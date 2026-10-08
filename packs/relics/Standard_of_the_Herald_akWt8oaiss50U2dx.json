@@ -4,7 +4,7 @@
   "_id": "akWt8oaiss50U2dx",
   "img": "/icons/sundries/flags/banner-standard-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Spear with a banneret's standard capable of instilling bravery.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Warlord's Resolve: While planted in the ground, Allies within Near have a +1 bonus to Armor, and Favor on Saves against Frightened.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Loyalty: Can be thrown to attack. It then magically returns to the Wielder's hand after the attack.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Glamour: The standard can change to a design of the Bound Being's choice. It never gets dirty.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Spear with a banneret's standard capable of instilling bravery.</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Warlord's Resolve:</strong></b><span style=\"white-space:pre-wrap\"> While planted in the ground, Allies within Near have a +1 bonus to Armor, and Favor on Saves against Frightened.</span></li><li value=\"2\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Loyalty:</strong></b><span style=\"white-space:pre-wrap\"> Can be thrown to attack. It then magically returns to the Wielder's hand after the attack.</span></li><li value=\"3\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Glamour:</strong></b><span style=\"white-space:pre-wrap\"> The standard can change to a design of the Bound Being's choice. It never gets dirty.</span></li></ul>",
     "rules": [],
     "category": "weapons",
     "value": {
@@ -73,9 +73,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.1",
     "createdTime": 1790023028141,
-    "modifiedTime": 1790023201616,
+    "modifiedTime": 1791481631289,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

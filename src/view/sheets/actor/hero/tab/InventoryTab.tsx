@@ -7,7 +7,7 @@ import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { isInContainer,sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ContainerDataModel } from "../../../../../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
-import { equipmentContextMenuItems, getContainers, getEncumbranceInfo } from "../../../../../utils/heroInventoryUtil"
+import { equipmentContextMenuItems } from "../../../../../utils/heroInventoryUtil"
 import { appLang } from "../../../../../utils/lang"
 import { tableBorder, tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation, PrimaryButton } from "../../../../component/Button"
@@ -28,7 +28,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="w-full min-h-16 mb-4">
             <div className="flex justify-between gap-1">
-                <CapacityGauge label={appLang.HeroSheet.encumbrance} capacityInfo={getEncumbranceInfo(hero)} />
+                <CapacityGauge label={appLang.HeroSheet.encumbrance} capacityInfo={hero.encumbranceInfo()} />
                 <HeroCoinPurse hero={hero} />
             </div>
             <div className={`${tableBorder} mt-1 w-full`}>
@@ -38,7 +38,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                     items={
                         sortedItems<EquipmentDataModel<EquipmentSchema>>(
                             hero.inventory.items as EquipmentDataModel<EquipmentSchema>[]
-                        ).filter(it => !isInContainer(it, getContainers(hero)) && it.parent.type !== "container")
+                        ).filter(it => !isInContainer(it, hero.containers()) && it.parent.type !== "container")
                     }
                 />
             </div>
@@ -62,7 +62,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
 
 const Containers = ({ hero }: { hero: HeroDataModel }) => {
     const { ContextMenu, onCtxMenu } = useContextMenu()
-    const containers = getContainers(hero)
+    const containers = hero.containers()
         .sort((a, b) => a.parent.name.localeCompare(b.parent.name))
         .map(it => it.parent) as (Item & { system: ContainerDataModel })[]
 

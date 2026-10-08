@@ -14,7 +14,7 @@ const cardSubheaderStyle = "flex gap-x-2 py-1 pl-2 pr-1 items-center bg-section-
 const cardSubheaderLabel = "text-sm text-text-header-secondary font-eskapade font-bold"
 const cardSubheaderValue = "text-base text-text-header-primary font-eskapade font-normal"
 const cardBodyLayout = "p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border bg-sheet-main-fill"
-const cardBodyStyle = "text-text-primary text-sm antialiased text-justify font-paradigm font-normal"
+const cardBodyStyle = "text-text-primary text-sm antialiased font-paradigm font-normal"
 
 export const SkillCard = ({ actor, img = '', dmgType = 'none', title, subtitles, description, startCollapsed = true, hideCollapseButton, actions = [], mini }: {
     actor?: Actor,

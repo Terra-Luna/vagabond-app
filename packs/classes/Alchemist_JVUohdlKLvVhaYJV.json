@@ -4,7 +4,7 @@
   "_id": "JVUohdlKLvVhaYJV",
   "img": "systems/vagabond-app/assets/class/alchemist_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Often sequestered in a lab, alchemists study the essence of creation. They are as curious as they are resourceful, and always have “just the thing for this.”</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Alchemists</strong></b></p><p><span style=\"white-space:pre-wrap\">• The Colorman, Sacré Bleu</span></p><p><span style=\"white-space:pre-wrap\">• Diablo, Marvel Comics</span></p><p><span style=\"white-space:pre-wrap\">• Dr. Jekyll, Dr. Jekyll and Mr. Hyde</span></p><p><span style=\"white-space:pre-wrap\">• Tessa Cade, Defy the Night</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Alchemist</strong></b></p><p><span style=\"white-space:pre-wrap\">The alchemist is a low-defense, high-damage-and-utility blaster. It’s recommended you stay Far from Enemies to use Alchemical Items.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Use (Craft &amp; Attack)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Arcana, Craft, Medicine</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Often sequestered in a lab, alchemists study the essence of creation. They are as curious as they are resourceful, and always have “just the thing for this.”</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Alchemists</strong></b></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">The Colorman, Sacré Bleu</span></li><li value=\"2\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Diablo, Marvel Comics</span></li><li value=\"3\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Dr. Jekyll, Dr. Jekyll and Mr. Hyde</span></li><li value=\"4\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Tessa Cade, Defy the Night</span></li></ul><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Alchemist</strong></b></p><p><span style=\"white-space:pre-wrap\">The alchemist is a low-defense, high-damage-and-utility blaster. It’s recommended you stay Far from Enemies to use Alchemical Items.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Use (Craft &amp; Attack)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Arcana, Craft, Medicine</span></p>",
     "rules": [
       {
         "id": "3Zz32mqq4wp99hru",
@@ -63,9 +63,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.103",
+    "systemVersion": "0.2.1",
     "createdTime": 1785901125159,
-    "modifiedTime": 1791330766651,
+    "modifiedTime": 1791482568160,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

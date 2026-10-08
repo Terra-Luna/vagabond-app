@@ -4,7 +4,7 @@
   "_id": "z1kZnAwQjCbHMFla",
   "img": "systems/vagabond-app/assets/class/wizard_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Wizards are students of the arcane arts who research and develop spells as academic pursuit.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Wizards</strong></b></p><p><span style=\"white-space:pre-wrap\">• Harry Dresden, The Dresden Files</span></p><p><span style=\"white-space:pre-wrap\">• Merlyn, Arthurian legend</span></p><p><span style=\"white-space:pre-wrap\">• Sparrowhawk, Earthsea</span></p><p><span style=\"white-space:pre-wrap\">• Sypha Belnades, Castlevania</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Wizard</strong></b></p><p><span style=\"white-space:pre-wrap\">The wizard is a squishy blaster focused on Casting Spells. Stay in safety to Cast your Spells and discover Enemy weaknesses.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action: </strong></b><span style=\"white-space:pre-wrap\">Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Arcana, Craft, Mysticism</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Wizards are students of the arcane arts who research and develop spells as academic pursuit.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Wizards</strong></b></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Harry Dresden, The Dresden Files</span></li><li value=\"2\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Merlyn, Arthurian legend</span></li><li value=\"3\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Sparrowhawk, Earthsea</span></li><li value=\"4\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Sypha Belnades, Castlevania</span></li></ul><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Wizard</strong></b></p><p><span style=\"white-space:pre-wrap\">The wizard is a squishy blaster focused on Casting Spells. Stay in safety to Cast your Spells and discover Enemy weaknesses.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action: </strong></b><span style=\"white-space:pre-wrap\">Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Arcana, Craft, Mysticism</span></p>",
     "rules": [
       {
         "id": "n3d8EWbu9XuJNJMl",
@@ -63,9 +63,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.103",
+    "systemVersion": "0.2.1",
     "createdTime": 1786572729833,
-    "modifiedTime": 1791388976444,
+    "modifiedTime": 1791482826976,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

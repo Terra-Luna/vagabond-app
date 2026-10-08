@@ -4,7 +4,7 @@
   "_id": "idY1R4GWmCmfH6DA",
   "img": "/icons/equipment/neck/choker-chain-thick-silver.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Necklace of heavy chain which grants the wearer the following Powers:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Eternal Breath: They don't need to breathe.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Extremes Innured: They are not affected by extreme pressure or vacuums.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Necklace of heavy chain which grants the wearer the following Powers:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Eternal Breath: </strong></b><span style=\"white-space:pre-wrap\">They don't need to breathe.</span></li><li value=\"2\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Extremes Innured:</strong></b><span style=\"white-space:pre-wrap\"> They are not affected by extreme pressure or vacuums.</span></li></ul>",
     "rules": [],
     "category": "valuables",
     "value": {
@@ -56,9 +56,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.55",
+    "systemVersion": "0.2.1",
     "createdTime": 1790015242835,
-    "modifiedTime": 1790370829501,
+    "modifiedTime": 1791481253793,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

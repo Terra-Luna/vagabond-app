@@ -216,9 +216,18 @@ importers:
       '@lexical/html':
         specifier: 0.45.0
         version: 0.45.0
+      '@lexical/list':
+        specifier: 0.45.0
+        version: 0.45.0
       '@lexical/react':
         specifier: 0.45.0
         version: 0.45.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(yjs@13.6.31)
+      '@lexical/table':
+        specifier: 0.45.0
+        version: 0.45.0
+      '@lexical/utils':
+        specifier: 0.45.0
+        version: 0.45.0
       '@szhsin/react-menu':
         specifier: ^4.5.2
         version: 4.5.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)

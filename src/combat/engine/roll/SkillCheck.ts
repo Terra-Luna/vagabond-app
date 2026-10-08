@@ -128,7 +128,7 @@ export class SkillCheck {
         }
     }
 
-    public async roll(isReroll: boolean = false): Promise<SkillCheckResult> {
+    public async roll(isReroll: boolean = false, animate: boolean = true): Promise<SkillCheckResult> {
         let favorHinder = this.favorHinder
         const existingD6s = this.result?.d6s ?? []
         const existingD6 = existingD6s.reduce((a, b) => a + b, 0)
@@ -214,7 +214,7 @@ export class SkillCheck {
             rolls: [roll, ...favorExplosions, ...bonusRolls]
         }
 
-        roll3dDice(this.result.rolls)
+        if (animate) roll3dDice(this.result.rolls)
 
         return this.result
     }

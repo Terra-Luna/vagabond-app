@@ -139,13 +139,13 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                     ]} />
 
                     <div className="flex flex-col justify-center items-center">
-                        <SkillCheckDiceComponent
+                        {<SkillCheckDiceComponent
                             d20s={attack.skillCheck?.result?.d20s}
                             d6s={attack.skillCheck?.result?.d6s}
                             modifier={attack.skillCheck?.modifier}
                             favHinder={attack.skillCheck?.favorHinder}
                             bonusDice={[]}
-                        />
+                        />}
 
                         {/* CRIT CHOICE BUTTONS */}
                         {attack.showCritChoices &&
@@ -153,7 +153,7 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                                 {/* GAIN A LUCK */}
                                 <InteractiveChatCardButton label="+1 Luck" tooltip="Gain a Luck" fn={addCritLuck} />
                                 {/* ADD DAMAGE EQUAL TO SKILL'S STAT */}
-                                {!attack.isEffectOnlySpellAttack &&
+                                {!attack.isEffectOnlySpellAttack && !attack.isDefenseCheck &&
                                     <InteractiveChatCardButton label="+Damage" tooltip="Add damage equal to stat used" fn={addCritDamage} />
                                 }
                                 {/* ADD SPELL'S CRIT FX */}
@@ -246,7 +246,7 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
             {/* ALCHEMY ITEM DESCRIPTION */}
             {(source?.type as any) === 'alchemical' && (source as any)?.system?.description &&
                 <div>
-                    <EnrichedContent content={(source as any).system.description} styleClasses="text-sm text-justify font-paradigm font-normal px-2" />
+                    <EnrichedContent content={(source as any).system.description} styleClasses="text-sm font-paradigm font-normal px-2" />
                 </div>
             }
         </div>

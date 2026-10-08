@@ -80,7 +80,7 @@ export const ItemRulesManager = ({ item, name, level, scale }: {
     if (!isEditMode) return
     else return (
         <FoundryHotkeyBlocker>
-            <CollapsibleSection title={"GRANTS & MODIFIERS"} content={
+            <CollapsibleSection title={"GRANTS & MODIFIERS"} startCollapsed={true} content={
                 <div className={`p-2 bg-sheet-main-fill mb-8 ${tableBorder}`}>
                     <div className="flex justify-between items-center pb-2">
                         <HeroCreationLabel text={'Item Grants & Modifiers'} />

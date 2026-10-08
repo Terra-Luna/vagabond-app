@@ -117,7 +117,7 @@ export const EnrichedContent = ({ content, styleClasses = '', actor }: { content
     return (
         <div
             ref={ref}
-            className={`${styleClasses} ${linkStyles}`}
+            className={`vb-rtf ${styleClasses} ${linkStyles}`}
             onClick={onClick}
         >
             {ReactHtmlParser(enrichedText, parserConfig)}

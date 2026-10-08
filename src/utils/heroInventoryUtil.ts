@@ -5,19 +5,18 @@ import { ItemStackSplitApp } from "../apps/inventory/ItemStackSplitApp"
 import { HeroAttack } from "../combat/engine/HeroAttack"
 import { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
 import { HeroDataModel } from "../model/actor/HeroDataModel"
-import { isInContainer, isInventoryItem, openItemSheet } from "../model/actor/type/Inventory"
+import { isInventoryItem, openItemSheet } from "../model/actor/type/Inventory"
 import { Coins, subtractCoins } from "../model/common/CoinValue"
 import { AlchemicalItemDataModel } from "../model/item/equip/AlchemicalItemDataModel"
 import { ArmorDataModel } from "../model/item/equip/ArmorDataModel"
 import { addItemToContainer, ContainerDataModel, extractItemFromContainer } from "../model/item/equip/ContainerDataModel"
-import { EquipmentDataModel, EquipmentSchema, setEquipState } from "../model/item/equip/EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema } from "../model/item/equip/EquipmentDataModel"
 import { SundryDataModel } from "../model/item/equip/SundryDataModel"
-import { isEquippedWeapon, WeaponDataModel } from "../model/item/equip/WeaponDataModel"
+import { WeaponDataModel } from "../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../rules/util/ItemsCache"
 import { sendVagabondChatMessage } from "../view/chat/ChatCardSerializer"
 import { ItemChatCard } from "../view/chat/ItemChatCard"
 import { CtxMenuItem } from "../view/component/ContextMenu"
-import { CapacityInfo } from "../view/sheets/shared/CapacityGauge"
 import { sys_id } from "./foundryUtils"
 import { appLang } from "./lang"
 import { getFullItem, getId, getName } from "./modelUtil"
@@ -60,95 +59,6 @@ export async function addItems(actor: Actor & { system: any }, uuids: string[]) 
     if (items.length > 0) {
         await actor.createEmbeddedDocuments("Item", items)
     }
-}
-
-export function getEquippedArmor(hero: any): (Item & { system: ArmorDataModel }) | undefined {
-    const items = hero?.parent?.items ?? hero?.items ?? []
-    return items.find((it: any) => it.type === "armor" && it.system.isEquipped)
-}
-
-export async function equipArmor(hero: any, armor: ArmorDataModel) {
-    const equippedArmor = getEquippedArmor(hero)
-
-    if (equippedArmor) {
-        if (equippedArmor.system.isCursed() && !game.user?.isActiveGM) {
-            ui.notifications?.info(`${hero.parent.name} is unable to remove bound item: ${equippedArmor.name}...`)
-        }
-        else {
-            await setEquipState(hero, equippedArmor, false)
-            await armor.parent.update({ "system.isEquipped": true })
-        }
-    }
-    else {
-        await setEquipState(hero, armor, true)
-    }
-}
-
-export function getEquippedWeapons(actor: Actor & { system: any }) {
-    return actor.items.filter(i => isEquippedWeapon(i.system)).map(w => (
-        { value: w.uuid, label: w.name }
-    ))
-}
-
-/**
- * Shows a UI warning notification if the Hero doesn't have enough
- * free hands available to equip the given weapon.
- * @param hero
- * @param item 
- */
-export async function equipWeapon(hero: any, item: WeaponDataModel | SundryDataModel) {
-    if (item instanceof SundryDataModel && item.isWearable) {
-        item.parent.update({ 'system.isEquipped': true })
-    }
-    else if (item.bulk.totalSlots > 0 && occupiedWeaponSlots(hero) + item.bulk.totalSlots > hero.inventory.weaponSlots) {
-        ui.notifications?.warn("Cannot equip any more weapons or tools!")
-    }
-    else {
-        const updates = { 'system.isEquipped': true }
-        if (item instanceof WeaponDataModel) {
-            updates['system.grip.state'] = ['V', 'H'].includes(item.grip.style) ? 'H' : (item.grip.style === 'HH' ? 'HH' : '-')
-        }
-        item.parent.update(updates)
-    }
-}
-
-const occupiedWeaponSlots = (hero: any): number => {
-    const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
-    const equippedSundries = hero.parent.items.filter((it: any) => it.type === "sundry" && it.system.isEquipped && !it.system.isWearable)
-    return [...equippedWeapons, ...equippedSundries].reduce((sum, it) => {
-        return sum + it.system.bulk.totalSlots
-    }, 0)
-}
-
-/**
- * Toggles Versatile weapons between H and and HH mode. If
- * the Hero doesn't have a free hand availalble, a UI warning
- * notification is shown to the user.
- * @param hero
- * @param item
- */
-export async function toggleGripState(item: WeaponDataModel | SundryDataModel) {
-    if (item instanceof SundryDataModel) return
-
-    if (item.grip.style === 'V') {
-        if (item.grip.state === 'H') {
-            item.parent.update({ 'system.grip.state': 'HH' })
-        }
-        else {
-            item.parent.update({ 'system.grip.state': 'H' })
-        }
-    }
-}
-
-export const getEncumbranceInfo = (hero: any): CapacityInfo => {
-    const capacity = hero.inventory.capacity ?? 10
-    const bulk = hero.inventory.items.filter(i => !isInContainer(i, getContainers(hero))).reduce((sum, i) => { return sum + (i.bulk.totalSlots ?? 0) }, 0)
-    const isOverEncumbered = bulk / capacity > 1
-    return { bulk, capacity, isOverEncumbered }
-}
-
-export const getContainers = (hero: any): ContainerDataModel[] => {
-    return hero.parent.items.filter(it => it.type === 'container').map(it => it.system as ContainerDataModel[])
 }
 
 export const stackStackables = async (hero: any) => {
@@ -223,6 +133,7 @@ export const sendItemToChat = (hero: any, item: EquipmentDataModel<EquipmentSche
 
 export const equippedItemContextMenu = (hero: any, item: ArmorDataModel | WeaponDataModel | SundryDataModel): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
+
     if (item instanceof WeaponDataModel) {
         menuItems.push({
             icon: Sword,
@@ -233,49 +144,51 @@ export const equippedItemContextMenu = (hero: any, item: ArmorDataModel | Weapon
         })
         if (item.grip.style === 'V') {
             menuItems.push(
-                { icon: HandFist, label: 'Change grip', action: () => toggleGripState(item) }
+                { icon: HandFist, label: 'Change grip', action: () => hero.toggleVersatileGrip(item) }
             )
         }
     }
 
     menuItems.push(
-        { icon: Hand, label: 'Unequip', action: () => setEquipState(hero, item, false) }
+        { icon: Hand, label: 'Unequip', action: () => hero.equip(item.parent) }
     )
+
     return menuItems
 }
 
-export const equipmentContextMenuItems = (hero: any, item: EquipmentDataModel<EquipmentSchema>): CtxMenuItem[] => {
+export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
+
     if (item.isEquippable) {
         if (item.isEquipped) {
             if (item instanceof WeaponDataModel && item.grip.style === 'V') {
                 menuItems.push({
-                    icon: HandFist, label: appLang.HeroSheet.Inventory.ctxGrip, action: () => toggleGripState(item)
+                    icon: HandFist,
+                    label: appLang.HeroSheet.Inventory.ctxGrip,
+                    action: () => hero.toggleVersatileGrip(item.parent)
                 })
             }
             menuItems.push({
-                icon: Hand, label: appLang.HeroSheet.Inventory.ctxUnequip, action: () => setEquipState(hero, item, false)
+                icon: Hand,
+                label: appLang.HeroSheet.Inventory.ctxUnequip,
+                action: () => hero.equip(item.parent)
             })
         }
         else {
             menuItems.push({
-                icon: HandFist, label: appLang.HeroSheet.Inventory.ctxEquip, action: async () => {
-                    item instanceof WeaponDataModel || item instanceof SundryDataModel
-                        ? equipWeapon(hero, item)
-                        : (item instanceof ArmorDataModel
-                            ? await equipArmor(hero, item as ArmorDataModel)
-                            : await setEquipState(hero, item, true)
-                        )
-                }
+                icon: HandFist,
+                label: appLang.HeroSheet.Inventory.ctxEquip,
+                action: async () => await hero.equip(item.parent)
             })
         }
     }
     else if (item.isConsumable) {
         menuItems.push(useItemContextOption(hero.parent, item.parent))
     }
+
     menuItems.push(
         viewItemSheetContextOption(item),
-        sendItemToChatContextOption(hero, item),
+        sendItemToChatContextOption(hero, item)
     )
 
     if (item.bulk.isStackable && item.bulk.quantity > 1) {
@@ -287,6 +200,7 @@ export const equipmentContextMenuItems = (hero: any, item: EquipmentDataModel<Eq
     if (item.bulk.isStackable && item.bulk.quantity > 1) {
         menuItems.push(deleteAllItemsContextOption(hero, item))
     }
+
     return menuItems
 }
 

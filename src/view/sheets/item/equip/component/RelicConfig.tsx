@@ -30,7 +30,7 @@ export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataMode
 
     return (<>
         {isEditMode && <div className="flex flex-col gap-y-1 items-stretch w-full mb-2">
-            <CollapsibleSection title={appLang.ButtonActions.relic} content={
+            <CollapsibleSection title={appLang.ButtonActions.relic} startCollapsed={true} content={
                 <div className="flex flex-col gap-1 w-full">
 
                     {/* ACTIVE POWERS */}

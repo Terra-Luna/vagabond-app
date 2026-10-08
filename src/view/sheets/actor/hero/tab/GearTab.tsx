@@ -9,7 +9,7 @@ import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { SundryDataModel } from "../../../../../model/item/equip/SundryDataModel"
 import { isEquippedSundry, isEquippedWeapon, WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
-import { equippedItemContextMenu, inventoryItemDragDropHandler, toggleGripState } from "../../../../../utils/heroInventoryUtil"
+import { equippedItemContextMenu, inventoryItemDragDropHandler } from "../../../../../utils/heroInventoryUtil"
 import { appLang } from "../../../../../utils/lang"
 import { getId } from "../../../../../utils/modelUtil"
 import { buttonAnimation } from "../../../../component/Button"
@@ -151,8 +151,8 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
                     attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent)
                 },
                 rollDefenseCheck: async (e: React.MouseEvent) => {
+                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, true)
                     await attackInstance.initiate(e, { isDefenseCheck: true })
-                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent)
                 }
             }
         })
@@ -201,7 +201,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
                                                 >
                                                     <div
                                                         className={`mr-2 ${gripStyle} ${item.grip.style === 'V' ? 'hover-glow' : ''}`}
-                                                        onClick={() => toggleGripState(item)}>
+                                                        onClick={() => hero.toggleVersatileGrip(item.parent)}>
                                                         {appLang.GripsAbbr[item.grip.state]}
                                                     </div>
                                                 </Tooltip>

@@ -4,7 +4,7 @@
   "_id": "cZSYzfkd2JuPPpNs",
   "img": "/icons/equipment/finger/ring-cabochon-copper-red.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">This red ruby ring has the following Powers:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Innured to Flame: The wearer is unharmed by non-magical Fire.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Fire Resistance: The wearer has Favor on Saves against taking Fire-based damage, and reduces the Fire damage they take by 1 per damage die rolled (minimum 1 damage).</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">This red ruby ring has the following Powers:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Innured to Flame: </strong></b><span style=\"white-space:pre-wrap\">The wearer is unharmed by non-magical Fire.</span></li><li value=\"2\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Fire Resistance: </strong></b><span style=\"white-space:pre-wrap\">The wearer has Favor on Saves against taking Fire-based damage, and reduces the Fire damage they take by 1 per damage die rolled (minimum 1 damage).</span></li></ul>",
     "rules": [],
     "category": "valuables",
     "value": {
@@ -56,9 +56,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.57",
+    "systemVersion": "0.2.1",
     "createdTime": 1790021081953,
-    "modifiedTime": 1790372788043,
+    "modifiedTime": 1791481006474,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

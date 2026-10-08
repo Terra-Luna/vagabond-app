@@ -3,7 +3,7 @@
   "type": "sundry",
   "img": "/icons/equipment/feet/boots-folded-leather-brown.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Boots adorned with mithral rabbit filigree.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Lesser Speed: Wearer's Speed becomes 30' if it was previously lower.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Boots adorned with mithral rabbit filigree.</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Lesser Speed:</strong></b><span style=\"white-space:pre-wrap\"> Wearer's Speed becomes 30' if it was previously lower.</span></li></ul>",
     "rules": [],
     "category": "clothing",
     "value": {
@@ -50,9 +50,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.1",
     "createdTime": 1790012221125,
-    "modifiedTime": 1790023201617,
+    "modifiedTime": 1791481066219,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

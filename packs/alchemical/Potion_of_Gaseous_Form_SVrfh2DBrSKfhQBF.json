@@ -4,7 +4,7 @@
   "_id": "SVrfh2DBrSKfhQBF",
   "img": "/icons/magic/air/fog-gas-smoke-dense-white.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">For 1 Hour, the consumer's body becomes a cloud of gas and the following rules apply:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• They immediately drop anything they have equipped, and can't equip anything.</span></p><p><span style=\"white-space:pre-wrap\">• They can Move by seeping into tiny spaces.</span></p><p><span style=\"white-space:pre-wrap\">• They can't Attack or Cast.</span></p><p><span style=\"white-space:pre-wrap\">• They are Immune to all damage from attacks that aren't made by Relics.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">For 1 Hour, the consumer's body becomes a cloud of gas and the following rules apply:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">They immediately drop anything they have equipped, and can't equip anything.</span></li><li value=\"2\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">They can Move by seeping into tiny spaces.</span></li><li value=\"3\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">They can't Attack or Cast.</span></li><li value=\"4\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">They are Immune to all damage from attacks that aren't made by Relics.</span></li></ul>",
     "rules": [],
     "category": "alchemy",
     "value": {
@@ -45,10 +45,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.1",
     "createdTime": 1786822863979,
-    "modifiedTime": 1786826180641,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1791482367068,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

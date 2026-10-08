@@ -40,7 +40,7 @@ export const TrackerUpdateChatCard = ({ heroId, verb, resource, roll }: {
                         <TrackerIcon resource={resource} />
                         <DiceRollComponent result={roll} faces={6} />
                     </div>
-                    : <div className="text-sm text-justify font-paradigm font-normal max-h-16 overflow-y-auto">
+                    : <div className="text-sm font-paradigm font-normal max-h-16 overflow-y-auto">
                         <TrackerIcon resource={resource} />
                         {ReactHtmlParser(res.description)}
                     </div>

@@ -259,7 +259,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
     const NewTrainingBlock = isRsnTrainingOptionAvailable && (
         <div className="flex flex-col justify-center items-center mb-2">
             <Header title={"NEW TRAINING"} />
-            <p className="flex justify-center m-4 text-base text-text-primary text-justify font-eskapade font-normal shrink-0">
+            <p className="flex justify-center m-4 text-base text-text-primary font-eskapade font-normal shrink-0">
                 Your increased Reason has granted you another Training selection...
             </p>
             <HeroCreationDropdown
@@ -314,7 +314,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
                     <div className="@container flex-1 min-h-0 flex flex-col gap-y-2 overflow-y-auto">
                         {/* NO SELECTIONS REQUIRED */}
                         {visibleSteps.length === 0 &&
-                            <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal shrink-0">
+                            <p className="flex justify-center m-4 text-xl text-text-primary font-eskapade font-normal shrink-0">
                                 No selections required.
                             </p>
                         }

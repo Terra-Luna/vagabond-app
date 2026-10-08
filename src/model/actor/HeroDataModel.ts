@@ -7,12 +7,12 @@ import { getItemChoiceRules, getItemRules } from "../../rules/util/item-rules-ut
 import { PerkRulesSelectionsApplicator } from "../../rules/util/PerkRulesSelectionsApplicator"
 import { getRuleSelectors, normalizeSelector } from "../../rules/util/selector-util"
 import { sys_id } from "../../utils/foundryUtils"
-import { getEquippedArmor } from "../../utils/heroInventoryUtil"
 import { appLang } from "../../utils/lang"
 import { getId, inventoryItemTypes } from "../../utils/modelUtil"
 import { removeWhitespace } from "../../utils/stringUtil"
 import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
+import { CapacityInfo } from "../../view/sheets/shared/CapacityGauge"
 import { consolidateCoins } from "../common/CoinValue"
 import { fields, optionalString, requiredInteger, requiredString } from "../common/sharedSchemas"
 import { AncestryDataModel } from "../item/character/AncestryDataModel"
@@ -20,10 +20,12 @@ import { ClassDataModel } from "../item/character/ClassDataModel"
 import { PerkDataModel } from "../item/character/PerkDataModel"
 import { SpellDataModel } from "../item/character/SpellDataModel"
 import { ArmorDataModel } from "../item/equip/ArmorDataModel"
+import { ContainerDataModel } from "../item/equip/ContainerDataModel"
 import type { EquipmentDataModel, EquipmentSchema } from "../item/equip/EquipmentDataModel"
+import { SundryDataModel } from "../item/equip/SundryDataModel"
 import { WeaponDataModel } from "../item/equip/WeaponDataModel"
 import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
-import { inventorySchema, isInventoryItem } from "./type/Inventory"
+import { inventorySchema, isInContainer, isInventoryItem } from "./type/Inventory"
 import { levelSchema } from "./type/Level"
 import { manaSchema } from "./type/Mana"
 import { savesSchema } from "./type/Saves"
@@ -198,6 +200,65 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
     }
 
+    async equip(item: Item & { system: ArmorDataModel | SundryDataModel | WeaponDataModel }) {
+        if (item.system.isEquipped) {
+            await item.system.toggleEquipped()
+            return
+        }
+
+        if (item.system instanceof ArmorDataModel) {
+            for (const armor of [...this.equippedArmor(), item]) {
+                await armor.system.toggleEquipped()
+            }
+            return
+        }
+
+        if (item.system instanceof SundryDataModel && item.system.isWearable) {
+            await item.system.toggleEquipped()
+            return
+        }
+
+        const equipped = this.equippedWeapons()
+        const handsAreFull = equipped.length > 0 && equipped[0]?.system instanceof WeaponDataModel
+            ? equipped[0]?.system?.grip?.state === 'HH'
+            : equipped[0]?.system?.bulk?.slots > 1
+
+        if (handsAreFull) {
+            ui.notifications?.info(`Your hands are full.`)
+            return
+        }
+
+        const slots = equipped.reduce((sum, it) => sum + (it.system.bulk.slots ?? 0), 0)
+        if (this.inventory.weaponSlots - slots - item.system.bulk.slots < 0) {
+            ui.notifications?.info(`Equipped items slot limit (${this.inventory.weaponSlots}) exceeded.`)
+            return
+        }
+
+        await item.system.toggleEquipped()
+    }
+
+    async toggleVersatileGrip(item: Item & { system: WeaponDataModel }) {
+        if (item.system.grip.style !== 'V') return
+
+        const equipped = this.equippedWeapons()
+
+        if (equipped.length > 1) {
+            for (const weapon of equipped.filter(it => it.id !== item.id)) {
+                await weapon.system.toggleEquipped()
+            }
+        }
+
+        await item.update({ 'system.grip.state': item.system.grip.state === 'HH' ? 'H' : 'HH' } as Record<string, any>)
+    }
+
+    equippedArmor = (): (Item & { system: ArmorDataModel })[] => {
+        return this.parent.items.filter((it: any) => it.type === "armor" && it.system.isEquipped)
+    }
+
+    equippedWeapons = (): (Item & { system: SundryDataModel | WeaponDataModel })[] => {
+        return this.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
+    }
+
     defenseWeapons = (): (Item & { system: WeaponDataModel })[] => {
         return this.parent.items.filter((it: any) =>
             it.type === "weapon" && it.system.isEquipped && it.system.isDefenseWeapon() && it.system.skills.some(skill => this.skills[skill].trained)
@@ -214,6 +275,17 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     boundRelics = (): EquipmentDataModel<EquipmentSchema>[] => {
         return (this.inventory.items as any).filter(it => it.isEquipped && it.isBoundRelic())
+    }
+
+    encumbranceInfo = (): CapacityInfo => {
+        const capacity = this.inventory.capacity ?? 10
+        const bulk = this.inventory.items.filter(i => !isInContainer(i, this.containers())).reduce((sum, i) => { return sum + (i.bulk.totalSlots ?? 0) }, 0)
+        const isOverEncumbered = bulk / capacity > 1
+        return { bulk, capacity, isOverEncumbered }
+    }
+
+    containers = (): ContainerDataModel[] => {
+        return this.parent.items.filter(it => it.type === 'container').map(it => it.system as ContainerDataModel[])
     }
 
     getActiveRules() {
@@ -393,7 +465,7 @@ export function setSkill(stat: number, trained: boolean): number {
 
 export function setSaves(hero: HeroDataModel) {
     const base = 20
-    const armor = getEquippedArmor(hero)
+    const armor = hero.equippedArmor()[0]
     hero.saves.reflex = base + (armor?.system?.bulk?.slots ?? 0) - (hero.stats.dexterity! + hero.stats.awareness!)
     hero.saves.endure = base - (hero.stats.might! * 2)
     hero.saves.will = base - (hero.stats.reason! + hero.stats.presence!)

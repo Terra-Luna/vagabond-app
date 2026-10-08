@@ -349,3 +349,19 @@
     overflow: hidden;
     pointer-events: none;
 }
+
+/* RichTextField editor (lists, tables, toolbar). Based on https://lexical.dev/docs/getting-started/react */
+.vb-rtf ul, .vb-rtf ol { margin: 0; padding-left: 1.5rem; }
+.vb-rtf ul { list-style: disc outside; }
+.vb-rtf ol { list-style: decimal outside; }
+.vb-rtf ul ul, .vb-rtf ol ol, .vb-rtf ul ol, .vb-rtf ol ul { margin-left: 0.5rem; }
+.vb-rtf ul ul { list-style-type: circle; }
+.vb-rtf li { padding-left: 0.25rem; }
+.vb-rtf li.vb-rtf-nested { list-style-type: none; }
+.vb-rtf table { border-collapse: collapse; margin: 0.25rem 0; width: 100%; table-layout: fixed; }
+.vb-rtf th, .vb-rtf td { border: 1px solid color-mix(in srgb, currentColor 55%, transparent); padding: 0.125rem 0.375rem; vertical-align: top; min-width: 2rem; height: 1.75rem; }
+.vb-rtf th { font-weight: normal; text-align: left; }
+/* Lexical exports header cells with an inline background color, so this needs !important */
+.vb-rtf th, .vb-rtf td { background: transparent !important; color: inherit; text-shadow: none; }
+.vb-rtf-toolbar button { display: flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; padding: 0; border: none; border-radius: 4px; background: transparent; color: inherit; opacity: 0.7; cursor: pointer; }
+.vb-rtf-toolbar button:hover { opacity: 1; background: color-mix(in srgb, currentColor 15%, transparent); }

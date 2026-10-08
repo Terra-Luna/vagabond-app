@@ -4,7 +4,7 @@
   "_id": "8psdOCqV0yfM14Wc",
   "img": "/icons/magic/acid/orb-bubble-smoke-drip.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Vile blighting acid. A hit Target takes d6 damage, plus Burning (Cd6) if made of wood or plants. If the Target is a point, all natural plants Close to it immediately die.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">If the Target is a non-Relic, the acid destroys a 1' circle of it down 1-inch deep, causing the following if it is Armor or a Weapon:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Armor is reduced by 1, breaking at 0.</span></p><p><span style=\"white-space:pre-wrap\">• Weapons reduce their damage die by one size until repaired. If the damage die is a d4 when this happens, it is destroyed.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Vile blighting acid. A hit Target takes d6 damage, plus Burning (Cd6) if made of wood or plants. If the Target is a point, all natural plants Close to it immediately die.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">If the Target is a non-Relic, the acid destroys a 1' circle of it down 1-inch deep, causing the following if it is Armor or a Weapon:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Armor is reduced by 1, breaking at 0.</span></li><li value=\"2\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Weapons reduce their damage die by one size until repaired. If the damage die is a d4 when this happens, it is destroyed.</span></li></ul>",
     "rules": [],
     "category": "alchemy",
     "value": {
@@ -52,9 +52,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.1",
+    "systemVersion": "0.2.1",
     "createdTime": 1786819006860,
-    "modifiedTime": 1789666073355,
+    "modifiedTime": 1791482315742,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

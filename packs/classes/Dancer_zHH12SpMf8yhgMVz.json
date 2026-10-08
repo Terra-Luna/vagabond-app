@@ -4,7 +4,7 @@
   "_id": "zHH12SpMf8yhgMVz",
   "img": "systems/vagabond-app/assets/class/dancer_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Dancers are practitioners of the alluring art of dance. They have a flair for enlivening their audience and giving awe-inspiring shows.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Dancers</strong></b></p><p><span style=\"white-space:pre-wrap\">• Apsalar, Malazan Book of the Fallen</span></p><p><span style=\"white-space:pre-wrap\">• Azura, Fire Emblem Fates</span></p><p><span style=\"white-space:pre-wrap\">• Sandrilene fa Toren, The Circle Opens</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Dancer</strong></b></p><p><span style=\"white-space:pre-wrap\">The dancer is a low-defense support with a focus on action efficiency. Grant Actions through Step Up, as your main offenses will occur when you Crit on Reflex Saves.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Step Up</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Finesse, Performance</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Dancers are practitioners of the alluring art of dance. They have a flair for enlivening their audience and giving awe-inspiring shows.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Dancers</strong></b></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Apsalar, Malazan Book of the Fallen</span></li><li value=\"2\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Azura, Fire Emblem Fates</span></li><li value=\"3\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Sandrilene fa Toren, The Circle Opens</span></li></ul><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Dancer</strong></b></p><p><span style=\"white-space:pre-wrap\">The dancer is a low-defense support with a focus on action efficiency. Grant Actions through Step Up, as your main offenses will occur when you Crit on Reflex Saves.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Step Up</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Finesse, Performance</span></p>",
     "rules": [
       {
         "id": "3Zz32mqq4wp99hru",
@@ -62,9 +62,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.103",
+    "systemVersion": "0.2.1",
     "createdTime": 1786555298394,
-    "modifiedTime": 1791331056962,
+    "modifiedTime": 1791482615875,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

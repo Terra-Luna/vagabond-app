@@ -11,6 +11,7 @@ export interface ComboSubAttackSnapshot {
     statuses: string[]
     damageRoll: any | undefined
     saveResults: Record<string, any>
+    defenseArmorBonuses?: Record<string, number>
     rerolledSaveTargetIds: string[]
 }
 

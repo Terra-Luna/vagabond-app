@@ -4,7 +4,7 @@
   "_id": "Dy5ScV9PimQvyD4x",
   "img": "/icons/weapons/swords/greatsword-guard-jewel-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Longsword with a pure white blade and jewel-studded hilt.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Evil's Bane: Deals an extra damage die to Hellspawn and Undead.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Smite I: Targets that take damage from it are also Burning (Cd4) with holy flame that ignores Immune.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Longsword with a pure white blade and jewel-studded hilt.</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Evil's Bane:</strong></b><span style=\"white-space:pre-wrap\"> Deals an extra damage die to Hellspawn and Undead.</span></li><li value=\"2\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Smite I: </strong></b><span style=\"white-space:pre-wrap\">Targets that take damage from it are also Burning (Cd4) with holy flame that ignores Immune.</span></li></ul>",
     "rules": [],
     "category": "weapons",
     "value": {
@@ -118,9 +118,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.1",
     "createdTime": 1790013191890,
-    "modifiedTime": 1790023201616,
+    "modifiedTime": 1791481042407,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

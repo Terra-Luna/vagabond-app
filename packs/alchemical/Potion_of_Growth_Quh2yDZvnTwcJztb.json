@@ -4,7 +4,7 @@
   "_id": "Quh2yDZvnTwcJztb",
   "img": "/icons/consumables/potions/potion-flask-corked-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">For 1 Hour, the consumer gains these benefits:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Their size increases by one.</span></p><p><span style=\"white-space:pre-wrap\">• Their attacks deal an extra die of damage.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">A Being can benefit from no more than one of these potions at a time.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">For 1 Hour, the consumer gains these benefits:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Their size increases by one.</span></li><li value=\"2\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Their attacks deal an extra die of damage.</span></li></ul><p><br></p><p><span style=\"white-space:pre-wrap\">A Being can benefit from no more than one of these potions at a time.</span></p>",
     "rules": [],
     "category": "alchemy",
     "value": {
@@ -45,10 +45,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.1",
     "createdTime": 1786822958810,
-    "modifiedTime": 1786826146464,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1791482405185,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

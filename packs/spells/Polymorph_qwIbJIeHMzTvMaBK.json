@@ -4,7 +4,7 @@
   "_id": "qwIbJIeHMzTvMaBK",
   "img": "/icons/creatures/amphibians/bullfrog-glass-teal.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">The Target becomes a Beast of your choice with HD no higher than your Level for the duration. If the Target is unwilling and its HD are higher than your Level, the Spell fails. During this time, the Target uses:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• The Beast's Speed, Passives, Senses, Armor, Immune, Weak, Actions, and Abilities.</span></p><p><span style=\"white-space:pre-wrap\">• The Target's HP and, if possible, its Actions and Abilities.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">You must spend 1 Mana on your Turns to Focus on this Spell, even for willing Targets.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target becomes a Beast of your choice with HD no higher than your Level for the duration. If the Target is unwilling and its HD are higher than your Level, the Spell fails. During this time, the Target uses:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">The Beast's Speed, Passives, Senses, Armor, Immune, Weak, Actions, and Abilities.</span></li><li value=\"2\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">The Target's HP and, if possible, its Actions and Abilities.</span></li></ul><p><br></p><p><span style=\"white-space:pre-wrap\">You must spend 1 Mana on your Turns to Focus on this Spell, even for willing Targets.</span></p>",
     "rules": [],
     "baseManaCost": 0,
     "ignoreEffectCost": false,
@@ -22,10 +22,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.1",
     "createdTime": 1786556348857,
-    "modifiedTime": 1786556522246,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1791479501815,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

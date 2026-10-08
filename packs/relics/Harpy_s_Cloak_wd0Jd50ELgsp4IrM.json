@@ -4,7 +4,7 @@
   "_id": "wd0Jd50ELgsp4IrM",
   "img": "/icons/commodities/materials/material-feathers-violet.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">A cloak of harpy's feathers. It acts as Light Armor and the feathers can be used as Daggers.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• (+1) Armor: Grants a +1 bonus to Armor.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Infinite ((+1) Dagger): The feathers it creates attack as (+1) Daggers. They become mundane feathers after the attack is made, and the feather grows back instantly.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">A cloak of harpy's feathers. It acts as Light Armor and the feathers can be used as Daggers.</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">(+1) Armor:</strong></b><span style=\"white-space:pre-wrap\"> Grants a +1 bonus to Armor.</span></li></ul><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Infinite ((+1) Dagger):</strong></b><span style=\"white-space:pre-wrap\"> The feathers it creates attack as (+1) Daggers. They become mundane feathers after the attack is made, and the feather grows back instantly.</span></li></ul>",
     "rules": [],
     "category": "armor",
     "value": {
@@ -56,9 +56,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.55",
+    "systemVersion": "0.2.1",
     "createdTime": 1790013732657,
-    "modifiedTime": 1790370914504,
+    "modifiedTime": 1791481234290,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -4,7 +4,7 @@
   "_id": "3h8WWUocmjX4fMPx",
   "img": "/icons/weapons/hammers/hammer-double-engraved-gold.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Warhammer that must be Bound to to access its Powers, which are as follows:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• (+3) Bonus: Deals an extra +3 damage.</span></p><p><span style=\"white-space:pre-wrap\">• Giants Bane: Deals an extra damage die to giants.</span></p><p><span style=\"white-space:pre-wrap\">• Earth Shaker: (1/Day) Strike the earth to cause all Near foes to be Dazed (d4 Rounds).</span></p><p><span style=\"white-space:pre-wrap\">• Loyalty: Can be thrown to attack. It then magically returns to the Wielder's hand after the attack.</span></p><p><span style=\"white-space:pre-wrap\">• Sense Valuables: Senses gold and gems within Near.</span></p><p><span style=\"white-space:pre-wrap\">• Thrown Ace: Deals an extra damage die with thrown attacks.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Warhammer that must be Bound to to access its Powers, which are as follows:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Giants Bane:</strong></b><span style=\"white-space:pre-wrap\"> Deals an extra damage die to giants.</span></li><li value=\"2\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Earth Shaker:</strong></b><span style=\"white-space:pre-wrap\"> (1/Day) Strike the earth to cause all Near foes to be Dazed (d4 Rounds).</span></li><li value=\"3\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Sense Valuables:</strong></b><span style=\"white-space:pre-wrap\"> Senses gold and gems within Near.</span></li></ul>",
     "rules": [],
     "category": "weapons",
     "value": {
@@ -125,9 +125,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.1",
     "createdTime": 1790023201584,
-    "modifiedTime": 1790023308268,
+    "modifiedTime": 1791481460889,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

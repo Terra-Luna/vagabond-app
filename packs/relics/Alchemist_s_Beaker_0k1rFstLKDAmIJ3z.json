@@ -4,7 +4,7 @@
   "_id": "0k1rFstLKDAmIJ3z",
   "img": "/icons/consumables/potions/round-decorated-snake-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">A beaker with three separate layers, each with the following Power:</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">• Prima Materia:</strong></b><span style=\"white-space:pre-wrap\"> When the Ritual to Bond with it is performed, the Being can provide up to three alchemical items and assign them to a layer. The beaker can be used to provide a use of that alchemical item, which replenishes automatically after 1 Day.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">A beaker with three separate layers, each with the following Power:</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Prima Materia:</strong></b><span style=\"white-space:pre-wrap\"> When the Ritual to Bond with it is performed, the Being can provide up to three alchemical items and assign them to a layer. The beaker can be used to provide a use of that alchemical item, which replenishes automatically after 1 Day.</span></p>",
     "rules": [],
     "category": "alchemy",
     "value": {
@@ -56,9 +56,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.55",
+    "systemVersion": "0.2.1",
     "createdTime": 1790010745794,
-    "modifiedTime": 1790371076134,
+    "modifiedTime": 1791479557209,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

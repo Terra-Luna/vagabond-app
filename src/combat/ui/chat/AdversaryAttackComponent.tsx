@@ -8,7 +8,7 @@ import { TotalDmgFooter } from "../../../view/chat/TotalDamageFooter"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
 import { DamageTypeIcon } from "../../../view/component/DamageTypeIcon"
-import { ClearHeader, Divider, Header } from "../../../view/component/Header"
+import { ClearHeader, Divider } from "../../../view/component/Header"
 import { Tooltip } from "../../../view/component/Tooltip"
 import { AdversaryAttack, SavingThrowType } from "../../engine/AdversaryAttack"
 import { AdversaryComboAttack } from "../../engine/AdversaryComboAttack"
@@ -77,6 +77,7 @@ const AdversaryComboAttackSection = ({ attack, sub, subIndex, ownedTargets, unow
                 damageRoll={sub.damageRoll}
                 saveTypes={sub.saveTypes}
                 saveResults={sub.saveResults}
+                defenseArmorBonuses={sub.defenseArmorBonuses}
                 rerolledSaveTargetIds={sub.rerolledSaveTargetIds}
                 isResolved={attack.isResolved}
                 ownedTargets={ownedTargets}
@@ -96,7 +97,7 @@ const AttackDamageAndSavesSection = ({
     damageRoll: DamageRoll | undefined
     saveTypes: SavingThrowType[]
     saveResults: Record<string, SkillCheckResult>
-        defenseArmorBonuses?: Record<string, number>
+    defenseArmorBonuses?: Record<string, number>
     rerolledSaveTargetIds: string[]
     isResolved: boolean
     ownedTargets: TargetDisplayItem[]
@@ -128,7 +129,7 @@ const AttackDamageAndSavesSection = ({
                                 ? [...saveTypes, 'defend']
                                 : saveTypes
 
-                            const defenseBonus = defenseArmorBonuses?.[target.id]
+                            const defenseBonus = result?.outcome === appLang.RollResult.failure ? undefined : defenseArmorBonuses?.[target.id]
 
                             return (
                                 <div key={target.id} className="flex min-w-0 items-center gap-1 whitespace-nowrap font-normal">
@@ -198,7 +199,7 @@ const AttackDamageAndSavesSection = ({
             {showDamage &&
                 <div>
                     {title
-                        ? <Header title={title} textLeft={true} />
+                        ? <ClearHeader title={title} />
                         : <ClearHeader title="DAMAGE" />
                     }
                     <DamageRollsComponent result={damageRoll!.result!} />
@@ -230,18 +231,22 @@ const SaveOutcomeIcon = ({ result, overlay = false }: { result?: SkillCheckResul
 
     const isFailure = result.outcome === appLang.RollResult.failure
     const isSuccess = result.outcome === appLang.RollResult.success || result.outcome === appLang.RollResult.crit
-    const isSuccessfulDefense = isSuccess && result.skill !== 'reflex' && result.skill !== 'will' && result.skill !== 'endure'
+    const isDefense = result.skill !== 'reflex' && result.skill !== 'will' && result.skill !== 'endure'
+    const isSuccessfulDefense = isSuccess && isDefense
     if (!isFailure && !isSuccess) return null
 
     return (
         <span className={`${overlay ? "absolute -right-1 top-2 rounded-full bg-context-menu-fill" : "relative"} flex h-4 w-4 shrink-0 items-center justify-center`}>
             {isFailure
                 ? <Tooltip content={"Failure"}>
-                    <X size={14} strokeWidth={3} className="text-destructive-action" />
+                    {isDefense
+                        ? <Shield size={14} strokeWidth={3} className={`text-destructive-action fill-ic-armor-fill`} />
+                        : <X size={14} strokeWidth={3} className="text-destructive-action" />
+                    }
                 </Tooltip>
                 : isSuccessfulDefense
-                    ? <Tooltip content={"Successful Defense"}>
-                        <Shield size={14} strokeWidth={2} className="text-ic-luck" />
+                    ? <Tooltip content={`Successful Defense (${result?.total ?? 0} vs. ${result?.difficulty ?? 0})`}>
+                        <Shield size={14} strokeWidth={2} className={`text-ic-luck ${result?.outcome === "CRITICAL" ? "fill-ic-luck" : "fill-ic-armor-fill"}`} />
                     </Tooltip>
                     : result.outcome === appLang.RollResult.crit
                         ? <Tooltip title={"Critical Success"} content={appLang.Combat.critSaveTooltip}>

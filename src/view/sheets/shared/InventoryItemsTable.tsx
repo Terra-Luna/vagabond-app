@@ -4,11 +4,8 @@ import { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataM
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { itemNameQty, openItemSheet } from "../../../model/actor/type/Inventory"
 import { coinsAsString } from "../../../model/common/CoinValue"
-import { ArmorDataModel } from "../../../model/item/equip/ArmorDataModel"
-import { EquipmentDataModel, EquipmentSchema, setEquipState } from "../../../model/item/equip/EquipmentDataModel"
-import { SundryDataModel } from "../../../model/item/equip/SundryDataModel"
-import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
-import { equipArmor, equipWeapon, inventoryItemDragDropHandler, useItem } from "../../../utils/heroInventoryUtil"
+import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
+import { inventoryItemDragDropHandler, useItem } from "../../../utils/heroInventoryUtil"
 import { appLang } from "../../../utils/lang"
 import { getId, getName } from "../../../utils/modelUtil"
 import { tableBorder, tableBorderRounded } from "../../common/border-styles"
@@ -94,7 +91,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                                 isEquipped={item.isEquipped}
                                                 gripState={(item as any).grip?.state}
                                                 toggleEquipState={
-                                                    async () => await toggleEquipState(actor as HeroDataModel, item)
+                                                    async () => await (actor as HeroDataModel).equip(item.parent)
                                                 }
                                             />
                                         </td>
@@ -194,23 +191,4 @@ const EquipStateIcon = ({ tooltip, type, isEquipped, gripState, toggleEquipState
             </div>
         </Tooltip>
     )
-}
-
-async function toggleEquipState(hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) {
-    if (item.isEquipped) {
-        await setEquipState(hero, item, false)
-    }
-    else {
-        if (item) {
-            if (item instanceof ArmorDataModel) {
-                await equipArmor(hero, item)
-            }
-            else if (item instanceof WeaponDataModel || item instanceof SundryDataModel) {
-                await equipWeapon(hero, item)
-            }
-        }
-        else {
-            ui.notifications?.warn("Item not found!")
-        }
-    }
 }

@@ -1,5 +1,4 @@
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { roll3dDice } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { getTargetIds } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
@@ -61,7 +60,6 @@ export class AdversaryAttack extends Attack {
     override async rollDamage(isCrit?: boolean) {
         if (this.damageRoll && this.damageRoll.dice.length > 0 && !this.damageRoll?.result) {
             await this.damageRoll.roll(isCrit)
-            roll3dDice(this.damageRoll.result?.rolls ?? [])
         }
     }
 
@@ -74,40 +72,15 @@ export class AdversaryAttack extends Attack {
         if (!targetActor) return
 
         const hero = targetActor.system as HeroDataModel
-        const defenseWeapons = saveType === 'defend' ? hero.defenseWeapons() : []
-        const weapon = defenseWeapons[0]
-        if (saveType === 'defend' && !weapon) return
 
-        const skill = weapon
-            ? HeroAttack.getHighestDefaultWeaponSkill(hero, weapon.system)?.skill
-            : saveType
-        if (!skill) return
-
-        const skillCheck = new SkillCheck(hero, { type: 'save', skill, item: weapon?.system, clickEvent: clickEvent as any })
-        const result = await skillCheck.roll()
-
-        if (saveType === 'defend' &&
-            (result.outcome === appLang.RollResult.success || result.outcome === appLang.RollResult.crit)) {
-            const defenseRolls: Roll[] = []
-            let armorBonus = 0
-
-            for (const defenseWeapon of defenseWeapons) {
-                const weaponSkill = HeroAttack.getHighestDefaultWeaponSkill(hero, defenseWeapon.system)?.skill
-                if (!weaponSkill) continue
-
-                const damageDice = DiceRoll.getItemDamageWithHeroMods(hero, weaponSkill, defenseWeapon.system)
-                const damageRoll = new DamageRoll({
-                    atkName: defenseWeapon.name,
-                    dmgType: defenseWeapon.system.damage.type,
-                    dice: [new DiceRoll(damageDice)]
-                })
-                const damageResult = await damageRoll.roll()
-                armorBonus += damageResult.total
-                defenseRolls.push(...damageResult.rolls)
-            }
-
-            this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: armorBonus }
-            roll3dDice(defenseRolls)
+        let result: SkillCheckResult
+        if (saveType === 'defend') {
+            const defense = await HeroAttack.rollDefense(hero, { clickEvent })
+            if (!defense) return
+            result = defense.result
+            this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: defense.armorBonus }
+        } else {
+            result = await new SkillCheck(hero, { type: 'save', skill: saveType, clickEvent: clickEvent as any }).roll()
         }
 
         this.saveResults = { ...this.saveResults, [targetId]: result }
@@ -133,15 +106,17 @@ export class AdversaryAttack extends Attack {
             { ['skipTrackerChatCard' as string]: true }
         )
 
-        // Reroll the original attempt's Favor/Hinder.
-        const skillCheck = new SkillCheck(hero, {
-            type: 'save',
-            skill: existing.skill,
-            favorHinder: existing.favorHinder as 'favor' | 'hinder' | 'none'
-        })
+        const favorHinder = existing.favorHinder as 'favor' | 'hinder' | 'none'
 
-        const result = await skillCheck.roll()
-
+        let result: SkillCheckResult
+        if (this.defenseArmorBonuses[targetId] !== undefined) {
+            const defense = await HeroAttack.rollDefense(hero, { favorHinder })
+            if (!defense) return
+            result = defense.result
+            this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: defense.armorBonus }
+        } else {
+            result = await new SkillCheck(hero, { type: 'save', skill: existing.skill, favorHinder }).roll()
+        }
         this.saveResults = { ...this.saveResults, [targetId]: result }
         this.rerolledSaveTargetIds = [...this.rerolledSaveTargetIds, targetId]
         await this.save(serializeAttack)

@@ -4,7 +4,7 @@
   "_id": "ZVrTuUTrTYQD86NZ",
   "img": "icons/magic/unholy/hand-claw-glow-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Corpses in the area of non-Artificial or Undead Beings with cumulative HD no higher than your Level rise as an Undead under your control for the duration. Afterward, any Undead you raised this way die and can't be raised by this Spell again. You can command your raised Undead when you Focus on this Cast, using your Cast Skill for Checks they make. The Undead you raise this way use their original statblock with the following changes:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• It is an Undead</span></p><p><span style=\"white-space:pre-wrap\">• It has Darksight, is Immune to Poison, Weak to Silvered Weapons, and can't be Sickened.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Corpses in the area of non-Artificial or Undead Beings with cumulative HD no higher than your Level rise as an Undead under your control for the duration. Afterward, any Undead you raised this way die and can't be raised by this Spell again. You can command your raised Undead when you Focus on this Cast, using your Cast Skill for Checks they make. The Undead you raise this way use their original statblock with the following changes:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">It is an Undead</span></li><li value=\"2\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">It has Darksight, is Immune to Poison, Weak to Silvered Weapons, and can't be Sickened.</span></li></ul>",
     "rules": [],
     "baseManaCost": 0,
     "ignoreEffectCost": false,
@@ -22,10 +22,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.1",
     "createdTime": 1786722392717,
-    "modifiedTime": 1786722455970,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1791479524425,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

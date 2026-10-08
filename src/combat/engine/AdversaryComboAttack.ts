@@ -1,10 +1,10 @@
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { roll3dDice } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { getTargetIds } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import type { SavingThrowType } from "./AdversaryAttack"
 import { Attack, AttackResolutionArgs } from "./Attack"
+import { HeroAttack } from "./HeroAttack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
 import { SkillCheck, SkillCheckResult } from "./roll/SkillCheck"
@@ -23,6 +23,7 @@ export class ComboSubAttack {
     saveTypes: SavingThrowType[] = []
     statuses: string[] = []
     saveResults: Record<string, SkillCheckResult> = {}
+    defenseArmorBonuses: Record<string, number> = {}
     rerolledSaveTargetIds: string[] = []
 
     constructor(args: ComboSubAttackArgs) {
@@ -43,13 +44,14 @@ export class ComboSubAttack {
     async rollDamage(isCrit?: boolean) {
         if (this.damageRoll.dice.length > 0 && !this.damageRoll.result) {
             await this.damageRoll.roll(isCrit)
-            roll3dDice((this.damageRoll?.result as any)?.rolls ?? [])
         }
     }
 
     // Same rules as AdversaryAttack: a Block meeting/beating its difficulty negates all damage.
     shouldApplyDamageToTarget(targetId: string): boolean {
         const result = this.saveResults[targetId]
+        // A defense only adds armor; it doesn't negate the damage.
+        if (this.defenseArmorBonuses[targetId] !== undefined) return true
         return !result || result.outcome === appLang.RollResult.failure
     }
 
@@ -60,18 +62,29 @@ export class ComboSubAttack {
         const target = actor?.system
         const armorRating = (target as any)?.armor?.rating ?? 0
         const armorPiercing = this.damageRoll.armorPiercing ?? 0
-        const armor = args.bypassArmor ? 0 : Math.max(0, armorRating - armorPiercing)
+        const armor = args.bypassArmor ? 0 : Math.max(0, armorRating + (this.defenseArmorBonuses[targetId] ?? 0) - armorPiercing)
+
         return Math.max(0, damage - armor)
     }
 
     async rollSave(targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
-        if (!this.saveTypes.includes(saveType) || this.saveResults[targetId]) return
+        // Defend is offered whenever a Reflex save is allowed.
+        const isAllowed = saveType === 'defend' ? this.saveTypes.includes('reflex') : this.saveTypes.includes(saveType)
+        if (!isAllowed || this.saveResults[targetId]) return
 
         const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
         if (!targetActor) return
 
-        const skillCheck = new SkillCheck(targetActor.system as HeroDataModel, { type: 'save', skill: saveType, clickEvent: clickEvent as any })
-        const result = await skillCheck.roll()
+        const hero = targetActor.system as HeroDataModel
+        let result: SkillCheckResult
+        if (saveType === 'defend') {
+            const defense = await HeroAttack.rollDefense(hero, { clickEvent })
+            if (!defense) return
+            result = defense.result
+            this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: defense.armorBonus }
+        } else {
+            result = await new SkillCheck(hero, { type: 'save', skill: saveType, clickEvent: clickEvent as any }).roll()
+        }
 
         this.saveResults = { ...this.saveResults, [targetId]: result }
 
@@ -94,13 +107,17 @@ export class ComboSubAttack {
             { ['skipTrackerChatCard' as string]: true }
         )
 
-        const skillCheck = new SkillCheck(hero, {
-            type: 'save',
-            skill: existing.skill,
-            favorHinder: existing.favorHinder as 'favor' | 'hinder' | 'none'
-        })
-        const result = await skillCheck.roll()
+        const favorHinder = existing.favorHinder as 'favor' | 'hinder' | 'none'
 
+        let result: SkillCheckResult
+        if (this.defenseArmorBonuses[targetId] !== undefined) {
+            const defense = await HeroAttack.rollDefense(hero, { favorHinder })
+            if (!defense) return
+            result = defense.result
+            this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: defense.armorBonus }
+        } else {
+            result = await new SkillCheck(hero, { type: 'save', skill: existing.skill, favorHinder }).roll()
+        }
         this.saveResults = { ...this.saveResults, [targetId]: result }
         this.rerolledSaveTargetIds = [...this.rerolledSaveTargetIds, targetId]
 
@@ -126,6 +143,7 @@ export class ComboSubAttack {
                     { ...result, rolls: result.rolls?.map((r: any) => r && typeof r.toJSON === "function" ? r.toJSON() : r) ?? [] }
                 ])
             ),
+            defenseArmorBonuses: this.defenseArmorBonuses,
             rerolledSaveTargetIds: this.rerolledSaveTargetIds
         }
     }
@@ -141,6 +159,7 @@ export class ComboSubAttack {
         })
         sub.damageRoll = damageRoll ?? sub.damageRoll
         sub.saveResults = snapshot.saveResults ? foundry.utils.deepClone(snapshot.saveResults) : {}
+        sub.defenseArmorBonuses = snapshot.defenseArmorBonuses ? { ...snapshot.defenseArmorBonuses } : {}
         sub.rerolledSaveTargetIds = snapshot.rerolledSaveTargetIds ? [...snapshot.rerolledSaveTargetIds] : []
         return sub
     }

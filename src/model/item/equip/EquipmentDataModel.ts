@@ -1,5 +1,4 @@
 import { appLang } from "../../../utils/lang"
-import type { HeroDataModel } from "../../actor/HeroDataModel"
 import { addCoins, Coins, coinSchema, consolidateCoins, multiplyCoins, toCopper, zeroCoins } from "../../common/CoinValue"
 import { fields, optionalString, requiredInteger, requiredString, uncappedInteger } from "../../common/sharedSchemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
@@ -154,6 +153,14 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         }
     }
 
+    toggleEquipped = async (): Promise<void> => {
+        if (this.isEquipped && this.isCursed()) {
+            ui.notifications?.info(`Unable to remove Bound item: ${this.parent.name}...the curse must be lifted.`)
+            return
+        }
+        await this.parent.update({ 'system.isEquipped': !this.isEquipped })
+    }
+
     isRelic = (): boolean => {
         return this.relicPowers.length > 0
     }
@@ -166,34 +173,6 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         return this.relicPowers.some(rel => rel.category.value === 'cursed')
     }
 
-}
-
-export const setEquipState = async (hero: HeroDataModel, item: any, isEquipped: boolean) => {
-    const gear = item?.system ?? item
-    if (!gear) return false
-
-    const setEquipState = async () => {
-        await gear.parent.update({ 'system.isEquipped': isEquipped })
-    }
-
-    if (gear.isEquippable) {
-        if (isEquipped) {
-            if (gear.isBoundRelic() && hero.boundRelics().length >= (hero.boundRelicLimit ?? 3)) {
-                ui.notifications?.warn(`${hero.parent.name} must remove a bound relic before equipping another.`)
-            }
-            else {
-                await setEquipState()
-            }
-        }
-        else {
-            if (gear.isCursed() && !game.user?.isActiveGM) {
-                ui.notifications?.info(`${hero.parent.name} is unable to remove bound item: ${gear.parent.name}...`)
-            }
-            else {
-                await setEquipState()
-            }
-        }
-    }
 }
 
 export const getTotalSlots = (item: any): number => {

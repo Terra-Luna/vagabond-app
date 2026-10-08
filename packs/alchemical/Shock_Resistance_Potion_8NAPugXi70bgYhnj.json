@@ -4,7 +4,7 @@
   "_id": "8NAPugXi70bgYhnj",
   "img": "/icons/consumables/potions/potion-bottle-corked-fancy-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">For 1 Hour, the consumer gains these benefits:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• They gain a +2 bonus to Saves against being Dazed, Paralyzed, and Shock-based attacks and magic.</span></p><p><span style=\"white-space:pre-wrap\">• They reduce any Shock damage they take by 1 per die used for the damage.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">For 1 Hour, the consumer gains these benefits:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">They gain a +2 bonus to Saves against being Dazed, Paralyzed, and Shock-based attacks and magic.</span></li><li value=\"2\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">They reduce any Shock damage they take by 1 per die used for the damage.</span></li></ul>",
     "rules": [],
     "category": "alchemy",
     "value": {
@@ -45,10 +45,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.1",
     "createdTime": 1786824797730,
-    "modifiedTime": 1786826097424,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1791482423202,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

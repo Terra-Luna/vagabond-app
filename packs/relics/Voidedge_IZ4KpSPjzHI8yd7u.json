@@ -3,7 +3,7 @@
   "type": "weapon",
   "img": "/icons/weapons/swords/sword-runed-glowing.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Greatsword that a Being must Bind themselves to to access its Powers, which are as follows:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Haste: (1/Day) For 1 Minute, the Wielder's Speed is doubled, they gain Favor on Reflex Saves, and can take a second Action each Round.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Lifesteal: Killing a foe with it heals the Wielder for [[/r 4d8#Voidedge]] HP. If the slain foe is an Artificial or Undead Being, it instead deals [[/r 4d8#Voidedge]] damage to the Wielder.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Resolve: The Wielder is Immune to Charmed and Frightened.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Sense Life: Detects Small and larger living Beings within Far.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Soul Eater: It devours the soul of foes it slays. Those who have their soul eaten can't be resurrected unless a wish is granted to do so.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Greatsword that a Being must Bind themselves to to access its Powers, which are as follows:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Haste: </strong></b><span style=\"white-space:pre-wrap\">(1/Day) For 1 Minute, the Wielder's Speed is doubled, they gain Favor on Reflex Saves, and can take a second Action each Round.</span></li><li value=\"2\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Lifesteal: </strong></b><span style=\"white-space:pre-wrap\">Killing a foe with it heals the Wielder for [[/r 4d8#Voidedge]] HP. If the slain foe is an Artificial or Undead Being, it instead deals [[/r 4d8#Voidedge]] damage to the Wielder.</span></li><li value=\"3\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Resolve:</strong></b><span style=\"white-space:pre-wrap\"> The Wielder is Immune to Charmed and Frightened.</span></li><li value=\"4\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Sense Life:</strong></b><span style=\"white-space:pre-wrap\"> Detects Small and larger living Beings within Far.</span></li><li value=\"5\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Soul Eater:</strong></b><span style=\"white-space:pre-wrap\"> It devours the soul of foes it slays. Those who have their soul eaten can't be resurrected unless a wish is granted to do so.</span></li></ul>",
     "rules": [],
     "category": "weapons",
     "value": {
@@ -110,9 +110,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.35",
+    "systemVersion": "0.2.1",
     "createdTime": 1790023700148,
-    "modifiedTime": 1790216120684,
+    "modifiedTime": 1791481520704,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

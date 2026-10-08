@@ -16,7 +16,7 @@ import { Imbue, SpellDelivery, SpellDeliverySnapshot } from "../spellcasting/Spe
 import { Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
-import { SkillCheck, SkillCheckType } from "./roll/SkillCheck"
+import { SkillCheck, SkillCheckResult, SkillCheckType } from "./roll/SkillCheck"
 import { serializeAttack } from "./util/attack-serializer"
 import { getDiceTerms } from "./util/dice-utils"
 
@@ -106,7 +106,7 @@ export class HeroAttack extends Attack {
         return (isSuccess && isDmgOrEffect) || (!this.hasHostileTargets && isDmgOrEffect)
     }
 
-    async initiate(clickEvent?: any, options?: { isDefenseCheck?: boolean }) {
+    async initiate(clickEvent?: any, options?: { isDefenseCheck?: boolean, skipChatCard?: boolean }) {
         this.id = foundry.utils.randomID()
         this.skipSkillCheck = this.skipSkillCheck || clickEvent?.altKey
         this.isDefenseCheck = !!options?.isDefenseCheck
@@ -132,12 +132,13 @@ export class HeroAttack extends Attack {
             await this.rollDamage(this.skillCheck?.result?.outcome === appLang.RollResult.crit)
         }
 
+        if (options?.skipChatCard) return
+
         await this.save(serializeAttack)
         await sendVagabondChatCard(
             this.actor,
             "InteractiveAttackChatCard",
-            { actorId: this.actor.id!, attackId: this.id },
-            [...this.skillCheck?.result?.rolls ?? []]
+            { actorId: this.actor.id!, attackId: this.id }
         )
     }
 
@@ -159,11 +160,11 @@ export class HeroAttack extends Attack {
         }
     }
 
-    async rollSkillCheck(isReroll: boolean = false) {
+    async rollSkillCheck(isReroll: boolean = false, animate: boolean = true) {
         if (!this.skillCheck) return
 
         this.isRerolled = isReroll
-        await this.skillCheck?.roll(isReroll)
+        await this.skillCheck?.roll(isReroll, animate)
 
         if (isReroll) {
             const luck = this.actor.system.statuses.counters.luck
@@ -341,10 +342,39 @@ export class HeroAttack extends Attack {
         await this.save(serializeAttack)
     }
 
+    /**
+     * Rolls a hero's defense against an adversary attack. A single defense check is made with the first
+     * defense weapon, then all equipped defenses weapons' damage dice are rolled. The sum becomes an armor
+     * bonus for the specific incoming attack.
+     */
+    static async rollDefense(
+        hero: HeroDataModel,
+        options?: { clickEvent?: any, favorHinder?: 'favor' | 'hinder' | 'none' }
+    ): Promise<{ result: SkillCheckResult, armorBonus: number } | undefined> {
+        const [checkWeapon] = hero.defenseWeapons()
+        if (!checkWeapon) return
+
+        const clickEvent = options?.clickEvent
+            ? { shiftKey: options.clickEvent.shiftKey, ctrlKey: options.clickEvent.ctrlKey }
+            : undefined
+
+        const checkAttack = HeroAttack.buildWeaponAttack(hero.parent, checkWeapon, undefined, true)
+        if (options?.favorHinder && checkAttack.skillCheck) checkAttack.skillCheck.favorHinder = options.favorHinder
+        await checkAttack.initiate(clickEvent, { isDefenseCheck: true, skipChatCard: true })
+
+        const result = checkAttack.skillCheck?.result
+        if (!result) return
+
+        const armorBonus = result.outcome !== appLang.RollResult.failure ? checkAttack.damageRoll?.result?.total ?? 0 : 0
+
+        return { result, armorBonus }
+    }
+
     static buildWeaponAttack(
         actor: Actor & { system: HeroDataModel },
         item: Item & { system: WeaponDataModel },
-        skill?: string
+        skill?: string,
+        defenseCheck?: boolean
     ): HeroAttack {
         const hero = actor.system
         const weapon = foundry.utils.deepClone(item.system)
@@ -352,9 +382,9 @@ export class HeroAttack extends Attack {
 
         let weaponSkill = skill
 
-        // If a skill wasn't provided for the skill check, use the highest applicable skill.
+        // If a skill wasn't provided for the skill check, use the best applicable skill.
         if (!weaponSkill) {
-            const defaultSkill = HeroAttack.getHighestDefaultWeaponSkill(hero, weapon)
+            const defaultSkill = HeroAttack.getDefaultWeaponSkill(hero, weapon)
             weaponSkill = defaultSkill?.skill ?? 'melee'
         }
 
@@ -451,6 +481,19 @@ export class HeroAttack extends Attack {
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)
         attack.itemId = item.uuid
+
+        if (defenseCheck) {
+            const defenseWeapons = actor.system.defenseWeapons()
+            if (defenseWeapons && defenseWeapons.length > 0) {
+                const rolls = defenseWeapons.filter(it => it.id !== item.id).map(it => {
+                    const atk = HeroAttack.buildWeaponAttack(actor, it)
+                    atk.itemId = weapon.parent.uuid
+                    return atk
+                })
+                attack.title = defenseWeapons.map(it => it.name).join(' & ')
+                attack.damageRoll?.dice.push(...rolls.flatMap(r => r.damageRoll?.dice ?? []))
+            }
+        }
 
         return attack
     }
@@ -631,7 +674,11 @@ export class HeroAttack extends Attack {
         }
     }
 
-    static getHighestDefaultWeaponSkill(hero: HeroDataModel, weapon: WeaponDataModel): { skill: string, value: number } {
+    /**
+     * Find the lowest (best) weapon skill and us it by default.
+     * Players can override the skill used via the skill selector in the roll builder view.
+     */
+    static getDefaultWeaponSkill(hero: HeroDataModel, weapon: WeaponDataModel): { skill: string, value: number } {
         const weaponSkills = [...weapon.skills]
         const defaultSkill = [...Object.keys(hero.skills), ...Object.keys(hero.saves)]
             .filter(k => weaponSkills.includes(k))

@@ -4,7 +4,7 @@
   "_id": "6TmIRB6wIVRxMZxv",
   "img": "systems/vagabond-app/assets/class/rogue_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Rogues are the back-alley urchins, gutterborn scum, and shadowed assassins. To hammers, every problem looks like a nail. Rogues are</span></p><p><span style=\"white-space:pre-wrap\">blades, and every problem is a throat.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Rogues</strong></b></p><p><span style=\"white-space:pre-wrap\">• Locke Lamora, Gentleman Bastard Sequence</span></p><p><span style=\"white-space:pre-wrap\">• Nona Grey, Book of the Ancestor</span></p><p><span style=\"white-space:pre-wrap\">• Vin, Mistborn</span></p><p><span style=\"white-space:pre-wrap\">• Zidane Tribal, Final Fantasy IX</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Rogue</strong></b></p><p><span style=\"white-space:pre-wrap\">Rogues are low-defense, midline harassers that focus on one single, deadly shot. They are given Features that reinforce attempting to gain Favor on their Attacks.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Ranged, Finesse, Sneak</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Rogues are the back-alley urchins, gutterborn scum, and shadowed assassins. To hammers, every problem looks like a nail. Rogues are</span></p><p><span style=\"white-space:pre-wrap\">blades, and every problem is a throat.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Rogues</strong></b></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Locke Lamora, Gentleman Bastard Sequence</span></li><li value=\"2\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Nona Grey, Book of the Ancestor</span></li><li value=\"3\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Vin, Mistborn</span></li><li value=\"4\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Zidane Tribal, Final Fantasy IX</span></li></ul><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Rogue</strong></b></p><p><span style=\"white-space:pre-wrap\">Rogues are low-defense, midline harassers that focus on one single, deadly shot. They are given Features that reinforce attempting to gain Favor on their Attacks.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Ranged, Finesse, Sneak</span></p>",
     "rules": [
       {
         "id": "DODyMdEd2qJWmupn",
@@ -67,9 +67,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.103",
+    "systemVersion": "0.2.1",
     "createdTime": 1786568828310,
-    "modifiedTime": 1791333399449,
+    "modifiedTime": 1791482752209,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

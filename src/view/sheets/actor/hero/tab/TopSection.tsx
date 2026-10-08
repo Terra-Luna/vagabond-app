@@ -295,7 +295,7 @@ const Save = ({ hero, save }: {
             <div className={`flex items-center font-eskapade hover-glow ${tableBorder}/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await new SkillCheck(hero, { type: 'save', skill: save.key, clickEvent: e }).roll()
-                    sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
+                    sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />)
                 }
             }>
                 <div className="mx-1 w-full line-clamp-1">
@@ -366,7 +366,7 @@ export const Skill = ({ hero, trained, skillKey, name, value, isCastSkill }: {
                 <div className={`flex justify-between ml-2 mt-1 w-full text-base font-eskapade font-bold align-middle hover-glow`} onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => {
                         const skillCheck = await new SkillCheck(hero, { type: 'check', skill: skillKey, clickEvent: e }).roll()
-                        sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
+                        sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />)
                     }
                 }>
                     <div className="flex gap-x-2 items-center">
