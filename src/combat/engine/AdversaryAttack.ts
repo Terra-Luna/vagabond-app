@@ -139,8 +139,12 @@ export class AdversaryAttack extends Attack {
      */ 
     protected override shouldApplyDamageToTarget(targetId: string): boolean {
         const result = this.saveResults[targetId]
-        if (this.defenseArmorBonuses[targetId] !== undefined) return true
-        return !result || result.outcome === appLang.RollResult.failure
+        if (this.defenseArmorBonuses[targetId] !== undefined) {
+            return result.outcome !== appLang.RollResult.crit
+        }
+        else {
+            return !result || result.outcome === appLang.RollResult.failure
+        }
     }
 
     protected override processDamageRoll(args: AttackResolutionArgs) {

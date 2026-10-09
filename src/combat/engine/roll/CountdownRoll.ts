@@ -1,5 +1,6 @@
 import { createElement } from "react"
 
+import { showFloatingText } from "../../../utils/foundryUtils"
 import { sendVagabondChatMessage } from "../../../view/chat/ChatCardSerializer"
 import { CountdownRollChatCard } from "../../../view/chat/CountdownChatCard"
 import { getDiceTerms } from "../util/dice-utils"
@@ -37,13 +38,35 @@ export class CountdownRoll {
                 )
         }
 
-        sendVagabondChatMessage(
-            null,
-            createElement(CountdownRollChatCard, { result: this.result }),
-            [roll]
-        )
+        if (this.result.status !== "burning") {
+            sendVagabondChatMessage(
+                null,
+                createElement(CountdownRollChatCard, { result: this.result }),
+                [roll]
+            )
+        }
 
         return this.result
+    }
+
+    public async applyBurningDamage() {
+        if (this.result.status !== "burning") return
+
+        const token = this.result.tokenUuid
+            ? await fromUuid(this.result.tokenUuid) as TokenDocument | null
+            : null
+        const actor = token?.actor ?? (this.result.actorUuid
+            ? await fromUuid(this.result.actorUuid) as Actor | null
+            : null)
+        if (!actor) {
+            console.warn(`Actor not found: "${this.result.name}"`)
+            return
+        }
+
+        const damage = this.result.rollSummary?.result ?? 0
+        const health = (actor.system as any)?.health?.value ?? 0
+        showFloatingText(token?.object ?? actor, damage, { isHealing: false })
+        await actor.update({ "system.health.value": health - damage } as Record<string, number>)
     }
 
     /**

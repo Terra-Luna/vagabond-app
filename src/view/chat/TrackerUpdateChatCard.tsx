@@ -18,10 +18,11 @@ export const TrackerUpdateChatCard = ({ heroId, verb, resource, roll }: {
     if (!hero) return
 
     const res = resources[resource]
-    const remaining = resource === 'luck' ?
-        hero.system.statuses.counters.luck : (
-            resource === 'studied' ?
-                hero.system.statuses.counters.studied : ''
+    const remaining = resource === 'luck'
+        ? hero.system.statuses.counters.luck
+        : (resource === 'studied'
+            ? hero.system.statuses.counters.studied
+            : ''
         )
     const subtitle: CardSubHeaderValues[] = []
     subtitle.push({ label: `${res.name} Remaining`, value: remaining.toString() })
@@ -35,8 +36,8 @@ export const TrackerUpdateChatCard = ({ heroId, verb, resource, roll }: {
                 subtitle={subtitle}
             />}
             contents={<>
-                {roll ?
-                    <div className="flex gap-x-1 justify-center items-center font-eskapade">
+                {roll
+                    ? <div className="flex gap-x-1 justify-center items-center font-eskapade">
                         <TrackerIcon resource={resource} />
                         <DiceRollComponent result={roll} faces={6} />
                     </div>
@@ -50,20 +51,13 @@ export const TrackerUpdateChatCard = ({ heroId, verb, resource, roll }: {
     )
 }
 
-/**
- * TODO: find a way to embed the icon name+color into the Resources obj
- *       and dynamically build the Lucide icon here rather than mapping.
- * @param param0 
- * @returns 
- */
 const TrackerIcon = ({ resource }: { resource: string }) => {
     const size = 34
     const layout = "float-left mr-1"
     return (<>
-        {
-            resource === 'luck'
-                ? <Clover size={size} strokeWidth={1} className={`text-ic-luck ${layout}`} />
-                : (resource === 'studied' && <BookMarked size={size} strokeWidth={1} className={`text-ic-studied ${layout}`} />)
+        {resource === 'luck'
+            ? <Clover size={size} strokeWidth={1} className={`text-ic-luck ${layout}`} />
+            : (resource === 'studied' && <BookMarked size={size} strokeWidth={1} className={`text-ic-studied ${layout}`} />)
         }
     </>)
 }

@@ -39,7 +39,7 @@ import { ItemPilesConfig } from "./utils/ItemPilesConfig"
 import { getFullItem, getId } from "./utils/modelUtil"
 import { createStyleTag } from "./utils/styleUtils"
 import { installChatScrollGuard, RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
-import { renderInlineRoll, unmountRawRollMessage } from "./view/chat/InlineRollChatCard"
+import { serializeRawChatMessage } from "./view/chat/ChatCardSerializer"
 import { ItemActorSheet } from "./view/sheets/actor/adversary/ItemActorSheet"
 import { NpcSheet } from "./view/sheets/actor/adversary/NpcSheet"
 import { HeroSheet } from "./view/sheets/actor/hero/HeroSheet"
@@ -406,9 +406,11 @@ Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any)
 const vagabondChatRoots = new Map<string, Set<any>>()
 const vagabondElementRoots = new WeakMap<HTMLElement, any>()
 
-Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html: HTMLElement) => {
-    renderInlineRoll(message, html)
+Hooks.on("preCreateChatMessage", (message: any) => {
+    serializeRawChatMessage(message)
+})
 
+Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html: HTMLElement) => {
     const renderVagabondChatMessages = () => {
         const rootElement = html.querySelector('.vagabond-react-chat-root') as HTMLElement
         if (!rootElement) return
@@ -471,7 +473,6 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
 })
 
 Hooks.on("deleteChatMessage", (message: any) => {
-    unmountRawRollMessage(message.id)
     if (vagabondChatRoots.has(message.id)) {
         vagabondChatRoots.get(message.id)?.forEach(r => { try { r.unmount() } catch (e) { /* no-op */ } })
         vagabondChatRoots.delete(message.id);

@@ -43,6 +43,10 @@ export const CountdownAppView = () => {
             }
             return countdown
         }))
+
+        if (countdown.result.status === "burning") {
+            await roll.applyBurningDamage()
+        }
     }, [cdsRef])
 
     const increaseSize = useCallback(async (cdId: string) => {
