@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client"
 
 import { api } from "./apps/api/VagabondAPI"
+import { RollPreset } from "./apps/attack-builder/model/RollPreset"
 import { registerAdversaryCompendiumFilters } from "./apps/compendium/AdversaryCompendium"
 import { CountdownApp } from "./apps/countdown/CountdownApp"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
@@ -502,6 +503,60 @@ Hooks.on("dropCanvasData", (canvas: Canvas, data: Record<string, any>): boolean 
 
     enforceSingletonPlaceholder(data, canvas)
     return false
+});
+
+Hooks.on("hotbarDrop", (_bar: any, data: any, slot: number): boolean | void => {
+    if (data.type !== "RollPreset") return
+
+    const actor = game.actors?.get(data.owner) as any
+    const preset = (actor?.getFlag(sys_id, "rollPresets") as RollPreset[] | undefined)?.find(p => p.id === data.id)
+    if (!actor || !preset) return false
+
+    const img = actor.items.get(preset.weaponId)?.img ?? "icons/svg/dice-target.svg"
+    const command = `/* Hold Shift to add Favor, Ctrl for Hinder */
+const actor = game.user.character ?? game.canvas?.tokens?.controlled[0]?.actor;
+if (!actor) return;
+// Roll the saved preset...
+game.system.api.combat.rollPreset({ actor: actor, presetId: "${preset.id}", event: event });`
+
+    Macro.create({ name: `${preset.title}${preset.description?.length > 0 ? `: ${preset.description}` : ""}`, type: "script", img, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } } as any)
+        .then(macro => macro && game.user?.assignHotbarMacro(macro, slot))
+
+    return false
+});
+
+Hooks.on("preCreateMacro", (macro: any, data: any, options: any, userId: string) => {
+    const uuid = /(Actor\.[^"'\s.]+\.Item\.[^"'\s.]+)/.exec(data?.command ?? "")?.[1]
+    if (!uuid) return
+
+    const item = fromUuidSync(uuid) as any
+    if ((item?.system instanceof WeaponDataModel)) {
+        const command = `/* Hold Shift to add Favor, Ctrl for Hinder */
+const actor = game.user.character ?? game.canvas?.tokens?.controlled[0]?.actor;
+if (!actor) return;
+// Check the weapon exists and is equipped...
+const weapon = actor.items.get("${item.id}");
+if (!weapon || !weapon.system.isEquipped) return;
+// Attack with equipped weapon...
+const api = game.system.api.combat;
+// Send skill as a 3rd param to override default...
+api.weaponAttack({ actor: actor, itemId: weapon.id, /*skill: "brawl",*/ event: event});`
+
+        macro.updateSource({ img: item.img, name: `${item.name} Attack`, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } })
+        data.img = item.img
+    }
+    else {
+        macro.updateSource({ img: item.img, name: `${item.name}`, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } })
+        data.img = item.img
+    }
+});
+
+Hooks.on("renderMacroDirectory", (_app: any, html: HTMLElement) => {
+    const root: any = html instanceof HTMLElement ? html : (html as any)[0]
+    root?.querySelectorAll(".directory-item[data-entry-id]").forEach((li: any) => {
+        const macro = game.macros?.get(li.dataset.entryId) as any
+        if (macro?.getFlag(sys_id, "hotbarOnly")) li.remove()
+    })
 });
 
 Hooks.once("item-piles-ready" as any, () => ItemPilesConfig.configure());

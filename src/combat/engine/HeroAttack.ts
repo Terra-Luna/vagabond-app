@@ -500,10 +500,9 @@ export class HeroAttack extends Attack {
 
     static buildAlchemyAttack(
         actor: Actor & { system: HeroDataModel },
-        item: Item & { system: AlchemicalItemDataModel },
-        e?: any
+        item: Item & { system: AlchemicalItemDataModel }
     ): HeroAttack {
-        const skillCheck = new SkillCheck(actor.system, { type: 'attack', item: item.system, skill: "craft", clickEvent: e })
+        const skillCheck = new SkillCheck(actor.system, { type: 'attack', item: item.system, skill: "craft" })
         const damageDice = new DiceRoll(DiceRoll.getItemDamageWithHeroMods(actor.system, 'craft', item.system))
 
         const mods = foundry.utils.deepClone((actor as any).system.modifiers.damage.out.alchemy)
@@ -653,6 +652,7 @@ export class HeroAttack extends Attack {
 
         if (preset.skill && preset.damageRolls && preset.damageRolls.length > 0) {
             const weapon = actor.items.find(it => it.id === preset.weaponId) as Item & { system: WeaponDataModel }
+            if (!weapon || !weapon.system.isEquipped) return
 
             const title = (weapon?.name ? weapon.name + ": " : "") + preset.description
             const skillCheck = makeSkillCheck('attack')

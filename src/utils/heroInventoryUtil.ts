@@ -106,7 +106,7 @@ export const useItem = async (
             if (!skipDeletion) await deleteItems(actor, [getId(item)])
 
             if (item.system.damage.dice.count > 0 || item.system.appliedEffects.length > 0) {
-                const attack = HeroAttack.buildAlchemyAttack(actor, item as Item & { system: AlchemicalItemDataModel }, e)
+                const attack = HeroAttack.buildAlchemyAttack(actor, item as Item & { system: AlchemicalItemDataModel })
                 attack.initiate(e)
             }
             else {

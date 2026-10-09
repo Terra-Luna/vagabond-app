@@ -2,15 +2,28 @@ import { useCallback, useState } from "react"
 
 import { sys_id } from "../../../../utils/foundryUtils"
 import { RollPreset } from "../../model/RollPreset"
+import { updatePresets } from "./SavePresetUseCase"
 
 export const useReorderPreset = (actor: Actor) => {
 
     const [dragIndex, setDragIndex] = useState<number | null>(null)
 
-    const onDragStart = useCallback((e: React.DragEvent, index: number) => {
+    const onDragStart = useCallback((e: React.DragEvent, preset: RollPreset, index: number) => {
         e.stopPropagation()
+        if (!preset.id) {
+            preset.id = foundry.utils.randomID()
+            updatePresets(actor, preset)
+        }
         setDragIndex(index)
+        const dragData = {
+            type: "RollPreset",
+            id: preset.id,
+            uuid: preset.id,
+            owner: actor.id
+        }
+        e.dataTransfer.setData("text/plain", JSON.stringify(dragData))
         e.dataTransfer.effectAllowed = "move"
+        e.dataTransfer.dropEffect = "move"
     }, [])
 
     const onDragEnter = useCallback((e: React.DragEvent, index: number) => {

@@ -34,7 +34,7 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
                             key={index}
                             className={`w-full ${index === dragIndex ? "opacity-40" : "even:bg-table-row-even/50 odd:bg-table-row-odd/50"}`}
                             draggable={true}
-                            onDragStart={(e) => onDragStart(e, index)}
+                            onDragStart={(e) => onDragStart(e, preset, index)}
                             onDragEnter={(e) => onDragEnter(e, index)}
                             onDragOver={(e) => { e.preventDefault(); e.stopPropagation() }}
                             onDrop={(e) => onDrop(e, index)}

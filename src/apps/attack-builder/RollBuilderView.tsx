@@ -32,10 +32,10 @@ export const RollBuilderView = ({
     actor: Actor & { system: HeroDataModel },
     preset?: RollPreset,
     showHeader?: boolean,
-        skillCheckLabel?: string,
-        lockSkill?: boolean,
-        showSkillCheck?: boolean,
-        showDamageRolls?: boolean,
+    skillCheckLabel?: string,
+    lockSkill?: boolean,
+    showSkillCheck?: boolean,
+    showDamageRolls?: boolean,
     lockWeaponSelection?: boolean,
     saveOnRoll?: boolean,
     setClosed?: () => void
@@ -109,6 +109,7 @@ export const RollBuilderView = ({
 
     const rollForm = useMemo((): RollPreset => {
         return {
+            id: preset?.id ?? '',
             title: weapon?.name ?? '',
             description: description,
             weaponId: weapon?.id ?? '',

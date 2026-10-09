@@ -1,6 +1,7 @@
 import { DiceRollSchema } from "./DieRollSchema"
 
 export interface RollPreset {
+    id: string,
     title: string, description: string,
     weaponId: string,
     skill: string,
