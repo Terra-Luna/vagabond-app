@@ -12,9 +12,11 @@ export const TravelView = ({ onCancel, actor }: {
     return (
         <div className="flex flex-col h-full p-2 gap-8 overflow-y-scroll w-full">
             <TravelSpeed actor={actor} />
-            <DynamicGrid itemsStart widthIncrement={4}>
+            <DynamicGrid itemsStart widthIncrement={3}>
                 <TimeInfo />
                 <Speeds />
+            </DynamicGrid>
+            <DynamicGrid itemsStart widthIncrement={3}>
                 <Mounts />
                 <WaterTravel />
             </DynamicGrid>
@@ -61,12 +63,12 @@ const water = [
 ]
 
 const travelSpeed = [
-    ["Slow", "x0.5", "Add a d6, use two highest"],
-    ["Normal", "x1", "Normal"],
-    ["Fast", "x2", "Add a d6, use two lowest"]
+    ["Slow", "x0.5"],
+    ["Normal", "x1"],
+    ["Fast", "x2"]
 ]
 
-const sectionCss = "flex flex-col gap-2 px-2 mt-2"
+const sectionCss = "flex flex-col px-2 mt-2"
 
 const TravelSection = ({ children }) => <div className={sectionCss}>{children}</div>
 
@@ -108,14 +110,16 @@ const Speeds = () => {
 
 const TravelSpeed = ({ actor }) => {
     return (
-        <div>
+        <div className="px-2">
             <div>
                 Your Travel Speed is equal to <span className="text-ic-luck">{actor.system.speed.travel}</span> (your Speed ÷
                 5). A Group uses the Navigator's Speed. Your
                 Pace multiplies the distance you Move that
                 Shift by the Multiplier (Mult.).
             </div>
-            <Table headers={["Pace", "Mult.", "Complication Roll"]} data={travelSpeed} />
+            <div className="max-w-[300px]">
+                <Table headers={["Pace", "Mult."]} data={travelSpeed} />
+            </div>
         </div>
     )
 }
@@ -126,7 +130,7 @@ const Table = ({ headers, data }: { headers: string[], data: string[][] }) => {
             <thead className="bg-section-header-fill text-text-section-header text-sm">
                 <tr>
                     <th className="text-left pl-2 w-1/10">{headers[0]}</th>
-                    {headers.slice(1).map(h => <th className="text-center">{h}</th>)}
+                    {headers.slice(1).map(h => <th key={h} className="text-center">{h}</th>)}
                 </tr>
             </thead>
             <tbody className="font-eskapade">
@@ -141,8 +145,8 @@ const Table = ({ headers, data }: { headers: string[], data: string[][] }) => {
                             {d[0]}
                         </td>
 
-                        {d.slice(1).map(item =>
-                            <td className="text-center font-normal">
+                        {d.slice(1).map((item) =>
+                            <td key={item} className="text-center font-normal">
                                 {item}
                             </td>
                         )}
