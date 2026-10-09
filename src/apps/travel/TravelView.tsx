@@ -120,10 +120,6 @@ const TravelSpeed = ({ actor }) => {
     )
 }
 
-const Complications = () => {
-    
-}
-
 const Table = ({ headers, data }: { headers: string[], data: string[][] }) => {
     return (
         <table className={`table-fixed w-full ${tableBorder} mt-2`}>
