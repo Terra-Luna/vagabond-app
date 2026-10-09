@@ -70,7 +70,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 {hero.class && <div className="mb-2">
                     <ClearHeader title={appLang.HeroSheet.class} />
                     <div className="mt-0.5" />
-                    <DynamicGrid wideMode={!useMiniCards}>
+                    <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
                         {classFeatures.map((f, index) => (
                             <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                                 {
@@ -103,7 +103,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 {hero.perks && hero.perks.length > 0 && <>
                     <ClearHeader title={appLang.HeroSheet.perks} />
                     <div className="mt-0.5" />
-                    <DynamicGrid wideMode={!useMiniCards}>
+                    <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
                         {hero.perks.sort((a, b) => {
                                 const repeatableOrder = Number(Boolean(a.canTakeMultiple)) - Number(Boolean(b.canTakeMultiple))
                                 return repeatableOrder || a.parent.name.localeCompare(b.parent.name)

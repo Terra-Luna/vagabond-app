@@ -8,8 +8,8 @@ export class TravelApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: "Travel Info", resizable: false },
-            position: { width: 800, height: 332, top: 200, left: 400 },
+            window: { title: "Travel Info", resizable: true },
+            position: { width: 1600, height: 1200, top: 200, left: 400 },
             Component: TravelView
         } as VagabondAppArgs)
         this.actor = actor

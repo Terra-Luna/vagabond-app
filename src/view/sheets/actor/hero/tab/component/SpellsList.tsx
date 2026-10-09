@@ -19,7 +19,7 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
     const useMiniCards = getMiniCardsPref(hero.parent.id)
 
     return (<div>
-        <DynamicGrid wideMode={!useMiniCards}>
+        <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
             {hero.spells.sort((a, b) => a.parent.name.localeCompare(b.parent.name)).map((sp: any, index: number) => (
                 <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                     {
