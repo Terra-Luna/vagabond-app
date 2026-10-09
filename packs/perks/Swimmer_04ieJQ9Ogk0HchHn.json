@@ -4,7 +4,7 @@
   "_id": "04ieJQ9Ogk0HchHn",
   "img": "/icons/creatures/fish/fish-shark-swimming.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You gain Swim.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain Swim. If you already have Swim, you do not begin Suffocating unless you have been without air for an entire Scene. You can take this Perk twice.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -22,7 +22,7 @@
         ]
       }
     ],
-    "canTakeMultiple": false
+    "canTakeMultiple": true
   },
   "effects": [],
   "folder": null,
@@ -35,10 +35,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.13",
     "createdTime": 1786728671363,
-    "modifiedTime": 1786728690841,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1791564246007,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
