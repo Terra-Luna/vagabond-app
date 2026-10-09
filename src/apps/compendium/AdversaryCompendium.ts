@@ -13,7 +13,6 @@ export const ADVERSARY_FILTER_FIELDS = [
 interface AdversaryFilterState {
     beingSize: string
     beingType: string
-    beingSubtype: string
     hitDiceMin: number | null
     hitDiceMax: number | null
     threatLevelMin: number | null
@@ -23,7 +22,6 @@ interface AdversaryFilterState {
 const emptyFilters = (): AdversaryFilterState => ({
     beingSize: "",
     beingType: "",
-    beingSubtype: "",
     hitDiceMin: null,
     hitDiceMax: null,
     threatLevelMin: null,
@@ -70,8 +68,12 @@ export class AdversaryCompendium extends (foundry.applications.sidebar.apps.Comp
         }
 
         const beingSizeOptions = Object.entries(appLang.Sizes).map(([value, label]) => `<option value="${value}">${label}</option>`).join("")
-        const beingTypeOptions = Object.entries(appLang.BeingTypes).map(([value, label]) => `<option value="${value}">${label}</option>`).join("")
-        const beingSubtypeOptions = Object.entries(appLang.BeingSubtypes).filter(([value]) => value !== "none").map(([value, label]) => `<option value="${value}">${label || value}</option>`).join("")
+        const beingTypeOptions = [...new Map([
+            ...Object.entries(appLang.BeingTypes),
+            ...Object.entries(appLang.BeingSubtypes).filter(([value]) => value !== "none")
+        ])]
+            .map(([value, label]) => `<option value="${value}">${label || value}</option>`)
+            .join("");
         
         const bar = document.createElement("div")
         bar.className = "vagabond-adversary-filters"
@@ -92,12 +94,6 @@ export class AdversaryCompendium extends (foundry.applications.sidebar.apps.Comp
                     <select data-filter="beingType" style="${STYLE_INPUT_BOX}">
                         <option value="">Any</option>
                         ${beingTypeOptions}
-                    </select>
-                </label>
-                <label style="${STYLE_FLEX_LABEL}">Subtype
-                    <select data-filter="beingSubtype" style="${STYLE_INPUT_BOX}">
-                        <option value="">Any</option>
-                        ${beingSubtypeOptions}
                     </select>
                 </label>
             </div>
@@ -178,8 +174,7 @@ export class AdversaryCompendium extends (foundry.applications.sidebar.apps.Comp
         const f = this._adversaryFilters
         const sys = entry.system ?? {}
         if (f.beingSize && sys.beingSize !== f.beingSize) return false
-        if (f.beingType && sys.beingType !== f.beingType) return false
-        if (f.beingSubtype && sys.beingSubtype !== f.beingSubtype) return false
+        if (f.beingType && (sys.beingType !== f.beingType && sys.beingSubtype !== f.beingType)) return false
         if (f.hitDiceMin != null && (sys.hitDice ?? 0) < f.hitDiceMin) return false
         if (f.hitDiceMax != null && (sys.hitDice ?? 0) > f.hitDiceMax) return false
         if (f.threatLevelMin != null && (sys.threatLevelOverride ?? sys.threatLevel ?? 0) < f.threatLevelMin) return false
