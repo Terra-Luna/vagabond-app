@@ -3,7 +3,6 @@ import { Check, Clover, Shield, Swords, X } from "lucide-react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { appLang } from "../../../utils/lang"
 import { DamageRollsComponent } from "../../../view/chat/component/DamageRollsComponent"
-import { TargetsDisplay } from "../../../view/chat/component/TargetsDisplay"
 import { TotalDmgFooter } from "../../../view/chat/TotalDamageFooter"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
@@ -45,13 +44,6 @@ export const AdversaryComboAttackComponent = ({ attack, setRevision }: { attack:
 
     return (
         <div className={`flex flex-col gap-2`}>
-            {/* TARGET TOKENS ARRAY (shared by every action in the combo) */}
-            {attack.showTargets &&
-                <div className="flex flex-col w-full">
-                    <TargetsDisplay targets={targets} />
-                </div>
-            }
-
             {/* ONE DAMAGE + SAVES SECTION PER COMBO ACTION */}
             {attack.subAttacks.map((sub, index) => (
                 <AdversaryComboAttackSection attack={attack} sub={sub} subIndex={index} ownedTargets={ownedTargets} unownedTargets={unownedTargets} setRevision={setRevision} key={index} />
