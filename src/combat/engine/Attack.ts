@@ -117,29 +117,37 @@ export abstract class Attack {
     }
 
     protected shouldApplyDamageToTarget(targetId: string): boolean {
+        return !Attack.isImmuneToDamage(targetId, this.damageRoll)
+    }
+
+    static isImmuneToDamage(targetId: string, damageRoll?: DamageRoll): boolean {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
         const immunities = (actor?.system as any)?.modifiers?.damage?.in?.immunities ?? []
-        if (immunities.includes(this.damageRoll?.dmgType ?? '')) return false
-        return true
+        return immunities.includes(damageRoll?.dmgType ?? '')
     }
 
     protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
+        return Attack.computeAdjustedDamage(this.damageRoll, targetId, args, this.getAdditionalArmorRating(targetId))
+    }
+
+    /**
+     * Shared damage mitigation (resistances, per-die reduction, armor, flanking) for any damage roll.
+     */
+    static computeAdjustedDamage(damageRoll: DamageRoll | undefined, targetId: string, args: AttackResolutionArgs, additionalArmorRating = 0): number {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
         const aSys = actor?.system as any
 
-        const dmgType = this.damageRoll?.dmgType ?? ''
+        const dmgType = damageRoll?.dmgType ?? ''
         const mods = aSys?.modifiers?.damage?.in ?? {}
         const perDieMitigation = (mods?.perDieReduction?.global ?? 0) + (mods?.perDieReduction?.[dmgType] ?? 0)
-        const damageDiceCount = this.damageRoll?.result?.rollSummaries?.filter(it => !it.rerolled).length ?? 0
+        const damageDiceCount = damageRoll?.result?.rollSummaries?.filter(it => !it.rerolled).length ?? 0
         const isResistant = mods?.resistances?.includes(dmgType)
         const perDieMit = perDieMitigation * damageDiceCount
 
-        const damage = isResistant ? Math.floor((this.damageRoll?.result?.total ?? 0) / 2) : this.damageRoll?.result?.total ?? 0
-        const target = actor?.system
+        const damage = isResistant ? Math.floor((damageRoll?.result?.total ?? 0) / 2) : damageRoll?.result?.total ?? 0
 
-        const armorRating = (target as any)?.armor?.rating ?? 0
-        const additionalArmorRating = this.getAdditionalArmorRating(targetId)
-        const armorPiercing = this.damageRoll?.result?.armorPiercing ?? 0
+        const armorRating = aSys?.armor?.rating ?? 0
+        const armorPiercing = damageRoll?.result?.armorPiercing ?? 0
         const armor = args.bypassArmor ? 0 : Math.max(0, armorRating + additionalArmorRating - armorPiercing)
         return Math.max(0, (damage + (args.flanked ? 2 : 0)) - armor - perDieMit)
     }

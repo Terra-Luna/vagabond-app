@@ -49,6 +49,7 @@ export class ComboSubAttack {
 
     // Same rules as AdversaryAttack: a Block meeting/beating its difficulty negates all damage.
     shouldApplyDamageToTarget(targetId: string): boolean {
+        if (Attack.isImmuneToDamage(targetId, this.damageRoll)) return false
         const result = this.saveResults[targetId]
         // A defense only adds armor; it doesn't negate the damage.
         if (this.defenseArmorBonuses[targetId] !== undefined) return true
@@ -56,15 +57,7 @@ export class ComboSubAttack {
     }
 
     calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
-        const actor = canvas?.scene?.tokens?.get(targetId)?.actor
-        const damage = this.damageRoll.result?.total ?? 0
-
-        const target = actor?.system
-        const armorRating = (target as any)?.armor?.rating ?? 0
-        const armorPiercing = this.damageRoll.armorPiercing ?? 0
-        const armor = args.bypassArmor ? 0 : Math.max(0, armorRating + (this.defenseArmorBonuses[targetId] ?? 0) - armorPiercing)
-
-        return Math.max(0, damage - armor)
+        return Attack.computeAdjustedDamage(this.damageRoll, targetId, args, this.defenseArmorBonuses[targetId] ?? 0)
     }
 
     async rollSave(targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
