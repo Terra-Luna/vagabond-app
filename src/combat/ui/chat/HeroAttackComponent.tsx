@@ -134,8 +134,8 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                 <div>
                     <Header title={`${attack.isDefenseCheck ? "Defense" : `${attack.skillCheck!.result!.skillName}`} Check`} textLeft={true} />
                     <CardSubHeader showRightBorder={false} values={[
-                        { label: "Difficulty", value: attack.skillCheck?.difficulty?.toString() },
-                        { label: "Result", value: attack.skillCheck?.result?.outcome }
+                        { label: appLang.Combat.difficulty, value: attack.skillCheck?.difficulty?.toString() },
+                        { label: appLang.Combat.result, value: attack.skillCheck?.result?.outcome }
                     ]} />
 
                     <div className="flex flex-col justify-center items-center">
@@ -151,14 +151,14 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                         {attack.showCritChoices &&
                             <div className="flex wrap gap-1 mb-1 justify-center text-center text-base font-normal content-center">
                                 {/* GAIN A LUCK */}
-                                <InteractiveChatCardButton label="+1 Luck" tooltip="Gain a Luck" fn={addCritLuck} />
+                                <InteractiveChatCardButton label={appLang.Combat.plusLuck} tooltip={appLang.Combat.gainLuckTooltip} fn={addCritLuck} />
                                 {/* ADD DAMAGE EQUAL TO SKILL'S STAT */}
                                 {!attack.isEffectOnlySpellAttack && !attack.isDefenseCheck &&
-                                    <InteractiveChatCardButton label="+Damage" tooltip="Add damage equal to stat used" fn={addCritDamage} />
+                                    <InteractiveChatCardButton label={appLang.Combat.plusDamage} tooltip={appLang.Combat.addDamageTooltip} fn={addCritDamage} />
                                 }
                                 {/* ADD SPELL'S CRIT FX */}
                                 {source?.system instanceof SpellDataModel && !attack.isEffectOnlySpellAttack &&
-                                    <InteractiveChatCardButton label="Spell Effect" tooltip="Apply Spell on-crit effect" fn={addSpellFx} />
+                                    <InteractiveChatCardButton label={appLang.Combat.spellEffect} tooltip={appLang.Combat.applySpellOnCritTooltip} fn={addSpellFx} />
                                 }
                             </div>
                         }
@@ -171,20 +171,20 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                                     {luck > 0 && <>
                                         <InteractiveChatCardButton
                                             icon={<Clover size={18} className="text-ic-luck h-full" />}
-                                            label={"Reroll"} tooltip="Spend a Luck to reroll"
+                                            label={appLang.ItemSheet.reroll} tooltip={appLang.AttackBuilder.spendLuckToReroll}
                                             fn={() => handleLuckReroll()}
                                         />
                                         {getAllowLateLuckStudy() &&
                                             <InteractiveChatCardButton
                                                 icon={<Clover size={18} className="text-ic-luck h-full" />}
-                                                label={"+Favor"} tooltip="Spend a Luck to add Favor or remove Hinder"
+                                                label={appLang.AttackBuilder.plusFavor} tooltip={appLang.AttackBuilder.spendLuckToAddFavor}
                                                 fn={() => handleLateD6('luck', luck)}
                                             />}
                                     </>}
                                     {studied > 0 && getAllowLateLuckStudy() &&
                                         <InteractiveChatCardButton
                                             icon={<BookMarked size={18} className="text-ic-studied h-full" />}
-                                            label={"+Favor"} tooltip="Spend a Studied die to add Favor or remove Hinder"
+                                            label={appLang.AttackBuilder.plusFavor} tooltip={appLang.AttackBuilder.spendStudyToAddFavor}
                                             fn={() => handleLateD6('studied', studied)}
                                         />
                                     }
@@ -222,7 +222,7 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                             {/* IMBUE BUTTON FOR WEAPON ATTACKS */}
                             {!attack.isResolved && !attack.isDefenseCheck && canImbue &&
                                 <div className="flex items-center justify-center mb-1">
-                                    <UtilityButton title="Imbue this attack" onClick={() =>
+                                    <UtilityButton title={appLang.Combat.imbueAttack} onClick={() =>
                                         new SpellcastingApp(getImbueActor(), true).render({ force: true })
                                     }>
                                         Imbue

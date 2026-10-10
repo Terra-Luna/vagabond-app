@@ -3,6 +3,7 @@ import { ReactNode, useCallback, useState } from "react"
 
 import { fields } from "../../model/common/sharedSchemas"
 import { sys_id } from "../../utils/foundryUtils"
+import { appLang } from "../../utils/lang"
 import { ClearHeader, Header, SkillCardAction } from "./Header"
 
 export interface CollapsibleHeaderProps {
@@ -64,8 +65,8 @@ export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed
     const settings = (game.settings! as any)
     if (settingsKey) {
         settings.register(sys_id, settingsKey, {
-            name: "Hero Sheet Setting",
-            hint: "Hero Sheet Dynamic Setting",
+            name: appLang.General.heroSheetSetting,
+            hint: appLang.General.heroSheetDynamicSetting,
             scope: "client",
             type: new fields.BooleanField(),
             default: false

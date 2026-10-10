@@ -1,5 +1,6 @@
 import { Eye, Pencil, Trash } from "lucide-react"
 
+import { appLang } from "../../../utils/lang"
 import { CtxMenuItem } from "../../component/ContextMenu"
 
 export const useImageEdit = (item: Actor | Item) => {
@@ -45,15 +46,15 @@ export const useImageEdit = (item: Actor | Item) => {
 
     const imageEditCtxMenuItems: CtxMenuItem[] = []
     imageEditCtxMenuItems.push(
-        { icon: Eye, label: 'View', action: () => viewImage() }
+        { icon: Eye, label: appLang.ButtonActions.view, action: () => viewImage() }
     )
 
     if (item.isOwner) {
         imageEditCtxMenuItems.push(
-            { icon: Pencil, label: 'Edit', action: () => editImage() },
-            { icon: Trash, label: 'Remove', action: () => removeImage(), isDestructive: true }
+            { icon: Pencil, label: appLang.ButtonActions.edit, action: () => editImage() },
+            { icon: Trash, label: appLang.ButtonActions.remove, action: () => removeImage(), isDestructive: true }
         )
     }
-    
+
     return { viewImage, editImage, removeImage, imageEditCtxMenuItems }
 }

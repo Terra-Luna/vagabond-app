@@ -192,13 +192,13 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 <Tab title={locale["tab-main"]}><Swords size={iconSize} className="hover-glow" /></Tab>
                 <Tab title={locale["tab-inv"]}><Handbag size={iconSize} className="hover-glow" /></Tab>
                 {showAlchemyTab &&
-                    <Tab title="Alchemy"><FlaskConical size={iconSize} className="hover-glow" /></Tab>
+                    <Tab title={appLang.General.alchemyTab}><FlaskConical size={iconSize} className="hover-glow" /></Tab>
                 }
                 {showMagicTab &&
                     <Tab title={locale["tab-magic"]}><WandSparkles size={iconSize} className="hover-glow" /></Tab>
                 }
                 <Tab title={locale["tab-abilities"]}><BookText size={iconSize} className="hover-glow" /></Tab>
-                <Tab title="Roll Presets"><Dices size={iconSize} className="hover-glow" /></Tab>
+                <Tab title={appLang.AttackBuilder.presets}><Dices size={iconSize} className="hover-glow" /></Tab>
             </TabList>
 
             {/* TAB PANELS */}

@@ -4,6 +4,7 @@ import { useCallback } from "react"
 import { openItemSheet } from "../../../../../model/actor/type/Inventory"
 import { StartingPackDataModel } from "../../../../../model/item/equip/StartingPackDataModel"
 import { ItemsCache } from "../../../../../rules/util/ItemsCache"
+import { appLang } from "../../../../../utils/lang"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { ItemSheetProperty } from "../component/ItemSheetLabelComponent"
@@ -23,7 +24,7 @@ export const StartingPackSheet = ({ item }: { item: Item & { system: StartingPac
                 {item.system.consolidatedItems.map((it, index) => (
                     <button key={index}
                         onContextMenu={(e) => onCtxMenu(e, [
-                            { icon: Trash, label: "Delete", action: () => deleteItem(index), isDestructive: true }
+                            { icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteItem(index), isDestructive: true }
                         ])}
                         onClick={() => {
                             const target = ItemsCache.equipment().find(eq => eq.id === it.id || (eq as any)._id === it.id)

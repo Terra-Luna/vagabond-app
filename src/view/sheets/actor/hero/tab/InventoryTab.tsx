@@ -19,7 +19,8 @@ import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOpt
 import { ContainerSheet } from "../../../item/equip/sheet/ContainerSheet"
 import { VagabondItemSheet } from "../../../item/VagabondItemSheet"
 import { CapacityGauge } from "../../../shared/CapacityGauge"
-import { InventoryItemsTable, ItemIconImg } from "../../../shared/InventoryItemsTable"
+import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
+import { ItemIconImg } from "../../../shared/ItemIconImg"
 
 export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
 

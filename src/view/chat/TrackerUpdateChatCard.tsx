@@ -2,8 +2,9 @@ import { BookMarked, Clover } from "lucide-react"
 import ReactHtmlParser from 'react-html-parser'
 
 import { appLang } from "../../utils/lang"
+import { localizeString } from "../../utils/localeUtils"
 import { getTokenImg } from "../../utils/modelUtil"
-import { CardSubHeaderValues } from "../component/SkillCard"
+import type { CardSubHeaderValues } from "../component/SkillCard"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { DiceRollComponent } from "./component/DiceRollComponent"
@@ -25,7 +26,7 @@ export const TrackerUpdateChatCard = ({ heroId, verb, resource, roll }: {
             : ''
         )
     const subtitle: CardSubHeaderValues[] = []
-    subtitle.push({ label: `${res.name} Remaining`, value: remaining.toString() })
+    subtitle.push({ label: localizeString(appLang.Combat.remaining, { name: res.name }), value: remaining.toString() })
 
     return (
         <BaseChatCardHost

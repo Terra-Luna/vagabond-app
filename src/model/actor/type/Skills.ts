@@ -21,7 +21,7 @@ export const skillsSchema = () => {
     }
 }
 
-export const skillSchema = (trained: boolean = false, stat: number = 2) => {
+const skillSchema = (stat: number = 2) => {
     return {
         trained: new fields.BooleanField({ initial: false }),
         value: new fields.NumberField({ ...requiredInteger, initial: 20 - stat })

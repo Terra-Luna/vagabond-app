@@ -2,6 +2,8 @@ import { BottleWine, Soup, XSquareIcon } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { appLang } from "../../utils/lang"
+import { localizeString } from "../../utils/localeUtils"
 import { tableBorderRounded } from "../../view/common/border-styles"
 import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { DropDown } from "../../view/component/Dropdown"
@@ -12,17 +14,17 @@ import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOpti
 import { isRation, LodgingTypes } from "./RestUtils"
 
 const getLodgingTypeCost = (lodging: keyof typeof LodgingTypes) => {
-    return " (" + LodgingTypes[lodging] + "s)"
+    return " (" + LodgingTypes[lodging] + appLang.Rest.lodgingCostSuffix + ")"
 }
 
 const LodgingOptions = [
-    { label: "Horrible" + getLodgingTypeCost('horrible'), value: 'horrible' },
-    { label: "Poor" + getLodgingTypeCost('poor'), value: 'poor' },
-    { label: "Modest" + getLodgingTypeCost('modest'), value: 'modest' },
-    { label: "Comfortable" + getLodgingTypeCost('comfortable'), value: 'comfortable' },
-    { label: "Luxury" + getLodgingTypeCost('luxury'), value: 'Luxury' },
-    { label: "Opulent" + getLodgingTypeCost('opulent'), value: 'opulent' },
-    { label: "None" + getLodgingTypeCost('none'), value: 'none' },
+    { label: appLang.Rest.lodging.horrible + getLodgingTypeCost('horrible'), value: 'horrible' },
+    { label: appLang.Rest.lodging.poor + getLodgingTypeCost('poor'), value: 'poor' },
+    { label: appLang.Rest.lodging.modest + getLodgingTypeCost('modest'), value: 'modest' },
+    { label: appLang.Rest.lodging.comfortable + getLodgingTypeCost('comfortable'), value: 'comfortable' },
+    { label: appLang.Rest.lodging.luxury + getLodgingTypeCost('luxury'), value: 'Luxury' },
+    { label: appLang.Rest.lodging.opulent + getLodgingTypeCost('opulent'), value: 'opulent' },
+    { label: appLang.Rest.lodging.none + getLodgingTypeCost('none'), value: 'none' },
 ] as { label: string, value: keyof typeof LodgingTypes }[]
 
 export const RestView = ({ onCancel, rest, breather, actor }: {
@@ -70,10 +72,10 @@ export const RestView = ({ onCancel, rest, breather, actor }: {
         <div className="flex flex-col h-full">
             <div className="flex gap-2 p-2">
                 <div>
-                    <Header title="Breather" />
+                    <Header title={appLang.Rest.breather} />
                     <div className={`text-lg text-center flex flex-col h-full`}>
                         <span className="px-2">
-                            Once per shift, eat a ration and drink some water to regain HP equal to your Might (<span className="text-ic-luck">{actor.system.stats.might}</span>)
+                            {localizeString(appLang.Rest.breatherDescription, { might: actor.system.stats.might?.toString() ?? "0" })}
                         </span>
                         <div className="flex w-full justify-center relative top-2">
                             <Soup size={64} strokeWidth={1} /><BottleWine size={64} strokeWidth={1} />
@@ -81,21 +83,21 @@ export const RestView = ({ onCancel, rest, breather, actor }: {
                         <div className="mt-auto">
                             <div className="flex justify-center">
                                 <PrimaryButton onClick={takeABreather} disabled={!!downTimeActionTaken}>
-                                    {downTimeActionTaken === "breather" ? "Phew..." : "Take a Breather"}
+                                    {downTimeActionTaken === "breather" ? appLang.Rest.breatherComplete : appLang.Rest.takeBreather}
                                 </PrimaryButton>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <Header title="Rest" />
+                    <Header title={appLang.Rest.rest} />
                     <div className={`text-lg text-center flex flex-col h-full`}>
                         <span className="px-2">
-                            Resting requires lodging and a ration, and recovers all your HP, Mana, and Luck.
+                            {appLang.Rest.restDescription}
                         </span>
                         <div className="pt-2">
                             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                                <LabelledField label="Lodging Quality">
+                                <LabelledField label={appLang.Rest.lodgingQuality}>
                                     <DropDown value={lodging} options={LodgingOptions}
                                         updateMechanism={{ onChange: (val) => setLodging(val) }} />
                                 </LabelledField>
@@ -104,7 +106,7 @@ export const RestView = ({ onCancel, rest, breather, actor }: {
                         <div className="mt-auto">
                             <div className="flex justify-center">
                                 <PrimaryButton onClick={takeARest} disabled={!!downTimeActionTaken}>
-                                    {downTimeActionTaken === "rest" ? "ZZZzzz..." : "Take a Rest"}
+                                    {downTimeActionTaken === "rest" ? appLang.Rest.restComplete : appLang.Rest.takeRest}
                                 </PrimaryButton>
                             </div>
                         </div>
@@ -115,7 +117,7 @@ export const RestView = ({ onCancel, rest, breather, actor }: {
                 <div>
                     <Ration rationItem={rationItem} numRations={numRations} hasRested={!!downTimeActionTaken} />
                 </div>
-                <SecondaryButton onClick={onCancel}>Close</SecondaryButton>
+                <SecondaryButton onClick={onCancel}>{appLang.ButtonActions.close}</SecondaryButton>
             </div>
         </div>
     )
@@ -137,6 +139,6 @@ const Ration = ({ rationItem, numRations, hasRested }) => {
 const NoRation = () => {
     return <div className="flex items-center gap-1 justify-center">
         <XSquareIcon />
-        No Ration found!
+        {appLang.Rest.noRationFound}
     </div>
 }

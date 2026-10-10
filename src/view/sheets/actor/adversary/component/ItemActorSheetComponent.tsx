@@ -1,3 +1,4 @@
+import { appLang } from "../../../../../utils/lang"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { EditableNameField } from "../../../../component/EditableTextField"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
@@ -10,7 +11,7 @@ export const ItemActorSheetComponent = ({ actor }) => {
 
     return (
         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-            <div title="R-click for optons" className="h-full bg-sheet-header-fill border-solid border-table-border" onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
+            <div title={appLang.General.itemActorContextMenuTooltip} className="h-full bg-sheet-header-fill border-solid border-table-border" onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
                 <div className="text-2xl text-text-header-primary font-eskapade font-bold p-2">
                     <EditableNameField actor={actor} />
                 </div>

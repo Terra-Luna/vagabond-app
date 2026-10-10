@@ -1,4 +1,4 @@
-import { DiceRoll } from "./DiceRoll"
+import type { DiceRoll } from "./DiceRoll"
 
 export class RollSummary {
 

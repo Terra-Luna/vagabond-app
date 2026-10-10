@@ -25,7 +25,7 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
     const [assignedStats, setAssignedStats] = useState<{ stat: string, value: number | null, poolIndex: number | null }[]>([])
     const [bonusStatSelections, setBonusStatSelections] = useState<{ stat: string, id_index: string, bonus: number }[]>([])
     const [dragOverKey, setDragOverStat] = useState<string | null>(null)
-    
+
     const resetAssignedStats = () => {
         setBonusStatSelections([])
         setAssignedStats(Object.keys(stats).map(s => ({ stat: s, value: null, poolIndex: null })))
@@ -104,9 +104,9 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
 
     /**
      * Drag & Drop handlers for assigning base stats.
-     * @param e 
-     * @param value 
-     * @param poolIndex 
+     * @param e
+     * @param value
+     * @param poolIndex
      */
     const onDragStart = (e: React.DragEvent, value: number, poolIndex: number) => {
         e.stopPropagation()
@@ -169,7 +169,7 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
                             s.value = selectedArr?.values[i] ?? 2
                         })
                         setAssignedStats([...assignedStats])
-                    }} children={<p>AUTO ASSIGN (TEST ONLY)</p>} />
+                    }} children={<p>{appLang.HeroCreation.testAutoAssign}</p>} />
                 </div>}
 
                 <HeroCreationSubtext text={strings.statArrayDrag} />

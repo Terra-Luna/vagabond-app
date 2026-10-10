@@ -8,6 +8,7 @@ import { PerkRulesSelectionsApplicator } from "../../rules/util/PerkRulesSelecti
 import { getRuleSelectors, normalizeSelector } from "../../rules/util/selector-util"
 import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
+import { localizeString } from "../../utils/localeUtils"
 import { getId, inventoryItemTypes } from "../../utils/modelUtil"
 import { removeWhitespace } from "../../utils/stringUtil"
 import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
@@ -32,6 +33,9 @@ import { savesSchema } from "./type/Saves"
 import { skillsSchema } from "./type/Skills"
 import { speedSchema } from "./type/Speed"
 import { statsSchema } from "./type/Stats"
+import { getArmor } from "./util/HeroEquipmentUtil"
+
+export { getArmor }
 
 const heroSchema = () => {
     return {
@@ -231,13 +235,13 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         ), 0) > 1
 
         if (handsAreFull) {
-            ui.notifications?.info(`Your hands are full.`)
+            ui.notifications?.info(appLang.Notifications.handsFull)
             return
         }
 
         const slots = equipped.reduce((sum, it) => sum + (it.system.bulk.slots ?? 0), 0)
         if (this.inventory.weaponSlots - slots - item.system.bulk.slots < 0) {
-            ui.notifications?.info(`Equipped items slot limit (${this.inventory.weaponSlots}) exceeded.`)
+            ui.notifications?.info(localizeString(appLang.Notifications.weaponSlotLimitExceeded, { slots: this.inventory.weaponSlots.toString() }))
             return
         }
 
@@ -404,12 +408,6 @@ export function validateCurrentFocus(hero: HeroDataModel) {
 export function setArmorRating(hero: HeroDataModel) {
     const equippedArmor = getArmor(hero)
     hero.armor.rating += equippedArmor?.rating ?? 0
-}
-
-export const getArmor = (hero: HeroDataModel): ArmorDataModel | undefined => {
-    return hero.inventory.items.find((i: any) =>
-        i.parent.type === 'armor' && i.isEquipped
-    ) as unknown as ArmorDataModel
 }
 
 export function setSpeeds(hero: HeroDataModel) {

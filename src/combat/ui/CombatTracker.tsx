@@ -354,7 +354,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                 
                 if (getHasStatus()) {
                     items.unshift({
-                        label: "Clear All", action: async (e) => {
+                        label: appLang.Combat.clearAll, action: async (e) => {
                             e.keepOpen = true
                             const combatants = combineCombatantWithControlledCombatants(combatant)
                             const actorUuids = combatants.map(c => c.token?.actor?.uuid).filter(Boolean) as string[]
@@ -393,18 +393,18 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
             actions.push(
                 {
                     icon: Eye,
-                    label: controlledTokens().size > 1 ? "Toggle Visibility (All selected)" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide",
+                    label: controlledTokens().size > 1 ? appLang.Combat.toggleVisibilitySelected : getCanvasToken(token?.id)?.document.hidden ? appLang.Combat.show : appLang.Combat.hide,
                     action: updateVisibility,
                 },
                 ...(controlledTokens
                     ().find(token => (token.combatant as VagabondCombatant).activations.value === 0) ? [{
                         icon: RefreshCw,
-                        label: "Refresh Activations",
+                        label: appLang.Combat.refreshActivations,
                         action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations(), combatant)
                     }] : []),
                 {
                     icon: Trash,
-                    label: "Remove",
+                    label: appLang.ButtonActions.remove,
                     action: (e) => {
                         e.keepOpen = true
                         getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id])

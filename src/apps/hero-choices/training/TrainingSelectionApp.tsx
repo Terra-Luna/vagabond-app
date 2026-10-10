@@ -4,6 +4,7 @@ import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import type { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { findOrCreateElectiveTrainingsRule, normalizeRuleSelections, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
+import { appLang } from "../../../utils/lang"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
@@ -15,7 +16,7 @@ export class TrainingSelectionApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: "Select Trainings", position: { top: 0 } },
+            window: { title: appLang.HeroChoices.selectTrainings, position: { top: 0 } },
             position: { width: 400, height: 800 },
             Component: () => {
                 const dataLoaded = useRef(false)
@@ -23,13 +24,11 @@ export class TrainingSelectionApp extends VagabondApplication {
                 const ancestry = actor?.items?.find(i => (i.type as string) === 'ancestry') as (Item & { system: AncestryDataModel }) | undefined
                 const clazz = actor?.items?.find(i => (i.type as string) === 'class') as (Item & { system: ClassDataModel }) | undefined
                 const stats = useMemo(() => {
-                    return Object.keys(actor.system.stats)
-                        .filter(key => key !== "baseStatBlock")
-                        .map(key => ({ stat: key, value: actor.system.stats[key] }))
+                    return Object.keys(actor.system.stats).map(key => ({ stat: key, value: actor.system.stats[key] }))
                 }, [actor.system.stats])
 
-                const { TrainingSelection, chosenTrainings, chosenBonusSkills, electiveTrainingsRuleId, electiveTrainingRules } =
-                    useTrainingSelection(ancestry, clazz, stats, [])
+                const { TrainingSelection, chosenTrainings, chosenBonusSkills, electiveTrainingsRuleId, electiveTrainingRules }
+                    = useTrainingSelection(ancestry, clazz, stats, [])
 
                 useEffect(() => {
                     if (!dataLoaded.current) {
@@ -40,7 +39,7 @@ export class TrainingSelectionApp extends VagabondApplication {
                     const persistTrainings = async () => {
                         // Class elective trainings
                         if (clazz) {
-                            const { rules: classRules, electiveRule } = findOrCreateElectiveTrainingsRule(clazz, {
+                            const { electiveRule } = findOrCreateElectiveTrainingsRule(clazz, {
                                 ruleId: electiveTrainingsRuleId,
                                 reasonValue: stats.find(s => s.stat === 'reason')?.value ?? 0,
                                 template: electiveTrainingRules.find(r => r.id === electiveTrainingsRuleId)

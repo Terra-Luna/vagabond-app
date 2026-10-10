@@ -1,5 +1,6 @@
 import { fields } from "../../model/common/sharedSchemas"
 import { sys_id } from "../../utils/foundryUtils"
+import { appLang } from "../../utils/lang"
 import { XpQuestionnaireConfigApp } from "../level-up/questionnaire/XpQuestionnaireConfigApp"
 import { RelicPowers } from "./relic/RelicPowers"
 
@@ -25,7 +26,7 @@ export class VagabondSettingsRegistry {
 
     static registerClientSetting(settingKey: any, value?: boolean | undefined) {
         game.settings?.register(sys_id, settingKey, {
-            name: `Custom client setting`,
+            name: appLang.Settings.customClientSetting,
             hint: `${settingKey}`,
             scope: "client",
             type: new fields.BooleanField(),
@@ -70,8 +71,8 @@ export class VagabondSettingsRegistry {
 
     private static registerMaxLevel() {
         game.settings?.register(sys_id, "maxLevel" as any, {
-            name: "Max Level (default: 10)",
-            hint: "The highest level a Hero can achieve.",
+            name: appLang.Settings.maxLevel,
+            hint: appLang.Settings.maxLevelHint,
             scope: "world",
             config: true,
             type: Number,
@@ -82,18 +83,18 @@ export class VagabondSettingsRegistry {
 
     private static registerLevelPacing() {
         game.settings?.register(sys_id, "levelPacing" as any, {
-            name: "Level Pacing",
-            hint: "Pace at which the Heroes gain levels.",
+            name: appLang.Settings.levelPacing,
+            hint: appLang.Settings.levelPacingHint,
             scope: "world",
             config: true,
             type: String,
             default: 'normal',
             choices: {
-                "quick": "Quick: 5 XP / Level (2-5 month campaign)",
-                "normal": "Normal: 5x next Level (5-12 month campaign)",
-                "epic": "Epic: 7x next Level (1-2 year campaign)",
-                "saga": "Saga: 10x next Level (2+ year campaign)",
-                "destiny": "Destiny: Grant level-ups from Hero sheet menu."
+                "quick": appLang.Settings.levelPacingQuick,
+                "normal": appLang.Settings.levelPacingNormal,
+                "epic": appLang.Settings.levelPacingEpic,
+                "saga": appLang.Settings.levelPacingSaga,
+                "destiny": appLang.Settings.levelPacingDestiny
             },
             onChange: () => { VagabondSettingsRegistry.refreshActorSheets() }
         })
@@ -101,25 +102,25 @@ export class VagabondSettingsRegistry {
 
     private static registerXpQuestionnaire() {
         game.settings?.register(sys_id, "xpQuestionnaire" as any, {
-            name: "XP Questionnaire",
-            hint: "An array of questions and their XP values.",
+            name: appLang.Settings.xpQuestionnaire,
+            hint: appLang.Settings.xpQuestionnaireHint,
             scope: "world",
             config: false,
             type: Object,
             default: [
-                { id: "q1", text: "Did you complete a Quest?", xp: 1 },
-                { id: "q2", text: "Did you Fail and allow the Fail to resolve?", xp: 1 },
-                { id: "q3", text: "Did you defeat a Boss Enemy?", xp: 1 },
-                { id: "q4", text: "Did you pass a Hindered Check?", xp: 1 },
-                { id: "q5", text: "Did you make a discovery?", xp: 1 },
-                { id: "q6", text: "Did you loot at least 50g of treasure?", xp: 1 }
+                { id: "q1", text: appLang.Settings.xpQuestion1, xp: 1 },
+                { id: "q2", text: appLang.Settings.xpQuestion2, xp: 1 },
+                { id: "q3", text: appLang.Settings.xpQuestion3, xp: 1 },
+                { id: "q4", text: appLang.Settings.xpQuestion4, xp: 1 },
+                { id: "q5", text: appLang.Settings.xpQuestion5, xp: 1 },
+                { id: "q6", text: appLang.Settings.xpQuestion6, xp: 1 }
             ] as any,
             onChange: () => { VagabondSettingsRegistry.refreshActorSheets() }
         })
         game.settings?.registerMenu(sys_id, "xpQuestionnaireConfig", {
-            name: "XP Questionnaire Editor",
-            label: "Modify Questions",
-            hint: "Add, remove, or edit the XP questionnaire.",
+            name: appLang.Settings.xpQuestionnaireEditor,
+            label: appLang.Settings.modifyQuestions,
+            hint: appLang.Settings.xpQuestionnaireEditorHint,
             icon: "fas fa-tasks",
             type: XpQuestionnaireConfigApp,
             restricted: true
@@ -128,8 +129,8 @@ export class VagabondSettingsRegistry {
 
     private static registerAttackRegistry() {
         (game.settings as any).register(sys_id, "attackRegistry", {
-            name: "Attack Registry",
-            hint: "Stores attack data from Heroes and Adversaries",
+            name: appLang.Settings.attackRegistry,
+            hint: appLang.Settings.attackRegistryHint,
             scope: "world",
             config: false,
             type: Object,
@@ -139,8 +140,8 @@ export class VagabondSettingsRegistry {
 
     private static registerItemShopToggle() {
         (game.settings as any).register(sys_id, "itemShopToggle", {
-            name: "Toggle Item Shop",
-            hint: "Control visibility of Item Shop to players",
+            name: appLang.VagabondTools.toggleItemShop,
+            hint: appLang.Settings.toggleItemShopHint,
             scope: "world",
             config: false,
             type: Boolean,
@@ -151,31 +152,31 @@ export class VagabondSettingsRegistry {
 
     private static async registerProgressClocks() {
         (game.settings as any).register(sys_id, "progressClocks" as any, {
-            name: "Progress Clocks",
-            hint: "World Progress Clocks",
+            name: appLang.VagabondTools.progressClocks,
+            hint: appLang.Settings.progressClocksHint,
             scope: "world",
             config: false,
             type: Array,
             default: []
         });
         (game.settings as any).register(sys_id, "clockPermissionLevel" as any, {
-            name: "Clock Interaction Permissions",
-            hint: "Determines whether players can advance progress clocks or if it is restricted to GM.",
+            name: appLang.Settings.clockInteractionPermissions,
+            hint: appLang.Settings.progressClocksPermissionHint,
             scope: "world",
             config: true,
             type: String,
             default: "gmOnly",
             choices: {
-                "gmOnly": "GM Only",
-                "everyone": "All Players"
+                "gmOnly": appLang.Settings.gmOnly,
+                "everyone": appLang.Settings.allPlayers
             }
         });
     }
 
     private static async registerCountdowns() {
         (game.settings as any).register(sys_id, "countdowns" as any, {
-            name: "Countdown Timers",
-            hint: "Countdown Timers",
+            name: appLang.Settings.countdowns,
+            hint: appLang.Settings.countdowns,
             scope: "world",
             config: false,
             type: Array,
@@ -183,23 +184,23 @@ export class VagabondSettingsRegistry {
         });
 
         (game.settings as any).register(sys_id, "countdownPermissionLevel" as any, {
-            name: "Countdown Interaction Permissions",
-            hint: "Determines whether players can interact with countdown dice or if it is restricted to GM.",
+            name: appLang.Settings.countdownInteractionPermissions,
+            hint: appLang.Settings.countdownsPermissionHint,
             scope: "world",
             config: true,
             type: String,
             default: "gmOnly",
             choices: {
-                "gmOnly": "GM Only",
-                "everyone": "All Players"
+                "gmOnly": appLang.Settings.gmOnly,
+                "everyone": appLang.Settings.allPlayers
             }
         })
     }
 
     private static registerManaEnforcement() {
         game.settings?.register(sys_id, "enforceMana" as any, {
-            name: "Enforce Mana",
-            hint: "Enable to enforce spellcasting Mana consumption and Max/Cast limits.",
+            name: appLang.Settings.enforceMana,
+            hint: appLang.Settings.manaEnforcementHint,
             scope: "world",
             config: true,
             type: Boolean,
@@ -209,8 +210,8 @@ export class VagabondSettingsRegistry {
 
     private static registerShowTrainingSelectionToggle() {
         (game.settings as any).register(sys_id, "showTrainingSelection", {
-            name: "Show Training Selection",
-            hint: "Allows players to access training (re)selection via a button on their Abilities tab.",
+            name: appLang.Settings.showTrainingSelection,
+            hint: appLang.Settings.trainingSelectionHint,
             scope: "world",
             config: true,
             type: Boolean,
@@ -221,8 +222,8 @@ export class VagabondSettingsRegistry {
 
     private static registerAllowLateLuckStudy() {
         game.settings?.register(sys_id, "allowLateLuckStudy" as any, {
-            name: "Allow Late Luck/Study",
-            hint: "Allow Heroes to spend Luck/Study dice after a failed check.",
+            name: appLang.Settings.allowLateLuckStudy,
+            hint: appLang.Settings.lateLuckStudyHint,
             scope: "world",
             config: true,
             type: Boolean,

@@ -1,4 +1,5 @@
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { appLang } from "../../../utils/lang"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
@@ -11,7 +12,7 @@ export class AlchemySelectionApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) {
         super({
-            window: { title: "Select Alchemy Recipes" },
+            window: { title: appLang.HeroChoices.selectAlchemyRecipes },
             position: { width: 400 },
             Component: () => {
                 const { AlchemySelectionView } = useAlchemySelection(actor, isLevelUp)

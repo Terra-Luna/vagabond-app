@@ -1,3 +1,4 @@
+import { appLang } from "../../utils/lang"
 import { fields, requiredInteger } from "./sharedSchemas"
 import { VagabondAppError } from "./VagabondAppError"
 
@@ -103,4 +104,4 @@ export const toCopper = (coins: Coins): number => {
     return (coins.g * 10000) + (coins.s * 100) + coins.c
 }
 
-export const NOT_ENOUGH_COINS_ERROR = { name: 'NOT_ENOUGH_COIN', message: 'Not enough coin' }
+export const NOT_ENOUGH_COINS_ERROR = { name: 'NOT_ENOUGH_COIN', message: appLang.Notifications.notEnoughFunds }

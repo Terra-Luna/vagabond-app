@@ -1,6 +1,6 @@
-import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
-import { RelicPower } from "./RelicPowers"
+import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import type { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
+import type { RelicPower } from "./RelicPowers"
 
 const getModifierSelectors = (mod: any): string[] => {
     if (Array.isArray(mod?.selector) && mod.selector.length > 0) return mod.selector

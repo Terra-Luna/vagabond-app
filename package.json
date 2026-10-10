@@ -21,10 +21,12 @@
     "tsConfig": "tsconfig.json",
     "detectiveOptions": {
       "ts": {
-        "skipTypeImports": true
+        "skipTypeImports": true,
+        "skipAsyncImports": true
       },
       "tsx": {
-        "skipTypeImports": true
+        "skipTypeImports": true,
+        "skipAsyncImports": true
       }
     }
   },

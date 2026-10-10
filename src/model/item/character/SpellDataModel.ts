@@ -1,5 +1,5 @@
 import { appLang } from "../../../utils/lang"
-import { CardSubHeaderValues } from "../../../view/component/SkillCard"
+import type { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
 
@@ -36,5 +36,5 @@ export class SpellDataModel extends ItemDataModel<SpellSchema> {
 }
 
 export const spellDamageBase = (spell: SpellDataModel): CardSubHeaderValues[] => {
-    return [{ label: 'Damage Base', value: appLang.DamageTypes[spell.damageType] }]
+    return [{ label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[spell.damageType] }]
 }

@@ -414,13 +414,13 @@ export const createElectiveTrainingsRule = (options: {
     return {
         id: options.id ? String(options.id) : String(randomId()),
         key: "ChoiceSet",
-        label: "Elective Trainings",
+        label: appLang.RulesEditor.electiveTrainings,
         level: 1,
         scale: 0,
         channel: "path",
         sourceMode: "static",
         maxChoices,
-        choices: [{ value: "skills.*.trained", label: "Skills" }],
+        choices: [{ value: "skills.*.trained", label: appLang.RulesEditor.skills }],
         selections: options.selections ?? []
     }
 }

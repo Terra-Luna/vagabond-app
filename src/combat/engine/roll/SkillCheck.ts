@@ -1,6 +1,6 @@
-import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
+import type { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
-import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
+import type { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
 import { RelicPowerProcessor } from "../../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { AlchemicalItemDataModel } from "../../../model/item/equip/AlchemicalItemDataModel"

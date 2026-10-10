@@ -1,5 +1,6 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
+import { appLang } from "../../utils/lang"
 import { VagabondAppArgs,VagabondApplication } from "../VagabondApplication"
 import { AlchemyCraftingView } from "./AlchemyCraftingView"
 
@@ -11,11 +12,11 @@ export class AlchemyCraftingApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: "Alchemy Crafting" },
+            window: { title: appLang.AlchemyCrafting.title },
             position: { width: 433 },
             Component: AlchemyCraftingView
         } as VagabondAppArgs)
-        
+
         this.actor = actor
     }
 

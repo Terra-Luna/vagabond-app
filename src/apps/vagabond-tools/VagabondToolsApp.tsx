@@ -2,6 +2,7 @@ import { Cog } from "lucide-react"
 import { createRoot } from "react-dom/client"
 
 import { getTheme } from "../../utils/foundryUtils"
+import { appLang } from "../../utils/lang"
 import { createStyleTag } from "../../utils/styleUtils"
 import { PrimaryButton } from "../../view/component/Button"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
@@ -11,7 +12,7 @@ export class VagabondToolsApp extends VagabondApplication {
 
     constructor() {
         super({
-            window: { title: "Vagabond Tools" },
+            window: { title: appLang.VagabondTools.title },
             position: { width: 400, top: 500, left: 18 },
             Component: VagabondToolsAppView,
         } as VagabondAppArgs)

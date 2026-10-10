@@ -1,7 +1,8 @@
-import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
+import type { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
 import { RelicPowerProcessor } from "../../../apps/vagabond-tools/relic/RelicPowerProcessor"
-import { getArmor, type HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { AlchemicalItemDataModel } from "../../../model/item/equip/AlchemicalItemDataModel"
+import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { getArmor } from "../../../model/actor/util/HeroEquipmentUtil"
+import type { AlchemicalItemDataModel } from "../../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 
 export class DiceRoll {

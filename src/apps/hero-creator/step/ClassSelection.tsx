@@ -16,7 +16,7 @@ export const useClassSelection = (navButtons: ReactNode[]) => {
         CombinedItems('class').then((res) => {
             setClasses(res.sort((a, b) => a.name.localeCompare(b.name)))
             setClassOpts([
-                { value: null, label: " -- Select your Class -- " },
+                { value: null, label: appLang.HeroChoices.selectClassPlaceholder },
                 ...res.map(it => ({ value: it._id, label: it.name }))
             ])
         })

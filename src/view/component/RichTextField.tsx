@@ -17,6 +17,7 @@ import { $getNearestNodeFromDOMNode, $getSelection, $insertNodes, $isRangeSelect
 import { BetweenHorizontalEnd, BetweenHorizontalStart, BetweenVerticalEnd, BetweenVerticalStart, Columns2, IndentDecrease, IndentIncrease, List, ListOrdered, Rows2, Table, Trash2 } from 'lucide-react'
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
+import { appLang } from '../../utils/lang'
 import { useEditMode } from '../context/EditModeContext/Hooks'
 import { IFrameWrapper } from './IFrameWrapper'
 
@@ -140,18 +141,18 @@ const Toolbar = () => {
     })
 
     const buttons: { icon: ReactNode, title: string, onClick: () => void, tableOnly?: boolean }[] = [
-        { icon: <List size={14} />, title: 'Bulleted list', onClick: () => editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined) },
-        { icon: <ListOrdered size={14} />, title: 'Numbered list', onClick: () => editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined) },
-        { icon: <IndentIncrease size={14} />, title: 'Indent', onClick: () => editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined) },
-        { icon: <IndentDecrease size={14} />, title: 'Outdent', onClick: () => editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined) },
-        { icon: <Table size={14} />, title: 'Insert table', onClick: () => editor.dispatchCommand(INSERT_TABLE_COMMAND, { rows: '3', columns: '3', includeHeaders: true }) },
-        { icon: <BetweenHorizontalStart size={14} />, title: 'Insert row above', onClick: tableEdit(() => $insertTableRowAtSelection(false)), tableOnly: true },
-        { icon: <BetweenHorizontalEnd size={14} />, title: 'Insert row below', onClick: tableEdit(() => $insertTableRowAtSelection(true)), tableOnly: true },
-        { icon: <BetweenVerticalStart size={14} />, title: 'Insert column left', onClick: tableEdit(() => $insertTableColumnAtSelection(false)), tableOnly: true },
-        { icon: <BetweenVerticalEnd size={14} />, title: 'Insert column right', onClick: tableEdit(() => $insertTableColumnAtSelection(true)), tableOnly: true },
-        { icon: <Rows2 size={14} />, title: 'Delete row', onClick: tableEdit($deleteTableRowAtSelection), tableOnly: true },
-        { icon: <Columns2 size={14} />, title: 'Delete column', onClick: tableEdit($deleteTableColumnAtSelection), tableOnly: true },
-        { icon: <Trash2 size={14} />, title: 'Delete table', onClick: deleteTable, tableOnly: true },
+        { icon: <List size={14} />, title: appLang.RichTextEditor.bulletedList, onClick: () => editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined) },
+        { icon: <ListOrdered size={14} />, title: appLang.RichTextEditor.numberedList, onClick: () => editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined) },
+        { icon: <IndentIncrease size={14} />, title: appLang.RichTextEditor.indent, onClick: () => editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined) },
+        { icon: <IndentDecrease size={14} />, title: appLang.RichTextEditor.outdent, onClick: () => editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined) },
+        { icon: <Table size={14} />, title: appLang.RichTextEditor.insertTable, onClick: () => editor.dispatchCommand(INSERT_TABLE_COMMAND, { rows: '3', columns: '3', includeHeaders: true }) },
+        { icon: <BetweenHorizontalStart size={14} />, title: appLang.RichTextEditor.insertRowAbove, onClick: tableEdit(() => $insertTableRowAtSelection(false)), tableOnly: true },
+        { icon: <BetweenHorizontalEnd size={14} />, title: appLang.RichTextEditor.insertRowBelow, onClick: tableEdit(() => $insertTableRowAtSelection(true)), tableOnly: true },
+        { icon: <BetweenVerticalStart size={14} />, title: appLang.RichTextEditor.insertColumnLeft, onClick: tableEdit(() => $insertTableColumnAtSelection(false)), tableOnly: true },
+        { icon: <BetweenVerticalEnd size={14} />, title: appLang.RichTextEditor.insertColumnRight, onClick: tableEdit(() => $insertTableColumnAtSelection(true)), tableOnly: true },
+        { icon: <Rows2 size={14} />, title: appLang.RichTextEditor.deleteRow, onClick: tableEdit($deleteTableRowAtSelection), tableOnly: true },
+        { icon: <Columns2 size={14} />, title: appLang.RichTextEditor.deleteColumn, onClick: tableEdit($deleteTableColumnAtSelection), tableOnly: true },
+        { icon: <Trash2 size={14} />, title: appLang.RichTextEditor.deleteTable, onClick: deleteTable, tableOnly: true },
     ]
 
     return (
@@ -209,7 +210,7 @@ export const RichTextField = ({
 
     const Placeholder = () => {
         return (
-            <div className="absolute p-1 text-sm italic" style={{ pointerEvents: 'none' }}>Enter text...</div>
+            <div className="absolute p-1 text-sm italic" style={{ pointerEvents: 'none' }}>{appLang.General.enterText}</div>
         )
     }
 

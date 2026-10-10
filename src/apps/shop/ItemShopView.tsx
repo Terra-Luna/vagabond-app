@@ -79,7 +79,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                     setSelectedPack(pack)
                 }
                 else {
-                    ui.notifications?.warn("Not enough funds!")
+                    ui.notifications?.warn(appLang.Notifications.notEnoughFunds)
                 }
             }
         }, [selectedPack, wallet, packs])
@@ -92,7 +92,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                 setWallet(deduction)
             }
             else {
-                ui.notifications?.warn("Not enough funds!")
+                ui.notifications?.warn(appLang.Notifications.notEnoughFunds)
             }
         }, [cart, wallet])
 
@@ -189,7 +189,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                                     <input
                                         type="text"
                                         value={shopSearch}
-                                        placeholder="Search items..."
+                                        placeholder={appLang.ItemShop.searchItems}
                                         className={`w-full text-lg text-text-secondary font-paradigm font-normal italic px-2 py-1 pr-8 ${tableBorderRounded}`}
                                         onChange={(e) => {
                                             shopSearchRef.current = e.target.value
@@ -205,7 +205,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                                                 setShopSearch("")
                                             }}
                                             className="absolute right-0 pr-2 text-text-secondary hover:text-destructive-action font-bold cursor-pointer"
-                                            aria-label="Clear search"
+                                            aria-label={appLang.ItemShop.clearSearch}
                                         >✕</button>
                                     )}
                                 </div>

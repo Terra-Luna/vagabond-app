@@ -1,5 +1,6 @@
 import { useEffect,useState } from 'react'
 
+import { appLang } from '../../utils/lang'
 import { tableBorder } from '../common/border-styles'
 
 interface CSVTextInputProps {
@@ -13,7 +14,7 @@ interface CSVTextInputProps {
 export const CSVTextInput = ({
     value,
     onChange,
-    placeholder = "e.g., 6, 10, 12",
+    placeholder = appLang.AttackBuilder.csvDiceExample,
     className = "",
     label
 }: CSVTextInputProps) => {

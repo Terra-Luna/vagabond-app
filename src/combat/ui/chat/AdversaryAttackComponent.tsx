@@ -105,7 +105,7 @@ const AttackDamageAndSavesSection = ({
             {/* SAVING THROW BUTTONS */}
             {saveTypes.length > 0 && (ownedTargets.length > 0 || unownedTargets.length > 0) &&
                 <div className="px-1">
-                    <ClearHeader title="TARGETS" />
+                    <ClearHeader title={appLang.Combat.targets} />
                     <div className="flex flex-col gap-1 mt-1 px-1">
                         {/* OWNED TARGETS */}
                         {ownedTargets.map(target => {
@@ -192,7 +192,7 @@ const AttackDamageAndSavesSection = ({
                 <div>
                     {title
                         ? <ClearHeader title={title} />
-                        : <ClearHeader title="DAMAGE" />
+                        : <ClearHeader title={appLang.Combat.damage} />
                     }
                     <DamageRollsComponent result={damageRoll!.result!} />
                     <div className="flex items-center justify-center">
@@ -241,7 +241,7 @@ const SaveOutcomeIcon = ({ result, overlay = false }: { result?: SkillCheckResul
                         <Shield size={14} strokeWidth={2} className={`text-ic-luck ${result?.outcome === "CRITICAL" ? "fill-ic-luck" : "fill-ic-armor-fill"}`} />
                     </Tooltip>
                     : result.outcome === appLang.RollResult.crit
-                        ? <Tooltip title={"Critical Success"} content={appLang.Combat.critSaveTooltip}>
+                        ? <Tooltip title={appLang.Combat.criticalSuccess} content={appLang.Combat.critSaveTooltip}>
                             <Swords size={14} strokeWidth={2} className="text-ic-luck" />
                         </Tooltip>
                         : <Tooltip content={"Success"}>

@@ -1,5 +1,6 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
+import { appLang } from "../../../utils/lang"
 import { getDiceTerms, rollExplosions } from "../util/dice-utils"
 import { DiceRoll } from "./DiceRoll"
 import { RollSummary } from "./RollSummary"
@@ -178,7 +179,7 @@ export class DamageRoll {
                 return true
             }
         }
-        ui.notifications?.warn("Invalid exploding dice config detected (infinite recursion). Please check your exploding dice and reroll settings.")
+        ui.notifications?.warn(appLang.Notifications.invalidExplodingDice)
         return false
     }
 

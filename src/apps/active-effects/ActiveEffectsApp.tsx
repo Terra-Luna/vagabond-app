@@ -1,3 +1,4 @@
+import { appLang } from "../../utils/lang"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { ActiveEffectsView } from "./ActiveEffectsView"
 
@@ -8,7 +9,7 @@ export class ActiveEffectsApp extends VagabondApplication {
     constructor(document: Actor | Item) {
         super({
             id: `active-effects-${document.id}`,
-            window: { title: "Active Effects" },
+            window: { title: appLang.Effects.title },
             position: { width: 400 },
             Component: AEAppView,
         } as VagabondAppArgs)

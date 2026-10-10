@@ -1,3 +1,4 @@
+import { appLang } from "../../../../utils/lang"
 import { VagabondActorSheet } from "../VagabondActorSheet"
 import { HeroSheetReactComponent } from "./HeroSheetComponent"
 
@@ -29,7 +30,7 @@ export class HeroSheet extends VagabondActorSheet {
          * sheet. Instead, these items should be granted through rules configurations.
          */
         if (item && ['feature', 'spell', 'perk'].includes(item.type)) {
-            ui.notifications?.warn('Features, Spells, and Perks cannot be dropped here. Please add Features to a Class and select Spells or Perks through the rules selectors.')
+            ui.notifications?.warn(appLang.Notifications.heroDropNotAllowed)
             return false
         }
 

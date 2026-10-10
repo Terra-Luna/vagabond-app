@@ -1,6 +1,7 @@
-import { HeroDataModel } from "../../model/actor/HeroDataModel";
-import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel";
+import type { HeroDataModel } from "../../model/actor/HeroDataModel";
+import type { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel";
 import { sys_id } from "../../utils/foundryUtils";
+import { appLang } from "../../utils/lang";
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication";
 import { ItemStackSplitView } from "./ItemStackSplitView";
 
@@ -8,10 +9,10 @@ export class ItemStackSplitApp extends VagabondApplication {
 
     actor: Actor & { system: HeroDataModel }
     item: Item & { system: EquipmentDataModel<EquipmentSchema> }
-    
+
     constructor(actor: Actor & { system: HeroDataModel }, item: Item & { system: EquipmentDataModel<EquipmentSchema> }) {
         super({
-            window: { title: "Split Item Stack", resizable: false },
+            window: { title: appLang.Inventory.splitStackTitle, resizable: false },
             position: { width: 400, height: "auto", top: 200, left: 400 },
             Component: ItemStackSplitView
         } as VagabondAppArgs)

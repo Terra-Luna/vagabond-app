@@ -18,7 +18,7 @@ export const useAncestrySelection = (navButtons: ReactNode[]) => {
             const sortedAncestries = res.sort((a, b) => a.name.localeCompare(b.name))
             setAncestries(sortedAncestries)
             setAncestryOptions([
-                { value: null, label: " -- Select your Ancestry -- " },
+                { value: null, label: appLang.HeroChoices.selectAncestryPlaceholder },
                 ...sortedAncestries.map(it => ({ value: it._id, label: it.name }))
             ])
         })

@@ -1,3 +1,4 @@
+import { appLang } from "../../../utils/lang"
 import { getFullItem, getName, inventoryItemTypes } from "../../../utils/modelUtil"
 import { coinSchema } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
@@ -41,7 +42,7 @@ export const isInventoryItem = (item: Item): boolean => {
 
 export const openItemSheet = async (item: any) => {
     if (!item) {
-        ui.notifications?.warn("Item not found!")
+        ui.notifications?.warn(appLang.Notifications.itemNotFound)
         return
     }
     if (item.sheet?.render) {
@@ -55,10 +56,10 @@ export const openItemSheet = async (item: any) => {
         if (fullDoc?.sheet?.render) {
             fullDoc.sheet.render(true)
         } else {
-            ui.notifications?.warn("Item not found!")
+            ui.notifications?.warn(appLang.Notifications.itemNotFound)
         }
     }
     else {
-        ui.notifications?.warn("Item not found!")
+        ui.notifications?.warn(appLang.Notifications.itemNotFound)
     }
 }

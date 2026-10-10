@@ -7,7 +7,7 @@ import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDocumentAtPath, updateDocument } from "../../../../../utils/documentUtils"
 import { sys_id } from "../../../../../utils/foundryUtils"
 import { appLang } from "../../../../../utils/lang"
-import { createDropdownEntries, damageTypesWithPhysicalThresholds } from "../../../../../utils/localeUtils"
+import { createDropdownEntries, damageTypesWithPhysicalThresholds, localizeString } from "../../../../../utils/localeUtils"
 import { tableBorder } from "../../../../common/border-styles"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableNameField, EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
@@ -138,7 +138,7 @@ const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
             {/* EXPAND / COLLAPSE BUTTON */}
             <button
                 onClick={() => setIsPortraitOpen(open => !open)}
-                title={isPortraitOpen ? "Collapse portrait" : "Expand portrait"}
+                title={isPortraitOpen ? appLang.AdversarySheet.collapsePortrait : appLang.AdversarySheet.expandPortrait}
                 className={`bg-sheet-header-fill px-0.5 py-2 hover-glow cursor-pointer ${tableBorder}`}
             >
                 {isPortraitOpen
@@ -281,7 +281,7 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
 
             <StatBlockRow>
                 {/* MORALE */}
-                <div onClick={() => inlineRoll(npc.morale?.toString() ?? '12', locale.morale + " Check")} className="hover-glow cursor-pointer" title="Click to roll morale check">
+                <div onClick={() => inlineRoll(npc.morale?.toString() ?? '12', localizeString(appLang.NpcSheet.moraleCheckRoll, { morale: locale.morale }))} className="hover-glow cursor-pointer" title={appLang.Combat.moraleRollTooltip}>
                     <StatBlockField label={locale.morale} content={
                         <NumericCounterInput
                             value={npc.morale ?? 6}
@@ -293,7 +293,7 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                 </div>
                 {/* NUMBER APPEARING */}
                 {npc instanceof AdversaryDataModel &&
-                    <div onClick={() => inlineRoll(npc.numberAppearing?.toString() ?? '1', locale.appearing + " Roll")} className="hover-glow cursor-pointer" title="Click to roll number appearing">
+                    <div onClick={() => inlineRoll(npc.numberAppearing?.toString() ?? '1', localizeString(appLang.NpcSheet.numberAppearingRoll, { appearing: locale.appearing }))} className="hover-glow cursor-pointer" title={appLang.Combat.numberAppearingRollTooltip}>
                         <StatBlockField label={locale.appearing} content={
                             <EditableTextField
                                 boundValue={npc.numberAppearing?.toString() ?? '1'}

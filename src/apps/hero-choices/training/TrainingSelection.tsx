@@ -189,7 +189,7 @@ export const useTrainingSelection = (
 
                         {/* LEVEL 1 TRAINING SELECTIONS */}
                         <div className="space-y-1 mt-2">
-                            <Tooltip title="Elective Trainings Formula" content={appLang.HeroCreation.electiveFormula}>
+                            <Tooltip title={appLang.General.electiveTrainingsFormulaTooltip} content={appLang.HeroCreation.electiveFormula}>
                                 <HeroCreationLabel text={appLang.HeroCreation.electiveTraining.replace("%s", `${electiveTrainingsRule!.maxChoices}`)} />
                             </Tooltip>
                             {electiveTrainingRules.flatMap(rule => ({ id: rule.id, choices: rule.choices })).map(rule => {

@@ -3,20 +3,21 @@ import { createElement } from "react"
 
 import { ItemStackSplitApp } from "../apps/inventory/ItemStackSplitApp"
 import { HeroAttack } from "../combat/engine/HeroAttack"
-import { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
-import { HeroDataModel } from "../model/actor/HeroDataModel"
+import type { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
+import type { HeroDataModel } from "../model/actor/HeroDataModel"
 import { isInventoryItem, openItemSheet } from "../model/actor/type/Inventory"
 import { Coins, subtractCoins } from "../model/common/CoinValue"
 import { AlchemicalItemDataModel } from "../model/item/equip/AlchemicalItemDataModel"
 import { ArmorDataModel } from "../model/item/equip/ArmorDataModel"
-import { addItemToContainer, ContainerDataModel, extractItemFromContainer } from "../model/item/equip/ContainerDataModel"
-import { EquipmentDataModel, EquipmentSchema } from "../model/item/equip/EquipmentDataModel"
+import type { ContainerDataModel } from "../model/item/equip/ContainerDataModel"
+import { addItemToContainer, extractItemFromContainer } from "../model/item/equip/ContainerDataModel"
+import type { EquipmentDataModel, EquipmentSchema } from "../model/item/equip/EquipmentDataModel"
 import { SundryDataModel } from "../model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../rules/util/ItemsCache"
 import { sendVagabondChatMessage } from "../view/chat/ChatCardSerializer"
 import { ItemChatCard } from "../view/chat/ItemChatCard"
-import { CtxMenuItem } from "../view/component/ContextMenu"
+import type { CtxMenuItem } from "../view/component/ContextMenu"
 import { sys_id } from "./foundryUtils"
 import { appLang } from "./lang"
 import { getFullItem, getId, getName } from "./modelUtil"
@@ -121,7 +122,7 @@ export const useItem = async (
         }
     }
     else {
-        ui.notifications?.warn("Item not found!")
+        ui.notifications?.warn(appLang.Notifications.itemNotFound)
     }
 }
 
@@ -137,20 +138,20 @@ export const equippedItemContextMenu = (hero: any, item: ArmorDataModel | Weapon
     if (item instanceof WeaponDataModel) {
         menuItems.push({
             icon: Sword,
-            label: 'Attack',
+            label: appLang.ButtonActions.attack,
             action: (e) => {
                 HeroAttack.buildWeaponAttack(hero.parent, item.parent).initiate(e)
             }
         })
         if (item.grip.style === 'V') {
             menuItems.push(
-                { icon: HandFist, label: 'Change grip', action: () => hero.toggleVersatileGrip(item) }
+                { icon: HandFist, label: appLang.ButtonActions.grip, action: () => hero.toggleVersatileGrip(item) }
             )
         }
     }
 
     menuItems.push(
-        { icon: Hand, label: 'Unequip', action: () => hero.equip(item.parent) }
+        { icon: Hand, label: appLang.ButtonActions.unequip, action: () => hero.equip(item.parent) }
     )
 
     return menuItems

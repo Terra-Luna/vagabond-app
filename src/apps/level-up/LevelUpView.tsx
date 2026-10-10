@@ -170,17 +170,17 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
     const goToNextStep = async () => {
         if (currentStep === 'class-selection') {
             if (!selectedClassItem) {
-                ui.notifications?.warn("Select a class to continue...")
+                ui.notifications?.warn(appLang.LevelUp.selectClass)
                 return
             }
         }
         if (currentStep === 'feats') {
             if (isStatBoostOptionAvailable() && !levelUpStat) {
-                ui.notifications?.warn("Select a Stat to increase before saving...")
+                ui.notifications?.warn(appLang.LevelUp.selectStat)
                 return
             }
             if (isRsnTrainingOptionAvailable && !newRsnTraining) {
-                ui.notifications?.warn("Select a new Skill Training before saving...")
+                ui.notifications?.warn(appLang.LevelUp.selectSkillTraining)
                 return
             }
         }
@@ -218,15 +218,15 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
             return
         }
         if (!actorClassItem && !selectedClassItem) {
-            ui.notifications?.warn("Select a class to continue...")
+            ui.notifications?.warn(appLang.LevelUp.selectClass)
             return
         }
         if (isStatBoostOptionAvailable() && !levelUpStat) {
-            ui.notifications?.warn("Select a Stat to increase before saving...")
+            ui.notifications?.warn(appLang.LevelUp.selectStat)
             return
         }
         if (isRsnTrainingOptionAvailable && !newRsnTraining) {
-            ui.notifications?.warn("Select a new Skill Training before saving...")
+            ui.notifications?.warn(appLang.LevelUp.selectSkillTraining)
             return
         }
         setIsSaving(true)
@@ -334,10 +334,10 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
                                         {/* LATEST/UPGRADED CLASS FEATURE CARDS */}
                                         {classFeature &&
                                         <div className="flex-1 space-y-1 max-w-[25rem]">
-                                                <Header title={"CLASS FEATURE"} />
+                                                <Header title={appLang.LevelUp.classFeature} />
                                                 <SkillCard
                                                     title={classFeature.feature.name}
-                                                    subtitles={[{ label: "Level", value: classFeature.level }]}
+                                                    subtitles={[{ label: appLang.ClassSheet.labelLevel, value: classFeature.level }]}
                                                     description={classFeature.feature.system.dynamicDescription(nextLevel)}
                                                     startCollapsed={false}
                                                 />
@@ -347,8 +347,8 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
                                     {/* LEVEL-UP STAT BOOST (EVEN LEVELS) */}
                                     {isStatBoostOptionAvailable() &&
                                         <div className="flex-1 space-y-1 text-center">
-                                            <Header title="STAT INCREASE" />
-                                            <HeroCreationLabel text={"Select a stat (Max: 7)"} />
+                                            <Header title={appLang.LevelUp.statIncrease} />
+                                            <HeroCreationLabel text={appLang.LevelUp.selectStatMax} />
                                             <div className="flex w-full justify-center">
                                                 <HeroCreationDropdown
                                                     value={levelUpStat ?? ''}

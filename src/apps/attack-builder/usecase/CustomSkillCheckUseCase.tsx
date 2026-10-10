@@ -2,6 +2,7 @@ import { useState } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
+import { appLang } from "../../../utils/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { Checkbox } from "../../../view/component/Checkbox"
 import { useSkillCheckCritThresholdInput } from "./skillcheck/CritThresholdInputUseCase"
@@ -40,17 +41,17 @@ export const useCustomSkillCheckBuilder = (
                     <span>+d{die}</span>
                 </div>
             ))}
-            <div title="Favor die results count towards Crit threshold.">
+            <div title={appLang.AttackBuilder.favorResultsCountTowardCrit}>
                 <Checkbox
-                    label="Crit Sum"
+                    label={appLang.AttackBuilder.critSum}
                     color="text-text-primary mt-1"
                     checked={critSum}
                     onCheckedChanged={(checked) => setCritSum(checked)}
                 />
             </div>
             <div className="mr-1" />
-            {favorHinder === 'favor' && <div title="Favor dice can explode."><Checkbox
-                label="Expld. Favor"
+            {favorHinder === 'favor' && <div title={appLang.AttackBuilder.favorDiceCanExplode}><Checkbox
+                label={appLang.AttackBuilder.explodingFavor}
                 color="text-text-primary"
                 checked={explodeFavor}
                 onCheckedChanged={(checked) => setExplodeFavor(checked)}

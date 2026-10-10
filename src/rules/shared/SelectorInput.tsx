@@ -1,5 +1,6 @@
 import { useMemo } from "react"
 
+import { appLang } from "../../utils/lang"
 import { MultiSelect, SelectOption } from "../../view/component/MultiSelect"
 import { getSelectorOptions, isValidSelector, normalizeSelector, SelectorKind } from "../util/selector-util"
 import { ItemRulesLabel } from "./ItemRulesTypography"
@@ -21,7 +22,7 @@ export const SelectorInput = ({ label, value, kind, onChange }: SelectorInputPro
             <MultiSelect
                 options={options}
                 value={selected}
-                placeholder="Start typing a path, e.g., health.max"
+                placeholder={appLang.RulesEditor.pathEntryPlaceholder}
                 isValidNewOption={input => isValidSelector(input, kind)}
                 handleOnChange={values => {
                     const next = Array.from(new Set(values.map(v => normalizeSelector(v.value)).filter(s => isValidSelector(s, kind))))
@@ -31,4 +32,3 @@ export const SelectorInput = ({ label, value, kind, onChange }: SelectorInputPro
         </div>
     )
 }
-

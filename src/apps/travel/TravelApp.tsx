@@ -1,4 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel";
+import { appLang } from "../../utils/lang"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication";
 import { TravelView } from "./TravelView";
 
@@ -8,7 +9,7 @@ export class TravelApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: "Travel Info", resizable: true },
+            window: { title: appLang.Travel.title, resizable: true },
             position: { width: 1000, height: 1200, top: 200, left: 400 },
             Component: TravelView
         } as VagabondAppArgs)

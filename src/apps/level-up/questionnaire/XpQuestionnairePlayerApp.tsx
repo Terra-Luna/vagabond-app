@@ -1,4 +1,6 @@
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { appLang } from "../../../utils/lang"
+import { localizeString } from "../../../utils/localeUtils"
 import { getXpQuestionnaiare } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { XpQuestionnairePlayerView } from "./XpQuestionnairePlayerView"
@@ -10,7 +12,7 @@ export class XpQuestionnairePlayerApp extends VagabondApplication {
     constructor(actor: Actor & { system: HeroDataModel }) {
         const appArgs: VagabondAppArgs = {
             window: {
-                title: "Earn XP",
+                title: appLang.LevelUp.xpQuestionnaireTitle,
                 resizable: false
             },
             Component: XpQuestionnairePlayerView
@@ -34,9 +36,9 @@ export class XpQuestionnairePlayerApp extends VagabondApplication {
         if (xp > 0) {
             const currentXp = this.actor.system.level.xp ?? 0
             await this.actor.update({ 'system.level.xp': currentXp + xp } as Record<string, number>)
-            ui.notifications?.info(`Applied ${xp}XP to ${this.actor.name}!`)
+            ui.notifications?.info(localizeString(appLang.LevelUp.xpApplied, { xp: xp.toString(), name: this.actor.name }))
         }
         this.close()
     }
-    
+
 }

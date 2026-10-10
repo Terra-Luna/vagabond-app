@@ -1,8 +1,9 @@
 import { Trash } from "lucide-react"
 
+import { appLang } from "../../utils/lang"
 import { Tooltip } from "./Tooltip"
 
-export const TrashButton = ({ title = "Delete", className = "", onClick }: { title?: string, className?: string, onClick: (e?) => void }) => {
+export const TrashButton = ({ title = appLang.ButtonActions.delete, className = "", onClick }: { title?: string, className?: string, onClick: (e?) => void }) => {
     return (
         <Tooltip content={title}>
             <button type="button" onClick={onClick} className={className}>

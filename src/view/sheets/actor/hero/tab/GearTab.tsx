@@ -19,7 +19,7 @@ import { Header, ItemDivider } from "../../../../component/Header"
 import { Tooltip } from "../../../../component/Tooltip"
 import { RelicEffectList } from "../../../item/equip/component/RelicEffectList"
 import { WeaponPropsList } from "../../../item/equip/component/WeaponPropsList"
-import { ItemIconImg } from "../../../shared/InventoryItemsTable"
+import { ItemIconImg } from "../../../shared/ItemIconImg"
 
 export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
     const [documentUpdateKey, setDocumentUpdateKey] = useState(0)
@@ -131,6 +131,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
                 damageString: attackInstance?.damageRoll?.toString() ?? '',
                 skill: attackInstance?.skillCheck?.skill ?? '',
                 preset: {
+                    id: "",
                     title: item.parent.name,
                     description: '',
                     weaponId: item.parent.id,

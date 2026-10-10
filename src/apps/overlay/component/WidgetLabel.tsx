@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
+import { appLang } from "../../../utils/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { FoundryHotkeyBlocker } from "../../../view/component/FoundryHotkeyBlocker"
 
@@ -55,7 +56,7 @@ export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {
                         mt-2 px-1 text-center focus:outline-none focus:border-destructive-action/50 w-32
                     `}
                 />
-                : <span title="Double click to edit"
+                : <span title={appLang.Overlay.doubleClickToEdit}
                     onDoubleClick={() => {
                         if (!permissionCheck()) return
                         setIsEditing(true)

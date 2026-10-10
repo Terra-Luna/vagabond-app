@@ -1,11 +1,5 @@
 import { ActiveEffectsView } from "../../../../apps/active-effects/ActiveEffectsView"
-import { AlchemicalItemDataModel } from "../../../../model/item/equip/AlchemicalItemDataModel"
-import { ArmorDataModel } from "../../../../model/item/equip/ArmorDataModel"
-import { ContainerDataModel } from "../../../../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel"
-import { StartingPackDataModel } from "../../../../model/item/equip/StartingPackDataModel"
-import { SundryDataModel } from "../../../../model/item/equip/SundryDataModel"
-import { WeaponDataModel } from "../../../../model/item/equip/WeaponDataModel"
 import { ItemRulesManager } from "../../../../rules/ItemRulesManager"
 import { Divider } from "../../../component/Header"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
@@ -31,22 +25,22 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
 
     let sheet: React.ReactElement
 
-    if (item.system instanceof AlchemicalItemDataModel) {
+    if ((item.type as string) === "alchemical") {
         sheet = <AlchemicalSheet key={item.uuid} item={item as any} />
     }
-    else if (item.system instanceof ArmorDataModel) {
+    else if ((item.type as string) === "armor") {
         sheet = <ArmorSheet key={item.uuid} item={item as any} />
     }
-    else if (item.system instanceof ContainerDataModel) {
+    else if ((item.type as string) === "container") {
         sheet = <ContainerSheet key={item.uuid} item={item as any} />
     }
-    else if (item.system instanceof StartingPackDataModel) {
+    else if ((item.type as string) === "startingpack") {
         sheet = <StartingPackSheet key={item.uuid} item={item as any} />
     }
-    else if (item.system instanceof SundryDataModel) {
+    else if ((item.type as string) === "sundry") {
         sheet = <SundrySheet key={item.uuid} item={item as any} />
     }
-    else if (item.system instanceof WeaponDataModel) {
+    else if ((item.type as string) === "weapon") {
         sheet = <WeaponSheet key={item.uuid} item={item as any} />
     }
     else {

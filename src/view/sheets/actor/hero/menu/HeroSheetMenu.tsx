@@ -9,6 +9,7 @@ import { TravelApp } from "../../../../../apps/travel/TravelApp"
 import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sys_id } from "../../../../../utils/foundryUtils"
+import { appLang } from "../../../../../utils/lang"
 import { tableBorderRounded } from "../../../../common/border-styles"
 import { ItemDivider } from "../../../../component/Header"
 import { VagabondActorSheet } from "../../VagabondActorSheet"
@@ -63,7 +64,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
             `}>
                 {/* DARK/LIGHT THEME SELECTOR */}
                 <div className={`flex gap-x-2 items-center justify-between mb-4 px-2 py-1 bg-sheet-header-fill cursor-pointer ${tableBorderRounded}`} onClick={toggleTheme}>
-                    <p className="text-sm">THEME</p>
+                    <p className="text-sm">{appLang.General.theme}</p>
                     <div className="flex gap-x-2 px-2 py-1 border border-solid border-text-header-tertiary rounded-sm">
                         <Sun size={18} className={`${isDarkMode ? 'text-text-header-primary hover-glow' : 'text-text-header-secondary'}`} />
                         <Moon size={18} className={`${isDarkMode ? 'text-text-header-secondary' : 'text-text-header-primary hover-glow'}`} />
@@ -83,9 +84,9 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                         <MenuListItem text={'[GM] REVOKE LEVEL UP'} onClick={() => hero.parent.setFlag(sys_id, "destiny", false)} toggleMenu={toggleMenu} />
                     }
 
-                    <AppMenuToggleSwitch label="STATS" hero={hero} toggleKey="hero-sheet-stats-hide" />
-                    <AppMenuToggleSwitch label="TRACKERS" hero={hero} toggleKey="hero-sheet-trackers-hide" />
-                    <AppMenuToggleSwitch label={`MINI CARDS`} hero={hero} toggleKey="hero-sheet-mini-cards" />
+                    <AppMenuToggleSwitch label={appLang.General.heroSheetStats} hero={hero} toggleKey="hero-sheet-stats-hide" />
+                    <AppMenuToggleSwitch label={appLang.General.heroSheetTrackers} hero={hero} toggleKey="hero-sheet-trackers-hide" />
+                    <AppMenuToggleSwitch label={appLang.General.miniCards} hero={hero} toggleKey="hero-sheet-mini-cards" />
                     <MenuListItem text={'REST'} onClick={() => { new RestApp(hero.parent).render({force: true}) }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { new TravelApp(hero.parent).render({force: true}) }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />

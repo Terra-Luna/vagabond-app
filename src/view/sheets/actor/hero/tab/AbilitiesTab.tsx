@@ -52,13 +52,13 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
         if (typeof perk.subheader === "function") return perk.subheader()
         const values: CardSubHeaderValues[] = []
         const model = perk as PerkDataModel
-        if (!model.prerequisites?.length) return [{ label: "Req", value: "None" }]
+        if (!model.prerequisites?.length) return [{ label: appLang.PerkSheet.prereqLabel, value: appLang.FavorHinder.none }]
         const spellReqs = perkSpellRerequisitesAsString(model)
         const statReqs = perkStatPrerequisitesAsString(model)
         const trainedReqs = perkTrainingPrerequisitesAsString(model)
-        if (spellReqs) values.push({ label: "Spell", value: spellReqs })
-        if (statReqs) values.push({ label: "Stat", value: statReqs })
-        if (trainedReqs) values.push({ label: "Trained", value: trainedReqs })
+        if (spellReqs) values.push({ label: appLang.PrerequisiteTypes.spell, value: spellReqs })
+        if (statReqs) values.push({ label: appLang.PrerequisiteTypes.stat, value: statReqs })
+        if (trainedReqs) values.push({ label: appLang.PrerequisiteTypes.trained, value: trainedReqs })
         return values
     }
 
@@ -75,7 +75,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                             <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                                 {
                                     icon: MessageSquareText,
-                                    label: 'Send to chat',
+                                    label: appLang.HeroSheet.Inventory.ctxChat,
                                     action: () => sendVagabondChatMessage(
                                         hero, <AbilityChatCard actorId={getId(hero)} img={f.img ?? ''} title={f.name} description={f.description} />
                                     )
@@ -110,7 +110,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         }).map((p: any, index: number) => (
                             <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                                 {
-                                    icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
+                                    icon: MessageSquareText, label: appLang.HeroSheet.Inventory.ctxChat, action: () => sendVagabondChatMessage(hero,
                                         <AbilityChatCard
                                             actorId={getId(hero)}
                                             img={p.parent.img}
@@ -147,7 +147,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         <div className="mt-0.5" />
                         <SkillCard
                             title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
-                            subtitles={[{ label: 'Size', value: beingSize }, { label: 'Type', value: beingType }]}
+                            subtitles={[{ label: appLang.HeroCreation.beingSize, value: beingSize }, { label: appLang.HeroCreation.beingType, value: beingType }]}
                             description={hero.ancestry?.description}
                         />
                     </div>}

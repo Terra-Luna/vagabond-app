@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react"
 
 import { sys_id } from "../../../../utils/foundryUtils"
+import { appLang } from "../../../../utils/lang"
 import { ConfirmationDialog } from "../../../vagabond-tools/dialog/ConfirmationDialog"
 import { RollPreset } from "../../model/RollPreset"
 
@@ -12,8 +13,8 @@ export const useDeletePreset = (actor: Actor) => {
 
         setDeleteConfirmation({
             isOpen: true,
-            title: "Delete preset?",
-            message: "This will delete the preset and cannot be undone.",
+            title: appLang.AttackBuilder.deletePreset,
+            message: appLang.AttackBuilder.deletePresetDescription,
             onAccept: () => {
                 const presets = [...actor.getFlag(sys_id, "rollPresets" as any) as RollPreset[] ?? []]
                 actor.setFlag(sys_id, "rollPresets", presets.filter((_, pIdx) => pIdx !== index))
@@ -30,7 +31,7 @@ export const useDeletePreset = (actor: Actor) => {
                 onConfirm={() => deleteConfirmation.onAccept()}
                 title={deleteConfirmation.title}
                 description={deleteConfirmation.message}
-                confirmText="Yes, Delete"
+                confirmText={appLang.ButtonActions.confirmDelete}
                 variant="destructive"
             />
         )

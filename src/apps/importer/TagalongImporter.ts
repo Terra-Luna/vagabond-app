@@ -3,24 +3,26 @@ import { VagabondAppError } from "../../model/common/VagabondAppError"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { updateDocument } from "../../utils/documentUtils"
 import { stackStackables } from "../../utils/heroInventoryUtil"
+import { appLang } from "../../utils/lang"
+import { localizeString } from "../../utils/localeUtils"
 import { addItemToActor, CombinedItems, CombinedItemsMultiType, inventoryItemTypes, TypedIndexEntry } from "../../utils/modelUtil"
 import { fetchHero, TagalongItem } from "./TagalongApi"
 import { TagalongItemCreator } from "./TagalongItemCreator"
 
 /**
- * Sample link: 
+ * Sample link:
  *      (Orphenia) https://www.vgbnd.app/character/e38db88c-ec28-4b67-a44c-09f0fe199d01
  * Imports hero data from www.vgbnd.app and maps it to the system hero data model.
- * 
+ *
  * TODO: update this to query for existing Items in our compendia instead
  *          --> const pack = game.packs.get(compendiumPackName)...
- * 
+ *
  * @param hero
  * @param tagalongUrl
  */
 export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
     try {
-        ui.notifications?.info("Importing character data from www.vgbnd.app, please wait...")
+        ui.notifications?.info(appLang.Notifications.importingCharacter)
         const url = new URL(tagalongUrl)
         const res = (await fetchHero(url)).character
 
@@ -46,8 +48,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
                 awareness: res.assignedStats.awareness,
                 reason: res.assignedStats.reason,
                 presence: res.assignedStats.presence,
-                luck: res.assignedStats.luck,
-                baseStatBlock: res.statArray
+                luck: res.assignedStats.luck
             },
 
             skills: {
@@ -140,7 +141,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         /**
          * Import character inventory...
          * First, check for any incoming new items and create them.
-         * Second, collect all matching items from the system 
+         * Second, collect all matching items from the system
          */
         const newItems: TagalongItem[] = []
         for (const tagalongItem of res.inventory) {
@@ -169,12 +170,12 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
          * Show any import failures...
          */
         if (failures.length > 0) {
-            ui.notifications?.warn("These items weren't able to be imported and will need to be configured manually...")
+            ui.notifications?.warn(appLang.Notifications.importItemsUnconfigured)
             failures.forEach(f => {
                 ui.notifications?.warn(f)
             })
         }
-        ui.notifications?.success(`${res.name}'s info has been imported!`)
+        ui.notifications?.success(localizeString(appLang.Notifications.importSucceeded, { name: res.name }))
     }
     catch (e) {
         console.error(e)

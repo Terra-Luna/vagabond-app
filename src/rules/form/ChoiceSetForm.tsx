@@ -32,7 +32,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
     const handleAddOption = () => {
         onChange({
             ...rule,
-            choices: [...choices, { value: "", label: "New Option" }]
+            choices: [...choices, { value: "", label: appLang.RulesEditor.newOption }]
         })
     }
 
@@ -76,28 +76,28 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
             {/* CHOICE CONFIGURATION SETTINGS */}
             <div className="grid grid-cols-2 gap-2 items-start">
                 <ItemRuleInput
-                    label="Name"
+                    label={appLang.RulesEditor.name}
                     value={rule.label || ""}
-                    placeholder="e.g., Training Choices"
+                    placeholder={appLang.RulesEditor.trainingChoicesExample}
                     onChange={(e) => onChange({ label: e.target.value })}
                     type="text"
                 />
                 <ItemRuleInput
-                    label="Level Req."
+                    label={appLang.RulesEditor.levelRequirement}
                     value={rule.level || 0}
                     placeholder="0"
                     onChange={(e) => onChange({ level: e.target.value })}
                     type="number"
                 />
                 <ItemRuleInput
-                    label="Levels Hereafter"
+                    label={appLang.RulesEditor.levelsHereafter}
                     value={rule.scale || 0}
                     placeholder="0"
                     onChange={(e) => onChange({ scale: e.target.value })}
                     type="number"
                 />
                 <ItemRuleInput
-                    label="# Choices"
+                    label={appLang.RulesEditor.numberOfChoices}
                     value={rule.maxChoices ?? 1}
                     onChange={(e) => onChange({ maxChoices: Math.max(1, Number(e.target.value)) })}
                     type="number"
@@ -105,11 +105,11 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
 
                 {/* CHANNEL SELECT */}
                 <ItemRuleSelector
-                    label={"Channel"}
+                    label={appLang.RulesEditor.channel}
                     value={rule.channel ?? ''}
                     options={<>
-                        <option value="path">Stat/Attribute Modifier</option>
-                        <option value="item">Spells/Perks/Alchemy</option>
+                        <option value="path">{appLang.RulesEditor.statAttributeModifier}</option>
+                        <option value="item">{appLang.RulesEditor.spellsPerksAlchemy}</option>
                     </>}
                     onChange={(e) => {
                         const val = e.target.value
@@ -125,11 +125,11 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                 {/* SELECT CHOICE SET TYPE: DYNAMIC / STATIC */}
                 {(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell" || rule.channel === "alchemical") &&
                     <ItemRuleSelector
-                        label="Choices Source"
+                        label={appLang.RulesEditor.choicesSource}
                         value={rule.sourceMode}
                         options={<>
-                            <option value="static">Static Manual List</option>
-                            <option value="dynamic">Dynamic Item Pack</option>
+                            <option value="static">{appLang.RulesEditor.staticManualList}</option>
+                            <option value="dynamic">{appLang.RulesEditor.dynamicItemPack}</option>
                         </>}
                         onChange={(e) => {
                             onChange({ sourceMode: e.target.value, filters: [] })
@@ -138,12 +138,12 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
 
                 {/* Conditionally show input field if rule.pack contains a valid string */}
                 {rule.sourceMode === "dynamic" && <ItemRuleSelector
-                        label="Item Pack Type"
+                        label={appLang.RulesEditor.itemPackType}
                         value={rule.pack}
                         options={<>
-                            <option value="perk">Perks</option>
-                            <option value="spell">Spells</option>
-                            <option value="alchemical">Alchemy</option>
+                            <option value="perk">{appLang.RulesEditor.perks}</option>
+                            <option value="spell">{appLang.RulesEditor.spells}</option>
+                            <option value="alchemical">{appLang.RulesEditor.alchemy}</option>
                         </>}
                     onChange={(e) => {
                         onChange({ pack: e.target.value, filters: [] })
@@ -154,7 +154,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                 {rule.sourceMode === "dynamic" && rule.pack === "perk" &&
                     <div>
                         <div className="flex gap-x-1 items-center">
-                            <ItemRulesLabel text={"Prerequisite Filters"} />
+                            <ItemRulesLabel text={appLang.RulesEditor.prerequisiteFilters} />
                             <IconOnlyButton
                                 Icon={Plus}
                                 colorClassName="text-text-header-tertiary"
@@ -177,10 +177,10 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                         }}
                                     />
                                     <ItemRuleSelector
-                                        label="Filter Type"
+                                        label={appLang.RulesEditor.filterType}
                                         value={filter.type}
                                         options={<>
-                                            <option value="training">Training</option>
+                                            <option value="training">{appLang.RulesEditor.training}</option>
                                         </>}
                                         onChange={(e) => {
                                             const updatedFilters = [...rule.filters]
@@ -192,7 +192,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                         }}
                                     />
                                     <ItemRuleSelector
-                                        label="Skill"
+                                        label={appLang.RulesEditor.skill}
                                         value={filter.value}
                                         options={createDropdownEntriesFromObj(appLang.Skills).map(it => (
                                             <option value={it.value}>{it.label}</option>
@@ -213,14 +213,14 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                         <div className="flex flex-col gap-1">
                             <ItemRulesLabel text={"Exceptions"} />
                             <Checkbox
-                                label="Stats"
+                                label={appLang.RulesEditor.stats}
                                 checked={rule.ignoreStats || false}
                                 onCheckedChanged={(checked) => {
                                     onChange({ ...rule, ignoreStats: checked })
                                 }}
                             />
                             <Checkbox
-                                label="Trainings"
+                                label={appLang.RulesEditor.trainings}
                                 checked={rule.ignoreTrainings || false}
                                 onCheckedChanged={(checked) => {
                                     onChange({ ...rule, ignoreTrainings: checked })
@@ -248,15 +248,15 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
 
                     <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
                         {choices.length === 0 ? (
-                            <p className="text-text-primary/50 text-xs italic p-1">Click +Add Option to get started...</p>
+                            <p className="text-text-primary/50 text-xs italic p-1">{appLang.RulesEditor.clickAddOptionToStart}</p>
                         ) : (
                             choices.map((choice, oIdx) => (
                                 <div key={oIdx} className="flex gap-2 items-end group/row">
                                     <div className="w-1/2">
                                         <ItemRuleInput
-                                            label="Name"
+                                            label={appLang.RulesEditor.name}
                                             value={choice.label}
-                                            placeholder="e.g. Might or Apoplex"
+                                            placeholder={appLang.RulesEditor.statExample}
                                             onChange={(e) => handleUpdateOption(oIdx, { label: e.target.value })}
                                             type="text"
                                         />
@@ -287,7 +287,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                         type="button"
                                         onClick={() => handleRemoveOption(oIdx)}
                                         className="p-1 mb-1 border border-solid border-transparent hover:border-table-border hover:bg-sheet-main-fill text-text-primary/60 hover:text-destructive-action transition-all shrink-0"
-                                        title="Delete Option"
+                                        title={appLang.RulesEditor.deleteOption}
                                     >
                                         <Trash size={16} />
                                     </button>
@@ -299,7 +299,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
             )}
 
             <Checkbox
-                label="Skip at Hero Creation"
+                label={appLang.RulesEditor.skipAtHeroCreation}
                 color="text-text-primary"
                 checked={rule.skipAtHeroCreation || false}
                 onCheckedChanged={(checked) => {

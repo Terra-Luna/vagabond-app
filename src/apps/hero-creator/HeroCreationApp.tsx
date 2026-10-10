@@ -1,4 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { appLang } from "../../utils/lang"
 import { centerOnFirstRender } from "../../utils/sheetUtils"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { HeroCreationNavHostView } from "./HeroCreationNavHostView"
@@ -10,7 +11,7 @@ export class HeroCreationApp extends VagabondApplication {
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
             window: {
-                title: "Create your Hero"
+                title: appLang.HeroChoices.createHero
             },
             position: {
                 height: 966, width: 1115, top: 60, left: 200

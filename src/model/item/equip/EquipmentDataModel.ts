@@ -1,4 +1,5 @@
 import { appLang } from "../../../utils/lang"
+import { localizeString } from "../../../utils/localeUtils"
 import { addCoins, Coins, coinSchema, consolidateCoins, multiplyCoins, toCopper, zeroCoins } from "../../common/CoinValue"
 import { fields, optionalString, requiredInteger, requiredString, uncappedInteger } from "../../common/sharedSchemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
@@ -155,7 +156,7 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
 
     toggleEquipped = async (): Promise<void> => {
         if (this.isEquipped && this.isCursed()) {
-            ui.notifications?.info(`Unable to remove Bound item: ${this.parent.name}...the curse must be lifted.`)
+            ui.notifications?.info(localizeString(appLang.Notifications.boundItemCannotBeRemoved, { name: this.parent.name }))
             return
         }
         const updates = { 'system.isEquipped': !this.isEquipped }

@@ -1,4 +1,5 @@
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { appLang } from "../../../utils/lang"
 import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { usePerkSelection } from "./PerkSelectionUseCase"
 
@@ -9,7 +10,7 @@ export class PerkSelectionApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) {
         super({
-            window: { title: "Select Perks" },
+            window: { title: appLang.HeroChoices.selectPerks },
             position: { width: 800, height: 900 },
             Component: () => {
                 const { PerkSelection, bonusChoicesByPerk } = usePerkSelection(actor, isLevelUp)

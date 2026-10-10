@@ -1,4 +1,5 @@
 import { sys_id } from "../../../utils/foundryUtils"
+import { appLang } from "../../../utils/lang"
 import { getXpQuestionnaiare, XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { XpQuestionnaireConfigView } from "./XpQuestionnaireConfigView"
@@ -8,7 +9,7 @@ export class XpQuestionnaireConfigApp extends VagabondApplication {
     constructor() {
         const appArgs: VagabondAppArgs = {
             window: {
-                title: "Manage XP Questionnaire",
+                title: appLang.XpQuestionnaire.manageTitle,
                 resizable: false
             },
             Component: XpQuestionnaireConfigView
@@ -31,12 +32,12 @@ export class XpQuestionnaireConfigApp extends VagabondApplication {
     private async handleSave(updatedQuestions: XpQuestion[]): Promise<void> {
         try {
             await (game as any).settings.set(sys_id, "xpQuestionnaire", updatedQuestions)
-            ui.notifications?.info("XP Questionnaire settings saved successfully!")
+            ui.notifications?.info(appLang.XpQuestionnaire.saved)
             this.close()
         }
         catch (error) {
             console.error("Vagabond | Failed to save questionnaire configuration:", error)
-            ui.notifications?.error("Failed to save changes to the database.")
+            ui.notifications?.error(appLang.XpQuestionnaire.saveFailed)
         }
     }
 

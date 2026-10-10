@@ -1,6 +1,7 @@
 import { Plus, Save } from "lucide-react"
 import React, { useState } from "react"
 
+import { appLang } from "../../../utils/lang"
 import { tableBorder } from "../../../view/common/border-styles"
 import { PrimaryButton, SecondaryButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
@@ -57,7 +58,7 @@ export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ init
                         <input
                             type="text"
                             value={q.text}
-                            placeholder="Question description..."
+                            placeholder={appLang.XpQuestionnaire.questionDescriptionPlaceholder}
                             onChange={(e) => handleInputChange(q.id, "text", e.target.value)}
                             className={`${tableBorder} flex-1 bg-context-menu-fill px-3 py-1.5 placeholder-text-tertiary`}
                         />
@@ -69,7 +70,7 @@ export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ init
                             onChange={(e) => handleInputChange(q.id, "xp", e.target.value)}
                             className={`${tableBorder} text-center bg-context-menu-fill w-[6ch] py-1.5 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
                         />
-                        <p className="text-sm text-text-secondary mr-2">XP</p>
+                        <p className="text-sm text-text-secondary mr-2">{appLang.XpQuestionnaire.xp}</p>
 
                         {/* DELETE BUTTON */}
                         <TrashButton onClick={() => deleteQuestion(q.id)} />
@@ -80,10 +81,10 @@ export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ init
             {/* ADD NEW, SAVE & CLOSE BUTTONS */}
             <div className="flex items-center justify-between border-t border-context-menu-fill pt-4 mt-2">
                 <SecondaryButton onClick={addQuestion} icon={<Plus size={16} />}>
-                    Add Question
+                    {appLang.XpQuestionnaire.addQuestion}
                 </SecondaryButton>
                 <PrimaryButton type="submit" icon={<Save size={16} />}>
-                    Save & Close
+                    {appLang.XpQuestionnaire.saveAndClose}
                 </PrimaryButton>
             </div>
         </form>

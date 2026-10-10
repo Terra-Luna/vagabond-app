@@ -273,7 +273,7 @@ export const usePerkBonusSelection = (
                     <div className="mt-4">
                         <TopNavButtons
                             navButtons={navButtons}
-                            subtitle="A Perk selection has granted another choice..."
+                            subtitle={appLang.HeroChoices.perkBonusGranted}
                             canProceed={selectedAdvancements.length > 0 || selectedSpells.length > 0 || selectedPerkTrainings.length > 0}
                         />
                     </div>
@@ -288,10 +288,7 @@ export const usePerkBonusSelection = (
                             <div className="flex flex-col justify-center">
                                 <BonusChoiceTitle text={advancements[0].label} />
                                 <HeroCreationSubtext text={
-                                    stats
-                                        .filter(stat => stat.stat !== "baseStatBlock")
-                                            .map(stat => `${appLang.Stat[stat.stat]?.abbr}: ${stat.value}`)
-                                        .join(" | ")
+                                    stats.map(stat => `${appLang.Stat[stat.stat]?.abbr}: ${stat.value}`).join(" | ")
                                 } />
                                 <div className="flex flex-wrap gap-2">
                                     {advancements.map((rule) => (

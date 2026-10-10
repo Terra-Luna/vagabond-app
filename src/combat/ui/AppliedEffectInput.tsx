@@ -42,7 +42,7 @@ export const AppliedEffectInput = ({ item }: { item: Item & { system: Alchemical
 
             {(appliedEffects.length > 0 || isEditMode) &&
                 <div className="flex gap-x-1">
-                    <ItemSheetPropLabel label={"Applied Effects"} />
+                    <ItemSheetPropLabel label={appLang.Effects.appliedEffects} />
                 </div>
             }
 
@@ -51,7 +51,7 @@ export const AppliedEffectInput = ({ item }: { item: Item & { system: Alchemical
                     {appliedEffects.map((applied, index) => (
                         <div key={`${applied.effect}-${index}`} className="flex items-end gap-0.5 text-base font-eskapade font-normal">
 
-                            <div title="Effect">
+                            <div title={appLang.Effects.effect}>
                                 <CustomDropDown
                                     value={applied.effect}
                                     options={statusEffectOptions}
@@ -61,8 +61,8 @@ export const AppliedEffectInput = ({ item }: { item: Item & { system: Alchemical
 
                             <p className="text-sm mr-1">:</p>
 
-                            <div title="Duration">
-                                {isEditMode && index === 0 && <p className="text-sm">Duration</p>}
+                            <div title={appLang.Effects.duration}>
+                                {isEditMode && index === 0 && <p className="text-sm">{appLang.Effects.duration}</p>}
                                 <CustomDropDown
                                     value={applied.duration ?? ''}
                                     options={appLang.Duration}
@@ -71,15 +71,15 @@ export const AppliedEffectInput = ({ item }: { item: Item & { system: Alchemical
                             </div>
 
                             {isEditMode && <>
-                                <div title="Duration (on crit)">
-                                    {index === 0 && <p className="text-sm">Crit</p>}
+                                <div title={appLang.Effects.durationOnCrit}>
+                                    {index === 0 && <p className="text-sm">{appLang.Effects.crit}</p>}
                                     <CustomDropDown
                                         value={applied.critDuration ?? ''}
                                         options={appLang.Duration}
                                         onChange={(e) => handleFieldChange(index, 'critDuration', e.target.value)}
                                     />
                                 </div>
-                                <TrashButton title="Remove effect" onClick={() => handleRemoveEffect(index)} />
+                                <TrashButton title={appLang.Effects.removeEffect} onClick={() => handleRemoveEffect(index)} />
                             </>}
                         </div>
                     ))}
@@ -88,7 +88,7 @@ export const AppliedEffectInput = ({ item }: { item: Item & { system: Alchemical
 
             {isEditMode &&
                 <div className="mt-0.5">
-                    <UtilityButton title="Add applied effect" onClick={handleAddEffect}>
+                    <UtilityButton title={appLang.Effects.addAppliedEffect} onClick={handleAddEffect}>
                         {appLang.ButtonActions.add}
                     </UtilityButton>
                 </div>

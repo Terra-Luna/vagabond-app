@@ -5,6 +5,7 @@ import { addItemToContainer,ContainerDataModel } from "../../../model/item/equip
 import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
 import { StartingPackDataModel } from "../../../model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "../../../model/item/equip/SundryDataModel"
+import { appLang } from "../../../utils/lang"
 import { centerOnFirstRender } from "../../../utils/sheetUtils"
 import { VagabondSheetMixin } from "../VagabondSheetMixin"
 
@@ -36,7 +37,7 @@ export abstract class VagabondItemSheet extends VagabondSheetMixin(sheets.ItemSh
             if (!droppedItem) return super._onDrop(event)
 
             if (!(droppedItem.system instanceof EquipmentDataModel || droppedItem.system instanceof SundryDataModel)) {
-                ui.notifications?.error("Only gear can be added to a Starting Pack.")
+                ui.notifications?.error(appLang.Notifications.onlyGearInStartingPack)
                 return false
             }
 

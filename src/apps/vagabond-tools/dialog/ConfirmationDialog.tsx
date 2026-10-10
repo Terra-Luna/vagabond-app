@@ -1,5 +1,6 @@
 import { useState } from "react"
 
+import { appLang } from "../../../utils/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../../view/component/Button"
 
@@ -18,10 +19,10 @@ export const ConfirmationDialog = ({
     isOpen,
     onClose,
     onConfirm,
-    title = "Are you sure?",
-    description = "This action cannot be undone.",
-    confirmText = "Confirm",
-    cancelText = "Cancel",
+    title = appLang.General.areYouSure,
+    description = appLang.General.actionCannotBeUndone,
+    confirmText = appLang.General.confirm,
+    cancelText = appLang.ButtonActions.cancel,
     variant = "destructive",
 }: ConfirmModalProps) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -63,8 +64,8 @@ export const ConfirmationDialog = ({
                     {variant !== "info" && <SecondaryButton onClick={onClose}>{cancelText}</SecondaryButton>}
 
                     {variant === "destructive"
-                        ? <DestructiveButton onClick={handleConfirm}>{isLoading ? "Processing..." : confirmText}</DestructiveButton>
-                        : <PrimaryButton onClick={handleConfirm}>{isLoading ? "Processing..." : confirmText}</PrimaryButton>
+                        ? <DestructiveButton onClick={handleConfirm}>{isLoading ? appLang.General.processing : confirmText}</DestructiveButton>
+                        : <PrimaryButton onClick={handleConfirm}>{isLoading ? appLang.General.processing : confirmText}</PrimaryButton>
                     }
 
                 </div>

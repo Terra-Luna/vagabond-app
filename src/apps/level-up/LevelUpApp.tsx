@@ -1,6 +1,7 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { findOrCreateElectiveTrainingsRule, normalizeRuleSelections, randomId, saveItemRuleSelections, savePerkSelections } from "../../rules/util/item-rules-util"
 import { sys_id } from "../../utils/foundryUtils"
+import { appLang } from "../../utils/lang"
 import { centerOnFirstRender } from "../../utils/sheetUtils"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { LevelUpArgs, LevelUpView } from "./LevelUpView"
@@ -51,7 +52,7 @@ export class LevelUpApp extends VagabondApplication {
                 left: 400
             },
             window: {
-                title: "Level Up!",
+                title: appLang.LevelUp.title,
                 resizable: true
             },
             Component: LevelUpView

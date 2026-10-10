@@ -3,6 +3,7 @@ import { useCallback, useState } from "react"
 
 import { CountdownRoll } from "../../combat/engine/roll/CountdownRoll"
 import { sys_id } from "../../utils/foundryUtils"
+import { appLang } from "../../utils/lang"
 import { DiceRollComponent } from "../../view/chat/component/DiceRollComponent"
 import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
 import { CanvasOverlayObjectWrapper } from "../overlay/component/CanvasOverlayObjectWrapper"
@@ -127,18 +128,18 @@ export const CountdownAppView = () => {
         const options: any[] = []
 
         if (canInteract && countdown.result.duration > 0) {
-            options.push({ label: "Increase Size", icon: Plus, action: async () => await increaseSize(countdown.id) })
-            options.push({ label: "Decrease Size", icon: Minus, action: async () => await decreaseSize(countdown.id) })
+            options.push({ label: appLang.Overlay.increaseCountdownSize, icon: Plus, action: async () => await increaseSize(countdown.id) })
+            options.push({ label: appLang.Overlay.decreaseCountdownSize, icon: Minus, action: async () => await decreaseSize(countdown.id) })
         }
 
         if (countdown.result.actorUuid) {
-            options.push({ label: "Open Actor Sheet", icon: User, action: () => openLinkedActorSheet(countdown.result.actorUuid, countdown.result.tokenUuid) })
+            options.push({ label: appLang.Overlay.openActorSheet, icon: User, action: () => openLinkedActorSheet(countdown.result.actorUuid, countdown.result.tokenUuid) })
         }
 
         options.push(...gmMenuItems(countdown))
 
         if (canInteract) {
-            options.push({ label: "Delete", icon: Trash, action: async () => await deleteCountdown(countdown.id), isDestructive: true })
+            options.push({ label: appLang.ButtonActions.delete, icon: Trash, action: async () => await deleteCountdown(countdown.id), isDestructive: true })
         }
 
         return options
@@ -162,7 +163,7 @@ export const CountdownAppView = () => {
                         ${countdown.result.duration === 0 ? 'bg-destructive-action/33' : 'bg-sheet-main-fill/40'}
                     `}>
                         <button
-                            title={`Click to roll\nR-click for options`}
+                            title={appLang.Overlay.countdownRollTooltip}
                             className="hover-glow transition-transform active:scale-95 focus:outline-none mt-1 -m-1"
                             onClick={() => handleCountdownClick(countdown.id)}
                         >

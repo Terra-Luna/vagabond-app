@@ -1,3 +1,4 @@
+import { appLang } from "../../utils/lang"
 import { Checkbox } from "../../view/component/Checkbox"
 import { FormProps } from "../shared/FormProps"
 import { ItemRuleInput } from "../shared/ItemRuleInput"
@@ -10,44 +11,44 @@ export const FlatModifierForm = ({ rule, onChange }: FormProps) => {
         <div className="space-y-2">
             <div className="flex flex-wrap gap-x-1">
                 <ItemRuleInput
-                    label={"Name"}
+                    label={appLang.RulesEditor.name}
                     value={rule.label || ""}
-                    placeholder={"e.g., Hulking"}
+                    placeholder={appLang.RulesEditor.hulkingExample}
                     onChange={(e) => onChange({ label: e.target.value })}
                 />
                 <ItemRuleInput
-                    label={"Level Req."}
+                    label={appLang.RulesEditor.levelRequirement}
                     value={rule.level ?? 0}
                     onChange={(e) => onChange({ level: Number(e.target.value) })}
                     type={"number"}
                 />
                 <ItemRuleInput
-                    label={"Levels Hereafter"}
+                    label={appLang.RulesEditor.levelsHereafter}
                     value={rule.scale ?? 0}
                     onChange={(e) => onChange({ scale: Number(e.target.value) })}
                     type={"number"}
                 />
             </div>
             <SelectorInput
-                label={"Path"}
+                label={appLang.RulesEditor.path}
                 kind="modifier"
                 value={getRuleSelectors(rule)}
                 onChange={(selector) => onChange({ selector })}
             />
             <ItemRuleInput
-                label={"Value"}
+                label={appLang.RulesEditor.value}
                 value={rule.value ?? '0'}
                 onChange={(e) => onChange({ value: e.target.value })}
                 type={"text"}
             />
             <ItemRuleInput
-                label={"Value Multiplier"}
+                label={appLang.RulesEditor.valueMultiplier}
                 value={rule.valueMultiplier ?? ''}
-                placeholder={"e.g., level.current"}
+                placeholder={appLang.RulesEditor.valueMultiplierExample}
                 onChange={(e) => onChange({ valueMultiplier: e.target.value })}
             />
             <Checkbox
-                label="Toggleable Effect"
+                label={appLang.RulesEditor.toggleableEffect}
                 checked={rule.toggleableEffect || false}
                 color="text-text-primary"
                 onCheckedChanged={(checked) => {

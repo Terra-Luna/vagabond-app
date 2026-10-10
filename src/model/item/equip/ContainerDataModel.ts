@@ -1,3 +1,4 @@
+import { appLang } from "../../../utils/lang"
 import { getId } from "../../../utils/modelUtil"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel, EquipmentSchema, getTotalSlots } from "./EquipmentDataModel"
@@ -64,11 +65,11 @@ export async function addItemToContainer(container: ContainerDataModel, item: It
     const itemId = getId(item)
     if (itemId && itemId !== container.parent.id && !container.itemIds.includes(itemId)) {
         if ((item.type as string) === 'container') {
-            ui.notifications?.warn("Cannot place containers within containers!")
+            ui.notifications?.warn(appLang.Notifications.cannotNestContainers)
             return false
         }
         if (item.system.isEquipped) {
-            ui.notifications?.warn("Unequip gear before placing in storage!")
+            ui.notifications?.warn(appLang.Notifications.unequipBeforeStorage)
             return false
         }
         if (container.emptySlots > 0 && container.emptySlots >= item.system.bulk.totalSlots) {
@@ -91,7 +92,7 @@ export async function addItemToContainer(container: ContainerDataModel, item: It
             return false
         }
         else {
-            ui.notifications?.warn("Not enough space available in container!")
+            ui.notifications?.warn(appLang.Notifications.containerFull)
             return false
         }
     }

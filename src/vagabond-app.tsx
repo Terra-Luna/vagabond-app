@@ -38,6 +38,8 @@ import { ItemsCache } from "./rules/util/ItemsCache"
 import { sys_id } from "./utils/foundryUtils"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { ItemPilesConfig } from "./utils/ItemPilesConfig"
+import { appLang, lang } from "./utils/lang"
+import { localizeString } from "./utils/localeUtils"
 import { getFullItem, getId } from "./utils/modelUtil"
 import { createStyleTag } from "./utils/styleUtils"
 import { installChatScrollGuard, RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
@@ -216,9 +218,16 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
         if (preExistingUniqueItem) {
             if (game.user?.isActiveGM) {
                 showConfirmationDialog({
-                    title: `Replace ${item.type === 'ancestry' ? 'Ancestry' : 'Class'}?`,
-                    description: `${actor.name} already has the ${item.type} "${preExistingUniqueItem.name}". Replace it with "${item.name}"?\n\nThis will reset the Hero's existing choices of: Trainings, Spells, & Perks but their level and base stats will remain unchanged.`,
-                    confirmText: "Replace",
+                    title: localizeString(appLang.Confirmation.replaceItemTitle, {
+                        itemType: item.type === 'ancestry' ? lang.TYPES.Item.ancestry : lang.TYPES.Item.class
+                    }),
+                    description: localizeString(appLang.Confirmation.replaceUniqueItemDescription, {
+                        actorName: actor.name,
+                        itemType: item.type === 'ancestry' ? lang.TYPES.Item.ancestry : lang.TYPES.Item.class,
+                        existingName: preExistingUniqueItem.name,
+                        newName: item.name
+                    }),
+                    confirmText: appLang.ButtonActions.replace,
                     variant: "primary"
                 }).then((confirmed) => {
                     if (!confirmed) return
@@ -391,11 +400,11 @@ Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any)
         const formGroup = document.createElement("div")
         formGroup.classList.add("form-group")
         formGroup.innerHTML = `
-            <label>On Equip</label>
+            <label>${appLang.ItemSheet.onEquip}</label>
             <div class="form-fields">
                 <input type="checkbox" name="system.requiresEquip" ${requiresEquip ? "checked" : ""}/>
             </div>
-            <p class="notes">If checked, this effect will only apply when the item is equipped.</p>
+            <p class="notes">${appLang.ItemSheet.onEquipHint}</p>
         `;
 
         detailsTab.appendChild(formGroup)

@@ -4,6 +4,7 @@ import { getAttackRegistry } from "../../../apps/vagabond-tools/usecase/Vagabond
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { sys_id } from "../../../utils/foundryUtils"
+import { appLang } from "../../../utils/lang"
 import { getCanvasToken, getTokenImg } from "../../../utils/modelUtil"
 import { BaseChatCardHost } from "../../../view/chat/component/BaseChatCardHost"
 import { ChatCardBanner } from "../../../view/chat/component/ChatCardBanner"
@@ -29,7 +30,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     /**
      * This side-effect is responsible for responsive UI elements
      * in the interactive chat card. It subs to the updateSetting
-     * hook to check for changes that include additions/edits to 
+     * hook to check for changes that include additions/edits to
      * our Attack Registry.
      */
     useEffect(() => {
@@ -138,7 +139,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                         {/* GM TOOL BUTTONS FOR MANAGING OUTCOMES */}
                                         <div className="flex flex-col gap-1 mt-1">
                                             {(attack.showDamage || attack.appliedEffects.length > 0) &&
-                                                <InteractiveChatCardButton label="Apply" tooltip="Apply damage, effects, & lock attack from edits."
+                                                <InteractiveChatCardButton label={appLang.ButtonActions.apply} tooltip={appLang.Combat.applyDamageTooltip}
                                                     fn={async () => {
                                                         await attack.applyDamageAndResolve(
                                                             { flanked: flanked, bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle },
@@ -150,7 +151,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 
                                             {((attack instanceof AdversaryAttack && attack.statuses.length > 0) ||
                                                 (attack instanceof AdversaryComboAttack && attack.subAttacks.some(sub => sub.statuses.length > 0))) &&
-                                                <InteractiveChatCardButton label="Statuses" tooltip="Apply statuses only (no damage) & lock attack from edits."
+                                                <InteractiveChatCardButton label={appLang.Combat.applyStatuses} tooltip={appLang.Combat.applyStatusesTooltip}
                                                     fn={async () => {
                                                         await attack.applyStatusesAndResolve({ gmTargetsOnly: targetsToggle }, serializeAttack)
                                                         setRevision(prev => prev + 1)
@@ -158,7 +159,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                                 />}
 
                                             <InteractiveChatCardButton
-                                                label="Resolve" tooltip="Resolve with no updates"
+                                                label={appLang.ButtonActions.resolve} tooltip={appLang.Combat.resolveWithoutUpdatesTooltip}
                                                 fn={async () => {
                                                     await attack.resolve(serializeAttack)
                                                     setRevision(prev => prev + 1)

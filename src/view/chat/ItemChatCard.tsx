@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { lazy, Suspense, useEffect, useState } from "react"
 
 import { Coins, coinsAsString } from "../../model/common/CoinValue"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
@@ -9,9 +9,14 @@ import { CombinedItemsAll, getFullItem, getTokenImg } from "../../utils/modelUti
 import { SkillCard } from "../component/SkillCard"
 import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../context/EditModeContext/EditModeOptions"
-import { EquipmentSheetComponent } from "../sheets/item/equip/EquipmentSheetComponent"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
+
+const EquipmentSheet = lazy(() =>
+    import("../sheets/item/equip/EquipmentSheetComponent").then(({ EquipmentSheetComponent }) => ({
+        default: EquipmentSheetComponent
+    }))
+)
 
 export const ItemChatCard = ({ actorId, itemId, itemName, isConsumable = false }: {
     actorId: string, itemId: string, itemName: string, isConsumable?: boolean
@@ -86,7 +91,9 @@ export const ItemChatCard = ({ actorId, itemId, itemName, isConsumable = false }
                                             description={(resolvedItem.system as any).description}
                                             startCollapsed={false}
                                         /></span>
-                                        : <EquipmentSheetComponent item={equipment.parent} hideBottomSection={true} />
+                                        : <Suspense fallback={null}>
+                                            <EquipmentSheet item={equipment.parent} hideBottomSection={true} />
+                                        </Suspense>
                                     }
                                 </EditModeContextProvider>
                             </div>

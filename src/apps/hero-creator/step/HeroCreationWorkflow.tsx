@@ -118,8 +118,8 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     const ExtraTrainingSelection = (
         <div className="@container bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
             <div className="flex-shrink-0 space-y-4">
-                <Header title="Additional Training" />
-                <TopNavButtons navButtons={[backButton, nextButton]} subtitle="The Advancement perk unlocked another skill training." canProceed={canProceedExtraTraining} />
+                <Header title={appLang.HeroChoices.additionalTraining} />
+                <TopNavButtons navButtons={[backButton, nextButton]} subtitle={appLang.HeroChoices.additionalTrainingDescription} canProceed={canProceedExtraTraining} />
             </div>
             <div className="flex-1 overflow-y-auto flex flex-col w-full justify-start">
                 <div className="inline-flex flex-col items-stretch space-y-2 @2xl:w-1/2 mx-auto">
@@ -228,7 +228,6 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
 
             const stats: Record<string, number | number[]> = {
                 'system.level.current': levelZero ? 0 : 1,
-                'system.stats.baseStatBlock': selectedArr?.values ?? [],
                 'system.stats.might': assignedStats?.find(s => s.stat === 'might')?.value ?? 2,
                 'system.stats.dexterity': assignedStats?.find(s => s.stat === 'dexterity')?.value ?? 2,
                 'system.stats.awareness': assignedStats?.find(s => s.stat === 'awareness')?.value ?? 2,
@@ -335,7 +334,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         }
         catch (error) {
             console.error("Vagabond App | Hero Creator commit error:", error)
-            ui.notifications?.error("An error occurred while saving your character, review your sheet for accuracy.")
+            ui.notifications?.error(appLang.HeroCreation.saveCharacterError)
         }
         finally {
             // Set the Hero up with max resources.
@@ -353,8 +352,8 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
 
             if (classFeats?.filter(f => f?.system?.rules.some(rule => rule.key === "ChoiceSet" && rule.pack === "alchemical")).length > 0) {
                 showConfirmationDialog({
-                    title: "Alchemy Recipes",
-                    description: "You can now select your prepared Alchemy Recipes. This menu can be accessed at any time from your Hero Record's Alchemy tab.",
+                    title: appLang.HeroChoices.alchemyRecipes,
+                    description: appLang.HeroChoices.alchemyRecipesDescription,
                     confirmText: "Let's cook",
                     variant: "info"
                 }).then(() => {

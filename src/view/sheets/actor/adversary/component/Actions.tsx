@@ -62,7 +62,7 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
             <div
                 className={`hover-glow`}
                 onClick={() => onClickActionCombo(npc)}
-                onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(npc), isDestructive: true }])}
+                onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteCombo(npc), isDestructive: true }])}
             >
                 {npc.combo.name !== '' &&
                     <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded}`}>
@@ -91,8 +91,8 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
 
                         return (
                             <div key={i} className={`flex gap-2 p-2 justify-between ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
-                                { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
-                                { icon: Trash, label: 'Delete', action: () => deleteAction(npc, act), isDestructive: true }
+                                { icon: PenSquare, label: appLang.ButtonActions.edit, action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
+                                { icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteAction(npc, act), isDestructive: true }
                             ])}>
                                 <div className="flex flex-col">
 
@@ -111,7 +111,7 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
                                         {/* ATTACK DAMAGE AND COUNTDOWN INFO */}
                                         {act.damage.dice.count > 0 &&
                                             <div className="flex items-center gap-2">
-                                                <p className="text-text-secondary leading-none">Dmg:</p>
+                                                <p className="text-text-secondary leading-none">{appLang.AdversarySheet.damageAbbreviation}</p>
                                                 <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={() => attack()}>
                                                     {new DiceRoll(act.damage.dice as any).toRollFormula()}
                                                 </p>
@@ -125,7 +125,7 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
                                         {/* RECHARGE ROLL */}
                                         {act.recharge != null && act.recharge != '' &&
                                             <div className="flex gap-x-2 text-text-secondary">
-                                                {'Recharge:'}
+                                                {appLang.AdversarySheet.recharge}
                                                 <EnrichedContent
                                                     actor={npc.parent}
                                                     content={`[[/r ${act.recharge}#Recharge: ${act.name}]]{${act.recharge}}`}
@@ -241,7 +241,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                 {editTarget == null && npc.actions.length > 0 &&
                     <div className="flex space-x-2">
                         <input type="checkbox" checked={isCombo} onChange={() => setIsCombo(!isCombo)} />
-                        <p>Action Combo</p>
+                        <p>{appLang.AdversarySheet.actionCombo}</p>
                     </div>
                 }
             </div>
@@ -249,12 +249,12 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
             {isCombo
                 ? <div className="space-y-1">
                     <div className="flex space-x-2">
-                        <p>Combo Name:</p>
-                        <EditableTextField boundValue={comboName} onSave={async (name) => { setComboName(name); return true }} placeholder='Enter name...' />
+                        <p>{appLang.AdversarySheet.comboName}</p>
+                        <EditableTextField boundValue={comboName} onSave={async (name) => { setComboName(name); return true }} placeholder={appLang.AdversarySheet.comboNamePlaceholder} />
                     </div>
                     <div className="flex space-x-2">
-                        <p>Notes:</p>
-                        <EditableTextField boundValue={comboDescr} onSave={async (descr) => { setComboDescr(descr); return true }} placeholder='Description...' />
+                        <p>{appLang.AdversarySheet.notes}</p>
+                        <EditableTextField boundValue={comboDescr} onSave={async (descr) => { setComboDescr(descr); return true }} placeholder={appLang.AdversarySheet.descriptionPlaceholder} />
                     </div>
                     {
                         npc.actions.map((act) => {
@@ -279,15 +279,15 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                 : <div className="space-y-2">
                     {/* ACTION NAME */}
                     <div className="flex items-end">
-                        <p>Name:&nbsp;</p>
+                        <p>{appLang.AdversarySheet.name}&nbsp;</p>
                         <div className={`font-eskapade font-bold hover-glow`}>
-                            <EditableTextField boundValue={newAction?.name ?? null} onSave={(name) => updateAction({ name: name ?? '' })} placeholder='Claws [Melee, Near]' />
+                            <EditableTextField boundValue={newAction?.name ?? null} onSave={(name) => updateAction({ name: name ?? '' })} placeholder={appLang.AdversarySheet.actionNamePlaceholder} />
                         </div>
                     </div>
 
                     {/* EFFECT DESCRIPTION */}
                     <div className="flex items-end">
-                        <p>Effect:&nbsp;</p>
+                        <p>{appLang.AdversarySheet.effect}&nbsp;</p>
                         <div className={`w-full font-eskapade font-bold hover-glow`}>
                             <RichTextField defaultValue={newAction?.description ?? ''} onChange={(description) => updateAction({ description })} className="text-xs font-paradigm font-normal" />
                         </div>
@@ -303,7 +303,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
 
                     {/* DAMAGE TYPE */}
                     <div className="flex items-end">
-                        <p>Damage Type:&nbsp;</p>
+                        <p>{appLang.AdversarySheet.damageType}&nbsp;</p>
                         <div className={`font-eskapade font-bold hover-glow`}>
                             <DropDown
                                 value={newAction?.damage?.type ?? ''}
@@ -318,7 +318,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
 
                     {/* SAVING THROWS */}
                     <div className="flex items-end">
-                        <p>Saves:&nbsp;</p>
+                        <p>{appLang.AdversarySheet.saves}&nbsp;</p>
                         <div className="flex gap-x-3">
                             {Object.entries(appLang.Saves).map(([key, save]) => (
                                 <div key={key} className="flex items-center gap-1">
@@ -335,7 +335,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
 
                     {/* STATUS EFFECTS */}
                     <div className="flex items-end">
-                        <p>Statuses:&nbsp;</p>
+                        <p>{appLang.AdversarySheet.statuses}&nbsp;</p>
                         <OptionsSelectionMenu
                             options={VagabondActiveEffect.statusEffects.map(effect => ({
                                 key: effect.id,
@@ -351,12 +351,12 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
 
                     {/* RECHARGE */}
                     <div className="flex items-end">
-                        <p>Recharge:&nbsp;</p>
+                        <p>{appLang.AdversarySheet.recharge}&nbsp;</p>
                         <div className={`font-eskapade font-bold hover-glow`}>
                             <EditableTextField
                                 boundValue={newAction?.recharge ?? null}
                                 onSave={(recharge) => updateAction({ recharge: recharge ?? '' })}
-                                placeholder="CdX"
+                                placeholder={appLang.AdversarySheet.rechargePlaceholder}
                             />
                         </div>
                     </div>
@@ -403,12 +403,12 @@ const saveNewAction = (npc, isCombo, comboSelections, comboName, comboDescriptio
             updateDocumentAtPath(npc.parent, ['combo'], { name: comboName, description: comboDescription, actions: comboActions })
         }
         else {
-            ui.notifications?.error("Error: [Name] and [Count] are required fields and at least 1 action must be selected.")
+            ui.notifications?.error(appLang.Notifications.actionComboRequiredFields)
             return
         }
     }
     else if (!newAction?.name) {
-        ui.notifications?.error("Error: [Name] is a required field.")
+        ui.notifications?.error(appLang.Notifications.actionNameRequired)
         return
     }
     else if (editTarget == null) {

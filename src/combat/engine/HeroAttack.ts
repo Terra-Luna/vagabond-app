@@ -1,6 +1,6 @@
 import { createElement } from "react"
 
-import { RollPreset } from "../../apps/attack-builder/model/RollPreset"
+import type { RollPreset } from "../../apps/attack-builder/model/RollPreset"
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
@@ -12,11 +12,11 @@ import { appLang } from "../../utils/lang"
 import { getTargetIds, inventoryItemTypes } from "../../utils/modelUtil"
 import { sendVagabondChatCard, sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { SkillCheckChatCard } from "../../view/chat/SkillCheckChatCard"
-import { Imbue, SpellDelivery, SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
+import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
-import { SkillCheck, SkillCheckResult, SkillCheckType } from "./roll/SkillCheck"
+import { SkillCheck, type SkillCheckResult, type SkillCheckType } from "./roll/SkillCheck"
 import { serializeAttack } from "./util/attack-serializer"
 import { getDiceTerms } from "./util/dice-utils"
 
@@ -192,7 +192,7 @@ export class HeroAttack extends Attack {
      */
     async addLateFavor(resource: 'luck' | 'studied', currentValue: number) {
         if (this.skillCheck?.isFavored ?? false) {
-            ui.notifications?.info("Cannot add Favor to Favored attack")
+            ui.notifications?.info(appLang.Notifications.cannotAddFavorToFavoredAttack)
             return
         }
 
@@ -237,7 +237,7 @@ export class HeroAttack extends Attack {
             return result
         }
         else {
-            ui.notifications?.warn("D6 already applied to Skill Check")
+            ui.notifications?.warn(appLang.Notifications.d6AlreadyAppliedToSkillCheck)
             return undefined
         }
     }
@@ -273,7 +273,7 @@ export class HeroAttack extends Attack {
             return result
         }
         else {
-            ui.notifications?.warn("D6 already applied to Skill Check")
+            ui.notifications?.warn(appLang.Notifications.d6AlreadyAppliedToSkillCheck)
             return undefined
         }
     }

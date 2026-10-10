@@ -3,6 +3,7 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { Coins } from "../../model/common/CoinValue"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { stackStackables } from "../../utils/heroInventoryUtil"
+import { appLang } from "../../utils/lang"
 import { getFullItem } from "../../utils/modelUtil"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { useItemShopView } from "./ItemShopView"
@@ -13,7 +14,7 @@ export class ItemShopApp extends VagabondApplication {
     
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: "Item Shop" },
+            window: { title: appLang.ItemShop.title },
             position: { height: 900, width: 460 },
             Component: ItemShopComponent
         } as VagabondAppArgs)

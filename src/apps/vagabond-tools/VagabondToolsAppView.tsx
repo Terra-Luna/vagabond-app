@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 
+import { appLang } from "../../utils/lang"
 import { UtilityButton } from "../../view/component/Button"
 import { Checkbox } from "../../view/component/Checkbox"
 import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
@@ -22,7 +23,7 @@ export const VagabondToolsAppView = () => {
         await addCountdown(label, duration)
     }, [])
 
-    const createNewProgressClock = useCallback(async (clockName = "Clock", duration = 4) => {
+    const createNewProgressClock = useCallback(async (clockName = appLang.VagabondTools.defaultClockName, duration = 4) => {
         const existingClocks = getProgressClocks()
 
         const newClock = {
@@ -42,7 +43,7 @@ export const VagabondToolsAppView = () => {
             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                 <div className="flex flex-col gap-y-2 grow bg-sheet-main-fill p-2 font-eskapade font-bold">
                     <div>
-                        <p>Countdowns</p>
+                        <p>{appLang.VagabondTools.countdowns}</p>
                         <div className="flex gap-x-1 items-center">
                             <UtilityButton onClick={() => createNewCountdown("Cd4", 4)}>Cd4</UtilityButton>
                             <UtilityButton onClick={() => createNewCountdown("Cd6", 6)}>Cd6</UtilityButton>
@@ -51,12 +52,12 @@ export const VagabondToolsAppView = () => {
                             <UtilityButton onClick={() => createNewCountdown("Cd12", 12)}>Cd12</UtilityButton>
                             <UtilityButton onClick={() => createNewCountdown("Cd20", 20)}>Cd20</UtilityButton>
                             <div className="ml-2">
-                                <TrashButton title={"Delete all countdowns"} onClick={async () => {
+                                <TrashButton title={appLang.VagabondTools.deleteAllCountdownsTooltip} onClick={async () => {
                                     if (getCountdowns().length > 0) {
                                         setDeleteConfirmation({
                                             isOpen: true,
-                                            title: "Delete all Countdowns?",
-                                            message: "Are you sure? This will delete all Countdowns across all scenes and cannot be undone.",
+                                            title: appLang.VagabondTools.deleteAllCountdowns,
+                                            message: appLang.VagabondTools.deleteCountdownsConfirmation,
                                             onAccept: deleteAllCountdowns
                                         })
                                     }
@@ -66,7 +67,7 @@ export const VagabondToolsAppView = () => {
                     </div>
 
                     <div>
-                        <p>Progress Clocks</p>
+                        <p>{appLang.VagabondTools.progressClocks}</p>
                         <div className="flex gap-x-1 items-center">
                             <UtilityButton onClick={() => createNewProgressClock("Prog-2", 2)}>Prog-2</UtilityButton>
                             <UtilityButton onClick={() => createNewProgressClock("Prog-4", 4)}>Prog-4</UtilityButton>
@@ -74,12 +75,12 @@ export const VagabondToolsAppView = () => {
                             <UtilityButton onClick={() => createNewProgressClock("Prog-8", 8)}>Prog-8</UtilityButton>
                             <UtilityButton onClick={() => createNewProgressClock("Prog-12", 12)}>Prog-12</UtilityButton>
                             <div className="ml-2">
-                                <TrashButton title={"Delete all clocks"} onClick={async () => {
+                                <TrashButton title={appLang.VagabondTools.deleteAllClocksTooltip} onClick={async () => {
                                     if (getProgressClocks().length > 0) {
                                         setDeleteConfirmation({
                                             isOpen: true,
-                                            title: "Delete all Progress Clocks?",
-                                            message: "Are you sure? This will delete all Progress Clocks across all scenes and cannot be undone.",
+                                            title: appLang.VagabondTools.deleteAllProgressClocks,
+                                            message: appLang.VagabondTools.deleteProgressClocksConfirmation,
                                             onAccept: deleteAllProgressClocks
                                         })
                                     }
@@ -90,7 +91,7 @@ export const VagabondToolsAppView = () => {
 
                     <div className="mt-4">
                         <Checkbox
-                            label="Toggle Item Shop"
+                            label={appLang.VagabondTools.toggleItemShop}
                             checked={shopToggle}
                             onCheckedChanged={(checked) => handleShopToggle(checked)}
                         />
@@ -102,7 +103,7 @@ export const VagabondToolsAppView = () => {
                         onConfirm={() => deleteConfirmation.onAccept()}
                         title={deleteConfirmation.title}
                         description={deleteConfirmation.message}
-                        confirmText="Yes, Delete All"
+                        confirmText={appLang.VagabondTools.confirmDeleteAll}
                         variant="destructive"
                     />
 

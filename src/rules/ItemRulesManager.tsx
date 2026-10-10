@@ -80,10 +80,10 @@ export const ItemRulesManager = ({ item, name, level, scale }: {
     if (!isEditMode) return
     else return (
         <FoundryHotkeyBlocker>
-            <CollapsibleSection title={"GRANTS & MODIFIERS"} startCollapsed={true} content={
+            <CollapsibleSection title={appLang.RulesEditor.title} startCollapsed={true} content={
                 <div className={`p-2 bg-sheet-main-fill mb-8 ${tableBorder}`}>
                     <div className="flex justify-between items-center pb-2">
-                        <HeroCreationLabel text={'Item Grants & Modifiers'} />
+                        <HeroCreationLabel text={appLang.RulesEditor.itemGrantsAndModifiers} />
                         <UtilityButton onClick={handleAddRule}>
                             <p>+ {appLang.ButtonActions.add}</p>
                         </UtilityButton>
@@ -93,7 +93,7 @@ export const ItemRulesManager = ({ item, name, level, scale }: {
 
                     <div className="space-y-2 pt-2">
                         {rules.length === 0 ? (
-                            <p className="text-text-primary text-sm italic">Click +Add to get started...</p>
+                            <p className="text-text-primary text-sm italic">{appLang.RulesEditor.clickAddToStart}</p>
                         ) : (
                             rules.map((rule, index) => (
                                 <CollapsibleSection key={index} title={rule.label} startCollapsed={true} content={
@@ -104,10 +104,10 @@ export const ItemRulesManager = ({ item, name, level, scale }: {
                                                 label={"Type"}
                                                 value={rule.key}
                                                 options={<>
-                                                    <option value="FlatModifier">Modifiers (Stats/Attributes/Flags)</option>
-                                                    <option value="ToggleRule">Toggle Rule (Trainings, etc...)</option>
-                                                    <option value="GrantItem">Grants (Spells, Perks, etc.)</option>
-                                                    <option value="ChoiceSet">Choice Set</option>
+                                                    <option value="FlatModifier">{appLang.RulesEditor.modifierTypes}</option>
+                                                    <option value="ToggleRule">{appLang.RulesEditor.toggleRuleType}</option>
+                                                    <option value="GrantItem">{appLang.RulesEditor.grantsType}</option>
+                                                    <option value="ChoiceSet">{appLang.RulesEditor.choiceSetType}</option>
                                                 </>}
                                                 onChange={(e) => {
                                                     const newType = e.target.value ?? foundry.utils.randomID()

@@ -84,11 +84,11 @@ export const ClassSheetComponent = ({ item, setFeatureDropEnabled }: { item: Ite
                                     if (!isEditMode) return
                                     onCtxMenu(event, [{
                                         icon: ExternalLink,
-                                        label: "Open Feature",
+                                        label: appLang.ClassSheet.openFeature,
                                         action: () => openItemSheet(feature)
                                     }, {
                                         icon: Trash,
-                                        label: "Delete Feature",
+                                        label: appLang.ClassSheet.deleteFeature,
                                         isDestructive: true,
                                         action: async () => {
                                             await item.update({

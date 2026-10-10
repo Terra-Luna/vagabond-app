@@ -41,7 +41,7 @@ export const PerkSheetComponent = ({ item }: { item: Item & { system: PerkDataMo
                             <Prerequisite key={index} perk={item} prereqIndex={index} />
                         ))}
                         <div className="ml-6 mt-1">
-                            <UtilityButton title="Add new prerequisite" onClick={() => addPerkPrerequisite(item)}>
+                            <UtilityButton title={appLang.General.addNewPrerequisite} onClick={() => addPerkPrerequisite(item)}>
                                 {appLang.ButtonActions.add}
                             </UtilityButton>
                         </div>

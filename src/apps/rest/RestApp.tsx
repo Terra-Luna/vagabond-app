@@ -1,5 +1,6 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel";
 import { removeStackableItemFromHero, subtractCoinsFromHero } from "../../utils/heroInventoryUtil";
+import { appLang } from "../../utils/lang"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication";
 import { LodgingTypes } from "./RestUtils";
 import { RestView } from "./RestView";
@@ -10,7 +11,7 @@ export class RestApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: "Rest & Recovery", resizable: false },
+            window: { title: appLang.Rest.title, resizable: false },
             position: { width: 800, height: 332, top: 200, left: 400 },
             Component: RestView
         } as VagabondAppArgs)

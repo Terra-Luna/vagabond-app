@@ -7,6 +7,7 @@ import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { getItemChoiceRules, getItemGrants, getItemRules, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../utils/lang"
+import { localizeString } from "../../../utils/localeUtils"
 import { Header } from "../../../view/component/Header"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
@@ -185,12 +186,12 @@ export const usePerkSelectionView = (
         const rule = perkChoiceRules.find(r => r.id === slot.ruleId)
         const perkName = ItemsCache.perks().find(p => p.uuid === perkId)?.name ?? 'Unknown Perk'
         if (rule && !rule.choices.some(choice => choice.value === perkId)) {
-            ui.notifications?.warn(`${perkName} is not eligible for ${slot.ruleName}. This slot requires its configured class feature restriction.`)
+            ui.notifications?.warn(localizeString(appLang.Notifications.perkNotEligibleForRestriction, { perk: perkName, slot: slot.ruleName }))
             return
         }
         const options = getSlotOptions(slot)
         if (!options.some(option => option.value === perkId)) {
-            ui.notifications?.warn(`Hero does not meet prerequisites for: ${perkName}.`)
+            ui.notifications?.warn(localizeString(appLang.Notifications.heroDoesNotMeetPerkPrerequisites, { perk: perkName }))
         }
     }, [perkChoiceRules, getSlotOptions])
 
@@ -270,7 +271,7 @@ export const usePerkSelectionView = (
                 {/* PERK SLOT LABEL */}
                 <div className="flex items-center justify-between gap-x-2 mb-2">
                     <p className="font-eskapade font-bold text-text-primary">{getSlotLabel(slot)}</p>
-                    {!slot.value && <span className="text-sm text-text-secondary">Empty perk slot</span>}
+                    {!slot.value && <span className="text-sm text-text-secondary">{appLang.HeroChoices.emptyPerkSlot}</span>}
                     {locked && <LockKeyhole size={14} className="text-text-tertiary" />}
                 </div>
                 {selectedPerk
@@ -328,7 +329,7 @@ export const usePerkSelectionView = (
                                 <span>
                                     Filter: <span className="font-bold">{isSlotFilterEnabled ? "ON" : "OFF"}</span>
                                 </span>
-                                <p>Click slot to toggle</p>
+                                <p>{appLang.HeroChoices.clickSlotToToggle}</p>
                             </div>
                         </div>
                         {/* SCROLLABLE PERK OPTIONS */}

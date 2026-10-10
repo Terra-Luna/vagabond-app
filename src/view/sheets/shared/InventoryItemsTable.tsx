@@ -1,19 +1,19 @@
-import { Diamond, Hand, HandFist, Shield } from "lucide-react"
+import { Hand, HandFist, Shield } from "lucide-react"
 
-import { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
-import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import type { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
+import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { itemNameQty, openItemSheet } from "../../../model/actor/type/Inventory"
 import { coinsAsString } from "../../../model/common/CoinValue"
-import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
+import type { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
 import { inventoryItemDragDropHandler, useItem } from "../../../utils/heroInventoryUtil"
 import { appLang } from "../../../utils/lang"
-import { getId, getName } from "../../../utils/modelUtil"
-import { tableBorder, tableBorderRounded } from "../../common/border-styles"
+import { getId } from "../../../utils/modelUtil"
+import { tableBorder } from "../../common/border-styles"
 import { UtilityButton } from "../../component/Button"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
 import { Tooltip } from "../../component/Tooltip"
-import { EquipmentSheetComponent } from "../item/equip/EquipmentSheetComponent"
+import { ItemIconImg } from "./ItemIconImg"
 
 export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipColumn = true }: {
     actor: ActorDataModel<BaseActorSchema> | null,
@@ -112,44 +112,6 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                 }</tbody>
             </table>
             <ContextMenu />
-        </div>
-    )
-}
-
-export const ItemIconImg = ({ item, size = 28 }) => {
-    const isEquipped = item.isEquipped
-    const isBound = item.isBoundRelic?.()
-    const isCursed = item.isCursed?.()
-
-    return (
-        <div className="flex items-center justify-center relative mr-2 shrink-0">
-            <Tooltip interactive={true} content={<EquipmentSheetComponent item={item.parent} />}>
-                <img
-                    src={item.parent.img}
-                    alt={getName(item)}
-                    width={size}
-                    height={size}
-                    className={`rounded-sm border border-solid border-section-header-fill/60 cursor-pointer`}
-                />
-
-                {/* DO NOT SHOW DIAMOND IF CURSED AND UNEQUIPPED */}
-                <span>
-
-                    {isEquipped && isBound &&
-                        <Diamond
-                            size={12}
-                            className={`absolute bottom-0 right-0 text-text-header-tertiary fill-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
-                        />
-                    }
-                    {!isEquipped && isBound && !isCursed &&
-                        <Diamond
-                            size={12}
-                            className={`absolute bottom-0 right-0 text-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
-                            strokeWidth={1}
-                        />
-                    }
-                </span>
-            </Tooltip>
         </div>
     )
 }

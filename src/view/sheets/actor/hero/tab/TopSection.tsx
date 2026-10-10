@@ -458,8 +458,8 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
     else return (
         <Tooltip content={appLang.HeroSheet.context_tooltip}>
             <div onContextMenu={(e) => onCtxMenu(e, [
-                { icon: Plus, label: "Add new", action: async () => await addTracker() },
-                { icon: EyeOff, label: "Hide", action: async () => await VagabondSettingsRegistry.toggleClientSetting(settingKey, actor.id) }
+                { icon: Plus, label: appLang.General.addNew, action: async () => await addTracker() },
+                { icon: EyeOff, label: appLang.ButtonActions.hide, action: async () => await VagabondSettingsRegistry.toggleClientSetting(settingKey, actor.id) }
             ])}>
                 <CollapsibleSection title={appLang.HeroSheet.trackers} settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
                     <div className="grid grid-cols-2 @lg:grid-cols-3 @xl:grid-cols-4 gap-1 w-full mt-1">

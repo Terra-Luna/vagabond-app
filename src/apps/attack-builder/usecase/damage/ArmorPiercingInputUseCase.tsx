@@ -1,13 +1,14 @@
 import { ShieldBan } from "lucide-react"
 import { useState } from "react"
 
+import { appLang } from "../../../../utils/lang"
 import { NumericCounterInput } from "../../../../view/component/EditableTextField"
 
 export const useArmorPiercingInput = () => {
     const [armorPiercing, setArmorPiercing] = useState<number>(0)
 
     const ArmorPiercingInput =
-        <div title="Ignore target Armor" className="relative flex items-center">
+        <div title={appLang.AttackBuilder.ignoreTargetArmor} className="relative flex items-center">
             <ShieldBan
                 size={16}
                 aria-hidden="true"

@@ -1,5 +1,6 @@
 import { MessageSquareText } from "lucide-react"
 
+import { appLang } from "../../../../utils/lang"
 import { getId } from "../../../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../../chat/ChatCardSerializer"
 import { ItemChatCard } from "../../../chat/ItemChatCard"
@@ -16,7 +17,7 @@ export const ItemPortraitComponent = ({ item, size = 56, className, disableCtxMe
     contextMenuItems.push(
         {
             icon: MessageSquareText,
-            label: 'Send to chat',
+            label: appLang.HeroSheet.Inventory.ctxChat,
             action: () => sendVagabondChatMessage(
                 item.parent,
                 <ItemChatCard

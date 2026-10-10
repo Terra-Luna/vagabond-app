@@ -1,4 +1,4 @@
-import { RollSummary } from "./RollSummary"
+import type { RollSummary } from "./RollSummary"
 
 export interface CountdownResult {
     actorUuid?: string

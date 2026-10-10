@@ -47,7 +47,7 @@ export const createDropdownEntriesFromObj = (localObj) => {
 export const createDropdownEntriesForItems = async (itemType: string, includeAnyOption: boolean = false) => {
     const items: { value: string, label: string }[] = []
     if (includeAnyOption) {
-        items.push({ value: 'Any', label: 'Any' })
+        items.push({ value: 'Any', label: appLang.ButtonActions.anyOpt })
     }
     (await CombinedItems(itemType)).sort((a, b) => a.name.localeCompare(b.name)).map(it => (
         items.push({ value: it.name, label: it.name })

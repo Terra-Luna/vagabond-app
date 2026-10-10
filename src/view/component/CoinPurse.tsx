@@ -27,7 +27,7 @@ export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
             reset()
         }
         else {
-            ui.notifications?.warn("Not enough funds!")
+            ui.notifications?.warn(appLang.Notifications.notEnoughFunds)
         }
     }, [coinAppCoin, mode, reset, hero.inventory.coins])
 
@@ -38,7 +38,7 @@ export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
                 setIsCoinAppOpen(true)
             }}>
                 <div className={`hover-glow content-center`}>
-                    <p className="text-lg text-wealth-denom-label font-eskapade font-bold">COIN</p>
+                    <p className="text-lg text-wealth-denom-label font-eskapade font-bold">{appLang.CoinPurse.coin}</p>
                 </div>
             </button>
 
@@ -66,7 +66,7 @@ export const ReadOnlyCoinPurse = ({ coins }: { coins: Coins }) => {
     return (
         <div className={`flex pl-2 content-center bg-wealth-fill/50 ${tableBorder} w-full py-1`}>
             <div className="content-center">
-                <p className="text-xl text-wealth-denom-label font-eskapade font-bold">FUNDS</p>
+                <p className="text-xl text-wealth-denom-label font-eskapade font-bold">{appLang.CoinPurse.funds}</p>
             </div>
             <div className="flex content-center justify-end w-full">
                 <CoinValue value={coins.g ?? 0} label={appLang.HeroSheet.Currency.g} path='g' fontSize="text-3xl" />

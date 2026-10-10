@@ -23,7 +23,7 @@ export const Recipes = ({ alchemySlots, alchemyItems, hideHeaderLabel, hideCompe
                         onClick={() => game.packs?.get(`${sys_id}.alchemical`)?.render(true)}
                         className={`hover-glow cursor-pointer ${buttonAnimation}`}
                     >
-                        <HeroCreationSubtext text={"Browse Compendium"} />
+                        <HeroCreationSubtext text={appLang.ItemSheet.browseCompendium} />
                     </button>
                 }
             </div>
@@ -34,7 +34,7 @@ export const Recipes = ({ alchemySlots, alchemyItems, hideHeaderLabel, hideCompe
                 const subtitles: CardSubHeaderValues[] = [{ label: appLang.HeroSheet.Alchemy.category, value: appLang.AlchemyCategories[item.category].name }]
                 const itemActions = actions.map(ska => ({ ...ska, item: item }))
 
-                subtitles.push({ label: "Value", value: coinsAsString(item.coinValue) })
+                subtitles.push({ label: appLang.ItemSheet.value, value: coinsAsString(item.coinValue) })
 
                 if (item) {
                     return (

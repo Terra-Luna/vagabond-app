@@ -34,7 +34,7 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
 
     const consumeMaterials = async (): Promise<boolean> => {
         if (!materials[0]) {
-            ui.notifications?.warn("Could not find crafting Materials.")
+            ui.notifications?.warn(appLang.Notifications.materialsNotFound)
             return false
         }
         if (materials[0].system.bulk.quantity > 1) {
@@ -57,7 +57,7 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
             }
         }
         else {
-            ui.notifications?.error("Vagabond | Failed to craft Alchemical Item")
+            ui.notifications?.error(appLang.Notifications.craftFailed)
         }
         setRevision(current => current + 1)
     }, [actor, materials, getAlchemyItem])
@@ -90,8 +90,8 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
                         hideHeaderLabel={true}
                         hideCompendiumLink={true}
                         actions={[
-                            { label: appLang.HeroSheet.Alchemy.craft, tooltip: { title: "Craft", content: appLang.HeroSheet.Alchemy.craft_tooltip }, item: undefined, action: addToInventory },
-                            { label: appLang.HeroSheet.Alchemy.use, tooltip: { title: "Use", content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}` }, item: undefined, action: (e, item) => craftAndUse(e, item) }
+                            { label: appLang.HeroSheet.Alchemy.craft, tooltip: { title: appLang.AlchemyCrafting.craftTooltipTitle, content: appLang.HeroSheet.Alchemy.craft_tooltip }, item: undefined, action: addToInventory },
+                            { label: appLang.HeroSheet.Alchemy.use, tooltip: { title: appLang.AlchemyCrafting.useTooltipTitle, content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}` }, item: undefined, action: (e, item) => craftAndUse(e, item) }
                         ]}
                     />
                 </div>

@@ -1,7 +1,8 @@
 import { ReactNode } from "react"
 
 import { Divider } from "../../component/Header"
-import { CardSubHeader, CardSubHeaderValues } from "../../component/SkillCard"
+import type { CardSubHeaderValues } from "../../component/SkillCard"
+import { CardSubHeader } from "../../component/SkillCard"
 import { ChatCardPortrait } from "./ChatCardPortrait"
 
 export const ChatCardBanner = ({ tokenId = '', portrait, title, subtitle = [] }: {

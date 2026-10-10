@@ -24,7 +24,7 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
                 title={"PRESETS"}
                 actions={[{
                     label: `+${appLang.ButtonActions.add}`,
-                    tooltip: { title: "Roll Presets", content: "Add new custom roll preset." },
+                    tooltip: { title: appLang.AttackBuilder.presets, content: appLang.AttackBuilder.addCustomPreset },
                     action: async (e) => { e.stopPropagation(); new RollBuilderApp(actor).render({ force: true }); }
                 }]}
                 content={<>

@@ -1,5 +1,7 @@
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { appLang } from "../../utils/lang"
+import { localizeString } from "../../utils/localeUtils"
 import { tableBorder } from "../../view/common/border-styles"
 import { DynamicGrid } from "../../view/component/DynamicGrid"
 import { Header } from "../../view/component/Header"
@@ -24,50 +26,6 @@ export const TravelView = ({ onCancel, actor }: {
     )
 }
 
-const times = [
-    ["Round", "10 Seconds", "Move and take an Action"],
-    ["Minute", "6 Rounds", "Fight, pick a lock"],
-    ["Scene", "10 Minutes", "Search a room, a Breather"],
-    ["Hour", "6 Scenes", "Burn out a torch, research"],
-    ["Shift", "6 Hours", "Travel, Rest"],
-    ["Day", "4 Shifts", "Recover from Fatigue"]
-]
-
-const speeds = [
-    ["Climb", "Ignores Difficult Terrain due to climbing"],
-    ["Cling", "As Climb, but it can also Move on ceilings."],
-    ["Fly", "Can Move through the air at full Speed."],
-    ["Phase", "Can Move through occupied space. Is shunted to the nearest open space and takes 5 damage if it ends its Turn in occupied space."],
-    ["Swim", "Ignores Difficult Terrain due to liquid."]
-]
-
-const mounts = [
-    ["Camel", "10 mi", "10g", "12 Slots"],
-    ["Elephant", "8 mi", "20g", "96 Slots"],
-    ["Horse, draft", "6 mi", "4g", "14 Slots"],
-    ["Horse, pony", "6 mi", "3g 50s", "10 Slots"],
-    ["Horse, riding", "16 mi", "7g 50s", "12 Slots"],
-    ["Horse, war", "8 mi", "25g", "16 Slots"],
-    ["Mule", "6 mi", "3g ", "11 Slots"]
-]
-
-const water = [
-    ["Canoe", "12 mi", "5g", "5 Slots"],
-    ["Caravel", "30 mi", "1000g", "1000 Slots"],
-    ["Galley", "24 mi", "3000g", "3000 Slots"],
-    ["Keelboat", "6 mi", "300g", "300 Slots"],
-    ["Longship", "30 mi", "1000g", "1000 Slots"],
-    ["Rowboat", "6 mi", "5g", "30 Slots"],
-    ["Sailboat", "30 mi", "1000g", "1000 Slots"],
-    ["Warship", "24 mi", "2500g", "2500 Slots"],
-]
-
-const travelSpeed = [
-    ["Slow", "x0.5"],
-    ["Normal", "x1"],
-    ["Fast", "x2"]
-]
-
 const sectionCss = "flex flex-col px-2 mt-2"
 
 const TravelSection = ({ children }) => <div className={sectionCss}>{children}</div>
@@ -75,8 +33,8 @@ const TravelSection = ({ children }) => <div className={sectionCss}>{children}</
 const WaterTravel = () => {
     return (
         <TravelSection>
-            <Header title="Water Travel" />
-            <Table headers={["Vessel", "Travel Speed (mi/shift)", "Cost", "Capacity"]} data={water} />
+            <Header title={appLang.Travel.waterTravel} />
+            <Table headers={[appLang.Travel.headers.vessel, appLang.Travel.headers.travelSpeedPerShift, appLang.Travel.headers.cost, appLang.Travel.headers.capacity]} data={appLang.Travel.watercraft} />
         </TravelSection>
     )
 }
@@ -84,8 +42,8 @@ const WaterTravel = () => {
 const Mounts = () => {
     return (
         <TravelSection>
-            <Header title="Riding Animals" />
-            <Table headers={["Beast", "Travel Speed", "Cost", "Capacity"]} data={mounts} />
+            <Header title={appLang.Travel.ridingAnimals} />
+            <Table headers={[appLang.Travel.headers.beast, appLang.Travel.headers.travelSpeed, appLang.Travel.headers.cost, appLang.Travel.headers.capacity]} data={appLang.Travel.mounts} />
         </TravelSection>
     )
 }
@@ -93,8 +51,8 @@ const Mounts = () => {
 const TimeInfo = () => {
     return (
         <TravelSection>
-            <Header title="Measuring Time" />
-            <Table headers={["Term", "Time (approx)", "Example Task"]} data={times} />
+            <Header title={appLang.Travel.measuringTime} />
+            <Table headers={[appLang.Travel.headers.term, appLang.Travel.headers.approximateTime, appLang.Travel.headers.exampleTask]} data={appLang.Travel.times} />
         </TravelSection>
     )
 }
@@ -102,8 +60,8 @@ const TimeInfo = () => {
 const Speeds = () => {
     return (
         <TravelSection>
-            <Header title="Movement Speeds" />
-            <Table headers={["Term", "Description"]} data={speeds} />
+            <Header title={appLang.Travel.movementSpeeds} />
+            <Table headers={[appLang.Travel.headers.term, appLang.Travel.headers.description]} data={appLang.Travel.speeds} />
         </TravelSection>
     )
 }
@@ -112,13 +70,10 @@ const TravelSpeed = ({ actor }) => {
     return (
         <div className="px-2">
             <div>
-                Your Travel Speed is equal to <span className="text-ic-luck">{actor.system.speed.travel}</span> (your Speed ÷
-                5). A Group uses the Navigator's Speed. Your
-                Pace multiplies the distance you Move that
-                Shift by the Multiplier (Mult.).
+                {localizeString(appLang.Travel.travelSpeedDescription, { speed: actor.system.speed.travel.toString() })}
             </div>
             <div className="max-w-[300px]">
-                <Table headers={["Pace", "Mult."]} data={travelSpeed} />
+                <Table headers={[appLang.Travel.headers.pace, appLang.Travel.headers.multiplier]} data={appLang.Travel.travelPaces} />
             </div>
         </div>
     )

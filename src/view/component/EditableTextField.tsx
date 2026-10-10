@@ -3,6 +3,7 @@ import { useCallback, useEffect,useRef, useState } from "react"
 
 import { VagabondAppError } from "../../model/common/VagabondAppError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
+import { appLang } from "../../utils/lang"
 import { tableBorder } from "../common/border-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 import { Tooltip } from "./Tooltip"
@@ -10,7 +11,7 @@ import { Tooltip } from "./Tooltip"
 const editModeBorder = `${tableBorder} rounded-xs px-1`
 
 export const EditableTextField = (
-    { boundValue, onSave, updateProps, placeholder = "Enter text...", hideBorderOnEditMode = false, className = '' }: {
+    { boundValue, onSave, updateProps, placeholder = appLang.General.enterText, hideBorderOnEditMode = false, className = '' }: {
         boundValue: string | null,
         onSave?: (value: string | null) => Promise<boolean>,
         updateProps?: { object: any, path: string[] },

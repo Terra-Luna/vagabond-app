@@ -15,7 +15,7 @@ export const Abilities = ({ actor }) => {
             {(features.length > 0 || isEditMode) && <ActionMenuHeader label={locale.abilities} />}
 
             {features.length === 0 && isEditMode &&
-                <p className="text-xs font-paradigm font-normal italic">Add abilities by dropping Features onto sheet</p>
+                <p className="text-xs font-paradigm font-normal italic">{appLang.AdversarySheet.abilitiesDropHint}</p>
             }
 
             {/* ABILITY (FEATURE) CARDS */}

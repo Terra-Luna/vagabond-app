@@ -1,5 +1,5 @@
 import { appLang } from "../../../utils/lang"
-import { CardSubHeaderValues } from "../../../view/component/SkillCard"
+import type { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/sharedSchemas"
 import { BaseItemSchema,ItemDataModel } from "../ItemDataModel"
 

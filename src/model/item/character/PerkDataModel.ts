@@ -1,6 +1,6 @@
 import { appLang } from "../../../utils/lang"
 import { andOrToSymbol, removeLastComma } from "../../../utils/stringUtil"
-import { CardSubHeaderValues } from "../../../view/component/SkillCard"
+import type { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { statsSchema } from "../../actor/type/Stats"
 import { fields, optionalString, requiredString, standardInteger } from "../../common/sharedSchemas"
 import {BaseItemSchema,ItemDataModel } from "../ItemDataModel"
@@ -44,14 +44,14 @@ export class PerkDataModel extends ItemDataModel<PerkSchema> {
     }
 
     subheader = (): CardSubHeaderValues[] => {
-        if (this.prerequisites.length === 0) return [{ label: "Req", value: "None" }]
+        if (this.prerequisites.length === 0) return [{ label: appLang.PerkSheet.prereqLabel, value: appLang.FavorHinder.none }]
         const values: CardSubHeaderValues[] = []
         const spellReqs = perkSpellRerequisitesAsString(this)
         const statReqs = perkStatPrerequisitesAsString(this)
         const trainedReqs = perkTrainingPrerequisitesAsString(this)
-        if (spellReqs !== '') values.push({ label: 'Spell', value: spellReqs })
-        if (statReqs !== '') values.push({ label: 'Stat', value: statReqs })
-        if (trainedReqs !== '') values.push({ label: 'Trained', value: trainedReqs })
+        if (spellReqs !== '') values.push({ label: appLang.PrerequisiteTypes.spell, value: spellReqs })
+        if (statReqs !== '') values.push({ label: appLang.PrerequisiteTypes.stat, value: statReqs })
+        if (trainedReqs !== '') values.push({ label: appLang.PrerequisiteTypes.trained, value: trainedReqs })
         return values
     }
 
@@ -110,14 +110,14 @@ export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string =
 }
 
 /**
- * Assesses the given perk against the given criteria to check 
+ * Assesses the given perk against the given criteria to check
  * whether the prerequisite requirements are met.
- * @param stats 
- * @param trainings 
- * @param spells 
- * @param perk 
+ * @param stats
+ * @param trainings
+ * @param spells
+ * @param perk
  * @param options
- * @returns 
+ * @returns
  */
 export const isEligibleForPerk = (
     stats: ReturnType<typeof statsSchema>,
@@ -162,8 +162,8 @@ export const isEligibleForPerk = (
 /**
  * Returns true if the given perk has a prerequisite matching any of the given trainings.
  * @param trainings
- * @param perk 
- * @returns 
+ * @param perk
+ * @returns
  */
 export const isTrainingPrereqMatch = (trainings: string[], perk: PerkDataModel): boolean => {
     let isMatch = false

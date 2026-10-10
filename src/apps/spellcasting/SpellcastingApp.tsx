@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { appLang } from "../../utils/lang"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { useSpellCastingMenu } from "../../view/sheets/actor/hero/tab/component/spellcasting/SpellcastingMenu"
@@ -24,7 +25,7 @@ export class SpellcastingApp extends VagabondApplication {
         }
 
         super({
-            window: { title: "Spellcasting" },
+            window: { title: appLang.Spellcasting.title },
             position: { width: 300 },
             Component: AppView,
         } as VagabondAppArgs)

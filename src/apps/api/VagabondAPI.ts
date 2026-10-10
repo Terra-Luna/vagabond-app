@@ -3,6 +3,8 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { sys_id } from "../../utils/foundryUtils"
+import { appLang } from "../../utils/lang"
+import { localizeString } from "../../utils/localeUtils"
 import { RollPreset } from "../attack-builder/model/RollPreset"
 
 export interface VagabondAPI {
@@ -23,7 +25,7 @@ export const api: VagabondAPI = {
                 actor.system.toggleItemRule(item, stateOverride)
             }
             else {
-                ui.notifications?.error(`Item with ID ${itemId} not found.`)
+                ui.notifications?.error(localizeString(appLang.Notifications.apiItemNotFound, { id: itemId }))
             }
         }
     },

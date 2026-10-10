@@ -1,6 +1,7 @@
 import { Eye, HeartMinusIcon, HeartPlusIcon, Trash } from "lucide-react"
 
 import { resolveAllAttacks } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { tableBorderRounded } from "../../view/common/border-styles"
 import { SecondaryButton } from "../../view/component/Button"
@@ -22,8 +23,8 @@ export const BulkCombatantEditView = ({ combatants }: { combatants: VagabondComb
 
     const ctxMenuActions = () => {
         const actions = [
-            { label: "Toggle Visibility of Selected Tokens", action: updateVisibility, icon: Eye },
-            { label: "Remove all", action: () => game.combat?.deleteEmbeddedDocuments("Combatant", combatants.map(c => c.id!)), icon: Trash, isDestructive: true }
+            { label: appLang.Combat.toggleVisibilitySelected, action: updateVisibility, icon: Eye },
+            { label: appLang.Combat.removeAll, action: () => game.combat?.deleteEmbeddedDocuments("Combatant", combatants.map(c => c.id!)), icon: Trash, isDestructive: true }
         ] as any
 
         return actions
@@ -44,11 +45,11 @@ export const BulkCombatantEditView = ({ combatants }: { combatants: VagabondComb
                 })}
                 <ContextMenu />
             </div>
-            <Header title={"GM TOOLS"} />
+            <Header title={appLang.Combat.gmTools} />
             <div className="flex justify-between items-center">
                 <Widget>
                     <div className="text-text-primary font-eskapade">
-                        Edit Combatant Hp
+                        {appLang.Combat.editCombatantHp}
                         <div className="flex items-center gap-x-2">
                             <div className={`flex items-center cursor-pointer h-full w-full ${tableBorderRounded}`} onClick={() => setMode(mode === 'add' ? 'subtr' : 'add')}>
                                 <div className={`text-4xl text-text-primary font-eskapade font-bold px-2 rounded-l-md ${mode === 'add' ? 'bg-ic-luck/50' : 'bg-sheet-main-fill'}`}>+</div>
@@ -72,8 +73,8 @@ export const BulkCombatantEditView = ({ combatants }: { combatants: VagabondComb
                 </Widget>
 
                 <div className="p-2">
-                    <Tooltip title={"Resolve All Attacks"} content={"Mark all pending attacks as resolved. This will not apply any damage or status effects."}>
-                        <SecondaryButton onClick={() => resolveAllAttacks()}>Resolve Attacks</SecondaryButton>
+                    <Tooltip title={appLang.Combat.resolveAllAttacks} content={appLang.Combat.resolveAllAttacksTooltip}>
+                        <SecondaryButton onClick={() => resolveAllAttacks()}>{appLang.Combat.resolveAttacks}</SecondaryButton>
                     </Tooltip>
                 </div>
             </div>
