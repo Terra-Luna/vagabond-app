@@ -280,9 +280,11 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             });
 
             const allTrainings = [...chosenTrainings, ...chosenBonusSkills]
+
             reasonTrainings.forEach(selection => {
                 allTrainings.push({ skill: selection.value, ruleId: electiveTrainingsRuleId })
-            })
+            });
+
             allTrainings.forEach(selection => {
                 addSelection(getRuleSet(selection.ruleId), `skills.${selection.skill}.trained`)
             });
@@ -299,6 +301,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             if (ancestry) {
                 await ancestry.update({ "system.rules": ancestryRules } as Record<string, any>)
             }
+            
             if (clazz) {
                 const classSelections = Object.fromEntries(classRules
                     .filter(rule => Array.isArray(rule.selections) && rule.selections.length > 0)

@@ -12,9 +12,11 @@ import { sys_id } from "../../../../../utils/foundryUtils"
 import { appLang } from "../../../../../utils/lang"
 import { tableBorderRounded } from "../../../../common/border-styles"
 import { ItemDivider } from "../../../../component/Header"
+import { Tooltip } from "../../../../component/Tooltip"
 import { VagabondActorSheet } from "../../VagabondActorSheet"
 import { AppMenuToggleSwitch } from "./item/AppMenuToggleSwitch"
 import { MenuListItem } from "./item/MenuListItem"
+import { importFromVgbndApp } from "./util/vgbnd-import"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VagabondActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -64,33 +66,37 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
             `}>
                 {/* DARK/LIGHT THEME SELECTOR */}
                 <div className={`flex gap-x-2 items-center justify-between mb-4 px-2 py-1 bg-sheet-header-fill cursor-pointer ${tableBorderRounded}`} onClick={toggleTheme}>
-                    <p className="text-sm">{appLang.General.theme}</p>
+                    <p className="text-sm">{appLang.HeroSheet.Menu.theme}</p>
                     <div className="flex gap-x-2 px-2 py-1 border border-solid border-text-header-tertiary rounded-sm">
                         <Sun size={18} className={`${isDarkMode ? 'text-text-header-primary hover-glow' : 'text-text-header-secondary'}`} />
                         <Moon size={18} className={`${isDarkMode ? 'text-text-header-secondary' : 'text-text-header-primary hover-glow'}`} />
                     </div>
                 </div>
                 <ul className="space-y-2 text-sm text-text-primary font-eskapade font-bold">
-                    {/* {!hero.tagalongId &&
-                        <MenuListItem text={"IMPORT"} onClick={() => importFromVgbndApp(hero)} />
-                    } */}
+                    {!hero.tagalongId &&
+                        <span className="flex w-full mb-2">
+                            <Tooltip title={appLang.HeroSheet.Menu.importFromVgbndApp} content={appLang.HeroSheet.Menu.importFromVgbndAppTooltip}>
+                                <MenuListItem text={appLang.HeroSheet.Menu.import} onClick={() => importFromVgbndApp(hero)} />
+                            </Tooltip>
+                        </span>
+                    }
                     {!hero.ancestry &&
-                        <MenuListItem text={"CREATE HERO"} onClick={() => new HeroCreationApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
+                        <MenuListItem text={appLang.HeroSheet.Menu.create} onClick={() => new HeroCreationApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     }
                     {game.user?.isActiveGM && hero.level.xpToLevel === -1 && !hero.parent.getFlag(sys_id, "destiny") &&
-                        <MenuListItem text={'[GM] GRANT LEVEL UP!!'} onClick={() => hero.parent.setFlag(sys_id, "destiny", true)} toggleMenu={toggleMenu} />
+                        <MenuListItem text={appLang.HeroSheet.Menu.lvlup} onClick={() => hero.parent.setFlag(sys_id, "destiny", true)} toggleMenu={toggleMenu} />
                     }
                     {game.user?.isActiveGM && hero.parent.getFlag(sys_id, "destiny") &&
-                        <MenuListItem text={'[GM] REVOKE LEVEL UP'} onClick={() => hero.parent.setFlag(sys_id, "destiny", false)} toggleMenu={toggleMenu} />
+                        <MenuListItem text={appLang.HeroSheet.Menu.lvlup} onClick={() => hero.parent.setFlag(sys_id, "destiny", false)} toggleMenu={toggleMenu} />
                     }
 
-                    <AppMenuToggleSwitch label={appLang.General.heroSheetStats} hero={hero} toggleKey="hero-sheet-stats-hide" />
-                    <AppMenuToggleSwitch label={appLang.General.heroSheetTrackers} hero={hero} toggleKey="hero-sheet-trackers-hide" />
-                    <AppMenuToggleSwitch label={appLang.General.miniCards} hero={hero} toggleKey="hero-sheet-mini-cards" />
-                    <MenuListItem text={'REST'} onClick={() => { new RestApp(hero.parent).render({force: true}) }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'TRAVEL'} onClick={() => { new TravelApp(hero.parent).render({force: true}) }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'GRANTS & MODIFIERS'} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
+                    <AppMenuToggleSwitch label={appLang.HeroSheet.Menu.heroSheetStats} hero={hero} toggleKey="hero-sheet-stats-hide" />
+                    <AppMenuToggleSwitch label={appLang.HeroSheet.Menu.heroSheetTrackers} hero={hero} toggleKey="hero-sheet-trackers-hide" />
+                    <AppMenuToggleSwitch label={appLang.HeroSheet.Menu.miniCards} hero={hero} toggleKey="hero-sheet-mini-cards" />
+                    <MenuListItem text={appLang.HeroSheet.Menu.rest} onClick={() => { new RestApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
+                    <MenuListItem text={appLang.HeroSheet.Menu.travel} onClick={() => { new TravelApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
+                    <MenuListItem text={appLang.HeroSheet.Menu.downtime} onClick={() => { ui.notifications?.info("Feature coming soon!") }} toggleMenu={toggleMenu} />
+                    <MenuListItem text={appLang.HeroSheet.Menu.grantsModifiers} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
 
                     <ItemDivider />
 

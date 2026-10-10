@@ -1,4 +1,5 @@
 import { statsSchema } from "../../model/actor/type/Stats"
+import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import type { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import type { FeatureDataModel } from "../../model/item/character/FeatureDataModel"
 import type { PerkDataModel } from "../../model/item/character/PerkDataModel"
@@ -25,7 +26,7 @@ export class ItemsCache {
         this.items.clear()
 
         const allItems = await CombinedItemsMultiType(
-            ['class', 'spell', 'perk', 'feature', 'alchemical', 'weapon', 'armor', 'sundry', 'container', 'startingpack']
+            ['ancestry', 'class', 'spell', 'perk', 'feature', 'alchemical', 'weapon', 'armor', 'sundry', 'container', 'startingpack']
         )
 
         for (const item of allItems) {
@@ -90,6 +91,12 @@ export class ItemsCache {
         return Array.from(this.items.values())
             .filter(item => item != null && item.type === 'feature')
             .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '')) as (Item & { system: FeatureDataModel })[]
+    }
+
+    static ancestries = () => {
+        return Array.from(this.items.values())
+            .filter(item => item != null && item.type === 'ancestry')
+            .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '')) as (Item & { system: AncestryDataModel })[]
     }
 
     static classes = () => {

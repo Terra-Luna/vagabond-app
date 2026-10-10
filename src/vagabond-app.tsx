@@ -526,7 +526,7 @@ Hooks.on("hotbarDrop", (_bar: any, data: any, slot: number): boolean | void => {
     const img = actor.items.get(preset.weaponId)?.img ?? "icons/svg/dice-target.svg"
     const command = `/* Hold Shift to add Favor, Ctrl for Hinder */
 const actor = game.user.character ?? game.canvas?.tokens?.controlled[0]?.actor;
-if (!actor) return;
+if (!actor || !actor.isOwner) return;
 // Roll the saved preset...
 game.system.api.combat.rollPreset({ actor: actor, presetId: "${preset.id}", event: event });`
 
@@ -544,7 +544,7 @@ Hooks.on("preCreateMacro", (macro: any, data: any, options: any, userId: string)
     if ((item?.system instanceof WeaponDataModel)) {
         const command = `/* Hold Shift to add Favor, Ctrl for Hinder */
 const actor = game.user.character ?? game.canvas?.tokens?.controlled[0]?.actor;
-if (!actor) return;
+if (!actor || !actor.isOwner) return;
 // Check the weapon exists and is equipped...
 const weapon = actor.items.get("${item.id}");
 if (!weapon || !weapon.system.isEquipped) return;
