@@ -11,7 +11,8 @@ interface TagalongHero {
         xp: number,
         statArray: number[],
         assignedStats: TagalongStats,
-        strongPotentialStat: string,
+        advancementStats: TagalongStats,
+        strongPotentialStat: keyof TagalongStats | "",
         trained_skills: string[],
         active_actions: string[],
         known_spells: string[],
@@ -38,7 +39,13 @@ interface TagalongStats {
 interface TagalongPerk {
     source: string,
     id: string,
-    name: string
+    name: string,
+    prereqs?: {
+        trained?: string[]
+        trained_or?: string[]
+        spells?: string[]
+        stats?: Record<string, number>
+    }
 }
 
 export interface TagalongItem {
@@ -48,12 +55,14 @@ export interface TagalongItem {
     notes: string,
     type: string,
     category: string,
-    quantity: number,
+    quantity?: number,
     slots: number,
     total_slots: number,
     value: { g: number, s: number, c: number },
-    can_equip: boolean,
-    is_eqiupped: boolean,
+    can_equip?: boolean,
+    is_equipped?: boolean,
+    /** Older Tagalong responses used this misspelled field. */
+    is_eqiupped?: boolean,
     is_custom: boolean,
     //Weapon
     range: string,

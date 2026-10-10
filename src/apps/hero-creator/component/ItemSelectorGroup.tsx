@@ -68,7 +68,7 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
                                     value={slot.value}
                                     options={filteredOptions}
                                     className={`
-                                        w-full flex flex-wrap gap-x-1 text-lg font-eskapade font-normal
+                                        w-full flex flex-wrap gap-x-1 text-lg text-text-primary font-eskapade font-normal
                                         ${slot.value === '' ? 'border-2 border-solid border-wealth-denom-label' : ''}
                                     `}
                                     onChange={(e) => {
