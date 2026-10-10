@@ -47,14 +47,14 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, extendedSett
                         <span title="Exploding dice values">
                             <ExplosionsInput explosionValues={explosionValues} handleExplosionChange={(values) => onChange({ explodesOn: values })} />
                         </span>
-                        <span className="text-sm font-normal max-w-[8ch] leading-3" title="Only explode on a Critical hit">
+                        {explosionValues.length > 0 && <span className="text-sm font-normal max-w-[8ch] leading-3" title="Only explode on a Critical hit">
                             <Checkbox
                                 label="Crit only"
                                 color="text-text-primary"
                                 checked={diceRoll.explodeOnCritOnly ?? false}
                                 onCheckedChanged={(isChecked) => onChange({ explodeOnCritOnly: isChecked })}
                             />
-                        </span>
+                        </span>}
 
                         {/* EXTRA DICE ON CRIT */}
                         <div className="relative flex items-end" title="Extra dice on a Critical hit">
@@ -109,7 +109,7 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, extendedSett
 const ExplosionsInput = ({ explosionValues, handleExplosionChange }) => {
     return (
         <div title={`Explodes on: ${explosionValues.join(', ')}`} className="relative flex items-center mt-0.5">
-            <span className="pointer-events-none absolute left-1 text-sm font-bold">!</span>
+            <span className="pointer-events-none absolute left-1 text-sm text-destructive-action font-bold">!</span>
             <CSVTextInput
                 value={explosionValues}
                 onChange={handleExplosionChange}

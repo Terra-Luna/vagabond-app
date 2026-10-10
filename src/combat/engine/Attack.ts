@@ -152,9 +152,10 @@ export abstract class Attack {
         return Math.max(0, (damage + (args.flanked ? 2 : 0)) - armor - perDieMit)
     }
 
-    protected getAdditionalArmorRating(_targetId: string): number {
-        return 0
-    }
+    /**
+     * Base function - overridden by AdversaryAttack. Not used for Hero attacks.
+     */
+    protected getAdditionalArmorRating(_targetId: string): number { return 0 }
 
     protected get isCriticalHit(): boolean { return false }
 

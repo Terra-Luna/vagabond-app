@@ -65,12 +65,12 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
         case "physical_lt2":
         case "physical_lt3": {
             element = <div className="flex text-text-primary font-eskapade">
-                <Swords size={size} className='text-text-primary fill-ic-armor-fill' />
+                <Swords size={size} strokeWidth={2} className='text-text-primary fill-ic-armor-fill' />
             </div>
             break
         }
         case "pierce": {
-            element = <Target size={size} className='text-text-primary fill-ic-armor-fill' />
+            element = <Target size={size} strokeWidth={2} className='text-text-primary' />
             break
         }
         case "poison": {
