@@ -6,6 +6,7 @@ import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import type { RollPreset } from "../attack-builder/model/RollPreset"
+import { SpellcastingApp } from "../spellcasting/SpellcastingApp"
 
 export interface VagabondAPI {
     rules: {
@@ -13,10 +14,11 @@ export interface VagabondAPI {
     },
     combat: {
         weaponAttack: ({ actor, itemId, skill, event }: { actor: Actor & { system: HeroDataModel }, itemId: string, skill?: string, event: any }) => void,
-        rollPreset: ({ actor, presetId, event }: { actor: Actor & { system: HeroDataModel }, presetId: string, event: any }) => void
+        rollPreset: ({ actor, presetId, event }: { actor: Actor & { system: HeroDataModel }, presetId: string, event: any }) => void,
+        openSpellcasting: (actor: Actor & { system: HeroDataModel }) => void
     },
     util: {
-        syncAncestryAndClass: (actor: (Actor & { system: HeroDataModel }) | null | undefined, sendChat?: boolean) => Promise<void>
+        syncAncestryAndClass: (actor: (Actor & { system: HeroDataModel }), sendChat?: boolean) => Promise<void>
     }
 }
 
@@ -39,7 +41,7 @@ export const api: VagabondAPI = {
             skill?: string
             event: any
         }) => {
-            if (!actor) return
+            if (!actor || !actor.isOwner) return
 
             const item = actor.items.get(itemId) as Item & { system: WeaponDataModel }
             if (!item) return
@@ -50,13 +52,18 @@ export const api: VagabondAPI = {
         },
 
         rollPreset: ({ actor, presetId, event }: { actor: Actor & { system: HeroDataModel }, presetId: string, event: any }) => {
-            if (!actor || !presetId) return
+            if (!actor || !actor.isOwner || !presetId) return
             
             const presets = [...actor.getFlag(sys_id, "rollPresets" as any) as RollPreset[] ?? []]
             const preset = presets.find(p => p.id === presetId)
             if (!preset) return
 
             HeroAttack.buildCustomRoll(actor, preset, event)
+        },
+
+        openSpellcasting: (actor: Actor & { system: HeroDataModel }) => {
+            if (!actor || !actor.isOwner || actor.system.spells.length === 0) return
+            new SpellcastingApp(actor, false, true).render({ force: true })
         }
     },
     util: {

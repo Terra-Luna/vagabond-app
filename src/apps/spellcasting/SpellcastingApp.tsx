@@ -11,11 +11,11 @@ export class SpellcastingApp extends VagabondApplication {
 
     actor: (Actor & { system: HeroDataModel }) | undefined
 
-    constructor(actor: (Actor & { system: HeroDataModel }) | undefined, imbueMode?: boolean) {
+    constructor(actor: (Actor & { system: HeroDataModel }) | undefined, imbueMode?: boolean, windowedMode?: boolean) {
         if (!actor) return
         
         const AppView = () => {
-            const { setIsSpellcastingOpen, SpellcastingMenu } = useSpellCastingMenu(actor, imbueMode, () => this.close())
+            const { setIsSpellcastingOpen, SpellcastingMenu } = useSpellCastingMenu(actor, imbueMode, windowedMode, () => this.close())
             
             useEffect(() => setIsSpellcastingOpen(true), [])
             

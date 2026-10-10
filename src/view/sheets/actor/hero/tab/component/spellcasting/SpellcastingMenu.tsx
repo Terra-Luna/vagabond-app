@@ -41,7 +41,7 @@ interface SpellcastingMenuState {
     targetCount?: number
 }
 
-export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, imbueMode?: boolean, onCast?: () => void) => {
+export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, imbueMode?: boolean, windowedMode?: boolean, onCast?: () => void) => {
     const hero = actor.system
     const useMiniCards = getMiniCardsPref(actor.id!)
 
@@ -315,7 +315,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
                     {/* SPELLCASTING MENU TOP ROW */}
                     <div className="flex gap-x-0.5 items-end text-lg w-full min-w-0 overflow-hidden">
                         {/* SELECTORS */}
-                        {(!useMiniCards || imbueMode) && <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />}
+                        {(!useMiniCards || imbueMode || windowedMode) && <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />}
                         {!imbueMode && <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />}
                         <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
 
