@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client"
 import { api } from "./apps/api/VagabondAPI"
 import { RollPreset } from "./apps/attack-builder/model/RollPreset"
 import { registerAdversaryCompendiumFilters } from "./apps/compendium/AdversaryCompendium"
+import { registerAlchemicalItemCompendiumFilters } from "./apps/compendium/AlchemicalItemCompendium"
 import { CountdownApp } from "./apps/countdown/CountdownApp"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
 import { showConfirmationDialog } from "./apps/vagabond-tools/dialog/showConfirmationDialog"
@@ -139,6 +140,7 @@ foundry.documents.collections.Items.registerSheet(sys_id, EquipmentSheet as any,
 Hooks.once("ready", async () => {
     installChatScrollGuard()
     registerAdversaryCompendiumFilters()
+    registerAlchemicalItemCompendiumFilters()
 
     game.socket?.on(`system.${sys_id}`, async (packet: any) => {
         if (!game.user?.isActiveGM) return
