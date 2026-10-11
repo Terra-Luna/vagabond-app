@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { appLang } from "../../utils/lang"
@@ -19,10 +19,20 @@ export class SpellcastingApp extends VagabondApplication {
         const RenderOpened = () => {
             const { setIsSpellcastingOpen } = useSpellcastingMenuContext()
             useEffect(() => { setIsSpellcastingOpen(true) }, [])
+
+            // Re-render when this changes...
+            const [, setActorUpdateTick] = useState(0)
+            useEffect(() => {
+                const hookId = Hooks.on("updateActor", (updatedActor: any) => {
+                    if (updatedActor.id === actor.id) setActorUpdateTick(prev => prev + 1)
+                })
+                return () => Hooks.off("updateActor", hookId)
+            }, [])
+
             return <ManaHUD hero={actor.system} hideTab={true} />
         }
 
-        const AppView = () => {            
+        const AppView = () => {
             return <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                 <SpellcastingMenuContextProvider actor={actor} imbueMode={imbueMode} windowedMode={windowedMode}>
                     <RenderOpened />
@@ -31,8 +41,16 @@ export class SpellcastingApp extends VagabondApplication {
         }
 
         super({
-            window: { title: `${appLang.Spellcasting.title}: ${actor.name} (${(actor.system?.class as any)?.parent?.name})` },
-            position: { width: 360 },
+            window: {
+                title: `${appLang.Spellcasting.title}: ${actor.name} (${(actor.system?.class as any)?.parent?.name})`,
+                resizable: false
+            },
+            position: {
+                width: 360,
+                height: "auto"
+            },
+            actorId: actor.id ?? undefined,
+            enforceSingleInstancePerActor: true,
             Component: AppView,
         } as VagabondAppArgs)
 

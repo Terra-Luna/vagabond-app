@@ -9,6 +9,8 @@ export interface VagabondAppArgs {
     window?: Partial<{ title: string, minimizable: boolean, resizable: boolean }>,
     position?: Partial<{ width: number | "auto", height: number | "auto", top: number, left: number }>,
     classes?: string[],
+    actorId?: string,
+    enforceSingleInstancePerActor?: boolean,
     enforceSingleInstance?: boolean,
     editModeOptions?: EditModeOptions,
     Component: React.FC<any>
@@ -20,7 +22,9 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
     protected SYSTEM_ID = sys_id
 
     private _reactRoot: Root | null = null
-    private static _openAppsRegistry = new Map<any, VagabondApplication>()
+    private static _openAppsRegistry = new Map<any, Map<string, VagabondApplication>>()
+    private actorId?: string
+    private enforceSingleInstancePerActor: boolean
     private enforceSingleInstance: boolean
 
     static override DEFAULT_OPTIONS: Partial<typeof foundry.applications.api.ApplicationV2["DEFAULT_OPTIONS"]> = {
@@ -51,15 +55,16 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
 
         this.Component = args.Component
         this.editModeOptions = args.editModeOptions ?? EditModeOptions.NEVER
+        this.actorId = args.actorId
+        this.enforceSingleInstancePerActor = args.enforceSingleInstancePerActor ?? true
         this.enforceSingleInstance = args.enforceSingleInstance ?? true
 
         /**
          * Check that the user doesn't already have the app open by comparing it
          * to the custom _openAppsRegistry.
          */
-        if (this.enforceSingleInstance) {
-            const Constructor = this.constructor
-            const existing = VagabondApplication._openAppsRegistry.get(Constructor)
+        if (this.isSingleInstance) {
+            const existing = this.registeredInstance
             const isExistingClosing = (existing?.state as any) === "CLOSING" || (existing as any)?._state === 4
 
             if (existing && !isExistingClosing) {
@@ -67,21 +72,43 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
                 (this as any)._state = 5
             }
             else {
-                VagabondApplication._openAppsRegistry.set(Constructor, this)
+                this.registerInstance()
             }
         }
     }
 
+    private get usesActorScope(): boolean {
+        return this.enforceSingleInstancePerActor && Boolean(this.actorId)
+    }
+
+    private get isSingleInstance(): boolean {
+        return this.usesActorScope || this.enforceSingleInstance
+    }
+
+    private get registryKey(): string {
+        return this.usesActorScope ? this.actorId! : ""
+    }
+
+    private get registeredInstance(): VagabondApplication | undefined {
+        return VagabondApplication._openAppsRegistry.get(this.constructor)?.get(this.registryKey)
+    }
+
+    private registerInstance() {
+        const byKey = VagabondApplication._openAppsRegistry.get(this.constructor) ?? new Map<string, VagabondApplication>()
+        byKey.set(this.registryKey, this)
+        VagabondApplication._openAppsRegistry.set(this.constructor, byKey)
+    }
+
     /**
-     * Prevent Foundry from opening the same app more than once per user.
+     * Prevent Foundry from opening the same app more than once per user
+     * (or per actor, when enforceSingleInstancePerActor applies).
      * @param options
      * @returns 
      */
     protected override _canRender(options: any): false | void {
         if (super._canRender(options) === false) return false
-        if (this.enforceSingleInstance) {
-            const Constructor = this.constructor
-            const currentActive = VagabondApplication._openAppsRegistry.get(Constructor)
+        if (this.isSingleInstance) {
+            const currentActive = this.registeredInstance
             if (currentActive && currentActive.id !== this.id) {
                 currentActive.bringToFront()
                 return false
@@ -116,11 +143,8 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
     }
 
     protected override _onClose(options): void {
-        if (this.enforceSingleInstance) {
-            const Constructor = this.constructor
-            if (VagabondApplication._openAppsRegistry.get(Constructor) === this) {
-                VagabondApplication._openAppsRegistry.delete(Constructor)
-            }
+        if (this.isSingleInstance && this.registeredInstance === this) {
+            VagabondApplication._openAppsRegistry.get(this.constructor)?.delete(this.registryKey)
         }
 
         if (this._reactRoot) {

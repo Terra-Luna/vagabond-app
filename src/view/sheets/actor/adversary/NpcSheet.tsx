@@ -5,7 +5,7 @@ export class NpcSheet extends VagabondActorSheet {
     Component = NpcSheetComponent
     static DEFAULT_OPTIONS = {
         position: {
-            width: 380,
+            width: 360,
             height: "auto",
             top: 120,
             left: 500

@@ -14,8 +14,10 @@ export class ItemShopApp extends VagabondApplication {
     
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: appLang.ItemShop.title },
+            window: { title: `${appLang.ItemShop.title}: ${actor.name}` },
             position: { height: 900, width: 460 },
+            actorId: actor.id ?? undefined,
+            enforceSingleInstancePerActor: true,
             Component: ItemShopComponent
         } as VagabondAppArgs)
         

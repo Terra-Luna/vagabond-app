@@ -16,8 +16,13 @@ export class TrainingSelectionApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: appLang.HeroChoices.selectTrainings, position: { top: 0 } },
+            window: {
+                title: `${appLang.HeroChoices.selectTrainings}: ${actor.name}`,
+                position: { top: 0 }
+            },
             position: { width: 400, height: 800 },
+            actorId: actor.id ?? undefined,
+            enforceSingleInstancePerActor: true,
             Component: () => {
                 const dataLoaded = useRef(false)
 

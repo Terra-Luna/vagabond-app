@@ -10,8 +10,10 @@ export class PerkSelectionApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) {
         super({
-            window: { title: appLang.HeroChoices.selectPerks },
+            window: { title: `${appLang.HeroChoices.selectPerks}: ${actor.name}` },
             position: { width: 800, height: 900 },
+            actorId: actor.id ?? undefined,
+            enforceSingleInstancePerActor: true,
             Component: () => {
                 const { PerkSelection, bonusChoicesByPerk } = usePerkSelection(actor, isLevelUp)
                 return <div className="flex flex-col min-h-0 w-full p-1 mb-4 overflow-y-auto">

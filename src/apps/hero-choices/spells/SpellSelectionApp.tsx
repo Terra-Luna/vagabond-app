@@ -12,8 +12,10 @@ export class SpellSelectionApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) {
         super({
-            window: { title: appLang.HeroChoices.selectSpells },
+            window: { title: `${appLang.HeroChoices.selectSpells}: ${actor.name}` },
             position: { width: 400 },
+            actorId: actor.id ?? undefined,
+            enforceSingleInstancePerActor: true,
             Component: () => {
                 const { SpellSelection } = useSpellSelection(actor, isLevelUp)
                 return (

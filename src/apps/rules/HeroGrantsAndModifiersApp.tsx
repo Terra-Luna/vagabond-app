@@ -9,8 +9,10 @@ export class HeroGrantsAndModifiersApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: appLang.RulesEditor.windowTitle },
+            window: { title: `${appLang.RulesEditor.windowTitle}: ${actor.name}` },
             position: { width: 500 },
+            actorId: actor.id ?? undefined,
+            enforceSingleInstancePerActor: true,
             Component: HeroGrantsAndModifiersView,
         } as VagabondAppArgs)
         this.actor = actor

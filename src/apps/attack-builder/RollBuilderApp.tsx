@@ -10,8 +10,10 @@ export class RollBuilderApp extends VagabondApplication {
 
     constructor(actor: Actor, preset?: RollPreset) {
         super({
-            window: { title: appLang.AttackBuilder.title, resizable: false },
+            window: { title: `${appLang.AttackBuilder.title}: ${actor.name}`, resizable: false },
             position: { width: 500 },
+            actorId: actor.id ?? undefined,
+            enforceSingleInstancePerActor: true,
             Component: RollBuilderView
         } as VagabondAppArgs)
 
