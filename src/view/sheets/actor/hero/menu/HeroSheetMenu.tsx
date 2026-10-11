@@ -97,8 +97,8 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     <AppMenuToggleSwitch label={appLang.HeroSheet.Menu.heroSheetTrackers} hero={hero} toggleKey="hero-sheet-trackers-hide" />
                     <AppMenuToggleSwitch label={appLang.HeroSheet.Menu.miniCards} hero={hero} toggleKey="hero-sheet-mini-cards" />
                     <MenuListItem text={appLang.HeroSheet.Menu.rest} onClick={() => { new RestApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={appLang.HeroSheet.Menu.travel} onClick={() => { new TravelApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
                     <MenuListItem text={appLang.HeroSheet.Menu.downtime} onClick={() => { ui.notifications?.info("Feature coming soon!") }} toggleMenu={toggleMenu} />
+                    <MenuListItem text={appLang.HeroSheet.Menu.travel} onClick={() => { new TravelApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
                     <MenuListItem text={appLang.HeroSheet.Menu.grantsModifiers} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
 
                     <ItemDivider />

@@ -6,7 +6,9 @@ import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import type { RollPreset } from "../attack-builder/model/RollPreset"
+import { RestApp } from "../rest/RestApp"
 import { SpellcastingApp } from "../spellcasting/SpellcastingApp"
+import { TravelApp } from "../travel/TravelApp"
 
 export interface VagabondAPI {
     rules: {
@@ -18,6 +20,8 @@ export interface VagabondAPI {
         openSpellcasting: (actor: Actor & { system: HeroDataModel }) => void
     },
     util: {
+        rest: () => void,
+        travel: () => void,
         syncAncestryAndClass: (actor: (Actor & { system: HeroDataModel }), sendChat?: boolean) => Promise<void>
     }
 }
@@ -66,6 +70,18 @@ export const api: VagabondAPI = {
     },
 
     util: {
+        rest: () => {
+            const actor = getControlledHeroToken()
+            if (!actor) return
+            new RestApp(actor).render({ force: true })
+        },
+
+        travel: () => {
+            const actor = getControlledHeroToken()
+            if (!actor) return
+            new TravelApp(actor).render({ force: true })
+        },
+
         syncAncestryAndClass: async (actor, sendChat = true) => {
             if (!actor || (actor.type as string) !== "hero") {
                 ui.notifications?.warn(appLang.Notifications.syncHeroRequiresHero)
@@ -232,4 +248,9 @@ const getItemMacroHero = (itemId: string): (Actor & { system: HeroDataModel }) |
 
 const getOwnedHeroes = () => {
     return game.actors?.contents?.filter(it => (it.type as any) === "hero" && it.isOwner)
+}
+
+const getControlledHeroToken = (): Actor & { system: HeroDataModel } => {
+    return canvas?.tokens?.controlled?.[0]?.actor as Actor & { system: HeroDataModel }
+        ?? game.user?.character as Actor & { system: HeroDataModel }
 }

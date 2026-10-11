@@ -7,7 +7,7 @@
   "img": "/icons/creatures/invertebrates/beetle-grub-larvae-gray.webp",
   "scope": "global",
   "command": "/**\n * Refresh a Hero's Ancestry and Class items from their compendium source,\n * keeping training, spell and perk selections.\n * Select a hero token (or set a default character) and run.\n */\nconst SYS = \"vagabond-app\";\nconst actor = canvas.tokens.controlled[0]?.actor ?? game.user.character;\n\nif (!actor || actor.type !== \"hero\" || !actor.isOwner) {\n  return ui.notifications.warn(\"Select a Hero token you own (or set a default character).\");\n}\n\ngame.system.api.util.syncAncestryAndClass(actor);",
-  "sort": 0,
+  "sort": 250000,
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -18,7 +18,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.103",
     "createdTime": 1791337032092,
-    "modifiedTime": 1791664824126,
+    "modifiedTime": 1791695700942,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

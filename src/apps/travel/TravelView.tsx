@@ -6,8 +6,7 @@ import { tableBorder } from "../../view/common/border-styles"
 import { DynamicGrid } from "../../view/component/DynamicGrid"
 import { Header } from "../../view/component/Header"
 
-export const TravelView = ({ onCancel, actor }: {
-    onCancel: () => void,
+export const TravelView = ({ actor }: {
     actor: Actor & { system: HeroDataModel }
 }) => {
 
@@ -26,7 +25,7 @@ export const TravelView = ({ onCancel, actor }: {
     )
 }
 
-const sectionCss = "flex flex-col px-2 mt-2"
+const sectionCss = "flex flex-col px-2"
 
 const TravelSection = ({ children }) => <div className={sectionCss}>{children}</div>
 
@@ -68,11 +67,11 @@ const Speeds = () => {
 
 const TravelSpeed = ({ actor }) => {
     return (
-        <div className="px-2">
-            <div>
+        <div className="flex flex-col justify-center text-center px-2 w-full">
+            <div className="w-3/4 mx-auto mb-2">
                 {localizeString(appLang.Travel.travelSpeedDescription, { speed: actor.system.speed.travel.toString() })}
             </div>
-            <div className="max-w-[300px]">
+            <div className="max-w-[300px] mx-auto">
                 <Table headers={[appLang.Travel.headers.pace, appLang.Travel.headers.multiplier]} data={appLang.Travel.travelPaces} />
             </div>
         </div>
@@ -81,7 +80,7 @@ const TravelSpeed = ({ actor }) => {
 
 const Table = ({ headers, data }: { headers: string[], data: string[][] }) => {
     return (
-        <table className={`table-fixed w-full ${tableBorder} mt-2`}>
+        <table className={`table-fixed w-full ${tableBorder} mt-0.5`}>
             <thead className="bg-section-header-fill text-text-section-header text-sm">
                 <tr>
                     <th className="text-left pl-2 w-1/10">{headers[0]}</th>

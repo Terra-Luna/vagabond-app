@@ -10,7 +10,7 @@ export class TravelApp extends VagabondApplication {
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
             window: { title: appLang.Travel.title, resizable: true },
-            position: { width: 1000, height: 1200, top: 200, left: 400 },
+            position: { width: 1000, height: "auto" },
             Component: TravelView
         } as VagabondAppArgs)
         this.actor = actor
@@ -23,7 +23,4 @@ export class TravelApp extends VagabondApplication {
         }
     }
 
-    onCancel = () => {
-        this.close()
-    }
 }
