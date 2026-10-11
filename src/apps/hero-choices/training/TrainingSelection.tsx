@@ -84,8 +84,7 @@ export const useTrainingSelection = (
     useEffect(() => {
         const ancestrySkillRules = getSkillTrainingChoiceRules([ancestry])
         const existingAncestrySelections = ancestrySkillRules.flatMap(rule => {
-            const rawRule = ancestry?.system?.rules?.find((r: any) => r.id === rule.id)
-            const selections = normalizeRuleSelections(rawRule?.selections || rule.selections)
+            const selections = normalizeRuleSelections(rule.selections)
             return selections.map(s => ({ skill: getSkillNameFromPath(s.value), ruleId: String(rule.id) }))
         })
 

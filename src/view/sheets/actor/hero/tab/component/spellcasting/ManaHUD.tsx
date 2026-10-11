@@ -10,7 +10,7 @@ import { Tooltip } from "../../../../../../component/Tooltip"
 import { SpellcastingLabel } from "./input/SpellcastingTypography"
 import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
 
-export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel, isCastMenuOpen?: boolean }) => {
+export const ManaHUD = ({ hero, isCastMenuOpen = false, hideTab = false }: { hero: HeroDataModel, isCastMenuOpen?: boolean, hideTab?: boolean }) => {
     const mana = hero.mana.value
     const updateMana = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { mana: { value: (mana ?? 0) + (auxClick ? 1 : -1) } })
@@ -23,32 +23,34 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
             <div className="flex gap-x-2 text-2xl font-eskapade font-bold mt-1 mb-2 justify-between">
 
                 {/* CURRENT MANA */}
-                <div className="flex gap-x-1 items-center">
-                    <SpellcastingLabel text={appLang.HeroSheet.Magic.labelMana} />
-                    <Tooltip title={appLang.HeroSheet.Magic.labelMana} content={appLang.HeroSheet.counter_tooltip}>
-                        <Sparkle className={`text-mana mr-1 hover-glow`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
-                    </Tooltip>
-                    <span className="text-mana">
-                        <EditableTextField
-                            boundValue={hero.mana.value?.toString() ?? ""}
-                            updateProps={{ object: hero.parent, path: ['mana', 'value'] }}
-                            placeholder="0"
-                            hideBorderOnEditMode={true}
-                        />
-                    </span>
-                    <p>/</p>
-                    <p>{hero.mana.max}</p>
-                </div>
+                <div className={`flex items-center gap-x-6 ${hideTab ? "px-2" : ""}`}>
+                    <div className="flex gap-x-1 items-center">
+                        <SpellcastingLabel text={appLang.HeroSheet.Magic.labelMana} />
+                        <Tooltip title={appLang.HeroSheet.Magic.labelMana} content={appLang.HeroSheet.counter_tooltip}>
+                            <Sparkle className={`text-mana mr-1 hover-glow`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
+                        </Tooltip>
+                        <span className="text-mana">
+                            <EditableTextField
+                                boundValue={hero.mana.value?.toString() ?? ""}
+                                updateProps={{ object: hero.parent, path: ['mana', 'value'] }}
+                                placeholder="0"
+                                hideBorderOnEditMode={true}
+                            />
+                        </span>
+                        <p>/</p>
+                        <p>{hero.mana.max}</p>
+                    </div>
 
-                {/* MAX MANA / CAST */}
-                <div className="flex gap-x-1 items-center">
-                    <SpellcastingLabel text={appLang.HeroSheet.Magic.labelCastMax} />
-                    <Sparkles size={20} className="text-mana" />
-                    <p>{hero.mana.maxCast}</p>
+                    {/* MAX MANA / CAST */}
+                    <div className="flex gap-x-1 items-center">
+                        <SpellcastingLabel text={appLang.HeroSheet.Magic.labelCastMax} />
+                        <Sparkles size={20} className="text-mana" />
+                        <p>{hero.mana.maxCast}</p>
+                    </div>
                 </div>
 
                 {/* SPELLCASTING TAB */}
-                {!isCastMenuOpen &&
+                {!isCastMenuOpen && !hideTab &&
                     <div className={`
                             flex items-center gap-x-1 -mb-1 pl-6 pr-2 
                             bg-context-menu-fill hover-glow

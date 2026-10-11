@@ -1,9 +1,7 @@
 import { ArrowBigUpDash, BookText, Dices, FlaskConical, Handbag, Swords, WandSparkles } from "lucide-react"
-import { useEffect } from "react"
 import { Tab, TabList, TabPanel,Tabs } from "react-tabs"
 
 import { HeroCreationApp } from "../../../../apps/hero-creator/HeroCreationApp"
-import { importHero } from "../../../../apps/importer/TagalongImporter"
 import { LevelUpApp } from "../../../../apps/level-up/LevelUpApp"
 import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
 import { HeroDataModel, isAlchemist } from "../../../../model/actor/HeroDataModel"
@@ -15,7 +13,8 @@ import { localizeString } from "../../../../utils/localeUtils"
 import { getName, inventoryItemTypes } from "../../../../utils/modelUtil"
 import { EditableNameField } from "../../../component/EditableTextField"
 import { Tooltip } from "../../../component/Tooltip"
-import { useEditMode } from "../../../context/EditModeContext/Hooks"
+import { EditModeContextProvider } from "../../../context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../context/EditModeContext/EditModeOptions"
 import { ActorPortrait } from "../component/ActorPortrait"
 import { VagabondActorSheet } from "../VagabondActorSheet"
 import { HeroSheetMenu } from "./menu/HeroSheetMenu"
@@ -32,31 +31,15 @@ const locale = appLang.HeroSheet
 
 export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { system: HeroDataModel }, sheet: VagabondActorSheet }) => {
     const hero = actor.system
-    useEffect(() => {
-        const listener = (e: KeyboardEvent) => {
-            if (e.ctrlKey && e.shiftKey && e.code === "KeyI") {
-                importHero(hero, "https://www.vgbnd.app/character/e38db88c-ec28-4b67-a44c-09f0fe199d01")
-                e.preventDefault()
-                e.stopPropagation()
-            }
-        }
-        window.addEventListener("keydown", listener)
-
-        return () => { window.removeEventListener("keydown", listener) }
-    }, [])
-
-    const { setEditMode } = useEditMode()
-    useEffect(() => {
-        setEditMode(true)
-    }, [])
-
     return (
         <div className="@container flex flex-col grow min-h-0 overflow-y-hidden">
-            <StatsDrawerContextProvider id={hero.parent.id}>
-                <HeroSheetHeader hero={hero} sheet={sheet} />
-                <HeroSheetUpperSection hero={hero} />
-                <HeroSheetTabbedSection hero={hero} />
-            </StatsDrawerContextProvider>
+            <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                <StatsDrawerContextProvider id={hero.parent.id}>
+                    <HeroSheetHeader hero={hero} sheet={sheet} />
+                    <HeroSheetUpperSection hero={hero} />
+                    <HeroSheetTabbedSection hero={hero} />
+                </StatsDrawerContextProvider>
+            </EditModeContextProvider>
         </div>
     )
 }
@@ -177,7 +160,7 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
     const spellRules = [
         ...getItemRules(classItem),
         ...getItemRules(ancestryItem),
-        ...hero.perks.flatMap(perk => (perk as any).rules ?? []),
+        ...hero.perks?.flatMap(perk => (perk as any).rules ?? []) ?? [],
         ...inventoryItems.flatMap(item => getItemRules(item))
     ]
 

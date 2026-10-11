@@ -4,7 +4,9 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { appLang } from "../../utils/lang"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { useSpellCastingMenu } from "../../view/sheets/actor/hero/tab/component/spellcasting/SpellcastingMenu"
+import { ManaHUD } from "../../view/sheets/actor/hero/tab/component/spellcasting/ManaHUD"
+import { useSpellcastingMenuContext } from "../../view/sheets/actor/hero/tab/component/spellcasting/SpellcastingMenuContext"
+import { SpellcastingMenuContextProvider } from "../../view/sheets/actor/hero/tab/component/spellcasting/SpellcastingMenuContextProvider"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 
 export class SpellcastingApp extends VagabondApplication {
@@ -14,19 +16,23 @@ export class SpellcastingApp extends VagabondApplication {
     constructor(actor: (Actor & { system: HeroDataModel }) | undefined, imbueMode?: boolean, windowedMode?: boolean) {
         if (!actor) return
         
-        const AppView = () => {
-            const { setIsSpellcastingOpen, SpellcastingMenu } = useSpellCastingMenu(actor, imbueMode, windowedMode, () => this.close())
-            
-            useEffect(() => setIsSpellcastingOpen(true), [])
-            
+        const RenderOpened = () => {
+            const { setIsSpellcastingOpen } = useSpellcastingMenuContext()
+            useEffect(() => { setIsSpellcastingOpen(true) }, [])
+            return <ManaHUD hero={actor.system} hideTab={true} />
+        }
+
+        const AppView = () => {            
             return <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                <SpellcastingMenu />
+                <SpellcastingMenuContextProvider actor={actor} imbueMode={imbueMode} windowedMode={windowedMode}>
+                    <RenderOpened />
+                </SpellcastingMenuContextProvider>
             </EditModeContextProvider>
         }
 
         super({
-            window: { title: appLang.Spellcasting.title },
-            position: { width: 300 },
+            window: { title: `${appLang.Spellcasting.title}: ${actor.name} (${(actor.system?.class as any)?.parent?.name})` },
+            position: { width: 360 },
             Component: AppView,
         } as VagabondAppArgs)
 

@@ -5,6 +5,7 @@ import { RollPreset } from "./apps/attack-builder/model/RollPreset"
 import { registerAdversaryCompendiumFilters } from "./apps/compendium/AdversaryCompendium"
 import { registerAlchemicalItemCompendiumFilters } from "./apps/compendium/AlchemicalItemCompendium"
 import { CountdownApp } from "./apps/countdown/CountdownApp"
+import { TagalongItemCreator } from "./apps/importer/TagalongItemCreator"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
 import { showConfirmationDialog } from "./apps/vagabond-tools/dialog/showConfirmationDialog"
 import { resolveAllAttacks } from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
@@ -145,6 +146,10 @@ Hooks.once("ready", async () => {
     registerAlchemicalItemCompendiumFilters()
 
     game.socket?.on(`system.${sys_id}`, async (packet: any) => {
+        if (packet?.action === "createTagalongItemsResult") {
+            TagalongItemCreator.handleItemCreationResult(packet)
+            return
+        }
         if (!game.user?.isActiveGM) return
 
         const activeGM = game.users?.activeGM
@@ -155,6 +160,9 @@ Hooks.once("ready", async () => {
             const attackData = packet.data
             if (!attackData || !attackData.actorId) return
             Attack.handleIncomingAttackSnapshot(attackData)
+        }
+        else if (packet?.action === "createTagalongItems") {
+            await TagalongItemCreator.handleIncomingItemCreation(packet)
         }
         else if (packet?.action === "updateGameSetting") {
             const data = packet.data
@@ -524,11 +532,10 @@ Hooks.on("hotbarDrop", (_bar: any, data: any, slot: number): boolean | void => {
     if (!actor || !preset) return false
 
     const img = actor.items.get(preset.weaponId)?.img ?? "icons/svg/dice-target.svg"
-    const command = `/* Hold Shift to add Favor, Ctrl for Hinder */
-const actor = game.user.character ?? game.canvas?.tokens?.controlled[0]?.actor;
-if (!actor || !actor.isOwner) return;
-// Roll the saved preset...
-game.system.api.combat.rollPreset({ actor: actor, presetId: "${preset.id}", event: event });`
+    const command = `/** 
+ * Hold Shift to add Favor, Ctrl for Hinder
+ */
+game.system.api.combat.rollPreset({ presetId: "${preset.id}", event: event });`
 
     Macro.create({ name: `${preset.title}${preset.description?.length > 0 ? `: ${preset.description}` : ""}`, type: "script", img, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } } as any)
         .then(macro => macro && game.user?.assignHotbarMacro(macro, slot))
@@ -542,16 +549,11 @@ Hooks.on("preCreateMacro", (macro: any, data: any, options: any, userId: string)
 
     const item = fromUuidSync(uuid) as any
     if ((item?.system instanceof WeaponDataModel)) {
-        const command = `/* Hold Shift to add Favor, Ctrl for Hinder */
-const actor = game.user.character ?? game.canvas?.tokens?.controlled[0]?.actor;
-if (!actor || !actor.isOwner) return;
-// Check the weapon exists and is equipped...
-const weapon = actor.items.get("${item.id}");
-if (!weapon || !weapon.system.isEquipped) return;
-// Attack with equipped weapon...
-const api = game.system.api.combat;
-// Send skill as a 3rd param to override default...
-api.weaponAttack({ actor: actor, itemId: weapon.id, /*skill: "brawl",*/ event: event});`
+        const command = `/** 
+ * Hold Shift to add Favor, Ctrl for Hinder
+ * Send skill as a 3rd param to override default...
+ */
+game.system.api.combat.weaponAttack({ itemId: "${item.id}", /*skill: "brawl",*/ event: event});`
 
         macro.updateSource({ img: item.img, name: `${item.name} Attack`, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } })
         data.img = item.img

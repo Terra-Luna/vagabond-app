@@ -34,14 +34,11 @@ export const api: VagabondAPI = {
             }
         }
     },
+
     combat: {
-        weaponAttack: ({ actor, itemId, skill, event }: {
-            actor: Actor & { system: HeroDataModel }
-            itemId: string
-            skill?: string
-            event: any
-        }) => {
-            if (!actor || !actor.isOwner) return
+        weaponAttack: ({ itemId, skill, event }: { itemId: string, skill?: string, event: any }) => {
+            const actor = getItemMacroHero(itemId)
+            if (!actor) return
 
             const item = actor.items.get(itemId) as Item & { system: WeaponDataModel }
             if (!item) return
@@ -51,8 +48,9 @@ export const api: VagabondAPI = {
             }
         },
 
-        rollPreset: ({ actor, presetId, event }: { actor: Actor & { system: HeroDataModel }, presetId: string, event: any }) => {
-            if (!actor || !actor.isOwner || !presetId) return
+        rollPreset: ({ presetId, event }: { presetId: string, event: any }) => {
+            const actor = getOwnedHeroes()?.find(it => it.flags?.[sys_id]?.rollPresets?.some((p: RollPreset) => p.id === presetId)) as Actor & { system: HeroDataModel }
+            if (!actor || !presetId) return
             
             const presets = [...actor.getFlag(sys_id, "rollPresets" as any) as RollPreset[] ?? []]
             const preset = presets.find(p => p.id === presetId)
@@ -66,20 +64,13 @@ export const api: VagabondAPI = {
             new SpellcastingApp(actor, false, true).render({ force: true })
         }
     },
+
     util: {
         syncAncestryAndClass: async (actor, sendChat = true) => {
             if (!actor || (actor.type as string) !== "hero") {
                 ui.notifications?.warn(appLang.Notifications.syncHeroRequiresHero)
                 return
             }
-
-            const escapeHtml = (value: string) => value.replace(/[&<>"']/g, char => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                "\"": "&quot;",
-                "'": "&#39;"
-            })[char]!)
 
             const recordedUuid = (item: Item): string | null => {
                 const coreFlags = item.flags.core as Record<string, unknown> | undefined
@@ -163,7 +154,7 @@ export const api: VagabondAPI = {
                 try {
                     const found = await findSource(item)
                     if (!found) {
-                        report.push(`<li><b>${escapeHtml(item.name)}</b> (${escapeHtml(item.type)}): ${escapeHtml(appLang.Notifications.syncHeroSourceMissing)}</li>`)
+                        report.push(`<li><b>${item.name}</b> (${item.type}): ${appLang.Notifications.syncHeroSourceMissing}</li>`)
                         continue
                     }
 
@@ -204,16 +195,14 @@ export const api: VagabondAPI = {
                     await item.setFlag(sys_id, "ruleSelections", mergedSelections)
                     await item.update({ "flags.core.sourceId": source.uuid } as Record<string, any>)
 
-                    const success = localizeString(appLang.Notifications.syncHeroSourceUpdated, {
-                        source: sourceDescription
-                    })
-                    report.push(`<li><b>${escapeHtml(source.name)}</b> (${escapeHtml(item.type as string)}): ${escapeHtml(success)}</li>`)
+                    const success = localizeString(appLang.Notifications.syncHeroSourceUpdated, { source: sourceDescription })
+                    report.push(`<li><b>${source.name}</b> (${item.type as string}): ${success}</li>`)
                 }
                 catch (error) {
                     console.error(`Failed to refresh ${item.type as string} "${item.name}" for Hero "${actor.name}".`, error)
                     const reason = error instanceof Error ? error.message : String(error)
                     const failure = localizeString(appLang.Notifications.syncHeroSourceFailed, { reason })
-                    report.push(`<li><b>${escapeHtml(item.name)}</b> (${escapeHtml(item.type as string)}): ${escapeHtml(failure)}</li>`)
+                    report.push(`<li><b>${item.name}</b> (${item.type as string}): ${failure}</li>`)
                 }
             }
 
@@ -226,9 +215,21 @@ export const api: VagabondAPI = {
                 await ChatMessage.create({
                     speaker: ChatMessage.getSpeaker({ actor }),
                     whisper: game.user?.id ? [game.user.id] : [],
-                    content: `<p><b>${escapeHtml(title)}</b></p><ul>${report.join("")}</ul>`
+                    content: `<p><b>${title}</b></p><ul>${report.join("")}</ul>`
                 })
             }
         }
     }
+}
+
+const getItemMacroHero = (itemId: string): (Actor & { system: HeroDataModel }) | undefined => {
+    return getOwnedHeroes()?.find(it =>
+        it.items?.get(itemId) &&
+        it.items?.get(itemId)?.system instanceof WeaponDataModel &&
+        (it.items?.get(itemId)?.system as any).isEquipped
+    ) as Actor & { system: HeroDataModel }
+}
+
+const getOwnedHeroes = () => {
+    return game.actors?.contents?.filter(it => (it.type as any) === "hero" && it.isOwner)
 }

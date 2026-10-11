@@ -73,10 +73,13 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     </div>
                 </div>
                 <ul className="space-y-2 text-sm text-text-primary font-eskapade font-bold">
-                    {!hero.tagalongId &&
-                        <span className="flex w-full mb-2">
+                    {!hero.tagalongId && hero.level.current === 0 &&
+                        <span className="flex w-full mb-2 [&>span]:block [&>span]:w-full">
                             <Tooltip title={appLang.HeroSheet.Menu.importFromVgbndApp} content={appLang.HeroSheet.Menu.importFromVgbndAppTooltip}>
-                                <MenuListItem text={appLang.HeroSheet.Menu.import} onClick={() => importFromVgbndApp(hero)} />
+                                <MenuListItem
+                                    text={<div className="flex gap-x-1">{appLang.HeroSheet.Menu.import}<p className="text-sm font-paradigm font-normal italic">(www.vgbnd.app)</p></div>}
+                                    onClick={() => importFromVgbndApp(hero)}
+                                />
                             </Tooltip>
                         </span>
                     }

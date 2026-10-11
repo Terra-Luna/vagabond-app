@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import type { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { findOrCreateElectiveTrainingsRule, normalizeRuleSelections, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
+import { findOrCreateElectiveTrainingsRule, getItemRules, normalizeRuleSelections, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
 import { appLang } from "../../../utils/lang"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
@@ -67,8 +67,8 @@ export class TrainingSelectionApp extends VagabondApplication {
 
                         // Ancestry bonus trainings
                         if (ancestry) {
-                            const ancestryRules = foundry.utils.deepClone(ancestry.system.rules || []) as any[]
-                            let hasAncestryChanges = false
+                            const ancestryRules = foundry.utils.deepClone(getItemRules(ancestry)) as any[]
+                            const ancestrySelectionUpdates: Record<string, any> = {}
 
                             ancestryRules.forEach(rule => {
                                 if (rule.key === "ChoiceSet" && (rule.channel === "path" || rule.choices?.some((c: any) => (typeof c === 'string' ? c : c?.value || '').includes('skills.')))) {
@@ -86,15 +86,12 @@ export class TrainingSelectionApp extends VagabondApplication {
                                         })
 
                                     if (JSON.stringify(currentSelections) !== JSON.stringify(nextSelections)) {
-                                        rule.selections = nextSelections
-                                        hasAncestryChanges = true
+                                        ancestrySelectionUpdates[rule.id] = nextSelections
                                     }
                                 }
                             })
 
-                            if (hasAncestryChanges) {
-                                await ancestry.update({ "system.rules": ancestryRules } as Record<string, any>)
-                            }
+                            await saveItemRuleSelections(ancestry, ancestrySelectionUpdates)
                         }
 
                         await actor.system?.forceUpdate?.()

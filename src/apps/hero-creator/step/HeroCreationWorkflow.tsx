@@ -60,8 +60,8 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     /**
      * Trainings
      */
-    const { TrainingSelection, requiredTrainingRules, chosenTrainings, chosenBonusSkills, setChosenTrainings, setChosenBonusSkills, electiveTrainingRules, electiveTrainingsRuleId } =
-        useTrainingSelection(ancestryItem, classItem, statsWithBonuses, [backButton, nextButton])
+    const { TrainingSelection, requiredTrainingRules, chosenTrainings, chosenBonusSkills, setChosenTrainings, setChosenBonusSkills, electiveTrainingRules, electiveTrainingsRuleId }
+        = useTrainingSelection(ancestryItem, classItem, statsWithBonuses, [backButton, nextButton])
 
     const allTrainings = useMemo(() => {
         return [...chosenTrainings, ...chosenBonusSkills, ...requiredTrainingRules].map(sk => sk.skill)
@@ -316,6 +316,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                     .flatMap(source => source.rules)
                     .filter(rule => Array.isArray(rule.selections) && rule.selections.length > 0)
                     .map(rule => [rule.id, rule.selections]))
+                
                 await saveItemRuleSelections(clazz, featureSelections)
             }
 

@@ -90,7 +90,7 @@ export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLev
             setClassPerkSlots
         )
 
-        if (ancestry) loadSelections(getItemChoiceRules(level, ancestry.system.rules ?? [])
+        if (ancestry) loadSelections(getItemChoiceRules(level, getItemRules(ancestry))
             .filter(rule => rule.pack === "perk"),
             setAncestryPerkSlots
         )

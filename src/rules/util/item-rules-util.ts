@@ -425,6 +425,12 @@ export const createElectiveTrainingsRule = (options: {
     }
 }
 
+/**
+ * This function will find or create a rule for elective trainings within the given item or rules array.
+ * @param itemOrRules 
+ * @param options 
+ * @returns 
+ */
 export const findOrCreateElectiveTrainingsRule = (
     itemOrRules: (Item & { system?: { rules?: any[] } }) | any[] | undefined,
     options: {
@@ -454,6 +460,32 @@ export const findOrCreateElectiveTrainingsRule = (
     return { rules, electiveRule }
 }
 
+/**
+ * Some Perks (Advancement, New Training, & Magical Secret) require a secondary selection. This selection
+ * gets saved as a flag at...
+ *     actor.system.class.parent.flags[sys_id].ruleSelections.{randomId}
+ * 
+ * E.g.,
+{
+    "3Zz32mqq4wp99hru": [
+        {
+            "id": "637TTsthzb3rATxk",
+            "value": "Compendium.vagabond-app.perks.Item.PoN6ANaHqgaTZDIi",
+            "subselect": "Compendium.vagabond-app.spells.Item.rxJcGObE6iraw3NT"
+        },
+        {
+            "id": "wDpbsvoEsvIv95GY",
+            "value": "Compendium.vagabond-app.perks.Item.5uNlp9l83FGJaPg7",
+            "subselect": "stats.reason"
+        },
+        {
+            "id": "ys6Tebu70dj1Xa8m",
+            "value": "Compendium.vagabond-app.perks.Item.eRKvvm7zmttXM5qY",
+            "subselect": "skills.melee.trained"
+        }
+    ]
+}
+ */
 export function getPerkSkillSubselections(items: (Item & { system: { rules: any } } | undefined)[]): string[] {
     const gatheredSkills: string[] = []
 

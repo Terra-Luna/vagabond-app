@@ -6,7 +6,7 @@
   "author": "KyorYoEvge7ElSaj",
   "img": "icons/magic/symbols/cross-circle-blue.webp",
   "scope": "global",
-  "command": "const actor = game.user.character ?? canvas?.tokens?.controlled[0]?.actor;\ngame.system.api.combat.openSpellcasting(actor);",
+  "command": "const actor = canvas?.tokens?.controlled[0]?.actor ?? game.user.character;\ngame.system.api.combat.openSpellcasting(actor);",
   "sort": 0,
   "ownership": {
     "default": 0,
@@ -18,7 +18,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.2.25",
     "createdTime": 1791666058103,
-    "modifiedTime": 1791666417006,
+    "modifiedTime": 1791686403659,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -30,8 +30,14 @@ const hasOffensiveSpell = (actor: any): boolean =>
  * the first controlled token's actor that does.
  */
 const getImbueActor = (): (Actor & { system: HeroDataModel }) | undefined => {
-    const character = game.user?.character
-    if (hasOffensiveSpell(character)) return character as any
+    const heroes = game.actors?.contents?.filter(it => (it.type as any) === "hero" && it.isOwner && hasOffensiveSpell(it)) ?? []
+    if (heroes.length === 1) {
+        return heroes[0] as Actor & { system: HeroDataModel }
+    }
+    else if (heroes.length > 1) {
+        return (canvas?.tokens?.controlled?.find(it => heroes?.some(h => h.id === it.actor?.id))?.actor ?? heroes[0]) as Actor & { system: HeroDataModel }
+    }
+
     if (!game.user?.isActiveGM) return undefined
     const controlled: any[] = game.canvas?.tokens?.controlled ?? []
     return controlled.map(token => token.actor).find(hasOffensiveSpell)

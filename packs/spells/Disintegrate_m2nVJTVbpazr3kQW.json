@@ -1,5 +1,5 @@
 {
-  "name": "Disintigrate",
+  "name": "Disintegrate",
   "type": "spell",
   "_id": "m2nVJTVbpazr3kQW",
   "img": "icons/magic/death/undead-skeleton-worn-blue.webp",
@@ -21,8 +21,8 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1784764777615,
-    "modifiedTime": 1784769932139,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1791679318854,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -55,7 +55,7 @@ export const ConfirmationDialog = ({
                 <p className="text-text-primary text-lg font-eskapade font-bold">
                     {title}
                 </p>
-                <p className="mt-2 text-base text-text-primary font-paradigm font-normal">
+                <p className="mt-2 text-base text-text-primary font-paradigm font-normal whitespace-pre-line">
                     {description}
                 </p>
 

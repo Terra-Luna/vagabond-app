@@ -1,6 +1,8 @@
+import { ReactNode } from "react"
+
 import { ItemDivider } from "../../../../../component/Header"
 
-export const MenuListItem = ({ text, onClick, toggleMenu }: { text: string, onClick?: any, toggleMenu?: any }) => {
+export const MenuListItem = ({ text, onClick, toggleMenu }: { text: string | ReactNode, onClick?: any, toggleMenu?: any }) => {
     return (
         <div>
             <ItemDivider />

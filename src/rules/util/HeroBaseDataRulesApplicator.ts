@@ -68,6 +68,7 @@ export class HeroBaseDataRulesApplicator {
         const isToggleRuleActive = (rule) =>
             (rule.value === true || rule.value === "true" || rule.value === "enabled") &&
             (!rule.toggleableEffect || actor.system.getRuleToggleState(rule.parentId))
+        
         let activeTogglePaths = new Set<string>()
 
         const applyToggleRule = async (rule) => {

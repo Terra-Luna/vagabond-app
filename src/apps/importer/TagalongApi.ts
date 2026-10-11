@@ -9,8 +9,8 @@ interface TagalongHero {
         class: string,
         level: number,
         xp: number,
-        statArray: number[],
         assignedStats: TagalongStats,
+        levelStats: TagalongStats,
         advancementStats: TagalongStats,
         strongPotentialStat: keyof TagalongStats | "",
         trained_skills: string[],
@@ -40,6 +40,7 @@ interface TagalongPerk {
     source: string,
     id: string,
     name: string,
+    metadata?: { spell?: string, castSkill?: string },
     prereqs?: {
         trained?: string[]
         trained_or?: string[]
@@ -61,7 +62,7 @@ export interface TagalongItem {
     value: { g: number, s: number, c: number },
     can_equip?: boolean,
     is_equipped?: boolean,
-    /** Older Tagalong responses used this misspelled field. */
+    // Older Tagalong responses used this misspelled field
     is_eqiupped?: boolean,
     is_custom: boolean,
     //Weapon
@@ -73,7 +74,10 @@ export interface TagalongItem {
     //Armor
     might_req: number,
     armor_rating: number,
-    material: string
+    material: string,
+    relic_powers: [
+        { id: string }
+    ]
 }
 
 
@@ -99,4 +103,14 @@ export async function fetchHero(url: URL): Promise<TagalongHero> {
 
 export function parseHeroId(url: URL): string {
     return url.pathname.split('/')[2]
+}
+
+export function cleanTagalongItemName(name: string): string {
+    const cleaned = name.toUpperCase().includes("SHIELD")
+        ? "Shield"
+        : (name.includes("(")
+            ? name.split("(")[0].trim()
+            : name
+        )
+    return cleaned.toUpperCase()
 }
