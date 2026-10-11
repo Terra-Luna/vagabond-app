@@ -227,7 +227,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             return
         }
 
-        const equipped = this.equippedWeapons().filter(it => it.system instanceof WeaponDataModel && it.system.grip.style !== '-')
+        const equipped = this.equippedWeapons()
+
         const handsAreFull = equipped.length > 0 && equipped.reduce((sum, it) => sum + (
             it.system instanceof WeaponDataModel
                 ? (it.system.grip.state === 'HH' ? 2 : 1)
@@ -251,7 +252,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     async toggleVersatileGrip(item: Item & { system: WeaponDataModel }) {
         if (item.system.grip.style !== 'V') return
 
-        const equipped = this.equippedWeapons().filter(it => it.system instanceof WeaponDataModel && it.system.grip.style !== '-')
+        const equipped = this.equippedWeapons()
 
         if (equipped.length > 1) {
             for (const weapon of equipped.filter(it => it.id !== item.id)) {
@@ -267,7 +268,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     }
 
     equippedWeapons = (): (Item & { system: SundryDataModel | WeaponDataModel })[] => {
-        return this.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
+        const allEquippedWeapons = this.parent.items.filter((it: any) => it.system.isEquipped && (it.type === "sundry" || it.type === "weapon"))
+        return allEquippedWeapons.filter(it => it.system instanceof SundryDataModel || (it.system instanceof WeaponDataModel && it.system.grip.style !== '-'))
     }
 
     defenseWeapons = (): (Item & { system: WeaponDataModel })[] => {
@@ -485,7 +487,7 @@ export function setSpellcastingStats(hero: HeroDataModel) {
 }
 
 export function calculateMaxManaPerCast(level: number, maxCastFormula: string): number {
-    if (level === 0 || maxCastFormula.length === 0) return 0
+    if (level === 0 || !maxCastFormula || maxCastFormula.length === 0) return 0
     return maxCastFormula === "half" ? (1 + Math.ceil(level / 2)) : (2 + level)
 }
 
