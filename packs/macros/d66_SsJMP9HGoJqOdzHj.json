@@ -1,0 +1,28 @@
+{
+  "folder": "dNSZ8oo7EphDRyO4",
+  "name": "d66",
+  "type": "chat",
+  "_id": "SsJMP9HGoJqOdzHj",
+  "author": "KyorYoEvge7ElSaj",
+  "img": "/icons/sundries/gaming/dice-pair-white-green.webp",
+  "scope": "global",
+  "command": "/r d6*10+d6",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.2.31",
+    "createdTime": 1791697293963,
+    "modifiedTime": 1791697351751,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!SsJMP9HGoJqOdzHj"
+}
