@@ -3,7 +3,6 @@ import { useCallback, useState } from "react"
 
 import { ActiveEffectsView } from "../../../../../apps/active-effects/ActiveEffectsView"
 import { DowntimeApp } from "../../../../../apps/downtime/DowntimeApp"
-import { DowntimeApp } from "../../../../../apps/downtime/DowntimeApp"
 import { HeroCreationApp } from "../../../../../apps/hero-creator/HeroCreationApp"
 import { RestApp } from "../../../../../apps/rest/RestApp"
 import { HeroGrantsAndModifiersApp } from "../../../../../apps/rules/HeroGrantsAndModifiersApp"
