@@ -1449,7 +1449,7 @@
           "rations": "Rations:",
           "rationsExplainer": "{{diceRoll.d6}} Rations",
           "materials": "Materials:",
-          "materialsExplainer": "Materials worth {{diceRoll.d6}} x 5s)"
+          "materialsExplainer": "{{diceRoll.d6}} Materials"
         }
       },
       "XpQuestionnaire": {

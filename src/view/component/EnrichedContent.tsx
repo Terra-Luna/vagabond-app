@@ -43,9 +43,10 @@ export const EnrichedContent = ({ content, styleClasses = '', actor, setRollResu
                 return
             }
 
+            // check if the flavor text is actually a skillCheck, we can do that automatically
             if (actor && flavor?.startsWith("skillCheck.")) {
-                const skill = flavor.slice(11)
-                const skillCheck = await new SkillCheck(actor.system as HeroDataModel, { type: 'check', skill }).roll()
+                const skill = flavor.split(".").pop()
+                const skillCheck = await new SkillCheck(actor.system as HeroDataModel, { type: 'check', skill: skill! }).roll()
                 setRollResult?.(skillCheck)
                 sendVagabondChatCard(actor, "SkillCheckChatCard", { actorId: getId(actor), result: skillCheck })
                 return
