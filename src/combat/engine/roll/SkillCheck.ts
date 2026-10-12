@@ -39,6 +39,7 @@ export interface SkillCheckResult {
     d6s: number[]
     total: number
     outcome: string
+    success: boolean
     rolls: Roll.Evaluated<Roll<EmptyObject>>[]
 }
 
@@ -211,6 +212,7 @@ export class SkillCheck {
                 : (d6Term ? [d6Initial, ...favorExplosions.flatMap(r => getDiceTerms(r)).flatMap(t => t.results.map(x => x.result))] : []),
             total: total,
             outcome: isCrit ? appLang.RollResult.crit : (isSuccess ? appLang.RollResult.success : appLang.RollResult.failure),
+            success: isCrit || isSuccess,
             rolls: [roll, ...favorExplosions, ...bonusRolls]
         }
 

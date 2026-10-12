@@ -12,7 +12,7 @@ export class DowntimeApp extends VagabondApplication {
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
             window: { title: locale.title, resizable: true },
-            position: { width: 1000, height: 1200 },
+            position: { width: 1000, height: 'auto' },
             enforceSingleInstancePerActor: true,
             actorId: actor.id,
             Component: DowntimeView
