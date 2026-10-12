@@ -377,7 +377,7 @@
     "Resources": {
       "luck": {
         "name": "Luck",
-        "description": "You can spend 1 Luck to do the following:</br><b>Advantage:</b> Grant Favor on a d20 roll.</br><b>Fluke:</b> Reroll an unresolved die you rolled.<br><b>Plot Armor (variant):</b> Once per Round, if you are reduced to 0 HP, you can spend 1 Luck to regain d6 HP."
+        "description": "You can spend 1 Luck to do the following:</br><b>Advantage:</b> Grant Favor on a d20 roll.</br><b>Fluke:</b> Reroll an unresolved die you rolled.<br><b>Plot Armor (variant):</b> If you are reduced to 0 HP, you can spend 1 Luck to regain HP equal to your remaining Luck."
       },
       "studied": {
         "name": "Studied Die",
