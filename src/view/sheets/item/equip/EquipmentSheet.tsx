@@ -1,14 +1,13 @@
 import { VagabondItemSheet } from "../VagabondItemSheet"
 import { EquipmentSheetComponent } from "./EquipmentSheetComponent"
 
+// @ts-expect-error -- intentionally excluding top and left from DEFAULT_OPTIONS
 export class EquipmentSheet extends VagabondItemSheet {
     Component = EquipmentSheetComponent
     static DEFAULT_OPTIONS = {
         position: {
-            width: 380,
-            height: "auto",
-            top: 100,
-            left: 100
+            width: 360,
+            height: "auto"
         },
         window: {
             resizable: true

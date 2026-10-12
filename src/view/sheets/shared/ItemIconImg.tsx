@@ -1,15 +1,9 @@
 import { Diamond } from "lucide-react"
-import { lazy, Suspense } from "react"
 
 import { getName } from "../../../utils/modelUtil"
 import { tableBorderRounded } from "../../common/border-styles"
 import { Tooltip } from "../../component/Tooltip"
-
-const EquipmentSheet = lazy(() =>
-    import("../item/equip/EquipmentSheetComponent").then(({ EquipmentSheetComponent }) => ({
-        default: EquipmentSheetComponent
-    }))
-)
+import { EquipmentSheetComponent } from "../item/equip/EquipmentSheetComponent"
 
 export const ItemIconImg = ({ item, size = 28 }) => {
     const isEquipped = item.isEquipped
@@ -19,9 +13,7 @@ export const ItemIconImg = ({ item, size = 28 }) => {
     return (
         <div className="flex items-center justify-center relative mr-2 shrink-0">
             <Tooltip interactive={true} content={
-                <Suspense fallback={null}>
-                    <EquipmentSheet item={item.parent} />
-                </Suspense>
+                <EquipmentSheetComponent item={item.parent} />
             }>
                 <img
                     src={item.parent.img}

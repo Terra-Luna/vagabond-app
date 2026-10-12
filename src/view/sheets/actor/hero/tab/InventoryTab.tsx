@@ -72,7 +72,7 @@ const Containers = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="flex flex-wrap gap-1 mt-1">
             {containers.map((container, index) => (
-                <Tooltip key={index} title={container.name} content={
+                <Tooltip key={index} title={container.name} interactive={true} content={
                     <div className={`max-w-[360px] p-2 bg-sheet-main-fill rounded-md mb-2`}>
                         <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
                             <ContainerSheet item={container} hideButtons={true} />
