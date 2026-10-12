@@ -86,9 +86,17 @@ export abstract class Attack {
     }
 
     private applyHealing(args: AttackResolutionArgs) {
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
+        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
         this.getActors(targetIds).forEach(target => {
-            this.updateHP(target?.system, this.getHP(target?.system) + (this.damageRoll?.result?.total ?? 0))
+            const mods = (target?.system as any)?.modifiers?.healing?.in?.modifier ?? {}
+            const flatMod = Number(mods?.flat ?? 0)
+            const diceCount = this.damageRoll?.result?.rollSummaries?.length ?? 0
+            const perDieMod = (Number(mods?.perDie ?? 0)) * diceCount
+            this.updateHP(
+                target?.system,
+                this.getHP(target?.system) +
+                Math.max(0, (this.damageRoll?.result?.total ?? 0) + flatMod + perDieMod)
+            )
         })
     }
 

@@ -1,5 +1,4 @@
 import { Eye, Hand, HandFist, MessageSquareText, Split, Sword, Trash, Undo } from "lucide-react"
-import { createElement } from "react"
 
 import { ItemStackSplitApp } from "../apps/inventory/ItemStackSplitApp"
 import { HeroAttack } from "../combat/engine/HeroAttack"
@@ -15,8 +14,7 @@ import type { EquipmentDataModel, EquipmentSchema } from "../model/item/equip/Eq
 import { SundryDataModel } from "../model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../rules/util/ItemsCache"
-import { sendVagabondChatMessage } from "../view/chat/ChatCardSerializer"
-import { ItemChatCard } from "../view/chat/ItemChatCard"
+import { sendVagabondChatCard } from "../view/chat/ChatCardSerializer"
 import type { CtxMenuItem } from "../view/component/ContextMenu"
 import { sys_id } from "./foundryUtils"
 import { appLang } from "./lang"
@@ -94,12 +92,12 @@ export const useItem = async (
     e?: any
 ) => {
     const sendToChat = () => {
-        sendVagabondChatMessage(actor, createElement(ItemChatCard, {
+        sendVagabondChatCard(actor, "ItemChatCard", {
             actorId: getId(actor),
             itemId: getId(item),
             itemName: getName(item),
             isConsumable: item.system.isConsumable
-        }))
+        })
     }
 
     if (item) {
@@ -127,9 +125,9 @@ export const useItem = async (
 }
 
 export const sendItemToChat = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
-    sendVagabondChatMessage(hero, createElement(ItemChatCard, {
+    sendVagabondChatCard(hero, "ItemChatCard", {
         actorId: getId(hero), itemId: getId(item), itemName: getName(item)
-    }))
+    })
 }
 
 export const equippedItemContextMenu = (hero: any, item: ArmorDataModel | WeaponDataModel | SundryDataModel): CtxMenuItem[] => {

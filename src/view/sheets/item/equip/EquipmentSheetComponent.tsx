@@ -4,6 +4,7 @@ import { ItemRulesManager } from "../../../../rules/ItemRulesManager"
 import { Divider } from "../../../component/Header"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
 import { Description } from "../../shared/Description"
+import { setItemTooltipComponent } from "../../shared/ItemTooltipSheet"
 import { BaseItemSheetComponent } from "../shared/BaseItemSheetComponent"
 import { Bulk } from "./component/BulkConfig"
 import { EquipmentSheetBanner } from "./component/EquipmentSheetBanner"
@@ -83,3 +84,5 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
         />
     )
 }
+
+setItemTooltipComponent(EquipmentSheetComponent)

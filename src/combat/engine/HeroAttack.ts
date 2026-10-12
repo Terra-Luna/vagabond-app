@@ -1,5 +1,3 @@
-import { createElement } from "react"
-
 import type { RollPreset } from "../../apps/attack-builder/model/RollPreset"
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
@@ -10,8 +8,7 @@ import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { roll3dDice } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { getTargetIds, inventoryItemTypes } from "../../utils/modelUtil"
-import { sendVagabondChatCard, sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
-import { SkillCheckChatCard } from "../../view/chat/SkillCheckChatCard"
+import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
@@ -666,9 +663,10 @@ export class HeroAttack extends Attack {
         }
         else if (preset.skill && !preset.damageRolls || preset.damageRolls.length === 0) {
             const result = await makeSkillCheck('check').roll()
-            sendVagabondChatMessage(
+            sendVagabondChatCard(
                 actor,
-                createElement(SkillCheckChatCard, { actorId: actor.id ?? '', result: result }),
+                "SkillCheckChatCard",
+                { actorId: actor.id ?? '', result: result },
                 result.rolls
             )
         }

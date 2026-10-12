@@ -14,7 +14,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             id: "berserk",
             name: "APP.StatusConditions.berserk.name",
             img: "icons/svg/explosion.svg",
-            changes: [{ key: "system.statuses.toggles.berserk", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.berserk", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
         {
             _id: "vBlinded00000000",
@@ -22,8 +22,8 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "APP.StatusConditions.blinded.name",
             img: "icons/svg/blind.svg",
             changes: [
-                { key: "system.statuses.toggles.blinded", mode: "OVERRIDE", value: "true" },
-                { key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true" }
+                { key: "system.statuses.toggles.blinded", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true", priority: 20 }
             ]
         },
         {
@@ -31,35 +31,35 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             id: "burning",
             name: "APP.StatusConditions.burning.name",
             img: "icons/svg/fire.svg",
-            changes: [{ key: "system.statuses.toggles.burning", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.burning", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
         {
             _id: "vCharmed00000000",
             id: "charmed",
             name: "APP.StatusConditions.charmed.name",
             img: "icons/svg/heal.svg",
-            changes: [{ key: "system.statuses.toggles.charmed", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.charmed", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
         {
             _id: "vConfused0000000",
             id: "confused",
             name: "APP.StatusConditions.confused.name",
             img: "icons/svg/stoned.svg",
-            changes: [{ key: "system.statuses.toggles.confused", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.confused", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
         {
             _id: "vDazed0000000000",
             id: "dazed",
             name: "APP.StatusConditions.dazed.name",
             img: "icons/svg/daze.svg",
-            changes: [{ key: "system.statuses.toggles.dazed", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.dazed", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
         {
             _id: "vFatigued0000000",
             id: "fatigued",
             name: "APP.StatusConditions.fatigued.name",
             img: "/icons/svg/unconscious.svg",
-            changes: [{ key: "system.counters.statuses.fatigue", mode: "ADD", value: "1" }]
+            changes: [{ key: "system.counters.statuses.fatigue", mode: "ADD", value: "1", priority: 20 }]
         },
         {
             _id: "vFrightened00000",
@@ -67,8 +67,8 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "APP.StatusConditions.frightened.name",
             img: "icons/svg/terror.svg",
             changes: [
-                { key: "system.statuses.toggles.frightened", mode: "OVERRIDE", value: "true" },
-                { key: "system.modifiers.damage.out.global.bonus.flat", mode: "ADD", value: "-2" }
+                { key: "system.statuses.toggles.frightened", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.modifiers.damage.out.global.bonus.flat", mode: "ADD", value: "-2", priority: 20 }
             ]
         },
         {
@@ -77,7 +77,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "APP.StatusConditions.grappling.name",
             img: "/icons/svg/bones.svg",
             changes: [
-                { key: "system.statuses.toggles.grappling", mode: "OVERRIDE", value: "true" }
+                { key: "system.statuses.toggles.grappling", mode: "OVERRIDE", value: "true", priority: 20 }
             ]
         },
         {
@@ -86,8 +86,8 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "APP.StatusConditions.incapacitated.name",
             img: "icons/svg/falling.svg",
             changes: [
-                { key: "system.statuses.toggles.incapacitated", mode: "OVERRIDE", value: "true" },
-                { key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true" }
+                { key: "system.statuses.toggles.incapacitated", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true", priority: 20 }
             ]
         },
         {
@@ -95,7 +95,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             id: "invisible",
             name: "APP.StatusConditions.invisible.name",
             img: "icons/svg/invisible.svg",
-            changes: [{ key: "system.statuses.toggles.invisible", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.invisible", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
         {
             _id: "vParalyzed000000",
@@ -103,9 +103,9 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "APP.StatusConditions.paralyzed.name",
             img: "/icons/svg/ice-aura.svg",
             changes: [
-                { key: "system.statuses.toggles.paralyzed", mode: "OVERRIDE", value: "true" },
-                { key: "system.statuses.toggles.incapacitated", mode: "OVERRIDE", value: "true" },
-                { key: "system.speed.turn", mode: "OVERRIDE", value: "0" }
+                { key: "system.statuses.toggles.paralyzed", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.statuses.toggles.incapacitated", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.speed.turn", mode: "OVERRIDE", value: "0", priority: 20 }
             ]
         },
         {
@@ -113,7 +113,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             id: "prone",
             name: "APP.StatusConditions.prone.name",
             img: "/icons/svg/falling.svg",
-            changes: [{ key: "system.statuses.toggles.prone", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.prone", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
         {
             _id: "vRestrained00000",
@@ -121,9 +121,9 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "APP.StatusConditions.restrained.name",
             img: "icons/svg/net.svg",
             changes: [
-                { key: "system.statuses.toggles.restrained", mode: "OVERRIDE", value: "true" },
-                { key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true" },
-                { key: "system.speed.turn", mode: "OVERRIDE", value: "0" }
+                { key: "system.statuses.toggles.restrained", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.speed.turn", mode: "OVERRIDE", value: "0", priority: 20 }
             ]
         },
         {
@@ -132,8 +132,8 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "APP.StatusConditions.sickened.name",
             img: "/icons/svg/degen.svg",
             changes: [
-                { key: "system.statuses.toggles.sickened", mode: "OVERRIDE", value: "true" },
-                { key: "system.modifiers.healing.in.modifier", mode: "ADD", value: "-2" }
+                { key: "system.statuses.toggles.sickened", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.modifiers.healing.in.modifier.perDie", mode: "ADD", value: "-2", priority: 20 }
             ]
         },
         {
@@ -141,7 +141,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             id: "suffocating",
             name: "APP.StatusConditions.suffocating.name",
             img: "/icons/svg/acid.svg",
-            changes: [{ key: "system.statuses.toggles.suffocating", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.suffocating", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
         {
             _id: "vUnconscious0000",
@@ -149,10 +149,10 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "APP.StatusConditions.unconscious.name",
             img: "/icons/svg/sleep.svg",
             changes: [
-                { key: "system.statuses.toggles.unconscious", mode: "OVERRIDE", value: "true" },
-                { key: "system.statuses.toggles.blinded", mode: "OVERRIDE", value: "true" },
-                { key: "system.statuses.toggles.incapacitated", mode: "OVERRIDE", value: "true" },
-                { key: "system.statuses.toggles.prone", mode: "OVERRIDE", value: "true" }
+                { key: "system.statuses.toggles.unconscious", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.statuses.toggles.blinded", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.statuses.toggles.incapacitated", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.statuses.toggles.prone", mode: "OVERRIDE", value: "true", priority: 20 }
             ]
         },
         {
@@ -160,14 +160,14 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             id: "vulnerable",
             name: "APP.StatusConditions.vulnerable.name",
             img: "/icons/svg/dice-target.svg",
-            changes: [{ key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
         {
             _id: "vDead00000000000",
             id: "dead",
             name: "APP.StatusConditions.dead.name",
             img: "icons/svg/skull.svg",
-            changes: [{ key: "system.statuses.toggles.dead", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.dead", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
 
         /**
@@ -179,8 +179,8 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "APP.StatusConditions.warded.name",
             img: "/icons/svg/mage-shield.svg",
             changes: [
-                { key: "system.statuses.toggles.warded", mode: "OVERRIDE", value: "true" },
-                { key: "system.armor.rating", mode: "ADD", value: "1" }
+                { key: "system.statuses.toggles.warded", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.armor.rating", mode: "ADD", value: "1", priority: 20 }
             ]
         },
         {
@@ -189,15 +189,15 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "APP.StatusConditions.exalted.name",
             img: "/icons/svg/paralysis.svg",
             changes: [
-                { key: "system.statuses.toggles.exalted", mode: "OVERRIDE", value: "true" },
-                { key: "system.modifiers.damage.out.melee.bonus.perDie", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.brawl.bonus.perDie", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.finesse.bonus.perDie", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.ranged.bonus.perDie", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.thrown.bonus.perDie", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.defense.bonus.perDie", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.spell.bonus.perDie", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.alchemy.bonus.perDie", mode: "ADD", value: "1" }
+                { key: "system.statuses.toggles.exalted", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.modifiers.damage.out.melee.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
+                { key: "system.modifiers.damage.out.brawl.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
+                { key: "system.modifiers.damage.out.finesse.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
+                { key: "system.modifiers.damage.out.ranged.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
+                { key: "system.modifiers.damage.out.thrown.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
+                { key: "system.modifiers.damage.out.defense.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
+                { key: "system.modifiers.damage.out.spell.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
+                { key: "system.modifiers.damage.out.alchemy.bonus.perDie", mode: "ADD", value: "1", priority: 20 }
             ]
         },
         {
@@ -206,10 +206,10 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "APP.StatusConditions.blessed.name",
             img: "/icons/svg/angel.svg",
             changes: [
-                { key: "system.statuses.toggles.blessed", mode: "OVERRIDE", value: "true" },
-                { key: "system.modifiers.skillCheck.reflex.d4", mode: "OVERRIDE", value: "true" },
-                { key: "system.modifiers.skillCheck.endure.d4", mode: "OVERRIDE", value: "true" },
-                { key: "system.modifiers.skillCheck.will.d4", mode: "OVERRIDE", value: "true" }
+                { key: "system.statuses.toggles.blessed", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.modifiers.skillCheck.reflex.d4", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.modifiers.skillCheck.endure.d4", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.modifiers.skillCheck.will.d4", mode: "OVERRIDE", value: "true", priority: 20 }
             ]
         },
         {
@@ -217,14 +217,14 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             id: "marked",
             name: "APP.StatusConditions.marked.name",
             img: "/icons/svg/target.svg",
-            changes: [{ key: "system.statuses.toggles.marked", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.marked", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
         {
             _id: "vHexed0000000000",
             id: "hexed",
             name: "APP.StatusConditions.hexed.name",
             img: "/icons/svg/cancel.svg",
-            changes: [{ key: "system.statuses.toggles.hexed", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.hexed", mode: "OVERRIDE", value: "true", priority: 20 }]
         }
     ]
 

@@ -36,7 +36,7 @@ export function useLiveTargetSync(attack?: Attack | undefined): string[] {
             const actorAttacks = attackRegistry[attack.actor.id] || []
 
             const latestAttack = actorAttacks[actorAttacks.length - 1]
-            if (latestAttack && latestAttack.id !== attack.id) return
+            if (!latestAttack || latestAttack.id !== attack.id) return
 
             const filteredIds = Array.from(user.targets).map(t => t.id).filter((id): id is string => !!id)
 

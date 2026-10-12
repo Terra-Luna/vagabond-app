@@ -2,8 +2,7 @@ import { MessageSquareText } from "lucide-react"
 
 import { appLang } from "../../../../utils/lang"
 import { getId } from "../../../../utils/modelUtil"
-import { sendVagabondChatMessage } from "../../../chat/ChatCardSerializer"
-import { ItemChatCard } from "../../../chat/ItemChatCard"
+import { sendVagabondChatCard } from "../../../chat/ChatCardSerializer"
 import { CtxMenuItem,useContextMenu } from "../../../component/ContextMenu"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
 
@@ -18,13 +17,14 @@ export const ItemPortraitComponent = ({ item, size = 56, className, disableCtxMe
         {
             icon: MessageSquareText,
             label: appLang.HeroSheet.Inventory.ctxChat,
-            action: () => sendVagabondChatMessage(
+            action: () => sendVagabondChatCard(
                 item.parent,
-                <ItemChatCard
-                    actorId={item.parent?.id ?? ''}
-                    itemId={getId(item)}
-                    itemName={item.name}
-                />
+                "ItemChatCard",
+                {
+                    actorId: item.parent?.id ?? '',
+                    itemId: getId(item),
+                    itemName: item.name
+                }
             )
         },
         ...imageEditCtxMenuItems

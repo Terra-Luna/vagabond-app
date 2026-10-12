@@ -7,8 +7,7 @@ import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getId, getTargetIds } from "../../../../../utils/modelUtil"
-import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
-import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
+import { sendVagabondChatCard } from "../../../../chat/ChatCardSerializer"
 
 export const useAddActionMenu = () => {
     const [isAddActionOpen, setIsAddActionOpen] = useState(false)
@@ -34,12 +33,12 @@ export const onClickAction = async (
         await attack.initiate()
     }
     else {
-        sendVagabondChatMessage(npc, <AbilityChatCard
-            actorId={getId(npc)}
-            title={name}
-            description={description ?? ''}
-            tokenIds={getTargetIds()}
-        />)
+        sendVagabondChatCard(npc, "AbilityChatCard", {
+            actorId: getId(npc),
+            title: name,
+            description: description ?? '',
+            tokenIds: getTargetIds()
+        })
     }
 }
 

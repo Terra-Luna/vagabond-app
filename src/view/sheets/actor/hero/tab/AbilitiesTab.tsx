@@ -9,8 +9,7 @@ import { ItemsCache } from "../../../../../rules/util/ItemsCache"
 import { groupBy } from "../../../../../utils/collectionUtil"
 import { appLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
-import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
-import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
+import { sendVagabondChatCard } from "../../../../chat/ChatCardSerializer"
 import { PrimaryButton, SecondaryButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../component/DynamicGrid"
@@ -76,8 +75,10 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                 {
                                     icon: MessageSquareText,
                                     label: appLang.HeroSheet.Inventory.ctxChat,
-                                    action: () => sendVagabondChatMessage(
-                                        hero, <AbilityChatCard actorId={getId(hero)} img={f.img ?? ''} title={f.name} description={f.description} />
+                                    action: () => sendVagabondChatCard(
+                                        hero,
+                                        "AbilityChatCard",
+                                        { actorId: getId(hero), img: f.img ?? '', title: f.name, description: f.description }
                                     )
                                 }
                             ])}>
@@ -110,14 +111,15 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         }).map((p: any, index: number) => (
                             <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                                 {
-                                    icon: MessageSquareText, label: appLang.HeroSheet.Inventory.ctxChat, action: () => sendVagabondChatMessage(hero,
-                                        <AbilityChatCard
-                                            actorId={getId(hero)}
-                                            img={p.parent.img}
-                                            title={p.parent.name}
-                                            subtitle={getPerkSubheader(p)}
-                                            description={p.description}
-                                        />
+                                    icon: MessageSquareText, label: appLang.HeroSheet.Inventory.ctxChat, action: () => sendVagabondChatCard(hero,
+                                        "AbilityChatCard",
+                                        {
+                                            actorId: getId(hero),
+                                            img: p.parent.img,
+                                            title: p.parent.name,
+                                            subtitle: getPerkSubheader(p),
+                                            description: p.description
+                                        }
                                     )
                                 }
                             ])}>

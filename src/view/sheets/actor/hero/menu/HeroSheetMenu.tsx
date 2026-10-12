@@ -107,8 +107,8 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     <div className="-mx-2">
                         <ActiveEffectsView initialDocument={hero.parent} />
                     </div>
-                </ul >
-            </div >
-        </div >
+                </ul>
+            </div>
+        </div>
     </>)
 }

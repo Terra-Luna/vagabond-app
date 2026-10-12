@@ -117,6 +117,7 @@ export function installChatScrollGuard() {
         chatPinnedToBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40
     }, { capture: true, passive: true })
 }
+
 export const SmartScrollWrapper = ({ children }: { children: ReactNode }) => {
     const localRef = useRef<HTMLDivElement>(null)
 

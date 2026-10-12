@@ -1,0 +1,94 @@
+{
+  "name": "Harpy's Feather",
+  "type": "weapon",
+  "_id": "yR27e2RhKTqFjYpp",
+  "img": "/icons/commodities/materials/feather-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">A feather from a @UUID[Compendium.vagabond-app.relics.Item.wd0Jd50ELgsp4IrM]{Harpy}.</span></p>",
+    "rules": [],
+    "category": "weapons",
+    "value": {
+      "g": 1,
+      "s": 0,
+      "c": 0
+    },
+    "copperValue": 0,
+    "bulk": {
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 1000,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": [
+      {
+        "id": "bonus-weapon-1",
+        "category": {
+          "value": "bonus",
+          "label": "Bonus"
+        },
+        "power": {
+          "value": "weapon-1",
+          "label": "Weapon +1",
+          "modifiers": [
+            {
+              "selector": [
+                "system.damage.dice.modifier"
+              ],
+              "value": 1
+            }
+          ]
+        },
+        "goldValue": 100,
+        "description": "+1 bonus to Attack damage.",
+        "bound": false
+      }
+    ],
+    "range": "close",
+    "damage": {
+      "dice": {
+        "count": 1,
+        "faces": 4,
+        "modifier": 1,
+        "explodesOn": []
+      },
+      "type": "physical"
+    },
+    "grip": {
+      "style": "H",
+      "state": "H"
+    },
+    "skills": [
+      "finesse",
+      "melee"
+    ],
+    "properties": [
+      "keen",
+      "thrown"
+    ],
+    "material": "steel"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.2.31",
+    "createdTime": 1791839582118,
+    "modifiedTime": 1791839797922,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!yR27e2RhKTqFjYpp"
+}

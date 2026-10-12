@@ -5,8 +5,7 @@ import { FeatureDataModel } from "../../../../model/item/character/FeatureDataMo
 import { PerkDataModel } from "../../../../model/item/character/PerkDataModel"
 import { spellDamageBase,SpellDataModel } from "../../../../model/item/character/SpellDataModel"
 import { appLang } from "../../../../utils/lang"
-import { AbilityChatCard } from "../../../chat/AbilityChatCard"
-import { sendVagabondChatMessage } from "../../../chat/ChatCardSerializer"
+import { sendVagabondChatCard } from "../../../chat/ChatCardSerializer"
 import { CtxMenuItem,useContextMenu } from "../../../component/ContextMenu"
 import { EditableTextField } from "../../../component/EditableTextField"
 import { Divider } from "../../../component/Header"
@@ -28,13 +27,14 @@ export const ItemSheetBanner = ({ item, hideImage, className }: {
             icon: MessageSquareText,
             label: appLang.ButtonActions.chat,
             action: () => {
-                sendVagabondChatMessage(
+                sendVagabondChatCard(
                     null,
-                    <AbilityChatCard
-                        actorId={item.actor?.id ?? null}
-                        title={item.name}
-                        description={item.system.description}
-                    />
+                    "AbilityChatCard",
+                    {
+                        actorId: item.actor?.id ?? null,
+                        title: item.name,
+                        description: item.system.description
+                    }
                 )
             }
         },

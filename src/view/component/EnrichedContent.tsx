@@ -5,8 +5,7 @@ import { addCountdown, checkCountdownPermission } from '../../apps/vagabond-tool
 import { SkillCheck } from '../../combat/engine/roll/SkillCheck'
 import { HeroDataModel } from '../../model/actor/HeroDataModel'
 import { getId } from '../../utils/modelUtil'
-import { sendVagabondChatMessage } from '../chat/ChatCardSerializer'
-import { SkillCheckChatCard } from '../chat/SkillCheckChatCard'
+import { sendVagabondChatCard } from '../chat/ChatCardSerializer'
 
 const countdownFormulaPattern = /^cd(\d+)$/i
 
@@ -47,7 +46,7 @@ export const EnrichedContent = ({ content, styleClasses = '', actor }: { content
             if (actor && flavor?.startsWith("skillCheck.")) {
                 const skill = flavor.slice(11)
                 const skillCheck = await new SkillCheck(actor.system as HeroDataModel, { type: 'check', skill }).roll()
-                sendVagabondChatMessage(actor, <SkillCheckChatCard actorId={getId(actor)} result={skillCheck} />)
+                sendVagabondChatCard(actor, "SkillCheckChatCard", { actorId: getId(actor), result: skillCheck })
                 return
             }
 

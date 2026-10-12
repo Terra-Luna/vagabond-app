@@ -3,17 +3,18 @@ import { Diamond } from "lucide-react"
 import { getName } from "../../../utils/modelUtil"
 import { tableBorderRounded } from "../../common/border-styles"
 import { Tooltip } from "../../component/Tooltip"
-import { EquipmentSheetComponent } from "../item/equip/EquipmentSheetComponent"
+import { getItemTooltipComponent } from "./ItemTooltipSheet"
 
 export const ItemIconImg = ({ item, size = 28 }) => {
     const isEquipped = item.isEquipped
     const isBound = item.isBoundRelic?.()
     const isCursed = item.isCursed?.()
+    const TooltipSheet = getItemTooltipComponent()
 
     return (
         <div className="flex items-center justify-center relative mr-2 shrink-0">
             <Tooltip interactive={true} content={
-                <EquipmentSheetComponent item={item.parent} />
+                TooltipSheet ? <TooltipSheet item={item.parent} /> : null
             }>
                 <img
                     src={item.parent.img}

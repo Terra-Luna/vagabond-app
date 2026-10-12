@@ -42,7 +42,7 @@ export class SpellcastingApp extends VagabondApplication {
 
         super({
             window: {
-                title: `${appLang.Spellcasting.title}: ${actor.name} (${(actor.system?.class as any)?.parent?.name})`,
+                title: `${appLang.Spellcasting.title}: ${actor.name}`,
                 resizable: false
             },
             position: {

@@ -11,9 +11,7 @@ import { sys_id } from "../../../../../utils/foundryUtils"
 import { appLang } from "../../../../../utils/lang"
 import { localizeString } from "../../../../../utils/localeUtils"
 import { getId } from "../../../../../utils/modelUtil"
-import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
-import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
-import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
+import { sendVagabondChatCard } from "../../../../chat/ChatCardSerializer"
 import { tableBorder, tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
@@ -109,14 +107,16 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
     const updateLuck = useCallback(async (auxClick: boolean, e?: any) => {
         if (e?.shiftKey && !auxClick) {
             const roll = await new Roll('1d6').evaluate()
-            sendVagabondChatMessage(
+            sendVagabondChatCard(
                 hero,
-                <TrackerUpdateChatCard
-                    heroId={hero.parent.id}
-                    resource="luck"
-                    verb={appLang.HeroSheet.spent}
-                    roll={roll.total}
-                />, [roll]
+                "TrackerUpdateChatCard",
+                {
+                    heroId: hero.parent.id,
+                    resource: "luck",
+                    verb: appLang.HeroSheet.spent,
+                    roll: roll.total
+                },
+                [roll]
             )
             hero.parent.update(
                 { 'system.statuses.counters.luck': luck - 1 } as Record<string, number>,
@@ -143,14 +143,16 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
     const updateStudied = useCallback(async (auxClick: boolean, e?: any) => {
         if (e?.shiftKey && !auxClick) {
             const roll = await new Roll('1d6').evaluate()
-            sendVagabondChatMessage(
+            sendVagabondChatCard(
                 hero,
-                <TrackerUpdateChatCard
-                    heroId={hero.parent.id}
-                    resource="studied"
-                    verb={appLang.HeroSheet.spent}
-                    roll={roll.total}
-                />, [roll]
+                "TrackerUpdateChatCard",
+                {
+                    heroId: hero.parent.id,
+                    resource: "studied",
+                    verb: appLang.HeroSheet.spent,
+                    roll: roll.total
+                },
+                [roll]
             )
             await hero.parent.update(
                 { 'system.statuses.counters.studied': studied - 1 } as Record<string, number>,
@@ -295,7 +297,7 @@ const Save = ({ hero, save }: {
             <div className={`flex items-center font-eskapade hover-glow ${tableBorder}/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await new SkillCheck(hero, { type: 'save', skill: save.key, clickEvent: e }).roll()
-                    sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />)
+                    sendVagabondChatCard(hero, "SkillCheckChatCard", { actorId: getId(hero), result: skillCheck })
                 }
             }>
                 <div className="mx-1 w-full line-clamp-1">
@@ -366,7 +368,7 @@ export const Skill = ({ hero, trained, skillKey, name, value, isCastSkill }: {
                 <div className={`flex justify-between ml-2 mt-1 w-full text-base font-eskapade font-bold align-middle hover-glow`} onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => {
                         const skillCheck = await new SkillCheck(hero, { type: 'check', skill: skillKey, clickEvent: e }).roll()
-                        sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />)
+                        sendVagabondChatCard(hero, "SkillCheckChatCard", { actorId: getId(hero), result: skillCheck })
                     }
                 }>
                     <div className="flex gap-x-2 items-center">

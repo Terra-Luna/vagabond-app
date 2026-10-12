@@ -5,8 +5,7 @@ import { HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
 import { spellDamageBase } from "../../../../../../model/item/character/SpellDataModel"
 import { appLang } from "../../../../../../utils/lang"
 import { getId } from "../../../../../../utils/modelUtil"
-import { AbilityChatCard } from "../../../../../chat/AbilityChatCard"
-import { sendVagabondChatMessage } from "../../../../../chat/ChatCardSerializer"
+import { sendVagabondChatCard } from "../../../../../chat/ChatCardSerializer"
 import { useContextMenu } from "../../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../../component/DynamicGrid"
 import { SkillCard, SkillCardTitle } from "../../../../../component/SkillCard"
@@ -30,15 +29,16 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                     },
                     {
                         icon: MessageSquareText, label: appLang.ButtonActions.chat, action: () =>
-                            sendVagabondChatMessage(
+                            sendVagabondChatCard(
                                 hero,
-                                <AbilityChatCard
-                                    actorId={getId(hero)}
-                                    img={sp.parent.img}
-                                    title={sp.parent.name}
-                                    subtitle={spellDamageBase(sp)}
-                                    description={sp.description}
-                                />
+                                "AbilityChatCard",
+                                {
+                                    actorId: getId(hero),
+                                    img: sp.parent.img,
+                                    title: sp.parent.name,
+                                    subtitle: spellDamageBase(sp),
+                                    description: sp.description
+                                }
                             )
                     }
                 ])}>

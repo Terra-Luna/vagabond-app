@@ -52,7 +52,10 @@ export const modifierSchema = () => {
 
         healing: new fields.SchemaField({
             in: new fields.SchemaField({
-                modifier: new fields.NumberField({ ...uncappedInteger, initial: 0 })
+                modifier: new fields.SchemaField({
+                    flat: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+                    perDie: new fields.NumberField({ ...uncappedInteger, initial: 0 })
+                })
             }),
             out: new fields.SchemaField({
                 alchemy: new fields.SchemaField({ ...damageOutSchema() }),

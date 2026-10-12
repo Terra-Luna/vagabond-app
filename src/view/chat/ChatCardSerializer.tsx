@@ -1,5 +1,3 @@
-import { ReactElement } from "react"
-
 import { sys_id } from "../../utils/foundryUtils"
 import { getId, getName } from "../../utils/modelUtil"
 import type { InlineRollData } from "./InlineRollChatCard"
@@ -10,23 +8,6 @@ interface ElementBlueprint {
         children?: ElementBlueprint | ElementBlueprint[] | string | number
         [key: string]: any
     }
-}
-
-export const sendVagabondChatMessage = async (
-    actor: any,
-    card: React.ReactElement,
-    rolls: any[] = []
-) => {
-    const blueprint = serializeElement(card)
-    const chatRoot = `<div class="vagabond-react-chat-root"/>`
-    await ChatMessage.create({
-        speaker: { actor: getId(actor), alias: getName(actor) },
-        content: chatRoot,
-        rolls: rolls,
-        flags: {
-            [sys_id]: { blueprint }
-        } as any
-    })
 }
 
 export const sendVagabondChatCard = async (
@@ -94,36 +75,4 @@ export const serializeRawChatMessage = (message: any) => {
         content: CHAT_ROOT,
         flags: { [sys_id]: { blueprint } }
     })
-}
-
-// Converts a live ReactElement tree into serializable JSON
-function serializeElement(element: ReactElement): ElementBlueprint {
-    const { type, props } = element
-
-    // Resolve component name if it's a functional/class component, otherwise use string tag
-    const typeName = typeof type === 'function' ? type.name : (type as string)
-
-    const serializedProps: Record<string, any> = {}
-
-    for (const [key, value] of Object.entries(props as any)) {
-        if (key === 'children') {
-            if (React.isValidElement(value)) {
-                serializedProps.children = serializeElement(value)
-            }
-            else if (Array.isArray(value)) {
-                serializedProps.children = value.map(child =>
-                    React.isValidElement(child) ? serializeElement(child) : child
-                )
-            }
-            else {
-                serializedProps.children = value // string, number, etc.
-            }
-        }
-        else if (typeof value !== 'function') {
-            // Strips out runtime callbacks/functions which cannot be serialized
-            serializedProps[key] = value
-        }
-    }
-
-    return { type: typeName, props: serializedProps }
 }

@@ -1,8 +1,5 @@
-import { createElement } from "react"
-
 import { showFloatingText } from "../../../utils/foundryUtils"
-import { sendVagabondChatMessage } from "../../../view/chat/ChatCardSerializer"
-import { CountdownRollChatCard } from "../../../view/chat/CountdownChatCard"
+import { sendVagabondChatCard } from "../../../view/chat/ChatCardSerializer"
 import { getDiceTerms } from "../util/dice-utils"
 import { CountdownResult } from "./CountdownResult"
 import { RollSummary } from "./RollSummary"
@@ -39,9 +36,10 @@ export class CountdownRoll {
         }
 
         if (this.result.status !== "burning") {
-            sendVagabondChatMessage(
+            sendVagabondChatCard(
                 null,
-                createElement(CountdownRollChatCard, { result: this.result }),
+                "CountdownRollChatCard",
+                { result: this.result },
                 [roll]
             )
         }

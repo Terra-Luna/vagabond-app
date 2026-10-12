@@ -1,5 +1,3 @@
-import { createElement } from "react"
-
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
@@ -11,8 +9,7 @@ import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { getId, inventoryItemTypes } from "../../utils/modelUtil"
 import { removeWhitespace } from "../../utils/stringUtil"
-import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
-import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
+import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { CapacityInfo } from "../../view/sheets/shared/CapacityGauge"
 import { consolidateCoins } from "../common/CoinValue"
 import { fields, optionalString, requiredInteger, requiredString } from "../common/sharedSchemas"
@@ -166,7 +163,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
         const pendingResourceTrackerUpdate = (options as any).resourceTrackerUpdate
         if (pendingResourceTrackerUpdate && !(options as any).skipTrackerChatCard) {
-            sendVagabondChatMessage(this.parent, createElement(TrackerUpdateChatCard, { heroId: getId(this), verb: pendingResourceTrackerUpdate.verb, resource: pendingResourceTrackerUpdate.resource }))
+            sendVagabondChatCard(this.parent, "TrackerUpdateChatCard", { heroId: getId(this), verb: pendingResourceTrackerUpdate.verb, resource: pendingResourceTrackerUpdate.resource })
         }
     }
 
