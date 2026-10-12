@@ -3,10 +3,15 @@ import { execSync } from "child_process"
 import fs from "fs"
 import path from "path"
 
+let dryrun = false
 const args = process.argv.slice(2)
 const manifestPath = "./public/system.json"
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"))
 let version = (args[0] || 'v0.0.1')
+
+if (args.includes("dryrun")) {
+    dryrun = true
+}
 
 if (args.includes("--help") || args.includes("--usage")) {
     console.info("Usage: pnpm deploy {version number} {destination}")
@@ -15,7 +20,7 @@ if (args.includes("--help") || args.includes("--usage")) {
     process.exit(0)
 }
 
-if (args.includes("patch")) {
+if (args.includes("patch") && !dryrun) {
     const currentVersion = manifest.version.split('.')
     const patch = Number(currentVersion.pop()) + 1
     version = `v${currentVersion[0]}.${currentVersion[1]}.${patch}`
@@ -43,20 +48,55 @@ console.info("Building release ZIP...")
 const zip = new AdmZip()
 zip.addLocalFolder("./dist")
 zip.addLocalFolder("./lang", "lang")
-zip.writeZip(destination)
-console.info(`\nRelease zip created at ${destination}`)
+if (!dryrun) {
+    zip.writeZip(destination)
+    console.info(`\nRelease zip created at ${destination}`)
+}
+
+const updateFoundryPackage = async (): Promise<any> => {
+    const authToken = process.env.VG_APP_AUTH_TOKEN
+    if (!authToken) return
+
+    const response = await fetch("https://foundryvtt.com/_api/packages/release_version/", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authToken,
+        },
+        body: JSON.stringify({
+            "id": "vagabond-app",
+            "dry-run": dryrun,
+            "release": {
+                "version": version.replace("v", ""),
+                "manifest": `https://github.com/Terra-Luna/vagabond-app/releases/download/${version}/system.json`,
+                "compatibility": {
+                    "minimum": "14",
+                    "verified": "14.361",
+                    "maximum": ""
+                }
+            }
+        })
+    })
+    return await response.json()
+}
 
 // Release to GitHub
-console.info(`Creating GitHub release for ${version}...`)
 try {
-    execSync(
-        `gh release create ${version} "${destination}" "${manifestPath}" --title "Release ${version}" --notes "Automated release for version ${version}"`,
-        { stdio: "inherit" }
-    )
-    console.info("GitHub release created, ZIP and system.json uploaded successfully!");
+    if (!dryrun) {
+        console.info(`Creating GitHub release for ${version}...`)
+        execSync(
+            `gh release create ${version} "${destination}" "${manifestPath}" --title "Release ${version}" --notes "Automated release for version ${version}"`,
+            { stdio: "inherit" }
+        )
+        console.info(`GitHub release process completed for ${version}.`)
+    }
+
+    console.info(`Updating Foundry package for ${version}${dryrun ? " (dry run)..." : "..."}`)
+    const updateResponse = await updateFoundryPackage()
+    console.info("Foundry package update response:", { updateResponse })
 }
 catch (error) {
-    console.error(`Failed to create GitHub release. Make sure GitHub CLI (gh) is installed and authenticated. ${error}`)
+    console.error(`Failed to create GitHub release or update Foundry package: ${error}`)
     process.exit(1)
 }
 finally {
@@ -65,17 +105,19 @@ finally {
      * future release state which will force Foundry to recognize database
      * updates and run the migration scripts after a system update.
      */
-    const currentVersion = manifest.version.split('.')
-    const patch = Number(currentVersion.pop()) + 1
-    version = `${currentVersion[0]}.${currentVersion[1]}.${patch}`
-    manifest.version = version
-    fs.writeFileSync("./public/system.json", JSON.stringify(manifest, null, 2), "utf-8")
+    if (!dryrun) {
+        const currentVersion = manifest.version.split('.')
+        const patch = Number(currentVersion.pop()) + 1
+        version = `${currentVersion[0]}.${currentVersion[1]}.${patch}`
+        manifest.version = version
+        fs.writeFileSync("./public/system.json", JSON.stringify(manifest, null, 2), "utf-8")
 
-    // Rebuild and launch dev server...
-    console.info(`Updating working patch version: ${version}.`)
-    execSync(`pnpm build`)
-    console.info(`Rebuilding & starting dev server...`)
-    execSync(`pnpm foundry`)
+        // Rebuild and launch dev server...
+        console.info(`Updating working patch version: ${version}.`)
+        execSync(`pnpm build`)
+        console.info(`Rebuilding & starting dev server...`)
+        execSync(`pnpm foundry`)
+    }
 }
 
 process.exit(0)
