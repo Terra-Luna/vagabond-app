@@ -1,11 +1,16 @@
+import { useState } from "react"
+
+import { SkillCheckResult } from "../../combat/engine/roll/SkillCheck"
 import { Table } from "../../combat/ui/Table"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { CollapsibleSection } from "../../view/component/Collapsible"
+import { DiceRollEnrichedText } from "../../view/component/DiceRollEnrichedText"
 import { DynamicGrid } from "../../view/component/DynamicGrid"
 import { EnrichedContent } from "../../view/component/EnrichedContent"
 import { Header } from "../../view/component/Header"
+import { SkillCheckEnrichedText } from "../../view/component/SkillCheckEnrichedText"
 import { Studied } from "../../view/sheets/actor/hero/tab/TopSection"
 
 const locale = appLang.Downtime
@@ -88,19 +93,21 @@ const Foraging = ({ actor }) => {
         <Section>
             <Header title={locale.Foraging.title} />
             <div className={textCss}>
-                <EnrichedContent actor={actor} content={locale.Foraging.body} /><br />
-                <EnrichedContent actor={actor} content={locale.Foraging.rations + " " + locale.Foraging.rationsExplainer} />
-                <EnrichedContent actor={actor} content={locale.Foraging.materials + " " + locale.Foraging.materialsExplainer} />
+                <SkillCheckEnrichedText actor={actor} content={locale.Foraging.body} /><br />
+                <DiceRollEnrichedText actor={actor} content={locale.Foraging.rations + " " + locale.Foraging.rationsExplainer} />
+                <DiceRollEnrichedText actor={actor} content={locale.Foraging.materials + " " + locale.Foraging.materialsExplainer} />
             </div>
         </Section>
     )
 }
 
 const Hunting = ({ actor }) => {
+    const [rollResult, setRollResult] = useState<SkillCheckResult | Roll>()
+    const wildGameResult = (rollResult instanceof Roll) ? rollResult : undefined
     return (
         <Section>
             <Header title={locale.Hunting.title} />
-            <EnrichedContent content={locale.Hunting.body} actor={actor} />
+            <SkillCheckEnrichedText content={locale.Hunting.body} actor={actor} setRollResult={setRollResult} />
             <CollapsibleSection startCollapsed useClearHeader title={locale.Hunting.huntingInfo} content={
                 <div className="px-4">
                     {locale.Hunting.additionalInfo}<br /><br />
@@ -108,7 +115,7 @@ const Hunting = ({ actor }) => {
                     <b>{locale.Hunting.materials}</b> {locale.Hunting.materialsExplainer}
                 </div>
             } />
-            <Table headers={locale.Hunting.tableHeaders} data={locale.Hunting.table} />
+            <Table headers={locale.Hunting.tableHeaders} data={locale.Hunting.table} highlightedRow={wildGameResult ? parseInt(wildGameResult.result) - 1 : undefined} />
         </Section>
     )
 }
