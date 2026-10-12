@@ -76,33 +76,21 @@
         "rating": 1,
         "slots": 1,
         "mitReq": 2,
-        "value": {
-          "g": 0,
-          "s": 50,
-          "c": 0
-        }
+        "value": {"g": 0, "s": 50, "c": 0}
       },
       "medium": {
         "name": "Medium",
         "rating": 2,
         "slots": 2,
         "mitReq": 4,
-        "value": {
-          "g": 1,
-          "s": 0,
-          "c": 0
-        }
+        "value": {"g": 1, "s": 0, "c": 0}
       },
       "heavy": {
         "name": "Heavy",
         "rating": 3,
         "slots": 3,
         "mitReq": 6,
-        "value": {
-          "g": 2,
-          "s": 0,
-          "c": 0
-        }
+        "value": {"g": 2, "s": 0, "c": 0}
       }
     },
     "Zones": {
@@ -332,54 +320,18 @@
       }
     },
     "Duration": [
-      {
-        "value": "-",
-        "label": "-"
-      },
-      {
-        "value": "Cd4",
-        "label": "Cd4"
-      },
-      {
-        "value": "Cd6",
-        "label": "Cd6"
-      },
-      {
-        "value": "Cd8",
-        "label": "Cd8"
-      },
-      {
-        "value": "Cd10",
-        "label": "Cd10"
-      },
-      {
-        "value": "Cd12",
-        "label": "Cd12"
-      },
-      {
-        "value": "Cd20",
-        "label": "Cd20"
-      },
-      {
-        "value": "focus",
-        "label": "Focused"
-      },
-      {
-        "value": "continual",
-        "label": "Continual"
-      },
-      {
-        "value": "round",
-        "label": "Round"
-      },
-      {
-        "value": "scene",
-        "label": "Scene"
-      },
-      {
-        "value": "shift",
-        "label": "Shift"
-      }
+      { "value": "-", "label": "-" },
+      { "value": "Cd4", "label": "Cd4" },
+      { "value": "Cd6", "label": "Cd6" },
+      { "value": "Cd8", "label": "Cd8" },
+      { "value": "Cd10", "label": "Cd10" },
+      { "value": "Cd12", "label": "Cd12" },
+      { "value": "Cd20", "label": "Cd20" },
+      { "value": "focus", "label": "Focused"},
+      { "value": "continual", "label": "Continual" },
+      { "value": "round", "label": "Round" },
+      { "value": "scene", "label": "Scene" },
+      { "value": "shift", "label": "Shift" }
     ],
     "Wealth": {
       "g": "g",
@@ -413,70 +365,14 @@
       }
     },
     "BaseStatBlocks": [
-      [
-        5,
-        5,
-        5,
-        5,
-        3,
-        3
-      ],
-      [
-        6,
-        5,
-        5,
-        4,
-        3,
-        3
-      ],
-      [
-        6,
-        6,
-        4,
-        4,
-        3,
-        3
-      ],
-      [
-        6,
-        6,
-        5,
-        3,
-        3,
-        2
-      ],
-      [
-        7,
-        5,
-        4,
-        4,
-        3,
-        3
-      ],
-      [
-        7,
-        5,
-        5,
-        3,
-        3,
-        2
-      ],
-      [
-        7,
-        6,
-        4,
-        3,
-        3,
-        2
-      ],
-      [
-        7,
-        7,
-        3,
-        3,
-        2,
-        2
-      ]
+      [5, 5, 5, 5, 3, 3],
+      [6, 5, 5, 4, 3, 3],
+      [6, 6, 4, 4, 3, 3],
+      [6, 6, 5, 3, 3, 2],
+      [7, 5, 4, 4, 3, 3],
+      [7, 5, 5, 3, 3, 2],
+      [7, 6, 4, 3, 3, 2],
+      [7, 7, 3, 3, 2, 2]
     ],
     "Resources": {
       "luck": {
@@ -810,7 +706,7 @@
         "travel": "TRAVEL",
         "downtime": "DOWNTIME",
         "grantsModifiers": "GRANTS & MODIFIERS"
-      },
+      },      
       "Inventory": {
         "item": "ITEM",
         "slots": "SLOTS",
@@ -1002,10 +898,10 @@
       }
     },
     "PrerequisiteTypes": {
-      "stat": "Stat",
-      "trained": "Trained",
-      "spell": "Spell",
-      "other": "Other"
+        "stat": "Stat",
+        "trained": "Trained",
+        "spell": "Spell",
+        "other": "Other"
     },
     "Grips": {
       "H": "1H",
@@ -1104,9 +1000,9 @@
       "skillOptsJoiner": "from"
     },
     "PerkSheet": {
-      "prereqLabel": "Req",
-      "prereqAnd": "and",
-      "prereqOr": "or"
+       "prereqLabel": "Req",
+       "prereqAnd": "and",
+       "prereqOr": "or"
     },
     "ButtonActions": {
       "save": "Save",
@@ -1203,605 +1099,430 @@
       "numberAppearingRollTooltip": "Click to roll number appearing",
       "toggleVisibilitySelected": "Toggle Visibility of Selected Tokens",
       "removeAll": "Remove all"
-    },
-    "DiceRoll": {
-      "title": "Roll",
-      "diceCount": "Dice count",
-      "flatModifier": "Flat modifier (can be negative)",
-      "explodingDiceValues": "Exploding dice values",
-      "explodeOnCriticalOnly": "Only explode on a Critical hit",
-      "critOnly": "Crit only",
-      "extraDiceOnCritical": "Extra dice on a Critical hit",
-      "critDice": "Crit dice",
-      "rerollAbbreviation": "RR",
-      "rerollValues": "Reroll on these values",
-      "explodesOn": "Explodes on: {{values}}"
-    },
-    "AttackBuilder": {
-      "title": "Roll Builder",
-      "deletePreset": "Delete preset?",
-      "favorResultsCountTowardCrit": "Favor die results count towards Crit threshold.",
-      "critSum": "Crit Sum",
-      "favorDiceCanExplode": "Favor dice can explode.",
-      "explodingFavor": "Expld. Favor",
-      "plusFavor": "+Favor",
-      "ignoreTargetArmor": "Ignore target Armor",
-      "spendLuckToReroll": "Spend a Luck to reroll",
-      "spendLuckToAddFavor": "Spend a Luck to add Favor or remove Hinder",
-      "spendStudyToAddFavor": "Spend a Studied die to add Favor or remove Hinder",
-      "presets": "Roll Presets",
-      "addCustomPreset": "Add new custom roll preset.",
-      "rerollExample": "E.g., 1, 2",
-      "explodeExample": "E.g., 6, 10",
-      "csvDiceExample": "e.g., 6, 10, 12",
-      "deletePresetDescription": "This will delete the preset and cannot be undone."
-    },
-    "AdversarySheet": {
-      "damageAbbreviation": "Dmg:",
-      "actionCombo": "Action Combo",
-      "comboName": "Combo Name:",
-      "notes": "Notes:",
-      "name": "Name:",
-      "effect": "Effect:",
-      "damageType": "Damage Type:",
-      "saves": "Saves:",
-      "statuses": "Statuses:",
-      "recharge": "Recharge:",
-      "comboNamePlaceholder": "Enter name...",
-      "descriptionPlaceholder": "Description...",
-      "actionNamePlaceholder": "Claws [Melee, Near]",
-      "rechargePlaceholder": "CdX",
-      "abilitiesDropHint": "Add abilities by dropping Features onto sheet",
-      "expandPortrait": "Expand portrait",
-      "collapsePortrait": "Collapse portrait"
-    },
-    "AlchemyCrafting": {
-      "title": "Alchemy Crafting",
-      "craftTooltipTitle": "Craft",
-      "useTooltipTitle": "Use"
-    },
-    "Spellcasting": {
-      "title": "Spellcasting",
-      "deliveryAbbreviation": "Dlv.",
-      "effectAbbreviation": "Eff."
-    },
-    "LevelUp": {
-      "title": "Level Up!",
-      "classFeature": "CLASS FEATURE",
-      "statIncrease": "STAT INCREASE",
-      "selectStatMax": "Select a stat (Max: 7)",
-      "xpQuestionnaireTitle": "Earn XP",
-      "xpApplied": "Applied {{xp}}XP to {{name}}!",
-      "selectClass": "Select a class to continue...",
-      "selectStat": "Select a Stat to increase before saving...",
-      "selectSkillTraining": "Select a new Skill Training before saving..."
-    },
-    "VagabondTools": {
-      "title": "Vagabond Tools",
-      "countdowns": "Countdowns",
-      "progressClocks": "Progress Clocks",
-      "defaultClockName": "Clock",
-      "deleteAllCountdowns": "Delete all Countdowns?",
-      "deleteAllProgressClocks": "Delete all Progress Clocks?",
-      "deleteCountdownsConfirmation": "Are you sure? This will delete all Countdowns across all scenes and cannot be undone.",
-      "deleteProgressClocksConfirmation": "Are you sure? This will delete all Progress Clocks across all scenes and cannot be undone.",
-      "deleteAllCountdownsTooltip": "Delete all countdowns",
-      "deleteAllClocksTooltip": "Delete all clocks",
-      "toggleItemShop": "Toggle Item Shop",
-      "confirmDeleteAll": "Yes, Delete All"
-    },
-    "Settings": {
-      "customClientSetting": "Custom client setting",
-      "maxLevel": "Max Level (default: 10)",
-      "maxLevelHint": "The highest level a Hero can achieve.",
-      "levelPacing": "Level Pacing",
-      "levelPacingHint": "Pace at which the Heroes gain levels.",
-      "levelPacingQuick": "Quick: 5 XP / Level (2-5 month campaign)",
-      "levelPacingNormal": "Normal: 5x next Level (5-12 month campaign)",
-      "levelPacingEpic": "Epic: 7x next Level (1-2 year campaign)",
-      "levelPacingSaga": "Saga: 10x next Level (2+ year campaign)",
-      "levelPacingDestiny": "Destiny: Grant level-ups from Hero sheet menu.",
-      "xpQuestionnaire": "XP Questionnaire",
-      "xpQuestionnaireHint": "An array of questions and their XP values.",
-      "xpQuestion1": "Did you complete a Quest?",
-      "xpQuestion2": "Did you Fail and allow the Fail to resolve?",
-      "xpQuestion3": "Did you defeat a Boss Enemy?",
-      "xpQuestion4": "Did you pass a Hindered Check?",
-      "xpQuestion5": "Did you make a discovery?",
-      "xpQuestion6": "Did you loot at least 50g of treasure?",
-      "xpQuestionnaireEditor": "XP Questionnaire Editor",
-      "modifyQuestions": "Modify Questions",
-      "xpQuestionnaireEditorHint": "Add, remove, or edit the XP questionnaire.",
-      "attackRegistry": "Attack Registry",
-      "attackRegistryHint": "Stores attack data from Heroes and Adversaries",
-      "toggleItemShopHint": "Control visibility of Item Shop to players",
-      "progressClocksHint": "World Progress Clocks",
-      "progressClocksPermissionHint": "Determines whether players can advance progress clocks or if it is restricted to GM.",
-      "countdowns": "Countdown Timers",
-      "countdownsPermissionHint": "Determines whether players can interact with countdown dice or if it is restricted to GM.",
-      "clockInteractionPermissions": "Clock Interaction Permissions",
-      "countdownInteractionPermissions": "Countdown Interaction Permissions",
-      "gmOnly": "GM Only",
-      "allPlayers": "All Players",
-      "enforceMana": "Enforce Mana",
-      "manaEnforcementHint": "Enable to enforce spellcasting Mana consumption and Max/Cast limits.",
-      "showTrainingSelection": "Show Training Selection",
-      "trainingSelectionHint": "Allows players to access training (re)selection via a button on their Abilities tab.",
-      "allowLateLuckStudy": "Allow Late Luck/Study",
-      "lateLuckStudyHint": "Allow Heroes to spend Luck/Study dice after a failed check."
-    },
-    "RulesEditor": {
-      "windowTitle": "Grants & Modifiers",
-      "title": "GRANTS & MODIFIERS",
-      "itemGrantsAndModifiers": "Item Grants & Modifiers",
-      "clickAddToStart": "Click +Add to get started...",
-      "modifierTypes": "Modifiers (Stats/Attributes/Flags)",
-      "toggleRuleType": "Toggle Rule (Trainings, etc...)",
-      "grantsType": "Grants (Spells, Perks, etc.)",
-      "choiceSetType": "Choice Set",
-      "enabled": "Enabled",
-      "disabled": "Disabled",
-      "toggleableEffect": "Toggleable Effect",
-      "newOption": "New Option",
-      "name": "Name",
-      "trainingChoicesExample": "e.g., Training Choices",
-      "trainingToggleExample": "e.g., Training: Arcane",
-      "hulkingExample": "e.g., Hulking",
-      "levelRequirement": "Level Req.",
-      "levelsHereafter": "Levels Hereafter",
-      "numberOfChoices": "# Choices",
-      "path": "Path",
-      "pathEntryPlaceholder": "Start typing a path, e.g., health.max",
-      "selectState": "Select State",
-      "value": "Value",
-      "valueMultiplier": "Value Multiplier",
-      "valueMultiplierExample": "e.g., level.current",
-      "channel": "Channel",
-      "statAttributeModifier": "Stat/Attribute Modifier",
-      "spellsPerksAlchemy": "Spells/Perks/Alchemy",
-      "perks": "Perks",
-      "spells": "Spells",
-      "alchemy": "Alchemy",
-      "training": "Training",
-      "choicesSource": "Choices Source",
-      "staticManualList": "Static Manual List",
-      "dynamicItemPack": "Dynamic Item Pack",
-      "itemPackType": "Item Pack Type",
-      "filterType": "Filter Type",
-      "skill": "Skill",
-      "stats": "Stats",
-      "trainings": "Trainings",
-      "clickAddOptionToStart": "Click +Add Option to get started...",
-      "statExample": "e.g. Might or Apoplex",
-      "deleteOption": "Delete Option",
-      "skipAtHeroCreation": "Skip at Hero Creation",
-      "prerequisiteFilters": "Prerequisite Filters",
-      "electiveTrainings": "Elective Trainings",
-      "skills": "Skills"
-    },
-    "RichTextEditor": {
-      "bulletedList": "Bulleted list",
-      "numberedList": "Numbered list",
-      "indent": "Indent",
-      "outdent": "Outdent",
-      "insertTable": "Insert table",
-      "insertRowAbove": "Insert row above",
-      "insertRowBelow": "Insert row below",
-      "insertColumnLeft": "Insert column left",
-      "insertColumnRight": "Insert column right",
-      "deleteRow": "Delete row",
-      "deleteColumn": "Delete column",
-      "deleteTable": "Delete table"
-    },
-    "HeroChoices": {
-      "createHero": "Create your Hero",
-      "selectTrainings": "Select Trainings",
-      "selectPerks": "Select Perks",
-      "selectSpells": "Select Spells",
-      "selectAlchemyRecipes": "Select Alchemy Recipes",
-      "perkBonusGranted": "A Perk selection has granted another choice...",
-      "selectClassPlaceholder": " -- Select your Class -- ",
-      "selectAncestryPlaceholder": " -- Select your Ancestry -- ",
-      "emptyPerkSlot": "Empty perk slot",
-      "clickSlotToToggle": "Click slot to toggle",
-      "additionalTraining": "Additional Training",
-      "additionalTrainingDescription": "The Advancement perk unlocked another skill training.",
-      "alchemyRecipes": "Alchemy Recipes",
-      "alchemyRecipesDescription": "You can now select your prepared Alchemy Recipes. This menu can be accessed at any time from your Hero Record's Alchemy tab.",
-      "electiveTrainingsFormula": "Elective Trainings Formula"
-    },
-    "Inventory": {
-      "splitStackTitle": "Split Item Stack"
-    },
-    "Rest": {
-      "title": "Rest & Recovery",
-      "breather": "Breather",
-      "breatherDescription": "Once per shift, eat a ration and drink some water to regain HP equal to your Might ({{might}})",
-      "breatherComplete": "Phew...",
-      "takeBreather": "Take a Breather",
-      "rest": "Rest",
-      "restDescription": "Resting requires lodging and a ration, and recovers all your HP, Mana, and Luck.",
-      "lodgingQuality": "Lodging Quality",
-      "restComplete": "ZZZzzz...",
-      "takeRest": "Take a Rest",
-      "noRationFound": "No Ration found!",
-      "lodgingCostSuffix": "s",
-      "lodging": {
-        "horrible": "Horrible",
-        "poor": "Poor",
-        "modest": "Modest",
-        "comfortable": "Comfortable",
-        "luxury": "Luxury",
-        "opulent": "Opulent",
-        "none": "None"
-      }
-    },
-    "CoinApp": {
-      "title": "Add / remove coins"
-    },
-    "CoinPurse": {
-      "coin": "COIN",
-      "funds": "FUNDS"
-    },
-    "Travel": {
-      "title": "Travel Info",
-      "waterTravel": "Water Travel",
-      "ridingAnimals": "Riding Animals",
-      "measuringTime": "Measuring Time",
-      "movementSpeeds": "Movement Speeds",
-      "travelSpeedDescription": "Your Travel Speed is equal to {{speed}} (your Speed ÷ 5). A Group uses the Navigator's Speed. Your Pace multiplies the distance you Move that Shift by the Multiplier (Mult.).",
-      "headers": {
-        "vessel": "Vessel",
-        "beast": "Beast",
-        "travelSpeedPerShift": "Travel Speed (mi/shift)",
-        "travelSpeed": "Travel Speed",
-        "cost": "Cost",
-        "capacity": "Capacity",
-        "term": "Term",
-        "approximateTime": "Time (approx)",
-        "exampleTask": "Example Task",
-        "description": "Description",
-        "pace": "Pace",
-        "multiplier": "Mult."
       },
-      "times": [
-        [
-          "Round",
-          "10 Seconds",
-          "Move and take an Action"
+      "DiceRoll": {
+        "title": "Roll",
+        "diceCount": "Dice count",
+        "flatModifier": "Flat modifier (can be negative)",
+        "explodingDiceValues": "Exploding dice values",
+        "explodeOnCriticalOnly": "Only explode on a Critical hit",
+        "critOnly": "Crit only",
+        "extraDiceOnCritical": "Extra dice on a Critical hit",
+        "critDice": "Crit dice",
+        "rerollAbbreviation": "RR",
+        "rerollValues": "Reroll on these values",
+        "explodesOn": "Explodes on: {{values}}"
+      },
+      "AttackBuilder": {
+        "title": "Roll Builder",
+        "deletePreset": "Delete preset?",
+        "favorResultsCountTowardCrit": "Favor die results count towards Crit threshold.",
+        "critSum": "Crit Sum",
+        "favorDiceCanExplode": "Favor dice can explode.",
+        "explodingFavor": "Expld. Favor",
+        "plusFavor": "+Favor",
+        "ignoreTargetArmor": "Ignore target Armor",
+        "spendLuckToReroll": "Spend a Luck to reroll",
+        "spendLuckToAddFavor": "Spend a Luck to add Favor or remove Hinder",
+        "spendStudyToAddFavor": "Spend a Studied die to add Favor or remove Hinder",
+        "presets": "Roll Presets",
+        "addCustomPreset": "Add new custom roll preset.",
+        "rerollExample": "E.g., 1, 2",
+        "explodeExample": "E.g., 6, 10",
+        "csvDiceExample": "e.g., 6, 10, 12",
+        "deletePresetDescription": "This will delete the preset and cannot be undone."
+      },
+      "AdversarySheet": {
+        "damageAbbreviation": "Dmg:",
+        "actionCombo": "Action Combo",
+        "comboName": "Combo Name:",
+        "notes": "Notes:",
+        "name": "Name:",
+        "effect": "Effect:",
+        "damageType": "Damage Type:",
+        "saves": "Saves:",
+        "statuses": "Statuses:",
+        "recharge": "Recharge:",
+        "comboNamePlaceholder": "Enter name...",
+        "descriptionPlaceholder": "Description...",
+        "actionNamePlaceholder": "Claws [Melee, Near]",
+        "rechargePlaceholder": "CdX",
+        "abilitiesDropHint": "Add abilities by dropping Features onto sheet",
+        "expandPortrait": "Expand portrait",
+        "collapsePortrait": "Collapse portrait"
+      },
+      "AlchemyCrafting": {
+        "title": "Alchemy Crafting",
+        "craftTooltipTitle": "Craft",
+        "useTooltipTitle": "Use"
+      },
+      "Spellcasting": {
+        "title": "Spellcasting",
+        "deliveryAbbreviation": "Dlv.",
+        "effectAbbreviation": "Eff."
+      },
+      "LevelUp": {
+        "title": "Level Up!",
+        "classFeature": "CLASS FEATURE",
+        "statIncrease": "STAT INCREASE",
+        "selectStatMax": "Select a stat (Max: 7)",
+        "xpQuestionnaireTitle": "Earn XP",
+        "xpApplied": "Applied {{xp}}XP to {{name}}!",
+        "selectClass": "Select a class to continue...",
+        "selectStat": "Select a Stat to increase before saving...",
+        "selectSkillTraining": "Select a new Skill Training before saving..."
+      },
+      "VagabondTools": {
+        "title": "Vagabond Tools",
+        "countdowns": "Countdowns",
+        "progressClocks": "Progress Clocks",
+        "defaultClockName": "Clock",
+        "deleteAllCountdowns": "Delete all Countdowns?",
+        "deleteAllProgressClocks": "Delete all Progress Clocks?",
+        "deleteCountdownsConfirmation": "Are you sure? This will delete all Countdowns across all scenes and cannot be undone.",
+        "deleteProgressClocksConfirmation": "Are you sure? This will delete all Progress Clocks across all scenes and cannot be undone.",
+        "deleteAllCountdownsTooltip": "Delete all countdowns",
+        "deleteAllClocksTooltip": "Delete all clocks",
+        "toggleItemShop": "Toggle Item Shop",
+        "confirmDeleteAll": "Yes, Delete All"
+      },
+      "Settings": {
+        "customClientSetting": "Custom client setting",
+        "maxLevel": "Max Level (default: 10)",
+        "maxLevelHint": "The highest level a Hero can achieve.",
+        "levelPacing": "Level Pacing",
+        "levelPacingHint": "Pace at which the Heroes gain levels.",
+        "levelPacingQuick": "Quick: 5 XP / Level (2-5 month campaign)",
+        "levelPacingNormal": "Normal: 5x next Level (5-12 month campaign)",
+        "levelPacingEpic": "Epic: 7x next Level (1-2 year campaign)",
+        "levelPacingSaga": "Saga: 10x next Level (2+ year campaign)",
+        "levelPacingDestiny": "Destiny: Grant level-ups from Hero sheet menu.",
+        "xpQuestionnaire": "XP Questionnaire",
+        "xpQuestionnaireHint": "An array of questions and their XP values.",
+        "xpQuestion1": "Did you complete a Quest?",
+        "xpQuestion2": "Did you Fail and allow the Fail to resolve?",
+        "xpQuestion3": "Did you defeat a Boss Enemy?",
+        "xpQuestion4": "Did you pass a Hindered Check?",
+        "xpQuestion5": "Did you make a discovery?",
+        "xpQuestion6": "Did you loot at least 50g of treasure?",
+        "xpQuestionnaireEditor": "XP Questionnaire Editor",
+        "modifyQuestions": "Modify Questions",
+        "xpQuestionnaireEditorHint": "Add, remove, or edit the XP questionnaire.",
+        "attackRegistry": "Attack Registry",
+        "attackRegistryHint": "Stores attack data from Heroes and Adversaries",
+        "toggleItemShopHint": "Control visibility of Item Shop to players",
+        "progressClocksHint": "World Progress Clocks",
+        "progressClocksPermissionHint": "Determines whether players can advance progress clocks or if it is restricted to GM.",
+        "countdowns": "Countdown Timers",
+        "countdownsPermissionHint": "Determines whether players can interact with countdown dice or if it is restricted to GM.",
+        "clockInteractionPermissions": "Clock Interaction Permissions",
+        "countdownInteractionPermissions": "Countdown Interaction Permissions",
+        "gmOnly": "GM Only",
+        "allPlayers": "All Players",
+        "enforceMana": "Enforce Mana",
+        "manaEnforcementHint": "Enable to enforce spellcasting Mana consumption and Max/Cast limits.",
+        "showTrainingSelection": "Show Training Selection",
+        "trainingSelectionHint": "Allows players to access training (re)selection via a button on their Abilities tab.",
+        "allowLateLuckStudy": "Allow Late Luck/Study",
+        "lateLuckStudyHint": "Allow Heroes to spend Luck/Study dice after a failed check."
+      },
+      "RulesEditor": {
+        "windowTitle": "Grants & Modifiers",
+        "title": "GRANTS & MODIFIERS",
+        "itemGrantsAndModifiers": "Item Grants & Modifiers",
+        "clickAddToStart": "Click +Add to get started...",
+        "modifierTypes": "Modifiers (Stats/Attributes/Flags)",
+        "toggleRuleType": "Toggle Rule (Trainings, etc...)",
+        "grantsType": "Grants (Spells, Perks, etc.)",
+        "choiceSetType": "Choice Set",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "toggleableEffect": "Toggleable Effect",
+        "newOption": "New Option",
+        "name": "Name",
+        "trainingChoicesExample": "e.g., Training Choices",
+        "trainingToggleExample": "e.g., Training: Arcane",
+        "hulkingExample": "e.g., Hulking",
+        "levelRequirement": "Level Req.",
+        "levelsHereafter": "Levels Hereafter",
+        "numberOfChoices": "# Choices",
+        "path": "Path",
+        "pathEntryPlaceholder": "Start typing a path, e.g., health.max",
+        "selectState": "Select State",
+        "value": "Value",
+        "valueMultiplier": "Value Multiplier",
+        "valueMultiplierExample": "e.g., level.current",
+        "channel": "Channel",
+        "statAttributeModifier": "Stat/Attribute Modifier",
+        "spellsPerksAlchemy": "Spells/Perks/Alchemy",
+        "perks": "Perks",
+        "spells": "Spells",
+        "alchemy": "Alchemy",
+        "training": "Training",
+        "choicesSource": "Choices Source",
+        "staticManualList": "Static Manual List",
+        "dynamicItemPack": "Dynamic Item Pack",
+        "itemPackType": "Item Pack Type",
+        "filterType": "Filter Type",
+        "skill": "Skill",
+        "stats": "Stats",
+        "trainings": "Trainings",
+        "clickAddOptionToStart": "Click +Add Option to get started...",
+        "statExample": "e.g. Might or Apoplex",
+        "deleteOption": "Delete Option",
+        "skipAtHeroCreation": "Skip at Hero Creation",
+        "prerequisiteFilters": "Prerequisite Filters",
+        "electiveTrainings": "Elective Trainings",
+        "skills": "Skills"
+      },
+      "RichTextEditor": {
+        "bulletedList": "Bulleted list",
+        "numberedList": "Numbered list",
+        "indent": "Indent",
+        "outdent": "Outdent",
+        "insertTable": "Insert table",
+        "insertRowAbove": "Insert row above",
+        "insertRowBelow": "Insert row below",
+        "insertColumnLeft": "Insert column left",
+        "insertColumnRight": "Insert column right",
+        "deleteRow": "Delete row",
+        "deleteColumn": "Delete column",
+        "deleteTable": "Delete table"
+      },
+      "HeroChoices": {
+        "createHero": "Create your Hero",
+        "selectTrainings": "Select Trainings",
+        "selectPerks": "Select Perks",
+        "selectSpells": "Select Spells",
+        "selectAlchemyRecipes": "Select Alchemy Recipes",
+        "perkBonusGranted": "A Perk selection has granted another choice...",
+        "selectClassPlaceholder": " -- Select your Class -- ",
+        "selectAncestryPlaceholder": " -- Select your Ancestry -- ",
+        "emptyPerkSlot": "Empty perk slot",
+        "clickSlotToToggle": "Click slot to toggle",
+        "additionalTraining": "Additional Training",
+        "additionalTrainingDescription": "The Advancement perk unlocked another skill training.",
+        "alchemyRecipes": "Alchemy Recipes",
+        "alchemyRecipesDescription": "You can now select your prepared Alchemy Recipes. This menu can be accessed at any time from your Hero Record's Alchemy tab.",
+        "electiveTrainingsFormula": "Elective Trainings Formula"
+      },
+      "Inventory": {
+        "splitStackTitle": "Split Item Stack"
+      },
+      "Rest": {
+        "title": "Rest & Recovery",
+        "breather": "Breather",
+        "breatherDescription": "Once per shift, eat a ration and drink some water to regain HP equal to your Might ({{might}})",
+        "breatherComplete": "Phew...",
+        "takeBreather": "Take a Breather",
+        "rest": "Rest",
+        "restDescription": "Resting requires lodging and a ration, and recovers all your HP, Mana, and Luck.",
+        "lodgingQuality": "Lodging Quality",
+        "restComplete": "ZZZzzz...",
+        "takeRest": "Take a Rest",
+        "noRationFound": "No Ration found!",
+        "lodgingCostSuffix": "s",
+        "lodging": {
+          "horrible": "Horrible",
+          "poor": "Poor",
+          "modest": "Modest",
+          "comfortable": "Comfortable",
+          "luxury": "Luxury",
+          "opulent": "Opulent",
+          "none": "None"
+        }
+      },
+      "CoinApp": {
+        "title": "Add / remove coins"
+      },
+      "CoinPurse": {
+        "coin": "COIN",
+        "funds": "FUNDS"
+      },
+      "Travel": {
+        "title": "Travel Info",
+        "waterTravel": "Water Travel",
+        "ridingAnimals": "Riding Animals",
+        "measuringTime": "Measuring Time",
+        "movementSpeeds": "Movement Speeds",
+        "travelSpeedDescription": "Your Travel Speed is equal to {{speed}} (your Speed ÷ 5). A Group uses the Navigator's Speed. Your Pace multiplies the distance you Move that Shift by the Multiplier (Mult.).",
+        "headers": {
+          "vessel": "Vessel",
+          "beast": "Beast",
+          "travelSpeedPerShift": "Travel Speed (mi/shift)",
+          "travelSpeed": "Travel Speed",
+          "cost": "Cost",
+          "capacity": "Capacity",
+          "term": "Term",
+          "approximateTime": "Time (approx)",
+          "exampleTask": "Example Task",
+          "description": "Description",
+          "pace": "Pace",
+          "multiplier": "Mult."
+        },
+        "times": [
+          ["Round", "10 Seconds", "Move and take an Action"],
+          ["Minute", "6 Rounds", "Fight, pick a lock"],
+          ["Scene", "10 Minutes", "Search a room, a Breather"],
+          ["Hour", "6 Scenes", "Burn out a torch, research"],
+          ["Shift", "6 Hours", "Travel, Rest"],
+          ["Day", "4 Shifts", "Recover from Fatigue"]
         ],
-        [
-          "Minute",
-          "6 Rounds",
-          "Fight, pick a lock"
+        "speeds": [
+          ["Climb", "Ignores Difficult Terrain due to climbing"],
+          ["Cling", "As Climb, but it can also Move on ceilings."],
+          ["Fly", "Can Move through the air at full Speed."],
+          ["Phase", "Can Move through occupied space. Is shunted to the nearest open space and takes 5 damage if it ends its Turn in occupied space."],
+          ["Swim", "Ignores Difficult Terrain due to liquid."]
         ],
-        [
-          "Scene",
-          "10 Minutes",
-          "Search a room, a Breather"
+        "mounts": [
+          ["Camel", "10 mi", "10g", "12 Slots"],
+          ["Elephant", "8 mi", "20g", "96 Slots"],
+          ["Horse, draft", "6 mi", "4g", "14 Slots"],
+          ["Horse, pony", "6 mi", "3g 50s", "10 Slots"],
+          ["Horse, riding", "16 mi", "7g 50s", "12 Slots"],
+          ["Horse, war", "8 mi", "25g", "16 Slots"],
+          ["Mule", "6 mi", "3g ", "11 Slots"]
         ],
-        [
-          "Hour",
-          "6 Scenes",
-          "Burn out a torch, research"
+        "watercraft": [
+          ["Canoe", "12 mi", "5g", "5 Slots"],
+          ["Caravel", "30 mi", "1000g", "1000 Slots"],
+          ["Galley", "24 mi", "3000g", "3000 Slots"],
+          ["Keelboat", "6 mi", "300g", "300 Slots"],
+          ["Longship", "30 mi", "1000g", "1000 Slots"],
+          ["Rowboat", "6 mi", "5g", "30 Slots"],
+          ["Sailboat", "30 mi", "1000g", "1000 Slots"],
+          ["Warship", "24 mi", "2500g", "2500 Slots"]
         ],
-        [
-          "Shift",
-          "6 Hours",
-          "Travel, Rest"
-        ],
-        [
-          "Day",
-          "4 Shifts",
-          "Recover from Fatigue"
+        "travelPaces": [
+          ["Slow", "x0.5"],
+          ["Normal", "x1"],
+          ["Fast", "x2"]
         ]
-      ],
-      "speeds": [
-        [
-          "Climb",
-          "Ignores Difficult Terrain due to climbing"
-        ],
-        [
-          "Cling",
-          "As Climb, but it can also Move on ceilings."
-        ],
-        [
-          "Fly",
-          "Can Move through the air at full Speed."
-        ],
-        [
-          "Phase",
-          "Can Move through occupied space. Is shunted to the nearest open space and takes 5 damage if it ends its Turn in occupied space."
-        ],
-        [
-          "Swim",
-          "Ignores Difficult Terrain due to liquid."
-        ]
-      ],
-      "mounts": [
-        [
-          "Camel",
-          "10 mi",
-          "10g",
-          "12 Slots"
-        ],
-        [
-          "Elephant",
-          "8 mi",
-          "20g",
-          "96 Slots"
-        ],
-        [
-          "Horse, draft",
-          "6 mi",
-          "4g",
-          "14 Slots"
-        ],
-        [
-          "Horse, pony",
-          "6 mi",
-          "3g 50s",
-          "10 Slots"
-        ],
-        [
-          "Horse, riding",
-          "16 mi",
-          "7g 50s",
-          "12 Slots"
-        ],
-        [
-          "Horse, war",
-          "8 mi",
-          "25g",
-          "16 Slots"
-        ],
-        [
-          "Mule",
-          "6 mi",
-          "3g ",
-          "11 Slots"
-        ]
-      ],
-      "watercraft": [
-        [
-          "Canoe",
-          "12 mi",
-          "5g",
-          "5 Slots"
-        ],
-        [
-          "Caravel",
-          "30 mi",
-          "1000g",
-          "1000 Slots"
-        ],
-        [
-          "Galley",
-          "24 mi",
-          "3000g",
-          "3000 Slots"
-        ],
-        [
-          "Keelboat",
-          "6 mi",
-          "300g",
-          "300 Slots"
-        ],
-        [
-          "Longship",
-          "30 mi",
-          "1000g",
-          "1000 Slots"
-        ],
-        [
-          "Rowboat",
-          "6 mi",
-          "5g",
-          "30 Slots"
-        ],
-        [
-          "Sailboat",
-          "30 mi",
-          "1000g",
-          "1000 Slots"
-        ],
-        [
-          "Warship",
-          "24 mi",
-          "2500g",
-          "2500 Slots"
-        ]
-      ],
-      "travelPaces": [
-        [
-          "Slow",
-          "x0.5"
-        ],
-        [
-          "Normal",
-          "x1"
-        ],
-        [
-          "Fast",
-          "x2"
-        ]
-      ]
-    },
-    "Downtime": {
-      "title": "Downtime",
-      "subtitle": "Your downtime lets you prepare, establish a foothold in society, gather intel, or just get wasted and wind up in a tavern brawl.",
-      "Craft": {
-        "title": "Craft",
-        "craftingInfo": "Crafting Info",
-        "yourDC": "Your Crafting DC: {{dc}}",
-        "tableHeaders": [
-          "Difficulty",
-          "Value"
-        ],
-        "body": "Crafting requires Materials worth at least half the value of the Items being crafted and reasonable tools or an environment to make them.\nYour Craft Difficulty sets the Value you can Craft per Shift on the following table.\nMultiple Shifts of work can be put into making an Item, which don't need to be consecutive.\nYou can Craft Multiple Items during the same Shift, provided the total value of those Items does not exceed the Value you can Craft per Shift.",
-        "table": [
-          [
-            "18 - 17",
-            "1s"
+      },
+      "Downtime": {
+        "title": "Downtime",
+        "subtitle": "Your downtime lets you prepare, establish a foothold in society, gather intel, or just get wasted and wind up in a tavern brawl.",
+        "Craft": {
+          "title": "Craft",
+          "craftingInfo": "Crafting Info",
+          "yourDC": "Your Crafting DC: {{dc}}",
+          "tableHeaders": ["Difficulty", "Value"],
+          "body": "Crafting requires Materials worth at least half the value of the Items being crafted and reasonable tools or an environment to make them.\nYour Craft Difficulty sets the Value you can Craft per Shift on the following table.\nMultiple Shifts of work can be put into making an Item, which don't need to be consecutive.\nYou can Craft Multiple Items during the same Shift, provided the total value of those Items does not exceed the Value you can Craft per Shift.",
+          "table": [
+            ["18 - 17", "1s"],
+            ["16 - 15", "20s"],
+            ["14 - 13", "50s"],
+            ["12 - 11", "2g 50s"],
+            ["10 - 9", "5g"],
+            ["8 - 7", "7g 50s"],
+            [ "6", "10g"]
           ],
-          [
-            "16 - 15",
-            "20s"
-          ],
-          [
-            "14 - 13",
-            "50s"
-          ],
-          [
-            "12 - 11",
-            "2g 50s"
-          ],
-          [
-            "10 - 9",
-            "5g"
-          ],
-          [
-            "8 - 7",
-            "7g 50s"
-          ],
-          [
-            "6",
-            "10g"
+          "scrap": "You can scrap Items for Materials worth half its value during a Shift you spend to Craft or by spending an Hour to do so"
+        },
+        "Hunting": {
+          "title": "Hunting",
+          "huntingInfo": "More Hunting Info",
+          "body": "Requires a Shift. Make a {{skillCheck.survival}}. On a pass, [[/r d6#Hunting]]{roll} to see what Wild Game you discover.",
+          "additionalInfo": "On a Crit, choose which Beast you find.\nHarvesting can be done as part of a Scene.\nAnything you can harvest meat from gives Rations or Materials: ",
+          "rations": "Rations:",
+          "rationsExplainer": "The number you can harvest equals its HP, multiplied by 3 for Prey Animals.",
+          "materials": "Materials:",
+          "materialsExplainer": "The Value harvested is equal to (its HPx5s).",
+          "tableHeaders": ["d6", "Beast", "Rations per Beast"],
+          "table": [
+            ["1", "2d6 Wolf", "9"],
+            ["2", "d6 Fowl (as Hawk)", "1"],
+            ["3", "2d6 Vermin (as Rabbit)", "1"],
+            ["4", "d6 Deer", "4"],
+            ["5", "d6 Boar", "13"],
+            ["6", "d4 Cattle", "18"]
           ]
-        ],
-        "scrap": "You can scrap Items for Materials worth half its value during a Shift you spend to Craft or by spending an Hour to do so"
+        },
+        "Study": {
+          "title": "Study",
+          "body": "If you Study, you gain a Studied die which is a d6 that you can spend to gain Favor on a d20 roll you make in the next Day. Additionally, you can change a choice offered by one of your Features when you Study (such as a Spell Known)."
+        },
+        "Foraging": {
+          "title": "Foraging",
+          "body": "You can spend a Shift gathering food and Materials from the wilderness in environments that can provide them. You can also do so when you Travel at a Slow Pace.\n\nWhen you do, make a {{skillCheck.survival}}. On a pass, determine if you find Rations or Materials. On a Crit, you find double.",
+          "rations": "Rations:",
+          "rationsExplainer": "{{diceRoll.d6}} Rations",
+          "materials": "Materials:",
+          "materialsExplainer": "Materials worth {{diceRoll.d6}} x 5s)"
+        }
       },
-      "Hunting": {
-        "title": "Hunting",
-        "huntingInfo": "More Hunting Info",
-        "body": "Requires a Shift. Make a {{skillCheck.survival}}. On a pass, [[/r d6#Hunting]]{roll} to see what Wild Game you discover.",
-        "additionalInfo": "On a Crit, choose which Beast you find.\nHarvesting can be done as part of a Scene.\nAnything you can harvest meat from gives Rations or Materials: ",
-        "rations": "Rations:",
-        "rationsExplainer": "The number you can harvest equals its HP, multiplied by 3 for Prey Animals.",
-        "materials": "Materials:",
-        "materialsExplainer": "The Value harvested is equal to (its HPx5s).",
-        "tableHeaders": [
-          "d6",
-          "Beast",
-          "Rations per Beast"
-        ],
-        "table": [
-          [
-            "1",
-            "2d6 Wolf",
-            "9"
-          ],
-          [
-            "2",
-            "d6 Fowl (as Hawk)",
-            "1"
-          ],
-          [
-            "3",
-            "2d6 Vermin (as Rabbit)",
-            "1"
-          ],
-          [
-            "4",
-            "d6 Deer",
-            "4"
-          ],
-          [
-            "5",
-            "d6 Boar",
-            "13"
-          ],
-          [
-            "6",
-            "d4 Cattle",
-            "18"
-          ]
-        ]
+      "XpQuestionnaire": {
+        "manageTitle": "Manage XP Questionnaire",
+        "questionDescriptionPlaceholder": "Question description...",
+        "xp": "XP",
+        "addQuestion": "Add Question",
+        "saveAndClose": "Save & Close",
+        "saved": "XP Questionnaire settings saved successfully!",
+        "saveFailed": "Failed to save changes to the database."
       },
-      "Study": {
-        "title": "Study",
-        "body": "If you Study, you gain a Studied die which is a d6 that you can spend to gain Favor on a d20 roll you make in the next Day. Additionally, you can change a choice offered by one of your Features when you Study (such as a Spell Known)."
+      "Overlay": {
+        "doubleClickToEdit": "Double click to edit",
+        "countdownRollTooltip": "Click to roll\nR-click for options",
+        "increaseCountdownSize": "Increase Size",
+        "decreaseCountdownSize": "Decrease Size",
+        "openActorSheet": "Open Actor Sheet"
       },
-      "Foraging": {
-        "title": "Foraging",
-        "body": "You can spend a Shift gathering food and Materials from the wilderness in environments that can provide them. You can also do so when you Travel at a Slow Pace.\n\nWhen you do, make a {{skillCheck.survival}}. On a pass, determine if you find Rations or Materials. On a Crit, you find double.",
-        "rations": "Rations:",
-        "rationsExplainer": "{{diceRoll.d6}} Rations",
-        "materials": "Materials:",
-        "materialsExplainer": "Materials worth {{diceRoll.d6}} x 5s)"
+      "General": {
+        "enterText": "Enter text...",
+        "alchemyTab": "Alchemy",
+        "prerequisite": "Prerequisite",
+        "addNewPrerequisite": "Add new prerequisite",
+        "addNew": "Add new",
+        "areYouSure": "Are you sure?",
+        "actionCannotBeUndone": "This action cannot be undone.",
+        "confirm": "Confirm",
+        "ok": "OK",
+        "processing": "Processing...",
+        "clickToRollMorale": "Click to roll morale check",
+        "clickToRollNumberAppearing": "Click to roll number appearing",
+        "itemActorContextMenuTooltip": "R-click for options",
+        "electiveTrainingsFormulaTooltip": "Elective Trainings Formula",
+        "heroSheetSetting": "Hero Sheet Setting",
+        "heroSheetDynamicSetting": "Hero Sheet Dynamic Setting",
+        "additionalTraining": "Additional Training"
+      },
+      "Notifications": {
+        "notEnoughFunds": "Not enough funds!",
+        "itemNotFound": "Item not found!",
+        "syncHeroRequiresHero": "Select a hero token (or set a default character) first.",
+        "syncHeroNoItems": "{{name}} has no Ancestry or Class item.",
+        "syncHeroSourceMissing": "No source found - skipped.",
+        "syncHeroSourceMissingUuid": "The source item has no UUID.",
+        "syncHeroSourceUpdated": "Successfully refreshed from {{source}}.",
+        "syncHeroSourceFailed": "Refresh failed: {{reason}}",
+        "syncHeroReportTitle": "{{name}}'s Ancestry and Class refresh:",
+        "cannotNestContainers": "Cannot place containers within containers!",
+        "unequipBeforeStorage": "Unequip gear before placing in storage!",
+        "containerFull": "Not enough space available in container!",
+        "boundItemCannotBeRemoved": "Unable to remove Bound item: {{name}}...the curse must be lifted.",
+        "handsFull": "Your hands are full.",
+        "weaponSlotLimitExceeded": "Equipped items slot limit ({{slots}}) exceeded.",
+        "onlyGearInStartingPack": "Only gear can be added to a Starting Pack.",
+        "materialsNotFound": "Could not find crafting Materials.",
+        "craftFailed": "Vagabond | Failed to craft Alchemical Item",
+        "cannotAddFavorToFavoredAttack": "Cannot add Favor to Favored attack",
+        "d6AlreadyAppliedToSkillCheck": "D6 already applied to Skill Check",
+        "perkNotEligibleForRestriction": "{{perk}} is not eligible for {{slot}}. This slot requires its configured class feature restriction.",
+        "heroDoesNotMeetPerkPrerequisites": "Hero does not meet prerequisites for: {{perk}}.",
+        "importingCharacter": "Importing character data from www.vgbnd.app, please wait...",
+        "importComplete": "Import complete",
+        "importItemsUnconfigured": "These items weren't able to be imported. If they're custom or homebrew, they'll need to be configured manually...",
+        "importSucceeded": "{{name}}'s info has been imported! Please review Training, Spell, and Perk selections for accuracy as well as any custom inventory items.",
+        "heroDropNotAllowed": "Features, Spells, and Perks cannot be dropped here. Please add Features to a Class and select Spells or Perks through the rules selectors.",
+        "apiItemNotFound": "Item with ID {{id}} not found.",
+        "invalidExplodingDice": "Invalid exploding dice config detected (infinite recursion). Please check your exploding dice and reroll settings.",
+        "actionComboRequiredFields": "Error: [Name] and [Count] are required fields and at least 1 action must be selected.",
+        "actionNameRequired": "Error: [Name] is a required field."
+      },
+      "Confirmation": {
+        "replaceItemTitle": "Replace {{itemType}}?",
+        "replaceUniqueItemDescription": "{{actorName}} already has the {{itemType}} \"{{existingName}}\". Replace it with \"{{newName}}\"?\n\nThis will reset the Hero's existing choices of: Trainings, Spells, & Perks but their level and base stats will remain unchanged."
       }
-    },
-    "XpQuestionnaire": {
-      "manageTitle": "Manage XP Questionnaire",
-      "questionDescriptionPlaceholder": "Question description...",
-      "xp": "XP",
-      "addQuestion": "Add Question",
-      "saveAndClose": "Save & Close",
-      "saved": "XP Questionnaire settings saved successfully!",
-      "saveFailed": "Failed to save changes to the database."
-    },
-    "Overlay": {
-      "doubleClickToEdit": "Double click to edit",
-      "countdownRollTooltip": "Click to roll\nR-click for options",
-      "increaseCountdownSize": "Increase Size",
-      "decreaseCountdownSize": "Decrease Size",
-      "openActorSheet": "Open Actor Sheet"
-    },
-    "General": {
-      "enterText": "Enter text...",
-      "alchemyTab": "Alchemy",
-      "prerequisite": "Prerequisite",
-      "addNewPrerequisite": "Add new prerequisite",
-      "addNew": "Add new",
-      "areYouSure": "Are you sure?",
-      "actionCannotBeUndone": "This action cannot be undone.",
-      "confirm": "Confirm",
-      "ok": "OK",
-      "processing": "Processing...",
-      "clickToRollMorale": "Click to roll morale check",
-      "clickToRollNumberAppearing": "Click to roll number appearing",
-      "itemActorContextMenuTooltip": "R-click for options",
-      "electiveTrainingsFormulaTooltip": "Elective Trainings Formula",
-      "heroSheetSetting": "Hero Sheet Setting",
-      "heroSheetDynamicSetting": "Hero Sheet Dynamic Setting",
-      "additionalTraining": "Additional Training"
-    },
-    "Notifications": {
-      "notEnoughFunds": "Not enough funds!",
-      "itemNotFound": "Item not found!",
-      "syncHeroRequiresHero": "Select a hero token (or set a default character) first.",
-      "syncHeroNoItems": "{{name}} has no Ancestry or Class item.",
-      "syncHeroSourceMissing": "No source found - skipped.",
-      "syncHeroSourceMissingUuid": "The source item has no UUID.",
-      "syncHeroSourceUpdated": "Successfully refreshed from {{source}}.",
-      "syncHeroSourceFailed": "Refresh failed: {{reason}}",
-      "syncHeroReportTitle": "{{name}}'s Ancestry and Class refresh:",
-      "cannotNestContainers": "Cannot place containers within containers!",
-      "unequipBeforeStorage": "Unequip gear before placing in storage!",
-      "containerFull": "Not enough space available in container!",
-      "boundItemCannotBeRemoved": "Unable to remove Bound item: {{name}}...the curse must be lifted.",
-      "handsFull": "Your hands are full.",
-      "weaponSlotLimitExceeded": "Equipped items slot limit ({{slots}}) exceeded.",
-      "onlyGearInStartingPack": "Only gear can be added to a Starting Pack.",
-      "materialsNotFound": "Could not find crafting Materials.",
-      "craftFailed": "Vagabond | Failed to craft Alchemical Item",
-      "cannotAddFavorToFavoredAttack": "Cannot add Favor to Favored attack",
-      "d6AlreadyAppliedToSkillCheck": "D6 already applied to Skill Check",
-      "perkNotEligibleForRestriction": "{{perk}} is not eligible for {{slot}}. This slot requires its configured class feature restriction.",
-      "heroDoesNotMeetPerkPrerequisites": "Hero does not meet prerequisites for: {{perk}}.",
-      "importingCharacter": "Importing character data from www.vgbnd.app, please wait...",
-      "importComplete": "Import complete",
-      "importItemsUnconfigured": "These items weren't able to be imported. If they're custom or homebrew, they'll need to be configured manually...",
-      "importSucceeded": "{{name}}'s info has been imported! Please review Training, Spell, and Perk selections for accuracy as well as any custom inventory items.",
-      "heroDropNotAllowed": "Features, Spells, and Perks cannot be dropped here. Please add Features to a Class and select Spells or Perks through the rules selectors.",
-      "apiItemNotFound": "Item with ID {{id}} not found.",
-      "invalidExplodingDice": "Invalid exploding dice config detected (infinite recursion). Please check your exploding dice and reroll settings.",
-      "actionComboRequiredFields": "Error: [Name] and [Count] are required fields and at least 1 action must be selected.",
-      "actionNameRequired": "Error: [Name] is a required field."
-    },
-    "Confirmation": {
-      "replaceItemTitle": "Replace {{itemType}}?",
-      "replaceUniqueItemDescription": "{{actorName}} already has the {{itemType}} \"{{existingName}}\". Replace it with \"{{newName}}\"?\n\nThis will reset the Hero's existing choices of: Trainings, Spells, & Perks but their level and base stats will remain unchanged."
     }
-  }
 }
