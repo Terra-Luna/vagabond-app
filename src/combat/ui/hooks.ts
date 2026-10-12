@@ -4,7 +4,8 @@ import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { AdversaryAttack, SavingThrowType } from "../engine/AdversaryAttack"
 import { AdversaryComboAttack } from "../engine/AdversaryComboAttack"
-import { TargetDisplayItem, useLiveTargetSync } from "../engine/usecase/LiveTargetSyncUseCase"
+
+export interface TargetDisplayItem { id: string, src: string, token: Token | undefined }
 
 interface CombatContextProps {
     activeCombatantId?: string | null;
@@ -21,16 +22,14 @@ export const useIsCurrentCombatant = (combatant) => {
 export const useCombatContext = () => useContext(CombatContext)
 
 export const useAdversaryAttackTargets = (attack: AdversaryAttack | AdversaryComboAttack) => {
-    const liveTargetIds = useLiveTargetSync(attack)
-
     const targets = useMemo<TargetDisplayItem[]>(() => {
-        return liveTargetIds
+        return (attack?.targetIds ?? [])
             .map(id => {
                 const canvasToken = getCanvasToken(id)
                 return { id, src: getTokenImg(canvasToken), token: canvasToken }
             })
             .filter(it => it.src != null && it.src.length > 0)
-    }, [liveTargetIds])
+    }, [attack?.targetIds])
 
     const ownedTargets = useMemo(() => {
         return targets.filter(target => game.user?.isActiveGM || target.token?.actor?.isOwner)

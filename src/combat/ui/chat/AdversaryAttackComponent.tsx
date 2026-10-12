@@ -13,8 +13,7 @@ import { AdversaryAttack, SavingThrowType } from "../../engine/AdversaryAttack"
 import { AdversaryComboAttack } from "../../engine/AdversaryComboAttack"
 import { DamageRoll } from "../../engine/roll/DamageRoll"
 import { SkillCheckResult } from "../../engine/roll/SkillCheck"
-import { TargetDisplayItem } from "../../engine/usecase/LiveTargetSyncUseCase"
-import { useAdversaryAttack, useAdversaryAttackSaveHandlers, useAdversaryAttackTargets } from "../hooks"
+import { TargetDisplayItem, useAdversaryAttack, useAdversaryAttackSaveHandlers, useAdversaryAttackTargets } from "../hooks"
 
 export const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAttack, setRevision: any }) => {
     const { targets, ownedTargets, handleSave, handleRerollSave } = useAdversaryAttack(attack, setRevision)

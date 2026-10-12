@@ -18,7 +18,7 @@ import { ClearHeader, Divider, Header } from "../../../view/component/Header"
 import { CardSubHeader } from "../../../view/component/SkillCard"
 import { ItemPortraitComponent } from "../../../view/sheets/item/shared/ItemPortraitComponent"
 import { HeroAttack } from "../../engine/HeroAttack"
-import { TargetDisplayItem, useLiveTargetSync } from "../../engine/usecase/LiveTargetSyncUseCase"
+import { TargetDisplayItem } from "../hooks"
 import { InteractiveChatCardButton } from "./InteractiveChatCardButton"
 import { SpellAttackInfoComponent } from "./SpellAttackInfoComponent"
 
@@ -84,10 +84,8 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
         return hasPermission && !attack.isResolved && !attack.isRerolled && isFailure && hasResources
     }, [luck, studied, attack, setRevision])
 
-    const liveTargetIds = useLiveTargetSync(attack)
-
     const targets = useMemo<TargetDisplayItem[]>(() => {
-        return liveTargetIds
+        return (attack.targetIds ?? [])
             .map(id => {
                 const canvasToken = getCanvasToken(id)
                 return {
@@ -97,7 +95,7 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                 }
             })
             .filter(it => it.src != null && it.src.length > 0)
-    }, [liveTargetIds, setRevision])
+    }, [attack.targetIds, setRevision])
 
     const handleLuckReroll = useCallback(async () => {
         await attack.rollSkillCheck(true)
