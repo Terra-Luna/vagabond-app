@@ -2,6 +2,8 @@ import { Menu, Moon, Sun, X } from "lucide-react"
 import { useCallback, useState } from "react"
 
 import { ActiveEffectsView } from "../../../../../apps/active-effects/ActiveEffectsView"
+import { DowntimeApp } from "../../../../../apps/downtime/DowntimeApp"
+import { DowntimeApp } from "../../../../../apps/downtime/DowntimeApp"
 import { HeroCreationApp } from "../../../../../apps/hero-creator/HeroCreationApp"
 import { RestApp } from "../../../../../apps/rest/RestApp"
 import { HeroGrantsAndModifiersApp } from "../../../../../apps/rules/HeroGrantsAndModifiersApp"
@@ -93,21 +95,21 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                         <MenuListItem text={appLang.HeroSheet.Menu.lvlup} onClick={() => hero.parent.setFlag(sys_id, "destiny", false)} toggleMenu={toggleMenu} />
                     }
 
-                    <AppMenuToggleSwitch label={appLang.HeroSheet.Menu.heroSheetStats} hero={hero} toggleKey="hero-sheet-stats-hide" />
-                    <AppMenuToggleSwitch label={appLang.HeroSheet.Menu.heroSheetTrackers} hero={hero} toggleKey="hero-sheet-trackers-hide" />
-                    <AppMenuToggleSwitch label={appLang.HeroSheet.Menu.miniCards} hero={hero} toggleKey="hero-sheet-mini-cards" />
-                    <MenuListItem text={appLang.HeroSheet.Menu.rest} onClick={() => { new RestApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={appLang.HeroSheet.Menu.downtime} onClick={() => { ui.notifications?.info("Feature coming soon!") }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={appLang.HeroSheet.Menu.travel} onClick={() => { new TravelApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={appLang.HeroSheet.Menu.grantsModifiers} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
+                    <AppMenuToggleSwitch label="STATS" hero={hero} toggleKey="hero-sheet-stats-hide" />
+                    <AppMenuToggleSwitch label="TRACKERS" hero={hero} toggleKey="hero-sheet-trackers-hide" />
+                    <AppMenuToggleSwitch label={`MINI CARDS`} hero={hero} toggleKey="hero-sheet-mini-cards" />
+                    <MenuListItem text={'REST'} onClick={() => { new RestApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
+                    <MenuListItem text={'TRAVEL'} onClick={() => { new TravelApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
+                    <MenuListItem text={'DOWNTIME'} onClick={() => { new DowntimeApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
+                    <MenuListItem text={'GRANTS & MODIFIERS'} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
 
                     <ItemDivider />
 
                     <div className="-mx-2">
                         <ActiveEffectsView initialDocument={hero.parent} />
                     </div>
-                </ul>
-            </div>
-        </div>
+                </ul >
+            </div >
+        </div >
     </>)
 }
