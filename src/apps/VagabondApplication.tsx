@@ -26,6 +26,7 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
     private actorId?: string
     private enforceSingleInstancePerActor: boolean
     private enforceSingleInstance: boolean
+    private onActorUpdateHook?: number
 
     static override DEFAULT_OPTIONS: Partial<typeof foundry.applications.api.ApplicationV2["DEFAULT_OPTIONS"]> = {
         window: { title: "", minimizable: true, resizable: true },
@@ -74,6 +75,14 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
             else {
                 this.registerInstance()
             }
+        }
+
+        if (this.usesActorScope) {
+            this.onActorUpdateHook = Hooks.on("updateActor", (actor) => {
+                if (this.actorId === actor.id) {
+                    this.render({ force: true })
+                }
+            })
         }
     }
 
@@ -155,6 +164,10 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
         if (this.element) {
             this.element.style.transition = "none"
             this.element.style.animation = "none"
+        }
+
+        if (this.onActorUpdateHook) {
+            Hooks.off("updateActor", this.onActorUpdateHook)
         }
 
         super._onClose(options)

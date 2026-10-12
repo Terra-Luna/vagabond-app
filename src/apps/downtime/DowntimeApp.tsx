@@ -1,6 +1,9 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel";
+import { appLang } from "../../utils/lang"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication";
 import { DowntimeView } from "./DowntimeView";
+
+const locale = appLang.Downtime
 
 export class DowntimeApp extends VagabondApplication {
 
@@ -8,8 +11,10 @@ export class DowntimeApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: "Downtime", resizable: true },
-            position: { width: 1000, height: 1200, top: 200, left: 400 },
+            window: { title: locale.title, resizable: true },
+            position: { width: 1000, height: 1200 },
+            enforceSingleInstancePerActor: true,
+            actorId: actor.id,
             Component: DowntimeView
         } as VagabondAppArgs)
         this.actor = actor

@@ -12,7 +12,7 @@ export class RestApp extends VagabondApplication {
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
             window: { title: `${appLang.Rest.title}: ${actor.name}`, resizable: false },
-            position: { width: 800, height: 332, top: 200, left: 400 },
+            position: { width: 800, height: 332 },
             actorId: actor.id ?? undefined,
             enforceSingleInstancePerActor: true,
             Component: RestView

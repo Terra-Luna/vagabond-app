@@ -1396,6 +1396,58 @@
           ["Fast", "x2"]
         ]
       },
+      "Downtime": {
+        "title": "Downtime",
+        "subtitle": "Your downtime lets you prepare, establish a foothold in society, gather intel, or just get wasted and wind up in a tavern brawl.",
+        "Craft": {
+          "title": "Craft",
+          "craftingInfo": "Crafting Info",
+          "yourDC": "Your Crafting DC: {{dc}}",
+          "tableHeaders": ["Difficulty", "Value"],
+          "body": "Crafting requires Materials worth at least half the value of the Items being crafted and reasonable tools or an environment to make them.\nYour Craft Difficulty sets the Value you can Craft per Shift on the following table.\nMultiple Shifts of work can be put into making an Item, which don't need to be consecutive.\nYou can Craft Multiple Items during the same Shift, provided the total value of those Items does not exceed the Value you can Craft per Shift.",
+          "table": [
+            ["18 - 17", "1s"],
+            ["16 - 15", "20s"],
+            ["14 - 13", "50s"],
+            ["12 - 11", "2g 50s"],
+            ["10 - 9", "5g"],
+            ["8 - 7", "7g 50s"],
+            [ "6", "10g"]
+          ],
+          "scrap": "You can scrap Items for Materials worth half its value during a Shift you spend to Craft or by spending an Hour to do so"
+        },
+        "Hunting": {
+          "title": "Hunting",
+          "huntingInfo": "More Hunting Info",
+          "body": "Requires a Shift. Make a [[/r d20#skillCheck.survival]]{Survival Check}. On a pass, [[/r d6#Hunting]]{roll} to see what Wild Game you discover.",
+          "additionalInfo": "On a Crit, choose which Beast you find.\nHarvesting can be done as part of a Scene.\nAnything you can harvest meat from gives Rations or Materials: ",
+          "rations": "Rations:",
+          "rationsExplainer": "The number you can harvest equals its HP, multiplied by 3 for Prey Animals.",
+          "materials": "Materials:",
+          "materialsExplainer": "The Value harvested is equal to (its HPx5s).",
+          "tableHeaders": ["d6", "Beast", "Rations per Beast"],
+          "table": [
+            ["1", "2d6 Wolf", "9"],
+            ["2", "d6 Fowl (as Hawk)", "1"],
+            ["3", "2d6 Vermin (as Rabbit)", "1"],
+            ["4", "d6 Deer", "4"],
+            ["5", "d6 Boar", "13"],
+            ["6", "d4 Cattle", "18"]
+          ]
+        },
+        "Study": {
+          "title": "Study",
+          "body": "If you Study, you gain a Studied die which is a d6 that you can spend to gain Favor on a d20 roll you make in the next Day. Additionally, you can change a choice offered by one of your Features when you Study (such as a Spell Known)."
+        },
+        "Foraging": {
+          "title": "Foraging",
+          "body": "You can spend a Shift gathering food and Materials from the wilderness in environments that can provide them. You can also do so when you Travel at a Slow Pace.\n\nWhen you do, make a [[/r d20#skillCheck.survival]]{Survival Check}. On a pass, determine if you find Rations or Materials. On a Crit, you find double.",
+          "rations": "Rations:",
+          "rationsExplainer": "[[/r d6#Number of Rations Found]]{d6} Rations",
+          "materials": "Materials:",
+          "materialsExplainer": "Materials worth ([[/r d6#Worth of Materials (X5 silver)]]{d6} x 5s)"
+        }
+      },
       "XpQuestionnaire": {
         "manageTitle": "Manage XP Questionnaire",
         "questionDescriptionPlaceholder": "Question description...",

@@ -1,7 +1,12 @@
-import React, { useEffect,useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactHtmlParser from 'react-html-parser'
 
 import { addCountdown, checkCountdownPermission } from '../../apps/vagabond-tools/usecase/VagabondSettingsHelper'
+import { SkillCheck } from '../../combat/engine/roll/SkillCheck'
+import { HeroDataModel } from '../../model/actor/HeroDataModel'
+import { getId } from '../../utils/modelUtil'
+import { sendVagabondChatMessage } from '../chat/ChatCardSerializer'
+import { SkillCheckChatCard } from '../chat/SkillCheckChatCard'
 
 const countdownFormulaPattern = /^cd(\d+)$/i
 
@@ -36,6 +41,13 @@ export const EnrichedContent = ({ content, styleClasses = '', actor }: { content
                 const actorId: string | undefined = actor?.id ?? undefined
                 const tokenUuid: string | undefined = (actor?.isToken ? actor.token?.uuid : undefined) ?? undefined
                 await addCountdown(label, Number(countdownMatch[1]), undefined, undefined, actorId, tokenUuid)
+                return
+            }
+
+            if (actor && flavor?.startsWith("skillCheck.")) {
+                const skill = flavor.slice(11)
+                const skillCheck = await new SkillCheck(actor.system as HeroDataModel, { type: 'check', skill }).roll()
+                sendVagabondChatMessage(actor, <SkillCheckChatCard actorId={getId(actor)} result={skillCheck} />)
                 return
             }
 

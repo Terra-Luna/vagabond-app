@@ -1,8 +1,8 @@
 
+import { Table } from "../../combat/ui/Table"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
-import { tableBorder } from "../../view/common/border-styles"
 import { DynamicGrid } from "../../view/component/DynamicGrid"
 import { Header } from "../../view/component/Header"
 
@@ -78,35 +78,3 @@ const TravelSpeed = ({ actor }) => {
     )
 }
 
-const Table = ({ headers, data }: { headers: string[], data: string[][] }) => {
-    return (
-        <table className={`table-fixed w-full ${tableBorder} mt-0.5`}>
-            <thead className="bg-section-header-fill text-text-section-header text-sm">
-                <tr>
-                    <th className="text-left pl-2 w-1/10">{headers[0]}</th>
-                    {headers.slice(1).map(h => <th key={h} className="text-center">{h}</th>)}
-                </tr>
-            </thead>
-            <tbody className="font-eskapade">
-                {data.map(d => (
-                    <tr
-                        key={`time-${d[0]}`}
-                        className={
-                            `even:bg-table-row-even/50 odd:bg-table-row-odd/50 hover-glow draggable`
-                        }
-                    >
-                        <td className="p-1">
-                            {d[0]}
-                        </td>
-
-                        {d.slice(1).map((item) =>
-                            <td key={item} className="text-center font-normal">
-                                {item}
-                            </td>
-                        )}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    )
-}
