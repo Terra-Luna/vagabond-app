@@ -1,4 +1,5 @@
 import { getTokenImg } from "../../utils/modelUtil"
+import { EnrichedContent } from "../component/EnrichedContent"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { DiceRollComponent } from "./component/DiceRollComponent"
@@ -80,7 +81,7 @@ export const InlineRollChatCard = ({ actorId, userId, alias, flavor, whisper = [
             banner={<ChatCardBanner tokenId={token?.id ?? actor?.id} portrait={portrait} title={title} />}
             contents={rolls.length > 0
                 ? rolls.map((roll, i) => <InlineRoll key={i} roll={roll} />)
-                : <div className="text-base text-text-primary font-normal" dangerouslySetInnerHTML={{ __html: textHtml ?? "" }} />}
+                : <EnrichedContent content={textHtml ?? ""} actor={actor} styleClasses="text-base text-text-primary font-normal" />}
         />
     )
 }

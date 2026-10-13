@@ -4,7 +4,7 @@
   "_id": "R3Hj2LF94pnsVEkk",
   "img": "icons/skills/melee/shield-block-gray-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">When a Close Ally is attacked while you have a Defend Weapon Equipped, you can grant them a bonus to Armor equal to a roll of its damage die instead of yourself for the attack.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">When a Close Ally would be dealt damage due to a failed Reflex Save while you have a Defense Weapon Equipped, you can use the Defense property for them.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -49,10 +49,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.57",
     "createdTime": 1784994603132,
-    "modifiedTime": 1787884645508,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1791927128463,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

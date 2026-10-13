@@ -310,7 +310,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
         const spell = delivery?.spell
         return (<>
             {isSpellcastingOpen && delivery && spell &&
-                <div className={`flex flex-col gap-2font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-1 ${tableBorder}`}>
+                <div className={`flex flex-col font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-1 ${windowedMode ? "" : `${tableBorder}`}`}>
 
                     {/* SPELLCASTING MENU TOP ROW */}
                     <div className="flex gap-x-0.5 items-end text-lg w-full min-w-0 overflow-hidden">

@@ -32,12 +32,14 @@ export class SpellcastingApp extends VagabondApplication {
             return <ManaHUD hero={actor.system} hideTab={true} />
         }
 
-        const AppView = () => {
-            return <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+        const SpellcastingMenuView = () => {
+            return <div className="">
+                <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                 <SpellcastingMenuContextProvider actor={actor} imbueMode={imbueMode} windowedMode={windowedMode}>
                     <RenderOpened />
                 </SpellcastingMenuContextProvider>
             </EditModeContextProvider>
+            </div>
         }
 
         super({
@@ -51,7 +53,7 @@ export class SpellcastingApp extends VagabondApplication {
             },
             actorId: actor.id ?? undefined,
             enforceSingleInstancePerActor: true,
-            Component: AppView,
+            Component: SpellcastingMenuView,
         } as VagabondAppArgs)
 
         this.actor = actor

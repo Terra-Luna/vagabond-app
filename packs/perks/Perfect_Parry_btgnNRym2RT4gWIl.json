@@ -4,7 +4,7 @@
   "_id": "btgnNRym2RT4gWIl",
   "img": "/icons/skills/melee/swords-parry-block-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">If you pass a Reflex Save against an attack by 10 or more, you can deflect the attack to another viable Target of the attack, which could be the attacker, rerolling the damage.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">If you don’t take damage from an attack that Targets you, you can deflect the attack to a viable Target of the attack, which could be the attacker, rerolling the damage.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -35,10 +35,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.57",
     "createdTime": 1786726740979,
-    "modifiedTime": 1787884597040,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1791927093777,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
