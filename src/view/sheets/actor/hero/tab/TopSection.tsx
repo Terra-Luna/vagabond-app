@@ -3,6 +3,7 @@ import { ReactNode, useCallback } from "react"
 
 import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
 import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
+import { SpellcastingApp } from "../../../../../apps/spellcasting/SpellcastingApp"
 import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
@@ -18,6 +19,7 @@ import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { Divider, Header, ItemDivider } from "../../../../component/Header"
+import { IconOnlyButton } from "../../../../component/IconOnlyButton"
 import { Tooltip } from "../../../../component/Tooltip"
 import { useStatsDrawerStatus } from "./statdrawer/StatsDrawerContext"
 
@@ -228,7 +230,7 @@ const Speed = ({ name, value }: { name: string, value: string }) => (
 export const Saves = ({ hero }: { hero: HeroDataModel }) => {
     const mods = foundry.utils.deepClone(hero.modifiers)
     const { reflex, endure, will } = mods.skillCheck
-    
+
     return (
         <div className="w-full flex flex-col gap-y-0.5">
             <Header title={appLang.HeroSheet.saves} />
@@ -373,9 +375,14 @@ export const Skill = ({ hero, trained, skillKey, name, value, isCastSkill }: {
                 }>
                     <div className="flex gap-x-2 items-center">
                         {name}
-                        {isCastSkill &&
-                            <Wand2 size={16} className="text-ic-skill-trained" />
-                        }
+                        {isCastSkill && <IconOnlyButton
+                            Icon={Wand2} size={18}
+                            colorClassName="text-ic-skill-trained"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                new SpellcastingApp(hero.parent).render({ force: true })
+                            }}
+                        />}
                     </div>
                     <div className={"text-xl mr-2"}>
                         {value}
@@ -514,24 +521,24 @@ const CustomTracker = ({ actor, tracker, index }) => {
                 />
 
                 <div className="ml-auto">
-                {tracker.type === 'numeric' &&
-                    <NumericCounterInput
-                        value={tracker.value}
-                        hideBorder={true}
-                        onChange={(val) => updateTracker('value', val)}
-                    />
-                }
+                    {tracker.type === 'numeric' &&
+                        <NumericCounterInput
+                            value={tracker.value}
+                            hideBorder={true}
+                            onChange={(val) => updateTracker('value', val)}
+                        />
+                    }
 
-                {tracker.type === 'boolean' &&
-                    <button className="flex" onClick={() => updateTracker('value', tracker.value > 0 ? 0 : 1)}>
-                        {tracker.value === 0
-                            ? <ToggleLeft className="text-text-tertiary hover-glow" />
-                            : <ToggleRight className="text-text-primary hover-glow" />
-                        }
-                    </button>
+                    {tracker.type === 'boolean' &&
+                        <button className="flex" onClick={() => updateTracker('value', tracker.value > 0 ? 0 : 1)}>
+                            {tracker.value === 0
+                                ? <ToggleLeft className="text-text-tertiary hover-glow" />
+                                : <ToggleRight className="text-text-primary hover-glow" />
+                            }
+                        </button>
                     }
                 </div>
-                
+
                 <ContextMenu />
             </div>
         </Tooltip>
