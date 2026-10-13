@@ -74,6 +74,7 @@ export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed
 
         initialCollapsedValue = settings.get(sys_id, settingsKey)
     }
+
     const [isCollapsed, setCollapsed] = useState(initialCollapsedValue)
     const toggleCollapsed = useCallback(() => {
         const newVal = !isCollapsed
@@ -82,11 +83,12 @@ export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed
         }
         setCollapsed(newVal)
     }, [isCollapsed, settingsKey])
+
     return (
         <div>
             <div onClick={toggleCollapsed}>
                 {useClearHeader
-                    ? <ClearHeader title={title} collapseButton={<ToggleCollapseIcon isCollapsed={isCollapsed} />} />
+                    ? <ClearHeader title={title} collapseButton={<ToggleCollapseIcon isCollapsed={isCollapsed} isClear={true} />} />
                     : <Header title={title} collapseButton={<ToggleCollapseIcon isCollapsed={isCollapsed} />} actions={actions} />
                 }
             </div>
@@ -95,8 +97,10 @@ export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed
     )
 }
 
-const ToggleCollapseIcon = ({ isCollapsed }: { isCollapsed: boolean }) => {
-    const style = "text-text-header-secondary bg-section-header-fill rounded-full"
+const ToggleCollapseIcon = ({ isCollapsed, isClear }: { isCollapsed: boolean, isClear?: boolean }) => {
+    const style = isClear
+        ? "text-text-primary"
+        : "text-text-header-secondary bg-section-header-fill rounded-full"
     return isCollapsed
         ? <LucideChevronDown className={style} />
         : <LucideChevronUp className={style} />
