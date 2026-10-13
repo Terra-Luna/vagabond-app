@@ -12,9 +12,9 @@ export const useImageEdit = (item: Actor | Item) => {
             src: item.img ?? '',
             uuid: item.uuid,
             window: { title: item.name }
-        }
-        ).render(true)
+        }).render(true)
     }
+
     const changeImage = () => {
         new foundry.applications.apps.FilePicker({
             type: "image",
@@ -33,6 +33,7 @@ export const useImageEdit = (item: Actor | Item) => {
             }
         }).render()
     }
+
     const removeImage = async () => {
         await item.update({ img: '' })
 
