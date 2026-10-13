@@ -101,7 +101,26 @@ const OneMenuItem = ({ item, length, onItemAction }: { item: CtxMenuItem, length
             </SubMenu>)
     }
 
-    return <MenuItem className={item.isDestructive ? ctxMenuDestructiveTextStyle : isSelected ? ctxMenuSelectedTextStyle : ctxMenuTextStyle} onClick={(e) => { item.action?.(e); onItemAction(e) }}>
+    return <MenuItem
+        className={item.isDestructive
+            ? ctxMenuDestructiveTextStyle
+            : isSelected
+                ? ctxMenuSelectedTextStyle
+                : ctxMenuTextStyle
+        }
+        onClick={(clickEvent) => {
+            const e = clickEvent as typeof clickEvent & { shiftKey?: boolean, ctrlKey?: boolean, altKey?: boolean }
+            const original = e.syntheticEvent as { shiftKey?: boolean, ctrlKey?: boolean, altKey?: boolean } | undefined
+
+            if (original) {
+                e.shiftKey = original.shiftKey
+                e.ctrlKey = original.ctrlKey
+                e.altKey = original.altKey
+            }
+
+            item.action?.(e)
+            onItemAction(e)
+        }}>
         {item.isDestructive && (length ?? 0) > 1 && <Divider />}
         <LabelAndIcon item={item} />
     </MenuItem>

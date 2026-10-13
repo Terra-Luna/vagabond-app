@@ -6,7 +6,7 @@
   "author": "KyorYoEvge7ElSaj",
   "img": "icons/magic/symbols/cross-circle-blue.webp",
   "scope": "global",
-  "command": "const actor = canvas?.tokens?.controlled[0]?.actor ?? game.user.character;\ngame.system.api.combat.openSpellcasting(actor);",
+  "command": "const actor = canvas?.tokens?.controlled[0]?.actor ?? game.user.character;\ngame.system.api.hero.openSpellcasting(actor);",
   "sort": 200000,
   "ownership": {
     "default": 0,

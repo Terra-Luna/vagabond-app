@@ -227,14 +227,15 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             const createdItems = await actor.createEmbeddedDocuments("Item", heroItems) as (Item & { system: { rules: any } })[]
 
             const stats: Record<string, number | number[]> = {
-                'system.level.current': levelZero ? 0 : 1,
-                'system.stats.might': assignedStats?.find(s => s.stat === 'might')?.value ?? 2,
-                'system.stats.dexterity': assignedStats?.find(s => s.stat === 'dexterity')?.value ?? 2,
-                'system.stats.awareness': assignedStats?.find(s => s.stat === 'awareness')?.value ?? 2,
-                'system.stats.reason': assignedStats?.find(s => s.stat === 'reason')?.value ?? 2,
-                'system.stats.presence': assignedStats?.find(s => s.stat === 'presence')?.value ?? 2,
-                'system.stats.luck': assignedStats?.find(s => s.stat === 'luck')?.value ?? 2
+                'system.level.current': levelZero ? 0 : 1
             }
+
+            for (const stat of ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck'] as const) {
+                const value = assignedStats?.find((s) => s.stat === stat)?.value ?? 2
+                stats[`system.stats.${stat}`] = value
+                stats[`system.baseStats.${stat}`] = value
+            }
+
             await actor.update(stats)
 
             const ancestry = createdItems.find(i => (i.type as string) === "ancestry")

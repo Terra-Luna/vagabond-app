@@ -1,47 +1,48 @@
-import { Eye, Pencil, Trash } from "lucide-react"
+import { Crop, Eye, Pencil, Trash } from "lucide-react"
 
+import { PortraitAdjustApp } from "../../../apps/portrait/PortraitAdjustApp"
 import { appLang } from "../../../utils/lang"
 import { CtxMenuItem } from "../../component/ContextMenu"
 
 export const useImageEdit = (item: Actor | Item) => {
 
     const viewImage = () => {
-            new foundry.applications.apps.ImagePopout(
-                item.img ?? '', {
-                    src: item.img ?? '',
-                    uuid: item.uuid,
-                    window: { title: item.name }
-                }
-            ).render(true)
+        new foundry.applications.apps.ImagePopout(
+            item.img ?? '', {
+            src: item.img ?? '',
+            uuid: item.uuid,
+            window: { title: item.name }
         }
-        const editImage = () => {
-            new foundry.applications.apps.FilePicker({
-                type: "image",
-                current: item.img ?? '',
-                callback: async (path) => {
-                    await item.update({ img: path })
+        ).render(true)
+    }
+    const changeImage = () => {
+        new foundry.applications.apps.FilePicker({
+            type: "image",
+            current: item.img ?? '',
+            callback: async (path) => {
+                await item.update({ img: path })
 
-                    if (item instanceof Actor) {
-                        await (item as any).update({
-                            'prototypeToken.texture.src': path,
-                            'prototypeToken.texture.scaleX': 1,
-                            'prototypeToken.texture.scaleY': 1,
-                            'prototypeToken.ring.subject.texture': path
-                        })
-                    }
+                if (item instanceof Actor) {
+                    await (item as any).update({
+                        'prototypeToken.texture.src': path,
+                        'prototypeToken.texture.scaleX': 1,
+                        'prototypeToken.texture.scaleY': 1,
+                        'prototypeToken.ring.subject.texture': path
+                    })
                 }
-            }).render()
-        }
-        const removeImage = async () => {
-            await item.update({ img: '' })
-
-            if (item instanceof Actor) {
-                await (item as any).update({
-                    'prototypeToken.texture.src': '',
-                    'prototypeToken.ring.enabled': false,
-                    'prototypeToken.ring.subject.texture': ''
-                })
             }
+        }).render()
+    }
+    const removeImage = async () => {
+        await item.update({ img: '' })
+
+        if (item instanceof Actor) {
+            await (item as any).update({
+                'prototypeToken.texture.src': '',
+                'prototypeToken.ring.enabled': false,
+                'prototypeToken.ring.subject.texture': ''
+            })
+        }
     }
 
     const imageEditCtxMenuItems: CtxMenuItem[] = []
@@ -51,10 +52,13 @@ export const useImageEdit = (item: Actor | Item) => {
 
     if (item.isOwner) {
         imageEditCtxMenuItems.push(
-            { icon: Pencil, label: appLang.ButtonActions.edit, action: () => editImage() },
+            { icon: Pencil, label: appLang.ButtonActions.change, action: () => changeImage() },
+            ...(item instanceof Actor && item.img
+                ? [{ icon: Crop, label: appLang.ButtonActions.adjust, action: () => new PortraitAdjustApp(item).render({ force: true }) }]
+                : []),
             { icon: Trash, label: appLang.ButtonActions.remove, action: () => removeImage(), isDestructive: true }
         )
     }
 
-    return { viewImage, editImage, removeImage, imageEditCtxMenuItems }
+    return { viewImage, editImage: changeImage, removeImage, imageEditCtxMenuItems }
 }

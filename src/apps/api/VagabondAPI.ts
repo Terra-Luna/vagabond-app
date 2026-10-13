@@ -1,4 +1,5 @@
 import { HeroAttack } from "../../combat/engine/HeroAttack"
+import { SkillCheck } from "../../combat/engine/roll/SkillCheck"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
@@ -14,10 +15,11 @@ export interface VagabondAPI {
     rules: {
         toggleEffect: (actor: Actor & { system: HeroDataModel }, itemId: string, stateOverride?: boolean) => void
     },
-    combat: {
+    hero: {
+        skillCheck: ({ skill, event }: { skill: string, event: any }) => void
         weaponAttack: ({ actor, itemId, skill, event }: { actor: Actor & { system: HeroDataModel }, itemId: string, skill?: string, event: any }) => void,
         rollPreset: ({ actor, presetId, event }: { actor: Actor & { system: HeroDataModel }, presetId: string, event: any }) => void,
-        openSpellcasting: (actor: Actor & { system: HeroDataModel }) => void
+        openSpellcasting: (actor: Actor & { system: HeroDataModel }) => void  
     },
     util: {
         rest: () => void,
@@ -39,7 +41,13 @@ export const api: VagabondAPI = {
         }
     },
 
-    combat: {
+    hero: {
+        skillCheck: ({ skill, event }: { skill: string, event: any }) => {
+            const actor = getControlledHeroToken()
+            if (!actor || !skill) return
+            new SkillCheck(actor.system, { type: 'check', skill, clickEvent: event }).roll()
+        },
+
         weaponAttack: ({ itemId, skill, event }: { itemId: string, skill?: string, event: any }) => {
             const actor = getItemMacroHero(itemId)
             if (!actor) return
@@ -55,7 +63,7 @@ export const api: VagabondAPI = {
         rollPreset: ({ presetId, event }: { presetId: string, event: any }) => {
             const actor = getOwnedHeroes()?.find(it => it.flags?.[sys_id]?.rollPresets?.some((p: RollPreset) => p.id === presetId)) as Actor & { system: HeroDataModel }
             if (!actor || !presetId) return
-            
+
             const presets = [...actor.getFlag(sys_id, "rollPresets" as any) as RollPreset[] ?? []]
             const preset = presets.find(p => p.id === presetId)
             if (!preset) return

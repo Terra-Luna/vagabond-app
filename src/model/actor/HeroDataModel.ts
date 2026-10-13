@@ -39,6 +39,7 @@ const heroSchema = () => {
         tagalongId: new fields.StringField({ ...optionalString }),
         level: new fields.SchemaField({ ...levelSchema() }),
         stats: new fields.SchemaField({ ...statsSchema() }),
+        baseStats: new fields.SchemaField({ ...statsSchema() }),
         skills: new fields.SchemaField({ ...skillsSchema() }),
         saves: new fields.SchemaField({ ...savesSchema() }),
         speed: new fields.SchemaField({ ...speedSchema() }),

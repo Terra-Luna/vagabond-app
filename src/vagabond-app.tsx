@@ -535,7 +535,7 @@ Hooks.on("hotbarDrop", (_bar: any, data: any, slot: number): boolean | void => {
     const command = `/** 
  * Hold Shift to add Favor, Ctrl for Hinder
  */
-game.system.api.combat.rollPreset({ presetId: "${preset.id}", event: event });`
+game.system.api.hero.rollPreset({ presetId: "${preset.id}", event: event });`
 
     Macro.create({ name: `${preset.title}${preset.description?.length > 0 ? `: ${preset.description}` : ""}`, type: "script", img, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } } as any)
         .then(macro => macro && game.user?.assignHotbarMacro(macro, slot))
@@ -553,7 +553,7 @@ Hooks.on("preCreateMacro", (macro: any, data: any, options: any, userId: string)
  * Hold Shift to add Favor, Ctrl for Hinder
  * Send skill as a 3rd param to override default...
  */
-game.system.api.combat.weaponAttack({ itemId: "${item.id}", /*skill: "brawl",*/ event: event});`
+game.system.api.hero.weaponAttack({ itemId: "${item.id}", /*skill: "brawl",*/ event: event});`
 
         macro.updateSource({ img: item.img, name: `${item.name} Attack`, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } })
         data.img = item.img

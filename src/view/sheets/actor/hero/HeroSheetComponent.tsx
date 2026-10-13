@@ -25,7 +25,7 @@ import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { RollsTab } from "./tab/RollsTab"
 import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextProvider"
-import { CustomTrackers,Focus, HPArmorFatigueHUD, Luck, Saves, Skills, Speeds, Stats, Studied } from "./tab/TopSection"
+import { CustomTrackers, Focus, HPArmorFatigueHUD, Luck, Saves, Skills, Speeds, StatsDrawer, Studied } from "./tab/TopSection"
 
 const locale = appLang.HeroSheet
 
@@ -55,7 +55,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
     return (
         <div className="flex">
             {/* MAIN STATS ARRAY */}
-            <Stats hero={hero} />
+            <StatsDrawer hero={hero} />
 
             {/* PORTRAIT */}
             <ActorPortrait actor={hero} />

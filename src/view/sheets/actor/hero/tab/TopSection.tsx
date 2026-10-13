@@ -387,7 +387,7 @@ export const Skill = ({ hero, trained, skillKey, name, value, isCastSkill }: {
     )
 }
 
-export const Stats = ({ hero }: { hero: HeroDataModel }) => {
+export const StatsDrawer = ({ hero }: { hero: HeroDataModel }) => {
     const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
     const { isStatsDrawerOpen, toggleStatsDrawer } = useStatsDrawerStatus()
 
@@ -399,7 +399,7 @@ export const Stats = ({ hero }: { hero: HeroDataModel }) => {
                     <Stat key={stat} actor={hero.parent} stat={stat} />
                 ))}
                     <div className={`w-full ml-1.5 -mt-1 mb-1 cursor-pointer`} onClick={toggleStatsDrawer}>
-                    <ChevronRight size={28} />
+                        <ChevronRight size={28} className="text-text-header-tertiary" />
                 </div>
             </div>
         }</>

@@ -158,6 +158,16 @@ export const equippedItemContextMenu = (hero: any, item: ArmorDataModel | Weapon
 export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
 
+    if (item instanceof WeaponDataModel && item.properties.includes("thrown")) {
+        menuItems.push({
+            icon: Sword,
+            label: appLang.ButtonActions.throw,
+            action: (e) => {
+                HeroAttack.buildWeaponAttack(hero.parent, item.parent).initiate(e)
+            }
+        })
+    }
+
     if (item.isEquippable) {
         if (item.isEquipped) {
             if (item instanceof WeaponDataModel && item.grip.style === 'V') {

@@ -145,7 +145,7 @@
       "type": "Item",
       "system": "vagabond-app",
       "path": "packs/features",
-      "banner": "systems/vagabond-app/assets/compendium/classes_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/features_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -181,7 +181,7 @@
       "type": "Item",
       "system": "vagabond-app",
       "path": "packs/alchemical",
-      "banner": "systems/vagabond-app/assets/compendium/equipment_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/alchemy_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -193,7 +193,7 @@
       "type": "Item",
       "system": "vagabond-app",
       "path": "packs/armor",
-      "banner": "systems/vagabond-app/assets/compendium/equipment_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/armor_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -205,7 +205,19 @@
       "type": "Item",
       "system": "vagabond-app",
       "path": "packs/weapons",
-      "banner": "systems/vagabond-app/assets/compendium/equipment_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/weapons_banner.webp",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "gear",
+      "label": "Gear",
+      "type": "Item",
+      "system": "vagabond-app",
+      "path": "packs/gear",
+      "banner": "systems/vagabond-app/assets/compendium/gear_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -217,21 +229,9 @@
       "type": "Item",
       "system": "vagabond-app",
       "path": "packs/relics",
-      "banner": "systems/vagabond-app/assets/compendium/equipment_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/relics_banner.webp",
       "ownership": {
         "PLAYER": "NONE",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "gear",
-      "label": "Gear",
-      "type": "Item",
-      "system": "vagabond-app",
-      "path": "packs/gear",
-      "banner": "systems/vagabond-app/assets/compendium/equipment_banner.webp",
-      "ownership": {
-        "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
       }
     },

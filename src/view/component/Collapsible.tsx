@@ -96,5 +96,8 @@ export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed
 }
 
 const ToggleCollapseIcon = ({ isCollapsed }: { isCollapsed: boolean }) => {
-    return isCollapsed ? <LucideChevronDown /> : <LucideChevronUp />
+    const style = "text-text-header-secondary bg-section-header-fill rounded-full"
+    return isCollapsed
+        ? <LucideChevronDown className={style} />
+        : <LucideChevronUp className={style} />
 }
