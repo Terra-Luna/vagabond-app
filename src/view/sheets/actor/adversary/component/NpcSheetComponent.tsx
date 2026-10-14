@@ -80,7 +80,7 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
             <div className="flex flex-col grow">
                 <NpcSheetHeader npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} />
                 <div className="overflow-y-auto">
-                    <Description item={npc.parent} />
+                    <Description item={npc.parent} showFullView={true} />
                     <StatBlock npc={npc} />
 
                     <Actions npc={npc} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
