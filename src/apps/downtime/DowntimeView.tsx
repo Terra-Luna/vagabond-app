@@ -25,7 +25,7 @@ export const DowntimeView = ({ onCancel, actor }: {
 }) => {
 
     return (
-        <div className="flex flex-col h-full p-2 gap-4 overflow-y-scroll w-full">
+        <div className="flex flex-col h-full p-2 gap-4 overflow-y-auto w-full">
             {locale.subtitle}
             <DynamicGrid itemsStart widthIncrement={2}>
                 <div className="flex-1 flex flex-col min-w-[50%] gap-2">

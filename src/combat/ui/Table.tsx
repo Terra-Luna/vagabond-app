@@ -1,11 +1,11 @@
 import { tableBorder } from "../../view/common/border-styles"
 
-export const Table = ({ headers, data, highlightedRow }: { headers: string[], data: string[][], highlightedRow?: number }) => {
+export const Table = ({ headers, data, highlightedRow, centerFirstHeader }: { headers: string[], data: string[][], highlightedRow?: number, centerFirstHeader?: boolean }) => {
     return (
-        <table className={`table-fixed w-full ${tableBorder} mt-0.5`}>
+        <table className={`table-auto w-full ${tableBorder} mt-0.5`}>
             <thead className="bg-section-header-fill text-text-section-header text-sm">
                 <tr>
-                    <th className="text-left pl-2 w-1/10">{headers[0]}</th>
+                    <th className={`${centerFirstHeader ? "" : "text-left pl-1"} whitespace-nowrap`}>{headers[0]}</th>
                     {headers.slice(1).map(h => <th key={h} className="text-center">{h}</th>)}
                 </tr>
             </thead>
@@ -17,7 +17,7 @@ export const Table = ({ headers, data, highlightedRow }: { headers: string[], da
                             `even:bg-table-row-even/50 odd:bg-table-row-odd/50 hover-glow draggable ${highlightedRow === idx ? 'border-2 border-wealth-denom-label' : ''}`
                         }
                     >
-                        <td className="p-1">
+                        <td className="p-1 whitespace-nowrap">
                             {d[0]}
                         </td>
 

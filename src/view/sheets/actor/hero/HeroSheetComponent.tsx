@@ -32,7 +32,7 @@ const locale = appLang.HeroSheet
 export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { system: HeroDataModel }, sheet: VagabondActorSheet }) => {
     const hero = actor.system
     return (
-        <div className="@container flex flex-col grow min-h-0 overflow-y-hidden">
+        <div className="@container flex flex-col grow min-h-0 overflow-hidden">
             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                 <StatsDrawerContextProvider id={hero.parent.id}>
                     <HeroSheetHeader hero={hero} sheet={sheet} />
@@ -200,7 +200,7 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
             }
 
             {showMagicTab &&
-                <TabPanel className={tabPanelClasses}>
+                <TabPanel className={`${tabPanelClasses} overflow-x-hidden`}>
                     <MagicTab hero={hero} />
                 </TabPanel>
             }

@@ -7,7 +7,7 @@ import { Checkbox } from "../../../view/component/Checkbox"
 import { Header } from "../../../view/component/Header"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
-import { AncestryReactComponent } from "../../../view/sheets/item/character/ancestry/AncestrySheetComponent"
+import { AncestrySheetComponent } from "../../../view/sheets/item/character/ancestry/AncestrySheetComponent"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { TopNavButtons } from "../component/TopNavButtons"
 
@@ -58,7 +58,7 @@ export const useAncestrySelection = (navButtons: ReactNode[]) => {
                 <Header title={appLang.HeroCreation.identity} />
                 <TopNavButtons navButtons={navButtons} canProceed={!!ancestryItem && (!miscAncestryChoiceRules || Object.keys(selectedAncestryMiscChoices).length === miscAncestryChoiceRules.length)} />
             </div>
-            <div className="flex-1 overflow-y-auto space-y-4">
+            <div className="flex-1 min-h-0 flex flex-col space-y-4">
                 <div className="flex gap-x-2 items-end">
                     <HeroCreationDropdown
                         label={appLang.HeroCreation.selectAncestry}
@@ -91,9 +91,11 @@ export const useAncestrySelection = (navButtons: ReactNode[]) => {
                     </div>
                 </div>
                 {ancestryItem &&
-                    <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                        <AncestryReactComponent item={ancestryItem} />
-                    </EditModeContextProvider>
+                    <div className="flex-1 min-h-0">
+                        <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                            <AncestrySheetComponent item={ancestryItem} />
+                        </EditModeContextProvider>
+                    </div>
                 }
             </div>
         </div>

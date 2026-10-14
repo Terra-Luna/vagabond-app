@@ -151,6 +151,16 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
         return { sheet: this }
     }
 
+    /**
+     * Changes to the app's associated Actor could trigger the app to re-launch
+     * if those changes are still taking place as it's closing - so hook-off the
+     * Actor to prevent this from happening.
+     */
+    override async close(options?: any) {
+        this.removeActorUpdateHook()
+        return super.close(options)
+    }
+
     protected override _onClose(options): void {
         if (this.isSingleInstance && this.registeredInstance === this) {
             VagabondApplication._openAppsRegistry.get(this.constructor)?.delete(this.registryKey)
@@ -166,11 +176,16 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
             this.element.style.animation = "none"
         }
 
-        if (this.onActorUpdateHook) {
-            Hooks.off("updateActor", this.onActorUpdateHook)
-        }
+        this.removeActorUpdateHook()
 
         super._onClose(options)
+    }
+
+    private removeActorUpdateHook() {
+        if (this.onActorUpdateHook !== undefined) {
+            Hooks.off("updateActor", this.onActorUpdateHook)
+            this.onActorUpdateHook = undefined
+        }
     }
 
     protected async _animateClose(): Promise<void> {

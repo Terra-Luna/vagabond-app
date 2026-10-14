@@ -1,7 +1,6 @@
 import { ExternalLink, Trash } from "lucide-react"
 import { useEffect } from "react"
 
-import { ActiveEffectsView } from "../../../../../apps/active-effects/ActiveEffectsView"
 import { openItemSheet } from "../../../../../model/actor/type/Inventory"
 import { ClassDataModel } from "../../../../../model/item/character/ClassDataModel"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
@@ -61,9 +60,9 @@ export const ClassSheetComponent = ({ item, setFeatureDropEnabled }: { item: Ite
 
                     <div className="mt-2">
                         <ItemRulesManager item={item} />
-                        <div className="px-2">
+                        {/* <div className="px-2">
                             <ActiveEffectsView initialDocument={item} />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 

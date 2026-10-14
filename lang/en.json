@@ -1293,7 +1293,7 @@
         "deleteTable": "Delete table"
       },
       "HeroChoices": {
-        "createHero": "Create your Hero",
+        "createHero": "Hero Builder",
         "selectTrainings": "Select Trainings",
         "selectPerks": "Select Perks",
         "selectSpells": "Select Spells",

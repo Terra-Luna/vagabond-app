@@ -59,9 +59,9 @@ export const onRender = (sheet: VagabondApplication) => {
 }
 
 /**
- * Centers the window horizontally (and raised vertically) on its first completed render only.
+ * Centers the window horizontally on first render. Vertically centers then raises by the given vertAdj arg.
  */
-export const centerOnFirstRender = (sheet: any) => {
+export const centerOnFirstRender = (sheet: any, vertAdj = 500) => {
     if (sheet._centeredOnFirstRender) return
     sheet._centeredOnFirstRender = true
 
@@ -71,7 +71,7 @@ export const centerOnFirstRender = (sheet: any) => {
 
         sheet.setPosition({
             left: Math.round((window.innerWidth - bounds.width) / 2),
-            top: Math.max(0, Math.round((window.innerHeight - bounds.height) / 2) - 500)
+            top: Math.max(0, Math.round((window.innerHeight - bounds.height) / 2) - vertAdj)
         })
     })
 }

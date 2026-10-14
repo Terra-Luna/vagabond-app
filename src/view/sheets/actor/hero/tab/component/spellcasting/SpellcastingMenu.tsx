@@ -313,7 +313,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
                 <div className={`flex flex-col font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-1 ${windowedMode ? "" : `${tableBorder}`}`}>
 
                     {/* SPELLCASTING MENU TOP ROW */}
-                    <div className="flex gap-x-0.5 items-end text-lg w-full min-w-0 overflow-hidden">
+                    <div className="flex gap-x-0.5 items-end text-lg w-full min-w-0">
                         {/* SELECTORS */}
                         {(!useMiniCards || imbueMode || windowedMode) && <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />}
                         {!imbueMode && <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />}

@@ -10,12 +10,10 @@ export class HeroCreationApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: {
-                title: appLang.HeroChoices.createHero
-            },
-            position: {
-                height: 966, width: 1115, top: 60, left: 200
-            },
+            window: { title: `${appLang.HeroChoices.createHero}: ${actor.name}` },
+            position: { height: 780, width: 1190 },
+            actorId: actor.id,
+            enforceSingleInstancePerActor: true,
             Component: HeroCreationNavHostView
         } as VagabondAppArgs)
         this.actor = actor
@@ -23,7 +21,7 @@ export class HeroCreationApp extends VagabondApplication {
 
     override async _onRender(context, options) {
         await super._onRender(context, options)
-        centerOnFirstRender(this)
+        centerOnFirstRender(this, 200)
     }
 
     override getReactProps() {

@@ -37,7 +37,7 @@ export const useClassSelection = (navButtons: ReactNode[]) => {
                 <Header title={appLang.HeroCreation.class} />
                 <TopNavButtons navButtons={navButtons} subtitle="" canProceed={!!classItem} />
             </div>
-            <div className="flex-1 overflow-y-auto space-y-4 mt-2">
+            <div className="flex-1 min-h-0 flex flex-col space-y-4 mt-2">
                 <HeroCreationDropdown
                     label={appLang.HeroCreation.class}
                     value={classItem?.id ?? appLang.HeroCreation.selectClass}
@@ -47,9 +47,11 @@ export const useClassSelection = (navButtons: ReactNode[]) => {
 
 
                 {classItem &&
-                    <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                        <ClassSheetComponent item={classItem} />
-                    </EditModeContextProvider>
+                    <div className="flex-1 min-h-0">
+                        <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                            <ClassSheetComponent item={classItem} />
+                        </EditModeContextProvider>
+                    </div>
                 }
             </div>
         </div>

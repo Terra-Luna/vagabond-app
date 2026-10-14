@@ -10,7 +10,7 @@ import { useImageEdit } from "../../../shared/ImageEditUseCase"
 import { BaseItemSheetComponent } from "../../shared/BaseItemSheetComponent"
 import { ItemSheetBanner } from "../../shared/ItemSheetBanner"
 
-export const AncestryReactComponent = ({ item }: { item: Item & { system: AncestryDataModel } | null }) => {
+export const AncestrySheetComponent = ({ item }: { item: Item & { system: AncestryDataModel } | null }) => {
     if (!item) return
     const { isEditMode } = useEditMode()
     const { ContextMenu, onCtxMenu } = useContextMenu()
@@ -27,7 +27,7 @@ export const AncestryReactComponent = ({ item }: { item: Item & { system: Ancest
             </div>
 
             {/* ITEM SHEET - SCROLLABLE */}
-            <div className="w-2/3 h-full overflow-y-auto">
+            <div className="w-2/3 h-full min-h-0 flex flex-col overflow-hidden">
                 <BaseItemSheetComponent
                     bodyClassName="mt-2 mx-2 pb-10"
                     banner={<ItemSheetBanner item={item} hideImage={true} />}

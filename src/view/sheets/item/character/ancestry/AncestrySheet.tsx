@@ -1,5 +1,5 @@
 import { VagabondItemSheet } from "../../VagabondItemSheet";
-import { AncestryReactComponent } from "./AncestrySheetComponent";
+import { AncestrySheetComponent } from "./AncestrySheetComponent";
 
 export class AncestrySheet extends VagabondItemSheet {
     static DEFAULT_OPTIONS = {
@@ -14,5 +14,5 @@ export class AncestrySheet extends VagabondItemSheet {
         },
         dragDrop: []
     }
-    Component = AncestryReactComponent
+    Component = AncestrySheetComponent
 }

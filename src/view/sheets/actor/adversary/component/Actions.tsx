@@ -320,16 +320,18 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                     <div className="flex items-end">
                         <p>{appLang.AdversarySheet.saves}&nbsp;</p>
                         <div className="flex gap-x-3">
-                            {Object.entries(appLang.Saves).map(([key, save]) => (
-                                <div key={key} className="flex items-center gap-1">
-                                    <input
-                                        type="checkbox"
-                                        checked={(newAction?.saves ?? []).includes(key)}
-                                        onChange={() => toggleSave(key as SavingThrowType)}
-                                    />
-                                    <p>{(save as { name: string }).name}</p>
-                                </div>
-                            ))}
+                            {Object.entries(appLang.Saves).map(([key, save]) =>
+                                key !== "defend"
+                                    ? <div key={key} className="flex items-center gap-1">
+                                        <input
+                                            type="checkbox"
+                                            checked={(newAction?.saves ?? []).includes(key)}
+                                            onChange={() => toggleSave(key as SavingThrowType)}
+                                        />
+                                        <p>{(save as { name: string }).name}</p>
+                                    </div>
+                                    : null
+                            )}
                         </div>
                     </div>
 
