@@ -1,6 +1,7 @@
 import ReactDom from "react-dom/client"
 
 import { onClose, onRender, onRenderHTML, onRenderWithWrappers, onUpdatePosition } from "../../utils/sheetUtils"
+import { sys_id } from "../../utils/foundryUtils"
 
 export const VagabondSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null
@@ -92,5 +93,37 @@ export const VagabondSheetMixin = (superclass) => class extends superclass {
 
     protected getReactProps() {
         return { sheet: this }
+    }
+
+    protected _onDetach(sourceDocument, targetDocument) {
+        super._onDetach(sourceDocument, targetDocument)
+        // add our fonts to the detached document
+        // add our fonts
+        const fontFaces = [
+            new FontFace(
+                'Eskapade',
+                `url("systems/${sys_id}/assets/fonts/eskapade-black.ttf")`,
+                { weight: 'bold', style: 'normal', }
+            ),
+            new FontFace(
+                'Eskapade',
+                `url("systems/${sys_id}/assets/fonts/eskapade-regular.ttf")`,
+                { weight: 'normal', style: 'normal', }
+            ),
+            new FontFace(
+                'Paradigm',
+                `url("systems/${sys_id}/assets/fonts/paradigm-regular.otf")`,
+                { weight: 'normal', style: 'normal', }
+            ),
+            new FontFace(
+                'Paradigm',
+                `url("systems/${sys_id}/assets/fonts/paradigm-bold.otf")`,
+                { weight: 'bold', style: 'normal', }
+            ),
+        ];
+
+        Promise.all(fontFaces.map(face => face.load())).then(fonts => fonts.forEach(
+            font => targetDocument?.fonts.add(font)
+        ))
     }
 }
