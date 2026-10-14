@@ -49,7 +49,10 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
     }, [sheet, isDarkMode])
 
     return (<>
-        <div className={`relative ${className}`}>
+        <div className={`relative ${className}`} onBlur={(e) => {
+            if (e.relatedTarget instanceof Node && e.currentTarget.contains(e.relatedTarget)) return
+            setIsOpen(false)
+        }}>
             {/* MENU BUTTON */}
             <button onClick={toggleMenu} className="flex items-center justify-center p-2 cursor-pointer">
                 <div className="relative w-6 h-6">
@@ -59,8 +62,8 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
             </button>
 
             {/* MENU CONTAINER */}
-            <div className={`
-                absolute top-9 right-0 z-1000 p-4 w-54 max-h-120 overflow-y-auto
+            <div tabIndex={-1} className={`
+                absolute top-9 right-0 z-1000 p-4 w-54 max-h-120 overflow-y-auto outline-none
                 bg-context-menu-fill border-2 border-solid border-table-border rounded-sm shadow-lg
                 transition-all duration-200 transform origin-top-right
                 ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'}

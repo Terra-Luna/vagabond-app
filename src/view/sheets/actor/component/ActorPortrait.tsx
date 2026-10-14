@@ -17,7 +17,7 @@ export const ActorPortrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema
 
     return (
         <div onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
-            <div className="relative overflow-hidden h-[154px] w-[110px] bg-black/5 border border-solid border-black/5">
+            <div className={`relative overflow-hidden h-[160px] w-[110px] bg-black/10 border-r border-b border-solid border-table-border`}>
                 <img
                     src={actor.parent.img} alt={actor.parent.name}
                     onLoad={onLoad}

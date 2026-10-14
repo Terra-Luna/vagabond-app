@@ -18,7 +18,7 @@ import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
-import { Divider, Header, ItemDivider } from "../../../../component/Header"
+import { Header, ItemDivider } from "../../../../component/Header"
 import { IconOnlyButton } from "../../../../component/IconOnlyButton"
 import { Tooltip } from "../../../../component/Tooltip"
 import { useStatsDrawerStatus } from "./statdrawer/StatsDrawerContext"
@@ -37,47 +37,49 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
     const updateHp = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { health: { value: (hp ?? 0) + (auxClick ? 1 : -1) } })
     }, [hp])
+
     return (
-        <div className={`flex grow items-center justify-between mt-1 mx-1`}>
+        <div className="flex justify-evenly items-center gap-x-1 grow min-w-0" style={{ ['--hud' as string]: '68px' }}>
             {/* HP CURRENT / MAX */}
-            <div className="relative items-center justify-center w-[80px] h-[80px]">
-                <span className="absolute -top-0.5 w-full text-center text-xs text-text-primary pb-1">{appLang.HeroSheet.hp}</span>
-                <Heart className="w-full h-full text-text-primary fill-sheet-header-fill/10" strokeWidth={0.5} />
-                <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
-                    <span className={`text-4xl text-text-hp-current hover-glow`}>
-                        <EditableTextField
-                            boundValue={health.value?.toString() ?? ""}
-                            updateProps={{ object: hero.parent, path: ['health', 'value'] }}
-                            placeholder="0"
-                            hideBorderOnEditMode={true}
-                        />
-                    </span>
-                </div>
-                <Tooltip title={"Adjust HP"} content={appLang.HeroSheet.counter_tooltip}>
-                    <div className="absolute -right-2.5 bottom-1.5 flex items-center justify-center min-w-[28px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold"
-                        onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}
-                    >
-                        <span className={`text-xl text-text-hp-max px-1 hover-glow`}>{health.max}</span>
+            <div className="flex flex-col items-center">
+                <span className="text-xs leading-none text-text-primary whitespace-nowrap" style={{ marginBottom: 'calc(var(--hud) * -0.08)' }}>{appLang.HeroSheet.hp}</span>
+                <div className="relative" style={{ width: 'var(--hud)', height: 'var(--hud)' }}>
+                    <Heart className="w-full h-full text-text-primary fill-sheet-header-fill/10" strokeWidth={0.5} />
+                    <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
+                        <span className={`text-text-hp-current hover-glow`} style={{ fontSize: 'calc(var(--hud) * 0.45)', lineHeight: 1 }}>
+                            <EditableTextField
+                                boundValue={health.value?.toString() ?? ""}
+                                updateProps={{ object: hero.parent, path: ['health', 'value'] }}
+                                placeholder="0"
+                                hideBorderOnEditMode={true}
+                            />
+                        </span>
                     </div>
-                </Tooltip>
-            </div>
-            <Divider />
-            {/* ARMOR RATING */}
-            <div className="relative items-center justify-center w-[60px] h-[60px]">
-                <span className="absolute -top-3 w-full text-center text-xs text-text-primary">{appLang.HeroSheet.armor}</span>
-                <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <span className={`text-3xl text-text-armor font-eskapade font-bold`}>
-                        {armor.rating}
-                    </span>
+                    <Tooltip title={"Adjust HP"} content={appLang.HeroSheet.counter_tooltip}>
+                        <div className="absolute -right-2.5 bottom-1.5 flex items-center justify-center border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold"
+                            style={{ minWidth: 'calc(var(--hud) * 0.35)' }}
+                            onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}
+                        >
+                            <span className={`text-text-hp-max px-1 hover-glow`} style={{ fontSize: 'calc(var(--hud) * 0.25)', lineHeight: 1.3 }}>{health.max}</span>
+                        </div>
+                    </Tooltip>
                 </div>
             </div>
-            <Divider />
+            {/* ARMOR RATING */}
+            <div className="flex flex-col items-center">
+                <span className="text-xs leading-none text-text-primary whitespace-nowrap" style={{ marginBottom: 'calc(var(--hud) * -0.08)' }}>{appLang.HeroSheet.armor}</span>
+                <div className="relative flex items-center justify-center" style={{ width: 'var(--hud)', height: 'var(--hud)' }}>
+                    <Shield style={{ width: '75%', height: '75%' }} className="text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <span className={`text-text-armor font-eskapade font-bold`} style={{ fontSize: 'calc(var(--hud) * 0.375)', lineHeight: 1 }}>
+                            {armor.rating}
+                        </span>
+                    </div>
+                </div>
+            </div>
             {/* FATIGUE TRACKER */}
             <Tooltip title={"Fatigue"} content={appLang.HeroSheet.counter_tooltip}>
-                <div className="ml-6">
-                    <Fatigue hero={hero} />
-                </div>
+                <Fatigue hero={hero} />
             </Tooltip>
         </div>
     )
@@ -89,17 +91,15 @@ export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
         updateDocument(hero.parent, { statuses: { counters: { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) } } })
     }, [fatigue])
     return (
-        <div className={`flex items-center flex-col pb-4 text-text-primary font-paradigm w-1/3 hover-glow`}
+        <div className={`flex items-center flex-col text-text-primary font-paradigm hover-glow`}
             onClick={() => updateFatigue(false)}
             onAuxClick={() => updateFatigue(true)}
         >
-            <span className="text-xs">{appLang.HeroSheet.fatigue}</span>
-            <span className="font-eskapade font-bold text-4xl">{
-                <div className={trackerLayout + " text-text-fatigue-current"}>
-                    <LucideHeartOff size={28} />
-                    <span className="min-w-[1ch]">{fatigue}</span>
-                </div>
-            }</span>
+            <span className="text-xs leading-none whitespace-nowrap" style={{ marginBottom: 'calc(var(--hud, 80px) * -0.08)' }}>{appLang.HeroSheet.fatigue}</span>
+            <div className={trackerLayout + " justify-center font-eskapade font-bold text-text-fatigue-current"} style={{ height: 'var(--hud, 80px)', fontSize: 'calc(var(--hud, 80px) * 0.45)', lineHeight: 1 }}>
+                <LucideHeartOff style={{ width: 'calc(var(--hud, 80px) * 0.35)', height: 'calc(var(--hud, 80px) * 0.35)' }} />
+                <span className="min-w-[1ch]">{fatigue}</span>
+            </div>
         </div>
     )
 }
@@ -111,8 +111,7 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
             const roll = await new Roll('1d6').evaluate()
             sendVagabondChatCard(
                 hero,
-                "TrackerUpdateChatCard",
-                {
+                "TrackerUpdateChatCard", {
                     heroId: hero.parent.id,
                     resource: "luck",
                     verb: appLang.HeroSheet.spent,
@@ -331,9 +330,10 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div>
             <CollapsibleSection settingsKey={`hero-sheet-collapsed-${(hero as any)._id}`} title={appLang.HeroSheet.skills} content={
-                <div className="grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-x-2">
+                <div className="grid grid-cols-2 gap-x-2">
                     {skills.map(sk => (
-                        <Skill key={sk}
+                        <Skill
+                            key={sk}
                             hero={hero}
                             skillKey={sk}
                             name={appLang.Skills[sk].name}
@@ -365,16 +365,16 @@ export const Skill = ({ hero, trained, skillKey, name, value, isCastSkill }: {
                 />
             }
         >
-            <div className="flex items-center ml-1 -my-0.5">
-                <Star className={(trained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
-                <div className={`flex justify-between ml-2 mt-1 w-full text-base font-eskapade font-bold align-middle hover-glow`} onClick={
+            <div className="flex items-center ml-1 -my-0.5 min-w-0">
+                <Star className={(trained ? 'text-ic-skill-trained fill-ic-skill-trained shrink-0' : 'text-ic-skill-untrained shrink-0')} size={18} />
+                <div className={`flex justify-between ml-2 mt-1 w-full min-w-0 text-base font-eskapade font-bold align-middle hover-glow`} onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => {
                         const skillCheck = await new SkillCheck(hero, { type: 'check', skill: skillKey, clickEvent: e }).roll()
                         sendVagabondChatCard(hero, "SkillCheckChatCard", { actorId: getId(hero), result: skillCheck })
                     }
                 }>
-                    <div className="flex gap-x-2 items-center">
-                        {name}
+                    <div className="flex gap-x-2 items-center min-w-0">
+                        <span className="truncate">{name}</span>
                         {isCastSkill && <IconOnlyButton
                             Icon={Wand2} size={18}
                             colorClassName="text-ic-skill-trained"
@@ -384,7 +384,7 @@ export const Skill = ({ hero, trained, skillKey, name, value, isCastSkill }: {
                             }}
                         />}
                     </div>
-                    <div className={"text-xl mr-2"}>
+                    <div className={"text-xl mr-2 ml-1 shrink-0"}>
                         {value}
                     </div>
                 </div>

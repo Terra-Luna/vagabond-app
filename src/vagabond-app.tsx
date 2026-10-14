@@ -537,7 +537,7 @@ Hooks.on("hotbarDrop", (_bar: any, data: any, slot: number): boolean | void => {
  */
 game.system.api.hero.rollPreset({ presetId: "${preset.id}", event: event });`
 
-    Macro.create({ name: `${preset.title}${preset.description?.length > 0 ? `: ${preset.description}` : ""}`, type: "script", img, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } } as any)
+    Macro.create({ name: `${actor.name}: ${preset.title}${preset.description?.length > 0 ? `: ${preset.description}` : ""}`, type: "script", img, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } } as any)
         .then(macro => macro && game.user?.assignHotbarMacro(macro, slot))
 
     return false
@@ -548,6 +548,7 @@ Hooks.on("preCreateMacro", (macro: any, data: any, options: any, userId: string)
     if (!uuid) return
 
     const item = fromUuidSync(uuid) as any
+
     if ((item?.system instanceof WeaponDataModel)) {
         const command = `/** 
  * Hold Shift to add Favor, Ctrl for Hinder
@@ -555,7 +556,8 @@ Hooks.on("preCreateMacro", (macro: any, data: any, options: any, userId: string)
  */
 game.system.api.hero.weaponAttack({ itemId: "${item.id}", /*skill: "brawl",*/ event: event});`
 
-        macro.updateSource({ img: item.img, name: `${item.name} Attack`, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } })
+        const actor = game.actors?.contents?.find(a => a.items.get(item.id))
+        macro.updateSource({ img: item.img, name: `${actor ? actor.name + ": " : ""}${item.name} Attack`, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } })
         data.img = item.img
     }
     else {

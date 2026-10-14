@@ -1,4 +1,4 @@
-import { MessageSquareText, Wand2 } from "lucide-react"
+import { MessageSquareText } from "lucide-react"
 
 import { getMiniCardsPref } from "../../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
@@ -21,12 +21,6 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
         <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
             {hero.spells.sort((a, b) => a.parent.name.localeCompare(b.parent.name)).map((sp: any, index: number) => (
                 <div key={index} onContextMenu={(e) => onCtxMenu(e, [
-                    {
-                        icon: Wand2, label: appLang.HeroSheet.Magic.btnCast, action: () => {
-                            onSelectSpell(sp._sourceId)
-                            setIsSpellcastingOpen(true)
-                        }
-                    },
                     {
                         icon: MessageSquareText, label: appLang.ButtonActions.chat, action: () =>
                             sendVagabondChatCard(

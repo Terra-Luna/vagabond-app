@@ -1,7 +1,6 @@
 import ReactDom from "react-dom/client"
 
 import { onClose, onDetach, onRender, onRenderHTML, onRenderWithWrappers, onUpdatePosition } from "../../utils/sheetUtils"
-import { sys_id } from "../../utils/foundryUtils"
 
 export const VagabondSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null
@@ -33,6 +32,22 @@ export const VagabondSheetMixin = (superclass) => class extends superclass {
     }
 
     _replaceHTML() { } // no-op, implemented just to comply with sheets api
+
+    bringToFront() {
+        try {
+            super.bringToFront()
+        }
+        catch {
+            /**
+             * Addresses a crash where Foundry fails to re-render a recently closed detached window.
+             */
+            this._reactRoot?.unmount()
+            this._reactRoot = null
+            this.close({ animate: false })
+                .catch(() => { })
+                .then(() => this.render({ force: true }))
+        }
+    }
 
     _onFirstRender(context, options) {
         super._onFirstRender(context, options)

@@ -310,14 +310,15 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
         const spell = delivery?.spell
         return (<>
             {isSpellcastingOpen && delivery && spell &&
-                <div className={`flex flex-col font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-1 ${windowedMode ? "" : `${tableBorder}`}`}>
+                <div className={`flex flex-col font-eskapade font-bold bg-context-menu-fill -mt-1 p-1 ${windowedMode || imbueMode ? "" : `mb-1 ${tableBorder}`}`}>
 
                     {/* SPELLCASTING MENU TOP ROW */}
                     <div className="flex gap-x-0.5 items-end text-lg w-full min-w-0">
                         {/* SELECTORS */}
                         {(!useMiniCards || imbueMode || windowedMode) && <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />}
                         {!imbueMode && <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />}
-                        <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
+
+                        {!hero.class.castingSkill && <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />}
 
                         {/* CAST BUTTON */}
                         <div className="@container ml-auto flex-shrink min-w-0 max-w-[100px] w-full">

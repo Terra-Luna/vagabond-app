@@ -19,7 +19,7 @@ export const RollPresetCard = ({ actor, preset, EditButton, TrashButton }: {
             <div>
                 <div className="flex gap-x-1 text-base font-eskapade">
                     {preset.title.length > 0 && <p className="font-bold">{`${preset.title}${preset.description.length > 0 ? ':' : ''}`}</p>}
-                    {preset.description.length > 0 && <p>{preset.description}</p>}
+                    {preset.description.length > 0 && <p className={`${preset.title ? "" : "font-bold"}`}>{preset.description}</p>}
                 </div>
 
                 {/* PRESET METADATA GHOST TEXT */}

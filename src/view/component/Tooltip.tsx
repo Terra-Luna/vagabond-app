@@ -83,17 +83,18 @@ export const Tooltip = ({ title, content, children, interactive, disabled, maxWi
 
     useEffect(() => {
         const anchor = anchorRef.current
-        if (!anchor || !document.body) return
-        let portalHost = document.body.querySelector<HTMLDivElement>(':scope > .tooltip-portal-root')
+        const ownerDoc = anchor?.ownerDocument
+        if (!anchor || !ownerDoc?.body) return
+        let portalHost = ownerDoc.body.querySelector<HTMLDivElement>(':scope > .tooltip-portal-root')
 
         if (!portalHost) {
-            portalHost = document.createElement('div')
+            portalHost = ownerDoc.createElement('div')
             portalHost.className = 'tooltip-portal-root'
-            document.body.appendChild(portalHost)
+            ownerDoc.body.appendChild(portalHost)
         }
 
         const scaduRoot = portalHost.shadowRoot ?? portalHost.attachShadow({ mode: 'open' })
-        const container = document.createElement('div')
+        const container = ownerDoc.createElement('div')
         container.className = 'tooltip-portal-container'
         syncPortalTheme(container)
         scaduRoot.appendChild(container)

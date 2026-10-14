@@ -25,10 +25,17 @@ export interface VagabondApplication {
 }
 
 export const onRenderHTML = (sheet: VagabondApplication) => {
-    if (!sheet._reactRoot) {
-        const defaultWindowContent = sheet.element.getElementsByClassName('window-content')?.[0]
-        if (defaultWindowContent) sheet.element.removeChild(defaultWindowContent)
+    if (sheet._reactRoot && !sheet.element.querySelector(':scope > .app-root')) {
+        sheet._reactRoot.unmount()
+        sheet._reactRoot = null
+    }
 
+    if (!sheet._reactRoot) {
+        const defaultWindowContent = sheet.element.getElementsByClassName('window-content')?.[0] as HTMLElement | undefined
+        if (defaultWindowContent) {
+            defaultWindowContent.replaceChildren()
+            defaultWindowContent.style.display = "none"
+        }
         const appDiv = document.createElement('div')
         appDiv.setAttribute("class", "app-root")
         const reactRootElem = sheet.element.appendChild(appDiv)
@@ -128,12 +135,17 @@ export const onRenderWithWrappers = (sheet: VagabondApplication, theme = "light"
     const { width, top, left } = position
     const rawHeight = position.height
     const toolbarOffset = sheet._toolbarHeight || 0
+    const ownerWindow = sheet.element?.ownerDocument?.defaultView ?? window
+    const isDetached = ownerWindow !== window
     let height: number
 
     /**
      * Sheets may be height "auto", in which case their height needs to be calculated based off the DOM height.
      */
-    if (typeof rawHeight === "number" && !isNaN(rawHeight)) {
+    if (isDetached) {
+        height = Math.max(ownerWindow.innerHeight - toolbarOffset, 100)
+    }
+    else if (typeof rawHeight === "number" && !isNaN(rawHeight)) {
         height = rawHeight - toolbarOffset
     }
     else {
@@ -153,9 +165,9 @@ export const onRenderWithWrappers = (sheet: VagabondApplication, theme = "light"
                             font-paradigm tracking-wider rounded-b-lg overflow-hidden
                         `}
                             style={{
-                                height: typeof rawHeight === "number" ? height : "100%",
-                                maxHeight: `calc(88vh - ${top}px)`,
-                                overflowY: rawHeight === "auto" ? "auto" : undefined,
+                                height: (isDetached || typeof rawHeight === "number") ? height : "100%",
+                                maxHeight: isDetached ? undefined : `calc(88vh - ${top}px)`,
+                                overflowY: (rawHeight === "auto" && !isDetached) ? "auto" : undefined,
                             }}>
                             <sheet.Component {...sheet.getReactProps()} />
                         </div>
@@ -195,5 +207,17 @@ export const onDetach = (sheet: VagabondApplication, sourceDocument, targetDocum
         font => targetDocument?.fonts.add(font)
     ));
 
-    (sheet as any).super._onDetach(sourceDocument, targetDocument)
+    (sheet as any).super?._onDetach(sourceDocument, targetDocument)
+
+    if (targetDocument?.head && sheet.element?.id) {
+        const fillStyle = targetDocument.createElement("style")
+        fillStyle.textContent = `#${sheet.element.id} { top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; max-width: none !important; max-height: none !important; border-radius: 0 !important; }`
+        targetDocument.head.appendChild(fillStyle)
+    }
+    sheet.renderWithWrappers({ theme: getTheme(), position: sheet.position })
+
+    targetDocument?.defaultView?.addEventListener("resize", () => {
+        sheet.renderWithWrappers({ theme: getTheme(), position: sheet.position })
+    })
+
 }

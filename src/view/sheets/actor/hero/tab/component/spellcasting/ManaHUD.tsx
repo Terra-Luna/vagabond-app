@@ -7,7 +7,6 @@ import { appLang } from "../../../../../../../utils/lang"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
 import { Tooltip } from "../../../../../../component/Tooltip"
-import { SpellcastingLabel } from "./input/SpellcastingTypography"
 import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
 
 export const ManaHUD = ({ hero, isCastMenuOpen = false, hideTab = false }: { hero: HeroDataModel, isCastMenuOpen?: boolean, hideTab?: boolean }) => {
@@ -23,10 +22,10 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false, hideTab = false }: { her
             <div className="flex gap-x-2 text-2xl font-eskapade font-bold mt-1 mb-2 justify-between">
 
                 {/* CURRENT MANA */}
-                <div className={`flex items-center gap-x-6 ${hideTab ? "px-2" : ""}`}>
+                <div className={`flex items-end gap-x-4 ml-auto ${hideTab ? "px-2" : ""}`}>
                     <div className="flex gap-x-1 items-center">
-                        <SpellcastingLabel text={appLang.HeroSheet.Magic.labelMana} />
-                        <Tooltip title={appLang.HeroSheet.Magic.labelMana} content={appLang.HeroSheet.counter_tooltip}>
+                        {/* <SpellcastingLabel text={appLang.HeroSheet.Magic.labelMana} /> */}
+                        <Tooltip title={appLang.HeroSheet.Magic.labelMana} content={`Current / Max${appLang.HeroSheet.counter_tooltip}`}>
                             <Sparkle className={`text-mana mr-1 hover-glow`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
                         </Tooltip>
                         <span className="text-mana">
@@ -42,11 +41,12 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false, hideTab = false }: { her
                     </div>
 
                     {/* MAX MANA / CAST */}
-                    <div className="flex gap-x-1 items-center">
-                        <SpellcastingLabel text={appLang.HeroSheet.Magic.labelCastMax} />
+                    <Tooltip title={appLang.HeroSheet.Magic.labelCastMax} content={`Maximum mana allowed per-cast.`}>
+                        <div className="flex gap-x-1 items-center">
                         <Sparkles size={20} className="text-mana" />
-                        <p>{hero.mana.maxCast}</p>
+                            <p>{hero.mana.maxCast}</p>
                     </div>
+                    </Tooltip>
                 </div>
 
                 {/* SPELLCASTING TAB */}

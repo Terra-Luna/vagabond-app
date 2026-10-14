@@ -1,4 +1,5 @@
 import { appLang } from "../../utils/lang"
+import { centerOnFirstRender } from "../../utils/sheetUtils"
 import { VagabondAppArgs,VagabondApplication } from "../VagabondApplication"
 import { RollPreset } from "./model/RollPreset"
 import { RollBuilderView } from "./RollBuilderView"
@@ -19,6 +20,11 @@ export class RollBuilderApp extends VagabondApplication {
 
         this.actor = actor
         this.preset = preset
+    }
+
+    override async _onRender(context, options) {
+        await super._onRender(context, options)
+        centerOnFirstRender(this)
     }
 
     override getReactProps() {

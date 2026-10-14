@@ -652,14 +652,14 @@
       "yourInventory": "Your Inventory"
     },
     "HeroSheet": {
-      "hp": "HIT POINTS",
+      "hp": "HP",
       "armor": "ARMOR",
       "Level": "Level {{level}}",
       "xp": "XP: {{xp}} / {{nextLevel}}",
       "trackers": "TRACKERS",
       "studied": "Studied",
       "focus": "Focus",
-      "fatigue": "Fatigue",
+      "fatigue": "FATIGUE",
       "luck": "Luck",
       "gained": "Gained a",
       "spent": "Spent a",
@@ -687,9 +687,9 @@
       "wealth": "WEALTH",
       "tab-main": "Equipped Gear",
       "tab-inv": "Inventory & Wealth",
-      "tab-magic": "Magic & Spellcasting",
-      "tab-abilities": "Class Features, Perks, & Ancestry Information",
-      "noEquipment": "Equip gear from the inventory tab",
+      "tab-magic": "Spellcasting",
+      "tab-abilities": "Features & Perks",
+      "noEquipment": "Equip gear from the inventory table",
       "Menu": {
         "import": "IMPORT",
         "importFromVgbndApp": "Vagabond Tagalong",
@@ -1424,7 +1424,7 @@
           "scrap": "You can scrap Items for Materials worth half its value during a Shift you spend to Craft or by spending an Hour to do so"
         },
         "Hunting": {
-          "title": "Hunting",
+          "title": "Hunt",
           "huntingInfo": "More Hunting Info",
           "body": "Requires a Shift. Make a {{skillCheck.survival}}. On a pass, [[/r d6#Hunting]]{roll} to see what Wild Game you discover.",
           "additionalInfo": "On a Crit, choose which Beast you find.\nHarvesting can be done as part of a Scene.\nAnything you can harvest meat from gives Rations or Materials: ",
@@ -1447,7 +1447,7 @@
           "body": "If you Study, you gain a Studied die which is a d6 that you can spend to gain Favor on a d20 roll you make in the next Day. Additionally, you can change a choice offered by one of your Features when you Study (such as a Spell Known)."
         },
         "Foraging": {
-          "title": "Foraging",
+          "title": "Forage",
           "body": "You can spend a Shift gathering food and Materials from the wilderness in environments that can provide them. You can also do so when you Travel at a Slow Pace.\n\nWhen you do, make a {{skillCheck.survival}}. On a pass, determine if you find Rations or Materials. On a Crit, you find double.",
           "rations": "Rations:",
           "rationsExplainer": "{{diceRoll.d6}} Rations",

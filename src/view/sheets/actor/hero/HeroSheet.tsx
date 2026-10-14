@@ -1,18 +1,17 @@
 import { appLang } from "../../../../utils/lang"
 import { VagabondActorSheet } from "../VagabondActorSheet"
-import { HeroSheetReactComponent } from "./HeroSheetComponent"
+import { HeroSheetComponent } from "./HeroSheetComponent"
 
 export class HeroSheet extends VagabondActorSheet {
-    Component = HeroSheetReactComponent
+    Component = HeroSheetComponent
     static DEFAULT_OPTIONS = {
         position: {
             width: 360,
             height: 815 as any,
             top: 60,
-            left: 333
+            left: 400
         },
         window: {
-            title: "x",
             resizable: true
         },
         dragDrop: []
