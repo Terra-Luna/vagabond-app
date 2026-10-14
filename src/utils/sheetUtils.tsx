@@ -6,7 +6,7 @@ import { DimensionsContext } from "../view/context/DimensionsContext"
 import { EditModeContextProvider } from "../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../view/context/EditModeContext/EditModeOptions"
 import { EmotionCacheContext } from "../view/context/EmotionCacheContext"
-import { getTheme } from "./foundryUtils"
+import { getTheme, sys_id } from "./foundryUtils"
 import { createStyleTag } from "./styleUtils"
 
 export interface VagabondApplication {
@@ -164,4 +164,35 @@ export const onRenderWithWrappers = (sheet: VagabondApplication, theme = "light"
             </DimensionsContext.Provider>
         </FoundryHotkeyBlocker>
     )
+}
+
+export const onDetach = (sheet: VagabondApplication, sourceDocument, targetDocument) => {
+    (sheet as any)._onDetach(sourceDocument, targetDocument)
+    // add our fonts to the detached document
+    const fontFaces = [
+        new FontFace(
+            'Eskapade',
+            `url("systems/${sys_id}/assets/fonts/eskapade-black.ttf")`,
+            { weight: 'bold', style: 'normal', }
+        ),
+        new FontFace(
+            'Eskapade',
+            `url("systems/${sys_id}/assets/fonts/eskapade-regular.ttf")`,
+            { weight: 'normal', style: 'normal', }
+        ),
+        new FontFace(
+            'Paradigm',
+            `url("systems/${sys_id}/assets/fonts/paradigm-regular.otf")`,
+            { weight: 'normal', style: 'normal', }
+        ),
+        new FontFace(
+            'Paradigm',
+            `url("systems/${sys_id}/assets/fonts/paradigm-bold.otf")`,
+            { weight: 'bold', style: 'normal', }
+        ),
+    ];
+
+    Promise.all(fontFaces.map(face => face.load())).then(fonts => fonts.forEach(
+        font => targetDocument?.fonts.add(font)
+    ))
 }

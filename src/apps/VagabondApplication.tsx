@@ -192,4 +192,7 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
         return
     }
 
+    protected _onDetach(sourceDocument, targetDocument) {
+        sheetUtils.onDetach(this as any, sourceDocument, targetDocument)
+    }
 }
