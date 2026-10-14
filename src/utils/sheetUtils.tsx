@@ -167,7 +167,6 @@ export const onRenderWithWrappers = (sheet: VagabondApplication, theme = "light"
 }
 
 export const onDetach = (sheet: VagabondApplication, sourceDocument, targetDocument) => {
-    (sheet as any)._onDetach(sourceDocument, targetDocument)
     // add our fonts to the detached document
     const fontFaces = [
         new FontFace(
@@ -194,5 +193,7 @@ export const onDetach = (sheet: VagabondApplication, sourceDocument, targetDocum
 
     Promise.all(fontFaces.map(face => face.load())).then(fonts => fonts.forEach(
         font => targetDocument?.fonts.add(font)
-    ))
+    ));
+
+    (sheet as any).super._onDetach(sourceDocument, targetDocument)
 }
