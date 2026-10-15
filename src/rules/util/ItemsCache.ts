@@ -75,7 +75,7 @@ export class ItemsCache {
             .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: WeaponDataModel })[]
     }
 
-    static spells = () => {
+    static spells = (): (Item & { system: SpellDataModel })[] => {
         return Array.from(this.items.values())
             .filter(item => item != null && item.type === 'spell')
             .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: SpellDataModel })[]

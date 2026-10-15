@@ -308,6 +308,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
     const SpellcastingMenu = () => {
         const delivery = deliveries[deliveryIndex]
         const spell = delivery?.spell
+
         return (<>
             {isSpellcastingOpen && delivery && spell &&
                 <div className={`flex flex-col font-eskapade font-bold bg-context-menu-fill -mt-1 p-1 ${windowedMode || imbueMode ? "" : `mb-1 ${tableBorder}`}`}>

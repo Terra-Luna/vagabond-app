@@ -54,7 +54,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
     }
 
     return (
-        <div className="flex">
+        <div className="flex mb-0.5">
             {/* MAIN STATS ARRAY */}
             <StatsDrawer hero={hero} />
 
@@ -62,7 +62,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
             <ActorPortrait actor={hero} />
 
             {/* MAIN HEADER CONTENT + MENU BUTTON */}
-            <div className="flex flex-col grow min-w-0">
+            <div className="flex flex-col grow min-w-0 border-b border-solid border-sheet-header-fill">
                 <div className="bg-sheet-header-fill font-eskapade min-w-0">
                     <div className="flex text-text-header-primary text-4xl font-bold mt-1 ml-2 min-w-0">
                         <div className="min-w-0 truncate"><EditableNameField actor={hero.parent} /></div>

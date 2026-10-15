@@ -33,7 +33,9 @@ const locale = appLang.NpcSheet
  * per-token rather than a transient client-side value.
  */
 const usePortraitOpenFlag = (actor: Actor) => {
+
     const token = actor.isToken ? actor.token : actor.getActiveTokens()[0]?.document
+    
     const [isPortraitOpen, setIsPortraitOpenState] = useState<boolean>(
         (token?.getFlag(sys_id, "portraitOpen" as any) as boolean | undefined) ?? true
     )
@@ -60,6 +62,7 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
     const { isEditMode } = useEditMode()
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
     const { isPortraitOpen, setIsPortraitOpen } = usePortraitOpenFlag(actor)
+    const x = ""
 
     useEffect(() => {
         if (!isEditMode) {
@@ -70,10 +73,8 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
     return (
         <div className="@container flex grow overflow-y-hidden">
             <div className="absolute left-0 flex items-start">
-                <div className={`overflow-hidden transition-all duration-300 ease-in-out bg-sheet-main-fill/33 ${tableBorder} rounded-l-md ${isPortraitOpen ? 'w-[110px] -ml-[110px]' : 'w-0 ml-0'}`}>
-                    <div className="w-[110px]">
-                        <ActorPortrait actor={npc} />
-                    </div>
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out border border-solid border-sheet-header-fill rounded-l-md ${isPortraitOpen ? 'w-[100px] -ml-[100px]' : 'w-0 ml-0'}`}>
+                    <ActorPortrait actor={npc} />
                 </div>
             </div>
 

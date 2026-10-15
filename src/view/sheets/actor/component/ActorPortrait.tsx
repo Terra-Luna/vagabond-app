@@ -2,7 +2,7 @@ import { ActorDataModel, BaseActorSchema } from "../../../../model/actor/ActorDa
 import { sys_id } from "../../../../utils/foundryUtils"
 import { useContextMenu } from "../../../component/ContextMenu"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
-import { defaultPortraitFrame, PortraitFrameData, portraitFrameFlag, portraitFrameImageStyle, useImageAspect } from "./PortraitFrame"
+import { ACTOR_PORTRAIT_HEIGHT, ACTOR_PORTRAIT_WIDTH, defaultPortraitFrame, PortraitFrameData, portraitFrameFlag, portraitFrameImageStyle, useImageAspect } from "./PortraitFrame"
 
 
 /**
@@ -17,7 +17,9 @@ export const ActorPortrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema
 
     return (
         <div onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
-            <div className={`relative overflow-hidden h-[160px] w-[110px] bg-black/10 border-r border-b border-solid border-table-border`}>
+            <div className="relative overflow-hidden shrink-0 bg-sheet-header-fill/50 border-r border-l border-b border-solid border-sheet-header-fill"
+                style={{ width: ACTOR_PORTRAIT_WIDTH, height: ACTOR_PORTRAIT_HEIGHT }}
+            >
                 <img
                     src={actor.parent.img} alt={actor.parent.name}
                     onLoad={onLoad}

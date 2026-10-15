@@ -3,10 +3,10 @@ import { useState } from "react"
 import { appLang } from "../../utils/lang"
 import { tableBorder } from "../../view/common/border-styles"
 import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
-import { calculateAdjImgDims, portraitBoundry, PortraitFrameData, portraitFrameImageStyle, useImageAspect } from "../../view/sheets/actor/component/PortraitFrame"
+import { ACTOR_PORTRAIT_HEIGHT, ACTOR_PORTRAIT_WIDTH, calculateAdjImgDims, portraitBoundry, PortraitFrameData, portraitFrameImageStyle, useImageAspect } from "../../view/sheets/actor/component/PortraitFrame"
 
-const previewW = 220
-const previewH = 308
+const previewW = ACTOR_PORTRAIT_WIDTH * 2
+const previewH = ACTOR_PORTRAIT_HEIGHT * 2
 const minZoom = 1
 const maxZoom = 4
 

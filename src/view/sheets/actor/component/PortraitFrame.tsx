@@ -4,12 +4,14 @@ export interface PortraitFrameData { x: number, y: number, zoom: number }
 
 export const defaultPortraitFrame: PortraitFrameData = { x: 50, y: 50, zoom: 1 }
 
+export const ACTOR_PORTRAIT_WIDTH = 100
+export const ACTOR_PORTRAIT_HEIGHT = 162
 export const portraitFrameFlag = "portraitFrame"
 
 /**
  * Actor portrait dimensions (1.4 ratio).
  */
-const frameAspect = 110 / 154
+const frameAspect = ACTOR_PORTRAIT_WIDTH / ACTOR_PORTRAIT_HEIGHT
 
 
 export const calculateAdjImgDims = (zoom: number, imgAspect: number) => {

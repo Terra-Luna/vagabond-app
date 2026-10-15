@@ -2,24 +2,43 @@ import { Sparkle, Sparkles, X } from "lucide-react"
 import { useCallback } from "react"
 
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
+import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { updateDocument } from "../../../../../../../utils/documentUtils"
 import { appLang } from "../../../../../../../utils/lang"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
+import { SkillCard, SkillCardTitle } from "../../../../../../component/SkillCard"
 import { Tooltip } from "../../../../../../component/Tooltip"
 import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
 
 export const ManaHUD = ({ hero, isCastMenuOpen = false, hideTab = false }: { hero: HeroDataModel, isCastMenuOpen?: boolean, hideTab?: boolean }) => {
     const mana = hero.mana.value
+
     const updateMana = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { mana: { value: (mana ?? 0) + (auxClick ? 1 : -1) } })
     }, [mana])
 
-    const { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu } = useSpellcastingMenuContext()
+    const { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu, selectedSpellId } = useSpellcastingMenuContext()
+    const spell = ItemsCache.spells().find(s => s.uuid === selectedSpellId)
+
+    console.log(ItemsCache.spells(), { selectedSpellId })
 
     return (
         <div>
             <div className="flex gap-x-2 text-2xl font-eskapade font-bold mt-1 mb-2 justify-between">
+                {hideTab && spell &&
+                    <SkillCard
+                        actor={hero.parent}
+                        img={spell.img ?? ""}
+                        dmgType={spell.system.damageType}
+                        title={<SkillCardTitle text={spell.name} />}
+                        subtitles={[
+                            { label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[spell.system.damageType] }
+                        ]}
+                        description={spell.system.description}
+                        mini={true}
+                    />
+                }
 
                 {/* CURRENT MANA */}
                 <div className={`flex items-end gap-x-4 ml-auto ${hideTab ? "px-2" : ""}`}>

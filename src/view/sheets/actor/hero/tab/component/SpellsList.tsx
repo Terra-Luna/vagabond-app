@@ -33,7 +33,7 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                                     subtitle: spellDamageBase(sp),
                                     description: sp.description
                                 }
-                            )
+                        )
                     }
                 ])}>
                     <div onClick={() => {

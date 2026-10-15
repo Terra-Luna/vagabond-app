@@ -15,6 +15,8 @@ export interface SpellDeliverySnapshot {
 export interface SpellSnapshot {
     uuid: string,
     name: string,
+    img: string,
+    description: string,
     damageType: string,
     baseManaCost: number,
     ignoreEffectCost: boolean,
@@ -138,6 +140,8 @@ export abstract class SpellDelivery {
         return {
             uuid: spell.uuid,
             name: spell.name,
+            img: spell.img ?? "",
+            description: spell.system.description,
             damageType: spell.system.damageType,
             baseManaCost: spell.system.baseManaCost,
             ignoreEffectCost: spell.system.ignoreEffectCost,
