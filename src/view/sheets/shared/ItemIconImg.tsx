@@ -21,7 +21,7 @@ export const ItemIconImg = ({ item, size = 28 }) => {
                     alt={getName(item)}
                     width={size}
                     height={size}
-                    className={`rounded-sm border border-solid border-section-header-fill/60 cursor-pointer`}
+                    className={`rounded-sm border border-solid border-section-header-fill/60`}
                 />
 
                 {/* DO NOT SHOW DIAMOND IF CURSED AND UNEQUIPPED */}

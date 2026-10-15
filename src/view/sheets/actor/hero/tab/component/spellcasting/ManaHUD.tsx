@@ -21,8 +21,6 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false, hideTab = false }: { her
     const { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu, selectedSpellId } = useSpellcastingMenuContext()
     const spell = ItemsCache.spells().find(s => s.uuid === selectedSpellId)
 
-    console.log(ItemsCache.spells(), { selectedSpellId })
-
     return (
         <div>
             <div className="flex gap-x-2 text-2xl font-eskapade font-bold mt-1 mb-2 justify-between">

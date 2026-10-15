@@ -129,6 +129,19 @@ export class HeroAttack extends Attack {
             await this.rollDamage(this.skillCheck?.result?.outcome === appLang.RollResult.crit)
         }
 
+        /**
+         * Update Focus, if available.
+         */
+        if (this.isSpellAttack && this.spellDelivery?.isFocused && (this.skipSkillCheck || this.isSuccessOrCrit)) {
+            const focus = this.actor.system.statuses.counters.focus ?? 0
+            if (focus >= this.actor.system.maxFocus) {
+                ui.notifications?.warn(appLang.Spellcasting.maxFocusMessage)
+            }
+            else {
+                this.actor.update({ 'system.statuses.counters.focus': focus + 1 } as Record<string, number>)
+            }
+        }
+
         if (options?.skipChatCard) return
 
         await this.save(serializeAttack)

@@ -1,4 +1,5 @@
 import { addCountdown, getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel"
 import { roll3dDice, showFloatingText, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTargetIds } from "../../utils/modelUtil"
@@ -117,11 +118,17 @@ export abstract class Attack {
 
     private applyDamage(args: AttackResolutionArgs) {
         const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
-        targetIds.forEach(id => {
+        for (const id of targetIds) {
             const actor = canvas?.scene?.tokens?.get(id)?.actor
+            if (!actor) continue
+
             const adjDamage = this.calculateAdjustedDamage(id, args)
+            if ((actor.system as ActorDataModel<BaseActorSchema>).statuses.toggles.focusing && adjDamage >= 5) {
+                actor.update({ 'system.statuses.counters.focus': 0 } as Record<string, number>)
+                actor.toggleStatusEffect("focusing", { active: false })
+            }
             this.updateHP(actor?.system, this.getHP(actor?.system) - adjDamage)
-        })
+        }
     }
 
     protected shouldApplyDamageToTarget(targetId: string): boolean {

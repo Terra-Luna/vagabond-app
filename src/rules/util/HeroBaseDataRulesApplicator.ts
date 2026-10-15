@@ -113,7 +113,7 @@ export class HeroBaseDataRulesApplicator {
                 }
                 else if (path.startsWith("flags.")) {
                     const state = actor.getFlag(sys_id, path.replace("flags.", ""))
-                    if (state === undefined) {
+                    if (state === undefined || state === false) {
                         actor.setFlag(sys_id, path.replace("flags.", ""), value)
                     }
                 }

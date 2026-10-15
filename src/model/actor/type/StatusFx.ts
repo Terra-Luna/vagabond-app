@@ -15,6 +15,7 @@ export const statusFxSchema = () => {
             confused: new fields.BooleanField({ initial: false }),
             dazed: new fields.BooleanField({ initial: false }),
             dead: new fields.BooleanField({ initial: false }),
+            focusing: new fields.BooleanField({ initial: false }),
             frightened: new fields.BooleanField({ initial: false }),
             grappling: new fields.BooleanField({ initial: false }),
             incapacitated: new fields.BooleanField({ initial: false }),

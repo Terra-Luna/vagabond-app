@@ -44,9 +44,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                 />
             </div>
 
-            <Containers hero={hero} />
-
-            <div className="flex gap-x-2 w-fill justify-end">
+            <div className="flex gap-x-1 mt-1 items-center">
                 {/* ITEM SHOP BUTTON */}
                 {itemShopToggle &&
                     <div className="flex w-fll justify-end">
@@ -55,6 +53,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                         </PrimaryButton>
                     </div>
                 }
+                <Containers hero={hero} />
             </div>
 
         </div>
@@ -70,7 +69,7 @@ const Containers = ({ hero }: { hero: HeroDataModel }) => {
     const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null)
 
     return (
-        <div className="flex flex-wrap gap-1 mt-1">
+        <div className="flex flex-wrap gap-1">
             {containers.map((container, index) => (
                 <Tooltip key={index} title={container.name} interactive={true} content={
                     <div className={`max-w-[360px] p-2 bg-sheet-main-fill rounded-md mb-2`}>

@@ -1,5 +1,5 @@
 import { LockKeyhole } from "lucide-react"
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { statsSchema } from "../../../model/actor/type/Stats"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
@@ -9,6 +9,7 @@ import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../utils/lang"
 import { localizeString } from "../../../utils/localeUtils"
 import { Header } from "../../../view/component/Header"
+import { SearchBar } from "../../../view/component/SearchBar"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
@@ -305,8 +306,25 @@ export const usePerkSelectionView = (
             .filter(perk => stackablePerkIds.has(perk.value) || !selectedPerkIds.has(perk.value))
     }, [activeSlot, getSlotOptions, eligiblePerksList, grantedPerkIds, isSlotFilterEnabled, perksList, selectedPerkIds, stackablePerkIds])
 
-    const PerkSelection = ({ bonusChoices = {} }: { bonusChoices?: Record<string, ReactNode> } = {}) =>
-        <div className="bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden space-y-2">
+    // PerkSelection is re-created on every render, which remounts the lists; remember their scroll positions.
+    const scrollPositions = useRef({ left: 0, right: 0 })
+    const scrollRef = (side: 'left' | 'right') => (el: HTMLDivElement | null) => {
+        if (el) el.scrollTop = scrollPositions.current[side]
+    }
+    const onScrollList = (side: 'left' | 'right') => (e: React.UIEvent<HTMLDivElement>) => {
+        scrollPositions.current[side] = e.currentTarget.scrollTop
+    }
+
+    // Kept in a ref because PerkSelection remounts whenever this hook re-renders.
+    const perkSearchRef = useRef('')
+
+    const PerkSelection = ({ bonusChoices = {} }: { bonusChoices?: Record<string, ReactNode> } = {}) => {
+        const [perkSearch, setPerkSearch] = useState(() => perkSearchRef.current)
+        const searchedPerks = perkSearch.trim().length > 0
+            ? availablePerks.filter(perk => perk.label.toUpperCase().includes(perkSearch.trim().toUpperCase()))
+            : availablePerks
+
+        return <div className="bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden space-y-2">
             {/* FIXED HEADER AND NAVIGATION BUTTONS */}
             <div className="flex flex-col gap-4 flex-shrink-0">
                 <Header title={strings.perksHeader} />
@@ -332,14 +350,24 @@ export const usePerkSelectionView = (
                                 <p>{appLang.HeroChoices.clickSlotToToggle}</p>
                             </div>
                         </div>
+                        {/* SEARCH BY NAME */}
+                        <SearchBar
+                            value={perkSearch}
+                            placeholder={appLang.ItemShop.searchItems}
+                            clearLabel={appLang.ItemShop.clearSearch}
+                            onChange={(value) => {
+                                perkSearchRef.current = value
+                                setPerkSearch(value)
+                            }}
+                        />
                         {/* SCROLLABLE PERK OPTIONS */}
-                        <div className="flex-1 overflow-y-auto min-h-0 space-y-1">
-                            {availablePerks.map(perk => renderPerkCard(perk, true))}
+                        <div ref={scrollRef('left')} onScroll={onScrollList('left')} className="flex-1 overflow-y-auto min-h-0 space-y-1">
+                            {searchedPerks.map(perk => renderPerkCard(perk, true))}
                         </div>
                     </div>
 
                     {/* RIGHT-SIDE PANEL: PERK SLOTS */}
-                    <div className="flex flex-col h-full min-h-0 overflow-y-auto">
+                    <div ref={scrollRef('right')} onScroll={onScrollList('right')} className="flex flex-col h-full min-h-0 overflow-y-auto">
                         <div className="space-y-1 pb-4">
                             {/* GRANTED PERKS */}
                             <div className="mb-4">
@@ -373,6 +401,7 @@ export const usePerkSelectionView = (
                 </div>
             </div>
         </div>
+    }
 
     return {
         PerkSelection, ancestryPerkSlots, classPerkSlots, allPerks, perksList,

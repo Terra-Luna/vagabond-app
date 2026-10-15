@@ -91,10 +91,10 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                         <MenuListItem text={appLang.HeroSheet.Menu.create} onClick={() => new HeroCreationApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     }
                     {game.user?.isActiveGM && hero.level.xpToLevel === -1 && !hero.parent.getFlag(sys_id, "destiny") &&
-                        <MenuListItem text={appLang.HeroSheet.Menu.lvlup} onClick={() => hero.parent.setFlag(sys_id, "destiny", true)} toggleMenu={toggleMenu} />
+                        <MenuListItem text={appLang.HeroSheet.Menu.grantLvl} onClick={() => hero.parent.setFlag(sys_id, "destiny", true)} toggleMenu={toggleMenu} />
                     }
                     {game.user?.isActiveGM && hero.parent.getFlag(sys_id, "destiny") &&
-                        <MenuListItem text={appLang.HeroSheet.Menu.lvlup} onClick={() => hero.parent.setFlag(sys_id, "destiny", false)} toggleMenu={toggleMenu} />
+                        <MenuListItem text={appLang.HeroSheet.Menu.revokeLvl} onClick={() => hero.parent.setFlag(sys_id, "destiny", false)} toggleMenu={toggleMenu} />
                     }
 
                     <AppMenuToggleSwitch label="STATS" hero={hero} toggleKey="hero-sheet-stats-hide" />

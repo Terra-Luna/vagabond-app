@@ -3,7 +3,6 @@ import { Hand, HandFist, Shield } from "lucide-react"
 import type { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { itemNameQty, openItemSheet } from "../../../model/actor/type/Inventory"
-import { coinsAsString } from "../../../model/common/CoinValue"
 import type { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
 import { inventoryItemDragDropHandler, useItem } from "../../../utils/heroInventoryUtil"
 import { appLang } from "../../../utils/lang"
@@ -34,7 +33,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                     <tr>
                         <th className="text-left pl-2 w-5/9">{appLang.HeroSheet.Inventory.item}</th>
                         <th className="text-center">{appLang.HeroSheet.Inventory.slots}</th>
-                        <th className="text-center">{appLang.HeroSheet.Inventory.value}</th>
+                        {/* <th className="text-center">{appLang.HeroSheet.Inventory.value}</th> */}
                         {showEquipColumn &&
                             <th className="text-center">
                                 {appLang.HeroSheet.Inventory.equip}
@@ -78,9 +77,9 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                 {/* BULK SLOTS */}
                                 <td className="text-center font-normal">{item.bulk.totalSlots}</td>
                                 {/* VALUE */}
-                                <td className="text-center font-normal truncate">
+                                {/* <td className="text-center font-normal truncate">
                                     {coinsAsString(item.totalValue)}
-                                </td>
+                                </td> */}
                                 {/* EQUIP STATUS */}
                                 {showEquipColumn && (
                                     item.isEquippable
@@ -121,7 +120,7 @@ const EquipStateIcon = ({ tooltip, type, isEquipped, gripState, toggleEquipState
     const unEquipedIconStyle = "w-full justify-center text-ic-equipped"
     return (
         <Tooltip content={`Toggle equip\n${tooltip}`}>
-            <div onClick={toggleEquipState} onDoubleClick={(e) => { e.stopPropagation() }}>
+            <div onClick={(e) => { e.stopPropagation(); toggleEquipState() }} onDoubleClick={(e) => { e.stopPropagation() }}>
                 {
                     type === 'armor' &&
                     <div>

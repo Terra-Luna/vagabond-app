@@ -254,6 +254,10 @@
         "name": "Fatigued",
         "description": "Fatigue is measured from 0 to 5 with the following rules: - Each Fatigue occupies an Item Slot. - At 3 or ore Fatigue, it can't Rush. - At 5 Fatigue, it dies."
       },
+      "focusing": {
+        "name": "Focusing",
+        "description": "It is maintaining a spell duration or other effect."
+      },
       "frightened": {
         "name": "Frightened",
         "description": "It has a -2 penalty to damage it deals."
@@ -680,15 +684,16 @@
       "defend_tooltip": "Make an Attack Check to use your Defense weapons to mitigate incoming attacks.",
       "attacks": "ATTACKS",
       "weapons": "WEAPONS",
-      "ancestry": "ANCESTRY",
-      "class": "CLASS FEATURES",
-      "perks": "PERKS",
+      "ancestry": "Ancestry",
+      "class": "Class Features",
+      "perks": "Perks",
       "encumbrance": "ENCUMBRANCE",
       "wealth": "WEALTH",
       "tab-main": "Equipped Gear",
       "tab-inv": "Inventory & Wealth",
       "tab-magic": "Spellcasting",
       "tab-abilities": "Features & Perks",
+      "tab-rolls": "Custom Rolls",
       "noEquipment": "Equip gear from the inventory table",
       "Menu": {
         "import": "IMPORT",
@@ -1162,7 +1167,8 @@
       "Spellcasting": {
         "title": "Spellcasting",
         "deliveryAbbreviation": "Dlv.",
-        "effectAbbreviation": "Eff."
+        "effectAbbreviation": "Eff.",
+        "maxFocusMessage": "Your Focus is already at its maximum."
       },
       "LevelUp": {
         "title": "Level Up!",

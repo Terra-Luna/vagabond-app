@@ -8,10 +8,11 @@ import { StartingPackDataModel } from "../../model/item/equip/StartingPackDataMo
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { groupBy } from "../../utils/collectionUtil"
 import { appLang } from "../../utils/lang"
-import { tableBorder, tableBorderRounded } from "../../view/common/border-styles"
+import { tableBorder } from "../../view/common/border-styles"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { ReadOnlyCoinPurse } from "../../view/component/CoinPurse"
 import { Divider, Header } from "../../view/component/Header"
+import { SearchBar } from "../../view/component/SearchBar"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { EquipmentSheetComponent } from "../../view/sheets/item/equip/EquipmentSheetComponent"
@@ -185,30 +186,16 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
 
                             <div className="flex flex-col flex-1 space-y-1 min-h-0">
                                 {/* SEARCH BY NAME */}
-                                <div className="relative flex items-center mx-2">
-                                    <input
-                                        type="text"
-                                        value={shopSearch}
-                                        placeholder={appLang.ItemShop.searchItems}
-                                        className={`w-full text-lg text-text-secondary font-paradigm font-normal italic px-2 py-1 pr-8 ${tableBorderRounded}`}
-                                        onChange={(e) => {
-                                            shopSearchRef.current = e.target.value
-                                            setShopSearch(e.target.value)
-                                        }}
-                                        autoComplete="off"
-                                    />
-                                    {shopSearch.length > 0 && (
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                shopSearchRef.current = ""
-                                                setShopSearch("")
-                                            }}
-                                            className="absolute right-0 pr-2 text-text-secondary hover:text-destructive-action font-bold cursor-pointer"
-                                            aria-label={appLang.ItemShop.clearSearch}
-                                        >✕</button>
-                                    )}
-                                </div>
+                                <SearchBar
+                                    className="mx-2"
+                                    value={shopSearch}
+                                    placeholder={appLang.ItemShop.searchItems}
+                                    clearLabel={appLang.ItemShop.clearSearch}
+                                    onChange={(value) => {
+                                        shopSearchRef.current = value
+                                        setShopSearch(value)
+                                    }}
+                                />
 
                                 {/* CATEGORY BUTTONS */}
                                 <CategoryButtons shopCategory={shopCategory} setShopCategory={setShopCategory} />

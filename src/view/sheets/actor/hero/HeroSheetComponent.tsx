@@ -192,27 +192,72 @@ const HeroSheetBody = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondAc
 
     // Gear and inventory share a column once the sheet is wide enough; in single-column mode they are separate tabs.
     const gearTabs: HeroSheetTabs[] = columns > 1
-        ? [{ id: "main", title: locale["tab-main"], icon: <Swords size={iconSize} className="hover-glow" />, content: <><GearTab hero={hero} /><ClearHeader title={locale["tab-inv"]} /><InventoryTab hero={hero} /></> }]
+        ? [
+            {
+                id: "main",
+                title: locale["tab-main"],
+                icon: <Swords size={iconSize} className="hover-glow" />,
+                content: <div className="flex flex-col gap-y-2">
+                    <ClearHeader title={locale["tab-inv"]} />
+                    <InventoryTab hero={hero} />
+                    <div className="flex flex-col gap-y-2 -mt-2">
+                        <ClearHeader title={locale["tab-main"]} />
+                        <GearTab hero={hero} />
+                    </div>
+                </div>
+            }]
         : [
-            { id: "main", title: locale["tab-main"], icon: <Swords size={iconSize} className="hover-glow" />, content: <GearTab hero={hero} /> },
-            { id: "inv", title: locale["tab-inv"], icon: <Handbag size={iconSize} className="hover-glow" />, content: <InventoryTab hero={hero} /> },
+            {
+                id: "main",
+                title: locale["tab-main"],
+                icon: <Swords size={iconSize} className="hover-glow" />,
+                content: <GearTab hero={hero} />
+            },
+            {
+                id: "inv",
+                title: locale["tab-inv"],
+                icon: <Handbag size={iconSize} className="hover-glow" />,
+                content: <InventoryTab hero={hero} />
+            }
         ]
 
     const tabs: HeroSheetTabs[] = [
         ...gearTabs,
         ...(showAlchemyTab
-            ? [{ id: "alchemy", title: appLang.General.alchemyTab, icon: <FlaskConical size={iconSize} className="hover-glow" />, content: <AlchemyTab actor={hero.parent} /> }]
-            : []
-        ),
-        ...(showMagicTab
-            ? [{ id: "magic", title: locale["tab-magic"], icon: <WandSparkles size={iconSize} className="hover-glow" />, content: <MagicTab hero={hero} />, className: "overflow-x-hidden" }]
+            ? [{
+                id: "alchemy", title: appLang.General.alchemyTab,
+                icon: <FlaskConical size={iconSize} className="hover-glow" />,
+                content: <AlchemyTab actor={hero.parent} />
+            }]
             : []
         ),
         ...(showAbilitiesTab
-            ? [{ id: "abilities", title: locale["tab-abilities"], icon: <BookText size={iconSize} className="hover-glow" />, content: <AbilitiesTab hero={hero} /> }]
+            ? [{
+                id: "abilities",
+                title: locale["tab-abilities"],
+                icon: <BookText size={iconSize} className="hover-glow" />,
+                content: <div className="-mt-1"><AbilitiesTab hero={hero} /></div>
+            }]
             : []
         ),
-        { id: "rolls", title: appLang.AttackBuilder.presets, icon: <Dices size={iconSize} className="hover-glow" />, content: <RollsTab actor={hero.parent} /> },
+        ...(showMagicTab
+            ? [{
+                id: "magic",
+                title: locale["tab-magic"],
+                icon: <WandSparkles size={iconSize} className="hover-glow" />,
+                content: <MagicTab hero={hero} />, className: "overflow-x-hidden"
+            }]
+            : []
+        ),
+        {
+            id: "rolls",
+            title: appLang.AttackBuilder.presets,
+            icon: <Dices size={iconSize} className="hover-glow" />,
+            content: <div className="flex flex-col gap-y-2">
+                <ClearHeader title={locale["tab-rolls"]} />
+                <RollsTab actor={hero.parent} />
+            </div>
+        }
     ]
 
     const [selectedId, setSelectedId] = useState("main")
@@ -263,7 +308,7 @@ const HeroSheetBody = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondAc
             }
         </div>
         {extractedTabs.map(tab => (
-            <div key={tab.id} className={`flex-1 min-w-0 min-h-0 overflow-y-auto border-l border-solid border-sheet-header-fill ${tab.className ?? ""}`}>
+            <div key={tab.id} className={`flex-1 min-w-0 min-h-0 -mt-1 overflow-y-auto border-l border-solid border-sheet-header-fill ${tab.className ?? ""}`}>
                 <div className="mt-2 px-1">
                     {tab.content}
                 </div>

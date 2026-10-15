@@ -5,6 +5,8 @@ import { AncestryDataModel } from "../../../model/item/character/AncestryDataMod
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { getItemChoiceRules, getItemRules, normalizeRuleSelections, randomId, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
+import { getRuleSelectors, normalizeSelector } from "../../../rules/util/selector-util"
+import { sys_id } from "../../../utils/foundryUtils"
 import { groupBy } from "../../../utils/collectionUtil"
 import { usePerkBonusSelection } from "./PerkBonusSelection"
 import { usePerkSelectionView } from "./PerkSelectionView"
@@ -107,6 +109,19 @@ export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLev
      * @param pendingBonusSelections 
      * @returns 
      */
+    const disableRemovedPerkToggle = (perkUuid: string) => {
+        const perk = ItemsCache.perks().find(it => it.uuid === perkUuid)
+        if (!perk?.id) return
+        const stillSelected = [...classPerkSlots, ...ancestryPerkSlots].some(slot => slot.value === perkUuid)
+        if (stillSelected) return
+        if (actor.system.getRuleToggleState(perk.id)) actor.system.toggleItemRule(perk, true)
+        getItemRules(perk)
+            .flatMap(rule => getRuleSelectors(rule))
+            .map(selector => normalizeSelector(selector))
+            .filter(selector => selector.startsWith("flags."))
+            .forEach(selector => actor.setFlag(sys_id, selector.replace("flags.", ""), false))
+    }
+
     const persistSlots = (item: any, slots: any[], pendingBonusSelections: { ruleId: string, selectionId?: string, value: string }[] = []) => {
         if (!item || !slots.length || !dataLoaded.current) return
         if (item.parent !== actor) return // Not yet embedded on the Actor; nothing to persist to.
@@ -119,6 +134,10 @@ export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLev
             const rule = rules.find(candidate => candidate.id === ruleId)
             if (!rule) return
             const current = normalizeRuleSelections(rule.selections)
+            const newValues = grouped.map(slot => slot.value)
+            current
+                .filter(selection => selection.value && !newValues.includes(selection.value))
+                .forEach(selection => disableRemovedPerkToggle(selection.value))
             rule.selections = grouped.map(slot => {
                 const existing = current.find(selection => selection.id === slot.selectionId)
                 const existingValue = existing?.value

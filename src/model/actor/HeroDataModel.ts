@@ -400,6 +400,12 @@ export function setMaxHP(hero: HeroDataModel) {
 }
 
 export function validateCurrentFocus(hero: HeroDataModel) {
+    if (!hero.statuses.toggles.focusing && hero.statuses.counters.focus > 0) {
+        hero.parent.toggleStatusEffect("focusing", { active: true })
+    }
+    else if (hero.statuses.toggles.focusing && hero.statuses.counters.focus === 0) {
+        hero.parent.toggleStatusEffect("focusing", { active: false })
+    }
     if (hero.statuses.counters.focus! > hero.maxFocus!) {
         hero.statuses.counters.focus = hero.maxFocus!
     }

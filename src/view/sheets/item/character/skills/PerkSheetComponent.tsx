@@ -48,7 +48,7 @@ export const PerkSheetComponent = ({ item }: { item: Item & { system: PerkDataMo
                     </div>
                 </>}
 
-                <div className="mt-8">
+                <div className="my-4">
                     <ItemRulesManager item={item} />
                 </div>
 

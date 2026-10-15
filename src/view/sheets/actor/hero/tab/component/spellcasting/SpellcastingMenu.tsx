@@ -97,6 +97,19 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
         setDeliveries(deliveryOptions)
     }, [])
 
+    const castingModsJson = JSON.stringify(actor.system.modifiers.casting ?? {})
+    useEffect(() => {
+        setDeliveries(prev => {
+            if (prev.length === 0 || JSON.stringify(prev[0].mods) === castingModsJson) return prev
+            const mods = { ...actor.system.modifiers.casting }
+            return prev.map(d => {
+                const clone = d.clone()
+                clone.setMods(mods)
+                return clone
+            })
+        })
+    }, [castingModsJson])
+
     const onUpdateTargetTokens = useCallback(async (tokens: Token[]) => {
         const delivs = deliveries.map(d => {
             const clone = d.clone()

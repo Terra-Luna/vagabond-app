@@ -380,7 +380,7 @@ export const Skill = ({ hero, trained, skillKey, name, value, isCastSkill }: {
                             colorClassName="text-ic-skill-trained"
                             onClick={(e) => {
                                 e.stopPropagation()
-                                new SpellcastingApp(hero.parent).render({ force: true })
+                                new SpellcastingApp(hero.parent, false, true).render({ force: true })
                             }}
                         />}
                     </div>

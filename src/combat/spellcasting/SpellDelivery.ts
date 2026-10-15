@@ -112,6 +112,11 @@ export abstract class SpellDelivery {
         this.isFocused = isFocused
     }
 
+    setMods(mods: DeliveryMods) {
+        this.mods = mods
+        this.calculateManaCost()
+    }
+
     setDiscount(discount: number) {
         this.discount = Math.max(0, discount)
     }

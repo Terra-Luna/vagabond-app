@@ -171,7 +171,7 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                         {canUpdateSkillCheck && (luck > 0 || (studied > 0 && getAllowLateLuckStudy())) &&
                             <div className="flex flex-col w-full gap-2">
                                 <Divider />
-                                <div className="flex gap-x-1 items-center justify-center text-base font-normal px-4 mb-2">
+                                <div className="flex gap-x-1 items-center justify-center text-base font-normal px-1 mb-2">
                                     {luck > 0 && <>
                                         <InteractiveChatCardButton
                                             icon={<Clover size={18} className="text-ic-luck h-full" />}

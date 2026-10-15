@@ -67,8 +67,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
 
                 {/* CLASS FEATURES */}
                 {hero.class && <div className="mb-2">
-                    <ClearHeader title={appLang.HeroSheet.class} />
-                    <div className="mt-0.5" />
+                    <div className="font-paradigm font-normal mb-2"><ClearHeader title={appLang.HeroSheet.class} /></div>
                     <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
                         {classFeatures.map((f, index) => (
                             <div key={index} onContextMenu={(e) => onCtxMenu(e, [
@@ -102,8 +101,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
 
                 {/* PERKS */}
                 {hero.perks && hero.perks.length > 0 && <>
-                    <ClearHeader title={appLang.HeroSheet.perks} />
-                    <div className="mt-0.5" />
+                    <div className="font-paradigm font-normal mb-2"><ClearHeader title={appLang.HeroSheet.perks} /></div>
                     <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
                         {hero.perks.sort((a, b) => {
                                 const repeatableOrder = Number(Boolean(a.canTakeMultiple)) - Number(Boolean(b.canTakeMultiple))
@@ -145,8 +143,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 {/* ANDCESTRY TRAITS */}
                 {hero.ancestry &&
                     <div className="mt-2">
-                        <ClearHeader title={appLang.HeroSheet.ancestry} />
-                        <div className="mt-0.5" />
+                        <div className="font-paradigm font-normal mb-2"><ClearHeader title={appLang.HeroSheet.ancestry} /></div>
                         <SkillCard
                             title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
                             subtitles={[{ label: appLang.HeroCreation.beingSize, value: beingSize }, { label: appLang.HeroCreation.beingType, value: beingType }]}

@@ -169,6 +169,13 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             img: "icons/svg/skull.svg",
             changes: [{ key: "system.statuses.toggles.dead", mode: "OVERRIDE", value: "true", priority: 20 }]
         },
+        {
+            _id: "vFocusing0000000",
+            id: "focusing",
+            name: "APP.StatusConditions.focusing.name",
+            img: "icons/svg/eye.svg",
+            changes: [{ key: "system.statuses.toggles.focusing", mode: "OVERRIDE", value: "true", priority: 20 }]
+        },
 
         /**
          * Special effects from Hero abilities...
