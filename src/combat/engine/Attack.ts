@@ -1,5 +1,6 @@
 import { addCountdown, getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel"
+import { physicalDamageTypes } from "../../model/common/sharedSchemas"
 import { roll3dDice, showFloatingText, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTargetIds } from "../../utils/modelUtil"
@@ -19,7 +20,7 @@ export interface AppliedFx {
     damageType?: string
 }
 
-export abstract class Attack {
+export abstract class Attack<TActor extends Actor = Actor> {
 
     abstract readonly attackType: 'adversary' | 'hero' | 'combo'
 
@@ -28,16 +29,21 @@ export abstract class Attack {
     // User ID for keeping track of who has permission to interact in chat card
     userId: string = game.userId ?? ''
 
-    abstract actor: Actor
-    abstract targetIds?: string[]
+    actor: TActor
+    targetIds: string[]
     title: string = "Attack"
     damageRoll?: DamageRoll
+    get isSpellAttack(): boolean { return false }
+    get isEffectOnlySpellAttack(): boolean { return false }
     isResolved: boolean = false
     appliedEffects: AppliedFx[] = []
 
-    constructor(title) {
+    constructor(title: string, actor: TActor, targetIds?: string[], damageRoll?: DamageRoll) {
         this.id = foundry.utils.randomID()
         this.title = title
+        this.actor = actor
+        this.targetIds = targetIds ?? []
+        this.damageRoll = damageRoll
     }
 
     get showTargets(): boolean {
@@ -132,12 +138,15 @@ export abstract class Attack {
     }
 
     protected shouldApplyDamageToTarget(targetId: string): boolean {
-        return !Attack.isImmuneToDamage(targetId, this.damageRoll)
+        return !Attack.isImmuneToDamage(targetId, this.damageRoll, this.isSpellAttack)
     }
 
-    static isImmuneToDamage(targetId: string, damageRoll?: DamageRoll): boolean {
+    static isImmuneToDamage(targetId: string, damageRoll?: DamageRoll, isCast?: boolean): boolean {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
         const immunities = (actor?.system as any)?.modifiers?.damage?.in?.immunities ?? []
+
+        if (immunities.includes("magical") && isCast && !physicalDamageTypes().includes(damageRoll?.dmgType ?? "")) return true
+        if (immunities.includes("physical") && physicalDamageTypes().includes(damageRoll?.dmgType ?? "")) return true
         return immunities.includes(damageRoll?.dmgType ?? '')
     }
 
@@ -193,7 +202,7 @@ export abstract class Attack {
         }
     }
 
-    // Countdown durations (e.g. "Cd6") additionally spawn a Countdown die to track it; the status is always toggled on immediately.
+    // Countdown durations (e.g. "Cd6") additionally spawn a Countdown die to track it.
     private async applyEffects(actor: Actor, token: Token | undefined, status: string, duration?: string, damageType?: string) {
         if (!duration || duration === "-") return
 

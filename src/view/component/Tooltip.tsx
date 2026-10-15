@@ -81,10 +81,15 @@ export const Tooltip = ({ title, content, children, interactive, disabled, maxWi
         if (theme) container.classList.add(theme.classList.contains('dark') ? 'dark' : 'light')
     }
 
-    useEffect(() => {
+    const portalContainerRef = useRef<HTMLElement | null>(null)
+
+    const ensurePortal = () => {
         const anchor = anchorRef.current
         const ownerDoc = anchor?.ownerDocument
         if (!anchor || !ownerDoc?.body) return
+        if (portalContainerRef.current?.ownerDocument === ownerDoc && portalContainerRef.current.isConnected) return
+
+        portalContainerRef.current?.remove()
         let portalHost = ownerDoc.body.querySelector<HTMLDivElement>(':scope > .tooltip-portal-root')
 
         if (!portalHost) {
@@ -112,8 +117,13 @@ export const Tooltip = ({ title, content, children, interactive, disabled, maxWi
             pointerEvents: 'none'
         })
 
+        portalContainerRef.current = container
         setPortalTarget(container)
-        return () => container.remove()
+    }
+
+    useEffect(() => {
+        ensurePortal()
+        return () => portalContainerRef.current?.remove()
     }, [])
 
     useEffect(() => () => {
@@ -123,6 +133,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled, maxWi
 
     const trackPointer = (e: { clientX?: number, clientY?: number }) => {
         if (disabled || !content) return
+        ensurePortal()
         if (portalTarget) syncPortalTheme(portalTarget)
         claimHover()
         if (typeof e.clientX === 'number' && typeof e.clientY === 'number') {

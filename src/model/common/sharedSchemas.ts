@@ -71,6 +71,10 @@ export const damageImmunityTypeOptions = () => {
     }
 }
 
+export const physicalDamageTypes = () => {
+    return ["physical", "blunt", "slash", "pierce", "adamant", "coldiron", "silvered"]
+}
+
 export const statusEffOptions = () => {
     const statusFx = Object.keys(locale.APP.StatusConditions)
     return {

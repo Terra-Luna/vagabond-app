@@ -17,8 +17,6 @@ export interface AdversaryAttackArgs { attackName: string, dmgType: string, dice
 export class AdversaryAttack extends Attack {
 
     override readonly attackType = 'adversary' as const
-    override actor: Actor
-    override targetIds: string[]
 
     saveTypes: SavingThrowType[] = []
     saveResults: Record<string, SkillCheckResult> = {}
@@ -32,17 +30,14 @@ export class AdversaryAttack extends Attack {
         args: AdversaryAttackArgs,
         targetIds?: string[]
     ) {
-        super(args.attackName)
-        this.actor = actor
-        this.targetIds = targetIds ?? []
-        this.saveTypes = args.saveTypes ?? []
-        this.description = args.description ?? ''
-        this.statuses = args.statuses ?? []
-        this.damageRoll = new DamageRoll({
+        super(args.attackName, actor, targetIds, new DamageRoll({
             atkName: args.attackName,
             dmgType: args.dmgType,
             dice: args.dice
-        })
+        }))
+        this.saveTypes = args.saveTypes ?? []
+        this.description = args.description ?? ''
+        this.statuses = args.statuses ?? []
     }
 
     async initiate() {

@@ -27,22 +27,22 @@ export class RelicPowerProcessor {
         const equippedRelics = actor.system.equippedRelics()
         if (!equippedRelics || equippedRelics.length === 0) return
 
-        const relics = equippedRelics.flatMap(it => it.system.relicPowers) as RelicPower[]
+        equippedRelics.forEach(item => {
+            const filteredRelics = (item.system.relicPowers as RelicPower[]).flatMap(it => ({
+                ...it,
+                power: {
+                    modifiers: it.power.modifiers.flatMap(mod => {
+                        const selectors = getModifierSelectors(mod).filter(selector =>
+                            selector.startsWith("system.") &&
+                            foundry.utils.getProperty(actor, selector) !== undefined
+                        )
+                        return selectors.length > 0 ? [{ selector: selectors, value: mod.value }] : []
+                    })
+                }
+            })).filter(it => it.power.modifiers.length > 0) as RelicPower[]
 
-        const filteredRelics = relics.flatMap(it => ({
-            ...it,
-            power: {
-                modifiers: it.power.modifiers.flatMap(mod => {
-                    const selectors = getModifierSelectors(mod).filter(selector =>
-                        selector.startsWith("system.") &&
-                        foundry.utils.getProperty(actor, selector) !== undefined
-                    )
-                    return selectors.length > 0 ? [{ selector: selectors, value: mod.value }] : []
-                })
-            }
-        })).filter(it => it.power.modifiers.length > 0) as RelicPower[]
-
-        RelicPowerProcessor.applyRelicPowers(filteredRelics, actor)
+            RelicPowerProcessor.applyRelicPowers(filteredRelics, actor)
+        })
     }
 
     static toggleRelicEffect = async (item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower) => {

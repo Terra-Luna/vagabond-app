@@ -12,7 +12,7 @@ import { tableBorder } from "../../../../common/border-styles"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableNameField, EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
-import { DamageTypeIconDisplay,OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
+import { DamageTypeIconDisplay, OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
 import { CardSubHeader } from "../../../../component/SkillCard"
 import { Tooltip } from "../../../../component/Tooltip"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
@@ -35,7 +35,7 @@ const locale = appLang.NpcSheet
 const usePortraitOpenFlag = (actor: Actor) => {
 
     const token = actor.isToken ? actor.token : actor.getActiveTokens()[0]?.document
-    
+
     const [isPortraitOpen, setIsPortraitOpenState] = useState<boolean>(
         (token?.getFlag(sys_id, "portraitOpen" as any) as boolean | undefined) ?? true
     )
@@ -62,7 +62,6 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
     const { isEditMode } = useEditMode()
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
     const { isPortraitOpen, setIsPortraitOpen } = usePortraitOpenFlag(actor)
-    const x = ""
 
     useEffect(() => {
         if (!isEditMode) {
@@ -73,7 +72,12 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
     return (
         <div className="@container flex grow overflow-y-hidden">
             <div className="absolute left-0 flex items-start">
-                <div className={`overflow-hidden transition-all duration-300 ease-in-out border border-solid border-sheet-header-fill rounded-l-md ${isPortraitOpen ? 'w-[100px] -ml-[100px]' : 'w-0 ml-0'}`}>
+                <div className={`
+                    overflow-hidden transition-all duration-300 ease-in-out
+                    bg-sheet-header-fill/66 border-solid border-sheet-header-fill
+                    ${isPortraitOpen ? 'border-2 rounded-l-md' : 'border'}
+                    ${isPortraitOpen ? 'w-[100px] -ml-[100px]' : 'w-0 ml-0'}`}
+                >
                     <ActorPortrait actor={npc} />
                 </div>
             </div>
@@ -85,6 +89,7 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
                     <StatBlock npc={npc} />
 
                     <Actions npc={npc} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
+
                     {isAddActionOpen &&
                         <NewActionWindow npc={npc} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} />
                     }
@@ -107,7 +112,7 @@ const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
             <div className="flex text-2xl text-text-header-primary font-bold bg-sheet-header-fill font-eskapade pl-2 py-1 items-center gap-x-1">
                 {/* NPC NAME */}
                 <EditableNameField actor={npc.parent} />
-                
+
                 <Divider />
 
                 {/* THREAT LEVEL DISPLAY (ADVERSARY ONLY) */}
@@ -124,7 +129,7 @@ const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
                             />
                         </span>
                     }
-                        {editModeToggleBtn}
+                    {editModeToggleBtn}
                 </div>
             </div>
             <TraitSelectors npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} />
@@ -140,15 +145,15 @@ const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
             <button
                 onClick={() => setIsPortraitOpen(open => !open)}
                 title={isPortraitOpen ? appLang.AdversarySheet.collapsePortrait : appLang.AdversarySheet.expandPortrait}
-                className={`bg-sheet-header-fill px-0.5 py-2 hover-glow cursor-pointer ${tableBorder}`}
+                className={`bg-sheet-header-fill -mt-1 px-0.5 py-2 hover-glow cursor-pointer ${tableBorder}`}
             >
                 {isPortraitOpen
                     ? <ChevronRight size={14} className="text-text-header-primary" />
                     : <ChevronLeft size={14} className="text-text-header-primary" />
                 }
             </button>
-            {
-                isEditMode ? <div className="flex gap-x-1 px-1 mt-1">
+            {isEditMode
+                ? <div className="flex gap-x-1 px-1 mt-1">
                     <DropDown
                         options={createDropdownEntries(appLang.Sizes)}
                         parent={npc.parent}
@@ -168,11 +173,13 @@ const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
                         value={npc.beingSubtype}
                     />
                 </div>
-                    : <CardSubHeader values={[
+                : <div className="mt-0.5">
+                    <CardSubHeader values={[
                         { label: appLang.Sizes[npc.beingSize], value: "" },
                         { label: appLang.BeingTypes[npc.beingType], value: "" },
                         { label: appLang.BeingSubtypes[npc.beingSubtype].length > 0 ? `(${appLang.BeingSubtypes[npc.beingSubtype]})` : "", value: "" }
                     ]} showRightBorder={false} />
+                </div>
             }
         </div>
     )
@@ -208,44 +215,44 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                 } />
 
                 <div className="flex gap-x-4 items-center">
-                {/* HIT POINTS */}
-                <StatBlockField label={locale.hp} content={
-                    <StatBlockRow>
-                        <Tooltip title={appLang.HeroSheet.controls} content={appLang.HeroSheet.counter_tooltip}>
-                            <button
-                                className="cursor-pointer hover-glow"
-                                onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}
-                            >
-                                <Heart size={18} className="text-text-hp-current fill-text-hp-current -mr-1" />
-                            </button>
-                        </Tooltip>
-                        <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                            <div className="flex gap-x-0.5">
-                                <EditableTextField
-                                    boundValue={npc.health.value?.toString() ?? '1'}
-                                    updateProps={{ object: npc.parent, path: ['health', 'value'] }}
-                                    hideBorderOnEditMode={true}
-                                    placeholder="4"
-                                />
-                                <p>/{npc.health.max?.toString() ?? '4'}</p>
-                            </div>
-                        </EditModeContextProvider>
-                    </StatBlockRow>
-                } />
-                {/* ARMOR RATING & INFO */}
-                <div className="flex gap-x-1 text-text-primary items-center justify-center">
-                    <div className="relative w-[32px] h-[32px]">
-                        <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className={`text-xl text-text-armor font-eskapade font-bold`}>
-                                <EditableTextField
+                    {/* HIT POINTS */}
+                    <StatBlockField label={locale.hp} content={
+                        <StatBlockRow>
+                            <Tooltip title={appLang.HeroSheet.controls} content={appLang.HeroSheet.counter_tooltip}>
+                                <button
+                                    className="cursor-pointer hover-glow"
+                                    onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}
+                                >
+                                    <Heart size={18} className="text-text-hp-current fill-text-hp-current -mr-1" />
+                                </button>
+                            </Tooltip>
+                            <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                                <div className="flex gap-x-0.5">
+                                    <EditableTextField
+                                        boundValue={npc.health.value?.toString() ?? '1'}
+                                        updateProps={{ object: npc.parent, path: ['health', 'value'] }}
+                                        hideBorderOnEditMode={true}
+                                        placeholder="4"
+                                    />
+                                    <p>/{npc.health.max?.toString() ?? '4'}</p>
+                                </div>
+                            </EditModeContextProvider>
+                        </StatBlockRow>
+                    } />
+                    {/* ARMOR RATING & INFO */}
+                    <div className="flex gap-x-1 text-text-primary items-center justify-center">
+                        <div className="relative w-[32px] h-[32px]">
+                            <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`text-xl text-text-armor font-eskapade font-bold`}>
+                                    <EditableTextField
                                         boundValue={npc.armor?.rating?.toString() ?? ''}
-                                    updateProps={{ object: npc.parent, path: ['armor', 'rating'] }}
-                                    placeholder="0"
-                                />
+                                        updateProps={{ object: npc.parent, path: ['armor', 'rating'] }}
+                                        placeholder="0"
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </StatBlockRow>

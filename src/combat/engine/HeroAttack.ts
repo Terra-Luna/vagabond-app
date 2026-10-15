@@ -17,13 +17,11 @@ import { SkillCheck, type SkillCheckResult, type SkillCheckType } from "./roll/S
 import { serializeAttack } from "./util/attack-serializer"
 import { getDiceTerms } from "./util/dice-utils"
 
-export class HeroAttack extends Attack {
+export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
     static SPELL_DIE_SIZE = 6
     override readonly attackType = 'hero' as const
 
-    override actor: Actor & { system: HeroDataModel }
-    override targetIds?: string[]
     itemId: string = ''
     skipSkillCheck: boolean = false
     spellDelivery: SpellDeliverySnapshot | undefined
@@ -40,12 +38,9 @@ export class HeroAttack extends Attack {
         isDefenseCheck?: boolean,
         damageRoll?: DamageRoll
     ) {
-        super(title)
-        this.actor = actor
-        this.targetIds = targetIds ? [...targetIds] : []
+        super(title, actor, targetIds ? [...targetIds] : [], damageRoll)
         this.skillCheck = skillCheck
         this.isDefenseCheck = !!isDefenseCheck
-        this.damageRoll = damageRoll
     }
 
     private get isSuccessOrCrit(): boolean {
@@ -83,11 +78,11 @@ export class HeroAttack extends Attack {
         return hasPermission && !this.critChoice
     }
 
-    get isSpellAttack(): boolean {
+    override get isSpellAttack(): boolean {
         return !!this.spellDelivery
     }
 
-    get isEffectOnlySpellAttack(): boolean {
+    override get isEffectOnlySpellAttack(): boolean {
         return (this.spellDelivery?.applyEffect ?? false) && (!this.damageRoll || this.damageRoll?.result?.total === 0)
     }
 

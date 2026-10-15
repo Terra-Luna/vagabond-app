@@ -16,7 +16,11 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
     const [revision, setRevision] = useState(0)
     const { alchemySlots, alchemyItems } = useAlchemySelection(actor, false, true, true)
     const fullAlchemyItems = useMemo(() => { return ItemsCache.alchemical() }, [])
-    const tools = useMemo(() => { return actor.items.find(it => (it.type as string) === 'sundry' && (it.system as any).isAlchemyTools)! }, [])
+    const tools = useMemo(() => {
+        return actor.items.find((it: any) =>
+            it.type === 'sundry' && it.system.isAlchemyTools && it.system.isEquipped
+        ) as Item & { system: AlchemicalItemDataModel }
+    }, [])
 
     const getAlchemyItem = useCallback((item) => {
         return getFullItem<AlchemicalItemDataModel>(
@@ -46,40 +50,55 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
         return true
     }
 
+    const validateToolsEquipped = (): boolean => {
+        if (!tools) {
+            ui.notifications?.warn(appLang.Notifications.alchemyToolsNotFound)
+            return false
+        }
+        return true
+    }
+
     /**
-     * Spend Material and add item to Actor's inventory.
+     * Spends Materials and generates item. See below for actions.
      */
-    const addToInventory = useCallback(async (e, item) => {
+    const craftItem = async (item, action: (fullItem: any) => Promise<void>) => {
         const fullItem = await getAlchemyItem(item)
         if (fullItem) {
             if (await consumeMaterials()) {
-                await addItemToActor(actor, fullItem)
+                await action(fullItem)
             }
         }
         else {
             ui.notifications?.error(appLang.Notifications.craftFailed)
         }
         setRevision(current => current + 1)
+    }
+
+    /**
+     * Spend Material and add item to Actor's inventory.
+     */
+    const addToInventory = useCallback(async (e, item) => {
+        if (!validateToolsEquipped()) return
+        craftItem(item, async (fullItem) => {
+            await addItemToActor(actor, fullItem)
+        })
     }, [actor, materials, getAlchemyItem])
 
     /**
      * Spend Material and use item directly without adding it to inventory.
      */
     const craftAndUse = useCallback(async (e, item) => {
-        const fullItem = await getAlchemyItem(item)
-        if (fullItem) {
-            if (await consumeMaterials()) {
-                await useItem(actor, fullItem, true, e)
-            }
-        }
-        setRevision(current => current + 1)
+        if (!validateToolsEquipped()) return
+        craftItem(item, async (fullItem) => {
+            await useItem(actor, fullItem, true, e)
+        })
     }, [actor, materials, getAlchemyItem])
 
     return (
         <div className="@container">
             <div className="flex w-full justify-between">
-                <AlchemyToolsPill item={tools} />
-                <MaterialsCounter text={materialsCount} />
+                {tools && <AlchemyToolsPill item={tools} />}
+                {materials && <MaterialsCounter text={materialsCount} />}
             </div>
 
             <div className="flex flex-col h-full overflow-hidden">
@@ -90,8 +109,24 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
                         hideHeaderLabel={true}
                         hideCompendiumLink={true}
                         actions={[
-                            { label: appLang.HeroSheet.Alchemy.craft, tooltip: { title: appLang.AlchemyCrafting.craftTooltipTitle, content: appLang.HeroSheet.Alchemy.craft_tooltip }, item: undefined, action: addToInventory },
-                            { label: appLang.HeroSheet.Alchemy.use, tooltip: { title: appLang.AlchemyCrafting.useTooltipTitle, content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}` }, item: undefined, action: (e, item) => craftAndUse(e, item) }
+                            {
+                                label: appLang.HeroSheet.Alchemy.craft,
+                                tooltip: {
+                                    title: appLang.AlchemyCrafting.craftTooltipTitle,
+                                    content: appLang.HeroSheet.Alchemy.craft_tooltip
+                                },
+                                item: undefined,
+                                action: addToInventory
+                            },
+                            {
+                                label: appLang.HeroSheet.Alchemy.use,
+                                tooltip: {
+                                    title: appLang.AlchemyCrafting.useTooltipTitle,
+                                    content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}`
+                                },
+                                item: undefined,
+                                action: (e, item) => craftAndUse(e, item)
+                            }
                         ]}
                     />
                 </div>

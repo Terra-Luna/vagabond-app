@@ -32,7 +32,7 @@
       }
     },
     "grip": {
-      "style": "H",
+      "style": "V",
       "state": "H"
     },
     "properties": [
@@ -124,9 +124,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.1",
+    "systemVersion": "0.2.63",
     "createdTime": 1790023477459,
-    "modifiedTime": 1791481581884,
+    "modifiedTime": 1792084079329,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

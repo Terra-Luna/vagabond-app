@@ -32,7 +32,8 @@ export const useContextMenu = () => {
     const keepOpenRef = useRef(false)
 
     const onCtxMenu = (e: any, menuItems: CtxMenuItem[]) => {
-        if (typeof document.hasFocus === 'function' && !document.hasFocus()) return
+        const eventDocument: Document = e?.target?.ownerDocument ?? document
+        if (typeof eventDocument.hasFocus === 'function' && !eventDocument.hasFocus()) return
         e.stopPropagation()
         e.preventDefault()
         setMenuAnchorPoint({ x: e.clientX, y: e.clientY })

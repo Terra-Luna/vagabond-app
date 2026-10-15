@@ -225,9 +225,17 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             return
         }
 
-        const equipped = this.equippedWeapons()
+        const equippedWeapons = this.equippedWeapons()
 
-        const handsAreFull = equipped.length > 0 && equipped.reduce((sum, it) => sum + (
+        if (item.system instanceof WeaponDataModel && item.system.grip.style === 'HH') {
+            for (const weapon of equippedWeapons) {
+                await weapon.system.toggleEquipped()
+            }
+            await item.system.toggleEquipped()
+            return
+        }
+
+        const handsAreFull = equippedWeapons.length > 0 && equippedWeapons.reduce((sum, it) => sum + (
             it.system instanceof WeaponDataModel
                 ? (it.system.grip.state === 'HH' ? 2 : 1)
                 : (it.system.bulk.slots ?? 1)
@@ -238,7 +246,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             return
         }
 
-        const slots = equipped.reduce((sum, it) => sum + (it.system.bulk.slots ?? 0), 0)
+        const slots = equippedWeapons.reduce((sum, it) => sum + (it.system.bulk.slots ?? 0), 0)
         if (this.inventory.weaponSlots - slots - item.system.bulk.slots < 0) {
             ui.notifications?.info(localizeString(appLang.Notifications.weaponSlotLimitExceeded, { slots: this.inventory.weaponSlots.toString() }))
             return

@@ -11,7 +11,14 @@ import { SkillCheck, SkillCheckResult } from "./roll/SkillCheck"
 import type { AttackSnapshot, ComboSubAttackSnapshot } from "./util/attack-serializer"
 import { serializeAttack } from "./util/attack-serializer"
 
-export interface ComboSubAttackArgs { name: string, dmgType: string, dice: DiceRoll[], saveTypes?: SavingThrowType[], statuses?: string[] }
+export interface ComboSubAttackArgs {
+    name: string,
+    dmgType: string,
+    isSpellAttack?: boolean
+    dice: DiceRoll[],
+    saveTypes?: SavingThrowType[],
+    statuses?: string[]
+}
 
 /**
  * One repetition of an action within an Adversary combo (e.g. one of "2x Claw").
@@ -20,6 +27,7 @@ export class ComboSubAttack {
 
     name: string
     damageRoll: DamageRoll
+    isSpellAttack: boolean = false
     saveTypes: SavingThrowType[] = []
     statuses: string[] = []
     saveResults: Record<string, SkillCheckResult> = {}
@@ -30,6 +38,7 @@ export class ComboSubAttack {
         this.name = args.name
         this.saveTypes = args.saveTypes ?? []
         this.statuses = args.statuses ?? []
+        this.isSpellAttack = args.isSpellAttack ?? false
         this.damageRoll = new DamageRoll({
             atkName: args.name,
             dmgType: args.dmgType,
@@ -49,7 +58,7 @@ export class ComboSubAttack {
 
     // Same rules as AdversaryAttack: a Block meeting/beating its difficulty negates all damage.
     shouldApplyDamageToTarget(targetId: string): boolean {
-        if (Attack.isImmuneToDamage(targetId, this.damageRoll)) return false
+        if (Attack.isImmuneToDamage(targetId, this.damageRoll, this.isSpellAttack)) return false
         const result = this.saveResults[targetId]
         // A defense only adds armor; it doesn't negate the damage.
         if (this.defenseArmorBonuses[targetId] !== undefined) return true
@@ -164,15 +173,11 @@ export interface AdversaryComboAttackArgs { comboName: string, subAttacks: Combo
 export class AdversaryComboAttack extends Attack {
 
     override readonly attackType = 'combo' as const
-    override actor: Actor
-    override targetIds: string[]
 
     subAttacks: ComboSubAttack[] = []
 
     constructor(actor: Actor, args: AdversaryComboAttackArgs, targetIds?: string[]) {
-        super(args.comboName)
-        this.actor = actor
-        this.targetIds = targetIds ?? []
+        super(args.comboName, actor, targetIds)
         this.subAttacks = args.subAttacks.map(sub => new ComboSubAttack(sub))
     }
 

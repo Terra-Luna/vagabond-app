@@ -46,7 +46,14 @@ const getImbueActor = (): (Actor & { system: HeroDataModel }) | undefined => {
 export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
     actor: Actor & { system: HeroDataModel }, attack: HeroAttack, source: Item | undefined, setRevision: any
 }) => {
-    const canImbue = !!getImbueActor()
+    const isEligibleForImbue = !attack.isResolved
+        && !attack.isDefenseCheck
+        && attack.damageRoll
+        && attack.damageRoll.dmgType !== "healing"
+        && attack.damageRoll.dmgType !== "fatigue"
+        && attack.damageRoll.dmgType !== "mana"
+        && !!getImbueActor()
+
     const hasPermission = game.user?.isActiveGM || game.user?.id === attack.userId
     const isFailure = attack.skillCheck?.result?.outcome === appLang.RollResult.failure
     const needsResourceUpdates = hasPermission && !attack.isResolved && (
@@ -224,7 +231,7 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                             {/* WEAPON ATTACK DAMAGE */}
                             <DamageRollsComponent result={attack.damageRoll!.result!} />
                             {/* IMBUE BUTTON FOR WEAPON ATTACKS */}
-                            {!attack.isResolved && !attack.isDefenseCheck && canImbue &&
+                            {isEligibleForImbue &&
                                 <div className="flex items-center justify-center mb-1">
                                     <UtilityButton title={appLang.Combat.imbueAttack} onClick={() =>
                                         new SpellcastingApp(getImbueActor(), true).render({ force: true })

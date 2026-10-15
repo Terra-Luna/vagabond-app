@@ -17,6 +17,7 @@ import { tableBorder, tableBorderRounded } from "../../../../common/border-style
 import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useContextMenu } from "../../../../component/ContextMenu"
+import { DynamicGrid } from "../../../../component/DynamicGrid"
 import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { IconOnlyButton } from "../../../../component/IconOnlyButton"
@@ -471,14 +472,12 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
                 { icon: EyeOff, label: appLang.ButtonActions.hide, action: async () => await VagabondSettingsRegistry.toggleClientSetting(settingKey, actor.id) }
             ])}>
                 <CollapsibleSection title={appLang.HeroSheet.trackers} settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
-                    <div className="grid grid-cols-2 @lg:grid-cols-3 @xl:grid-cols-4 gap-1 w-full mt-1">
+                    <DynamicGrid widthIncrement={1}>
                         {actor.system.trackers.sort((a, b) => a.sort - b.sort).map((tracker, index) => (
                             <CustomTracker key={index} actor={actor} tracker={tracker} index={index} />
                         ))}
-                        {(actor.system.trackers.length === 0 || actor.system.trackers.length % 2 > 0) &&
-                            <GhostTracker actor={actor} />
-                        }
-                    </div>
+                        <GhostTracker actor={actor} />
+                    </DynamicGrid>
                 } />
                 <ContextMenu />
             </div>
@@ -558,7 +557,7 @@ const GhostTracker = ({ actor }: { actor: Actor & { system: HeroDataModel } }) =
     return (
         <button onClick={() => addTracker()}
             className={`flex items-center border border-dashed border-table-border rounded-sm px-2 hover-glow ${buttonAnimation}`}>
-            <p className="text-sm italic">+Add custom tracker</p>
+            <p className="text-sm italic">+Add</p>
         </button>
     )
 }
