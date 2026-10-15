@@ -179,7 +179,7 @@ export const RollBuilderView = ({
         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
             {showHeader && <Header title={"ROLL BUILDER"} />}
 
-            <div className="flex flex-col gap-y-1 p-1 text-text-primary font-eskapade border-2 border-solid border-t-0 border-table-border bg-sheet-main-fill rounded-b-sm">
+            <div className="flex flex-col gap-y-1 text-text-primary font-eskapade bg-sheet-main-fill rounded-b-sm">
                 {/* EACH ATTACK CATEGORY BY USE-CASE */}
                 {showDamageRolls && <>{WeaponSelector}</>}
                 {showSkillCheck && <>{CustomSkillCheckBuilder}</>}

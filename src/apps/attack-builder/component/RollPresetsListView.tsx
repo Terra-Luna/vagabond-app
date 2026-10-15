@@ -2,6 +2,7 @@ import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { sys_id } from "../../../utils/foundryUtils"
 import { appLang } from "../../../utils/lang"
 import { tableBorder } from "../../../view/common/border-styles"
+import { UtilityButton } from "../../../view/component/Button"
 import { CollapsibleSection } from "../../../view/component/Collapsible"
 import { EditButton } from "../../../view/component/EditButton"
 import { TrashButton } from "../../../view/component/TrashButton"
@@ -21,12 +22,12 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
     return (
         <div className="flex flex-col">
             <CollapsibleSection
-                title={"PRESETS"}
-                actions={[{
-                    label: `+${appLang.ButtonActions.add}`,
-                    tooltip: { title: appLang.AttackBuilder.presets, content: appLang.AttackBuilder.addCustomPreset },
-                    action: async (e) => { e.stopPropagation(); new RollBuilderApp(actor).render({ force: true }); }
-                }]}
+                title={<div className="flex gap-x-2">
+                    {appLang.AttackBuilder.presets.toUpperCase()}
+                    <UtilityButton onClick={() => new RollBuilderApp(actor).render({ force: true })}>
+                        {appLang.ButtonActions.add}
+                    </UtilityButton>
+                </div>}
                 content={<>
                 <div className={`${tableBorder} border-t-0 rounded-b-sm`}>
                     {presets.map((preset, index) => (
