@@ -24,33 +24,35 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
             <CollapsibleSection
                 title={<div className="flex gap-x-2">
                     {appLang.AttackBuilder.presets.toUpperCase()}
-                    <UtilityButton onClick={() => new RollBuilderApp(actor).render({ force: true })}>
-                        {appLang.ButtonActions.add}
-                    </UtilityButton>
+                    <span className="text-text-header-tertiary">
+                        <UtilityButton onClick={() => new RollBuilderApp(actor).render({ force: true })}>
+                            +{appLang.ButtonActions.add}
+                        </UtilityButton>
+                    </span>
                 </div>}
                 content={<>
-                <div className={`${tableBorder} border-t-0 rounded-b-sm`}>
-                    {presets.map((preset, index) => (
-                        <div
-                            key={index}
-                            className={`w-full ${index === dragIndex ? "opacity-40" : "even:bg-table-row-even/50 odd:bg-table-row-odd/50"}`}
-                            draggable={true}
-                            onDragStart={(e) => onDragStart(e, preset, index)}
-                            onDragEnter={(e) => onDragEnter(e, index)}
-                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation() }}
-                            onDrop={(e) => onDrop(e, index)}
-                            onDragEnd={(e) => onDragEnd(e)}
-                        >
-                            <RollPresetCard
-                                actor={actor} preset={preset}
-                                EditButton={<EditButton onEdit={() => editPreset(preset)} />}
-                                TrashButton={<TrashButton onClick={() => deletePreset(index)} />}
-                            />
-                        </div>
-                    ))}
-                </div>
+                    <div className={`${tableBorder} border-t-0 rounded-b-sm`}>
+                        {presets.map((preset, index) => (
+                            <div
+                                key={index}
+                                className={`w-full ${index === dragIndex ? "opacity-40" : "even:bg-table-row-even/50 odd:bg-table-row-odd/50"}`}
+                                draggable={true}
+                                onDragStart={(e) => onDragStart(e, preset, index)}
+                                onDragEnter={(e) => onDragEnter(e, index)}
+                                onDragOver={(e) => { e.preventDefault(); e.stopPropagation() }}
+                                onDrop={(e) => onDrop(e, index)}
+                                onDragEnd={(e) => onDragEnd(e)}
+                            >
+                                <RollPresetCard
+                                    actor={actor} preset={preset}
+                                    EditButton={<EditButton onEdit={() => editPreset(preset)} />}
+                                    TrashButton={<TrashButton onClick={() => deletePreset(index)} />}
+                                />
+                            </div>
+                        ))}
+                    </div>
 
-            </>} />
+                </>} />
 
             {/* DELETE PRESET CONFIRMATION DIALOG */}
             <Confirmation />

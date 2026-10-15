@@ -4,7 +4,7 @@
   "_id": "bfd62SvI4ibqiXuU",
   "img": "icons/skills/melee/hand-grip-sword-red.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">When you Hold with a Melee Weapon Equipped, it has the Defend property until your next Turn or until you roll its damage die.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.6T1dJlhyAZDZsQ6n]{Patience}</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">If you end your Turn with a Brawl, Finesse, or Melee Weapon Equipped that you did not attack or Cast with, it has the Defense property until your next Turn or until you roll its damage die.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.6T1dJlhyAZDZsQ6n]{Patience}</span></p>",
     "rules": [
       {
         "id": "lwq0XX1VA1dYaE35",
@@ -13,7 +13,9 @@
         "level": 0,
         "value": "defense",
         "selector": [
-          "modifiers.damage.out.melee.properties.granted"
+          "modifiers.damage.out.melee.properties.granted",
+          "modifiers.damage.out.brawl.properties.granted",
+          "modifiers.damage.out.finesse.properties.granted"
         ],
         "toggleableEffect": true
       },
@@ -71,9 +73,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.91",
+    "systemVersion": "0.2.61",
     "createdTime": 1786726395245,
-    "modifiedTime": 1790833676313,
+    "modifiedTime": 1792081268570,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
