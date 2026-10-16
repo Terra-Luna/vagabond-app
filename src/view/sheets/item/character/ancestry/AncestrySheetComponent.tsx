@@ -21,7 +21,7 @@ export const AncestrySheetComponent = ({ item }: { item: Item & { system: Ancest
     return (
         <div className="flex h-full w-full overflow-hidden">
             {/* STORYBOOK IMAGE */}
-            <div className="w-1/3 sticky top-0 flex justify-start items-start" onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
+            <div className="w-1/3 sticky top-0 flex justify-start items-start bg-sheet-header-fill" onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
                 <img src={item.img ?? ''} className="w-full object-contain" />
                 <ContextMenu />
             </div>
@@ -31,7 +31,7 @@ export const AncestrySheetComponent = ({ item }: { item: Item & { system: Ancest
                 <BaseItemSheetComponent
                     bodyClassName="mt-2 mx-2 pb-10"
                     banner={<ItemSheetBanner item={item} hideImage={true} />}
-                    description={<Description item={item} showFullView={true} italic={false} />}
+                    description={<Description item={item} showFullView={true} italic={false} editHeight={300} />}
                     body={
                         <>
                             {isEditMode && (

@@ -36,7 +36,7 @@ export const ClassSheetComponent = ({ item, setFeatureDropEnabled }: { item: Ite
             <div className="flex flex-col @4xl:flex-row h-full w-full overflow-hidden">
 
                 {/* STORYBOOK IMAGE */}
-                <div className="hidden @4xl:flex @4xl:w-1/3 @4xl:sticky top-0 justify-start items-start -mt-1" onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
+                <div className="hidden @4xl:flex @4xl:w-1/3 @4xl:sticky top-0 justify-start items-start -mt-1 bg-sheet-header-fill" onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
                     <img src={item.img ?? ''} className="w-full object-contain" />
                 </div>
 
@@ -44,7 +44,7 @@ export const ClassSheetComponent = ({ item, setFeatureDropEnabled }: { item: Ite
                 <div className="w-full @4xl:w-1/3 h-full overflow-y-auto">
                     <BaseItemSheetComponent
                         banner={<ClassSheetBanner item={item} />}
-                        description={<Description item={item} showFullView={true} italic={false} hideBorder={true} />}
+                        description={<Description item={item} showFullView={true} italic={false} hideBorder={true} editHeight={300} />}
                         body={<>
                             <KeyStatsSelector item={item} />
                             <ComplexityRating item={item} />

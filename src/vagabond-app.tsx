@@ -35,6 +35,7 @@ import { ContainerDataModel } from "./model/item/equip/ContainerDataModel"
 import { StartingPackDataModel } from "./model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "./model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "./model/item/equip/WeaponDataModel"
+import { VagabondItem } from "./model/item/VagabondItem"
 import { ItemsCache } from "./rules/util/ItemsCache"
 import { sys_id } from "./utils/foundryUtils"
 import { stackStackables } from "./utils/heroInventoryUtil"
@@ -88,6 +89,7 @@ Hooks.once("init", () => {
     Object.assign(
         // Actors
         CONFIG.Actor.documentClass = VagabondActor,
+        CONFIG.Item.documentClass = VagabondItem,
         CONFIG.Actor.dataModels.adversary = AdversaryDataModel,
         CONFIG.Actor.dataModels.hero = HeroDataModel,
         CONFIG.Actor.dataModels.npc = NpcDataModel,

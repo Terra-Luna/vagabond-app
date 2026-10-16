@@ -28,11 +28,6 @@ export class StartingPackDataModel extends ItemDataModel<StartingPackSchema> {
         }
     }
 
-    override async _preCreate(data: any, options: any, user: any) {
-        await super._preCreate(data, options, user)
-        this.parent.updateSource({ 'img': '/icons/containers/bags/pouch-leather-silver-white.webp' })
-    }
-
     get cost(): Coins {
         return subtractCoins({ g: 3, s: 0, c: 0 }, this.value)
     }

@@ -18,7 +18,7 @@ const alchemySchema = () => {
                     new fields.NumberField({ integer: true, initial: 0, required: false }),
                     { initial: [] }
                 )
-            }, { initial: {} }),
+            }),
             type: new fields.StringField({ ...damageTypeOptions() })
         }),
         appliedEffects: new fields.ArrayField(
