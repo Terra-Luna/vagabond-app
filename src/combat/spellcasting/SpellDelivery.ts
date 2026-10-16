@@ -243,17 +243,16 @@ export class Line extends AreaOfEffectDelivery {
 
         const isLineExpanded = this.height > this.baseHeight || this.width > this.baseWidth
         if (isLineExpanded) {
-            const heightMultiplier = (this.height - this.baseHeight) / this.baseHeight
-            const widthMultiplier = (this.width - this.baseWidth) / this.baseWidth
-            const mana = this.manaCost
-            for (let i = 0; i < heightMultiplier; i++) {
-                this.deliveryUpcastCost += mana
-                this._manaCost += mana
-            }
-            for (let i = 0; i < widthMultiplier; i++) {
-                this.deliveryUpcastCost += mana
-                this._manaCost += mana
-            }
+            const expansionSteps =
+                (this.height - this.baseHeight) / this.baseHeight +
+                (this.width - this.baseWidth) / this.baseWidth
+
+            const deliveryCost =
+                (this.baseManaCost + this.deliveryUpcastCost) * 2 ** expansionSteps
+
+            const damageUpcastCost = this.damageDice - 1
+
+            this._manaCost = deliveryCost + damageUpcastCost
         }
 
         if (dud > 0 && dud < this.deliveryUpcastCost - this.baseManaCost) {
