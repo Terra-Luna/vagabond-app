@@ -9,6 +9,7 @@ import { EditModeOptions } from '../context/EditModeContext/EditModeOptions'
 
 const TOOLTIP_CURSOR_GAP = 8
 const TOOLTIP_ESTIMATED_WIDTH = 240
+const TOOLTIP_DELAY = 666
 export const tooltipContainerStyle = "pointer-events-none z-99"
 export const tooltipContentStyle = ""
 
@@ -166,12 +167,10 @@ export const Tooltip = ({ title, content, children, interactive, disabled, maxWi
         clearTimeout(openTimeout.current)
         clearTimeout(closeTimeout.current)
         openTimeout.current = setTimeout(() => {
-            // a deeper nested Tooltip may have claimed hover since this was scheduled - only the
-            // innermost hovered Tooltip is allowed to actually open
             if (nest.activeDepth.current !== nest.depth) return
             setAnchorPoint({ x: cursorXY.current.x, y: cursorXY.current.y - TOOLTIP_CURSOR_GAP })
             setIsOpen(true)
-        }, 1200)
+        }, TOOLTIP_DELAY)
     }
 
     const hide = () => {
@@ -227,7 +226,17 @@ export const Tooltip = ({ title, content, children, interactive, disabled, maxWi
                     }}
                 >
                     <div
-                        className={`bg-context-menu-fill ${tableBorderRounded} border-2 px-2 py-0.5 ${typeof content === 'string' ? 'max-w-[min(24rem,calc(100vw-2rem))] whitespace-normal break-words' : ''} ${interactive ? 'pointer-events-auto' : ''}`}
+                        className={`
+                            bg-context-menu-fill ${tableBorderRounded} border-2 px-2 py-0.5 
+                            ${typeof content === 'string'
+                                ? 'max-w-[min(24rem,calc(100vw-2rem))] whitespace-normal break-words'
+                                : ''
+                            } 
+                            ${interactive
+                                ? 'pointer-events-auto'
+                                : ''
+                            }
+                        `}
                         onMouseEnter={interactive ? cancelHide : undefined}
                         onMouseLeave={interactive ? hide : undefined}
                     >

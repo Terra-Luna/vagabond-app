@@ -95,7 +95,6 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
         const handleTargetChange = (user, token, isTargeted) => {
             if (user.id !== game.user?.id) return
             setTargetIds(Array.from(game.user?.targets ?? []).join("."))
-
         }
         const hookId = Hooks.on('targetToken', handleTargetChange)
         return () => { Hooks.off('targetToken', hookId) }
