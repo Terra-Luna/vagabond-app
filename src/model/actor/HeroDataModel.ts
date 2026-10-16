@@ -225,34 +225,67 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             return
         }
 
-        const equippedWeapons = this.equippedWeapons()
+        await this.equipHandheldItem(item as any)
+    }
 
-        if (item.system instanceof WeaponDataModel && item.system.grip.style === 'HH') {
-            for (const weapon of equippedWeapons) {
-                await weapon.system.toggleEquipped()
-            }
+    /**
+     * Recursive function that will unequip weapons til there's a free hand slot for the new one.
+     */
+    async equipHandheldItem(item: Item & { system: SundryDataModel | WeaponDataModel }) {
+        const getHandSlot = (it: any, prop: string): number => {
+            return it.system instanceof WeaponDataModel
+                ? (it.system.grip[prop] === 'HH' ? 2 : 1)
+                : it.system.bulk.slots ?? 1
+        }
+
+        /**
+         * Auto unequip the weaker weapons first.
+         */
+        const equippedWeapons = this.equippedWeapons().sort((a: any, b: any) =>
+            (a.system.damage?.dice?.faces ?? 0) - (b.system.damage?.dice?.faces ?? 0)
+        )
+
+        let currentBulk = 0
+        let occupiedHands = 0
+        for (const weapon of equippedWeapons) {
+            currentBulk += weapon.system.bulk.slots ?? 0
+            occupiedHands += getHandSlot(weapon, 'state')
+        }
+
+        const maxBulk = this.inventory.weaponSlots
+        const availableBulk = maxBulk - currentBulk
+        const hands = this.inventory.hands
+        const freeHands = hands - occupiedHands
+        const itemHandReq = getHandSlot(item, 'style')
+        const itemBulk = item.system.bulk.slots ?? 0
+
+        if (itemBulk > maxBulk) {
+            ui.notifications?.info(localizeString(appLang.Notifications.weaponSlotLimitExceeded, { slots: maxBulk.toString() }))
+            return
+        }
+
+        if (freeHands >= itemHandReq && itemBulk <= maxBulk && itemBulk <= availableBulk) {
             await item.system.toggleEquipped()
             return
         }
-
-        const handsAreFull = equippedWeapons.length > 0 && equippedWeapons.reduce((sum, it) => sum + (
-            it.system instanceof WeaponDataModel
-                ? (it.system.grip.state === 'HH' ? 2 : 1)
-                : (it.system.bulk.slots ?? 1)
-        ), 0) > 1
-
-        if (handsAreFull) {
-            ui.notifications?.info(appLang.Notifications.handsFull)
-            return
+        else {
+            const weapon = equippedWeapons[0]
+            if (weapon.system instanceof WeaponDataModel && weapon.system.grip.style === 'V' && weapon.system.grip.state === 'HH') {
+                await this.toggleVersatileGrip(weapon as any)
+            }
+            else {
+                let result = false
+                for (const weapon of equippedWeapons) {
+                    result = await weapon.system.toggleEquipped(true)
+                    if (result) break
+                }
+                // If we couldn't unequip any weapon we can't equip the new one, so bail.
+                if (!result) return
+            }
         }
 
-        const slots = equippedWeapons.reduce((sum, it) => sum + (it.system.bulk.slots ?? 0), 0)
-        if (this.inventory.weaponSlots - slots - item.system.bulk.slots < 0) {
-            ui.notifications?.info(localizeString(appLang.Notifications.weaponSlotLimitExceeded, { slots: this.inventory.weaponSlots.toString() }))
-            return
-        }
-
-        await item.system.toggleEquipped()
+        // Try again...
+        await this.equipHandheldItem(item)
     }
 
     async toggleVersatileGrip(item: Item & { system: WeaponDataModel }) {
@@ -260,7 +293,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
         const equipped = this.equippedWeapons()
 
-        if (equipped.length > 1) {
+        if (equipped.length >= this.inventory.hands) {
             for (const weapon of equipped.filter(it => it.id !== item.id)) {
                 await weapon.system.toggleEquipped()
             }

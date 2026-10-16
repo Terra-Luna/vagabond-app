@@ -154,16 +154,19 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         }
     }
 
-    toggleEquipped = async (): Promise<void> => {
+    toggleEquipped = async (skipNotification?: boolean) => {
         if (this.isEquipped && this.isCursed()) {
-            ui.notifications?.info(localizeString(appLang.Notifications.boundItemCannotBeRemoved, { name: this.parent.name }))
-            return
+            if (!skipNotification) {
+                ui.notifications?.info(localizeString(appLang.Notifications.boundItemCannotBeRemoved, { name: this.parent.name }))
+            }
+            return false
         }
         const updates = { 'system.isEquipped': !this.isEquipped }
         if (this.parent.type === 'weapon') {
             updates['system.grip.state'] = (this as any).grip.style === 'HH' ? 'HH' : 'H'
         }
         await this.parent.update(updates)
+        return true
     }
 
     isRelic = (): boolean => {

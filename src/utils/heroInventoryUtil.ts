@@ -204,9 +204,13 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
         menuItems.push(splitItemsContextOption(hero, item))
     }
 
-    menuItems.push(deleteItemContextOption(hero, item))
+    const hideDelete = item.isEquipped && item.isBoundRelic() && item.isCursed()
 
-    if (item.bulk.isStackable && item.bulk.quantity > 1) {
+    if (!hideDelete) {
+        menuItems.push(deleteItemContextOption(hero, item))
+    }
+
+    if (!hideDelete && item.bulk.isStackable && item.bulk.quantity > 1) {
         menuItems.push(deleteAllItemsContextOption(hero, item))
     }
 

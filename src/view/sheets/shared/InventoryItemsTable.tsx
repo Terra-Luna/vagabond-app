@@ -119,37 +119,32 @@ const EquipStateIcon = ({ tooltip, type, isEquipped, gripState, toggleEquipState
     const equippedIconStyle = "w-full justify-center text-ic-equipped fill-ic-equipped/80"
     const unEquipedIconStyle = "w-full justify-center text-ic-equipped"
     return (
-        <Tooltip content={`Toggle equip\n${tooltip}`}>
-            <div onClick={(e) => { e.stopPropagation(); toggleEquipState() }} onDoubleClick={(e) => { e.stopPropagation() }}>
-                {
-                    type === 'armor' &&
-                    <div>
-                        {isEquipped
-                            ? <Shield size={18} className={equippedIconStyle} />
-                            : <Shield size={18} className={unEquipedIconStyle} />
-                        }
-                    </div>
-                }
-                {
-                    type === 'weapon'
-                        ? <div>
-                            {isEquipped
-                                ? <div className="flex items-center justify-end -space-x-4 font-eskapade text-text-secondary">
-                                    <p>{appLang.GripsAbbr[gripState]}</p>
-                                    <HandFist size={18} className={equippedIconStyle} />
-                                </div>
-                                : <Hand size={18} className={unEquipedIconStyle} />
-                            }
+        <div title={`Toggle equip\n${tooltip}`} onClick={(e) => { e.stopPropagation(); toggleEquipState() }} onDoubleClick={(e) => { e.stopPropagation() }}>
+            {type === 'armor'
+                && <div>
+                    {isEquipped
+                        ? <Shield size={18} className={equippedIconStyle} />
+                        : <Shield size={18} className={unEquipedIconStyle} />
+                    }
+                </div>
+            }
+            {type === 'weapon'
+                ? <div>
+                    {isEquipped
+                        ? <div className="flex items-center justify-end -space-x-4 font-eskapade text-text-secondary">
+                            <p>{appLang.GripsAbbr[gripState]}</p>
+                            <HandFist size={18} className={equippedIconStyle} />
                         </div>
-                        : <div>
-                            {type !== 'armor' && type !== 'weapon' && <>{
-                                isEquipped
-                                    ? <HandFist size={18} className={equippedIconStyle} />
-                                    : <Hand size={18} className={unEquipedIconStyle} />
-                            }</>}
-                        </div>
-                }
-            </div>
-        </Tooltip>
+                        : <Hand size={18} className={unEquipedIconStyle} />
+                    }
+                </div>
+                : <div>
+                    {type !== 'armor' && type !== 'weapon' && <>{
+                        isEquipped
+                            ? <HandFist size={18} className={equippedIconStyle} />
+                            : <Hand size={18} className={unEquipedIconStyle} />
+                    }</>}
+                </div>}
+        </div>
     )
 }

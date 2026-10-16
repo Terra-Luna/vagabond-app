@@ -14,7 +14,7 @@ const VIRTUAL_SELECTORS = ["class.castingSkill", "class.maxCastFormula"]
 const EXCLUSIONS = [
     "ancestry.beingSize", "ancestry.beingType", "ancestry.description", "ancestry.rules",
     "class.featureIds", "class.description", "class.complexity", "class.keyStats", "class.rules", "class.startingPacks",
-    "inventory.coins.", "inventory.items", "inventory.weaponSlots", "level.", "health.value", "mana.value",
+    "inventory.coins.", "inventory.items", "level.", "health.value", "mana.value",
     "saves.endure", "saves.reflex", "saves.will", "forceUpdateTrack", "trackers", "tagalongId", "status.counters."
 ]
 

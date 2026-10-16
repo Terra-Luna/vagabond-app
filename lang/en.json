@@ -1510,7 +1510,6 @@
         "unequipBeforeStorage": "Unequip gear before placing in storage!",
         "containerFull": "Not enough space available in container!",
         "boundItemCannotBeRemoved": "Unable to remove Bound item: {{name}}...the curse must be lifted.",
-        "handsFull": "Your hands are full.",
         "weaponSlotLimitExceeded": "Equipped items slot limit ({{slots}}) exceeded.",
         "onlyGearInStartingPack": "Only gear can be added to a Starting Pack.",
         "materialsNotFound": "Could not find crafting Materials.",

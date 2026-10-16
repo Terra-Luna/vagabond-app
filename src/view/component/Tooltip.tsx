@@ -1,5 +1,5 @@
 import { ControlledMenu } from '@szhsin/react-menu'
-import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import ReactHtmlParser from 'react-html-parser'
 
 import { createStyleTag } from '../../utils/styleUtils'
@@ -59,10 +59,25 @@ export const Tooltip = ({ title, content, children, interactive, disabled, maxWi
 
     const nest = nestRef.current
 
-    useEffect(() => {
-        nest.closers.set(nest.depth, () => setIsOpen(false))
-        return () => { nest.closers.delete(nest.depth) }
+    const closeTooltip = useCallback(() => {
+        clearTimeout(openTimeout.current)
+        clearTimeout(closeTimeout.current)
+        nest.closers.forEach((close, depth) => {
+            if (depth > nest.depth) close()
+        })
+        if (nest.activeDepth.current === nest.depth) nest.activeDepth.current = nest.depth - 1
+        setIsOpen(false)
     }, [nest])
+
+    useEffect(() => {
+        nest.closers.set(nest.depth, closeTooltip)
+        return () => {
+            nest.closers.delete(nest.depth)
+            clearTimeout(openTimeout.current)
+            clearTimeout(closeTimeout.current)
+            if (nest.activeDepth.current >= nest.depth) nest.activeDepth.current = nest.depth - 1
+        }
+    }, [nest, closeTooltip])
 
     const claimHover = () => {
         if (nest.depth > nest.activeDepth.current) {
@@ -148,6 +163,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled, maxWi
     const show = (e: { clientX?: number, clientY?: number } = {}) => {
         if (disabled || !content) return
         trackPointer(e)
+        clearTimeout(openTimeout.current)
         clearTimeout(closeTimeout.current)
         openTimeout.current = setTimeout(() => {
             // a deeper nested Tooltip may have claimed hover since this was scheduled - only the
@@ -161,21 +177,14 @@ export const Tooltip = ({ title, content, children, interactive, disabled, maxWi
     const hide = () => {
         releaseHover()
         clearTimeout(openTimeout.current)
-        closeTimeout.current = setTimeout(() => setIsOpen(false), 50)
+        closeTimeout.current = setTimeout(closeTooltip, 50)
     }
 
     const cancelHide = () => clearTimeout(closeTimeout.current)
 
     const resetTimer = (e: { clientX?: number, clientY?: number }) => {
-        if (isOpen) {
-            clearTimeout(openTimeout.current)
-            clearTimeout(closeTimeout.current)
-            setIsOpen(false)
-        }
-        else {
-            clearTimeout(openTimeout.current)
-            show(e)
-        }
+        if (isOpen) closeTooltip()
+        else show(e)
     }
 
     return (
@@ -187,8 +196,8 @@ export const Tooltip = ({ title, content, children, interactive, disabled, maxWi
                 onMouseLeave={hide}
                 onFocus={() => show()}
                 onBlur={hide}
-                onClick={resetTimer}
-                onAuxClick={resetTimer}
+                onClickCapture={resetTimer}
+                onAuxClickCapture={resetTimer}
             >
                 <TooltipNestContext.Provider value={nest}>
                     {children}
@@ -204,7 +213,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled, maxWi
                     unmountOnClose
                     portal={{ target: portalTarget }}
                     menuClassName={tooltipContainerStyle}
-                    onClose={() => setIsOpen(false)}
+                    onClose={closeTooltip}
                     onClick={(e) => {
                         if (interactive) {
                             e.stopPropagation()
