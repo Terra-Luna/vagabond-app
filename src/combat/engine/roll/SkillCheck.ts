@@ -24,6 +24,7 @@ export interface SkillCheckArgs {
     explodeFavor?: boolean
     favorHinder?: 'favor' | 'hinder' | 'none'
     clickEvent?: React.MouseEvent<HTMLDivElement>
+    skipCalculations?: boolean
 }
 
 export interface SkillCheckResult {
@@ -58,25 +59,31 @@ export class SkillCheck {
     result: SkillCheckResult | undefined
 
     constructor(hero: HeroDataModel, args: SkillCheckArgs) {
-        const heroMods = foundry.utils.deepClone(hero.modifiers)
+        let heroMods: any | undefined
+        let skillMods: any | undefined
+        let globalMods: any | undefined
 
-        if (args.item) {
-            RelicPowerProcessor.applyRelicPowers(args.item.relicPowers as any, heroMods, { skillTrained: hero.skills[args.skill]?.trained ?? false })
+        if (!args.skipCalculations) {
+            heroMods = foundry.utils.deepClone(hero.modifiers)
+
+            if (args.item) {
+                RelicPowerProcessor.applyRelicPowers(args.item.relicPowers as any, heroMods, { skillTrained: hero.skills[args.skill]?.trained ?? false })
+            }
+
+            skillMods = heroMods.skillCheck[args.skill]
+
+            globalMods = args.type === 'attack'
+                ? foundry.utils.deepClone(hero.modifiers).skillCheck.attack
+                : (args.type === 'cast'
+                    ? foundry.utils.deepClone(hero.modifiers).skillCheck.cast
+                    : undefined
+                )
         }
-
-        const skillMods = heroMods.skillCheck[args.skill]
-
-        const globalMods = args.type === 'attack'
-            ? foundry.utils.deepClone(hero.modifiers).skillCheck.attack
-            : (args.type === 'cast'
-                ? foundry.utils.deepClone(hero.modifiers).skillCheck.cast
-                : undefined
-            )
 
         let bonusRolls = args.bonusDice?.map(d => new DiceRoll(d)) ?? []
 
         // Keep the highest bonus die if multiple are present, otherwise use the one specified in the skill modifier args.
-        if (bonusRolls.length === 0) {
+        if (bonusRolls.length === 0 && !args.skipCalculations) {
             if (skillMods?.d4) bonusRolls = [new DiceRoll({ count: 1, faces: 4 })]
             if (skillMods?.d6) bonusRolls = [new DiceRoll({ count: 1, faces: 6 })]
             if (skillMods?.d8) bonusRolls = [new DiceRoll({ count: 1, faces: 8 })]
@@ -91,7 +98,9 @@ export class SkillCheck {
         this.critThreshold = args.critThreshold ?? (20 - ((skillMods?.critThreshold ?? 0) + (globalMods?.critThreshold ?? 0)))
         this.critSum = args.critSum ?? false
         this.explodeFavor = args.explodeFavor ?? false
-        this.favorHinder = this.getFavorHinderFromHotkey(args.clickEvent) ?? args.favorHinder ?? 'none'
+        this.favorHinder = args.skipCalculations
+            ? args.favorHinder ?? 'none'
+            : this.getFavorHinderFromHotkey(args.clickEvent, heroMods) ?? args.favorHinder ?? 'none'
         this.clickEvent = args.clickEvent
     }
 
@@ -118,7 +127,8 @@ export class SkillCheck {
                 bonusDice: snapshot.bonusDice?.map(d => ({ count: 1, faces: d.faces })),
                 modifier: snapshot.modifier,
                 critThreshold: snapshot.critThreshold,
-                favorHinder: snapshot.favorHinder
+                favorHinder: snapshot.favorHinder,
+                skipCalculations: true
             })
             skillCheck.result = snapshot.result
             return skillCheck
@@ -224,18 +234,32 @@ export class SkillCheck {
     get isFavored() { return this.favorHinder === 'favor' }
     get isHindered() { return this.favorHinder === 'hinder' }
 
-    setFavorHinder(e?: React.MouseEvent<HTMLDivElement>) {
+    setFavorHinder(e?: React.MouseEvent<HTMLDivElement>, heroMods?: any) {
         this.clickEvent = e
-        this.favorHinder = this.getFavorHinderFromHotkey(e) ?? 'none'
+        this.favorHinder = this.getFavorHinderFromHotkey(e, heroMods) ?? 'none'
     }
 
-    private getFavorHinderFromHotkey(e?: React.MouseEvent<HTMLDivElement>): 'favor' | 'hinder' | undefined {
-        if (e?.shiftKey) {
-            return 'favor'
-        }
-        else if (e?.ctrlKey) {
-            return 'hinder'
-        }
+    private getFavorHinderFromHotkey(e?: React.MouseEvent<HTMLDivElement>, heroMods?: any): 'favor' | 'hinder' | undefined {
+        const keyMod = e?.shiftKey ? 1 : (e?.ctrlKey ? -1 : 0)
+
+        const modFavor = (
+            (this.type === 'attack' && heroMods?.skillCheck?.attack?.favored) ||
+            (this.type === 'cast' && heroMods?.skillCheck?.cast?.favored) ||
+            heroMods?.skillCheck[this.skill]?.favored
+        ) ? 1 : 0
+
+        const modHinder = (
+            (this.type === 'attack' && heroMods?.skillCheck?.attack?.hindered) ||
+            (this.type === 'cast' && heroMods?.skillCheck?.cast?.hindered) ||
+            heroMods?.skillCheck[this.skill]?.hindered
+        ) ? -1 : 0
+
+        return (keyMod + modFavor + modHinder > 0)
+            ? 'favor'
+            : (keyMod + modFavor + modHinder < 0
+                ? 'hinder'
+                : undefined
+            )
     }
 
 }

@@ -95,6 +95,8 @@ export const modifierSchema = () => {
 
 const skillModifierSchema = () => {
     return {
+        favored: new fields.BooleanField({ initial: false }),
+        hindered: new fields.BooleanField({ initial: false }),
         modifier: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
         critThreshold: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         sumCrit: new fields.BooleanField({ initial: false }),

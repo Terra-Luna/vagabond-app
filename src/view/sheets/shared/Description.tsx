@@ -72,7 +72,7 @@ export const Description = ({ item, descriptionOverride, showFullView = false, i
                             </div>
                     }
                     {/* RESIZE HANDLE */}
-                    <div
+                    {isEditMode && <div
                         role="separator"
                         aria-orientation="horizontal"
                         title="Drag to resize"
@@ -84,7 +84,7 @@ export const Description = ({ item, descriptionOverride, showFullView = false, i
                         onDoubleClick={() => setUserHeight(undefined)}
                     >
                         <div className="w-10 h-1 rounded-full bg-table-border mx-auto hover:bg-text-primary/60" />
-                    </div>
+                    </div>}
                 </div>
         }
     </>)

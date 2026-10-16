@@ -5,7 +5,19 @@
   "img": "icons/skills/melee/hand-grip-sword-strike-orange.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">If you pass a Save against an Enemy’s attack or reduce its damage to 0, your next attack before the end of your Turn is Favored.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "S6yNQW4vHsRh0UVy",
+        "key": "ToggleRule",
+        "label": "Favor",
+        "level": 1,
+        "value": true,
+        "selector": [
+          "modifiers.skillCheck.attack.favored"
+        ],
+        "toggleableEffect": true
+      }
+    ],
     "level": 1,
     "scale": 0,
     "maxLevel": 0
@@ -21,9 +33,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.2.75",
     "createdTime": 1789496174959,
-    "modifiedTime": 1789922473792,
+    "modifiedTime": 1792165956529,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

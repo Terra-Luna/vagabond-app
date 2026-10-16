@@ -892,7 +892,7 @@
     },
     "ItemShop": {
       "title": "Item Shop",
-      "searchItems": "Search items...",
+      "searchItems": "Search...",
       "clearSearch": "Clear search",
       "Categories": {
         "all": "All",

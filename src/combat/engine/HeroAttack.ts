@@ -111,7 +111,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             )
         ) && !this.skipSkillCheck) {
             if (clickEvent?.shiftKey || clickEvent?.ctrlKey) {
-                this.skillCheck.setFavorHinder(clickEvent)
+                this.skillCheck.setFavorHinder(clickEvent, foundry.utils.deepClone(this.actor?.system?.modifiers))
             }
             await this.rollSkillCheck()
         }
