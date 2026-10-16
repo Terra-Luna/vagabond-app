@@ -17,7 +17,7 @@ export const ItemActorSheetComponent = ({ actor }) => {
                 </div>
                 <img
                     src={actor.img} alt={actor.name}
-                    className={`border border-solid border-black/5 object-fill`}
+                    className={`border border-solid border-black/5 object-fill w-full`}
                 />
                 <ContextMenu />
             </div>

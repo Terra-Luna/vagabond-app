@@ -23,23 +23,25 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false, hideTab = false }: { her
 
     return (
         <div>
-            <div className="flex gap-x-2 text-2xl font-eskapade font-bold mt-1 mb-2 justify-between">
+            <div className={`flex gap-x-2 text-2xl font-eskapade font-bold mt-0.5 mb-1 justify-between`}>
                 {hideTab && spell &&
-                    <SkillCard
-                        actor={hero.parent}
-                        img={spell.img ?? ""}
-                        dmgType={spell.system.damageType}
-                        title={<SkillCardTitle text={spell.name} />}
-                        subtitles={[
-                            { label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[spell.system.damageType] }
-                        ]}
-                        description={spell.system.description}
-                        mini={true}
-                    />
+                    <div className="-ml-0.5 -mt-0.5">
+                        <SkillCard
+                            actor={hero.parent}
+                            img={spell.img ?? ""}
+                            dmgType={spell.system.damageType}
+                            title={<SkillCardTitle text={spell.name} />}
+                            subtitles={[
+                                { label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[spell.system.damageType] }
+                            ]}
+                            description={spell.system.description}
+                            mini={true}
+                        />
+                    </div>
                 }
 
                 {/* CURRENT MANA */}
-                <div className={`flex items-end gap-x-4 ml-auto ${hideTab ? "px-2" : ""}`}>
+                <div className={`flex items-center gap-x-4 ml-auto ${hideTab ? "px-2" : ""}`}>
                     <div className="flex gap-x-1 items-center">
                         {/* <SpellcastingLabel text={appLang.HeroSheet.Magic.labelMana} /> */}
                         <Tooltip title={appLang.HeroSheet.Magic.labelMana} content={`Current / Max${appLang.HeroSheet.counter_tooltip}`}>

@@ -1,17 +1,16 @@
 import { VagabondActorSheet } from "../VagabondActorSheet"
 import { ItemActorSheetComponent } from "./component/ItemActorSheetComponent"
 
+// @ts-expect-error excluded positionals
 export class ItemActorSheet extends VagabondActorSheet {
     Component = ItemActorSheetComponent
     static DEFAULT_OPTIONS = {
         position: {
             width: 200,
-            height: "auto",
-            top: 120,
-            left: 120
+            height: "auto"
         },
         window: {
-            resizable: true
+            resizable: false
         },
         dragDrop: [
             {

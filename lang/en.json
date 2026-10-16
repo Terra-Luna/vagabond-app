@@ -739,7 +739,7 @@
       "Magic": {
         "labelSelectSpell": "Spell",
         "labelMana": "Mana",
-        "labelCastMax": "Max",
+        "labelCastMax": "Max/Cast",
         "labelDmgBase": "Damage Base",
         "labelDelivery": "Delivery",
         "labelSkill": "Skill",
