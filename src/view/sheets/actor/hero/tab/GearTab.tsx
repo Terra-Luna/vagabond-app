@@ -95,6 +95,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
         const handleTargetChange = (user, token, isTargeted) => {
             if (user.id !== game.user?.id) return
             setTargetIds(Array.from(game.user?.targets ?? []).join("."))
+
         }
         const hookId = Hooks.on('targetToken', handleTargetChange)
         return () => { Hooks.off('targetToken', hookId) }
@@ -107,19 +108,28 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
     const [effectUpdateKey, setEffectUpdateKey] = useState(0)
 
     useEffect(() => {
-        const triggerUpdate = (effect: any) => {
+        const onEffectChange = (effect: ActiveEffect) => {
             if (effect.parent?.id === hero.parent?.id) {
                 setEffectUpdateKey(prev => prev + 1)
             }
         }
 
-        Hooks.on("createActiveEffect", triggerUpdate)
-        Hooks.on("updateActiveEffect", triggerUpdate)
-        Hooks.on("deleteActiveEffect", triggerUpdate)
+        const onTargetChange = (user: User) => {
+            if (user.id === game.user?.id) {
+                setEffectUpdateKey(prev => prev + 1)
+            }
+        }
+
+        Hooks.on("createActiveEffect", onEffectChange)
+        Hooks.on("updateActiveEffect", onEffectChange)
+        Hooks.on("deleteActiveEffect", onEffectChange)
+        Hooks.on("targetToken", onTargetChange)
+
         return () => {
-            Hooks.off("createActiveEffect", triggerUpdate)
-            Hooks.off("updateActiveEffect", triggerUpdate)
-            Hooks.off("deleteActiveEffect", triggerUpdate)
+            Hooks.off("createActiveEffect", onEffectChange)
+            Hooks.off("updateActiveEffect", onEffectChange)
+            Hooks.off("deleteActiveEffect", onEffectChange)
+            Hooks.off("targetToken", onTargetChange)
         }
     }, [hero.parent?.id])
 
