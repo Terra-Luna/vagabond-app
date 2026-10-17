@@ -331,8 +331,12 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     encumbranceInfo = (): CapacityInfo => {
         const capacity = this.inventory.capacity ?? 10
-        const bulk = this.inventory.items.filter(i => !isInContainer(i, this.containers())).reduce((sum, i) => { return sum + (i.bulk.totalSlots ?? 0) }, 0)
+        const bulk = this.inventory.items
+            .filter(i => !isInContainer(i, this.containers()))
+            .reduce((sum: number, i: any) => sum + (i.parent.type === 'container' ? i.bulk.slots : i.bulk.totalSlots ?? 0), 0)
+
         const isOverEncumbered = bulk / capacity > 1
+
         return { bulk, capacity, isOverEncumbered }
     }
 
