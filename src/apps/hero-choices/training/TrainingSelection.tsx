@@ -180,7 +180,7 @@ export const useTrainingSelection = (
                         <div className="justify-center text-center bg-context-menu-fill/25">
                             <BorderedContent className="flex-col gap-y-2 justify-center w-full">
                                 <HeroCreationSubtext text={appLang.HeroCreation.trainingSlots} />
-                                <p className="text-4xl text-text-header-tertiary font-eskapade font-bold">
+                                <p className="text-3xl text-text-header-tertiary font-eskapade font-bold">
                                     {`${chosenTrainings.length} / ${electiveTrainingsRule!.maxChoices} ${appLang.HeroCreation.selected}`}
                                 </p>
                             </BorderedContent>
