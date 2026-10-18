@@ -12,7 +12,9 @@ export const startingPackSchema = () => {
             id: new fields.StringField({ ...requiredString }),
             name: new fields.StringField({ ...requiredString }),
             qty: new fields.NumberField({ ...requiredInteger, initial: 1 })
-        }), { initial: [] }),
+        }), {
+            initial: []
+        }),
         category: new fields.StringField({ ...requiredString, initial: 'containers' }),
         value: new fields.SchemaField({ ...coinSchema() })
     }
@@ -53,7 +55,16 @@ export class StartingPackDataModel extends ItemDataModel<StartingPackSchema> {
         if (!actor || !actor.isOwner) return
 
         const equipment = ItemsCache.equipment()
-        const groupedItems = groupBy('name', this.items)
+        const groupedItems = groupBy('name', [
+            ...this.items,
+            { id: "DZMWTY8e84bWbQNZ", name: "Backpack", qty: 1 },
+            { id: "cjqZKWv4abzOiiqW", name: "Torch", qty: 1 },
+            { id: "cjqZKWv4abzOiiqW", name: "Torch", qty: 1 },
+            { id: "cQt7QhGszWI3mKW1", name: "Bedroll", qty: 1 },
+            { id: "x6i1Z4QsqkWqzuRz", name: "Waterskin", qty: 1 },
+            { id: "YaUANqg4Z1yYF71w", name: "Rations", qty: 5 }
+        ])
+
         const itemsToCreate: any[] = []
 
         for (const key of Object.keys(groupedItems)) {
@@ -67,7 +78,10 @@ export class StartingPackDataModel extends ItemDataModel<StartingPackSchema> {
             const itemData = fullDoc.toObject()
             if (itemData.system?.bulk) {
                 if (itemData.system.bulk.isStackable) {
-                    itemData.system.bulk.quantity = group.length
+                    console.log({ group })
+                    itemData.system.bulk.quantity = group[0].qty > 1
+                        ? group[0].qty
+                        : group.length
                 }
                 else {
                     Array.from({ length: group.length }).forEach(_ => {

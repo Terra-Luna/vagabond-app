@@ -7,7 +7,8 @@ describe('hero derived data tests', () => {
         // Setup
         const hero = {
             stats: { might: 5, dexterity: 3, awareness: 6, reason: 7, presence: 2 },
-            saves: { reflex: 20, endure: 20, will: 20 }
+            saves: { reflex: 20, endure: 20, will: 20 },
+            equippedArmor: () => { return [] }
         }
         // Execute
         setSaves(hero as any)
