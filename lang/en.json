@@ -1494,7 +1494,11 @@
         "electiveTrainingsFormulaTooltip": "Elective Trainings Formula",
         "heroSheetSetting": "Hero Sheet Setting",
         "heroSheetDynamicSetting": "Hero Sheet Dynamic Setting",
-        "additionalTraining": "Additional Training"
+        "additionalTraining": "Additional Training",
+        "compendiumAccessHeader": "Vagabond COmpendium Access",
+        "compendiumAccessButton": "Unlock",
+        "compendiumAccessQuestionRoot": "What are the dice values on the bottom of p.{{page}}?",
+        "compendiumAccessDenied": "Access denied: incorrect answer."
       },
       "Notifications": {
         "notEnoughFunds": "Not enough funds!",

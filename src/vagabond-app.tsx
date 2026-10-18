@@ -8,6 +8,7 @@ import { CountdownApp } from "./apps/countdown/CountdownApp"
 import { TagalongItemCreator } from "./apps/importer/TagalongItemCreator"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
 import { showConfirmationDialog } from "./apps/vagabond-tools/dialog/showConfirmationDialog"
+import { CompendiumAccessor } from "./apps/vagabond-tools/usecase/CompendiumAccessor"
 import { resolveAllAttacks } from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondSettingsRegistry } from "./apps/vagabond-tools/VagabondSettingsRegistry"
 import { VagabondToolsApp } from "./apps/vagabond-tools/VagabondToolsApp"
@@ -137,9 +138,7 @@ foundry.documents.collections.Items.registerSheet(sys_id, PerkSheet as any, { ty
 foundry.documents.collections.Items.registerSheet(sys_id, SpellSheet as any, { types: ['spell'], makeDefault: true });
 foundry.documents.collections.Items.registerSheet(sys_id, AncestrySheet as any, { types: ['ancestry'], makeDefault: true });
 foundry.documents.collections.Items.registerSheet(sys_id, EquipmentSheet as any, {
-    types: [
-        'alchemical', 'armor', 'container', 'startingpack', 'sundry', 'weapon'
-    ], makeDefault: true
+    types: ['alchemical', 'armor', 'container', 'startingpack', 'sundry', 'weapon'], makeDefault: true
 });
 
 Hooks.once("ready", async () => {
@@ -333,6 +332,50 @@ Hooks.on("deleteItem", async (item, options, userId) => {
         ItemsCache.removeItem(item.uuid)
     }
 })
+
+Hooks.on("activateCompendiumDirectory" as any, (app: any) => {
+    /**
+     * Our compendium content is hidden til the user inputs an answer to prove possession of the book.
+     */
+    if (CompendiumAccessor.isLocked()) {
+        const rootElement: HTMLElement | null = app.element instanceof HTMLElement
+            ? app.element
+            : app.element?.[0] ?? null
+
+        rootElement
+            ?.querySelectorAll<HTMLElement>('li[data-pack^="vagabond-app."]')
+            .forEach(li => {
+                li.style.display = "none"
+            })
+
+        const div = document.createElement("div")
+        div.style.paddingInline = "0.5rem"
+        div.style.paddingTop = "0.5rem"
+        div.style.paddingBottom = "0.5rem"
+
+        const label = document.createElement("h4")
+        label.textContent = appLang.General.compendiumAccessHeader
+
+        const button = document.createElement("button")
+        button.style.width = "100%"
+        button.textContent = appLang.General.compendiumAccessButton
+        button.addEventListener("click", async () => {
+            const { question, answer } = CompendiumAccessor.getQuestion()
+            const input = prompt(question, 'E.g., 4681012')
+            if (await CompendiumAccessor.checkAnswer(input ?? "", answer)) {
+                await CompendiumAccessor.unlock()
+                location.reload()
+            }
+            else {
+                ui.notifications?.error(appLang.General.compendiumAccessDenied)
+            }
+        })
+
+        div.appendChild(label)
+        div.appendChild(button)
+        rootElement?.prepend(div)
+    }
+});
 
 Hooks.on("updateCompendium", async (pack: any, documents: any[], options: any, userId: string) => {
     if (pack.metadata.type === "Item") {

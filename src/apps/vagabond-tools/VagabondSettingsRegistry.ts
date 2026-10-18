@@ -3,6 +3,7 @@ import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { XpQuestionnaireConfigApp } from "../level-up/questionnaire/XpQuestionnaireConfigApp"
 import { RelicPowers } from "./relic/RelicPowers"
+import { CompendiumAccessor } from "./usecase/CompendiumAccessor"
 
 /**
  * These settings show up in Foundry's system settings main menu.
@@ -20,6 +21,7 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerManaEnforcement()
         VagabondSettingsRegistry.registerShowTrainingSelectionToggle()
         VagabondSettingsRegistry.registerAllowLateLuckStudy()
+        CompendiumAccessor.registerCompendiumAccess()
 
         RelicPowers.register()
     }
