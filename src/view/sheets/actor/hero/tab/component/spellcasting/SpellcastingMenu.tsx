@@ -90,7 +90,10 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
                 }
                 setDeliveryIndex(index)
             }
-            setSelectedSpellId(savedState.spellUuid ?? null)
+            setSelectedSpellId(hero.spells.some(sp => sp._sourceId === savedState?.spellUuid)
+                ? savedState.spellUuid ?? null
+                : hero.spells[0]?._sourceId ?? null
+            )
             setSkill(savedState.skill)
         }
 

@@ -200,5 +200,7 @@ export const getStackSlots = (stack: any): number => {
     const slots = bulk.slots ?? 0
     const qty = bulk.quantity ?? 1
     const stackSize = bulk.stackSize || 10
-    return slots > 0 ? qty * slots : Math.floor(qty / stackSize)
+    return slots > 0
+        ? qty * slots
+        : Math.ceil(qty / stackSize)
 }
