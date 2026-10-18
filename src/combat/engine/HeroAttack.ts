@@ -383,7 +383,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     ): HeroAttack {
         const hero = actor.system
         const weapon = foundry.utils.deepClone(item.system)
-        const mods = hero.modifiers
+        const mods = foundry.utils.deepClone(hero.modifiers)
 
         let weaponSkill = skill
 
@@ -391,6 +391,10 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         if (!weaponSkill) {
             const defaultSkill = HeroAttack.getDefaultWeaponSkill(hero, weapon)
             weaponSkill = defaultSkill?.skill ?? 'melee'
+        }
+
+        if (weapon instanceof WeaponDataModel) {
+            RelicPowerProcessor.applyRelicPowers(weapon.relicPowers as any, mods, { skillTrained: hero.skills[weaponSkill]?.trained ?? false })
         }
 
         /**
@@ -477,11 +481,17 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             atkName: item.name,
             dmgType: weapon.damage.type,
             dice: [damageDice, ...extraDice ?? []],
+            relicLevel: relicLevel,
             perDieDmgBonus: (dmgMods.global?.bonus?.perDie ?? 0) + (dmgMods[weaponSkill]?.bonus?.perDie ?? 0),
-            armorPiercing: dmgMods[weaponSkill]?.armorPiercing?.flat ?? (isKeen ? dmgMods.keen.armorPiercing.flat ?? 0 : 0),
-            armorPiercingPerDie: dmgMods[weaponSkill]?.armorPiercing?.perDie ?? (isKeen ? dmgMods.keen.armorPiercing.perDie ?? 0 : 0),
-            armorPiercingPerExtraDie: dmgMods[weaponSkill]?.armorPiercing?.perExtraDie ?? (isKeen ? dmgMods.keen.armorPiercing.perExtraDie ?? 0 : 0),
-            relicLevel: relicLevel
+            armorPiercing: dmgMods.global?.armorPiercing?.flat
+                || dmgMods[weaponSkill]?.armorPiercing?.flat
+                || (isKeen ? dmgMods.keen.armorPiercing.flat || 0 : 0),
+            armorPiercingPerDie: dmgMods.global?.armorPiercing?.perDie
+                || dmgMods[weaponSkill]?.armorPiercing?.perDie
+                || (isKeen ? dmgMods.keen.armorPiercing.perDie || 0 : 0),
+            armorPiercingPerExtraDie: dmgMods.global?.armorPiercing?.perExtraDie
+                || dmgMods[weaponSkill]?.armorPiercing?.perExtraDie
+                || (isKeen ? dmgMods.keen.armorPiercing.perExtraDie || 0 : 0)
         })
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)

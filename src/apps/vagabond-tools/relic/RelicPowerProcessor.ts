@@ -20,8 +20,6 @@ export class RelicPowerProcessor {
 
     /**
      * Called from Hero's prepareDerivedData - applies relic bonuses in-memory only.
-     * @param actor 
-     * @returns 
      */
     static applyHeroBonuses = (actor: Actor & { system: HeroDataModel }) => {
         const equippedRelics = actor.system.equippedRelics()
@@ -45,6 +43,9 @@ export class RelicPowerProcessor {
         })
     }
 
+    /**
+     * Removes or adds the effect of a relic on an item, updating its properties accordingly.
+     */
     static toggleRelicEffect = async (item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower) => {
         const existingPowers = item.system.relicPowers
 
@@ -61,10 +62,7 @@ export class RelicPowerProcessor {
     }
 
     /**
-     * Update the item with DB-backed properies.
-     * @param item 
-     * @param relic 
-     * @param event 
+     * Update the item with DB-backed properties based on the relic's modifiers and the specified event ('add' or 'remove').
      */
     static updateItemProperties = async (item: Item, relic: RelicPower, event: 'add' | 'remove') => {
         if (!relic.power.modifiers || relic.power.modifiers.length === 0) return
@@ -99,6 +97,7 @@ export class RelicPowerProcessor {
         deduped.forEach(relic => {
             relic.power.modifiers?.forEach(relicMod => {
                 if (relicMod.value === undefined) return
+
                 getModifierSelectors(relicMod).forEach(selector => {
                     const keys = selector.split('.')
 

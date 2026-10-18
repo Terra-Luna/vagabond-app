@@ -1002,7 +1002,13 @@ export class RelicPowers {
         {
             id: 'utility-piercing-1',
             category: { value: 'utility', label: 'Utility' },
-            power: { value: 'piercing-1', label: 'Piercing I' },
+            power: {
+                value: 'piercing-1',
+                label: 'Piercing I',
+                modifiers: [{
+                    selector: ['damage.out.global.armorPiercing.flat'], value: 1
+                }]
+            },
             types: ['weapon'],
             goldValue: 150,
             description: "Attacks with it ignore 1 Armor."
@@ -1010,7 +1016,13 @@ export class RelicPowers {
         {
             id: 'utility-piercing-2',
             category: { value: 'utility', label: 'Utility' },
-            power: { value: 'piercing-2', label: 'Piercing II' },
+            power: {
+                value: 'piercing-2',
+                label: 'Piercing II',
+                modifiers: [{
+                    selector: ['damage.out.global.armorPiercing.flat'], value: 2
+                }]
+            },
             types: ['weapon'],
             goldValue: 1875,
             description: "Attacks with it ignore 2 Armor."
@@ -1018,7 +1030,13 @@ export class RelicPowers {
         {
             id: 'utility-piercing-3',
             category: { value: 'utility', label: 'Utility' },
-            power: { value: 'piercing-3', label: 'Piercing III' },
+            power: {
+                value: 'piercing-3',
+                label: 'Piercing III',
+                modifiers: [{
+                    selector: ['damage.out.global.armorPiercing.flat'], value: 3
+                }]
+            },
             types: ['weapon'],
             goldValue: 7500,
             description: "Attacks with it ignore 3 Armor."
