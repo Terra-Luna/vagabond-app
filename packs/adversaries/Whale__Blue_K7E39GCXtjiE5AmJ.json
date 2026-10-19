@@ -731,9 +731,6 @@
     "description": "",
     "hitDice": 15,
     "zone": "front",
-    "movement": {
-      "speed": "Swim 60'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -758,7 +755,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 6
+    "morale": 6,
+    "speeds": [
+      {
+        "type": "swim",
+        "value": 60
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Whale, Blue",

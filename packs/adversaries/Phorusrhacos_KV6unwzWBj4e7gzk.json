@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Flightless, aggressive birds of impressive stature.</span></p>",
     "hitDice": 7,
     "zone": "front",
-    "movement": {
-      "speed": "45'"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -811,7 +808,13 @@
       ],
       "description": null
     },
-    "morale": 8
+    "morale": 8,
+    "speeds": [
+      {
+        "value": 45,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Phorusrhacos",

@@ -731,9 +731,6 @@
     "description": "",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "Swim 80'"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -760,7 +757,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "type": "swim",
+        "value": 80
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Whale, Killer",

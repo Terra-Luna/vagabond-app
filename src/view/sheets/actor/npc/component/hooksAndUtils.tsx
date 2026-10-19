@@ -1,10 +1,13 @@
 import { useState } from "react"
 
 import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRollSchema"
+import { RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPowers"
 import { AdversaryAttack, SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
 import { AdversaryComboAttack, ComboSubAttackArgs } from "../../../../../combat/engine/AdversaryComboAttack"
+import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../../../chat/ChatCardSerializer"
@@ -42,13 +45,40 @@ export const onClickAction = async (
     }
 }
 
+export const onClickActionAsWeaponAttack = async (actor: Actor & { system: HeroDataModel }, action: any, e: React.MouseEvent) => {
+    const polyMods = actor.system.modifiers.polymorph
+    const relicPower = polyMods.relicAttacks
+        ? (polyMods.attackBonus > 0
+            ? RelicPowers.bonus.find(it => it.id === `bonus-weapon-${Math.min(3, polyMods.attackBonus)}`)
+            : RelicPowers.bonus.find(it => it.id === `utility-other`)
+        )
+        : undefined
+
+    const weapon = {
+        id: action.id,
+        name: action.name,
+        img: "/icons/creatures/claws/claw-straight-orange.webp",
+        system: {
+            damage: action.damage,
+            statuses: action.statuses,
+            skills: actor.system.modifiers.polymorph.useCastSkill
+                ? [actor.system.class.castingSkill]
+                : (action.type === 'melee' ? ['melee', 'brawl'] : ['ranged']),
+            properties: ['polymorph'],
+            relicPowers: relicPower ? [relicPower] : []
+        }
+    }
+    const attack = HeroAttack.buildWeaponAttack(actor, weapon as any)
+    await attack.initiate(e)
+}
+
 export const onClickActionCombo = async (npc: AdversaryDataModel | NpcDataModel) => {
     const subAttacks: ComboSubAttackArgs[] = []
 
     for (const comboAct of npc.combo.actions) {
         const act = npc.actions.find(it => it.name === comboAct.name) ?? comboAct
-
         const repeatCount = comboAct.comboCount ?? 0
+
         for (let i = 0; i < repeatCount; i++) {
             subAttacks.push({
                 name: repeatCount > 1 ? `${act.name} (${i + 1})` : act.name,

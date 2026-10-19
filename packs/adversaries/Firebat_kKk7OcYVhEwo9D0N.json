@@ -738,9 +738,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A bat-like creature of pure elemental fire. It latches onto its target with its fangs to hold it in place while it burns them alive.</span></p>",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "40' (Fly)"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -767,7 +764,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Firebat",

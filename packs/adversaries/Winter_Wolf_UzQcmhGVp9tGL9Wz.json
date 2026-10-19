@@ -733,9 +733,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">The white coated winter wolves are revered as guardian spirits of the tundra.</span></p>",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "50'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -777,7 +774,13 @@
     "combo": {
       "name": "",
       "actions": []
-    }
+    },
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Winter Wolf",

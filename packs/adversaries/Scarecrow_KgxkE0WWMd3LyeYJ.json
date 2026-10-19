@@ -853,9 +853,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A straw effigy meant to deter pests, now being given animus by spirit possession.</span></p>",
     "hitDice": 5,
     "zone": "front",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -881,7 +878,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 2
+    "morale": 2,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Scarecrow",

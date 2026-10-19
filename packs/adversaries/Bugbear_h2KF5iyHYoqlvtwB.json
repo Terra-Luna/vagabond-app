@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Long-limbed, tall goblinoids with bear-like fur.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -758,7 +755,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Bugbear",

@@ -5,7 +5,19 @@
   "img": "icons/creatures/mammals/wolf-howl-moon-forest-blue.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">When you are a Target of your Polymorph Spell, you use your Cast Skill for its Actions, and it doesn’t cost you Mana to Focus on it as per the Spell’s description.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "LM5MDPuB6G5xWqlJ",
+        "key": "ToggleRule",
+        "label": "Polymorph: Cast Skill Atk",
+        "level": 0,
+        "value": true,
+        "selector": [
+          "modifiers.polymorph.useCastSkill"
+        ],
+        "toggleableEffect": false
+      }
+    ],
     "prerequisites": [
       {
         "type": "spell",
@@ -35,10 +47,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.93",
     "createdTime": 1786556380909,
-    "modifiedTime": 1786556732589,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1792387537348,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

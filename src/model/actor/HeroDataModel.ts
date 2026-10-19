@@ -26,6 +26,7 @@ import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
 import { inventorySchema, isInContainer, isInventoryItem } from "./type/Inventory"
 import { levelSchema } from "./type/Level"
 import { manaSchema } from "./type/Mana"
+import { PolymorphFlag } from "./type/PolymorphFlag"
 import { savesSchema } from "./type/Saves"
 import { skillsSchema } from "./type/Skills"
 import { speedSchema } from "./type/Speed"
@@ -95,6 +96,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
         this.ancestry = actor.items.find((i: { type: string }) => i?.type === 'ancestry')?.system
         this.class = actor.items.find((i: { type: string }) => i?.type === 'class')?.system
+        this.modifiers.polymorph.castingLevel = this.level.current ?? 0
 
         /**
          * Apply bonuses from Item Rules...
@@ -203,6 +205,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     }
 
     async equip(item: Item & { system: ArmorDataModel | SundryDataModel | WeaponDataModel }) {
+        if (this.polymorph) return
+
         if (item.system.isEquipped) {
             await item.system.toggleEquipped()
             return
@@ -427,6 +431,72 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             }
         }
     }
+
+    override async setPolymorph(polyFlag: PolymorphFlag | undefined) {
+        if (polyFlag && Object.keys(polyFlag).length > 0) {
+            // Set equipment id history
+            if (!this.polymorph) {
+                polyFlag.equipHistory ??= []
+                for (const weapon of this.equippedWeapons().filter(it => it.name.toUpperCase() !== "BREATH ATTACK")) {
+                    polyFlag.equipHistory?.push(weapon.id)
+                    await this.equip(weapon)
+                }
+                for (const armor of this.equippedArmor()) {
+                    polyFlag.equipHistory?.push(armor.id)
+                    await this.equip(armor)
+                }
+            }
+
+            polyFlag.statBlock.system.actions.forEach((action: any) => {
+                action.damage.dice.modifier += this.modifiers.polymorph.attackBonus
+            })
+
+            const oldPolymorphEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph"))?.map(eff => eff.id) ?? []
+            const polymorphEffect = {
+                name: "Polymorph: " + polyFlag.statBlock.name,
+                img: polyFlag.statBlock.img,
+                showIcon: 2,
+                flags: { [sys_id]: { polymorph: true } },
+                changes: [
+                    { key: "system.ancestry.beingType", value: polyFlag.statBlock.system.beingType, type: "override", priority: 1 },
+                    { key: "system.ancestry.beingSize", value: polyFlag.statBlock.system.beingSize, type: "override", priority: 1 },
+                    { key: "system.armor.rating", value: polyFlag.statBlock.system.armor.rating, type: "add", priority: 1 },
+                    { key: "system.speed.turn", value: polyFlag.statBlock.system.speeds[0].value - calcTurnSpeed(this), type: "add", priority: 1 },
+                    ...polyFlag.statBlock.system.modifiers.damage.in.immunities.map((immunity: string) => ({ key: "system.modifiers.damage.in.immunities", value: immunity, type: "add", priority: 1 })),
+                    ...polyFlag.statBlock.system.modifiers.damage.in.weaknesses.map((weakness: string) => ({ key: "system.modifiers.damage.in.weaknesses", value: weakness, type: "add", priority: 1 })),
+                    ...polyFlag.statBlock.system.modifiers.damage.in.statusImmunities.map((status: string) => ({ key: "system.modifiers.damage.in.statusImmunities", value: status, type: "add", priority: 1 })),
+                    ...polyFlag.statBlock.system.senses.map((sense: string) => ({ key: "system.senses", value: sense, type: "add", priority: 1 }))
+                ]
+            }
+
+            await super.setPolymorph(polyFlag)
+
+            if (oldPolymorphEffects.length) {
+                await this.parent?.deleteEmbeddedDocuments("ActiveEffect", oldPolymorphEffects)
+            }
+
+            await this.parent?.createEmbeddedDocuments("ActiveEffect", [polymorphEffect])
+        }
+        else {
+            // Clear polymorph effect(s)
+            const polymorphEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph")).map(eff => eff.id) ?? []
+            if (polymorphEffects.length) {
+                await this.parent?.deleteEmbeddedDocuments("ActiveEffect", polymorphEffects)
+            }
+
+            const equipHistory = this.polymorph?.equipHistory ?? []
+            await super.setPolymorph(polyFlag)
+
+            // Re-equip previous gear
+            for (const id of equipHistory) {
+                if (!id) continue
+                const item = this.parent?.items?.get(id)
+                if (!item) continue
+                await this.equip(item as any)
+            }
+        }
+    }
+
 }
 
 export function validateCurrentHP(hero: HeroDataModel) {
@@ -461,21 +531,28 @@ export function setArmorRating(hero: HeroDataModel) {
     hero.armor.rating += equippedArmor?.rating ?? 0
 }
 
+function calcTurnSpeed(hero: HeroDataModel): number {
+    const dex = hero.stats.dexterity ?? 2
+    if (dex < 4) return 25
+    if (dex < 6) return 30
+    return 35
+}
 export function setSpeeds(hero: HeroDataModel) {
     const dex = hero.stats.dexterity ?? 0
+    const turnSpeed = calcTurnSpeed(hero)
     if (dex < 4) {
-        hero.speed.turn += 25
-        hero.speed.crawl += hero.speed.turn * 3
+        hero.speed.turn += turnSpeed
+        hero.speed.crawl += turnSpeed * 3
         hero.speed.travel += 5
     }
     else if (dex < 6) {
-        hero.speed.turn += 30
-        hero.speed.crawl += hero.speed.turn * 3
+        hero.speed.turn += turnSpeed
+        hero.speed.crawl += turnSpeed * 3
         hero.speed.travel += 6
     }
     else {
-        hero.speed.turn += 35
-        hero.speed.crawl += hero.speed.turn * 3
+        hero.speed.turn += turnSpeed
+        hero.speed.crawl += turnSpeed * 3
         hero.speed.travel += 7
     }
 

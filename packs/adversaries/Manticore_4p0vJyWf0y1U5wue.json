@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Flying, quilled hybrids of a lion and bat, with a scorpion tail.</span></p>",
     "hitDice": 6,
     "zone": "mid",
-    "movement": {
-      "speed": "30' (Fly 50')"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -826,7 +823,17 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 50
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Manticore",

@@ -744,9 +744,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Undead humanoid wrapped in enchanted bandages.</span></p>",
     "hitDice": 13,
     "zone": "back",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -810,7 +807,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Mummy Lord",

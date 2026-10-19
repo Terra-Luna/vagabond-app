@@ -752,9 +752,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A spore-producing fungus that thrives in dank environments.</span></p>",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "0"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -781,7 +778,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 0,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Yellow Mould",

@@ -734,9 +734,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Black, semi-skeletal hell horses with manes of fire.</span></p>",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "50' (Fly)"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -777,7 +774,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 50
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Nightmare",

@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 2,
     "zone": "mid",
-    "movement": {
-      "speed": "80'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -776,7 +773,13 @@
       ],
       "description": null
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 80,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Horse, Riding",

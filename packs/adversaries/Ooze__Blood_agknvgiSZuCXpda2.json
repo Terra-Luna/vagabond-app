@@ -741,9 +741,6 @@
     "description": "",
     "hitDice": 5,
     "zone": "front",
-    "movement": {
-      "speed": "10' (Cling)"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -768,7 +765,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "cling",
+        "value": 10
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Ooze, Blood",

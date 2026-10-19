@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A blood-sucking pest that resembles a fleshy mosquito. They attack by latching onto a victim and penetrating their tissue with a barbed proboscis.</span></p>",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "5' (Fly 40')"
-    },
     "numberAppearing": "3d6",
     "actions": [
       {
@@ -758,7 +755,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 5,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Stirge",

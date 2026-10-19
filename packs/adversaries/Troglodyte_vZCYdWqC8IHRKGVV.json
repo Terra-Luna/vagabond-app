@@ -735,9 +735,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Reptilian humanoids that inhabit subterranean areas. Extremely hostile to any surface dwellers.</span></p>",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "3d6",
     "actions": [
       {
@@ -813,7 +810,13 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Troglodyte",

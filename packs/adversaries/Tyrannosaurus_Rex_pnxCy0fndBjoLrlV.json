@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">The tyrant lizard that dominates regions that have been \"lost to time.\" Its massive jaws are nearly unstoppable by man.</span></p>",
     "hitDice": 20,
     "zone": "front",
-    "movement": {
-      "speed": "50'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -758,7 +755,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Tyrannosaurus Rex",

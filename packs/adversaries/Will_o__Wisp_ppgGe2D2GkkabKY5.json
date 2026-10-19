@@ -742,9 +742,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Chaotic spirit motes that dwell in swamps. They can send a burst of spiritual energy that zaps the essence from a mortal.</span></p>",
     "hitDice": 6,
     "zone": "back",
-    "movement": {
-      "speed": "0' (Fly 50', Phase)"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -784,7 +781,21 @@
       "name": "",
       "actions": []
     },
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 0,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 50
+      },
+      {
+        "type": "phase",
+        "value": 0
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Will o' Wisp",

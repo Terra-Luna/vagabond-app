@@ -131,15 +131,6 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
 
     return (
         <div>
-            {/* TARGET TOKENS ARRAY */}
-            {attack.showTargets && !attack.isDefenseCheck &&
-                <div className="flex">
-                    <div className="flex flex-col w-full">
-                        <TargetsDisplay targets={targets} />
-                    </div>
-                </div>
-            }
-
             {/* SKILL CHECK */}
             {attack.showSkillCheck &&
                 <div>
@@ -202,6 +193,15 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                                 </div>
                             </div>
                         }
+                    </div>
+                </div>
+            }
+
+            {/* TARGET TOKENS ARRAY */}
+            {attack.showTargets && !attack.isDefenseCheck &&
+                <div className="flex">
+                    <div className="flex flex-col w-full">
+                        <TargetsDisplay targets={targets} />
                     </div>
                 </div>
             }

@@ -730,9 +730,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">The source of \"Lady of the Lake\" stories, nymphs are feminine spirits of freshwater.</span></p>",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "30', (Swim 60')"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -757,7 +754,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 60
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Nymph",

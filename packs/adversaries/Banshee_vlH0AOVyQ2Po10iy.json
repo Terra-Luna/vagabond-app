@@ -747,9 +747,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">The feminine spirit of an evil elf, known to kill with its scream. Often has a sort of guardianship over fae creatures.</span></p>",
     "hitDice": 7,
     "zone": "mid",
-    "movement": {
-      "speed": "Fly 40', Phase"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -793,7 +790,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "type": "fly",
+        "value": 40
+      },
+      {
+        "type": "phase",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Banshee",

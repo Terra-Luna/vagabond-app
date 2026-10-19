@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Hatched on the highest peaks of the land, harpies are a people with the wings and talons of predatory raptor birds.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "10' (Fly 30')"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -792,7 +789,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 2
+    "morale": 2,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Harpy",

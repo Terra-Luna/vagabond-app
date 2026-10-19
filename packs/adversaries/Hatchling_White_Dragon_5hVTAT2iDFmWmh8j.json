@@ -733,9 +733,6 @@
     "description": "<p><br></p>",
     "hitDice": 10,
     "zone": "front",
-    "movement": {
-      "speed": "30' (Fly 60')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -831,7 +828,17 @@
       ],
       "description": null
     },
-    "morale": 8
+    "morale": 8,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 60
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Hatchling White Dragon",

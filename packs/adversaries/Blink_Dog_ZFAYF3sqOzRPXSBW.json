@@ -730,9 +730,6 @@
     "description": "",
     "hitDice": 4,
     "zone": "mid",
-    "movement": {
-      "speed": "40' (Phase)"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -755,7 +752,17 @@
     "combo": {
       "name": "",
       "actions": []
-    }
+    },
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "phase",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Blink Dog",

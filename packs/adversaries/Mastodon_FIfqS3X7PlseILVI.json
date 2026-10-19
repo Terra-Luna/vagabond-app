@@ -721,7 +721,7 @@
         }
       }
     },
-    "beingSize": "medium",
+    "beingSize": "huge",
     "beingType": "beast",
     "beingSubtype": "none",
     "threatLevel": 1,
@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Both the woolly and imperial mammoths roam arctic and sub-tropic lands.</span></p>",
     "hitDice": 13,
     "zone": "front",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -811,7 +808,13 @@
       ],
       "description": null
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Mastodon",
@@ -912,7 +915,7 @@
       "_id": "QRKbdjpB54u1P5ed",
       "img": "/icons/creatures/abilities/bull-head-horns-glowing.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">If it Moves at least 20' in a straight line before making a Tusk Attack, the damage is doubled.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Tusks deal double damage that Turn if it Moves at least 20' before the attack.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -923,9 +926,9 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
+        "systemVersion": "0.2.93",
         "createdTime": 1790034255032,
-        "modifiedTime": 1790034255032,
+        "modifiedTime": 1792443902677,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
         "compendiumSource": "Compendium.vagabond-app.features.Item.QRKbdjpB54u1P5ed",
         "duplicateSource": null,
@@ -950,9 +953,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.93",
     "createdTime": 1790034152898,
-    "modifiedTime": 1790034276155,
+    "modifiedTime": 1792443855116,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

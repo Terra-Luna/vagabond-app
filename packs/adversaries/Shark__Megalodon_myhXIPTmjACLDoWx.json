@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 20,
     "zone": "front",
-    "movement": {
-      "speed": "Swim 60'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -776,7 +773,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "type": "swim",
+        "value": 60
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Shark, Megalodon",

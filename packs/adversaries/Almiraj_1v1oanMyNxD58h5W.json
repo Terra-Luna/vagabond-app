@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A rabbit with a unicorn-like horn.</span></p>",
     "hitDice": 1,
     "zone": "back",
-    "movement": {
-      "speed": "45'"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -756,7 +753,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 1
+    "morale": 1,
+    "speeds": [
+      {
+        "value": 45,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Almiraj",

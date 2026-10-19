@@ -741,9 +741,6 @@
     "description": "",
     "hitDice": 12,
     "zone": "front",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -768,7 +765,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Elemental, Earth",

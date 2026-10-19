@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "20' (Climb, Cling, Swim)"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -774,7 +771,25 @@
     "combo": {
       "name": "",
       "actions": []
-    }
+    },
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 20
+      },
+      {
+        "type": "cling",
+        "value": 20
+      },
+      {
+        "type": "swim",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Frog/Toad, Giant",

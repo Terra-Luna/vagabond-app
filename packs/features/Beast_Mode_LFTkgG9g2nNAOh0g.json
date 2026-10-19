@@ -5,7 +5,29 @@
   "img": "icons/magic/nature/wolf-paw-glow-large-orange.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">The attacks you make as Beasts ignore Immune to non-Relic damage.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, when you are the sole Target of a casting of your Polymorph Spell, you can make the duration continual.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "GnenH356DAsKDRsM",
+        "key": "ToggleRule",
+        "label": "Continual Self Polymorph",
+        "level": 6,
+        "value": true,
+        "selector": [
+          "modifiers.polymorph.continualSelf"
+        ],
+        "toggleableEffect": false
+      },
+      {
+        "id": "VAkBfoabktWydamJ",
+        "key": "ToggleRule",
+        "label": "Relic Polymorph Attacks",
+        "level": 6,
+        "value": true,
+        "selector": [
+          "modifiers.polymorph.relicAttacks"
+        ]
+      }
+    ],
     "level": 6,
     "scale": 0,
     "maxLevel": 0
@@ -21,9 +43,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.2.93",
     "createdTime": 1789495374434,
-    "modifiedTime": 1789605441525,
+    "modifiedTime": 1792429604974,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

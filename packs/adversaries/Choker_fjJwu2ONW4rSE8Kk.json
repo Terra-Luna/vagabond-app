@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A vicious, solitary goblin-like creature with a remarkable grip and penchant for strangling its prey. They tend to ambush their victims from treetops.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "20' (Climb)"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -761,7 +758,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Choker",

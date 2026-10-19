@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A land-walking octopus creature able to launch calcified projectiles like cannonballs. Distinguishes itself with its massive eyes and 4 tentacles, rather than the standard 8 of an octopus.</span></p>",
     "hitDice": 2,
     "zone": "back",
-    "movement": {
-      "speed": "25' (Swim)"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -813,7 +810,17 @@
       ],
       "description": null
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 25,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 25
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Thoom",

@@ -733,9 +733,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Ugly humanoid fae known to blur the lines between undeath and the fairy courts. Known to pull itself and its victims into invisibility to brutalize them.</span></p>",
     "hitDice": 9,
     "zone": "front",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -775,7 +772,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Hag, Green",

@@ -732,9 +732,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Greedy, pompous creatures out-of-touch with reality by nature. They are always driven insane by arrogance and the insatiable desire to rule over all. They are known to claim the works of their subjects as their own, enforce overreaching taxes, and trick others into outrageous deals.</span></p>",
     "hitDice": 12,
     "zone": "back",
-    "movement": {
-      "speed": "0' (Fly 20')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -956,7 +953,17 @@
       ],
       "description": null
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 0,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Ogler",

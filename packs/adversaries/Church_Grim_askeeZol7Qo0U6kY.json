@@ -738,9 +738,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">An animal buried in the walls of a church, and brought back to life as a guardian of the building.</span></p>",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -820,7 +817,13 @@
       ],
       "description": null
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Church Grim",

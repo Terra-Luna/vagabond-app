@@ -734,9 +734,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Multi-headed, anti-memetic horrors of flesh.</span></p>",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "25'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -778,7 +775,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 25,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "False Hydra",

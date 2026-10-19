@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -776,7 +773,13 @@
       ],
       "description": null
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Brawler",

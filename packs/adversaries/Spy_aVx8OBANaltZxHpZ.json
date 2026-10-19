@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "35'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -834,7 +831,13 @@
       ],
       "description": null
     },
-    "morale": 5
+    "morale": 5,
+    "speeds": [
+      {
+        "value": 35,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Spy",

@@ -733,9 +733,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Vicious, opportunistic hunter covered in mink-like fur. It resembles a rug, bedroll, or blanket, but its underside contains hundreds of tiny, sucker-like mouths.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "15' (Climb)"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -779,7 +776,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 3
+    "morale": 3,
+    "speeds": [
+      {
+        "value": 15,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 15
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Rumptifusel",

@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 8,
     "zone": "front",
-    "movement": {
-      "speed": "Swim 60'"
-    },
     "numberAppearing": "3d4",
     "actions": [
       {
@@ -776,7 +773,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "type": "swim",
+        "value": 60
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Shark, Great White",

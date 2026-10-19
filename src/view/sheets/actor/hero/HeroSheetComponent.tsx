@@ -98,7 +98,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                         <div className="min-w-0 grow truncate whitespace-nowrap">
                             <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
                             <span>&nbsp;•&nbsp;</span>
-                            <span className="cursor-pointer" onClick={() => openItemSheet(hero.ancestry)}>{getName(hero.ancestry) ?? ''}</span>
+                            <span className="cursor-pointer" onClick={() => openItemSheet(hero.ancestry)}>{hero.polymorph ? hero.polymorph.statBlock.name : getName(hero.ancestry) ?? ''}</span>
                             {hero.class
                                 ? <span className="cursor-pointer" onClick={() => openItemSheet(hero.class)}>{` ${getName(hero.class)}`}</span>
                                 : <span>{" Vagabond"}</span>

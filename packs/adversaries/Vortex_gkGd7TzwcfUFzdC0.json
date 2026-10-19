@@ -742,9 +742,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A living whirlwind. Its true body is a small sphere that flutters in the center of the whirlwind.</span></p>",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Fly)"
-    },
     "numberAppearing": "d8",
     "actions": [
       {
@@ -771,7 +768,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Vortex",

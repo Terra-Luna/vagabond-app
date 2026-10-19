@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Venomous snakes who only deliver their venom through bites.</span></p>",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "20'"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -755,7 +752,13 @@
     "combo": {
       "name": "",
       "actions": []
-    }
+    },
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Snake, Pit Viper",

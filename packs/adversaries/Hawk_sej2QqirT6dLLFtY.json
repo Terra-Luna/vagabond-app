@@ -731,9 +731,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "5' (Fly 30')"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -757,7 +754,17 @@
     "combo": {
       "name": "",
       "actions": []
-    }
+    },
+    "speeds": [
+      {
+        "value": 5,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Hawk",

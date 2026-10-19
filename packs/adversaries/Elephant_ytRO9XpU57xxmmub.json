@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 9,
     "zone": "front",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "d20",
     "actions": [
       {
@@ -774,7 +771,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 6
+    "morale": 6,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Elephant",

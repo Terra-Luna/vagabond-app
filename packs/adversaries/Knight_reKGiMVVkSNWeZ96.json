@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "25'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -785,7 +782,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 25,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Knight",

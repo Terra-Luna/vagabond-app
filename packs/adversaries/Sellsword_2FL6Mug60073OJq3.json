@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -811,7 +808,13 @@
       ],
       "description": null
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Sellsword",

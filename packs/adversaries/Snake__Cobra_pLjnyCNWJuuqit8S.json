@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Venomous snakes that can deliver their venom</span></p><p><span style=\"white-space: pre-wrap;\">through bites or by spitting.</span></p>",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "20'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -793,7 +790,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Snake, Cobra",

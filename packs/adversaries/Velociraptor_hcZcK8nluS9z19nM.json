@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A vicious reptilian carnivore from the lost world. It walks upright, and moves with blinding speed.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "45'"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -756,7 +753,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 45,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Velociraptor",

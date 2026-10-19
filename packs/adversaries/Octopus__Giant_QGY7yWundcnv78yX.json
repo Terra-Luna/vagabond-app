@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Cephalopods capable of taking down small boats.</span></p>",
     "hitDice": 8,
     "zone": "front",
-    "movement": {
-      "speed": "10' (Swim 30')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -795,7 +792,17 @@
       ],
       "description": "per Tentacle it has, up to 4."
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Octopus, Giant",

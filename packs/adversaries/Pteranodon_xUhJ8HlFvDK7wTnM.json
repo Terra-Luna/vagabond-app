@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Flying dinosaurs that resemble birds with fanged maws.</span></p>",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "10' (Fly 60')"
-    },
     "numberAppearing": "d12",
     "actions": [
       {
@@ -756,7 +753,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 5
+    "morale": 5,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 60
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Pteranodon",

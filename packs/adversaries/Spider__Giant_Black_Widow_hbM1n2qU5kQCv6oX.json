@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Man-sized venomous spiders distinguished by their red hourglass mark.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Cling)"
-    },
     "numberAppearing": "d3",
     "actions": [
       {
@@ -758,7 +755,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 8,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "cling",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Spider, Giant Black Widow",

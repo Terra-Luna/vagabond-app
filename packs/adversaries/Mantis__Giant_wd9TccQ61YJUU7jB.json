@@ -731,9 +731,6 @@
     "description": "",
     "hitDice": 10,
     "zone": "front",
-    "movement": {
-      "speed": "20' (Cling, Fly 40')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -778,7 +775,21 @@
       ],
       "description": "Restrained if smaller and hit by both."
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "cling",
+        "value": 20
+      },
+      {
+        "type": "fly",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Mantis, Giant",

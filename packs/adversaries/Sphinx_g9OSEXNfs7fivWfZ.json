@@ -740,9 +740,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Monsters with human faces, lion bodies, and the wings of eagles. Known to trade in knowledge and poetry, making riddles a valuable commodity to these creatures.</span></p>",
     "hitDice": 12,
     "zone": "front",
-    "movement": {
-      "speed": "60' (Fly 120')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -803,7 +800,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 60,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 120
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Sphinx",

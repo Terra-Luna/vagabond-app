@@ -433,10 +433,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">An enchanted sword that dances through the air.</span></p>",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "type": "fly",
-      "speed": "0' (Fly 50')"
-    },
     "numberAppearing": "1d4",
     "actions": [
       {
@@ -471,7 +467,17 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">Attacks against it can't be Favored if it can Move.</span></p>"
       }
     ],
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 0,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 50
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Flying Sword",

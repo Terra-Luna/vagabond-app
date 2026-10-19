@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 2,
     "zone": "back",
-    "movement": {
-      "speed": "35'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -786,7 +783,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 5
+    "morale": 5,
+    "speeds": [
+      {
+        "value": 35,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Bounty Hunter",

@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A multi-headed drake with incredible regenerative properties.</span></p>",
     "hitDice": 10,
     "zone": "front",
-    "movement": {
-      "speed": "25'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -782,7 +779,13 @@
       ],
       "description": "per head"
     },
-    "morale": 8
+    "morale": 8,
+    "speeds": [
+      {
+        "value": 25,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Hydra",

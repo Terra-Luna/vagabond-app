@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A chimeric feline with a snake's head, a cheetah's body, and hooved hindquarters like a deer. Sounds like a pack of beagles on the hunt.</span></p>",
     "hitDice": 8,
     "zone": "front",
-    "movement": {
-      "speed": "60'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -830,7 +827,13 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 60,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Questing Beast",

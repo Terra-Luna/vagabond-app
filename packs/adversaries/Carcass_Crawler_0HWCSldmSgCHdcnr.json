@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A scavenger worm that dwells in dark cavern passages. It feasts on any carcass it can find.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Cling)"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -793,7 +790,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "cling",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Carcass Crawler",

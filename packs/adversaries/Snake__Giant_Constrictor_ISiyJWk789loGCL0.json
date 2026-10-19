@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">All manner of giant constricting snakes like boas and pythons. Always kills its prey by crushing it.</span></p>",
     "hitDice": 7,
     "zone": "front",
-    "movement": {
-      "speed": "20'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -815,7 +812,13 @@
       ],
       "description": null
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Snake, Giant Constrictor",

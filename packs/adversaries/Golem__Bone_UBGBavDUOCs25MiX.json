@@ -437,9 +437,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A pile of animated bones, given animus as a configuration of corpses rather than a single entity. They typically serve as guardians to tombs. Immune to physical damage from non-Silvered or non-Relic weapons.</span></p>",
     "hitDice": 8,
     "zone": "front",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "d2",
     "actions": [
       {
@@ -497,7 +494,13 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 1 or more.</span></p>"
       }
     ],
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Golem, Bone",

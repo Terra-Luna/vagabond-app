@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">The arcane fusion of a lion, goat, and dragon.</span></p>",
     "hitDice": 9,
     "zone": "front",
-    "movement": {
-      "speed": "10' (Fly 30')"
-    },
     "numberAppearing": "d2",
     "actions": [
       {
@@ -891,7 +888,17 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Chimera",

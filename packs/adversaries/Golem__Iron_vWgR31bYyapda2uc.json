@@ -438,9 +438,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A massive warrior statue of iron or similar metal.</span></p>",
     "hitDice": 18,
     "zone": "front",
-    "movement": {
-      "speed": "15'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -497,7 +494,13 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 1 or more.</span></p>"
       }
     ],
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 15,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Golem, Iron",

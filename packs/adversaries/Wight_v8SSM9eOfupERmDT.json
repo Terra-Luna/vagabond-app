@@ -742,9 +742,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Life-draining spirits in the body of a dead humanoid.</span></p>",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "25'"
-    },
     "numberAppearing": "2d8",
     "actions": [
       {
@@ -786,7 +783,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 25,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Wight",

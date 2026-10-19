@@ -850,9 +850,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">An animated iron statue. Slow, but more sturdy than crystal living statues.</span></p>",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "10'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -877,7 +874,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Living Statue, Iron",

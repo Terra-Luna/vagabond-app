@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -755,7 +752,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 5
+    "morale": 5,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Jester",

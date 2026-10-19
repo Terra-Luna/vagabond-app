@@ -734,9 +734,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">20' tall mix of frog, octopus, and hate.</span></p>",
     "hitDice": 16,
     "zone": "front",
-    "movement": {
-      "speed": "30' (Swim 60')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -820,7 +817,17 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 60
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Froghemoth",

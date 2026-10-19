@@ -732,9 +732,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Titanic worms with vicious teeth and a deadly stinger.</span></p>",
     "hitDice": 15,
     "zone": "front",
-    "movement": {
-      "speed": "20'"
-    },
     "numberAppearing": "d2",
     "actions": [
       {
@@ -793,7 +790,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Purple Worm",

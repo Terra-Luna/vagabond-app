@@ -735,9 +735,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Moving, human-sized plants that can launch a poisonous whorl from a cup atop their stem.</span></p>",
     "hitDice": 2,
     "zone": "mid",
-    "movement": {
-      "speed": "10'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -764,7 +761,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Triffid",

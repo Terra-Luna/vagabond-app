@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Massive blood-sucking parasites that latch onto their prey and drain their vitals.</span></p>",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "10' (Swim 20')"
-    },
     "numberAppearing": "3d6",
     "actions": [
       {
@@ -773,7 +770,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Leech, Giant",

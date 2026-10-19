@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "back",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -777,7 +774,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 8,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Mage, Fire",

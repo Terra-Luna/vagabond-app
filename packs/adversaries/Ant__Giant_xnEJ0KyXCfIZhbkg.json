@@ -730,9 +730,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">The incredibly hardy ant, increased to massive proportions. Their tunnels are the size of mineshafts, and an infestation of giant ants can topple a city.</span></p>",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "60'"
-    },
     "numberAppearing": "2d6+2",
     "actions": [
       {
@@ -757,7 +754,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 60,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Ant, Giant",

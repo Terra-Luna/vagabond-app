@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Insectoids known to destroy any metal.</span></p>",
     "hitDice": 5,
     "zone": "front",
-    "movement": {
-      "speed": "15'"
-    },
     "numberAppearing": "d2",
     "actions": [
       {
@@ -774,7 +771,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 15,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Rust Monster",

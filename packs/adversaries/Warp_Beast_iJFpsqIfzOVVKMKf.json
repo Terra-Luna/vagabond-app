@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Panther-like beasts with a bizarre array of tentacles, and a natural displacement magic caused by molecular vibrations in its fur.</span></p>",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "2d4",
     "actions": [
       {
@@ -778,7 +775,13 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Warp Beast",

@@ -739,9 +739,6 @@
     "description": "",
     "hitDice": 13,
     "zone": "front",
-    "movement": {
-      "speed": "30' (Fly 60')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -880,7 +877,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 60
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Pit Fiend",

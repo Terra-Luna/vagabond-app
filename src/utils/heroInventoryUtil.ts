@@ -157,8 +157,9 @@ export const equippedItemContextMenu = (hero: any, item: ArmorDataModel | Weapon
 
 export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
+    const isPolymorphed = hero.polymorph
 
-    if (item instanceof WeaponDataModel && item.properties.includes("thrown")) {
+    if (!isPolymorphed && item instanceof WeaponDataModel && item.properties.includes("thrown")) {
         menuItems.push({
             icon: Sword,
             label: appLang.ButtonActions.throw,
@@ -168,7 +169,7 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
         })
     }
 
-    if (item.isEquippable) {
+    if (!isPolymorphed && item.isEquippable) {
         if (item.isEquipped) {
             if (item instanceof WeaponDataModel && item.grip.style === 'V') {
                 menuItems.push({
@@ -191,7 +192,7 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
             })
         }
     }
-    else if (item.isConsumable) {
+    else if (!isPolymorphed && item.isConsumable) {
         menuItems.push(useItemContextOption(hero.parent, item.parent))
     }
 

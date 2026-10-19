@@ -732,9 +732,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">An armored aquatic creature that resembles a bear. When they feed in the water, the act of opening their mouth can create a small whirlpool.</span></p>",
     "hitDice": 10,
     "zone": "front",
-    "movement": {
-      "speed": "20' (Swim)"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -827,7 +824,17 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Skeljaskrimsli",

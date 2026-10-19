@@ -437,9 +437,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A living automoton of stitched-together flesh, given life through electric strikes.</span></p>",
     "hitDice": 9,
     "zone": "front",
-    "movement": {
-      "speed": "20'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -478,7 +475,13 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">Shock damage rolls heal it instead.</span></p>"
       }
     ],
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Golem, Flesh",

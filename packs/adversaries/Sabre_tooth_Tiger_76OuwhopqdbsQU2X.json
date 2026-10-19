@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 8,
     "zone": "front",
-    "movement": {
-      "speed": "50'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -811,7 +808,13 @@
       ],
       "description": null
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Sabre-tooth Tiger",

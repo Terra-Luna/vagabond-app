@@ -740,9 +740,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A writhing mass of fetid bones, tissue, and viscera.</span></p>",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "10'"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -786,7 +783,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Carrion Clump",

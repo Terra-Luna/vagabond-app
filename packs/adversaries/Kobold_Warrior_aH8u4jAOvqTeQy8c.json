@@ -731,9 +731,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "35'"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -758,7 +755,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 35,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Kobold Warrior",

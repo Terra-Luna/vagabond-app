@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 35,
     "zone": "front",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "d12",
     "actions": [
       {
@@ -773,7 +770,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Thunderfoot",

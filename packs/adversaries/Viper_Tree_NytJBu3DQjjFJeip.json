@@ -735,9 +735,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">In the twisted chaos of Hell, viper trees thrive. Easily mistaken for beech trees. Weak to damage from axes.</span></p>",
     "hitDice": 9,
     "zone": "front",
-    "movement": {
-      "speed": "0"
-    },
     "numberAppearing": "2d10",
     "actions": [
       {
@@ -782,7 +779,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 0,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Viper Tree",

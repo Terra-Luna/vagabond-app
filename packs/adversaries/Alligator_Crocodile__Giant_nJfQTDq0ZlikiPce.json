@@ -843,9 +843,6 @@
     "description": "",
     "hitDice": 15,
     "zone": "front",
-    "movement": {
-      "speed": "30' (Swim)"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -872,7 +869,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "type": "swim",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Alligator/Crocodile, Giant",

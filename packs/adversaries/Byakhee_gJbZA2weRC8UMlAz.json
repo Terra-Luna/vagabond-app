@@ -734,9 +734,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A grey alien dragon (wyrm) from beyond the stars.</span></p>",
     "hitDice": 15,
     "zone": "mid",
-    "movement": {
-      "speed": "60' (Fly 180')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -835,7 +832,17 @@
       ],
       "description": null
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 60,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 180
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Byakhee",

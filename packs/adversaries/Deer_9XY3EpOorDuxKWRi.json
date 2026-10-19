@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "50'"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -756,7 +753,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 3
+    "morale": 3,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Deer",

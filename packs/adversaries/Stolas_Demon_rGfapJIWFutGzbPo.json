@@ -736,9 +736,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Stolas demons are the astronomers of hell, appearing as massive owls whose eyes scintillate with a cosmic sprawl. They are  created from the deceased souls of philosophers who valued reason and pragmatism over humanity and ethics, and Stolas are extreme utilitarians in their slaughter.</span></p>",
     "hitDice": 27,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Cling; Fly 160')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -835,7 +832,21 @@
       ],
       "description": null
     },
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "cling",
+        "value": 40
+      },
+      {
+        "type": "fly",
+        "value": 160
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Stolas Demon",

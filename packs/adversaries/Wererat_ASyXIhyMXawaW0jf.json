@@ -733,9 +733,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A half-rat, half-human monster that haunts sewers and abandoned ruins.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -813,7 +810,13 @@
       ],
       "description": null
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Wererat",

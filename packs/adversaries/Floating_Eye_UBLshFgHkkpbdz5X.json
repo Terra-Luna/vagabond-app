@@ -737,9 +737,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "back",
-    "movement": {
-      "speed": "(Fly 30')"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -806,7 +803,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "type": "fly",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Floating Eye",

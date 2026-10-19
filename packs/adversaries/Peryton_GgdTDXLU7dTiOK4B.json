@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Flying elks with the souls of killers. Upon their creation, the peryton casts the shadow of a man. Only after murdering a human and devouring its heart does this shadow take its expected shape.</span></p>",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Fly 60')"
-    },
     "numberAppearing": "2d4",
     "actions": [
       {
@@ -757,7 +754,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 60
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Peryton",

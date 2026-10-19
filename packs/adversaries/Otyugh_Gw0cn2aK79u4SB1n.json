@@ -736,9 +736,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">The loathsome dung-eaters that inhabit city sewers. They stamp around on three clawed legs, and use a set of tentacles to grasp prey, with a forehead tentacle used to see.</span></p>",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -801,7 +798,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 8,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Otyugh",

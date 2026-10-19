@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 5,
     "zone": "front",
-    "movement": {
-      "speed": "25' (Swim)"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -776,7 +773,17 @@
       ],
       "description": null
     },
-    "morale": 8
+    "morale": 8,
+    "speeds": [
+      {
+        "value": 25,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 25
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Crayfish, Giant",

@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Monsters with the head of an owl and body of a bear. Often found in forests and caves.</span></p>",
     "hitDice": 5,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Climb)"
-    },
     "numberAppearing": "2d4",
     "actions": [
       {
@@ -809,7 +806,17 @@
       ],
       "description": "If both Claws hit, it takes an extra 9 (2d8)"
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Owl Bear",

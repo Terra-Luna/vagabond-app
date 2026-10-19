@@ -734,9 +734,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A bane of pirates, the serpentine beisht kione is a horrifying fae of the sea. Its jaws and mouth match the length of its nearly equine mane, and it can open these jaws to swallow most small boats whole. Stories say, if treasure is ever lost overboard, it now belongs to the beisht, as attempts to dredge it up will incur its greedy wrath.</span></p>",
     "hitDice": 13,
     "zone": "front",
-    "movement": {
-      "speed": "5' (Swim 50')"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -782,7 +779,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 5,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 50
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Beisht Kione Dhoo",

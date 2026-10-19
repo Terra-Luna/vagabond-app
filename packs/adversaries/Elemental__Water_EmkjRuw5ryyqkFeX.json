@@ -744,9 +744,6 @@
     "description": "",
     "hitDice": 12,
     "zone": "mid",
-    "movement": {
-      "speed": "0' (Swim 40')"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -771,7 +768,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 0,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Elemental, Water",

@@ -737,9 +737,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A bearded, panther-like creature with the eyes of a spider.</span></p>",
     "hitDice": 5,
     "zone": "mid",
-    "movement": {
-      "speed": "30' (Climb, Cling)"
-    },
     "numberAppearing": "d2",
     "actions": [
       {
@@ -857,7 +854,21 @@
       ],
       "description": null
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 30
+      },
+      {
+        "type": "cling",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Vigzud",

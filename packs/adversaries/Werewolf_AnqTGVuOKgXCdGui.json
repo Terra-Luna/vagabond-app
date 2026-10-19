@@ -733,9 +733,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A half-wolf, half-humanlike monster with a taste for blood. They usually only transform under a full moon and return to their normal form in sunlight.</span></p>",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -813,7 +810,13 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Werewolf",

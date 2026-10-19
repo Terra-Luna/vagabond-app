@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -756,7 +753,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Dog, Medium",

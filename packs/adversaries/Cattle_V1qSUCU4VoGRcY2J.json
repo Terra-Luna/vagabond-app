@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "25'"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -756,7 +753,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 2
+    "morale": 2,
+    "speeds": [
+      {
+        "value": 25,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Cattle",

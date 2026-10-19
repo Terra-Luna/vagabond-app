@@ -850,9 +850,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A living cauldron, possibly animated by a brew.</span></p>",
     "hitDice": 5,
     "zone": "front",
-    "movement": {
-      "speed": "15'"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -877,7 +874,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 15,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Pothead, medium",

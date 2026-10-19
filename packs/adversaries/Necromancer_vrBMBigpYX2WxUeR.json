@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 2,
     "zone": "back",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -806,7 +803,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Necromancer",

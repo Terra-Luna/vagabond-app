@@ -1,3 +1,4 @@
+import { formatSpeeds } from "../../utils/speedUtils"
 import { ActorDataModel } from "./ActorDataModel"
 import { NpcSchema, npcSchema } from "./type/NpcSchema"
 import { onNpcPreCreate, onUpdateNpc, prepareNpcBaseData, setThreatLevel } from "./util/NpcDataModelUtil"
@@ -25,6 +26,10 @@ export class AdversaryDataModel extends ActorDataModel<NpcSchema> {
     override prepareBaseData() {
         super.prepareBaseData()
         prepareNpcBaseData(this)
+    }
+
+    speedAsString() {
+        return formatSpeeds(this.speeds)
     }
 
 }

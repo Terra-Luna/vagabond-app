@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Gorillas and the cave-dwelling white apes.</span></p>",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Climb)"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -775,7 +772,17 @@
         }
       ]
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Ape, Giant",

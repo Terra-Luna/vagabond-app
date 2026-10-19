@@ -734,9 +734,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Weak to damage from axes.</span></p>",
     "hitDice": 8,
     "zone": "front",
-    "movement": {
-      "speed": "20'"
-    },
     "numberAppearing": "d8",
     "actions": [
       {
@@ -794,7 +791,13 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Treant",

@@ -734,9 +734,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Rocken worms of lava, whose bodies glow white hot like molten steel.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "10'"
-    },
     "numberAppearing": "d2",
     "actions": [
       {
@@ -780,7 +777,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Magmot",

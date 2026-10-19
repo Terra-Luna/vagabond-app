@@ -854,9 +854,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">An animated statue of igneous rock and magma.</span></p>",
     "hitDice": 5,
     "zone": "front",
-    "movement": {
-      "speed": "20'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -900,7 +897,13 @@
         }
       ]
     },
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Living Statue, Rock",

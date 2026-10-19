@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">More often found in forested areas. The boar is a feral pig with a notorious temper.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "50'"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -756,7 +753,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 6
+    "morale": 6,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Boar",

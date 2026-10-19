@@ -744,9 +744,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">This mass of ooze looks like liquid stone, allowing it to perfectly camouflage with gray rock walls.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "5'"
-    },
     "numberAppearing": "d3",
     "actions": [
       {
@@ -771,7 +768,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 5,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Grey Ooze",

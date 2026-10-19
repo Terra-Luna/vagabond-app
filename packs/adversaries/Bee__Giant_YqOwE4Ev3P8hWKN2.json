@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Roughly 1' in length, these giant bees are extremely territorial, but otherwise non-aggressive.</span></p>",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "10' (Fly 50')"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -756,7 +753,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 50
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Bee, Giant",

@@ -731,9 +731,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Climb)"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -758,7 +755,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 2
+    "morale": 2,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Cat",

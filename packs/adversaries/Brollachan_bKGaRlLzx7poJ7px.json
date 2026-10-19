@@ -738,9 +738,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A formless, writhing mass of dark black smoke. Its only distinguishing characteristic is a pair of bright red eyes in the center of the mass.</span></p>",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "20' (Fly)"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -765,7 +762,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Brollachan",

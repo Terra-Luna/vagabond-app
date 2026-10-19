@@ -851,9 +851,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Tunneling automatons known to wreak havoc on structures by undermining its foundation. They can cut through solid rock and earth with ease.</span></p>",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "20'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -878,7 +875,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 6
+    "morale": 6,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Ripworm",

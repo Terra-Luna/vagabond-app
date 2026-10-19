@@ -735,9 +735,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">When lightning strikes a bog, it may spark life to make a shambling mound: an ambulatory plant brute.</span></p>",
     "hitDice": 9,
     "zone": "front",
-    "movement": {
-      "speed": "20' (Swim)"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -782,7 +779,17 @@
       ],
       "description": null
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Shambling Mound",

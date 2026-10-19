@@ -733,9 +733,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Nightmarish brutes of crones that reside in swamps and dead woods. They are known for devouring humans with their iron claws and teeth.</span></p>",
     "hitDice": 8,
     "zone": "front",
-    "movement": {
-      "speed": "50' (Cling)"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -826,7 +823,17 @@
       ],
       "description": "A Being hit by all three is Restrained and takes 18 (4d8) damage at the start of this Being's Turns."
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      },
+      {
+        "type": "cling",
+        "value": 50
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Hag, Grove",

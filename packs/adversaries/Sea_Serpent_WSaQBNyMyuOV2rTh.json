@@ -734,9 +734,6 @@
     "description": "",
     "hitDice": 14,
     "zone": "front",
-    "movement": {
-      "speed": "Swim 80'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -782,7 +779,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "type": "swim",
+        "value": 80
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Sea Serpent",

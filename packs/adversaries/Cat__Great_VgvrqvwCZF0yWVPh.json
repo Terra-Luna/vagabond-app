@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">All manner of lions, tigers, and panthers.</span></p>",
     "hitDice": 5,
     "zone": "front",
-    "movement": {
-      "speed": "50'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -813,7 +810,13 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Cat, Great",

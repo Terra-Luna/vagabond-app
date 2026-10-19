@@ -280,9 +280,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "back",
-    "movement": {
-      "type": "walk"
-    },
     "numberAppearing": "1d4",
     "actions": [
       {
@@ -357,7 +354,13 @@
       "actions": []
     },
     "abilities": [],
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Acolyte",

@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "20' (Climb)"
-    },
     "numberAppearing": "2d4",
     "actions": [
       {
@@ -756,7 +753,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Centipede, Giant",

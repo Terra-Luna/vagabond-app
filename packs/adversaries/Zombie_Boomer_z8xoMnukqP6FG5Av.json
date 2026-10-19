@@ -741,9 +741,6 @@
     "description": "",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "20'"
-    },
     "numberAppearing": "3d8",
     "actions": [
       {
@@ -787,7 +784,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Zombie Boomer",

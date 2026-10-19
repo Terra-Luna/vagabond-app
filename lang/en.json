@@ -825,6 +825,11 @@
       "weak": "Weak",
       "status_immunities": "Status Immune",
       "actions": "ACTIONS",
+      "actionTypes": {
+        "melee": "Melee Attack",
+        "ranged": "Ranged Attack",
+        "cast": "Cast"
+      },
       "abilities": "ABILITIES",
       "speed": "Speed",
       "appearing": "# Appearing",

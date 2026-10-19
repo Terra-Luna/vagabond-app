@@ -7,6 +7,7 @@ import { SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDamageAverage } from "../../../../../model/actor/type/NpcAction"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
@@ -23,7 +24,7 @@ import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
 import { RichTextField } from "../../../../component/RichTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { onClickAction, onClickActionCombo } from "./hooksAndUtils"
+import { onClickAction, onClickActionAsWeaponAttack, onClickActionCombo } from "./hooksAndUtils"
 
 const locale = appLang.NpcSheet
 
@@ -47,21 +48,23 @@ export const AddNewIconButton = ({ onClick }) => {
     )
 }
 
-export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: AdversaryDataModel | NpcDataModel, setIsAddMenuOpen: any, setEditTarget: any }) => {
+export const Actions = ({ npc, hero, setIsAddMenuOpen, setEditTarget, isPolymorph }: {
+    npc: AdversaryDataModel | NpcDataModel, hero?: Actor & { system: HeroDataModel }, setIsAddMenuOpen?: any, setEditTarget?: any, isPolymorph?: boolean
+}) => {
     const { isEditMode } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
     return (
         <div className="mx-2 mt-2">
             {/* HEADER W/ ADD BUTTON */}
-            {(isEditMode || npc.actions.length > 0) &&
-                <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} />
+            {!isPolymorph && (isEditMode || npc.actions.length > 0) &&
+                <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen?.(true)} />
             }
 
             {/* DISPLAY COMBO FIRST */}
             <div
-                className={`hover-glow`}
-                onClick={() => onClickActionCombo(npc)}
+                className={`${isPolymorph ? '' : 'hover-glow'}`}
+                onClick={() => !isPolymorph ? onClickActionCombo(npc) : {}}
                 onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteCombo(npc), isDestructive: true }])}
             >
                 {npc.combo.name !== '' &&
@@ -78,63 +81,67 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
             {/* DISPLAY ALL ACTIONS */}
             <div className="flex flex-col gap-1">
                 {
-                    npc.actions.map((act, i) => {
-                        const avgDamage = getDamageAverage(act.damage.dice as DiceRollSchema)
+                    npc.actions.map((action, idx) => {
+                        const avgDamage = getDamageAverage(action.damage.dice as DiceRollSchema)
 
-                        const attack = (useAvgDmg?: boolean) => {
+                        const attack = (e: React.MouseEvent, useAvgDmg?: boolean) => {
                             const roll: DiceRollSchema = useAvgDmg
                                 ? { count: 0, faces: avgDamage }
-                                : act.damage.dice as DiceRollSchema
+                                : action.damage.dice as DiceRollSchema
 
-                            onClickAction(npc, act.name, act.description, act.damage.type, roll, act.saves as SavingThrowType[], act.statuses as string[])
+                            isPolymorph && hero
+                                ? onClickActionAsWeaponAttack(hero, action, e)
+                                : onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.statuses as string[])
                         }
 
                         return (
-                            <div key={i} className={`flex gap-2 p-2 justify-between ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
-                                { icon: PenSquare, label: appLang.ButtonActions.edit, action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
-                                { icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteAction(npc, act), isDestructive: true }
+                            <div key={idx} className={`flex gap-2 p-2 justify-between ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
+                                { icon: PenSquare, label: appLang.ButtonActions.edit, action: () => { setEditTarget?.(action); setIsAddMenuOpen?.(true); } },
+                                { icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteAction(npc, action), isDestructive: true }
                             ])}>
                                 <div className="flex flex-col">
 
                                     {/* ACTION NAME */}
-                                    <p className="font-bold hover-glow cursor-pointer" onClick={() => attack()}>
-                                        {act.name}
+                                    <p className="font-bold hover-glow cursor-pointer" onClick={(e) => attack(e)}>
+                                        {action.name}
                                     </p>
 
                                     {/* ACTION TRAITS... */}
                                     <div>
                                         {/* ATTACK DESCRIPTION */}
-                                        {act.description && act.description.length > 0 &&
-                                            <EnrichedContent content={act.description} styleClasses="text-text-secondary italic" actor={npc.parent} />
+                                        {action.description && action.description.length > 0 &&
+                                            <EnrichedContent content={action.description} styleClasses="text-text-secondary italic" actor={npc.parent} />
                                         }
 
                                         {/* ATTACK DAMAGE AND COUNTDOWN INFO */}
-                                        {act.damage.dice.count > 0 &&
+                                        {action.damage.dice.count > 0 &&
                                             <div className="flex items-center gap-2">
                                                 <p className="text-text-secondary leading-none">{appLang.AdversarySheet.damageAbbreviation}</p>
-                                                <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={() => attack()}>
-                                                    {new DiceRoll(act.damage.dice as any).toRollFormula()}
+                                                <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={(e) => attack(e)}>
+                                                    {new DiceRoll(action.damage.dice as any).toRollFormula()}
                                                 </p>
-                                                <p className="leading-none text-text-secondary">|</p>
-                                                <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={() => attack(true)}>
-                                                    {avgDamage}
-                                                </p>
+                                                {!isPolymorph && <>
+                                                    <p className="leading-none text-text-secondary">|</p>
+                                                    <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={(e) => attack(e, true)}>
+                                                        {avgDamage}
+                                                    </p>
+                                                </>}
                                             </div>
                                         }
 
                                         {/* RECHARGE ROLL */}
-                                        {act.recharge != null && act.recharge != '' &&
+                                        {action.recharge != null && action.recharge != '' &&
                                             <div className="flex gap-x-2 text-text-secondary">
                                                 {appLang.AdversarySheet.recharge}
                                                 <EnrichedContent
                                                     actor={npc.parent}
-                                                    content={`[[/r ${act.recharge}#Recharge: ${act.name}]]{${act.recharge}}`}
+                                                    content={`[[/r ${action.recharge}#Recharge: ${action.name}]]{${action.recharge}}`}
                                                 />
                                             </div>
                                         }
                                     </div>
                                 </div>
-                                <DamageTypeIcon dmgType={act.damage.type} size={24} />
+                                <DamageTypeIcon dmgType={action.damage.type} size={24} />
                             </div>
                         )
                     })

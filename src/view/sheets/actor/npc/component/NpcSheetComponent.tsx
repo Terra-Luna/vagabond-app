@@ -1,19 +1,21 @@
-import { ChevronLeft, ChevronRight, Heart, Shield } from "lucide-react"
+import { ChevronLeft, ChevronRight, Heart, Plus, Shield, Trash2 } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
 import { ActiveEffectsView } from "../../../../../apps/active-effects/ActiveEffectsView"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDocumentAtPath, updateDocument } from "../../../../../utils/documentUtils"
 import { sys_id } from "../../../../../utils/foundryUtils"
 import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries, damageTypesWithPhysicalThresholds, localizeString } from "../../../../../utils/localeUtils"
+import { formatSpeeds } from "../../../../../utils/speedUtils"
 import { tableBorder } from "../../../../common/border-styles"
+import { CardSubHeader } from "../../../../component/CardSubHeader"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableNameField, EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
 import { DamageTypeIconDisplay, OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
-import { CardSubHeader } from "../../../../component/SkillCard"
 import { Tooltip } from "../../../../component/Tooltip"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
@@ -25,6 +27,7 @@ import { ActorPortrait } from "../../component/ActorPortrait"
 import { Abilities } from "./Abilities"
 import { Actions, NewActionWindow } from "./Actions"
 import { useAddActionMenu } from "./hooksAndUtils"
+
 
 const locale = appLang.NpcSheet
 
@@ -273,16 +276,10 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                 {/* SPEED */}
                 <StatBlockField label={locale.speed} content={
                     <div className="flex space-x-1">
-                        <div className="flex">
-                            {isEditMode
-                                ? <EditableTextField
-                                    boundValue={npc.movement?.speed ?? '30'}
-                                    updateProps={{ object: npc.parent, path: ['movement', 'speed'] }}
-                                    placeholder="30"
-                                />
-                                : <StatBlockValue value={npc.movement?.speed} />
-                            }
-                        </div>
+                        {isEditMode
+                            ? <SpeedsEditor npc={npc} />
+                            : <StatBlockValue value={formatSpeeds(npc.speeds)} />
+                        }
                     </div>
                 } />
             </StatBlockRow>
@@ -316,10 +313,59 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
             {/* SENSES, IMMUNITIES, & WEAKNESSES */}
             <div className="w-full space-y-2 text-base text-text-header-tertiary font-normal">
                 <SelectableTextOptions obj={npc.parent} label={locale.senses} path={['senses']} localeObj={appLang.Senses} />
-                <DamageTypeSelector npc={npc} label={locale.immune} path={['modifiers', 'damage', 'in', 'immunities']} localeObj={damageTypesWithPhysicalThresholds()} />
-                <DamageTypeSelector npc={npc} label={locale.weak} path={['modifiers', 'damage', 'in', 'weaknesses']} localeObj={appLang.DamageTypes} />
+                <DamageTypeSelector actorModel={npc} label={locale.immune} path={['modifiers', 'damage', 'in', 'immunities']} localeObj={damageTypesWithPhysicalThresholds()} />
+                <DamageTypeSelector actorModel={npc} label={locale.weak} path={['modifiers', 'damage', 'in', 'weaknesses']} localeObj={appLang.DamageTypes} />
                 <SelectableTextOptions obj={npc.parent} label={locale.status_immunities} path={['modifiers', 'damage', 'in', 'statusImmunities']} localeObj={appLang.StatusConditions} />
             </div>
+        </div>
+    )
+}
+
+const SpeedsEditor = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
+    const speeds = (npc.speeds ?? []).map(s => ({ value: s.value, type: s.type }))
+
+    const saveSpeeds = (next: { value: number, type: string }[]) => {
+        npc.parent.update({ 'system.speeds': next })
+    }
+
+    const usedTypes = speeds.map(s => s.type)
+    const nextType = Object.keys(appLang.Movement).find(t => !usedTypes.includes(t)) ?? 'walk'
+
+    return (
+        <div className="flex flex-col items-center gap-1">
+            {speeds.map((speed, index) => (
+                <div key={index} className="flex items-center gap-x-0.5">
+                    <input
+                        type="number"
+                        className="w-12 text-center"
+                        defaultValue={speed.value}
+                        onBlur={e => {
+                            const value = Number(e.target.value)
+                            if (Number.isNaN(value) || value === speed.value) return
+                            saveSpeeds(speeds.map((s, i) => i === index ? { ...s, value } : s))
+                        }}
+                    />
+                    <DropDown
+                        options={createDropdownEntries(appLang.Movement)}
+                        value={speed.type}
+                        updateMechanism={{ onChange: (type: string) => saveSpeeds(speeds.map((s, i) => i === index ? { ...s, type } : s)) }}
+                    />
+                    <button
+                        className="cursor-pointer hover-glow"
+                        title="Remove"
+                        onClick={() => saveSpeeds(speeds.filter((_, i) => i !== index))}
+                    >
+                        <Trash2 size={14} />
+                    </button>
+                </div>
+            ))}
+            <button
+                className="cursor-pointer hover-glow"
+                title="Add"
+                onClick={() => saveSpeeds([...speeds, { value: 30, type: nextType }])}
+            >
+                <Plus size={16} />
+            </button>
         </div>
     )
 }
@@ -353,9 +399,9 @@ const StatBlockValue = ({ value }) => {
     )
 }
 
-const DamageTypeSelector = ({ npc, label, path, localeObj }: { npc: AdversaryDataModel | NpcDataModel, label: string, path: string[], localeObj: any }) => {
+export const DamageTypeSelector = ({ actorModel, label, path, localeObj }: { actorModel: AdversaryDataModel | NpcDataModel | HeroDataModel, label: string, path: string[], localeObj: any }) => {
     const { isEditMode } = useEditMode()
-    const field = getDocumentAtPath(npc.parent, path)
+    const field = getDocumentAtPath(actorModel.parent, path)
     const damageTypes = Object.keys(localeObj).filter(k => k !== 'none').map(k => (
         { key: k, value: localeObj[k], isSelected: field.indexOf(k) > -1 }
     ))
@@ -365,7 +411,7 @@ const DamageTypeSelector = ({ npc, label, path, localeObj }: { npc: AdversaryDat
             ? <></>
             : <div className="flex space-x-2 mt-2">
                 {isEditMode
-                    ? <OptionsSelectionMenu obj={npc.parent} label={label} path={path} options={damageTypes} />
+                    ? <OptionsSelectionMenu obj={actorModel.parent} label={label} path={path} options={damageTypes} />
                     : <StatBlockLabel text={label} />
                 }
                 <DamageTypeIconDisplay dmgTypes={field} />

@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Reptilian horrors with the ability to turn flesh to</span></p><p><span style=\"white-space: pre-wrap;\">stone with a mere gaze.</span></p>",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "20'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -797,7 +794,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 8,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Basilisk",

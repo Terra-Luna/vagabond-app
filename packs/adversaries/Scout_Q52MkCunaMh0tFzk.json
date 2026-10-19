@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "back",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -771,7 +768,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 3
+    "morale": 3,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Scout",

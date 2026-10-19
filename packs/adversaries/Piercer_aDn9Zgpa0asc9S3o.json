@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Ambush predators that resemble stalactites. They drop on unsuspecting creatures in the dark.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "5' (Cling)"
-    },
     "numberAppearing": "3d6",
     "actions": [
       {
@@ -757,7 +754,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 5,
+        "type": "walk"
+      },
+      {
+        "type": "cling",
+        "value": 5
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Piercer",

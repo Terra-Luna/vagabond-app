@@ -1,4 +1,5 @@
 import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
+import { appLang } from "../../../utils/lang"
 import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString, savingThrowOptions, statusEffOptions } from "../../common/sharedSchemas"
 
 /**
@@ -8,6 +9,7 @@ export const npcActionSchema = () => {
     return {
         name: new fields.StringField({ required: true }),
         description: new fields.StringField({ ...optionalString }),
+        type: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.NpcSheet.actionTypes), initial: "melee" }),
         damage: new fields.SchemaField({
             dice: new fields.SchemaField({
                 count: new fields.NumberField({ ...requiredInteger, initial: 1, min: 0 }),
@@ -25,6 +27,9 @@ export const npcActionSchema = () => {
             new fields.StringField({ ...savingThrowOptions() }),
             { initial: [] }
         ),
+        // Targets take half damage if save succeeds.
+        halfDamageOnSave: new fields.BooleanField({ initial: false }),
+        // Status effects applied if target fails save and takes damage.
         statuses: new fields.ArrayField(
             new fields.StringField({ ...statusEffOptions() }),
             { initial: [] }

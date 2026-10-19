@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A predatory alien fungus that hunts by attracting prey with a small, furry growth that mimics a rabbit, squirrel, or similar small mammal. The creature itself resembles a tree stump with multiple root-like limbs and fungal eyestalks.</span></p>",
     "hitDice": 9,
     "zone": "front",
-    "movement": {
-      "speed": "5'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -772,7 +769,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 8,
+    "speeds": [
+      {
+        "value": 5,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Wolf in Sheep's CLothing",

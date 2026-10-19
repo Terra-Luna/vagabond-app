@@ -737,9 +737,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Infernal bats with human faces and grotesque tongues that drag below them as they fly.</span></p>",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "5' (Fly 30')"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -784,7 +781,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 3
+    "morale": 3,
+    "speeds": [
+      {
+        "value": 5,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Dethbat",

@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "35'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -774,7 +771,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 35,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Assassin",

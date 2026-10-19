@@ -735,9 +735,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A serpent with a set of forelegs, and an acidic spit known to also poison those it touches.</span></p>",
     "hitDice": 7,
     "zone": "front",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -834,7 +831,13 @@
       ],
       "description": null
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Lindworm",

@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Humanoid spidermen.</span></p>",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Cling)"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -777,7 +774,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "cling",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Ettercap",

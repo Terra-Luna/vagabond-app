@@ -743,9 +743,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Corpses are at risk of becoming drowners if they are tossed to the sea, being reanimated by some unknown forces that lurk in the depths.</span></p>",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "20' (Swim)"
-    },
     "numberAppearing": "3d8",
     "actions": [
       {
@@ -789,7 +786,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Zombie",

@@ -435,9 +435,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relic weapons.</span></p>",
     "hitDice": 12,
     "zone": "front",
-    "movement": {
-      "speed": "15'"
-    },
     "numberAppearing": "1d4",
     "actions": [
       {
@@ -499,7 +496,13 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">If it takes 5 or more Fire damage at once, it is Dazed (Cd4).</span></p>"
       }
     ],
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 15,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Golem, Clay",

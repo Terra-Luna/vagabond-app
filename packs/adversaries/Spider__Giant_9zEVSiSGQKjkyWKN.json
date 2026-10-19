@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "35' (Climb, Cling)"
-    },
     "numberAppearing": "d3",
     "actions": [
       {
@@ -798,7 +795,21 @@
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 8,
+    "speeds": [
+      {
+        "value": 35,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 35
+      },
+      {
+        "type": "cling",
+        "value": 35
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Spider, Giant",

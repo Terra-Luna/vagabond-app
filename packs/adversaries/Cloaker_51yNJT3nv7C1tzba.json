@@ -731,9 +731,6 @@
     "description": "",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "30' (Fly)"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -815,7 +812,17 @@
       ],
       "description": null
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Cloaker",

@@ -436,9 +436,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Man-like stone statues, typically used as guardians of tombs and sacred sites.</span></p>",
     "hitDice": 13,
     "zone": "front",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -512,7 +509,13 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 1 or more.</span></p>"
       }
     ],
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Golem, Stone",

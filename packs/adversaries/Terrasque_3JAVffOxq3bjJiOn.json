@@ -743,9 +743,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A four-legged reptile of gargantuan proportions. It slumbers for centuries, then awakes to eat for weeks before returning to its sleep. During this time, it leaves destruction in its wake.</span></p>",
     "hitDice": 36,
     "zone": "front",
-    "movement": {
-      "speed": "120' (Swim)"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -897,7 +894,17 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 120,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 120
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Terrasque",

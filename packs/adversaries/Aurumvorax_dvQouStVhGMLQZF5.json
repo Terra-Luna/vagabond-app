@@ -737,9 +737,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">The eight-legged golden gorger is a vicious gold-furred honey badger-like creature with an appetite for metal.</span></p>",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "15'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -803,7 +800,13 @@
       ],
       "description": "[a Restrained Being]"
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 15,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Aurumvorax",

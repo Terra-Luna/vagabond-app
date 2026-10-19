@@ -736,9 +736,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Tentacled creatures that are indistinguishable from stalagmites or stalactites.</span></p>",
     "hitDice": 12,
     "zone": "front",
-    "movement": {
-      "speed": "10' (Climb, Cling)"
-    },
     "numberAppearing": "d3",
     "actions": [
       {
@@ -820,7 +817,21 @@
       ],
       "description": "per tendril"
     },
-    "morale": 2
+    "morale": 2,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 10
+      },
+      {
+        "type": "cling",
+        "value": 10
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Roper",

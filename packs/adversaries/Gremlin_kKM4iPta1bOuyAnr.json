@@ -733,9 +733,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Tiny, goblinoid fae that are associated with sudden misfortunes and calamity.</span></p>",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "10' (Fly 30')"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -776,7 +773,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 2
+    "morale": 2,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Gremlin",

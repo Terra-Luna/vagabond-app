@@ -732,9 +732,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Birds of legend, rocs are known to prey on elephants, and have the power to sink ships.</span></p>",
     "hitDice": 36,
     "zone": "front",
-    "movement": {
-      "speed": "20' (Fly 160')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -812,7 +809,17 @@
       ],
       "description": null
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 160
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Roc",

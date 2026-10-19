@@ -743,9 +743,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Floating masses of highly acrid air.</span></p>",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "0' (Fly 20')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -772,7 +769,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 0,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Air Bubble",

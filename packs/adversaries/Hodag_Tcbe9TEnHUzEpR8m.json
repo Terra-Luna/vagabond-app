@@ -734,9 +734,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A fearsome creature with a monkey-like head, gruesome claws and fangs, spikes along its back, and a mix of alligator scales and damp green fur. They're known to have a taste for small dogs.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "30' (Climb)"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -795,7 +792,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Hodag",

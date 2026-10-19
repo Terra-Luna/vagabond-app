@@ -732,9 +732,6 @@
     "description": "",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "10' (Cling)"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -777,7 +774,17 @@
       ],
       "description": null
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "cling",
+        "value": 10
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Flail Snail",

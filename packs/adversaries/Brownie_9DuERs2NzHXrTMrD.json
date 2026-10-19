@@ -730,9 +730,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "back",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "2d6+1",
     "actions": [
       {
@@ -786,7 +783,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Brownie",

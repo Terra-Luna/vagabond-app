@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "back",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -755,7 +752,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 6
+    "morale": 6,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Trader",

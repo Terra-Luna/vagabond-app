@@ -742,9 +742,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Blood-sucking, intelligent undead who bear the curse of vampirism.</span></p>",
     "hitDice": 8,
     "zone": "mid",
-    "movement": {
-      "speed": "35' (Fly 30')"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -860,7 +857,17 @@
       ],
       "description": null
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 35,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Vampire",

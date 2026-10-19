@@ -854,9 +854,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Runic titans created by ancient, shockingly advanced civilizations, colossus are golems that indicate a peoples' arcane advancements far outpaced their desire for diplomacy.</span></p>",
     "hitDice": 25,
     "zone": "front",
-    "movement": {
-      "speed": "50'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -898,7 +895,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Stone Colossus",

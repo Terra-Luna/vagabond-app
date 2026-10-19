@@ -741,9 +741,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">@UUID[Compendium.vagabond-app.relics.Item.Ax8nTfHlBaJSe9vr]{Phoenix Down}</span></p>",
     "hitDice": 20,
     "zone": "back",
-    "movement": {
-      "speed": "50' (Fly 150')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -851,7 +848,17 @@
       ],
       "description": null
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 150
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Phoenix",

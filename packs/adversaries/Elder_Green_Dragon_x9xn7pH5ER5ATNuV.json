@@ -739,9 +739,6 @@
     "description": "",
     "hitDice": 20,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Fly 80')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -856,7 +853,17 @@
       ],
       "description": null
     },
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 80
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Elder Green Dragon",

@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "0' (Swim 30')"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -774,7 +771,17 @@
       "actions": []
     },
     "morale": 3,
-    "forceUpdateTrack": true
+    "forceUpdateTrack": true,
+    "speeds": [
+      {
+        "value": 0,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Electric Eel",

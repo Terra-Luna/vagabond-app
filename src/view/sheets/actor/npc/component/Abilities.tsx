@@ -7,7 +7,7 @@ import { ActionMenuHeader } from "./Actions"
 
 const locale = appLang.NpcSheet
 
-export const Abilities = ({ actor }) => {
+export const Abilities = ({ actor, disabled = false }) => {
     const { isEditMode } = useEditMode()
     const features = actor.items.filter(it => it.type === 'feature').sort((a, b) => a.name.localeCompare(b.name))
     return (
@@ -19,14 +19,14 @@ export const Abilities = ({ actor }) => {
             }
 
             {/* ABILITY (FEATURE) CARDS */}
-            {features.map(feature => (
-                <FeatureCard key={feature.id} actor={actor} feature={feature} />
+            {features.map((feature, index) => (
+                <FeatureCard key={index} actor={actor} feature={feature} disabled={disabled} />
             ))}
         </div>
     )
 }
 
-const FeatureCard = ({ actor, feature }) => {
+const FeatureCard = ({ actor, feature, disabled = false }) => {
     const { isEditMode } = useEditMode()
 
     const deleteAbility = async (id) => {
@@ -36,7 +36,7 @@ const FeatureCard = ({ actor, feature }) => {
     return (
         <div className={`flex justify-between items-center gap-2 ${tableBorderRounded} p-2`}>
             <div className="flex flex-col gap-1">
-                <p className={`font-paradigm font-bold hover-glow`} onClick={() => feature.sheet.render(true)}>{feature.name}</p>
+                <p className={`font-paradigm font-bold ${!disabled ? "hover-glow" : ""}`} onClick={() => !disabled ? feature.sheet.render(true) : null}>{feature.name}</p>
                 <EnrichedContent content={feature.system.description} styleClasses="text-xs font-paradigm font-normal" actor={feature.parent} />
             </div>
             {isEditMode && <TrashButton onClick={() => deleteAbility(feature.id)} />}

@@ -730,9 +730,6 @@
     "description": "",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "35'"
-    },
     "numberAppearing": "2d4",
     "actions": [
       {
@@ -813,7 +810,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 35,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Satyr",

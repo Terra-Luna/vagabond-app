@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Terrifying bull-like humanoids of gigantic stature and power. Usually found wandering labyrinths.</span></p>",
     "hitDice": 6,
     "zone": "front",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -775,7 +772,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Minotaur",

@@ -732,9 +732,6 @@
     "description": "",
     "hitDice": 20,
     "zone": "front",
-    "movement": {
-      "speed": "20' (Swim 60')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -797,7 +794,17 @@
       ],
       "description": "per tentacle"
     },
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 60
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Kraken",

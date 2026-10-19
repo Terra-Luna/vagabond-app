@@ -741,9 +741,6 @@
     "description": "",
     "hitDice": 8,
     "zone": "front",
-    "movement": {
-      "speed": "20'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -768,7 +765,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Elemental, Lesser Earth",

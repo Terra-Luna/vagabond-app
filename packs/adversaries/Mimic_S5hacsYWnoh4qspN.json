@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Tends to shapeshift into chests, chairs, and doors, lying in wait for undiscerning prey. Some adventurers tell tales of intelligent mimics that have helped them on their journey.</span></p>",
     "hitDice": 5,
     "zone": "front",
-    "movement": {
-      "speed": "10'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -789,7 +786,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Mimic",

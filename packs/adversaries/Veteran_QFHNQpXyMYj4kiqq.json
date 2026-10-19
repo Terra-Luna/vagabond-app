@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "25'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -774,7 +771,13 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 25,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Veteran",

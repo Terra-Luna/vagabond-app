@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Overgrown reptiles, often used as mounts.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Climb)"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -758,7 +755,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Lizard, Giant Gecko",

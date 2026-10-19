@@ -435,10 +435,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A flying statue with a demonic appearance.</span></p>",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "type": "fly",
-      "speed": "15' (Fly 30')"
-    },
     "numberAppearing": "1d4",
     "actions": [
       {
@@ -523,7 +519,17 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">It can't be transformed.</span></p>"
       }
     ],
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 15,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 30
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Gargoyle",

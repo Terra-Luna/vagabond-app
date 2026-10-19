@@ -733,9 +733,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Werewolves that live longer in their lycanthropic form than they have as a person lose themselves to the curse, becoming a dire and losing their humanity.</span></p>",
     "hitDice": 8,
     "zone": "front",
-    "movement": {
-      "speed": "50'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -813,7 +810,13 @@
       ],
       "description": null
     },
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Dire Werewolf",

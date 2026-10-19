@@ -736,9 +736,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Owl-sized devils who often form their pacts by volunteering as familiars for diabolic mages.</span></p>",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "10' (Fly 40')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -783,7 +780,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 6
+    "morale": 6,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Imp",

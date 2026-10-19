@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A green, armadillo-like creature with a gorgeous ruby on its head. These rubies are worth roughly 800g, but the carbuncle is easily scared to death. If it dies, its body and the ruby dissolves into dust.</span></p>",
     "hitDice": 1,
     "zone": "back",
-    "movement": {
-      "speed": "10'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -771,7 +768,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 1
+    "morale": 1,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Carbuncle",

@@ -739,9 +739,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Goat-like bipedal demons, and sons of Chernobog.</span></p>",
     "hitDice": 7,
     "zone": "front",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -817,7 +814,13 @@
       ],
       "description": null
     },
-    "morale": 11
+    "morale": 11,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Chort",

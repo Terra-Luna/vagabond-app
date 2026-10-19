@@ -742,9 +742,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A relentless hunter of living air, capable of directly locating any scent that lingers in the winds.</span></p>",
     "hitDice": 8,
     "zone": "front",
-    "movement": {
-      "speed": "40'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -769,7 +766,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Invisible Stalker",

@@ -732,9 +732,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Humanoid aliens with cephalopod-like heads. Their tentacled faces hide a skull-piercing mouth that bores a hole into its victim's skull and drains its brain.</span></p>",
     "hitDice": 8,
     "zone": "mid",
-    "movement": {
-      "speed": "30'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -794,7 +791,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 4
+    "morale": 4,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Thulhan",

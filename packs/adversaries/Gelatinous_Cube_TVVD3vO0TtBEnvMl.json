@@ -743,9 +743,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A mostly transparent cube of slime that lurks in passageways, attempting to trap unaware delvers.</span></p>",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "10'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -772,7 +769,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Gelatinous Cube",

@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Born from an egg laid by a rooster and brooded by an adder, the cockatrice is a cursed wyrm famous for the petrifying bite.</span></p>",
     "hitDice": 5,
     "zone": "front",
-    "movement": {
-      "speed": "30' (Fly 60')"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -777,7 +774,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 30,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 60
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Cockatrice",

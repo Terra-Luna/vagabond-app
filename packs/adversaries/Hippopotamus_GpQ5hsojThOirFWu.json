@@ -729,9 +729,6 @@
     "description": "",
     "hitDice": 8,
     "zone": "front",
-    "movement": {
-      "speed": "20' (Swim 40')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -756,7 +753,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "swim",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Hippopotamus",

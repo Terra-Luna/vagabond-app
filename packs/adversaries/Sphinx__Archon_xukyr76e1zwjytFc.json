@@ -740,9 +740,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">The highest of all sphinxes, the Archon Sphinx is an alien mastermind and reality bender.</span></p>",
     "hitDice": 24,
     "zone": "front",
-    "movement": {
-      "speed": "60' (Fly 160')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -938,7 +935,17 @@
       ],
       "description": "and a Cast of its choice"
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 60,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 160
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Sphinx, Archon",

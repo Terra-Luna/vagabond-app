@@ -729,9 +729,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Giant beetles with tiger-striped carapace. Their mandibles are strong enough to crush bone.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "50'"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
@@ -756,7 +753,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Beetle,  Giant Tiger",

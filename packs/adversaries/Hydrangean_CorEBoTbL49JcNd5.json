@@ -734,9 +734,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Sharp-toothed carnivorous plants, with multiple serpentine petioles atop a digestive pitcher.</span></p>",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "5'"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -779,7 +776,13 @@
       ],
       "description": "per head"
     },
-    "morale": 8
+    "morale": 8,
+    "speeds": [
+      {
+        "value": 5,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Hydrangean",

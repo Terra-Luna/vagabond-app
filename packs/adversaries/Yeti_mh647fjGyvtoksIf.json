@@ -735,9 +735,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Fuzzy, ape-like flesh eaters that occupy the most extreme arctic areas. Their white fur and icy pale blue eyes embody wintry terror.</span></p>",
     "hitDice": 5,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Climb)"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -782,7 +779,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Yeti",

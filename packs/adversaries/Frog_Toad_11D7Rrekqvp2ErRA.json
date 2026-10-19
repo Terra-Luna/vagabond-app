@@ -729,16 +729,31 @@
     "description": "",
     "hitDice": 1,
     "zone": "mid",
-    "movement": {
-      "speed": "20' (Climb, Cling, Swim)"
-    },
     "numberAppearing": "2d6",
     "actions": [],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 2
+    "morale": 2,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 20
+      },
+      {
+        "type": "cling",
+        "value": 20
+      },
+      {
+        "type": "swim",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Frog/Toad",

@@ -738,9 +738,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Boogies capable of dimensional travel at-will, dimension rippers are many-mouthed, pale horrors who were cheats and double-talkers in life.</span></p>",
     "hitDice": 10,
     "zone": "front",
-    "movement": {
-      "speed": "35'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -836,7 +833,13 @@
       ],
       "description": null
     },
-    "morale": 5
+    "morale": 5,
+    "speeds": [
+      {
+        "value": 35,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Dimension Ripper",

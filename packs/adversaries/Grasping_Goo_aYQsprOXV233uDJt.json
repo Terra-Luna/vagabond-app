@@ -740,9 +740,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">An otherwise immobile pile of sludge. It only attacks when another creature moves within reach of its pseudopods.</span></p>",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "5'"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -769,7 +766,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 5,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Grasping Goo",

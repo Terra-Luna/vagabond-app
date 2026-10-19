@@ -738,9 +738,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A necromantically-animated humanoid hand.</span></p>",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "25'"
-    },
     "numberAppearing": "d20",
     "actions": [
       {
@@ -765,7 +762,13 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 25,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Crawling Claw",

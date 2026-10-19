@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">In the deepest caves, the 10-legged rhagodessa hunts. These massive camel spider-like creatures have yellow markings all over their brown bodies, and are known to devour human flesh.</span></p>",
     "hitDice": 4,
     "zone": "front",
-    "movement": {
-      "speed": "50' (Cling)"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
@@ -815,7 +812,17 @@
       ],
       "description": null
     },
-    "morale": 9
+    "morale": 9,
+    "speeds": [
+      {
+        "value": 50,
+        "type": "walk"
+      },
+      {
+        "type": "cling",
+        "value": 50
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Rhagodessa",

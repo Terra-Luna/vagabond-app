@@ -731,9 +731,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Man-sized venomous spiders with the ability to blend into their environment like a chameleon.</span></p>",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Cling)"
-    },
     "numberAppearing": "d4",
     "actions": [
       {
@@ -758,7 +755,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 7
+    "morale": 7,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "cling",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Spider, Giant Crab",

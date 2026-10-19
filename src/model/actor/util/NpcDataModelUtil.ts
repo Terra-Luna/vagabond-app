@@ -37,6 +37,10 @@ export const prepareNpcBaseData = (npc) => {
     npc.parent.prototypeToken.name = getName(npc)
     npc.health.max = calcNpcMaxHP(npc.hitDice ?? 1, npc.beingSize)
     npc.threatLevel = setThreatLevel(npc)
+    npc.modifiers.polymorph = {
+        castingLevel: npc.hitDice ?? 1,
+        resistanceLevel: npc.hitDice ?? 1
+    }
 }
 
 export const calcNpcMaxHP = (hitDice: number, size: string): number => {

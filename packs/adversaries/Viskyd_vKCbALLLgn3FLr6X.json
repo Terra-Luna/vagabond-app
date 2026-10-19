@@ -741,9 +741,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Lesser demons known to be extremely sticky, flammable, and disposable.</span></p>",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "10' (Fly 20')"
-    },
     "numberAppearing": "3d8",
     "actions": [
       {
@@ -786,7 +783,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 20
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Viskyd",

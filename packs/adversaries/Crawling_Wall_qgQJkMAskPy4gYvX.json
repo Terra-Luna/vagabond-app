@@ -288,10 +288,6 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A silent, moving wall that catches its prey by crushing it and soaking the pulp through its cracks. They may have arms and a mouth.</span></p>",
     "hitDice": 13,
     "zone": "front",
-    "movement": {
-      "type": "walk",
-      "speed": "20'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -366,7 +362,13 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">It can't be transformed.</span></p>"
       }
     ],
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "value": 20,
+        "type": "walk"
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Crawling Wall",

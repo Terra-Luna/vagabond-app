@@ -746,9 +746,6 @@
     "description": "",
     "hitDice": 10,
     "zone": "front",
-    "movement": {
-      "speed": "Fly 40', Phase"
-    },
     "numberAppearing": "1",
     "actions": [
       {
@@ -791,7 +788,17 @@
       "name": "",
       "actions": []
     },
-    "morale": 12
+    "morale": 12,
+    "speeds": [
+      {
+        "type": "fly",
+        "value": 40
+      },
+      {
+        "type": "phase",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Ghost",

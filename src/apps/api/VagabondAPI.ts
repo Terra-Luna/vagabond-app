@@ -1,6 +1,8 @@
 import { HeroAttack } from "../../combat/engine/HeroAttack"
 import { SkillCheck } from "../../combat/engine/roll/SkillCheck"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { NpcDataModel } from "../../model/actor/NpcDataModel"
+import { PolymorphFlag } from "../../model/actor/type/PolymorphFlag"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { sys_id } from "../../utils/foundryUtils"
@@ -19,9 +21,14 @@ export interface VagabondAPI {
         skillCheck: ({ skill, event }: { skill: string, event: any }) => void
         weaponAttack: ({ actor, itemId, skill, event }: { actor: Actor & { system: HeroDataModel }, itemId: string, skill?: string, event: any }) => void,
         rollPreset: ({ actor, presetId, event }: { actor: Actor & { system: HeroDataModel }, presetId: string, event: any }) => void,
-        openSpellcasting: (actor: Actor & { system: HeroDataModel }) => void  
+        openSpellcasting: (actor: Actor & { system: HeroDataModel }) => void
     },
     util: {
+        polymorph: ({ caster, target, form }: {
+            caster: Actor & { system: HeroDataModel },
+            target: Actor & { system: HeroDataModel | NpcDataModel },
+            form?: Actor & { system: NpcDataModel }
+        }) => Promise<void>,
         rest: () => void,
         travel: () => void,
         syncAncestryAndClass: (actor: (Actor & { system: HeroDataModel }), sendChat?: boolean) => Promise<void>
@@ -78,6 +85,32 @@ export const api: VagabondAPI = {
     },
 
     util: {
+        polymorph: async ({ caster, target, form }: {
+            caster: Actor & { system: HeroDataModel },
+            target: Actor & { system: HeroDataModel | NpcDataModel },
+            form?: Actor & { system: NpcDataModel }
+        }) => {
+            if (!caster || !target) return
+
+            let polymorphFlag: PolymorphFlag | undefined = undefined
+
+            if (form) {
+                polymorphFlag = {
+                    casterId: caster.id,
+                    duration: caster.system.modifiers.polymorph.continualSelf && caster.id === target.id ? 'continual' : 'focus',
+                    statBlock: {
+                        id: caster.id,
+                        name: form.name,
+                        img: form.img,
+                        items: form.items.filter((it: any) => it.type === "feature"),
+                        system: form.system.toObject()
+                    }
+                } as unknown as PolymorphFlag
+            }
+
+            await target.system.setPolymorph(polymorphFlag)
+        },
+
         rest: () => {
             const actor = getControlledHeroToken()
             if (!actor) return
