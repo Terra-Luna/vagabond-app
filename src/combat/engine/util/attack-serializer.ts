@@ -8,6 +8,7 @@ import { SkillCheck } from "../roll/SkillCheck"
 export interface ComboSubAttackSnapshot {
     name: string
     saveTypes: SavingThrowType[]
+    halfDamageOnSave?: boolean
     appliedEffects: { effect: string, duration?: string, critDuration?: string }[]
     damageRoll: any | undefined
     saveResults: Record<string, any>
@@ -35,6 +36,7 @@ export interface AttackSnapshot {
     saveResults: Record<string, any> | undefined
     defenseArmorBonuses: Record<string, number> | undefined
     description: string | undefined
+    halfDamageOnSave: boolean | undefined
     rerolledSaveTargetIds: string[] | undefined
     subAttacks: ComboSubAttackSnapshot[] | undefined
 }
@@ -125,6 +127,7 @@ function serializeAdversaryAttack(atk: AdversaryAttack): AttackSnapshot {
         saveResults: cleanSaveResults,
         defenseArmorBonuses: atk.defenseArmorBonuses,
         description: atk.description,
+        halfDamageOnSave: atk.halfDamageOnSave,
         rerolledSaveTargetIds: atk.rerolledSaveTargetIds
     } as AttackSnapshot
 }

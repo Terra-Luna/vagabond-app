@@ -1154,6 +1154,7 @@
         "effect": "Description",
         "damageType": "Damage Type",
         "saves": "Saves",
+        "halfDamageOnSave": "Half damage on Save success",
         "statuses": "Statuses",
         "recharge": "Recharge",
         "comboNamePlaceholder": "Enter name...",

@@ -17,6 +17,7 @@ import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { subMenuLayout, tableBorder, tableBorderRounded } from "../../../../common/border-styles"
 import { damageRoll } from "../../../../common/text-styles"
 import { DestructiveButton, PrimaryButton, UtilityButton } from "../../../../component/Button"
+import { Checkbox } from "../../../../component/Checkbox"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { DropDown } from "../../../../component/Dropdown"
@@ -93,7 +94,7 @@ export const Actions = ({ npc, hero, setIsAddMenuOpen, setEditTarget, isPolymorp
 
                             isPolymorph && hero
                                 ? onClickActionAsWeaponAttack(hero, action, e)
-                                : onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.appliedEffects as AppliedFx[])
+                                : onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.appliedEffects as AppliedFx[], action.halfDamageOnSave)
                         }
 
                         return (
@@ -169,6 +170,7 @@ export interface NpcAction {
     damage: { dice: DiceRollSchema, type: string },
     range: string,
     saves: string[],
+    halfDamageOnSave: boolean,
     appliedEffects: { effect: string, duration: string | null }[]
     statuses: string[],
     recharge: string,
@@ -184,6 +186,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
         damage: { dice: { count: 1, faces: 4 }, type: "physical" },
         range: "close",
         saves: ['reflex'],
+        halfDamageOnSave: false,
         appliedEffects: [],
         statuses: [],
         recharge: "",
@@ -380,8 +383,14 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                                     </div>
                                     : null
                             )}
-                        </div>
+                        </div>  
                     </div>
+                    <Checkbox
+                        label={appLang.AdversarySheet.halfDamageOnSave}
+                        color="text-text-primary"
+                        checked={newAction?.halfDamageOnSave ?? false}
+                        onCheckedChanged={(isChecked) => updateAction({ halfDamageOnSave: isChecked })}
+                    />
 
                     {/* STATUS EFFECTS */}
                     <div className="flex items-end gap-x-1">

@@ -75,15 +75,6 @@ export const physicalDamageTypes = () => {
     return ["physical", "blunt", "slash", "pierce", "adamant", "coldiron", "silvered"]
 }
 
-export const statusEffOptions = () => {
-    const statusFx = Object.keys(locale.APP.StatusConditions)
-    return {
-        required: true,
-        nullable: false,
-        choices: statusFx
-    }
-}
-
 export const savingThrowOptions = () => {
     const saves = Object.keys(locale.APP.Saves)
     return {

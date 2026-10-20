@@ -203,159 +203,8 @@
           "d8": false
         }
       },
-      "dice": {
-        "size": {
-          "melee": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "finesse": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "brawl": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "ranged": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "thrown": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "defense": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spell": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spellHealing": {
-            "minimum": 0,
-            "bonus": 0
-          }
-        },
-        "exploding": {
-          "melee": {
-            "max": false,
-            "values": []
-          },
-          "finesse": {
-            "max": false,
-            "values": []
-          },
-          "brawl": {
-            "max": false,
-            "values": []
-          },
-          "ranged": {
-            "max": false,
-            "values": []
-          },
-          "thrown": {
-            "max": false,
-            "values": []
-          },
-          "defense": {
-            "max": false,
-            "values": []
-          },
-          "spell": {
-            "max": false,
-            "values": []
-          },
-          "spellHealing": {
-            "max": false,
-            "values": []
-          }
-        },
-        "crit": {
-          "melee": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "finesse": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "brawl": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "ranged": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "thrown": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "defense": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "spell": {
-            "extraDice": 0,
-            "explodes": false
-          }
-        },
-        "reroll": {
-          "melee": {
-            "HH": []
-          },
-          "finesse": {
-            "HH": []
-          },
-          "brawl": {
-            "HH": []
-          },
-          "ranged": {
-            "HH": []
-          },
-          "thrown": {
-            "HH": []
-          },
-          "defense": {
-            "HH": []
-          },
-          "spell": {
-            "HH": []
-          }
-        }
-      },
       "damage": {
         "in": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
           "immunities": [
             "physical",
             "poison"
@@ -372,34 +221,13 @@
           ]
         },
         "out": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          }
+          "melee": {},
+          "finesse": {},
+          "brawl": {},
+          "ranged": {},
+          "thrown": {},
+          "defense": {},
+          "spell": {}
         }
       },
       "healing": {
@@ -455,15 +283,11 @@
         "saves": [
           "will"
         ],
-        "statuses": [
-          "dazed"
-        ],
         "recharge": "Cd4",
         "appliedEffects": [
           {
             "effect": "dazed",
-            "duration": "Cd4",
-            "critDuration": ""
+            "duration": "Cd4"
           }
         ]
       },
@@ -483,8 +307,7 @@
         },
         "saves": [
           "reflex"
-        ],
-        "statuses": []
+        ]
       }
     ],
     "combo": {
@@ -507,21 +330,10 @@
           "saves": [
             "reflex"
           ],
-          "statuses": [],
           "comboCount": 2
         }
       ]
     },
-    "abilities": [
-      {
-        "name": "Immutable",
-        "description": "<p><span style=\"white-space: pre-wrap;\">It can't be transformed.</span></p>"
-      },
-      {
-        "name": "Magic Ward I",
-        "description": "<p><span style=\"white-space: pre-wrap;\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 1 or more.</span></p>"
-      }
-    ],
     "morale": 11,
     "speeds": [
       {

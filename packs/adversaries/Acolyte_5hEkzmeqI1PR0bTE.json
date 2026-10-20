@@ -143,117 +143,14 @@
           "extraDice": 0
         }
       },
-      "dice": {
-        "size": {
-          "melee": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "finesse": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "brawl": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "ranged": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "thrown": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "defense": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spell": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spellHealing": {
-            "minimum": 0,
-            "bonus": 0
-          }
-        },
-        "exploding": {
-          "melee": {
-            "values": []
-          },
-          "finesse": {
-            "values": []
-          },
-          "brawl": {
-            "values": []
-          },
-          "ranged": {
-            "values": []
-          },
-          "thrown": {
-            "values": []
-          },
-          "defense": {
-            "values": []
-          },
-          "spell": {
-            "values": []
-          },
-          "spellHealing": {
-            "values": []
-          }
-        },
-        "crit": {
-          "melee": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "finesse": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "brawl": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "ranged": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "thrown": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "defense": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "spell": {
-            "extraDice": 0,
-            "explodes": false
-          }
-        }
-      },
       "damage": {
         "in": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0,
           "immunities": [],
           "weaknesses": [],
           "statusImmunities": []
         },
         "out": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0
+          "spell": 0
         }
       },
       "healing": {
@@ -297,8 +194,7 @@
           "type": "healing"
         },
         "saves": [],
-        "halfDamageOnSave": false,
-        "statuses": []
+        "halfDamageOnSave": false
       },
       {
         "name": "Ward",
@@ -315,8 +211,7 @@
           "type": "none"
         },
         "saves": [],
-        "halfDamageOnSave": false,
-        "statuses": []
+        "halfDamageOnSave": false
       },
       {
         "name": "Holy Flame",
@@ -336,14 +231,10 @@
           "endure"
         ],
         "halfDamageOnSave": false,
-        "statuses": [
-          "blinded"
-        ],
         "appliedEffects": [
           {
             "effect": "blinded",
-            "duration": "Cd4",
-            "critDuration": ""
+            "duration": "Cd4"
           }
         ]
       },
@@ -364,15 +255,13 @@
         "saves": [
           "reflex"
         ],
-        "halfDamageOnSave": false,
-        "statuses": []
+        "halfDamageOnSave": false
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "abilities": [],
     "morale": 7,
     "speeds": [
       {

@@ -143,106 +143,8 @@
           "extraDice": 0
         }
       },
-      "dice": {
-        "size": {
-          "melee": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "finesse": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "brawl": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "ranged": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "thrown": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "defense": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spell": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spellHealing": {
-            "minimum": 0,
-            "bonus": 0
-          }
-        },
-        "exploding": {
-          "melee": {
-            "values": []
-          },
-          "finesse": {
-            "values": []
-          },
-          "brawl": {
-            "values": []
-          },
-          "ranged": {
-            "values": []
-          },
-          "thrown": {
-            "values": []
-          },
-          "defense": {
-            "values": []
-          },
-          "spell": {
-            "values": []
-          },
-          "spellHealing": {
-            "values": []
-          }
-        },
-        "crit": {
-          "melee": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "finesse": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "brawl": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "ranged": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "thrown": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "defense": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "spell": {
-            "extraDice": 0,
-            "explodes": false
-          }
-        }
-      },
       "damage": {
         "in": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0,
           "immunities": [
             "poison"
           ],
@@ -256,12 +158,7 @@
           ]
         },
         "out": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0
+          "spell": 0
         }
       },
       "healing": {
@@ -306,8 +203,7 @@
         },
         "saves": [
           "reflex"
-        ],
-        "statuses": []
+        ]
       },
       {
         "name": "Crush",
@@ -323,8 +219,7 @@
           },
           "type": "physical"
         },
-        "saves": [],
-        "statuses": []
+        "saves": []
       }
     ],
     "combo": {
@@ -332,7 +227,6 @@
       "actions": [
         {
           "name": "Grasp",
-          "effect": "[Melee Attack]: Restrained",
           "damage": {
             "dice": {
               "count": 1,
@@ -348,7 +242,6 @@
         },
         {
           "name": "Crush",
-          "effect": "[Rush]: Any Huge or smaller Being in its path is pushed in front of it for the Move. If there is no open space within Close for the Being to go when this happens, it takes 3 (d6) for every 5' of Speed this Being has remaining.",
           "damage": {
             "dice": {
               "count": 1,
@@ -364,12 +257,6 @@
         }
       ]
     },
-    "abilities": [
-      {
-        "name": "Immutable",
-        "description": "<p><span style=\"white-space: pre-wrap;\">It can't be transformed.</span></p>"
-      }
-    ],
     "morale": 12,
     "speeds": [
       {

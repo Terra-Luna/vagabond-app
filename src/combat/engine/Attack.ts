@@ -151,13 +151,15 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
-        return Attack.computeAdjustedDamage(this.damageRoll, targetId, args, this.getAdditionalArmorRating(targetId))
+        return Attack.computeAdjustedDamage(this.damageRoll, targetId, args, this.getAdditionalArmorRating(targetId), this.isHalfDamageForTarget(targetId))
     }
+
+    protected isHalfDamageForTarget(_targetId: string): boolean { return false }
 
     /**
      * Shared damage mitigation (resistances, per-die reduction, armor, flanking) for any damage roll.
      */
-    static computeAdjustedDamage(damageRoll: DamageRoll | undefined, targetId: string, args: AttackResolutionArgs, additionalArmorRating = 0): number {
+    static computeAdjustedDamage(damageRoll: DamageRoll | undefined, targetId: string, args: AttackResolutionArgs, additionalArmorRating = 0, halfDamage = false): number {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
         const aSys = actor?.system as any
 
@@ -168,7 +170,8 @@ export abstract class Attack<TActor extends Actor = Actor> {
         const isResistant = mods?.resistances?.includes(dmgType)
         const perDieMit = perDieMitigation * damageDiceCount
 
-        const damage = isResistant ? Math.floor((damageRoll?.result?.total ?? 0) / 2) : damageRoll?.result?.total ?? 0
+        // Resistance and a passed save each halve the damage; they don't stack.
+        const damage = (isResistant || halfDamage) ? Math.floor((damageRoll?.result?.total ?? 0) / 2) : damageRoll?.result?.total ?? 0
 
         const armorRating = aSys?.armor?.rating ?? 0
         const armorPiercing = damageRoll?.result?.armorPiercing ?? 0
@@ -209,6 +212,8 @@ export abstract class Attack<TActor extends Actor = Actor> {
         }
     }
 
+    protected get prefixCountdownWithTargetName(): boolean { return false }
+
     // Countdown durations (e.g. "Cd6") additionally spawn a Countdown die to track it.
     private async applyEffects(actor: Actor, token: Token | undefined, status: string, duration?: string, damageType?: string) {
         if (!duration || duration === "-") return
@@ -217,8 +222,12 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
         const countdownFaces = duration?.match(/^Cd(\d+)$/)?.[1]
         if (countdownFaces) {
+            const statusName = appLang.StatusConditions[status]?.name ?? status
+            const label = this.prefixCountdownWithTargetName
+                ? `${token?.name ?? actor.name}: ${statusName}`
+                : statusName
             await addCountdown(
-                appLang.StatusConditions[status]?.name ?? status,
+                label,
                 Number(countdownFaces),
                 undefined, undefined,
                 actor.uuid,

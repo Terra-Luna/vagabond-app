@@ -1,6 +1,6 @@
 import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
 import { appLang } from "../../../utils/lang"
-import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString, savingThrowOptions, statusEffOptions } from "../../common/sharedSchemas"
+import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString, savingThrowOptions } from "../../common/sharedSchemas"
 
 /**
  * A detailed adversary offensive action.
@@ -36,10 +36,6 @@ export const npcActionSchema = () => {
                 effect: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.StatusConditions) }),
                 duration: new fields.StringField({ ...optionalString })
             }),
-            { initial: [] }
-        ),
-        statuses: new fields.ArrayField(
-            new fields.StringField({ ...statusEffOptions() }),
             { initial: [] }
         ),
         recharge: new fields.StringField({ ...optionalString })

@@ -17,6 +17,7 @@ export interface ComboSubAttackArgs {
     isSpellAttack?: boolean
     dice: DiceRoll[],
     saveTypes?: SavingThrowType[],
+    halfDamageOnSave?: boolean,
     appliedEffects?: AppliedFx[]
 }
 
@@ -29,6 +30,7 @@ export class ComboSubAttack {
     damageRoll: DamageRoll
     isSpellAttack: boolean = false
     saveTypes: SavingThrowType[] = []
+    halfDamageOnSave: boolean = false
     appliedEffects: AppliedFx[] = []
     saveResults: Record<string, SkillCheckResult> = {}
     defenseArmorBonuses: Record<string, number> = {}
@@ -37,6 +39,7 @@ export class ComboSubAttack {
     constructor(args: ComboSubAttackArgs) {
         this.name = args.name
         this.saveTypes = args.saveTypes ?? []
+        this.halfDamageOnSave = args.halfDamageOnSave ?? false
         this.appliedEffects = args.appliedEffects ?? []
         this.isSpellAttack = args.isSpellAttack ?? false
         this.damageRoll = new DamageRoll({
@@ -63,10 +66,17 @@ export class ComboSubAttack {
         // A defense only adds armor; it doesn't negate the damage.
         if (this.defenseArmorBonuses[targetId] !== undefined) return true
         return !result || result.outcome === appLang.RollResult.failure
+            || (result.outcome === appLang.RollResult.success && this.halfDamageOnSave)
+    }
+
+    isHalfDamageForTarget(targetId: string): boolean {
+        return this.halfDamageOnSave
+            && this.defenseArmorBonuses[targetId] === undefined
+            && this.saveResults[targetId]?.outcome === appLang.RollResult.success
     }
 
     calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
-        return Attack.computeAdjustedDamage(this.damageRoll, targetId, args, this.defenseArmorBonuses[targetId] ?? 0)
+        return Attack.computeAdjustedDamage(this.damageRoll, targetId, args, this.defenseArmorBonuses[targetId] ?? 0, this.isHalfDamageForTarget(targetId))
     }
 
     async rollSave(targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
@@ -131,6 +141,7 @@ export class ComboSubAttack {
         return {
             name: this.name,
             saveTypes: this.saveTypes,
+            halfDamageOnSave: this.halfDamageOnSave,
             appliedEffects: this.appliedEffects,
             damageRoll: {
                 ...rawDmg,
@@ -157,6 +168,7 @@ export class ComboSubAttack {
             dmgType: damageRoll?.dmgType ?? 'physical',
             dice: damageRoll?.dice ?? [],
             saveTypes: snapshot.saveTypes,
+            halfDamageOnSave: snapshot.halfDamageOnSave,
             appliedEffects: snapshot.appliedEffects
         })
         sub.damageRoll = damageRoll ?? sub.damageRoll
@@ -173,6 +185,8 @@ export interface AdversaryComboAttackArgs { comboName: string, subAttacks: Combo
 export class AdversaryComboAttack extends Attack {
 
     override readonly attackType = 'combo' as const
+
+    protected override get prefixCountdownWithTargetName(): boolean { return true }
 
     subAttacks: ComboSubAttack[] = []
 
@@ -246,8 +260,8 @@ export class AdversaryComboAttack extends Attack {
     private async applyStatusEffectsForSub(sub: ComboSubAttack, args: AttackResolutionArgs, eligibleTargetIds: string[]) {
         if (sub.appliedEffects.length === 0) return
 
-        // Skip targets who wouldn't have taken any damage from this sub-attack (e.g. fully mitigated).
-        const damagedIds = eligibleTargetIds.filter(id => sub.calculateAdjustedDamage(id, args) >= 1)
+        // Skip targets who passed the save (half damage only) or wouldn't have taken any damage (e.g. fully mitigated).
+        const damagedIds = eligibleTargetIds.filter(id => !sub.isHalfDamageForTarget(id) && sub.calculateAdjustedDamage(id, args) >= 1)
         await this.applyFxToTargets(sub.appliedEffects, damagedIds)
     }
 
