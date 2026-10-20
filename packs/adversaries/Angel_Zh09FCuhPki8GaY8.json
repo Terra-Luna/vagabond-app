@@ -740,6 +740,8 @@
       {
         "name": "Dominator",
         "description": "<p><span style=\"white-space: pre-wrap;\">[2 Actions as below ([[/r d6]] to determine)]</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -755,6 +757,8 @@
       {
         "name": "Flaming Sword",
         "description": "<p><span style=\"white-space: pre-wrap;\">1. [Melee Attack]: 17 (4d6+3) and Burning (Cd6)</span><br><span style=\"white-space: pre-wrap;\">(+3 Silvered Greatsword w/ Loyalty)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 4,
@@ -769,11 +773,20 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Burning Slash",
         "description": "<p><span style=\"white-space: pre-wrap;\">2. [Melee Attack, Near Cone | Half damage on a pass]: 13 (3d6+3) and Burning (Cd6)</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 3,
@@ -788,11 +801,20 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Banish",
         "description": "<p><span style=\"white-space: pre-wrap;\">3. [Remote | Will]: It is returned to its normal realm of existence, or ends another Being's possession of the Target.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -810,6 +832,8 @@
       {
         "name": "Command",
         "description": "<p><span style=\"white-space: pre-wrap;\">4. [Cast, Far Aura]: 4 (d6+1) or obey the command issued by this Being.</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 1,
@@ -827,6 +851,8 @@
       {
         "name": "Heal",
         "description": "<p><span style=\"white-space: pre-wrap;\">5. [Cast, Touch]: If it is a mortal Being, its HP is restored to maximum, and is cured of the Blinded, Paralyzed, or Sickened Status.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -842,6 +868,8 @@
       {
         "name": "Radiance",
         "description": "<p><span style=\"white-space: pre-wrap;\">6. [Cast, Far Aura]: The area within the Aura is Sunlight, which moves with this Being.</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,

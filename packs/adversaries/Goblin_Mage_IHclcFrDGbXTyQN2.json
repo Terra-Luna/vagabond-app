@@ -736,6 +736,8 @@
       {
         "name": "Apoplex",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Will] (3/Day): Berserk (Cd4)</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -750,11 +752,20 @@
         ],
         "statuses": [
           "berserk"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "berserk",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Flare",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 10' Sphere | Reflex] (3/Day)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -783,7 +794,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

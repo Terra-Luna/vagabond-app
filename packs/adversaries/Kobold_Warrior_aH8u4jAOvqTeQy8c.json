@@ -736,6 +736,8 @@
       {
         "name": "Spear",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Thrown]</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,

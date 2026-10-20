@@ -736,6 +736,8 @@
       {
         "name": "Acid Spit",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 10 (3d6) and Burning (Cd6)</span></p>",
+        "type": "ranged",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 3,
@@ -748,6 +750,13 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd6"
+          }
+        ],
         "statuses": [
           "burning"
         ],
@@ -756,6 +765,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -768,6 +779,8 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
         "statuses": []
       }
     ],
@@ -890,9 +903,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.93",
     "createdTime": 1790036233409,
-    "modifiedTime": 1790036359341,
+    "modifiedTime": 1792466355587,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

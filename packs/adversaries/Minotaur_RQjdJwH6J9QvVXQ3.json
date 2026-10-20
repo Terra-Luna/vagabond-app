@@ -736,6 +736,8 @@
       {
         "name": "Gore",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Prone if failed by 10 or more.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -753,6 +755,8 @@
       {
         "name": "Greataxe",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Cleave]: 5 (d10) or half to two Targets</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,

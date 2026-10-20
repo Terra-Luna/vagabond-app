@@ -743,6 +743,8 @@
       {
         "name": "Tendril",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 2,

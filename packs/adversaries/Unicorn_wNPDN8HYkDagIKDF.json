@@ -753,7 +753,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Horn",
@@ -769,11 +771,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Teleport",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast] (1/Day): Teleports itself and any Being mounting it up to Far</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -805,7 +811,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 2
+          "comboCount": 2,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Horn",
@@ -822,7 +830,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

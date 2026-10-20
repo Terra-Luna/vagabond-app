@@ -749,6 +749,8 @@
       {
         "name": "Glare",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Sight | Will]: Frightened (Cd4, Paralyzed)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -765,11 +767,25 @@
           "frightened",
           "paralyzed"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "frightened",
+            "duration": "Cd4",
+            "critDuration": ""
+          },
+          {
+            "effect": "paralyzed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Cursed Touch",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) and pass an [Endure] Save or be Cursed (can't regain HP or remove Fatigue, and it loses 3 (d6) HP every day)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -800,6 +816,15 @@
         ],
         "statuses": [
           "hexed"
+        ],
+        "type": "melee",
+        "range": "close",
+        "appliedEffects": [
+          {
+            "effect": "hexed",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

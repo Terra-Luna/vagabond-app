@@ -12,11 +12,12 @@ import { ItemSheetPropLabel } from "../../view/sheets/item/equip/component/ItemS
 import { DiceRoll } from "../engine/roll/DiceRoll"
 import { DieSizeSelector } from "./DieSizeSelector"
 
-export const DiceRollInputComponent = ({ label, diceRoll, onChange, extendedSettings, TrashButton }: {
+export const DiceRollInputComponent = ({ label, diceRoll, onChange, extendedSettings, hideCritFields, TrashButton }: {
     label?: string,
     diceRoll: DiceRoll | DiceRollSchema,
     onChange: (updatedFields: Partial<DiceRoll>) => void,
     extendedSettings?: boolean,
+    hideCritFields?: boolean,
     TrashButton?: ReactNode
 }) => {
     const { isEditMode } = useEditMode()
@@ -49,7 +50,7 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, extendedSett
                         <span title={appLang.DiceRoll.explodingDiceValues}>
                             <ExplosionsInput explosionValues={explosionValues} handleExplosionChange={(values) => onChange({ explodesOn: values })} />
                         </span>
-                        {explosionValues.length > 0 && <span className="text-sm font-normal max-w-[8ch] leading-3" title={appLang.DiceRoll.explodeOnCriticalOnly}>
+                        {explosionValues.length > 0 && !hideCritFields && <span className="text-sm font-normal max-w-[8ch] leading-3" title={appLang.DiceRoll.explodeOnCriticalOnly}>
                             <Checkbox
                                 label={appLang.DiceRoll.critOnly}
                                 color="text-text-primary"
@@ -59,14 +60,14 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, extendedSett
                         </span>}
 
                         {/* EXTRA DICE ON CRIT */}
-                        <div className="relative flex items-end" title={appLang.DiceRoll.extraDiceOnCritical}>
+                        {!hideCritFields && <div className="relative flex items-end" title={appLang.DiceRoll.extraDiceOnCritical}>
                             <span className="font-normal pointer-events-none absolute left-1 bottom-0.5 text-sm leading-3 max-w-[4ch]">{appLang.DiceRoll.critDice}</span>
                             <DiceCountInput
                                 dmgDice={diceRoll.extraDiceOnCrit ?? 0}
                                 onUpdateDmgDice={(input) => onChange({ extraDiceOnCrit: input })}
                                 width="max-w-[4.5ch]"
                             />
-                        </div>
+                        </div>}
 
                         {/* REROLLS */}
                         <div className="relative flex items-end" title={appLang.DiceRoll.rerollValues}>

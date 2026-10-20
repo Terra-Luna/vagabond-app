@@ -736,6 +736,8 @@
       {
         "name": "Stinger",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Sickened (Cd4, +1 Fatigue each Round)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -751,7 +753,14 @@
         "statuses": [
           "sickened"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Claw",
@@ -767,7 +776,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Bite",
@@ -783,7 +794,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {
@@ -792,6 +805,8 @@
         {
           "name": "Stinger",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Sickened (Cd4, +1 Fatigue each Round)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,
@@ -808,7 +823,14 @@
             "sickened"
           ],
           "recharge": "Cd4",
-          "comboCount": 1
+          "comboCount": 1,
+          "appliedEffects": [
+            {
+              "effect": "sickened",
+              "duration": "Cd4",
+              "critDuration": ""
+            }
+          ]
         },
         {
           "name": "Bite",
@@ -825,7 +847,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": "or 2x Claw, 1x Bite"

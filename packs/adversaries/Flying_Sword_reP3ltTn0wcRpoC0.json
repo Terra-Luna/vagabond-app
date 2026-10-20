@@ -437,7 +437,9 @@
     "actions": [
       {
         "name": "Slash",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 4 (d8)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "faces": 8,

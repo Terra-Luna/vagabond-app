@@ -737,6 +737,8 @@
       {
         "name": "Eyebeam",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote]: Roll [[/r d8]] for each...</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -752,6 +754,8 @@
       {
         "name": "Charm",
         "description": "<p><span style=\"white-space: pre-wrap;\">1 Charm [Will]: Charmed (Cd4, or until damaged)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -766,11 +770,20 @@
         ],
         "statuses": [
           "charmed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "charmed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Sleep",
         "description": "<p><span style=\"white-space: pre-wrap;\">2 Sleep [Will]: Unconscious (Cd6, or woken up)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -785,11 +798,20 @@
         ],
         "statuses": [
           "unconscious"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "unconscious",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Kinesis",
         "description": "<p><span style=\"white-space: pre-wrap;\">3 Kinesis [Endure]: Restrained (1 Round)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -804,11 +826,20 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "round",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Petrify",
         "description": "<p><span style=\"white-space: pre-wrap;\">4 Petrify [Will]: Transformed into a stone statue</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -823,11 +854,20 @@
         ],
         "statuses": [
           "paralyzed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Death",
         "description": "<p><span style=\"white-space: pre-wrap;\">5 Death [Near Only | Endure]: 14 (4d6)</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 4,
@@ -845,6 +885,8 @@
       {
         "name": "Fear",
         "description": "<p><span style=\"white-space: pre-wrap;\">6 Fear [Will]: Frightened (Cd4)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -859,11 +901,20 @@
         ],
         "statuses": [
           "frightened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "frightened",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Slow",
         "description": "<p><span style=\"white-space: pre-wrap;\">7 Slow [Will]: Speed reduced to 10' for (Cd4)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -881,6 +932,8 @@
       {
         "name": "Paralysis",
         "description": "<p><span style=\"white-space: pre-wrap;\">8 Paralysis [Endure]: Paralyzed (Cd4)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -895,6 +948,13 @@
         ],
         "statuses": [
           "paralyzed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
@@ -911,7 +971,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {
@@ -920,6 +982,8 @@
         {
           "name": "Eyebeam",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote]: Roll d8 for each...</span></p>",
+          "type": "cast",
+          "range": "far",
           "damage": {
             "dice": {
               "count": 0,
@@ -948,7 +1012,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

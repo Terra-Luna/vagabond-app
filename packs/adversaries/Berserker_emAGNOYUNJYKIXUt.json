@@ -745,11 +745,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Greataxe",
         "description": "<p><span style=\"white-space: pre-wrap;\">(Berserk)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -769,6 +773,8 @@
       {
         "name": "Rage",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ability]: Goes Berserk when it takes damage or when attacking. While Berserk, it reduces damage by 1 per die.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

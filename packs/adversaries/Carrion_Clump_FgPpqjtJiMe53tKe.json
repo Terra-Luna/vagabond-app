@@ -745,6 +745,8 @@
       {
         "name": "Viscera Sling",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 3 (d6) and pass [Endure] or become Sickened (Cd6, stinks and can't speak from retching).</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 1,
@@ -762,6 +764,8 @@
       {
         "name": "Sickness",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or become Sickened as described above.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -776,6 +780,13 @@
         ],
         "statuses": [
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       }
     ],

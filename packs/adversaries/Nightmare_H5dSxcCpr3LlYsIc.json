@@ -750,11 +750,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Stomp",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) plus 3 ([[/r d6]] if Prone)) and Burning (Cd4)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,

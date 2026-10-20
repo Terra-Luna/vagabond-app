@@ -742,6 +742,8 @@
       {
         "name": "Shriek",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action, Far Aura | Will]: Frightened (Cd6, it can't hear)</span></p>",
+        "type": "melee",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -757,7 +759,14 @@
         "statuses": [
           "frightened"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "frightened",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Claw",
@@ -773,11 +782,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and this Being is healed for the damage dealt</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -811,11 +824,15 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 2
+          "comboCount": 2,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Bite",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and this Being is healed for the damage dealt</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 3,

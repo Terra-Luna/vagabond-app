@@ -737,6 +737,8 @@
       {
         "name": "Entagle",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Grapple, an Enemy in Water]: Restrained</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -751,11 +753,20 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Enlure",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Sight | Will (-2 penalty)] (1/Day): Charmed (Cd6, it must Move closer to this Being)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -770,6 +781,13 @@
         ],
         "statuses": [
           "charmed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "charmed",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       }
     ],

@@ -738,6 +738,8 @@
       {
         "name": "Flesh Burrow",
         "description": "<p><span style=\"white-space: pre-wrap;\">This Being burrows itself into flesh that comes into contact with it, causing that Being to become Sickened (3 (d6) damage each Round).</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -753,6 +755,8 @@
       {
         "name": "Parasite",
         "description": "<p><span style=\"white-space: pre-wrap;\">If this Being or any Being it is burrowing into takes Fire damage or is the Target of an effect that ends the Sickened Status, this Being dies instantly.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

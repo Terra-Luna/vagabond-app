@@ -748,7 +748,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {
@@ -769,7 +771,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 5
+          "comboCount": 5,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

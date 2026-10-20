@@ -737,6 +737,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Burning (Cd6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -751,11 +753,20 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Tentacle",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Grapple, Near]: Restrained and pulled Close.</span><br><br><b><strong style=\"white-space: pre-wrap;\">Tentacles:</strong></b><span style=\"white-space: pre-wrap;\"> Starts with 6 Tentacles. Targeting a Tentacle causes a -4 penalty to the Attack Check, but severs it if at least 16 damage is dealt with the attack.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Grapple, Near]: Restrained and pulled Close.</span><br><br><span style=\"white-space: pre-wrap;\">Tentacles: Starts with 6 Tentacles. Targeting a Tentacle causes a -4 penalty to the Attack Check, but severs it if at least 16 damage is dealt with the attack.</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 0,
@@ -770,6 +781,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],
@@ -779,6 +797,8 @@
         {
           "name": "Bite",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Burning (Cd6)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 3,
@@ -794,11 +814,20 @@
           "statuses": [
             "burning"
           ],
-          "comboCount": 1
+          "comboCount": 1,
+          "appliedEffects": [
+            {
+              "effect": "burning",
+              "duration": "Cd6",
+              "critDuration": ""
+            }
+          ]
         },
         {
           "name": "Tentacle",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Grapple, Near]: Restrained and pulled Close.</span></p>",
+          "type": "melee",
+          "range": "near",
           "damage": {
             "dice": {
               "count": 0,
@@ -814,7 +843,14 @@
           "statuses": [
             "restrained"
           ],
-          "comboCount": 1
+          "comboCount": 1,
+          "appliedEffects": [
+            {
+              "effect": "restrained",
+              "duration": "continual",
+              "critDuration": ""
+            }
+          ]
         }
       ],
       "description": "per tentacle"

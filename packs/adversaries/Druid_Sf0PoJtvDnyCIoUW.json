@@ -734,6 +734,8 @@
       {
         "name": "Feral Shift",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Self] (Focus): It turns into a HD 2 or lower Beast.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,6 +751,8 @@
       {
         "name": "Cure Wounds",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch (Ally)] (3/Day): Regain 3 (d6) HP</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -764,6 +768,8 @@
       {
         "name": "Polymorph",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast | Will] (Focus): Target becomes a Beast of this Being's choice with HD 2 or lower.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

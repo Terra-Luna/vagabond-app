@@ -734,6 +734,8 @@
       {
         "name": "Sting",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4) and pass [Endure] against Sickened or gain 1 Fatigue</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -751,6 +753,8 @@
       {
         "name": "Claw",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (d10) and Restrained if its the second of this Being's Claw to hit it this Turn</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -772,6 +776,8 @@
         {
           "name": "Sting",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4) and pass [Endure] against Sickened or gain 1 Fatigue</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 2,
@@ -790,6 +796,8 @@
         {
           "name": "Claw",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (d10) and Restrained if its the second of this Being's Claw to hit it this Turn</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,

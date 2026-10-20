@@ -734,6 +734,8 @@
       {
         "name": "Caestus",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Brawl]: 3 (d6), or Grappled or</span></p><p><span style=\"white-space: pre-wrap;\">shoved 5'</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -755,6 +757,8 @@
         {
           "name": "Caestus",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Brawl]: 3 (d6), or Grappled or</span></p><p><span style=\"white-space: pre-wrap;\">shoved 5'</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,

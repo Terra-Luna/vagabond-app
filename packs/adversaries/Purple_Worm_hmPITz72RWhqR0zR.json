@@ -737,6 +737,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Cleave]: 2d8 or half to all Targets Close to its mouth.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -754,6 +756,8 @@
       {
         "name": "Sting",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near its tail]: 4 (d8) and pass [Endure] or become Sickened (+1 Fatigue for Cd12).</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 1,
@@ -771,6 +775,8 @@
       {
         "name": "Sickened",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

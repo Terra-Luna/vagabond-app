@@ -736,6 +736,8 @@
       {
         "name": "Spin-Thrash",
         "description": "<p><span style=\"white-space: pre-wrap;\">(Only while at or below half HP) [Cast, Aura Near | Endure] (3/Day): 9 (2d8), deals half on a pass and heals this Being for the damage roll.</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 2,
@@ -753,6 +755,8 @@
       {
         "name": "Chomp",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Cleave]: and Restrained</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -767,6 +771,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

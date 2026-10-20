@@ -294,7 +294,9 @@
     "actions": [
       {
         "name": "Weapon",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 3 (d6) or (by Weapon)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) or (by Weapon)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -307,6 +309,7 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
         "statuses": []
       }
     ],
@@ -504,7 +507,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.2.93",
     "createdTime": 1787708617762,
-    "modifiedTime": 1792448381043,
+    "modifiedTime": 1792463530351,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

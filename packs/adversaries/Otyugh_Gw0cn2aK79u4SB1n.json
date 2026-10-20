@@ -741,6 +741,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (d10) and pass [Endure] or become Sickened (until cured, Otyugh Disease)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -758,6 +760,8 @@
       {
         "name": "Tentacle",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and Restrained. If the Target is already Restrained this way, it is instead slammed into something and takes 7 (2d6) and must pass an [Endure] Save or be Dazed for 1 Round.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -772,11 +776,20 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "round",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Otyugh Disease",
         "description": "<p><span style=\"white-space: pre-wrap;\">@UUID[Compendium.vagabond-app.active-effects.ActiveEffect.NZnOYlOxrYO1jJPF]{Otyugh Disease:} Beings that aren't Otyughs that are Sickened this way must pass an an [Endure] Save every day or lose 3 (d6) from their Max HP. This reduction to their Max HP lasts while they are Sickened by this disease.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -791,6 +804,13 @@
         ],
         "statuses": [
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

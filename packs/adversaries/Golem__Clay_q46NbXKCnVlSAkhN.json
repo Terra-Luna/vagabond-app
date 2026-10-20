@@ -439,7 +439,9 @@
     "actions": [
       {
         "name": "Slam",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 9 (2d8)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -460,7 +462,9 @@
       "actions": [
         {
           "name": "Slam",
-          "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 9 (2d8)</span></p>",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 2,

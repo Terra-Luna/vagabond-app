@@ -734,6 +734,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6) and Restrained if it is smaller. This always hits a Target Restrained this way.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,

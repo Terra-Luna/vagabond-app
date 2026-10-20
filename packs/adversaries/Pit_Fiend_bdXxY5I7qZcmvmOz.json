@@ -744,6 +744,8 @@
       {
         "name": "Symbol of Pain",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Aura Far | Will] (1/Day): Cursed ([[/r Cd6#Symbol of Pain]] Rounds, -4 penalty to Attack Checks and a -2 to [Reflex] Saves)</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -761,6 +763,8 @@
       {
         "name": "Fireball",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 20' Sphere | Reflex]: and Burning (Cd4)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 6,
@@ -776,11 +780,20 @@
         "statuses": [
           "burning"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and pass [Endure] with a -1 penalty or become Sickened (Cd6 damage)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -798,6 +811,8 @@
       {
         "name": "Mace",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Burning (Cd6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -812,11 +827,20 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Wall of Fire",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Line | Reflex] (3/Day, Focus): Burning (2d6)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -831,11 +855,20 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Hold",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Endure]: Paralyzed (Cd4)</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -851,11 +884,20 @@
         "statuses": [
           "paralyzed"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Tail",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (2d4) and Restrained, taking</span></p><p><span style=\"white-space: pre-wrap;\">5 (2d4) at the start of this Being's Turns while</span></p><p><span style=\"white-space: pre-wrap;\">Restrained this way</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -870,6 +912,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

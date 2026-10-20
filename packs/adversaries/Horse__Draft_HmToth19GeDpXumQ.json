@@ -733,6 +733,8 @@
     "actions": [
       {
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+        "type": "melee",
+        "range": "close",
         "name": "Hoof",
         "damage": {
           "type": "physical",

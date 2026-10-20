@@ -736,6 +736,8 @@
       {
         "name": "Beak",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) and pass [Endure] or be Cursed (turned to stone for 1 Day)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -753,6 +755,8 @@
       {
         "name": "Stone",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or turned to stone for 1 day.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -767,6 +771,13 @@
         ],
         "statuses": [
           "paralyzed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

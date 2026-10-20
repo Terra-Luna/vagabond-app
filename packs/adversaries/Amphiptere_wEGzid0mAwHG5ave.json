@@ -738,6 +738,8 @@
       {
         "name": "Fireball",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 3 (d6) and Burning (Cd4)</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 1,
@@ -753,7 +755,14 @@
         "statuses": [
           "burning"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Bite",
@@ -769,7 +778,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

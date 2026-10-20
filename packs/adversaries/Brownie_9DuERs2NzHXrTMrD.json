@@ -746,11 +746,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Dancing Lights",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote]: Causes dancing lights of any shape no larger than Medium within Near</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -766,6 +770,8 @@
       {
         "name": "Dimension Door",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Self] (1/Day): Teleports to an open Area it is aware of within 360'</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

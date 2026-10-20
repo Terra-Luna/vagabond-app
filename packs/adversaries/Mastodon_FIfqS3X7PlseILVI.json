@@ -734,6 +734,8 @@
       {
         "name": "Stomp",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 18 (4d8)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 4,
@@ -751,6 +753,8 @@
       {
         "name": "Tusk",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -772,6 +776,8 @@
         {
           "name": "Stomp",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 18 (4d8)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 4,
@@ -790,6 +796,8 @@
         {
           "name": "Tusk",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 2,

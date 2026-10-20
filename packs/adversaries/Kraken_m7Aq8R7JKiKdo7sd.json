@@ -737,6 +737,8 @@
       {
         "name": "Lightning Bolt",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 2 ([[/r d4]]) 120' Lines | Reflex]</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 6,
@@ -755,6 +757,8 @@
       {
         "name": "Tentacle",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Grapple]: Restrained if smaller</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -776,6 +780,8 @@
         {
           "name": "Tentacle",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Grapple]: Restrained if smaller</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 3,

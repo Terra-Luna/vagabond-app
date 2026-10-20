@@ -734,6 +734,8 @@
       {
         "name": "Stomp",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 25 (4d10+3)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 4,
@@ -750,6 +752,8 @@
       },
       {
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 22 (5d8) and shoved Prone 30' away</span></p>",
+        "type": "melee",
+        "range": "close",
         "name": "Tail",
         "damage": {
           "dice": {

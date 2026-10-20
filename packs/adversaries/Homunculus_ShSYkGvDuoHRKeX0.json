@@ -435,7 +435,9 @@
     "actions": [
       {
         "name": "Bite",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 1 (d3) and (1/Day) pass [Endure] or become Sickened (Cd6 Rounds, Unconscious until it takes damage).</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 1 (d3) and (1/Day) pass [Endure] or become Sickened (Cd6 Rounds, Unconscious until it takes damage).</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -452,7 +454,9 @@
       },
       {
         "name": "Spit Acid",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Ranged Attack, Near]:</strong></b><span style=\"white-space: pre-wrap;\"> 2 (d4) and Burning (Cd4).</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 2 (d4) and Burning (Cd4).</span></p>",
+        "type": "ranged",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 1,
@@ -467,6 +471,13 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       }
     ],

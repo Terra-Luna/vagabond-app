@@ -735,6 +735,8 @@
       {
         "name": "Sleep",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Beings who hear it] (1/Day): Unconscious (Cd6 or until awoken)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,11 +751,20 @@
         ],
         "statuses": [
           "unconscious"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "unconscious",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Charm",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Beings who hear it | Will] (1/Day): Charmed (until this Being drops Focus). Those Charmed this way must Move toward this Being and use their Action to obey its commands.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -768,11 +779,20 @@
         ],
         "statuses": [
           "charmed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "charmed",
+            "duration": "focus",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Fear",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Beings who hear it | Will] (1/Day): Frightened (Cd4)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -787,6 +807,13 @@
         ],
         "statuses": [
           "frightened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "frightened",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
@@ -803,7 +830,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

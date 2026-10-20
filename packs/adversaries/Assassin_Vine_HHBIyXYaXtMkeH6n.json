@@ -743,6 +743,8 @@
       {
         "name": "Constrain",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Restrained Target]</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -758,6 +760,8 @@
       {
         "name": "Vine",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: and Restrained</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 1,
@@ -772,6 +776,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

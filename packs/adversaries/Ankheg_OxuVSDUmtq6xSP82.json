@@ -737,6 +737,8 @@
       {
         "name": "Acid Spray",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near] (1/Day): 18 (4d8) and Burning (Cd4)</span></p>",
+        "type": "ranged",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 4,
@@ -751,11 +753,20 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 10 (3d6) and Burning (Cd4)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -770,6 +781,13 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       }
     ],

@@ -742,6 +742,8 @@
       {
         "name": "Tendril",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and pass [Endure] or become Sickened (Cd8, +1 Fatigue each Round)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -759,6 +761,8 @@
       {
         "name": "Sickened",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened from Tendril</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -773,6 +777,13 @@
         ],
         "statuses": [
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd8",
+            "critDuration": ""
+          }
         ]
       }
     ],

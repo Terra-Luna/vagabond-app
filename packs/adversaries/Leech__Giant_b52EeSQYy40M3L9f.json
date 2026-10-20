@@ -734,6 +734,8 @@
       {
         "name": "Drain",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Restrained Being]: 2 (d4) healing this Being for the damage</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -751,6 +753,8 @@
       {
         "name": "Latch",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4) and Restrained if Medium or smaller</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "type": "physical",
           "dice": {

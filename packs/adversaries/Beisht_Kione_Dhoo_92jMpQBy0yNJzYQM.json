@@ -739,6 +739,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Restrained if it is Large or smaller. If this Being has a Target this way, it can only Bite the Restrained Target.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -753,11 +755,20 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Slam",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and shoved Prone if smaller than this Being.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -772,6 +783,13 @@
         ],
         "statuses": [
           "prone"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "prone",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

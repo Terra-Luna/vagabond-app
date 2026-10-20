@@ -751,6 +751,8 @@
       {
         "name": "Chill Touch",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch | Endure]: 3 (d6) and +1 Fatigue</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -768,6 +770,8 @@
       {
         "name": "Posession",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Will]: This Being gains control of the Target while it is alive, unless forced out by an effect that turns Undead or dispels magic</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,

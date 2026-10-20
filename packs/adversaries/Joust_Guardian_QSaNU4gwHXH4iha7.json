@@ -438,7 +438,9 @@
     "actions": [
       {
         "name": "Lance",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack, Near]:</strong></b><span style=\"white-space: pre-wrap;\"> 13 (2d12)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: 13 (2d12)</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 2,
@@ -455,7 +457,9 @@
       },
       {
         "name": "Cannon",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Ranged Attack (Sphere 10')]:</strong></b><span style=\"white-space: pre-wrap;\"> 11 (3d6)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack (Sphere 10')]: 11 (3d6)</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 3,
@@ -476,7 +480,9 @@
       "actions": [
         {
           "name": "Lance",
-          "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack, Near]:</strong></b><span style=\"white-space: pre-wrap;\"> 13 (2d12)</span></p>",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: 13 (2d12)</span></p>",
+          "type": "melee",
+          "range": "near",
           "damage": {
             "dice": {
               "count": 2,
@@ -494,7 +500,9 @@
         },
         {
           "name": "Cannon",
-          "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Ranged Attack (Sphere 10')]:</strong></b><span style=\"white-space: pre-wrap;\"> 11 (3d6)</span></p>",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack (Sphere 10')]: 11 (3d6)</span></p>",
+          "type": "ranged",
+          "range": "far",
           "damage": {
             "dice": {
               "count": 3,

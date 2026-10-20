@@ -738,6 +738,8 @@
       {
         "name": "Sabotage",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, a non-Relic Item in Near | Wielder's Endure] (1/Day): Breaks into materials.</span></p>",
+        "type": "cast",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 0,
@@ -766,7 +768,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

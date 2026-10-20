@@ -296,6 +296,8 @@
       {
         "name": "Spawn",
         "description": "<p><span style=\"white-space: pre-wrap;\">At the start of its Turn, roll d4. On a roll of 2 to 4, this Being spawns an Ally Being (d6, roll two and take the highest if this Being is at half HP or lower), which appears in the nearest open space:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">1 Giant Spider</span></p><p><span style=\"white-space: pre-wrap;\">2 Basilisk</span></p><p><span style=\"white-space: pre-wrap;\">3 Owl Bear</span></p><p><span style=\"white-space: pre-wrap;\">4 Rust Monster</span></p><p><span style=\"white-space: pre-wrap;\">5 Warp Beast</span></p><p><span style=\"white-space: pre-wrap;\">6 Gelatinous Cube</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

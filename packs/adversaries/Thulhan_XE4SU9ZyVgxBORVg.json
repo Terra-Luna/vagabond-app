@@ -737,6 +737,8 @@
       {
         "name": "Flay",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Paralyzed Target]: 5 (d8+1) Fatigue. If it dies to Fatigue this way, its brain is extracted.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -752,6 +754,8 @@
       {
         "name": "Mind Blast",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Cone Far | Will]: and Paralyzed (1 Round)</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 3,
@@ -767,11 +771,20 @@
         "statuses": [
           "paralyzed"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "round",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Tentacle",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Paralyzed Target]: and Restrained if Medium or smaller</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,

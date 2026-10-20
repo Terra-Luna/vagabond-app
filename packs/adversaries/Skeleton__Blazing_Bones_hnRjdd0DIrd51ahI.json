@@ -745,6 +745,8 @@
       {
         "name": "Hurl Fire",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Reflex]: 3 (d6) and Burning (Cd4)</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 1,
@@ -759,11 +761,20 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Grapple",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: Restrained</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -778,6 +789,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

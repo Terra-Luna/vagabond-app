@@ -749,6 +749,8 @@
       {
         "name": "Dominator",
         "description": "<p><span style=\"white-space: pre-wrap;\">2 Actions as below ([[r /d6]] to determine)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -764,6 +766,8 @@
       {
         "name": "Anti-Life Drain",
         "description": "<p><span style=\"white-space: pre-wrap;\">1. [Cast, Remote | Endure]: 10 (3d6) and this Being is healed equal to the damage</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 3,
@@ -781,6 +785,8 @@
       {
         "name": "Disintegrate",
         "description": "<p><span style=\"white-space: pre-wrap;\">2. [Cast, Remote | Endure]: 21 (6d6) and disintegrated if killed this way</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 6,
@@ -799,6 +805,8 @@
       {
         "name": "Raise",
         "description": "<p><span style=\"white-space: pre-wrap;\">3. [Cast, a corpse in Far]: Raised as a Zombie under this Being's control</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -814,6 +822,8 @@
       {
         "name": "Death Touch",
         "description": "<p><span style=\"white-space: pre-wrap;\">4. [Cast, Remote | Endure]: 5 (d10) and Paralyzed (Cd6)</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 1,
@@ -828,11 +838,20 @@
         ],
         "statuses": [
           "paralyzed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Fear",
         "description": "<p><span style=\"white-space: pre-wrap;\">5. [Cast, Aura Far | Will]: Frightened (Cd4)</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -847,11 +866,20 @@
         ],
         "statuses": [
           "frightened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "frightened",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Life Disruption",
         "description": "<p><span style=\"white-space: pre-wrap;\">6. [Cast, Aura Near | Endure]: 10 (3d6, half on pass) and +1 Fatigue</span></p>",
+        "type": "cast",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 3,

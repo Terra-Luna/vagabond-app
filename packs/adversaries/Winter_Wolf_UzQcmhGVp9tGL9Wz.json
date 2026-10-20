@@ -738,6 +738,8 @@
       {
         "name": "Frost Breath",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Close Aura | Endure]: 15 (6d4)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 6,
@@ -756,6 +758,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,

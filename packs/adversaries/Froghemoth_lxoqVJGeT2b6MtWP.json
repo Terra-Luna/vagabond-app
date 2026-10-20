@@ -750,11 +750,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Tentacle",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: 13 (3d8) and Restrained if smaller. It can't Restrain more than one Target at a time with the same Tentacle.</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 3,
@@ -769,11 +773,20 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Tongue",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: Restrained if smaller. If Restrained, it is pulled to Close, and this Being can make a Bite Attack against it.</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 0,
@@ -788,6 +801,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],
@@ -797,6 +817,8 @@
         {
           "name": "Tentacle",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: 13 (3d8) and Restrained if smaller. It can't Restrain more than one Target at a time with the same Tentacle.</span></p>",
+          "type": "melee",
+          "range": "near",
           "damage": {
             "dice": {
               "count": 3,
@@ -812,7 +834,14 @@
           "statuses": [
             "restrained"
           ],
-          "comboCount": 2
+          "comboCount": 2,
+          "appliedEffects": [
+            {
+              "effect": "restrained",
+              "duration": "continual",
+              "critDuration": ""
+            }
+          ]
         }
       ],
       "description": null

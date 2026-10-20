@@ -736,6 +736,8 @@
       {
         "name": "Web Shot",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -751,11 +753,20 @@
         "statuses": [
           "restrained"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -773,6 +784,8 @@
       {
         "name": "Bite Effect",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -788,6 +801,18 @@
         "statuses": [
           "paralyzed",
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "continual",
+            "critDuration": ""
+          },
+          {
+            "effect": "sickened",
+            "duration": "Cd8",
+            "critDuration": ""
+          }
         ]
       }
     ],

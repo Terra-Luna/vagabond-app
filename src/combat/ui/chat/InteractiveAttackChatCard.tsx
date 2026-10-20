@@ -151,8 +151,8 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                                     }}
                                                 />}
 
-                                            {((attack instanceof AdversaryAttack && attack.statuses.length > 0) ||
-                                                (attack instanceof AdversaryComboAttack && attack.subAttacks.some(sub => sub.statuses.length > 0))) &&
+                                            {((attack instanceof AdversaryAttack && attack.appliedEffects.length > 0) ||
+                                                (attack instanceof AdversaryComboAttack && attack.subAttacks.some(sub => sub.appliedEffects.length > 0))) &&
                                                 <InteractiveChatCardButton label={appLang.Combat.applyStatuses} tooltip={appLang.Combat.applyStatusesTooltip}
                                                     fn={async () => {
                                                         await attack.applyStatusesAndResolve({ gmTargetsOnly: targetsToggle }, serializeAttack)

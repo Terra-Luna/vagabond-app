@@ -752,11 +752,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Tendril",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Grapple, Far]: Restrained and pulled Close</span><br><br><span style=\"white-space: pre-wrap;\">Tendrils: Starts with 6. Targeting one causes a -4 penalty to the Check, but severs it if at least 4 damage is dealt.</span></p>",
+        "type": "melee",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -771,6 +775,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],
@@ -792,11 +803,15 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Tendril",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Grapple, Far]: Restrained and pulled Close</span><br><br><span style=\"white-space: pre-wrap;\">Tendrils: Starts with 6. Targeting one causes a -4 penalty to the Check, but severs it if at least 4 damage is dealt.</span></p>",
+          "type": "melee",
+          "range": "far",
           "damage": {
             "dice": {
               "count": 0,
@@ -812,7 +827,14 @@
           "statuses": [
             "restrained"
           ],
-          "comboCount": 1
+          "comboCount": 1,
+          "appliedEffects": [
+            {
+              "effect": "restrained",
+              "duration": "continual",
+              "critDuration": ""
+            }
+          ]
         }
       ],
       "description": "per tendril"

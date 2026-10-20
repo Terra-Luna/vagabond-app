@@ -740,6 +740,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: and pass [Endure] with a -3 penalty or be Sickened (Cd4, Paralyzed).</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 2,
@@ -757,6 +759,8 @@
       {
         "name": "Sickened",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened from Bite</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -772,6 +776,18 @@
         "statuses": [
           "paralyzed",
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "continual",
+            "critDuration": ""
+          },
+          {
+            "effect": "sickened",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       }
     ],

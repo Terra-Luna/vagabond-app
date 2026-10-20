@@ -735,6 +735,8 @@
       {
         "name": "Nymph's Kiss",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch | Will]: Cursed (Cd8 Rounds, and can only breathe water).</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

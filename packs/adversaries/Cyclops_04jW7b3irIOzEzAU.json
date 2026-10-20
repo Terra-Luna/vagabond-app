@@ -734,6 +734,8 @@
       {
         "name": "Greatclub",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, 10']</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -751,6 +753,8 @@
       {
         "name": "Rock",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 2,

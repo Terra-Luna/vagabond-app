@@ -737,7 +737,9 @@
     "actions": [
       {
         "name": "Shapechange",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Self (Focus)] (1/Minute): Appears to be a Being of humanoid form it has seen.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Doppelgäng:</strong></b><span style=\"white-space: pre-wrap;\"> Enemy Abilities treat this Being as an Ally while they are convinced it is an Ally.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Self (Focus)] (1/Minute): Appears to be a Being of humanoid form it has seen.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Doppelgäng: Enemy Abilities treat this Being as an Ally while they are convinced it is an Ally.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -764,7 +766,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

@@ -736,6 +736,8 @@
       {
         "name": "Snakebite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and pass [Endure] or be Sickened (drops to 0 HP).</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -754,6 +756,8 @@
       {
         "name": "Sickened",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -768,6 +772,13 @@
         ],
         "statuses": [
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       },
       {
@@ -784,7 +795,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

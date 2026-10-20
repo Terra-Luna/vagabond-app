@@ -747,11 +747,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Leech",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Endure]: 3 (d6) and Sickened (Cd6, any healing that affects it heals this Being instead)</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -766,6 +770,13 @@
         ],
         "statuses": [
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       }
     ],

@@ -740,6 +740,8 @@
       {
         "name": "Whorl",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: 2 (d4) and Sickened (Cd4 damage)</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 1,
@@ -754,6 +756,13 @@
         ],
         "statuses": [
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       }
     ],

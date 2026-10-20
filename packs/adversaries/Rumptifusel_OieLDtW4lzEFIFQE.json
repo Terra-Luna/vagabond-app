@@ -738,6 +738,8 @@
       {
         "name": "Drain",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Restrained Target]: 2 (d4) and this Being is healed for the damage dealt</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -755,6 +757,8 @@
       {
         "name": "Cloak",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: Restrained</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">While it has a Target Restrained, any damage dealt to it is halved and also dealt to the Target.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -769,6 +773,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

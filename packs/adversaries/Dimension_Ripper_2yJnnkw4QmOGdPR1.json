@@ -743,6 +743,8 @@
       {
         "name": "Temporal Lock",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Sight | Will]: Paralyzed (Cd4)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -758,7 +760,14 @@
         "statuses": [
           "paralyzed"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Claw",
@@ -774,7 +783,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Bite",
@@ -790,7 +801,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {
@@ -811,7 +824,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 2
+          "comboCount": 2,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Bite",
@@ -828,7 +843,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

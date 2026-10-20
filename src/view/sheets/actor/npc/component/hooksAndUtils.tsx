@@ -4,6 +4,7 @@ import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRoll
 import { RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPowers"
 import { AdversaryAttack, SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
 import { AdversaryComboAttack, ComboSubAttackArgs } from "../../../../../combat/engine/AdversaryComboAttack"
+import { AppliedFx } from "../../../../../combat/engine/Attack"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
@@ -25,12 +26,12 @@ export const onClickAction = async (
     dmgType?: string,
     dice?: DiceRollSchema,
     saveTypes?: SavingThrowType[],
-    statuses?: string[]
+    appliedEffects?: AppliedFx[]
 ) => {
     if (dice) {
         const attack = AdversaryAttack.build(
             npc.parent,
-            { attackName: name, dmgType: dmgType ?? 'physical', dice: [new DiceRoll(dice)], saveTypes, description, statuses },
+            { attackName: name, dmgType: dmgType ?? 'physical', dice: [new DiceRoll(dice)], saveTypes, description, appliedEffects },
             getTargetIds()
         )
         await attack.initiate()
@@ -54,22 +55,37 @@ export const onClickActionAsWeaponAttack = async (actor: Actor & { system: HeroD
         )
         : undefined
 
+    /**
+     * Translate the Npc Action into the general shape of a Weapon so it can be used for a Hero Attack.
+     */
     const weapon = {
         id: action.id,
         name: action.name,
         img: "/icons/creatures/claws/claw-straight-orange.webp",
         system: {
             damage: action.damage,
-            statuses: action.statuses,
+            appliedEffects: action.appliedEffects ?? [],
+            relicPowers: relicPower ? [relicPower] : [],
+            properties: [],
             skills: actor.system.modifiers.polymorph.useCastSkill
                 ? [actor.system.class.castingSkill]
-                : (action.type === 'melee' ? ['melee', 'brawl'] : ['ranged']),
-            properties: ['polymorph'],
-            relicPowers: relicPower ? [relicPower] : []
+                : (action.type === 'melee'
+                    ? ['melee', 'brawl']
+                    : (action.type === 'ranged'
+                        ? ['ranged']
+                        : [actor.system.class.castingSkill ?? ""]
+                    )
+                )
         }
     }
-    const attack = HeroAttack.buildWeaponAttack(actor, weapon as any)
-    await attack.initiate(e)
+
+    if (weapon.system.skills.length > 0) {
+        const attack = HeroAttack.buildWeaponAttack(actor, weapon as any)
+        await attack.initiate(e)
+    }
+    else {
+        ui.notifications?.warn("No valid skills available for this polymorph attack.")
+    }
 }
 
 export const onClickActionCombo = async (npc: AdversaryDataModel | NpcDataModel) => {
@@ -85,7 +101,7 @@ export const onClickActionCombo = async (npc: AdversaryDataModel | NpcDataModel)
                 dmgType: act.damage.type,
                 dice: [new DiceRoll(act.damage.dice as any)],
                 saveTypes: act.saves as SavingThrowType[],
-                statuses: act.statuses as string[]
+                appliedEffects: act.appliedEffects as AppliedFx[]
             })
         }
     }

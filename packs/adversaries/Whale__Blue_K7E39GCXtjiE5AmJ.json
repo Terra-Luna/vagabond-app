@@ -736,6 +736,8 @@
       {
         "name": "Slam",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 39 (6d12)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 6,

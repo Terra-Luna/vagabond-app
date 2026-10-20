@@ -737,6 +737,8 @@
       {
         "name": "Death Glare",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Sight (a Frightened Being) | Will] (3/Day): and ([[/r d4#Death Glare: Fatigue]]) Fatigue</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -765,7 +767,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

@@ -734,6 +734,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -751,6 +753,8 @@
       {
         "name": "Tongue",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near (Medium or smaller Being)]: Restrained and pulled Close</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 0,
@@ -765,6 +769,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

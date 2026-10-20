@@ -746,6 +746,8 @@
       {
         "name": "Pop!",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action (Cd4 after having a Being Restrained), Aura Near | Reflex]: 3 (d6). Further, all Close Viskyd Allies also Pop</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 1,
@@ -764,6 +766,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Restrained if Medium or smaller</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,

@@ -755,7 +755,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Headbutt",
@@ -771,7 +773,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {
@@ -792,7 +796,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 2
+          "comboCount": 2,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Headbutt",
@@ -809,7 +815,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

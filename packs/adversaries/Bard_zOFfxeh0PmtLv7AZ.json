@@ -734,6 +734,8 @@
       {
         "name": "Insipring Anthem",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action]: Grants all of its Allies who can hear it Favor on their next healing roll, Save, or damage roll this Round.</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -744,10 +746,13 @@
           "type": "none"
         },
         "saves": [],
+        "halfDamageOnSave": false,
         "statuses": []
       },
       {
         "name": "Rapier",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -760,6 +765,7 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
         "statuses": []
       }
     ],
@@ -878,9 +884,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.31",
+    "systemVersion": "0.2.93",
     "createdTime": 1790178691617,
-    "modifiedTime": 1790179565523,
+    "modifiedTime": 1792464372773,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

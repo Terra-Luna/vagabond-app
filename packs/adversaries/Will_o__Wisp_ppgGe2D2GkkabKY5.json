@@ -747,6 +747,8 @@
       {
         "name": "Life Zap",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch | Endure]: and heals this Being for the damage dealt</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -764,6 +766,8 @@
       {
         "name": "Dissipate",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Self (Focus)]: Invisible for the duration.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

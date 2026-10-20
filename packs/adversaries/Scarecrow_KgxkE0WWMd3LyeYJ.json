@@ -858,6 +858,8 @@
       {
         "name": "Scream",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, any Being who can hear it | Will]: Frightened ([[/r Cd4]], Paralyzed if failed by 5 or more)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

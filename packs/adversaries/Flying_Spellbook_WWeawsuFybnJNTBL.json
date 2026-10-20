@@ -347,7 +347,9 @@
     "actions": [
       {
         "name": "Freeze",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Remote | Endure] (Recharge Cd4):</strong></b><span style=\"white-space: pre-wrap;\"> 3 (d6) and its Speed is reduced by 10' (Cd4).</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Endure] (Recharge Cd4): 3 (d6) and its Speed is reduced by 10' (Cd4).</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 1,
@@ -365,7 +367,9 @@
       },
       {
         "name": "Zap",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Bolt | Reflex] (Recharge Cd4):</strong></b><span style=\"white-space: pre-wrap;\"> 3 (d6) and Dazed (Cd4)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Bolt | Reflex] (Recharge Cd4): 3 (d6) and Dazed (Cd4)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -381,7 +385,14 @@
         "statuses": [
           "dazed"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "dazed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       }
     ],
     "combo": {

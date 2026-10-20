@@ -734,6 +734,8 @@
       {
         "name": "Lignting Bolt",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 30-foot Line | Reflex] (2/Day): 10 (3d6) and Dazed (Cd4, or Cd6 if failed as a 1)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -748,11 +750,20 @@
         ],
         "statuses": [
           "dazed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "dazed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Fireball",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 20-foot Sphere | Reflex] (2/Day): 10 (3d6) and Burning (Cd4, or Cd6 if failed as a 1)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -767,11 +778,20 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Blizzard",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 20-foot Sphere | Endure] (Focus, 2/Day): 10 (3d6) and filling the area with snow (Difficult Terrain)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -789,6 +809,8 @@
       {
         "name": "Firebolt",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Reflex]: 7 (2d6) and Burning (Cd4, or Cd6 if failed as a 1)</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 2,
@@ -803,11 +825,20 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Ice Knife",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Bolt | Reflex] (Focus): 7 (2d6) and its Speed is reduced by half for the duration</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -825,6 +856,8 @@
       {
         "name": "Zap",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Bolt | Reflex]: 7 (2d6) and Dazed (Cd4, or Cd6 if failed as a 1)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -839,6 +872,13 @@
         ],
         "statuses": [
           "dazed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "dazed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       }
     ],

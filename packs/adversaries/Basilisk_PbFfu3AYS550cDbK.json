@@ -736,6 +736,8 @@
       {
         "name": "Gaze",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, a Being looking at it | Endure]: Cursed (Continual, turned to stone)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -751,11 +753,20 @@
         "statuses": [
           "paralyzed"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "continual",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (d10) and pass an [Endure] Save</span></p><p><span style=\"white-space: pre-wrap;\">or be Cursed (Continual, turned to stone)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -773,6 +784,8 @@
       {
         "name": "Stone",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or turned to stone.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -787,6 +800,13 @@
         ],
         "statuses": [
           "paralyzed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

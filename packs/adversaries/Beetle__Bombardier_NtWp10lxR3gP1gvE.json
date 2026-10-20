@@ -734,6 +734,8 @@
       {
         "name": "Noxious Gas",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Attack, Cone 10' | Endure]: 7 (2d6), half on pass and not a Crit.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -752,6 +754,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "faces": 6,

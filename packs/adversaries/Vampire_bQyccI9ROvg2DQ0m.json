@@ -747,6 +747,8 @@
       {
         "name": "Enthrall",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, all Beings that can see it | Will] (Recharge Cd6): Target is Charmed (Cd6) and must do all it can to defend this Being. A Target that passes the Save is immune to this for 1 Day.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -761,11 +763,20 @@
         ],
         "statuses": [
           "charmed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "charmed",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Claw",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (3d4)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -783,6 +794,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6) and this Being is healed for the damage dealt. A Being that takes damage from this attack must pass [Endure] or be Cursed with Vampirism.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -800,6 +813,8 @@
       {
         "name": "Vampire's Curse",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or cursed with Vampirism.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -821,6 +836,8 @@
         {
           "name": "Claw",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (3d4)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 3,
@@ -839,6 +856,8 @@
         {
           "name": "Bite",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6) and this Being is healed for the damage dealt. A Being that takes damage from this attack must pass [Endure] or be Cursed with Vampirism.</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 2,

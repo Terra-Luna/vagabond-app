@@ -734,6 +734,8 @@
       {
         "name": "Death Ray",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Endure]: 24 (8d6) and +1 Fatigue</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 8,
@@ -752,6 +754,8 @@
       {
         "name": "Tail",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) and pass an [Endure] Save or knocked Prone and be Dazed for 1 Round.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -769,6 +773,8 @@
       {
         "name": "Knock-down",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or knocked Prone and Dazed for 1 Round.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -784,6 +790,18 @@
         "statuses": [
           "dazed",
           "prone"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "dazed",
+            "duration": "round",
+            "critDuration": ""
+          },
+          {
+            "effect": "prone",
+            "duration": "round",
+            "critDuration": ""
+          }
         ]
       }
     ],

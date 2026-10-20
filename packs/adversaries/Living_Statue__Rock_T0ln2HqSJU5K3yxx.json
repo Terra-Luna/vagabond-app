@@ -858,7 +858,9 @@
     "actions": [
       {
         "name": "Magma Jet",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Ranged Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 7 (2d6) and Burning (Cd6)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 7 (2d6) and Burning (Cd6)</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 2,
@@ -879,7 +881,9 @@
       "actions": [
         {
           "name": "Magma Jet",
-          "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Ranged Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 7 (2d6) and Burning (Cd6)</span></p>",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 7 (2d6) and Burning (Cd6)</span></p>",
+          "type": "ranged",
+          "range": "far",
           "damage": {
             "dice": {
               "count": 2,

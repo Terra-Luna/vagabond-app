@@ -736,6 +736,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6) and pass [Endure] or</span></p><p><span style=\"white-space: pre-wrap;\">become Sickened (Cd4, +1 Fatigue each Round).</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -753,6 +755,8 @@
       {
         "name": "Sicken",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -767,6 +771,13 @@
         ],
         "statuses": [
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       }
     ],

@@ -739,6 +739,8 @@
       {
         "name": "Animate Trees",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, a tree in Far] (Focus): The tree acts as a Treant, though it has a Speed of 10' and doesn't have this Animate Trees Action.</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -765,7 +767,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {
@@ -786,7 +790,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 2
+          "comboCount": 2,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

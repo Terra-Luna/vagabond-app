@@ -751,6 +751,8 @@
       {
         "name": "Pseudopod",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Restrained</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -765,6 +767,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

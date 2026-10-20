@@ -746,6 +746,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Sickened (Cd4, Unconscious and +1 Fatigue each Round). If failed by 5 or more, it is also Restrained (5 ([[/r 2d4]]) each Round)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -761,11 +763,25 @@
         "statuses": [
           "sickened",
           "unconscious"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd4",
+            "critDuration": ""
+          },
+          {
+            "effect": "unconscious",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Restoration",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch]: Regain 10 (3d6) HP</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -781,6 +797,8 @@
       {
         "name": "Shapechange",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Self] (Focus): Polymorphs into a Medium or smaller Being. It uses its own Statblock.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

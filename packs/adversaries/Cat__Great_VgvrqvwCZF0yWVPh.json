@@ -736,6 +736,8 @@
       {
         "name": "Claws",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -753,6 +755,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (d10)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "faces": 10,
@@ -774,6 +778,8 @@
         {
           "name": "Claws",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,
@@ -792,6 +798,8 @@
         {
           "name": "Bite",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (d10)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,

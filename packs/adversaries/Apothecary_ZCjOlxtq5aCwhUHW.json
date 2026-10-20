@@ -734,6 +734,8 @@
       {
         "name": "Health Potion",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Use] (2/Shift): Regain 4 (d6+1) HP</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -749,6 +751,8 @@
       {
         "name": "Panacea",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Use] (1/Shift): Cured of Blinded or Sickened.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -764,6 +768,8 @@
       {
         "name": "Crossbow",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 2 (d4)</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 1,

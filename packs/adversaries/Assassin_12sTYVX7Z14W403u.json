@@ -745,11 +745,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Sneak Attack",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ability] (1/Turn): It deals 2 (d4) additional damage with an attack against a Vulnerable Target. This attack ignores Armor and can Explode.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,

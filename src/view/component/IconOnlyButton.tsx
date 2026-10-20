@@ -4,7 +4,7 @@ import { ReactNode } from "react"
 export const IconOnlyButton = ({ Icon, className, colorClassName, ...rest }: { Icon: (props: Partial<LucideProps>) => ReactNode, className?: string, colorClassName?: string } & Partial<LucideProps> & React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) => {
     return <button
         type="button"
-        className={`${className} cursor-pointer`}
+        className={`${className} cursor-pointer hover-glow`}
         {...rest}
     >
         <Icon className={colorClassName} {...rest} />

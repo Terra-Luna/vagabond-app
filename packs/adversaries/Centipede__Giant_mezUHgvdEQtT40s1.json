@@ -733,6 +733,8 @@
     "actions": [
       {
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: Pass [Endure] or become Sickened (Cd4, Paralyzed)</span></p>",
+        "type": "melee",
+        "range": "close",
         "name": "Bite",
         "saves": [
           "reflex"

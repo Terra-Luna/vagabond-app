@@ -746,6 +746,8 @@
       {
         "name": "Resurrect",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, the corpse of an Ally it is Touching] (1/Day): Revived at Full HP with 0 Fatigue</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 20,
@@ -772,7 +774,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Beak",
@@ -788,11 +792,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Fiery Revival",
         "description": "<p><span style=\"white-space: pre-wrap;\">(1/Day): If it dies, a ball of fire erupts out from it as a Near Aura. All within must pass a [Reflex] Save or take 55 (d10×10) and be Burning (Cd6). This fire is divine, and ignores Immune to Fire. This Being is than revived in 1 Round at full HP. It will always try to flee until this Ability refreshes.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 10,
@@ -826,7 +834,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 2
+          "comboCount": 2,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Beak",
@@ -843,7 +853,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

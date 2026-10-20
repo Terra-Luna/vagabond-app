@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Heart, Plus, Shield, Trash2 } from "lucide-react"
+import { ChevronLeft, ChevronRight, Heart, Plus, Shield } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
 import { ActiveEffectsView } from "../../../../../apps/active-effects/ActiveEffectsView"
@@ -15,8 +15,10 @@ import { CardSubHeader } from "../../../../component/CardSubHeader"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableNameField, EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
+import { IconOnlyButton } from "../../../../component/IconOnlyButton"
 import { DamageTypeIconDisplay, OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
 import { Tooltip } from "../../../../component/Tooltip"
+import { TrashButton } from "../../../../component/TrashButton"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -332,40 +334,33 @@ const SpeedsEditor = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
     const nextType = Object.keys(appLang.Movement).find(t => !usedTypes.includes(t)) ?? 'walk'
 
     return (
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col items-center">
             {speeds.map((speed, index) => (
                 <div key={index} className="flex items-center gap-x-0.5">
-                    <input
-                        type="number"
-                        className="w-12 text-center"
-                        defaultValue={speed.value}
-                        onBlur={e => {
-                            const value = Number(e.target.value)
-                            if (Number.isNaN(value) || value === speed.value) return
+                    <NumericCounterInput
+                        value={speed.value}
+                        incrementBy={5}
+                        valueAppend="'"
+                        onChange={(value: number) => {
+                            if (value === speed.value) return
                             saveSpeeds(speeds.map((s, i) => i === index ? { ...s, value } : s))
                         }}
                     />
                     <DropDown
-                        options={createDropdownEntries(appLang.Movement)}
                         value={speed.type}
+                        options={createDropdownEntries(appLang.Movement)}
                         updateMechanism={{ onChange: (type: string) => saveSpeeds(speeds.map((s, i) => i === index ? { ...s, type } : s)) }}
                     />
-                    <button
-                        className="cursor-pointer hover-glow"
-                        title="Remove"
-                        onClick={() => saveSpeeds(speeds.filter((_, i) => i !== index))}
-                    >
-                        <Trash2 size={14} />
-                    </button>
+                    <IconOnlyButton
+                        Icon={Plus}
+                        size={16}
+                        title={appLang.ButtonActions.add}
+                        onClick={() => saveSpeeds([...speeds, { value: 30, type: nextType }])}
+                    />
+
+                    <TrashButton onClick={() => saveSpeeds(speeds.filter((_, i) => i !== index))} />
                 </div>
             ))}
-            <button
-                className="cursor-pointer hover-glow"
-                title="Add"
-                onClick={() => saveSpeeds([...speeds, { value: 30, type: nextType }])}
-            >
-                <Plus size={16} />
-            </button>
         </div>
     )
 }

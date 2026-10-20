@@ -748,11 +748,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Major Invisibility",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Self](Focus): It can magically become Invisible during its Turn (no Action).</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

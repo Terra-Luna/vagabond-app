@@ -734,6 +734,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Restrained Target]: 3 (d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -750,6 +752,8 @@
       },
       {
         "description": "<p><span style=\"white-space: pre-wrap;\">[Grapple]: 9 (2d8) and Restrained</span></p>",
+        "type": "melee",
+        "range": "close",
         "name": "Constrict",
         "damage": {
           "type": "physical",
@@ -765,6 +769,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],
@@ -774,6 +785,8 @@
         {
           "name": "Bite",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Restrained Target]: 3 (d6)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,
@@ -792,6 +805,8 @@
         {
           "name": "Constrict",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Grapple]: 9 (2d8) and Restrained</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 2,
@@ -807,7 +822,14 @@
           "statuses": [
             "restrained"
           ],
-          "comboCount": 1
+          "comboCount": 1,
+          "appliedEffects": [
+            {
+              "effect": "restrained",
+              "duration": "continual",
+              "critDuration": ""
+            }
+          ]
         }
       ],
       "description": null

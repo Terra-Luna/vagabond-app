@@ -736,6 +736,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4) and pass [Endure] or become Sickened (Cd6 days)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "type": "physical",
           "dice": {

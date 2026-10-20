@@ -439,7 +439,9 @@
     "actions": [
       {
         "name": "Bite",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 3 (d6)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -456,7 +458,9 @@
       },
       {
         "name": "Claw",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">Claw [Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 1 (d3)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Claw [Melee Attack]: 1 (d3)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -477,7 +481,9 @@
       "actions": [
         {
           "name": "Bite",
-          "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 3 (d6)</span></p>",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,
@@ -495,7 +501,9 @@
         },
         {
           "name": "Claw",
-          "description": "<p><b><strong style=\"white-space: pre-wrap;\">Claw [Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 1 (d4)</span></p>",
+          "description": "<p><span style=\"white-space: pre-wrap;\">Claw [Melee Attack]: 1 (d4)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,

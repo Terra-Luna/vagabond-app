@@ -736,6 +736,8 @@
       {
         "name": "Choke",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4) and Restrained (Suffocating)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -751,6 +753,18 @@
         "statuses": [
           "restrained",
           "suffocating"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          },
+          {
+            "effect": "suffocating",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

@@ -745,11 +745,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Rally",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action]: Grants its Allies who hear it a d4 bonus to</span></p><p><span style=\"white-space: pre-wrap;\">their damage rolls and Will Saves for 1 Round.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

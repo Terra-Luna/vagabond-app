@@ -749,6 +749,8 @@
       {
         "name": "Strike",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 13 (3d8) plus 13 (3d8) if in water</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,

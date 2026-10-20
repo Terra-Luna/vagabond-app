@@ -737,7 +737,9 @@
     "actions": [
       {
         "name": "Call Terror",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast] (1/Day): Terror-Bound Being arrives in [[/r Cd4#Call Terror]]</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Terror-Bound:</strong></b><span style=\"white-space: pre-wrap;\"> It is bound to a terror of the sea, such as a @UUID[Compendium.vagabond-app.adversaries.Actor.92jMpQBy0yNJzYQM]{beisht kione dhoo}, @UUID[Compendium.vagabond-app.adversaries.Actor.m7Aq8R7JKiKdo7sd]{kraken}, or @UUID[Compendium.vagabond-app.adversaries.Actor.WSaQBNyMyuOV2rTh]{sea serpent}.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast] (1/Day): Terror-Bound Being arrives in [[/r Cd4#Call Terror]]</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Terror-Bound: It is bound to a terror of the sea, such as a @UUID[Compendium.vagabond-app.adversaries.Actor.92jMpQBy0yNJzYQM]{beisht kione dhoo}, @UUID[Compendium.vagabond-app.adversaries.Actor.m7Aq8R7JKiKdo7sd]{kraken}, or @UUID[Compendium.vagabond-app.adversaries.Actor.WSaQBNyMyuOV2rTh]{sea serpent}.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -764,11 +766,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Storm Bringer",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast] (1/Day): A storm stirs out to 1 mile from it, and lasts for Cd4 hours.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

@@ -747,6 +747,8 @@
       {
         "name": "Energy Drain",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch]: 3 (d6), which also reduces its Maximum HP until it spends 1 Shift in Sunlight</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,

@@ -748,6 +748,8 @@
       {
         "name": "Consume",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure]: Beings in its space are Burning ([[/r 2d8#Consumed]]). A Being that dies this way is dissolved, and becomes another green slime</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,

@@ -859,6 +859,8 @@
       {
         "name": "Slam",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: 21 (6d6) and Prone</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 6,
@@ -876,6 +878,8 @@
       {
         "name": "Laser",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack] (Recharge Cd4): 14 (4d6)</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 4,

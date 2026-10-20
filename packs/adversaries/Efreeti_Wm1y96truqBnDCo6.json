@@ -739,6 +739,8 @@
       {
         "name": "Wall of Fire",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 60' Line | Reflex] (3/Day, Focus): Burning ([[/r d6]], while in the flames).</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -756,6 +758,8 @@
       {
         "name": "Conjure Object",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Reflex] (3/Day): An Object no larger than 10'×10' is created. Objects made this way composed of metal or stone disappear after one day.</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -782,11 +786,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Invisibility",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch | Will] (Focus): Turns Invisible for the duration.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -801,6 +809,13 @@
         ],
         "statuses": [
           "invisible"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "invisible",
+            "duration": "focus",
+            "critDuration": ""
+          }
         ]
       }
     ],

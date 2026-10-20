@@ -736,6 +736,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, a Paralyzed Target]: 3 (d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -751,6 +753,8 @@
       {
         "name": "Tentacle",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] or become Sickened (Cd6, Paralyzed)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -768,6 +772,8 @@
       {
         "name": "Paralyze",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened (Cd6, Paralyzed)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -783,6 +789,18 @@
         "statuses": [
           "paralyzed",
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "Cd6",
+            "critDuration": ""
+          },
+          {
+            "effect": "sickened",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       }
     ],

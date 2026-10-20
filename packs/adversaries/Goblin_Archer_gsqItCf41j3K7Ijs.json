@@ -736,6 +736,8 @@
       {
         "name": "Shortbow",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 1,

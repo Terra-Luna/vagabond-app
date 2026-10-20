@@ -854,6 +854,8 @@
     "actions": [
       {
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8)</span></p>",
+        "type": "melee",
+        "range": "close",
         "name": "Slam",
         "damage": {
           "dice": {

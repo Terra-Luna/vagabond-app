@@ -748,6 +748,8 @@
       {
         "name": "Claw",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 4,
@@ -776,11 +778,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and the Target loses a limb of its choice if failed by 10 or more</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 5,
@@ -798,6 +804,8 @@
       {
         "name": "Tail",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: and shoved Prone</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 3,
@@ -812,6 +820,13 @@
         ],
         "statuses": [
           "prone"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "prone",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],
@@ -821,6 +836,8 @@
         {
           "name": "Claw",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]</span></p>",
+          "type": "melee",
+          "range": "near",
           "damage": {
             "dice": {
               "count": 4,
@@ -851,11 +868,15 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Bite",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and the Target loses a limb of its choice if failed by 10 or more</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 5,
@@ -874,6 +895,8 @@
         {
           "name": "Tail",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: and shoved Prone</span></p>",
+          "type": "melee",
+          "range": "near",
           "damage": {
             "dice": {
               "count": 3,
@@ -889,7 +912,14 @@
           "statuses": [
             "prone"
           ],
-          "comboCount": 1
+          "comboCount": 1,
+          "appliedEffects": [
+            {
+              "effect": "prone",
+              "duration": "continual",
+              "critDuration": ""
+            }
+          ]
         }
       ],
       "description": null

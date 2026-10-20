@@ -739,6 +739,8 @@
       {
         "name": "Fire Breath",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Near Cone | Reflex or Endure]</span></p>",
+        "type": "cast",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 3,
@@ -757,6 +759,8 @@
       {
         "name": "Spike",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -785,7 +789,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

@@ -747,6 +747,8 @@
       {
         "name": "Flame",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 13 (3d8) and Burning (Cd8)</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 3,
@@ -761,6 +763,13 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd8",
+            "critDuration": ""
+          }
         ]
       }
     ],

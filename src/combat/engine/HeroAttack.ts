@@ -10,7 +10,7 @@ import { appLang } from "../../utils/lang"
 import { getTargetIds, inventoryItemTypes } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
-import { Attack } from "./Attack"
+import { AppliedFx, Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
 import { SkillCheck, type SkillCheckResult, type SkillCheckType } from "./roll/SkillCheck"
@@ -508,6 +508,12 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
                 attack.title = defenseWeapons.map(it => it.name).join(' & ')
                 attack.damageRoll?.dice.push(...rolls.flatMap(r => r.damageRoll?.dice ?? []))
             }
+        }
+
+        // Weapons have no applied effects of their own; polymorph actions supply them.
+        const weaponEffects: AppliedFx[] | undefined = item.system["appliedEffects"]
+        if (weaponEffects?.length) {
+            attack.appliedEffects = weaponEffects.map(eff => ({ ...eff, damageType: weapon.damage.type }))
         }
 
         return attack

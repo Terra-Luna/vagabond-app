@@ -746,6 +746,8 @@
       {
         "name": "Boom!",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action, Aura Near | Reflex]: 7 (2d6) and pass</span></p><p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened (Cd4 damage). This Being dies.</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 2,
@@ -763,6 +765,8 @@
       {
         "name": "Sicken",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened (Cd4 damage).</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -777,6 +781,13 @@
         ],
         "statuses": [
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       }
     ],

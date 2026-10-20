@@ -734,6 +734,8 @@
       {
         "name": "Drain",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action, a Restrained Being]: 5 (2d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -749,6 +751,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4) and Restrained.</span></p>",
+        "type": "melee",
+        "range": "close",
         "statuses": [
           "restrained"
         ],
@@ -763,6 +767,13 @@
         },
         "saves": [
           "reflex"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

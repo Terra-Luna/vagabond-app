@@ -740,6 +740,8 @@
       {
         "name": "Terror Glare",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Sight | Will] (1/Day): Frightened (Cd4, Paralyzed)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -755,11 +757,25 @@
         "statuses": [
           "frightened",
           "paralyzed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "frightened",
+            "duration": "Cd4",
+            "critDuration": ""
+          },
+          {
+            "effect": "paralyzed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Claw",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) plus 9 ([[/r 2d8]]) if failed by 5 or more</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,

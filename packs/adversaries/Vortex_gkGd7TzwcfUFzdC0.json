@@ -747,6 +747,8 @@
       {
         "name": "Whirlwind",
         "description": "<p><span style=\"white-space: pre-wrap;\">Medium or smaller Close Beings must pass [Endure] against being Restrained at the start of their Turns or be thrown 25 ([[/r 5d10]])' in the air.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -761,6 +763,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

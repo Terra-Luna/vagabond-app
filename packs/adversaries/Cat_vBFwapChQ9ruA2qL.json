@@ -748,6 +748,8 @@
           "reflex"
         ],
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 1</span></p>",
+        "type": "melee",
+        "range": "close",
         "statuses": []
       }
     ],

@@ -739,6 +739,8 @@
       {
         "name": "Claw",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack 10']</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -756,6 +758,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and pass [Endure] or Sickened (Cd6 per Round, Dazed for Cd4 after the Status ends).</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -773,6 +777,8 @@
       {
         "name": "Sickened",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -787,6 +793,13 @@
         ],
         "statuses": [
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       }
     ],
@@ -796,6 +809,8 @@
         {
           "name": "Claw",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack 10']</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 3,
@@ -814,6 +829,8 @@
         {
           "name": "Bite",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and pass [Endure] or Sickened (Cd6 per Round, Dazed for Cd4 after the Status ends).</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 3,

@@ -739,6 +739,8 @@
       {
         "name": "Stinger",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack] (1/Day): 1 (d3) and pass [Endure] or become Sickened (Cd4, Unconscious)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -756,6 +758,8 @@
       {
         "name": "Sickened",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -771,6 +775,18 @@
         "statuses": [
           "sickened",
           "unconscious"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd4",
+            "critDuration": ""
+          },
+          {
+            "effect": "unconscious",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
@@ -787,7 +803,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

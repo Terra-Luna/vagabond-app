@@ -734,6 +734,8 @@
       {
         "name": "Claw",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8) and Restrained if smaller.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -755,6 +757,8 @@
         {
           "name": "Claw",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8) and Restrained if smaller.</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 2,

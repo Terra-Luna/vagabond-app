@@ -740,6 +740,8 @@
       {
         "name": "Slam",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8) and Restrained and Suffocating if it's this Being's second Slam attack to hit it this Turn, and the Target is this Being's size or smaller</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -761,6 +763,8 @@
         {
           "name": "Slam",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8) and Restrained and Suffocating if it's this Being's second Slam attack to hit it this Turn, and the Target is this Being's size or smaller</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 2,

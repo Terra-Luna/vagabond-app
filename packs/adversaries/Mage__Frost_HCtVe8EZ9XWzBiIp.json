@@ -734,6 +734,8 @@
       {
         "name": "Blizzard",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 20-foot Sphere | Endure] (Focus, 1/Day): 10 (3d6) and filling the area with snow (Difficult terrain)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -751,6 +753,8 @@
       {
         "name": "Ice Knife",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Bolt | Reflex] (Focus): 7 (2d6) and its Speed is reduced by half for the duration</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,

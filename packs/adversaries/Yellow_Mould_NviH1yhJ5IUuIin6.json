@@ -757,6 +757,8 @@
       {
         "name": "Spore Cloud",
         "description": "<p><span style=\"white-space: pre-wrap;\">[When Touched, Aura Close | Endure]: and pass [Endure] or become Sickened (Cd8, +1 Fatigue each Round).</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -771,6 +773,13 @@
         ],
         "statuses": [
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd8",
+            "critDuration": ""
+          }
         ]
       }
     ],

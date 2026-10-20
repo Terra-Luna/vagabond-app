@@ -742,6 +742,8 @@
       {
         "name": "Glare",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Endure] (1/Day): Transformed into a stone statue (Cd4)</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -756,11 +758,20 @@
         ],
         "statuses": [
           "paralyzed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Muddle",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 30-foot Cone | Will]: Confused (Cd4)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -776,11 +787,20 @@
         "statuses": [
           "confused"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "confused",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Enrage",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 30-foot Cone | Will]: Berserk (Cd4)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -796,7 +816,14 @@
         "statuses": [
           "berserk"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "berserk",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       }
     ],
     "combo": {

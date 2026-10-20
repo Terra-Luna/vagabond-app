@@ -741,7 +741,9 @@
     "actions": [
       {
         "name": "Kiss",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, a Paralyzed Enemy | Will]: Dethbat's Curse (Continual, until removed)</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Dethbat's Curse [Curse]:</strong></b><span style=\"white-space: pre-wrap;\"> Every hour while cursed and not in Sunlight, the victim rolls a d6, progressing the curse by 1 stage on a roll of 1:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">1. Their hair falls out.</span></p><p><span style=\"white-space: pre-wrap;\">2. Their ears transform into wings and their teeth become fangs.</span></p><p><span style=\"white-space: pre-wrap;\">3. They gain 1 Fatigue. If they die due to this, their head rips from their body and becomes a Dethbat.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, a Paralyzed Enemy | Will]: Dethbat's Curse (Continual, until removed)</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Dethbat's Curse [Curse]: Every hour while cursed and not in Sunlight, the victim rolls a d6, progressing the curse by 1 stage on a roll of 1:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">1. Their hair falls out.</span></p><p><span style=\"white-space: pre-wrap;\">2. Their ears transform into wings and their teeth become fangs.</span></p><p><span style=\"white-space: pre-wrap;\">3. They gain 1 Fatigue. If they die due to this, their head rips from their body and becomes a Dethbat.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -759,6 +761,8 @@
       {
         "name": "Shriek",
         "description": "<p><span style=\"white-space: pre-wrap;\">[All Near non-Dethbats that hear it | Will]: Frightened (Cd4, Paralyzed)</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 0,
@@ -774,6 +778,18 @@
         "statuses": [
           "frightened",
           "paralyzed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "frightened",
+            "duration": "Cd4",
+            "critDuration": ""
+          },
+          {
+            "effect": "paralyzed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       }
     ],

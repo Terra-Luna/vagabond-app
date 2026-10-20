@@ -734,6 +734,8 @@
       {
         "name": "Venom Spit",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 0 and, if failed by 5 or more, Blinded</span></p>",
+        "type": "ranged",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 1,
@@ -752,6 +754,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 1 (d3) and pass [Endure] or become Sickened (Cd6 damage each minute)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -769,6 +773,8 @@
       {
         "name": "Bite Effect",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -783,6 +789,13 @@
         ],
         "statuses": [
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       }
     ],

@@ -442,7 +442,9 @@
     "actions": [
       {
         "name": "Poison Breath",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Close 10' Cube | Endure] (Recharge Cd8):</strong></b><span style=\"white-space: pre-wrap;\"> 2 (d4) Fatigue</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Close 10' Cube | Endure] (Recharge Cd8): 2 (d4) Fatigue</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -460,7 +462,9 @@
       },
       {
         "name": "Greatsword",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 13 (2d12)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 13 (2d12)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,

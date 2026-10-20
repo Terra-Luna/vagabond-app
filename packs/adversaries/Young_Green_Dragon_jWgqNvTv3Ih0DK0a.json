@@ -744,6 +744,8 @@
       {
         "name": "Breath Attack",
         "description": "<p><span style=\"white-space: pre-wrap;\">[15' Aura]: 10 (3d6), and Sickened (Cd4 dmg) if failed [1/2 dmg on pass]</span></p><p><span style=\"white-space: pre-wrap;\">&gt;Begins this Attack, which occurs on its next Turn.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -759,7 +761,14 @@
         "statuses": [
           "sickened"
         ],
-        "recharge": "Cd6"
+        "recharge": "Cd6",
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Bite",
@@ -775,7 +784,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Claw",
@@ -791,11 +802,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Tail",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack 10']: 6 (d8) and shoved 10' away and Prone</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -810,6 +825,13 @@
         ],
         "statuses": [
           "prone"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "prone",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],
@@ -831,7 +853,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 2
+          "comboCount": 2,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Bite",
@@ -848,7 +872,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

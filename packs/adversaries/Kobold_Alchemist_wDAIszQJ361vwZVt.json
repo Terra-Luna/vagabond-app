@@ -736,6 +736,8 @@
       {
         "name": "Alchemist's Fire",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Thrown] (5/Day): 3 (d6) and Burning (Cd6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -750,6 +752,13 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       },
       {
@@ -766,7 +775,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

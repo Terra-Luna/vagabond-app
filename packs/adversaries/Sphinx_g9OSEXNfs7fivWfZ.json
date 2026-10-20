@@ -745,6 +745,8 @@
       {
         "name": "Roar",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action, all Beings who hear it | Will] (2/Day): Frightened (Cd4, and Dazed if within Near)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -760,6 +762,18 @@
         "statuses": [
           "dazed",
           "frightened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "dazed",
+            "duration": "Cd4",
+            "critDuration": ""
+          },
+          {
+            "effect": "frightened",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
@@ -776,11 +790,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Dispel Magic",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Will] (2/Day): A magic effect of its choice is dispelled or suspended for [[/r 2d6#Dispel Magic]] hours if it is a Curse or Relic Power</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,

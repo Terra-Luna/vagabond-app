@@ -733,7 +733,9 @@
     "actions": [
       {
         "name": "Beak",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 1 (d3) and Restrained (d4 damage each Round while Restrained this way)</span><br><br><b><strong style=\"white-space: pre-wrap;\">Leech:</strong></b><span style=\"white-space: pre-wrap;\"> Its Max HP increases by the amount of damage it deals with its Beak, which also heals it for the same amount. Max HP gained this way is lost after 1 minute.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Latcher:</strong></b><span style=\"white-space: pre-wrap;\"> Checks to end being Restrained by its Beak have a -3 penalty.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 1 (d3) and Restrained (d4 damage each Round while Restrained this way)</span><br><br><span style=\"white-space: pre-wrap;\">Leech: Its Max HP increases by the amount of damage it deals with its Beak, which also heals it for the same amount. Max HP gained this way is lost after 1 minute.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Latcher: Checks to end being Restrained by its Beak have a -3 penalty.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -748,6 +750,13 @@
         ],
         "statuses": [
           "restrained"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       }
     ],

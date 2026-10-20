@@ -736,6 +736,8 @@
       {
         "name": "Scare to Death",
         "description": "<p><span style=\"white-space: pre-wrap;\">If it fails a Morale Check or becomes Frightened, it dies.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -751,6 +753,8 @@
       {
         "name": "Shattering Death",
         "description": "<p><span style=\"white-space: pre-wrap;\">When it dies, it shatters to dust.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

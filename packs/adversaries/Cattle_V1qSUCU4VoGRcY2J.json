@@ -734,6 +734,8 @@
       {
         "name": "Horn",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "type": "physical",
           "dice": {

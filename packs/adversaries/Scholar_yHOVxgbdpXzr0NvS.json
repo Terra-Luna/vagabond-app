@@ -734,6 +734,8 @@
       {
         "name": "Advise",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action, Ally] (3/Rest): It grants a Studied die to the Ally.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,6 +751,8 @@
       {
         "name": "Crossbow",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 1,
@@ -777,7 +781,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

@@ -738,6 +738,8 @@
       {
         "name": "Steam Breath",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Attack; Far Cone | Endure or Reflex]: 28 (8d6), and Burning (Cd6) if failed</span></p>",
+        "type": "melee",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 8,
@@ -754,7 +756,14 @@
         "statuses": [
           "burning"
         ],
-        "recharge": "Cd6"
+        "recharge": "Cd6",
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Bite",
@@ -770,7 +779,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Claw",
@@ -786,7 +797,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {
@@ -807,7 +820,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 2
+          "comboCount": 2,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Bite",
@@ -824,7 +839,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

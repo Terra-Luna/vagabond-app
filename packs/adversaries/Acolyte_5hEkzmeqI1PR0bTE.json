@@ -284,7 +284,9 @@
     "actions": [
       {
         "name": "Cure Wounds",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Touch (Ally)] (3/Day):</strong></b><span style=\"white-space: pre-wrap;\"> Regain 3 (d6) HP</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch (Ally)] (3/Day): Regain 3 (d6) HP</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -295,11 +297,14 @@
           "type": "healing"
         },
         "saves": [],
+        "halfDamageOnSave": false,
         "statuses": []
       },
       {
         "name": "Ward",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Aura Near] (Focus, 1/Day):</strong></b><span style=\"white-space: pre-wrap;\"> Targets reduce damage by [[/r d6#Ward]]{d6}. This reduction can occur 2 times per Round.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Aura Near] (Focus, 1/Day): Targets reduce damage by [[/r d6#Ward]]{d6}. This reduction can occur 2 times per Round.</span></p>",
+        "type": "cast",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 0,
@@ -310,11 +315,14 @@
           "type": "none"
         },
         "saves": [],
+        "halfDamageOnSave": false,
         "statuses": []
       },
       {
         "name": "Holy Flame",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Aura Near | Endure]:</strong></b><span style=\"white-space: pre-wrap;\"> 7 (2d6) and Blinded (Cd4)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Aura Near | Endure]: 7 (2d6) and Blinded (Cd4)</span></p>",
+        "type": "cast",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 2,
@@ -327,13 +335,23 @@
         "saves": [
           "endure"
         ],
+        "halfDamageOnSave": false,
         "statuses": [
           "blinded"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "blinded",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Mace",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]</strong></b></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -346,6 +364,7 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
         "statuses": []
       }
     ],
@@ -465,9 +484,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.93",
     "createdTime": 1787785846565,
-    "modifiedTime": 1790179565526,
+    "modifiedTime": 1792463356758,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

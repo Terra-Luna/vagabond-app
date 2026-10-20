@@ -748,11 +748,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Claw",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: and Restrained if it's this Being's second Claw attack to hit it this Turn.</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 3,
@@ -786,11 +790,15 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Claw",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: and Restrained if it's this Being's second Claw attack to hit it this Turn.</span></p>",
+          "type": "melee",
+          "range": "near",
           "damage": {
             "dice": {
               "count": 3,

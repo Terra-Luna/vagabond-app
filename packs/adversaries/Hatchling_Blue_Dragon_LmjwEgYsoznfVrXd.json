@@ -738,6 +738,8 @@
       {
         "name": "Breath Attack",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Near Line]: 6 (1d12) and Dazed (Cd4) if failed [1/2 dmg on pass]</span></p><p><span style=\"white-space: pre-wrap;\">&gt;Begins this Attack, which occurs on its next Turn.</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 1,
@@ -753,7 +755,14 @@
         "statuses": [
           "dazed"
         ],
-        "recharge": "Cd6"
+        "recharge": "Cd6",
+        "appliedEffects": [
+          {
+            "effect": "dazed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Bite",
@@ -769,7 +778,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Claw",
@@ -785,7 +796,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {
@@ -806,7 +819,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 2
+          "comboCount": 2,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Bite",
@@ -823,7 +838,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

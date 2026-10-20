@@ -739,6 +739,8 @@
       {
         "name": "Slam",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6) and pass [Endure] or</span></p><p><span style=\"white-space: pre-wrap;\">become Burning (Cd4)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -756,6 +758,8 @@
       {
         "name": "Burning",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Burning from Slam</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -770,6 +774,13 @@
         ],
         "statuses": [
           "burning"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       }
     ],

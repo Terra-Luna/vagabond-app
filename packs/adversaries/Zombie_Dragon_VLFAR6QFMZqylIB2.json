@@ -748,6 +748,8 @@
       {
         "name": "Gore Spray",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Attack, Far Cone]: 7 (2d6) and Sickened (Cd6)</span></p>",
+        "type": "melee",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 2,
@@ -763,11 +765,20 @@
         "statuses": [
           "sickened"
         ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "sickened",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Claw",
         "description": "<p><span style=\"white-space: pre-wrap;\">Claw [Melee Attack]: 4 (d6+1)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -785,6 +796,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -806,6 +819,8 @@
         {
           "name": "Gore Spray",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Attack, Far Cone]: 7 (2d6) and Sickened (Cd6)</span></p>",
+          "type": "melee",
+          "range": "far",
           "damage": {
             "dice": {
               "count": 2,
@@ -822,11 +837,20 @@
             "sickened"
           ],
           "recharge": "Cd4",
-          "comboCount": 1
+          "comboCount": 1,
+          "appliedEffects": [
+            {
+              "effect": "sickened",
+              "duration": "Cd6",
+              "critDuration": ""
+            }
+          ]
         },
         {
           "name": "Claw",
           "description": "<p><span style=\"white-space: pre-wrap;\">Claw [Melee Attack]: 4 (d6+1)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,
@@ -845,6 +869,8 @@
         {
           "name": "Bite",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 2,

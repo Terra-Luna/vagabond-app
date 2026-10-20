@@ -747,6 +747,8 @@
       {
         "name": "Gust",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 13 (3d8) plus 13 (3d8) if flying</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 3,

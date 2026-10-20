@@ -740,6 +740,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (d10) and pass [Endure] or be</span></p><p><span style=\"white-space: pre-wrap;\">Sickened (Cd4, +1 Fatigue each Round)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -768,7 +770,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

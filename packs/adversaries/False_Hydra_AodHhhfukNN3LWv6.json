@@ -739,6 +739,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 1,
@@ -756,6 +758,8 @@
       {
         "name": "Song of Discord",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action, 5-mile Aura (only those who can hear it) | Will] (Focus): Charmed until the song ends, and acts as if it can't see or hear this Being and creates false memories of illogical events.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

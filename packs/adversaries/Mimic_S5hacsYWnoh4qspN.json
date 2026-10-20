@@ -736,6 +736,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack] and Restrained if smaller</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -753,6 +755,8 @@
       {
         "name": "Mimic",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action (Focus)]: It takes on the appearance of</span></p><p><span style=\"white-space: pre-wrap;\">an Object that is its size or smaller for the Duration.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -779,7 +783,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

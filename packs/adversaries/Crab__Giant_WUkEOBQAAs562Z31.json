@@ -734,6 +734,8 @@
       {
         "name": "Pincers",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -755,6 +757,8 @@
         {
           "name": "Pincers",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 2,

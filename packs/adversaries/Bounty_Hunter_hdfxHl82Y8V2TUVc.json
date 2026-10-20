@@ -745,7 +745,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Weapon",
@@ -761,11 +763,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Hunter's Mark",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ability (a Being it senses)] (Focus): It rolls an extra Attack damage die if failed as a 1 or 2.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

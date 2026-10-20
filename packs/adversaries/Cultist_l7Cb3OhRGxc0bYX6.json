@@ -745,11 +745,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Zealot",
         "description": "<p><span style=\"white-space: pre-wrap;\">Can't be Charmed or Frightened.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,

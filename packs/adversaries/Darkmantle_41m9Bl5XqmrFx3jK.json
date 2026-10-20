@@ -736,6 +736,8 @@
       {
         "name": "Cloak of Darkness",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Near Aura]: Extinguishes all light sources, and the Area becomes magic darkness. If the light source was Magic, it is dispelled.</span></p>",
+        "type": "cast",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 0,
@@ -762,7 +764,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

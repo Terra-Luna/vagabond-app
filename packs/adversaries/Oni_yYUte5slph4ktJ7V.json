@@ -736,6 +736,8 @@
       {
         "name": "Cone of Cold",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 60' Cone | Endure] (1/Day): 36 (8d8)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 8,
@@ -753,6 +755,8 @@
       {
         "name": "Charm Person",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, a Remote Humanlike | Will] (1/Day, Focus): Charmed</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 0,
@@ -767,11 +771,20 @@
         ],
         "statuses": [
           "charmed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "charmed",
+            "duration": "focus",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Darkness",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 20' Sphere]: The Area becomes magical darkness, and snuffs out any light sources.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -787,6 +800,8 @@
       {
         "name": "Sleep",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 20' Sphere | Endure] (1/Day): Unconscious (Cd4, or woken up)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -801,11 +816,20 @@
         ],
         "statuses": [
           "unconscious"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "unconscious",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Gaseous Form",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch | Endure] (1/Day): Turns into an incorporeal cloud of gas for the duration.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -823,6 +847,8 @@
       {
         "name": "Invisibility",
         "description": "<p><span style=\"white-space: pre-wrap;\">Invisibility [Cast, Touch | Will] (Focus): Turns Invisible for the duration.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -837,6 +863,13 @@
         ],
         "statuses": [
           "invisible"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "invisible",
+            "duration": "focus",
+            "critDuration": ""
+          }
         ]
       },
       {
@@ -853,7 +886,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {
@@ -874,7 +909,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 2
+          "comboCount": 2,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

@@ -747,6 +747,8 @@
       {
         "name": "Energy Drain",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch | Reflex]: 3 (d6) and +1 Fatigue, healing this Being for the damage dealt</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -764,6 +766,8 @@
       {
         "name": "Longsword",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,

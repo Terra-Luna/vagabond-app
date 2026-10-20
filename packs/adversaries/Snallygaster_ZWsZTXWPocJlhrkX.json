@@ -738,6 +738,8 @@
       {
         "name": "Drain",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action, Restrained Being | Endure]: 5 (2d4) HP is drained from the Target</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -755,6 +757,8 @@
       {
         "name": "Talon",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6) and Restrained if it's this Being's second Talon to hit it this Turn</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,

@@ -734,6 +734,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and Medium or smaller</span></p><p><span style=\"white-space: pre-wrap;\">Targets must pass [Endure] or be knocked Prone</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -751,6 +753,8 @@
       {
         "name": "Babble",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action, Aura Near | Will]: Confused (Cd4)</span></p>",
+        "type": "melee",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 0,
@@ -765,11 +769,20 @@
         ],
         "statuses": [
           "confused"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "confused",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Spit",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near | Endure]: Blinded (Cd4)</span></p>",
+        "type": "ranged",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 0,
@@ -784,6 +797,13 @@
         ],
         "statuses": [
           "blinded"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "blinded",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       }
     ],

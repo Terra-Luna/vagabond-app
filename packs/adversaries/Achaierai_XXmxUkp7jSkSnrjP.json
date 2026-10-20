@@ -738,6 +738,8 @@
       {
         "name": "Smoky Escape",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Rush, when Fleeing]: Fills a 10-foot sphere with black smoke. Other Beings in the area must pass [Endure] or take 7 (2d6).</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -755,6 +757,8 @@
       {
         "name": "Beak",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (d10)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -772,6 +776,8 @@
       {
         "name": "Talon",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "faces": 8,
@@ -793,6 +799,8 @@
         {
           "name": "Beak",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (d10)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,
@@ -811,6 +819,8 @@
         {
           "name": "Talon",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,

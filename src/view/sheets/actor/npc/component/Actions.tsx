@@ -2,9 +2,10 @@ import { PenSquare, Save,Trash } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
 import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRollSchema"
-import { VagabondActiveEffect } from "../../../../../combat/documents/VagabondActiveEffect"
 import { SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
+import { AppliedFx } from "../../../../../combat/engine/Attack"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
+import { AppliedEffectInput } from "../../../../../combat/ui/AppliedEffectInput"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
@@ -13,7 +14,7 @@ import { getDamageAverage } from "../../../../../model/actor/type/NpcAction"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
 import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
-import { subMenuLayout,tableBorderRounded } from "../../../../common/border-styles"
+import { subMenuLayout, tableBorder, tableBorderRounded } from "../../../../common/border-styles"
 import { damageRoll } from "../../../../common/text-styles"
 import { DestructiveButton, PrimaryButton, UtilityButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
@@ -21,8 +22,9 @@ import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
-import { OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
 import { RichTextField } from "../../../../component/RichTextField"
+import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { onClickAction, onClickActionAsWeaponAttack, onClickActionCombo } from "./hooksAndUtils"
 
@@ -91,7 +93,7 @@ export const Actions = ({ npc, hero, setIsAddMenuOpen, setEditTarget, isPolymorp
 
                             isPolymorph && hero
                                 ? onClickActionAsWeaponAttack(hero, action, e)
-                                : onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.statuses as string[])
+                                : onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.appliedEffects as AppliedFx[])
                         }
 
                         return (
@@ -163,8 +165,11 @@ const deleteAction = (npc: AdversaryDataModel | NpcDataModel, action: any) => {
 export interface NpcAction {
     name: string,
     description: string,
+    type: string,
     damage: { dice: DiceRollSchema, type: string },
+    range: string,
     saves: string[],
+    appliedEffects: { effect: string, duration: string | null }[]
     statuses: string[],
     recharge: string,
     comboCount: number
@@ -175,8 +180,11 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
     const [newAction, setNewAction] = useState<Partial<NpcAction>>(editTarget ?? {
         name: "",
         description: "",
+        type: "",
         damage: { dice: { count: 1, faces: 4 }, type: "physical" },
+        range: "close",
         saves: ['reflex'],
+        appliedEffects: [],
         statuses: [],
         recharge: "",
         comboCount: 0
@@ -288,16 +296,47 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                     <div className="flex items-end">
                         <p>{appLang.AdversarySheet.name}&nbsp;</p>
                         <div className={`font-eskapade font-bold hover-glow`}>
-                            <EditableTextField boundValue={newAction?.name ?? null} onSave={(name) => updateAction({ name: name ?? '' })} placeholder={appLang.AdversarySheet.actionNamePlaceholder} />
+                            <EditableTextField
+                                boundValue={newAction?.name ?? null}
+                                onSave={(name) => updateAction({ name: name ?? '' })}
+                                placeholder={appLang.AdversarySheet.actionNamePlaceholder}
+                            />
                         </div>
                     </div>
 
                     {/* EFFECT DESCRIPTION */}
-                    <div className="flex items-end">
+                    <div className="flex flex-col items-start">
                         <p>{appLang.AdversarySheet.effect}&nbsp;</p>
                         <div className={`w-full font-eskapade font-bold hover-glow`}>
-                            <RichTextField defaultValue={newAction?.description ?? ''} onChange={(description) => updateAction({ description })} className="text-xs font-paradigm font-normal" />
+                            <RichTextField
+                                defaultValue={newAction?.description ?? ''}
+                                onChange={(description) => updateAction({ description })}
+                                className="text-xs font-paradigm font-normal"
+                            />
                         </div>
+                    </div>
+
+                    {/* ATTACK TYPE SELECTOR */}
+                    <div className="flex items-end gap-x-1">
+                        <p>{appLang.ItemSheet.type}:</p>
+                        <div className={`font-eskapade font-bold hover-glow`}>
+                            <DropDown
+                                value={newAction?.type ?? ''}
+                                options={createDropdownEntries(locale.actionTypes)}
+                                updateMechanism={{
+                                    onChange: (attackType) => updateAction({ type: attackType ?? '' })
+                                }}
+                                parent={undefined}
+                            />
+                        </div>
+                        <DropDown
+                            value={newAction?.range ?? ''}
+                            options={createDropdownEntries(appLang.Ranges)}
+                            updateMechanism={{
+                                onChange: (range) => updateAction({ range: range ?? '' })
+                            }}
+                            parent={undefined}
+                        />
                     </div>
 
                     {/* DAMAGE ROLL */}
@@ -305,12 +344,14 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                         <DiceRollInputComponent
                             diceRoll={newAction?.damage?.dice ?? { count: 1, faces: 4 }}
                             onChange={(dice) => updateDamage({ dice: { ...newAction?.damage?.dice, ...dice } as DiceRollSchema })}
+                            extendedSettings={true}
+                            hideCritFields={true}
                         />
                     </div>
 
                     {/* DAMAGE TYPE */}
-                    <div className="flex items-end">
-                        <p>{appLang.AdversarySheet.damageType}&nbsp;</p>
+                    <div className="flex items-end gap-x-1">
+                        <p>{appLang.AdversarySheet.damageType}:</p>
                         <div className={`font-eskapade font-bold hover-glow`}>
                             <DropDown
                                 value={newAction?.damage?.type ?? ''}
@@ -324,9 +365,9 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                     </div>
 
                     {/* SAVING THROWS */}
-                    <div className="flex items-end">
-                        <p>{appLang.AdversarySheet.saves}&nbsp;</p>
-                        <div className="flex gap-x-3">
+                    <div className="flex items-end gap-x-2">
+                        <p>{appLang.AdversarySheet.saves}:</p>
+                        <div className={`flex gap-x-2 ${tableBorder} px-2`}>
                             {Object.entries(appLang.Saves).map(([key, save]) =>
                                 key !== "defend"
                                     ? <div key={key} className="flex items-center gap-1">
@@ -343,24 +384,19 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                     </div>
 
                     {/* STATUS EFFECTS */}
-                    <div className="flex items-end">
-                        <p>{appLang.AdversarySheet.statuses}&nbsp;</p>
-                        <OptionsSelectionMenu
-                            options={VagabondActiveEffect.statusEffects.map(effect => ({
-                                key: effect.id,
-                                value: appLang.StatusConditions[effect.id]?.name ?? effect.id,
-                                isSelected: (newAction?.statuses ?? []).includes(effect.id)
-                            }))}
-                            onChange={(statuses) => updateAction({ statuses })}
-                        />
-                        <p className="text-text-secondary italic">
-                            {(newAction?.statuses ?? []).map(id => appLang.StatusConditions[id]?.name ?? id).join(", ")}
-                        </p>
+                    <div className="flex items-end gap-x-1">
+                        <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                            <AppliedEffectInput
+                                effects={newAction?.appliedEffects as any}
+                                onChange={(appliedEffects) => updateAction({ appliedEffects: appliedEffects as NpcAction["appliedEffects"] })}
+                                hideCritDuration={true}
+                            />
+                        </EditModeContextProvider>
                     </div>
 
                     {/* RECHARGE */}
-                    <div className="flex items-end">
-                        <p>{appLang.AdversarySheet.recharge}&nbsp;</p>
+                    <div className="flex items-end gap-x-1">
+                        <p>{appLang.AdversarySheet.recharge}:</p>
                         <div className={`font-eskapade font-bold hover-glow`}>
                             <EditableTextField
                                 boundValue={newAction?.recharge ?? null}
@@ -385,7 +421,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
 
 export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
     return (
-        < div className="flex w-full justify-between mt-8" >
+        <div className="flex w-full justify-between mt-8" >
             <DestructiveButton onClick={() => {
                 setEditTarget(null)
                 setIsAddMenuOpen(false)
@@ -393,9 +429,10 @@ export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
                 Cancel
             </DestructiveButton>
             <PrimaryButton icon={<Save size={14} />} onClick={() => {
-                onSave()
-                setEditTarget(null)
-                setIsAddMenuOpen(false)
+                if (onSave()) {
+                    setEditTarget(null)
+                    setIsAddMenuOpen(false)
+                }
             }}>
                 Save
             </PrimaryButton>
@@ -403,29 +440,32 @@ export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
     )
 }
 
-const saveNewAction = (npc, isCombo, comboSelections, comboName, comboDescription, newAction, editTarget, editTargetIndex) => {
+const saveNewAction = (npc, isCombo, comboSelections, comboName, comboDescription, newAction, editTarget, editTargetIndex): boolean => {
     if (isCombo) {
         if (comboName && comboSelections.length > 0 && comboSelections.every(it => it.comboCount > 0)) {
             const comboActions = comboSelections.map(cs => ({
                 ...npc.actions.find(it => it.name === cs.action.name), comboCount: cs.comboCount
             }))
             updateDocumentAtPath(npc.parent, ['combo'], { name: comboName, description: comboDescription, actions: comboActions })
+            return true
         }
         else {
             ui.notifications?.error(appLang.Notifications.actionComboRequiredFields)
-            return
+            return false
         }
     }
     else if (!newAction?.name) {
         ui.notifications?.error(appLang.Notifications.actionNameRequired)
-        return
+        return false
     }
     else if (editTarget == null) {
         updateDocumentAtPath(npc.parent, ['actions'], [...npc.actions, newAction])
+        return true
     }
     else {
         const actions = npc.actions
         actions[editTargetIndex] = newAction
         updateDocumentAtPath(npc.parent, ['actions'], [...actions])
+        return true
     }
 }

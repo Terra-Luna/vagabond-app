@@ -746,6 +746,8 @@
       {
         "name": "Pseudopod",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6), and this Being is healed for the damage dealt</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,

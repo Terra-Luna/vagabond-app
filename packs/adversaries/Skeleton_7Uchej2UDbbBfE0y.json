@@ -745,6 +745,8 @@
       {
         "name": "Rusty Sword",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) or (by Weapon)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,

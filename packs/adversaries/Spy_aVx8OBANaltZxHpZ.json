@@ -734,6 +734,8 @@
       {
         "name": "Garrote",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: Grappled and Suffocating</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,6 +751,18 @@
         "statuses": [
           "restrained",
           "suffocating"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "restrained",
+            "duration": "continual",
+            "critDuration": ""
+          },
+          {
+            "effect": "suffocating",
+            "duration": "continual",
+            "critDuration": ""
+          }
         ]
       },
       {
@@ -765,11 +779,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Sneak Attack",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ability] (1/Turn): It deals 2 (d4) additional damage with an attack against a Vulnerable Target. This attack ignores Armor and can Explode.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -793,6 +811,8 @@
         {
           "name": "Garrote",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: Grappled and Suffocating</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 0,
@@ -809,7 +829,19 @@
             "restrained",
             "suffocating"
           ],
-          "comboCount": 1
+          "comboCount": 1,
+          "appliedEffects": [
+            {
+              "effect": "restrained",
+              "duration": "continual",
+              "critDuration": ""
+            },
+            {
+              "effect": "suffocating",
+              "duration": "continual",
+              "critDuration": ""
+            }
+          ]
         },
         {
           "name": "Dagger",
@@ -826,7 +858,9 @@
             "reflex"
           ],
           "statuses": [],
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         }
       ],
       "description": null

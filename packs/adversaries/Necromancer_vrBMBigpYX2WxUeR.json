@@ -734,6 +734,8 @@
       {
         "name": "Command",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Action (all Undead it controls)]: Commands them to Attack the nearest Being.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,6 +751,8 @@
       {
         "name": "Animate",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Near Aura (all Corpses)] (2/Day): Raised as a Zombie under its control.</span></p>",
+        "type": "cast",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 0,
@@ -764,6 +768,8 @@
       {
         "name": "Necrotic Blast",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Bolt]: 7 (2d6) and pass [Endure] or become Sickened (Cd4 damage, Blinded and deafened).</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -781,6 +787,8 @@
       {
         "name": "Sickened",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -796,6 +804,18 @@
         "statuses": [
           "blinded",
           "sickened"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "blinded",
+            "duration": "continual",
+            "critDuration": ""
+          },
+          {
+            "effect": "sickened",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
         ]
       }
     ],

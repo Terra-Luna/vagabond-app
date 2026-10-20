@@ -736,6 +736,8 @@
       {
         "name": "Cannon",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]</span></p>",
+        "type": "ranged",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 1,
@@ -753,6 +755,8 @@
       {
         "name": "Tentacle",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -774,6 +778,8 @@
         {
           "name": "Tentacle",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,
@@ -792,6 +798,8 @@
         {
           "name": "Cannon",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]</span></p>",
+          "type": "ranged",
+          "range": "far",
           "damage": {
             "dice": {
               "count": 1,

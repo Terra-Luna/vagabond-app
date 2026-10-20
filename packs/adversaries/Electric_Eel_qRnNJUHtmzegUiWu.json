@@ -734,6 +734,8 @@
       {
         "name": "Shock",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Attack, Aura Close | Endure]: 7 (2d6), Paralyzed (Cd4) if failed by 5 or more.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -751,6 +753,8 @@
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Attack]: 2 (d4)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,

@@ -854,7 +854,9 @@
     "actions": [
       {
         "name": "Weapon",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 4 (d8) or (by Weapon)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) or (by Weapon)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "faces": 8,

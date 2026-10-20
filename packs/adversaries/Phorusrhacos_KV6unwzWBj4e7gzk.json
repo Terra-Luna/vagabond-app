@@ -734,6 +734,8 @@
       {
         "name": "Beak",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -750,6 +752,8 @@
       },
       {
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+        "type": "melee",
+        "range": "close",
         "name": "Claw",
         "damage": {
           "type": "physical",
@@ -772,6 +776,8 @@
         {
           "name": "Beak",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 2,
@@ -790,6 +796,8 @@
         {
           "name": "Claw",
           "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,

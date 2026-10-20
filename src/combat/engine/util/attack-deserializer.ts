@@ -67,7 +67,7 @@ function deserializeAdversaryAttack(snapshot: AttackSnapshot): AdversaryAttack |
         dice: damageRoll?.dice ?? [],
         saveTypes: snapshot.saveTypes,
         description: snapshot.description,
-        statuses: snapshot.statuses
+        appliedEffects: snapshot.appliedEffects
     }, [...snapshot.targetIds])
 
     atk.id = snapshot.id

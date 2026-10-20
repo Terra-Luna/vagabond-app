@@ -746,6 +746,8 @@
       {
         "name": "Strike",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8) plus 4 (d8) if on the ground</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,

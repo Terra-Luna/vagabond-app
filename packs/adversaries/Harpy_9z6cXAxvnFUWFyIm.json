@@ -734,6 +734,8 @@
       {
         "name": "Enthralling Song",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, all that hear it (Focus) | Will]: Charmed (Cd4) and must Move toward this Being.</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,7 +751,14 @@
         "statuses": [
           "charmed"
         ],
-        "recharge": "Cd6"
+        "recharge": "Cd6",
+        "appliedEffects": [
+          {
+            "effect": "charmed",
+            "duration": "Cd4",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Claws",
@@ -765,11 +774,15 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       },
       {
         "name": "Weapon",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Attack]: 3 (d6) or (by Weapon)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,

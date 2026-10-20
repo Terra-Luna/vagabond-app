@@ -741,6 +741,8 @@
       {
         "name": "Hellfire",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Cone 15' | Reflex]: and Burning (Cd6)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
@@ -756,7 +758,14 @@
         "statuses": [
           "burning"
         ],
-        "recharge": "Cd6"
+        "recharge": "Cd6",
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
+        ]
       },
       {
         "name": "Bite",
@@ -772,7 +781,9 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [],
+        "type": "melee",
+        "range": "close"
       }
     ],
     "combo": {

@@ -183,17 +183,24 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
     protected get isCriticalHit(): boolean { return false }
 
-    private async processStatusFx(args: AttackResolutionArgs) {
+    protected shouldApplyEffectsToTarget(targetId: string, _args: AttackResolutionArgs): boolean {
+        return this.shouldApplyDamageToTarget(targetId)
+    }
+
+    protected async processStatusFx(args: AttackResolutionArgs) {
         if (this.appliedEffects.length === 0) return
 
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
+        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyEffectsToTarget(id, args))
+        await this.applyFxToTargets(this.appliedEffects, targetIds)
+    }
 
+    protected async applyFxToTargets(effects: AppliedFx[], targetIds: string[]) {
         for (const id of targetIds) {
             const token = getCanvasToken(id)
             const actor = token?.actor ?? canvas?.scene?.tokens?.get(id)?.actor
             if (!actor) continue
 
-            for (const eff of this.appliedEffects) {
+            for (const eff of effects) {
                 if (Attack.isImmuneToStatus(actor, eff.effect)) continue
 
                 const duration = (this.isCriticalHit && eff.critDuration) ? eff.critDuration : eff.duration

@@ -746,6 +746,8 @@
       {
         "name": "Stun",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, all who hear it | Will] (1/Day): Paralyzed</span></p><p><span style=\"white-space: pre-wrap;\">(Cd6 Rounds)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -760,11 +762,20 @@
         ],
         "statuses": [
           "paralyzed"
+        ],
+        "appliedEffects": [
+          {
+            "effect": "paralyzed",
+            "duration": "Cd6",
+            "critDuration": ""
+          }
         ]
       },
       {
         "name": "Longsword",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 6 (d8+2)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -782,6 +793,8 @@
       {
         "name": "Hellfire",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 20-foot Sphere | Reflex] (1/Day): 35</span></p><p><span style=\"white-space: pre-wrap;\">(10d6) and Burning (Cd6)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 10,

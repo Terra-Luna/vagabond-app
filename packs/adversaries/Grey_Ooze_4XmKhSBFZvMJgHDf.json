@@ -748,7 +748,9 @@
     "actions": [
       {
         "name": "Pseudopod",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8) and Corroding</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Corroding:</strong></b><span style=\"white-space: pre-wrap;\"> Non-Relic metal Items that make contact with it corrode. When this happens, roll a d6 for each Item. On a roll of 1, the Item breaks. If the Item that breaks is larger than Medium, this destroys a 1-foot square hole that is 1-foot deep in it.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8) and Corroding</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Corroding: Non-Relic metal Items that make contact with it corrode. When this happens, roll a d6 for each Item. On a roll of 1, the Item breaks. If the Item that breaks is larger than Medium, this destroys a 1-foot square hole that is 1-foot deep in it.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,

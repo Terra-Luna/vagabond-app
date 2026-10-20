@@ -733,7 +733,9 @@
     "actions": [
       {
         "name": "Weapon",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">Prowess:</strong></b><span style=\"white-space: pre-wrap;\"> +1 to attack damage it deals.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Prowess: +1 to attack damage it deals.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
