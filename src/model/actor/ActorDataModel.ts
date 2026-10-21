@@ -148,7 +148,6 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
         const polymorphEffect = {
             name: "Polymorph: " + polyFlag.statBlock.name,
             img: "/icons/creatures/amphibians/bullfrog-glass-teal.webp",
-            showIcon: 2,
             flags: { [sys_id]: { polymorph: true } },
             changes: changes ?? []
         }

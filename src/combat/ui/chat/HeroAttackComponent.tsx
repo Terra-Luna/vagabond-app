@@ -26,8 +26,7 @@ const hasOffensiveSpell = (actor: any): boolean =>
     !!actor?.system?.spells?.some(sp => sp.damageType !== 'none' && sp.damageType !== 'healing')
 
 /**
- * The user's character if it has an offensive spell, otherwise (for the active GM)
- * the first controlled token's actor that does.
+ * The user's character if it has an offensive spell, otherwise (for the active GM) the first controlled token's actor that does.
  */
 const getImbueActor = (): (Actor & { system: HeroDataModel }) | undefined => {
     const heroes = game.actors?.contents?.filter(it => (it.type as any) === "hero" && it.isOwner && hasOffensiveSpell(it)) ?? []
@@ -44,7 +43,10 @@ const getImbueActor = (): (Actor & { system: HeroDataModel }) | undefined => {
 }
 
 export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
-    actor: Actor & { system: HeroDataModel }, attack: HeroAttack, source: Item | undefined, setRevision: any
+    actor: Actor & { system: HeroDataModel },
+    attack: HeroAttack,
+    source: Item | undefined,
+    setRevision: any
 }) => {
     const isEligibleForImbue = !attack.isResolved
         && !attack.isDefenseCheck

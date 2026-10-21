@@ -204,8 +204,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     }
 
     async equip(item: Item & { system: ArmorDataModel | SundryDataModel | WeaponDataModel }) {
-        if (this.polymorph) return
-
         if (item.system.isEquipped) {
             await item.system.toggleEquipped()
             return
