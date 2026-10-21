@@ -33,7 +33,7 @@ export class VagabondActor<SubType extends Actor.SubType = Actor.SubType> extend
         /**
          * Listen for name changes on tokens and update the combat tracker.
          */
-        if (changed.name && this.isToken && this.token) {
+        if (game.user?.isActiveGM && changed.name && this.isToken && this.token) {
             this.token.update({ name: changed.name }).then(() => {
                 const activeCombat = game.combat
                 if (!activeCombat) return

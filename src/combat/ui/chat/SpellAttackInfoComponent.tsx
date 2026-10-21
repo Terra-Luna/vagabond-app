@@ -12,14 +12,14 @@ import { SpellcastingSubtext } from "../../../view/sheets/actor/hero/tab/compone
 import { DamageRollResult } from "../../engine/roll/DamageRoll"
 
 export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined, img }: {
-    spell: Item & { system: SpellDataModel },
+    spell?: Item & { system: SpellDataModel },
     delivery: any,
     dmgRoll?: DamageRollResult | undefined,
     img?: ReactNode
 }) => {
     const subtitle: CardSubHeaderValues[] = []
 
-    if (delivery.damageDice > 0 && spell.system.damageType !== 'none') {
+    if (delivery.damageDice > 0 && spell?.system?.damageType && spell.system.damageType !== 'none') {
         subtitle.push({ label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[spell.system.damageType] })
     }
     subtitle.push({ label: appLang.HeroSheet.Magic.labelMana, value: delivery.manaCost })
@@ -55,7 +55,7 @@ export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined,
             </div>
             }
             {delivery.applyEffect && <div className="flex px-1">
-                <SpellcastingSubtext text={ReactHtmlParser(spell.system.description)} />
+                <SpellcastingSubtext text={ReactHtmlParser(spell?.system?.description)} />
             </div>}
         </div>
     )

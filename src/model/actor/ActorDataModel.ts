@@ -73,10 +73,11 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
         Overridden by HeroDataModel.
      */
     async setPolymorph(polyFlag: PolymorphFlag | undefined) {
+        if (!this.parent.isOwner) return
+
         if (["adversary", "npc"].includes(this.parent.type)) {
             if (polyFlag && Object.keys(polyFlag).length > 0) {
                 const originalSystem = { ...this, name: this.parent.name, img: this.parent.img }
-                // One actor update carries the name, system, original-system backup and polymorph flag.
                 await this.parent.update({
                     "name": `${polyFlag.statBlock.name} (${this.parent.name})`,
                     "system": {
@@ -87,7 +88,7 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
                     "flags": { [sys_id]: { originalSystem, polymorph: polyFlag } }
                 })
                 await Promise.all([
-                    this.setPolymorphActiveEffect(polyFlag),
+                    this.setPolymorphActiveEffect(),
                     this.swapTokenImages(polyFlag)
                 ])
             }
@@ -143,10 +144,10 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
         }
     }
 
-    async setPolymorphActiveEffect(polyFlag: PolymorphFlag, changes?: any[]) {
+    async setPolymorphActiveEffect(changes?: any[]) {
         const oldPolymorphEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph"))?.map(eff => eff.id) ?? []
         const polymorphEffect = {
-            name: "Polymorph: " + polyFlag.statBlock.name,
+            name: "Polymorphed",
             img: "/icons/creatures/amphibians/bullfrog-glass-teal.webp",
             flags: { [sys_id]: { polymorph: true } },
             changes: changes ?? []

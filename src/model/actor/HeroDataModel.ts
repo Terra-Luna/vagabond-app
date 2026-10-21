@@ -198,41 +198,41 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
         if (removeFatigue > 0 && this.statuses.counters.fatigue > 0) {
             await this.parent.update({
-                'system.statuses.counters.fatigue': this.statuses.counters.fatigue - removeFatigue,
+                'system.statuses.counters.fatigue': this.statuses.counters.fatigue - removeFatigue
             } as Record<any, any>)
         }
     }
 
-    async equip(item: Item & { system: ArmorDataModel | SundryDataModel | WeaponDataModel }) {
+    async equip(item: Item & { system: ArmorDataModel | SundryDataModel | WeaponDataModel }, skipCurseMessage?: boolean, bypassCurseCheck?: boolean) {
         if (item.system.isEquipped) {
-            await item.system.toggleEquipped()
+            await item.system.toggleEquipped(skipCurseMessage, bypassCurseCheck)
             return
         }
 
         if (item.system instanceof WeaponDataModel && item.system.grip.style === '-') {
-            await item.system.toggleEquipped()
+            await item.system.toggleEquipped(skipCurseMessage)
             return
         }
 
         if (item.system instanceof ArmorDataModel) {
             for (const armor of [...this.equippedArmor(), item]) {
-                await armor.system.toggleEquipped()
+                await armor.system.toggleEquipped(skipCurseMessage)
             }
             return
         }
 
         if (item.system instanceof SundryDataModel && item.system.isWearable) {
-            await item.system.toggleEquipped()
+            await item.system.toggleEquipped(skipCurseMessage)
             return
         }
 
-        await this.equipHandheldItem(item as any)
+        await this.equipHandheldItem(item as any, skipCurseMessage)
     }
 
     /**
      * Recursive function that will unequip weapons til there's a free hand slot for the new one.
      */
-    async equipHandheldItem(item: Item & { system: SundryDataModel | WeaponDataModel }) {
+    async equipHandheldItem(item: Item & { system: SundryDataModel | WeaponDataModel }, skipCurseMessage?: boolean) {
         const getHandSlot = (it: any, prop: string): number => {
             return it.system instanceof WeaponDataModel
                 ? (it.system.grip[prop] === 'HH' ? 2 : 1)
@@ -266,7 +266,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
 
         if (freeHands >= itemHandReq && itemBulk <= maxBulk && itemBulk <= availableBulk) {
-            await item.system.toggleEquipped()
+            await item.system.toggleEquipped(skipCurseMessage)
             return
         }
         else {
@@ -277,7 +277,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             else {
                 let result = false
                 for (const weapon of equippedWeapons) {
-                    result = await weapon.system.toggleEquipped(true)
+                    result = await weapon.system.toggleEquipped(skipCurseMessage)
                     if (result) break
                 }
                 // If we couldn't unequip any weapon we can't equip the new one, so bail.
@@ -286,7 +286,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
 
         // Try again...
-        await this.equipHandheldItem(item)
+        await this.equipHandheldItem(item, skipCurseMessage)
     }
 
     async toggleVersatileGrip(item: Item & { system: WeaponDataModel }) {
@@ -431,7 +431,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     override async setPolymorph(polyFlag: PolymorphFlag | undefined) {
         if (polyFlag && Object.keys(polyFlag).length > 0) {
-            // Set equipment id history
+            // Set equipment id history so it can re-equip stuff later.
             if (!this.polymorph) {
                 const gear = [
                     ...this.equippedWeapons().filter(it => it.name.toUpperCase() !== "BREATH ATTACK"),
@@ -439,7 +439,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                 ]
                 polyFlag.equipHistory ??= []
                 polyFlag.equipHistory.push(...gear.map(it => it.id))
-                await Promise.all(gear.map(it => this.equip(it as any)))
+                await Promise.all(gear.map(it => this.equip(it as any, true, true)))
             }
 
             polyFlag.statBlock.system.actions.forEach((action: any) => {
@@ -448,16 +448,16 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
             await Promise.all([
                 this.setPolymorphFlag(polyFlag),
-                this.setPolymorphActiveEffect(polyFlag, [
-                { key: "system.ancestry.beingType", value: polyFlag.statBlock.system.beingType, type: "override", priority: 1 },
-                { key: "system.ancestry.beingSize", value: polyFlag.statBlock.system.beingSize, type: "override", priority: 1 },
-                { key: "system.armor.rating", value: polyFlag.statBlock.system.armor.rating, type: "add", priority: 1 },
-                { key: "system.speed.turn", value: polyFlag.statBlock.system.speeds[0].value - calcTurnSpeed(this), type: "add", priority: 1 },
-                ...polyFlag.statBlock.system.modifiers.damage.in.immunities.map((immunity: string) => ({ key: "system.modifiers.damage.in.immunities", value: immunity, type: "add", priority: 1 })),
-                ...polyFlag.statBlock.system.modifiers.damage.in.weaknesses.map((weakness: string) => ({ key: "system.modifiers.damage.in.weaknesses", value: weakness, type: "add", priority: 1 })),
-                ...polyFlag.statBlock.system.modifiers.damage.in.statusImmunities.map((status: string) => ({ key: "system.modifiers.damage.in.statusImmunities", value: status, type: "add", priority: 1 })),
-                ...polyFlag.statBlock.system.senses.map((sense: string) => ({ key: "system.senses", value: sense, type: "add", priority: 1 }))
-            ]),
+                this.setPolymorphActiveEffect([
+                    { key: "system.ancestry.beingType", value: polyFlag.statBlock.system.beingType, type: "override", priority: 1 },
+                    { key: "system.ancestry.beingSize", value: polyFlag.statBlock.system.beingSize, type: "override", priority: 1 },
+                    { key: "system.armor.rating", value: polyFlag.statBlock.system.armor.rating, type: "add", priority: 1 },
+                    { key: "system.speed.turn", value: polyFlag.statBlock.system.speeds[0].value - calcTurnSpeed(this), type: "add", priority: 1 },
+                    ...polyFlag.statBlock.system.modifiers.damage.in.immunities.map((immunity: string) => ({ key: "system.modifiers.damage.in.immunities", value: immunity, type: "add", priority: 1 })),
+                    ...polyFlag.statBlock.system.modifiers.damage.in.weaknesses.map((weakness: string) => ({ key: "system.modifiers.damage.in.weaknesses", value: weakness, type: "add", priority: 1 })),
+                    ...polyFlag.statBlock.system.modifiers.damage.in.statusImmunities.map((status: string) => ({ key: "system.modifiers.damage.in.statusImmunities", value: status, type: "add", priority: 1 })),
+                    ...polyFlag.statBlock.system.senses.map((sense: string) => ({ key: "system.senses", value: sense, type: "add", priority: 1 }))
+                ]),
                 this.swapTokenImages(polyFlag)
             ])
         }
@@ -475,8 +475,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             for (const id of equipHistory) {
                 if (!id) continue
                 const item = this.parent?.items?.get(id)
-                if (!item) continue
-                await this.equip(item as any)
+                if (!item || item.system.isEquipped) continue
+                await this.equip(item as any, true)
             }
         }
     }

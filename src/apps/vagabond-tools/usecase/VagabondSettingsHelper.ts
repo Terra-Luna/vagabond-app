@@ -61,6 +61,23 @@ export const getAttackRegistry = () => {
 export const setAttackRegistry = async (attackRegistry) => {
     (game.settings as any)?.set(sys_id, "attackRegistry", attackRegistry)
 }
+
+export type PolymorphRequestStatus = "applied" | "declined"
+export type PolymorphRequestRecord = { status: PolymorphRequestStatus, targetImg?: string }
+export type PolymorphRequestRegistry = Record<string, PolymorphRequestRecord>
+
+export const getPolymorphRequestRegistry = (): PolymorphRequestRegistry => {
+    return (game.settings as any)?.get(sys_id, "polymorphRequestRegistry") || {}
+}
+
+export const setPolymorphRequestStatus = async (messageId: string, status: PolymorphRequestStatus, targetImg?: string) => {
+    if (!messageId) throw new Error("Polymorph request message ID is unavailable.")
+    await updateSetting("polymorphRequestRegistry", {
+        ...getPolymorphRequestRegistry(),
+        [messageId]: { status, targetImg }
+    })
+}
+
 export const resolveAllAttacks = async () => {
     if (!game.user?.isActiveGM) return
     const registry = { ...getAttackRegistry() }

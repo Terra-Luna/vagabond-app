@@ -6,7 +6,7 @@ import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { PolymorphAppView } from "./PolymorphAppView"
 
 export class PolymorphApp extends VagabondApplication {
-    
+
     private caster: Actor & { system: HeroDataModel | AdversaryDataModel | NpcDataModel }
 
     constructor({ caster }: {

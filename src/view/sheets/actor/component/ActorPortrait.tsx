@@ -5,7 +5,6 @@ import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
 import { PolymorphFlag } from "../../../../model/actor/type/PolymorphFlag"
 import { sys_id } from "../../../../utils/foundryUtils"
 import { appLang } from "../../../../utils/lang"
-import { wealthBorderRounded } from "../../../common/border-styles"
 import { useContextMenu } from "../../../component/ContextMenu"
 import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { Tooltip } from "../../../component/Tooltip"
@@ -32,7 +31,7 @@ export const ActorPortrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema
             <img
                 src={polymorph.statBlock.tokenImg}
                 alt="Polymorph"
-                className={`absolute bottom-0 right-0 w-full h-fullbg-sheet-main-fill p-2 ${wealthBorderRounded} bg-sheet-main-fill`}
+                className={`absolute bottom-0 right-0 w-full h-fullbg-sheet-main-fill border-t border-l border-solid border-wealth-denom-label rounded-tl-lg bg-sheet-main-fill`}
                 style={{ width: ACTOR_PORTRAIT_WIDTH / 1.33, height: ACTOR_PORTRAIT_WIDTH / 1.33 }}
             />
         </div>

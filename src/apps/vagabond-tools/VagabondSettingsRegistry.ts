@@ -15,6 +15,7 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerLevelPacing()
         VagabondSettingsRegistry.registerXpQuestionnaire()
         VagabondSettingsRegistry.registerAttackRegistry()
+        VagabondSettingsRegistry.registerPolymorphRequestRegistry()
         VagabondSettingsRegistry.registerItemShopToggle()
         VagabondSettingsRegistry.registerProgressClocks()
         VagabondSettingsRegistry.registerCountdowns()
@@ -133,6 +134,17 @@ export class VagabondSettingsRegistry {
         (game.settings as any).register(sys_id, "attackRegistry", {
             name: appLang.Settings.attackRegistry,
             hint: appLang.Settings.attackRegistryHint,
+            scope: "world",
+            config: false,
+            type: Object,
+            default: {}
+        })
+    }
+
+    private static registerPolymorphRequestRegistry() {
+        (game.settings as any).register(sys_id, "polymorphRequestRegistry", {
+            name: "Polymorph Request Registry",
+            hint: "Stores the status of polymorph request chat cards.",
             scope: "world",
             config: false,
             type: Object,

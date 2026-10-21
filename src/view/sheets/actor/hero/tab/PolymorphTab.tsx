@@ -5,7 +5,6 @@ import { ClearHeader } from "../../../../component/Header"
 
 export const PolymorphTab = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     return <div className="w-full mb-4">
-        <ClearHeader title={appLang.HeroSheet["tab-polymorph"]} />
-        <PolymorphAppView caster={actor} />
+        <PolymorphAppView caster={actor} header={<ClearHeader title={appLang.HeroSheet["tab-polymorph"]} />} />
     </div>
 }

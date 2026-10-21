@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react"
 import { getAttackRegistry } from "../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { sys_id } from "../../../utils/foundryUtils"
 import { appLang } from "../../../utils/lang"
 import { getCanvasToken, getTokenImg } from "../../../utils/modelUtil"
 import { BaseChatCardHost } from "../../../view/chat/component/BaseChatCardHost"
@@ -18,6 +17,7 @@ import { HeroAttack } from "../../engine/HeroAttack"
 import { deserializeAttack } from "../../engine/util/attack-deserializer"
 import { serializeAttack } from "../../engine/util/attack-serializer"
 import { AdversaryAttackComponent, AdversaryComboAttackComponent } from "./AdversaryAttackComponent"
+import { subscribeToAttack } from "./attackRegistryStore"
 import { HeroAttackComponent } from "./HeroAttackComponent"
 import { InteractiveChatCardButton } from "./InteractiveChatCardButton"
 
@@ -26,34 +26,6 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     const [flanked, setFlanked] = useState<boolean>(false)
     const [targetsToggle, setTargetsToggle] = useState<boolean>(false)
     const [armorBypassToggle, setArmorBypassToggle] = useState<boolean>(false)
-
-    /**
-     * This side-effect is responsible for responsive UI elements
-     * in the interactive chat card. It subs to the updateSetting
-     * hook to check for changes that include additions/edits to
-     * our Attack Registry.
-     */
-    useEffect(() => {
-        const hookId = Hooks.on("updateSetting", (settingDoc: any, changes: any) => {
-            if (settingDoc.key !== `${sys_id}.attackRegistry`) return
-
-            let updatedData: Record<string, any>
-            try {
-                updatedData = typeof changes.value === "string"
-                    ? JSON.parse(changes.value)
-                    : (changes.value || {})
-            }
-            catch {
-                updatedData = getAttackRegistry()
-            }
-
-            if (actorId in updatedData) {
-                setRevision(prev => prev + 1)
-            }
-        })
-
-        return () => Hooks.off("updateSetting", hookId)
-    }, [actorId])
 
     const actor = useMemo(() => {
         return getCanvasToken(actorId)?.actor ?? game.actors?.get(actorId)
@@ -70,6 +42,17 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
             ? deserializeAttack(snapshot, (title, actor, targetIds) => new HeroAttack(title, actor, targetIds))
             : null
     }, [snapshot])
+
+    const isResolved = attack?.isResolved ?? false
+
+    /**
+     * Subscribes to the shared attack registry store. A single updateSetting
+     * hook serves all cards and only notifies cards whose own attack changed.
+     */
+    useEffect(() => {
+        if (isResolved) return
+        return subscribeToAttack(actorId, attackId, () => setRevision(prev => prev + 1))
+    }, [actorId, attackId, isResolved])
 
     const source = useMemo<Item | undefined>(() => {
         if (attack instanceof HeroAttack && attack.itemId) {

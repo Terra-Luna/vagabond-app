@@ -17,24 +17,24 @@ export const Header = ({ title, collapseButton, textLeft = false, actions = [] }
                 </>
             ) : (<>
                 {/* Background Dividers */}
-                    <div className="absolute inset-0 flex items-center pointer-events-none w-full">
-                        <div className="flex-1"><Divider /></div>
-                        {/* Invisible spacer  */}
-                        <div className="px-2 opacity-0 select-none">{title}</div>
-                        <div className="flex-1"><Divider /></div>
-                    </div>
+                <div className="absolute inset-0 flex items-center pointer-events-none w-full">
+                    <div className="flex-1"><Divider /></div>
+                    {/* Invisible spacer  */}
+                    <div className="px-2 opacity-0 select-none">{title}</div>
+                    <div className="flex-1"><Divider /></div>
+                </div>
 
-                    {/* Title Text Layer: Centered over the container */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div className="bg-section-header-fill px-2 pointer-events-auto">
-                            {title}
-                        </div>
+                {/* Title Text Layer: Centered over the container */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-section-header-fill px-2 pointer-events-auto">
+                        {title}
                     </div>
-                </>
+                </div>
+            </>
             )}
 
             {/* ACTIONS & COLLAPSE BUTTON: Floating elements aligned to the right side */}
-            <div className="ml-auto flex items-center z-10">
+            <div className="ml-auto flex items-center z-1">
                 {collapseButton && <div className="mr-2">{collapseButton}</div>}
 
                 {actions && (

@@ -1,15 +1,18 @@
 import { X } from "lucide-react"
-import { useEffect, useMemo, useState } from "react"
+import { ReactNode, useEffect, useMemo, useState } from "react"
 
 import { TargetDisplayItem } from "../../../combat/ui/hooks"
 import { AdversaryDataModel } from "../../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../model/actor/NpcDataModel"
 import { PolymorphFlag } from "../../../model/actor/type/PolymorphFlag"
+import { VagabondAppError } from "../../../model/common/VagabondAppError"
 import { sys_id } from "../../../utils/foundryUtils"
 import { appLang } from "../../../utils/lang"
+import { localizeString } from "../../../utils/localeUtils"
 import { getTokenImg } from "../../../utils/modelUtil"
 import { formatSpeeds } from "../../../utils/speedUtils"
+import { sendVagabondChatCard } from "../../../view/chat/ChatCardSerializer"
 import { TargetsDisplay } from "../../../view/chat/component/TargetsDisplay"
 import { useTargetSync } from "../../../view/chat/component/TargetSyncUseCase"
 import { tableBorderRounded, wealthBorderRounded } from "../../../view/common/border-styles"
@@ -26,8 +29,9 @@ import { showConfirmationDialog } from "../dialog/showConfirmationDialog"
 
 const FAVORITE_DRAG_TYPE = "application/x-vagabond-polymorph-favorite"
 
-export const PolymorphAppView = ({ caster }: {
-    caster: Actor & { system: HeroDataModel | AdversaryDataModel | NpcDataModel }
+export const PolymorphAppView = ({ caster, header }: {
+    caster: Actor & { system: HeroDataModel | AdversaryDataModel | NpcDataModel },
+    header?: ReactNode
 }) => {
 
     const syncedTargets = useTargetSync()
@@ -72,14 +76,23 @@ export const PolymorphAppView = ({ caster }: {
             ? dragData.uuid
             : event.dataTransfer.getData("text/plain") || undefined
 
-        const form = uuid ? await fromUuid(uuid as any) as any : undefined
-        if (form?.documentName === "Actor"
-            && (form.system instanceof AdversaryDataModel || form.system instanceof NpcDataModel)
-            && form.system.hitDice <= castingLevel
-            && (form.system.beingType === "beast" || form.system.beingSubtype === "beast")
-        ) {
-            return form as Actor & { system: AdversaryDataModel | NpcDataModel }
+        const statBlock = uuid ? await fromUuid(uuid as any) as any : undefined
+
+        if (!statBlock) {
+            throw new VagabondAppError({
+                name: appLang.Polymorph.error,
+                message: appLang.Polymorph.statBlockLookupFailed
+            })
         }
+
+        if (statBlock?.documentName === "Actor"
+            && (statBlock.system instanceof AdversaryDataModel || statBlock.system instanceof NpcDataModel)
+            && statBlock.system.hitDice <= castingLevel
+            && (statBlock.system.beingType === "beast" || statBlock.system.beingSubtype === "beast")
+        ) {
+            return statBlock as Actor & { system: AdversaryDataModel | NpcDataModel }
+        }
+
         return undefined
     }
 
@@ -91,23 +104,44 @@ export const PolymorphAppView = ({ caster }: {
         event.stopPropagation()
         setIsMorphDragOver(false)
 
-        const statBlock = await findStatBlock(event)
+        const statBlock = await (async () => {
+            try {
+                return await findStatBlock(event)
+            }
+            catch (error: any) {
+                ui.notifications?.error(`${error.name}: ${error.message}`)
+                return undefined
+            }
+        })()
 
         if (statBlock) {
             for (const target of targets) {
                 const targetActor = target.token?.actor ?? (target.id === caster.id ? caster : undefined)
                 if (!targetActor) continue
-                await api.util.polymorph({
+
+                const polymorph = () => api.util.polymorph({
                     caster: caster,
                     target: targetActor as any,
                     form: statBlock as any
                 })
+
+                if (targetActor.isOwner) {
+                    await polymorph()
+                }
+                else {
+                    await sendVagabondChatCard(caster, "PolymorphRequestChatCard", {
+                        casterId: caster.id,
+                        targetId: targetActor.id,
+                        targetTokenId: target.token?.id,
+                        formUuid: statBlock.uuid
+                    })
+                }
             }
         }
         else {
             showConfirmationDialog({
-                title: "Invalid polymorph form",
-                description: `Forms must be a type (or sub-type) of "Beast" with HD less than or equal to ${castingLevel}`,
+                title: appLang.Polymorph.invalidFormTitle,
+                description: localizeString(appLang.Polymorph.invalidFormDescription, { hd: String(castingLevel) }),
                 variant: "info"
             })
         }
@@ -134,12 +168,20 @@ export const PolymorphAppView = ({ caster }: {
             return
         }
 
-        const form = await findStatBlock(event)
+        const form = await (async () => {
+            try {
+                return await findStatBlock(event)
+            }
+            catch (error: any) {
+                ui.notifications?.error(`${error.name}: ${error.message}`)
+                return undefined
+            }
+        })()
 
         if (!form) {
             showConfirmationDialog({
-                title: "Invalid polymorph form",
-                description: `Forms must be of type (or sub-type) "Beast" with HD less than or equal to ${castingLevel}.`,
+                title: appLang.Polymorph.invalidFormTitle,
+                description: localizeString(appLang.Polymorph.invalidFormDescription, { hd: String(castingLevel) }),
                 variant: "info"
             })
             return
@@ -170,40 +212,45 @@ export const PolymorphAppView = ({ caster }: {
     return (
         <div className={`flex flex-col items-center text-base text-text-primary font-eskapade bg-sheet-main-fill p-2 gap-2`}>
 
-            {/* TARGETS */}
-            {(targets.length > 1 || (targets.length === 1 && targets[0].token?.actor?.id !== caster.id)) &&
-                <TargetsDisplay targets={targets} />
-            }
+            {/* HEADER (Stationary) */}
+            <div className="sticky top-0 z-10 flex flex-col items-center w-full gap-2 pb-2 -mt-2 pt-2 bg-sheet-main-fill">
+                {header}
 
-            {/* DROP ZONE */}
-            {polymorph && targets.length <= 1 && targets[0].token?.actor?.id === caster.id
-                ? <div
-                    className="w-full"
-                    onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(true) }}
-                    onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(false) }}
-                    onDrop={handleMorphDrop}
-                >
-                    <PolymorphCard polymorph={polymorph} onCancel={cancelPolymorph} isHovered={isMorphDragOver} />
-                </div>
-                : <div
-                    className={`flex w-full items-center justify-center py-8 px-4 rounded bg-context-menu-fill ${isMorphDragOver ? `${wealthBorderRounded}` : "border border-dashed border-table-border"}`}
-                    onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(true) }}
-                    onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(false) }}
-                    onDrop={handleMorphDrop}
-                >
-                    <span className="text-text-tertiary italic px-8 text-center whitespace-pre-line">
-                        {`Drop stat block here to Polymorph Targets.\n${caster.system instanceof HeroDataModel ? `(HD Limit: ${castingLevel})` : ""}`}
-                    </span>
-                </div>
-            }
+                {/* TARGETS */}
+                {(targets.length > 1 || (targets.length === 1 && targets[0].token?.actor?.id !== caster.id)) &&
+                    <TargetsDisplay targets={targets} />
+                }
+
+                {/* DROP ZONE */}
+                {polymorph && targets.length <= 1 && targets[0].token?.actor?.id === caster.id
+                    ? <div
+                        className="w-full"
+                        onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(true) }}
+                        onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(false) }}
+                        onDrop={handleMorphDrop}
+                    >
+                        <PolymorphCard polymorph={polymorph} onCancel={cancelPolymorph} isHovered={isMorphDragOver} />
+                    </div>
+                    : <div
+                        className={`flex w-full items-center justify-center py-4 px-4 rounded bg-context-menu-fill ${isMorphDragOver ? `${wealthBorderRounded}` : "border border-dashed border-table-border"}`}
+                        onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(true) }}
+                        onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(false) }}
+                        onDrop={handleMorphDrop}
+                    >
+                        <span className="text-text-tertiary italic text-center whitespace-pre-line">
+                            {`${appLang.Polymorph.dropZone}\n${caster.system instanceof HeroDataModel ? localizeString(appLang.Polymorph.hdLimit, { hd: String(castingLevel) }) : ""}`}
+                        </span>
+                    </div>
+                }
+            </div>
 
             {/* HERO TYPES CAN HAVE FAVORITES */}
             {caster.system instanceof HeroDataModel && caster.system.spells.some(sp => sp.parent.flags[sys_id].polymorph) && (
                 <div className="w-full">
                     <CollapsibleSection
-                        title="Favorites"
+                        title={appLang.Polymorph.favorites}
                         content={
-                            <div className="flex flex-col gap-1 mt-1">
+                            <div className="flex flex-col gap-1 mt-1 max-h-[50vh] overflow-y-auto">
                                 {favorites?.map((favorite, index) => (
                                     <PolymorphFavoriteCard
                                         key={index}
@@ -236,7 +283,7 @@ export const PolymorphAppView = ({ caster }: {
             {/* ADVERSARIES COMPENDIUM LINK */}
             <div className="w-full">
                 <button onClick={() => game.packs?.get("vagabond-app.adversaries")?.render(true)} className={`hover-glow cursor-pointer ${buttonAnimation}`}>
-                    <HeroCreationSubtext text={"Browse Stat Blocks"} />
+                    <HeroCreationSubtext text={appLang.Polymorph.browseStatBlocks} />
                 </button>
             </div>
 
@@ -259,7 +306,7 @@ const PolymorphCard = ({ polymorph, onCancel, isHovered }: {
                 onClick={() => actor?.sheet?.render(true)}
             />
             <div>
-                <p className="text-xs text-text-secondary font-paradigm">Current State</p>
+                <p className="text-xs text-text-secondary font-paradigm">{appLang.Polymorph.currentState}</p>
                 <p className="text-text-primary font-eskapade">{polymorph.statBlock.name}</p>
             </div>
         </div>
@@ -314,7 +361,7 @@ const PolymorphFavoriteCard = ({ uuid, index, isHovered, isCurrent, onDragOver, 
         />}
     </div>)
 
-    const name = statBlock?.name ?? "Drop stat blocks here to Favorite"
+    const name = statBlock?.name ?? appLang.Polymorph.dropToFavorite
 
     return (
         <div
@@ -338,13 +385,16 @@ const PolymorphFavoriteCard = ({ uuid, index, isHovered, isCurrent, onDragOver, 
                         <div className="flex w-[300px] max-h-[80vh] bg-sheet-main-fill">
                             <NpcSheetComponent actor={statBlock} hidePortrait={true} />
                         </div>
-                    }>{image}</Tooltip>
+                    }>
+                        {image}
+                    </Tooltip>
+
                     <div className="flex flex-col gap-1">
                         <p className="text-lg">{name}</p>
                         <div className="flex flex-wrap gap-1 -mt-1.5 text-xs text-text-secondary font-paradigm italic">
-                            <p>{`HD: ${statBlock?.system?.hitDice ?? 0}`}</p>
+                            <p>{localizeString(appLang.Polymorph.hd, { hd: String(statBlock?.system?.hitDice ?? 0) })}</p>
                             <p>{`|`}</p>
-                            <p>{`AC: ${statBlock?.system?.armor?.rating ?? 0}`}</p>
+                            <p>{localizeString(appLang.Polymorph.ac, { ac: String(statBlock?.system?.armor?.rating ?? 0) })}</p>
                             <p>{`|`}</p>
                             <p>{formatSpeeds(statBlock?.system?.speeds ?? [])}</p>
                         </div>
