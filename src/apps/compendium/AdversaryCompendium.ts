@@ -5,6 +5,7 @@ export const ADVERSARY_FILTER_FIELDS = [
     "system.beingSize",
     "system.beingType",
     "system.beingSubtype",
+    "system.speeds",
     "system.hitDice",
     "system.threatLevel",
     "system.threatLevelOverride"
@@ -18,6 +19,7 @@ export const AdversaryCompendium = createFilterableCompendium({
     emptyFilters: () => ({
         beingSize: "",
         beingType: "",
+        movementType: "",
         hitDiceMin: null,
         hitDiceMax: null,
         threatLevelMin: null,
@@ -29,9 +31,12 @@ export const AdversaryCompendium = createFilterableCompendium({
             ...Object.entries(appLang.BeingTypes),
             ...Object.entries(appLang.BeingSubtypes).filter(([value]) => value !== "none")
         ])].map(([value, label]) => [value, (label as string) || value] as [string, string])
+        const movementTypeOptions = Object.entries(appLang.Movement) as [string, string][]
 
         return filterRow(
-            selectFilter("Size", "beingSize", sizeOptions) + selectFilter("Being Type", "beingType", typeOptions),
+            selectFilter("Size", "beingSize", sizeOptions) +
+            selectFilter("Being Type", "beingType", typeOptions) +
+            selectFilter("Mvmnt", "movementType", movementTypeOptions),
             "margin-bottom: 8px;"
         ) + filterRow(
             numberFilter("HD Min", "hitDiceMin") +
@@ -44,6 +49,7 @@ export const AdversaryCompendium = createFilterableCompendium({
         const threatLevel = sys.threatLevelOverride ?? sys.threatLevel ?? 0
         if (f.beingSize && sys.beingSize !== f.beingSize) return false
         if (f.beingType && sys.beingType !== f.beingType && sys.beingSubtype !== f.beingType) return false
+        if (f.movementType && !sys.speeds.map(it => it.type).includes(f.movementType)) return false
         if (f.hitDiceMin != null && (sys.hitDice ?? 0) < f.hitDiceMin) return false
         if (f.hitDiceMax != null && (sys.hitDice ?? 0) > f.hitDiceMax) return false
         if (f.threatLevelMin != null && threatLevel < f.threatLevelMin) return false

@@ -8,6 +8,7 @@ import { TrashButton } from "../../view/component/TrashButton"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { ConfirmationDialog } from "./dialog/ConfirmationDialog"
+import { PolymorphApp } from "./polymorph/PolymorphApp"
 import { addCountdown, deleteAllCountdowns, deleteAllProgressClocks, getCountdowns, getItemShopToggle, getProgressClocks, ProgressClockSchema, setItemShopToggle, setProgressClocks } from "./usecase/VagabondSettingsHelper"
 
 export const VagabondToolsAppView = () => {
@@ -89,7 +90,15 @@ export const VagabondToolsAppView = () => {
                         </div>
                     </div>
 
+                    <div>
+                        <p>{appLang.VagabondTools.specialEffects}</p>
+                        <UtilityButton onClick={() => new PolymorphApp(canvas?.tokens?.controlled[0]?.actor as any).render({ force: true })}>
+                            Polymorph
+                        </UtilityButton>
+                    </div>
+
                     <div className="mt-4">
+                        <p>{appLang.VagabondTools.specialEffects}</p>
                         <Checkbox
                             label={appLang.VagabondTools.toggleItemShop}
                             checked={shopToggle}

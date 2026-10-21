@@ -47,7 +47,7 @@ export const onClickAction = async (
     }
 }
 
-export const onClickActionAsWeaponAttack = async (actor: Actor & { system: HeroDataModel }, action: any, e: React.MouseEvent) => {
+export const buildPolymorphAttack = (actor: Actor & { system: HeroDataModel }, action: any): HeroAttack | undefined => {
     const polyMods = actor.system.modifiers.polymorph
     const relicPower = polyMods.relicAttacks
         ? (polyMods.attackBonus > 0
@@ -80,8 +80,14 @@ export const onClickActionAsWeaponAttack = async (actor: Actor & { system: HeroD
         }
     }
 
-    if (weapon.system.skills.length > 0) {
-        const attack = HeroAttack.buildWeaponAttack(actor, weapon as any)
+    return weapon.system.skills.length > 0
+        ? HeroAttack.buildWeaponAttack(actor, weapon as any)
+        : undefined
+}
+
+export const onClickActionAsWeaponAttack = async (actor: Actor & { system: HeroDataModel }, action: any, e: React.MouseEvent) => {
+    const attack = buildPolymorphAttack(actor, action)
+    if (attack) {
         await attack.initiate(e)
     }
     else {

@@ -24,13 +24,9 @@ export const numberFilter = (label: string, key: string, step = 1) => `
     </label>`
 
 export interface FilterableCompendiumConfig {
-    /** Index fields required by the filters, e.g. "system.beingSize" */
     indexFields: string[]
-    /** Initial (empty) filter state */
     emptyFilters: () => FilterState
-    /** Inner HTML for the filter bar, built from the shared filter helpers */
     renderFilters: () => string
-    /** Whether an index entry's system data passes the current filters */
     matches: (sys: any, filters: FilterState) => boolean
 }
 

@@ -1050,7 +1050,8 @@
       "apply": "Apply",
       "resolve": "Resolve",
       "enable": "Enable",
-      "disable": "Disable"
+      "disable": "Disable",
+      "cancelPolymorph": "Cancel Polymorph"
     },
     "Effects": {
       "title": "Active Effects",
@@ -1191,6 +1192,8 @@
         "title": "Vagabond Tools",
         "countdowns": "Countdowns",
         "progressClocks": "Progress Clocks",
+        "specialEffects": "Special Effects",
+        "settings": "Settings",
         "defaultClockName": "Clock",
         "deleteAllCountdowns": "Delete all Countdowns?",
         "deleteAllProgressClocks": "Delete all Progress Clocks?",

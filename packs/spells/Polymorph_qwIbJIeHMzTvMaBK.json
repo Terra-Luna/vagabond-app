@@ -18,13 +18,17 @@
     "default": 0,
     "PDLxeQclz2rj9enO": 3
   },
-  "flags": {},
+  "flags": {
+    "vagabond-app": {
+      "polymorph": true
+    }
+  },
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.1",
+    "systemVersion": "0.2.93",
     "createdTime": 1786556348857,
-    "modifiedTime": 1791479501815,
+    "modifiedTime": 1792532433649,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

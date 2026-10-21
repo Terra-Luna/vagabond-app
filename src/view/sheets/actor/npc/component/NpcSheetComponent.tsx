@@ -30,7 +30,6 @@ import { Abilities } from "./Abilities"
 import { Actions, NewActionWindow } from "./Actions"
 import { useAddActionMenu } from "./hooksAndUtils"
 
-
 const locale = appLang.NpcSheet
 
 /**
@@ -39,7 +38,7 @@ const locale = appLang.NpcSheet
  */
 const usePortraitOpenFlag = (actor: Actor) => {
 
-    const token = actor.isToken ? actor.token : actor.getActiveTokens()[0]?.document
+    const token = actor.isToken ? actor.token : actor.getActiveTokens?.()[0]?.document
 
     const [isPortraitOpen, setIsPortraitOpenState] = useState<boolean>(
         (token?.getFlag(sys_id, "portraitOpen" as any) as boolean | undefined) ?? true
@@ -62,11 +61,14 @@ const usePortraitOpenFlag = (actor: Actor) => {
     return { isPortraitOpen, setIsPortraitOpen }
 }
 
-export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: AdversaryDataModel | NpcDataModel } }) => {
+export const NpcSheetComponent = ({ actor, hidePortrait }: { actor: Actor & { system: AdversaryDataModel | NpcDataModel }, hidePortrait?: boolean }) => {
     const npc = actor.system
     const { isEditMode } = useEditMode()
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
-    const { isPortraitOpen, setIsPortraitOpen } = usePortraitOpenFlag(actor)
+    const { isPortraitOpen: storedPortraitOpen, setIsPortraitOpen: setStoredPortraitOpen } = usePortraitOpenFlag(actor)
+
+    const isPortraitOpen = !hidePortrait && storedPortraitOpen
+    const setIsPortraitOpen = hidePortrait ? () => { } : setStoredPortraitOpen
 
     useEffect(() => {
         if (!isEditMode) {
@@ -75,7 +77,7 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
     }, [isEditMode, setIsAddActionOpen])
 
     return (
-        <div className="@container flex grow overflow-y-hidden">
+        <div className="@container flex grow overflow-y-hidden font-paradigm font-normal text-base text-text-primary">
             <div className="absolute left-0 flex items-start">
                 <div className={`
                     overflow-hidden transition-all duration-300 ease-in-out
@@ -83,12 +85,12 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
                     ${isPortraitOpen ? 'border-2 rounded-l-md' : 'border'}
                     ${isPortraitOpen ? 'w-[100px] -ml-[100px]' : 'w-0 ml-0'}`}
                 >
-                    <ActorPortrait actor={npc} />
+                    {!hidePortrait && <ActorPortrait actor={npc} />}
                 </div>
             </div>
 
             <div className="flex flex-col grow">
-                <NpcSheetHeader npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} />
+                <NpcSheetHeader npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} hidePortrait={hidePortrait} />
                 <div className="overflow-y-auto">
                     <Description item={npc.parent} showFullView={true} />
                     <StatBlock npc={npc} />
@@ -110,7 +112,7 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
     )
 }
 
-const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
+const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen, hidePortrait }: { npc: any, isPortraitOpen: boolean, setIsPortraitOpen: any, hidePortrait?: boolean }) => {
     const { editModeToggleBtn } = useEditMode()
     return (
         <div>
@@ -137,17 +139,17 @@ const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
                     {editModeToggleBtn}
                 </div>
             </div>
-            <TraitSelectors npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} />
+            <TraitSelectors npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} hidePortrait={hidePortrait} />
         </div>
     )
 }
 
-const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
+const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen, hidePortrait }: { npc: any, isPortraitOpen: boolean, setIsPortraitOpen: any, hidePortrait?: boolean }) => {
     const { isEditMode } = useEditMode()
     return (
         <div className="flex text-text-header-secondary">
             {/* EXPAND / COLLAPSE BUTTON */}
-            <button
+            {!hidePortrait && <button
                 onClick={() => setIsPortraitOpen(open => !open)}
                 title={isPortraitOpen ? appLang.AdversarySheet.collapsePortrait : appLang.AdversarySheet.expandPortrait}
                 className={`bg-sheet-header-fill -mt-1 px-0.5 py-2 hover-glow cursor-pointer ${tableBorder}`}
@@ -156,7 +158,7 @@ const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
                     ? <ChevronRight size={14} className="text-text-header-primary" />
                     : <ChevronLeft size={14} className="text-text-header-primary" />
                 }
-            </button>
+            </button>}
             {isEditMode
                 ? <div className="flex gap-x-1 px-1 mt-1">
                     <DropDown

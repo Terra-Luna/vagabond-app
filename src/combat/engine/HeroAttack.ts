@@ -645,7 +645,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         return attack
     }
 
-    static async buildCustomRoll(actor: Actor & { system: HeroDataModel }, preset: RollPreset, clickEvent?: any) {
+    static async buildCustomRoll(actor: Actor & { system: HeroDataModel }, preset: RollPreset, clickEvent?: any, baseAttack?: HeroAttack) {
         const makeSkillCheck = (type: SkillCheckType) => {
             return new SkillCheck(actor.system, {
                 type: type,
@@ -667,11 +667,24 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
                 dmgType: weapon?.system?.damage?.type ?? 'physical',
                 flatDmgBonus: preset.flatModifier,
                 perDieDmgBonus: preset.perDieBonus,
-                armorPiercing: preset.armorPiercing
+                armorPiercing: preset.armorPiercing,
+                relicLevel: baseAttack?.damageRoll?.relicLevel
             })
         }
 
-        if (preset.skill && preset.damageRolls && preset.damageRolls.length > 0) {
+        if (baseAttack && preset.skill && preset.damageRolls?.length > 0) {
+            const title = baseAttack.title + (preset.description ? `: ${preset.description}` : "")
+            const damageRoll = makeDamageRoll(undefined, title)
+            damageRoll.dmgType = baseAttack.damageRoll?.dmgType ?? 'physical'
+
+            const attack = new HeroAttack(title, actor, getTargetIds(), makeSkillCheck('attack'), false, damageRoll)
+            attack.itemId = baseAttack.itemId
+            attack.appliedEffects = baseAttack.appliedEffects
+            attack.skipSkillCheck = preset.skill === '-'
+
+            attack.initiate(clickEvent)
+        }
+        else if (preset.skill && preset.damageRolls && preset.damageRolls.length > 0) {
             const weapon = actor.items.find(it => it.id === preset.weaponId) as Item & { system: WeaponDataModel }
             if (!weapon || !weapon.system.isEquipped) return
 

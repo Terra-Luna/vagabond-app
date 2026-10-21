@@ -2,6 +2,8 @@ import { PenSquare, Save,Trash } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
 import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRollSchema"
+import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
+import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 import { SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
 import { AppliedFx } from "../../../../../combat/engine/Attack"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
@@ -24,10 +26,11 @@ import { DropDown } from "../../../../component/Dropdown"
 import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { RichTextField } from "../../../../component/RichTextField"
+import { Tooltip } from "../../../../component/Tooltip"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { onClickAction, onClickActionAsWeaponAttack, onClickActionCombo } from "./hooksAndUtils"
+import { buildPolymorphAttack, onClickAction, onClickActionAsWeaponAttack, onClickActionCombo } from "./hooksAndUtils"
 
 const locale = appLang.NpcSheet
 
@@ -97,6 +100,30 @@ export const Actions = ({ npc, hero, setIsAddMenuOpen, setEditTarget, isPolymorp
                                 : onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.appliedEffects as AppliedFx[], action.halfDamageOnSave)
                         }
 
+                        const polyAttack = isPolymorph && hero ? buildPolymorphAttack(hero, action) : undefined
+                        const polyPreset: RollPreset | undefined = polyAttack ? {
+                            id: "",
+                            title: action.name,
+                            description: '',
+                            weaponId: '',
+                            skill: polyAttack.skillCheck?.skill ?? '',
+                            d20Count: polyAttack.skillCheck?.d20Count ?? 1,
+                            skillCheckMod: polyAttack.skillCheck?.modifier ?? 0,
+                            critThreshold: polyAttack.skillCheck?.critThreshold ?? 20,
+                            critSum: polyAttack.skillCheck?.critSum,
+                            explodeFavor: polyAttack.skillCheck?.explodeFavor,
+                            favorHinder: polyAttack.skillCheck?.favorHinder ?? 'none',
+                            damageRolls: polyAttack.damageRoll?.dice ?? [],
+                            flatModifier: polyAttack.damageRoll?.flatDmgBonus ?? 0,
+                            perDieBonus: polyAttack.damageRoll?.perDieDmgBonus ?? 0,
+                            armorPiercing: polyAttack.damageRoll?.armorPiercing ?? 0
+                        } as RollPreset : undefined
+                        const damageElement = (
+                            <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={(e) => attack(e)}>
+                                {polyAttack?.damageRoll?.toString() ?? new DiceRoll(action.damage.dice as any).toRollFormula()}
+                            </p>
+                        )
+
                         return (
                             <div key={idx} className={`flex gap-2 p-2 justify-between ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
                                 { icon: PenSquare, label: appLang.ButtonActions.edit, action: () => { setEditTarget?.(action); setIsAddMenuOpen?.(true); } },
@@ -120,9 +147,12 @@ export const Actions = ({ npc, hero, setIsAddMenuOpen, setEditTarget, isPolymorp
                                         {action.damage.dice.count > 0 &&
                                             <div className="flex items-center gap-2">
                                                 <p className="text-text-secondary leading-none">{appLang.AdversarySheet.damageAbbreviation}</p>
-                                                <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={(e) => attack(e)}>
-                                                    {new DiceRoll(action.damage.dice as any).toRollFormula()}
-                                                </p>
+                                                {polyPreset && hero
+                                                    ? <Tooltip content={<RollBuilderView actor={hero} showHeader={true} preset={polyPreset} lockWeaponSelection={true} saveOnRoll={false} baseAttack={polyAttack} />} interactive={true}>
+                                                        {damageElement}
+                                                    </Tooltip>
+                                                    : damageElement
+                                                }
                                                 {!isPolymorph && <>
                                                     <p className="leading-none text-text-secondary">|</p>
                                                     <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={(e) => attack(e, true)}>

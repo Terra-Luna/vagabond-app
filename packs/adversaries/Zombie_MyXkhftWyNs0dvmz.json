@@ -322,10 +322,6 @@
       {
         "value": 20,
         "type": "walk"
-      },
-      {
-        "type": "swim",
-        "value": 20
       }
     ]
   },
@@ -461,9 +457,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.2.93",
     "createdTime": 1790099858199,
-    "modifiedTime": 1790099943205,
+    "modifiedTime": 1792539869797,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

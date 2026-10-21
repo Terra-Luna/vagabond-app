@@ -432,6 +432,23 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
     }
 
+    /**
+     * Delete polymorph effects one at a time. An effect may already be gone from the database
+     * (e.g. a stale local copy or a concurrent cancel), which makes a batched delete throw and
+     * abort the whole polymorph change, so missing effects are skipped.
+     */
+    private async deletePolymorphEffects(ids: (string | null)[]) {
+        for (const id of ids) {
+            if (!id || !this.parent?.effects?.has(id)) continue
+            try {
+                await this.parent.deleteEmbeddedDocuments("ActiveEffect", [id])
+            }
+            catch (error) {
+                console.warn(`Unable to delete polymorph effect ${id}`, error)
+            }
+        }
+    }
+
     override async setPolymorph(polyFlag: PolymorphFlag | undefined) {
         if (polyFlag && Object.keys(polyFlag).length > 0) {
             // Set equipment id history
@@ -472,7 +489,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             await super.setPolymorph(polyFlag)
 
             if (oldPolymorphEffects.length) {
-                await this.parent?.deleteEmbeddedDocuments("ActiveEffect", oldPolymorphEffects)
+                await this.deletePolymorphEffects(oldPolymorphEffects)
             }
 
             await this.parent?.createEmbeddedDocuments("ActiveEffect", [polymorphEffect])
@@ -480,9 +497,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         else {
             // Clear polymorph effect(s)
             const polymorphEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph")).map(eff => eff.id) ?? []
-            if (polymorphEffects.length) {
-                await this.parent?.deleteEmbeddedDocuments("ActiveEffect", polymorphEffects)
-            }
+            await this.deletePolymorphEffects(polymorphEffects)
 
             const equipHistory = this.polymorph?.equipHistory ?? []
             await super.setPolymorph(polyFlag)

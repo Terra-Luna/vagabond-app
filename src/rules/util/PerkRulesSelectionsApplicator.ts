@@ -95,7 +95,7 @@ export class PerkRulesSelectionsApplicator {
                         name: fullItem.name || "Unknown Feature",
                         img: fullItem.img || "icons/svg/item-bag.svg",
                         type: fullItem.type,
-                        flags: { [sys_id]: { sourceId: fullItem.uuid }, isRuleSelection: true }
+                        flags: { ...fullItem.flags, [sys_id]: { ...fullItem.flags?.[sys_id], sourceId: fullItem.uuid }, isRuleSelection: true }
                     },
                     ...systemClone
                 }

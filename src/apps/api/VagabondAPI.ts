@@ -1,5 +1,6 @@
 import { HeroAttack } from "../../combat/engine/HeroAttack"
 import { SkillCheck } from "../../combat/engine/roll/SkillCheck"
+import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../model/actor/NpcDataModel"
 import { PolymorphFlag } from "../../model/actor/type/PolymorphFlag"
@@ -25,9 +26,9 @@ export interface VagabondAPI {
     },
     util: {
         polymorph: ({ caster, target, form }: {
-            caster: Actor & { system: HeroDataModel },
-            target: Actor & { system: HeroDataModel | NpcDataModel },
-            form?: Actor & { system: NpcDataModel }
+            caster: Actor & { system: HeroDataModel | NpcDataModel | AdversaryDataModel },
+            target: Actor & { system: HeroDataModel | NpcDataModel | AdversaryDataModel },
+            form?: Actor & { system: NpcDataModel | AdversaryDataModel }
         }) => Promise<void>,
         rest: () => void,
         travel: () => void,
@@ -86,9 +87,9 @@ export const api: VagabondAPI = {
 
     util: {
         polymorph: async ({ caster, target, form }: {
-            caster: Actor & { system: HeroDataModel },
-            target: Actor & { system: HeroDataModel | NpcDataModel },
-            form?: Actor & { system: NpcDataModel }
+            caster: Actor & { system: HeroDataModel | NpcDataModel | AdversaryDataModel },
+            target: Actor & { system: HeroDataModel | NpcDataModel | AdversaryDataModel },
+            form?: Actor & { system: NpcDataModel | AdversaryDataModel }
         }) => {
             if (!caster || !target) return
 

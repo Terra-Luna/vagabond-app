@@ -386,7 +386,7 @@
       "_id": "OPxTuJ6bfW7QSa6w",
       "img": "/icons/commodities/bones/skull-hollow-worn-blue.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Once per Day, if it is reduced to 0 HP, it instead regains [[/r 2d4]] HP.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Once per Day, if it is reduced to 0 HP, it instead regains [[/r 2d4#Relentless Healing]] HP.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -397,9 +397,9 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
+        "systemVersion": "0.2.93",
         "createdTime": 1790030868113,
-        "modifiedTime": 1790030868113,
+        "modifiedTime": 1792540758346,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
         "exportSource": null,
         "compendiumSource": null,
