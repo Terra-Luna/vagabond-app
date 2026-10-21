@@ -209,6 +209,10 @@ export const PolymorphAppView = ({ caster, header }: {
         await api.util.polymorph({ caster: caster, target: caster })
     }
 
+    const isTargetSelf = () => {
+        return targets.length <= 1 && targets[0].token?.actor?.id === caster.id
+    }
+
     return (
         <div className={`flex flex-col items-center text-base text-text-primary font-eskapade bg-sheet-main-fill p-2 gap-2`}>
 
@@ -222,7 +226,7 @@ export const PolymorphAppView = ({ caster, header }: {
                 }
 
                 {/* DROP ZONE */}
-                {polymorph && targets.length <= 1 && targets[0].token?.actor?.id === caster.id
+                {polymorph && isTargetSelf()
                     ? <div
                         className="w-full"
                         onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(true) }}
@@ -238,7 +242,7 @@ export const PolymorphAppView = ({ caster, header }: {
                         onDrop={handleMorphDrop}
                     >
                         <span className="text-text-tertiary italic text-center whitespace-pre-line">
-                            {`${appLang.Polymorph.dropZone}\n${caster.system instanceof HeroDataModel ? localizeString(appLang.Polymorph.hdLimit, { hd: String(castingLevel) }) : ""}`}
+                            {`${localizeString(appLang.Polymorph.dropZone, { noun: isTargetSelf() ? appLang.Polymorph.self : appLang.Polymorph.targets })}\n${caster.system instanceof HeroDataModel ? localizeString(appLang.Polymorph.hdLimit, { hd: String(castingLevel) }) : ""}`}
                         </span>
                     </div>
                 }

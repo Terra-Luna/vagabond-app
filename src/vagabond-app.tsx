@@ -117,7 +117,12 @@ Hooks.once("init", () => {
         CONFIG.ui.combat = VagabondCombatTracker
     )
 
-    foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = `systems/${sys_id}/react-placeholder.hbs`
+    foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = `systems/${sys_id}/react-placeholder.hbs`;
+
+    /**
+     * Allows players to drag Actors from the sidebar onto their sheet without the Create Token permission.
+     */
+    (foundry.applications.sidebar.tabs.ActorDirectory.prototype as any)._canDragStart = () => true
 
     VagabondSettingsRegistry.register()
 
@@ -549,6 +554,7 @@ Hooks.on("deleteCombat", (combat: Combat, options: any, userId: string) => {
 });
 
 Hooks.on("dropCanvasData", (canvas: Canvas, data: Record<string, any>): boolean | void => {
+    if (data.type === "Actor" && !game.user?.can("TOKEN_CREATE")) return false
     if (data.type !== "Actor" || !data.uuid || !data.uuid.startsWith("Compendium.")) return true
 
     /**
