@@ -96,13 +96,16 @@ export const api: VagabondAPI = {
             let polymorphFlag: PolymorphFlag | undefined = undefined
 
             if (form) {
+                console.log(form.prototypeToken?.texture?.src, form.prototypeToken?.ring?.subject?.texture, form.img)
+
                 polymorphFlag = {
                     casterId: caster.id,
                     duration: caster.system.modifiers.polymorph.continualSelf && caster.id === target.id ? 'continual' : 'focus',
                     statBlock: {
-                        id: caster.id,
+                        casterId: caster.id,
+                        id: form.id,
                         name: form.name,
-                        img: form.img,
+                        tokenImg: form.prototypeToken?.texture?.src || form.prototypeToken?.ring?.subject?.texture || form.img,
                         items: form.items.filter((it: any) => it.type === "feature"),
                         system: form.system.toObject()
                     }

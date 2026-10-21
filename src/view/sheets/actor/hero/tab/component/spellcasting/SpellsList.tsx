@@ -1,15 +1,13 @@
 import { MessageSquareText } from "lucide-react"
 
 import { SpellSelectionApp } from "../../../../../../../apps/hero-choices/spells/SpellSelectionApp"
-import { PolymorphApp } from "../../../../../../../apps/vagabond-tools/polymorph/PolymorphApp"
 import { getMiniCardsPref } from "../../../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { spellDamageBase } from "../../../../../../../model/item/character/SpellDataModel"
-import { sys_id } from "../../../../../../../utils/foundryUtils"
 import { appLang } from "../../../../../../../utils/lang"
 import { getId } from "../../../../../../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../../../../../chat/ChatCardSerializer"
-import { PrimaryButton, SecondaryButton } from "../../../../../../component/Button"
+import { PrimaryButton } from "../../../../../../component/Button"
 import { useContextMenu } from "../../../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../../../component/DynamicGrid"
 import { SkillCard, SkillCardTitle } from "../../../../../../component/SkillCard"
@@ -20,7 +18,6 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const { setIsSpellcastingOpen, onSelectSpell, selectedSpellId } = useSpellcastingMenuContext()
     const useMiniCards = getMiniCardsPref(hero.parent.id)
-    const canPolymorph = hero.spells.some(sp => sp.parent.flags?.[sys_id]?.polymorph)
 
     return (<div>
         <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
@@ -66,13 +63,6 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
             <PrimaryButton onClick={() => new SpellSelectionApp(hero.parent).render({ force: true })}>
                 {'Select Spells'}
             </PrimaryButton>
-
-            {/* CONDITIONAL POLYMORPH BUTTON */}
-            {canPolymorph &&
-                <SecondaryButton onClick={() => new PolymorphApp(hero.parent).render({ force: true })}>
-                    {'Polymorph'}
-                </SecondaryButton>
-            }
         </div>
 
         <ContextMenu />

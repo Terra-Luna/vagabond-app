@@ -1,4 +1,4 @@
-import { ArrowBigUpDash, BookText, Dices, FlaskConical, Handbag, Swords, WandSparkles } from "lucide-react"
+import { ArrowBigUpDash, BookText, Dices, FlaskConical, Handbag, PawPrint, Swords, WandSparkles } from "lucide-react"
 import { ReactNode, useEffect, useRef, useState } from "react"
 import { Tab, TabList, TabPanel,Tabs } from "react-tabs"
 
@@ -26,6 +26,7 @@ import { AlchemyTab } from "./tab/AlchemyTab"
 import { GearTab } from "./tab/GearTab"
 import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
+import { PolymorphTab } from "./tab/PolymorphTab"
 import { RollsTab } from "./tab/RollsTab"
 import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextProvider"
 import { CustomTrackers, Focus, HPArmorFatigueHUD, Luck, Saves, Skills, Speeds, StatsDrawer, Studied } from "./tab/TopSection"
@@ -169,6 +170,7 @@ const HeroSheetBody = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondAc
         ...hero.perks?.flatMap(perk => (perk as any).rules ?? []) ?? [],
         ...inventoryItems.flatMap(item => getItemRules(item))
     ]
+    const canPolymorph = hero.spells.some(spell => spell.parent.flags[sys_id].polymorph)
 
     const showAlchemyTab = isAlchemist(hero)
     const showMagicTab = getItemChoiceRules(hero.level.current ?? 0, spellRules).some(rule => rule.pack === "spell" && rule.maxChoices > 0)
@@ -246,6 +248,15 @@ const HeroSheetBody = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondAc
                 title: locale["tab-magic"],
                 icon: <WandSparkles size={iconSize} className="hover-glow" />,
                 content: <MagicTab hero={hero} />, className: "overflow-x-hidden"
+            }]
+            : []
+        ),
+        ...(canPolymorph
+            ? [{
+                id: "polymorph",
+                title: locale["tab-polymorph"],
+                icon: <PawPrint size={iconSize} className="hover-glow" />,
+                content: <PolymorphTab actor={hero.parent} />
             }]
             : []
         ),

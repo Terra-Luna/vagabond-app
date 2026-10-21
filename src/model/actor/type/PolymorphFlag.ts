@@ -8,8 +8,9 @@ export interface PolymorphFlag {
 }
 
 interface PolymorphStatBlock {
+    id: string,
     name: string,
-    img: string,
+    tokenImg: string,
     items: any[],
     system: NpcDataModel
 }

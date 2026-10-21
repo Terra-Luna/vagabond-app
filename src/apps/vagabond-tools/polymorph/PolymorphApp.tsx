@@ -7,21 +7,25 @@ import { PolymorphAppView } from "./PolymorphAppView"
 
 export class PolymorphApp extends VagabondApplication {
     
-    private actor: Actor & { system: HeroDataModel | AdversaryDataModel | NpcDataModel }
+    private caster: Actor & { system: HeroDataModel | AdversaryDataModel | NpcDataModel }
 
-    constructor(actor: Actor & { system: HeroDataModel | AdversaryDataModel | NpcDataModel }) {
+    constructor({ caster }: {
+        caster: Actor & { system: HeroDataModel | AdversaryDataModel | NpcDataModel }
+    }) {
         super({
-            window: { title: "Polymorph: " + actor.name },
-            position: { width: 280 },
+            window: { title: "Polymorph: " + caster.name },
+            position: { width: 280, height: "auto" },
+            actorId: caster.id,
+            enforceSingleInstancePerActor: true,
             Component: PolymorphAppView
         } as VagabondAppArgs)
-        this.actor = actor
+        this.caster = caster
     }
 
     override getReactProps() {
         return {
             ...super.getReactProps(),
-            actor: this.actor
+            caster: this.caster
         }
     }
 

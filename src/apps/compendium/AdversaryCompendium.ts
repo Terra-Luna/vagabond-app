@@ -36,7 +36,7 @@ export const AdversaryCompendium = createFilterableCompendium({
         return filterRow(
             selectFilter("Size", "beingSize", sizeOptions) +
             selectFilter("Being Type", "beingType", typeOptions) +
-            selectFilter("Mvmnt", "movementType", movementTypeOptions),
+            selectFilter("Movement", "movementType", movementTypeOptions),
             "margin-bottom: 8px;"
         ) + filterRow(
             numberFilter("HD Min", "hitDiceMin") +

@@ -96,7 +96,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
         this.ancestry = actor.items.find((i: { type: string }) => i?.type === 'ancestry')?.system
         this.class = actor.items.find((i: { type: string }) => i?.type === 'class')?.system
-        this.modifiers.polymorph.castingLevel = this.level.current ?? 0
 
         /**
          * Apply bonuses from Item Rules...
@@ -432,23 +431,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
     }
 
-    /**
-     * Delete polymorph effects one at a time. An effect may already be gone from the database
-     * (e.g. a stale local copy or a concurrent cancel), which makes a batched delete throw and
-     * abort the whole polymorph change, so missing effects are skipped.
-     */
-    private async deletePolymorphEffects(ids: (string | null)[]) {
-        for (const id of ids) {
-            if (!id || !this.parent?.effects?.has(id)) continue
-            try {
-                await this.parent.deleteEmbeddedDocuments("ActiveEffect", [id])
-            }
-            catch (error) {
-                console.warn(`Unable to delete polymorph effect ${id}`, error)
-            }
-        }
-    }
-
     override async setPolymorph(polyFlag: PolymorphFlag | undefined) {
         if (polyFlag && Object.keys(polyFlag).length > 0) {
             // Set equipment id history
@@ -468,39 +450,26 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                 action.damage.dice.modifier += this.modifiers.polymorph.attackBonus
             })
 
-            const oldPolymorphEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph"))?.map(eff => eff.id) ?? []
-            const polymorphEffect = {
-                name: "Polymorph: " + polyFlag.statBlock.name,
-                img: polyFlag.statBlock.img,
-                showIcon: 2,
-                flags: { [sys_id]: { polymorph: true } },
-                changes: [
-                    { key: "system.ancestry.beingType", value: polyFlag.statBlock.system.beingType, type: "override", priority: 1 },
-                    { key: "system.ancestry.beingSize", value: polyFlag.statBlock.system.beingSize, type: "override", priority: 1 },
-                    { key: "system.armor.rating", value: polyFlag.statBlock.system.armor.rating, type: "add", priority: 1 },
-                    { key: "system.speed.turn", value: polyFlag.statBlock.system.speeds[0].value - calcTurnSpeed(this), type: "add", priority: 1 },
-                    ...polyFlag.statBlock.system.modifiers.damage.in.immunities.map((immunity: string) => ({ key: "system.modifiers.damage.in.immunities", value: immunity, type: "add", priority: 1 })),
-                    ...polyFlag.statBlock.system.modifiers.damage.in.weaknesses.map((weakness: string) => ({ key: "system.modifiers.damage.in.weaknesses", value: weakness, type: "add", priority: 1 })),
-                    ...polyFlag.statBlock.system.modifiers.damage.in.statusImmunities.map((status: string) => ({ key: "system.modifiers.damage.in.statusImmunities", value: status, type: "add", priority: 1 })),
-                    ...polyFlag.statBlock.system.senses.map((sense: string) => ({ key: "system.senses", value: sense, type: "add", priority: 1 }))
-                ]
-            }
-
-            await super.setPolymorph(polyFlag)
-
-            if (oldPolymorphEffects.length) {
-                await this.deletePolymorphEffects(oldPolymorphEffects)
-            }
-
-            await this.parent?.createEmbeddedDocuments("ActiveEffect", [polymorphEffect])
+            await this.setPolymorphActiveEffect(polyFlag, [
+                { key: "system.ancestry.beingType", value: polyFlag.statBlock.system.beingType, type: "override", priority: 1 },
+                { key: "system.ancestry.beingSize", value: polyFlag.statBlock.system.beingSize, type: "override", priority: 1 },
+                { key: "system.armor.rating", value: polyFlag.statBlock.system.armor.rating, type: "add", priority: 1 },
+                { key: "system.speed.turn", value: polyFlag.statBlock.system.speeds[0].value - calcTurnSpeed(this), type: "add", priority: 1 },
+                ...polyFlag.statBlock.system.modifiers.damage.in.immunities.map((immunity: string) => ({ key: "system.modifiers.damage.in.immunities", value: immunity, type: "add", priority: 1 })),
+                ...polyFlag.statBlock.system.modifiers.damage.in.weaknesses.map((weakness: string) => ({ key: "system.modifiers.damage.in.weaknesses", value: weakness, type: "add", priority: 1 })),
+                ...polyFlag.statBlock.system.modifiers.damage.in.statusImmunities.map((status: string) => ({ key: "system.modifiers.damage.in.statusImmunities", value: status, type: "add", priority: 1 })),
+                ...polyFlag.statBlock.system.senses.map((sense: string) => ({ key: "system.senses", value: sense, type: "add", priority: 1 }))
+            ])
+            await this.swapTokenImages(polyFlag)
         }
         else {
             // Clear polymorph effect(s)
             const polymorphEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph")).map(eff => eff.id) ?? []
             await this.deletePolymorphEffects(polymorphEffects)
+            await this.swapTokenImages(undefined)
 
             const equipHistory = this.polymorph?.equipHistory ?? []
-            await super.setPolymorph(polyFlag)
+            await super.setPolymorphFlag(polyFlag)
 
             // Re-equip previous gear
             for (const id of equipHistory) {

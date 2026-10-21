@@ -70,11 +70,108 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
 
         You must spend 1 Mana on your Turns to Focus on this Spell, even for willing Targets.
 
-        Overridden by Hero and NPC Data Models.
+        Overridden by HeroDataModel.
      */
-    async setPolymorph(polymorphFlag: PolymorphFlag | undefined) {
-        if (polymorphFlag) {
-            await this.parent.setFlag(sys_id, "polymorph", polymorphFlag)
+    async setPolymorph(polyFlag: PolymorphFlag | undefined) {
+        if (["adversary", "npc"].includes(this.parent.type)) {
+            if (polyFlag && Object.keys(polyFlag).length > 0) {
+                const originalSystem = { ...this, name: this.parent.name, img: this.parent.img }
+                await this.parent.setFlag(sys_id, "originalSystem", originalSystem)
+                await this.parent.update({
+                    "name": `${polyFlag.statBlock.name} (${this.parent.name})`,
+                    "system": {
+                        ...polyFlag.statBlock.system,
+                        health: { ...this.health },
+                        hitDice: (this as any).hitDice
+                    }
+                })
+                await this.setPolymorphActiveEffect(polyFlag)
+                await this.swapTokenImages(polyFlag)
+            }
+            else {
+                const originalSystem = await this.parent.getFlag(sys_id, "originalSystem")
+                if (originalSystem) {
+                    await this.parent.update({
+                        "name": originalSystem.name,
+                        "system": {
+                            ...originalSystem,
+                            health: { ...this.health }
+                        }
+                    })
+                }
+
+                const oldEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph"))?.map(eff => eff.id) ?? []
+                await this.deletePolymorphEffects(oldEffects)
+                await this.swapTokenImages(undefined)
+            }
+        }
+    }
+
+    async swapTokenImages(polyFlag: PolymorphFlag | undefined) {
+        const tokenDocs = this.parent.getActiveTokens(false, true) as any[]
+        for (const tokenDoc of tokenDocs) {
+            const original = tokenDoc.getFlag(sys_id, "originalTokenImg") as { src: string, ring: string } | undefined
+            if (polyFlag) {
+                const src = polyFlag.statBlock.tokenImg
+                if (!src) continue
+                if (!original) {
+                    await tokenDoc.setFlag(sys_id, "originalTokenImg", { src: tokenDoc.texture.src, ring: tokenDoc.ring?.subject?.texture ?? "" })
+                }
+
+                await tokenDoc.update({
+                    "texture.src": src,
+                    ...(tokenDoc.ring?.enabled ? { "ring.subject.texture": src } : {})
+                })
+            }
+            else if (original) {
+                await tokenDoc.update({
+                    "texture.src": original.src,
+                    ...(tokenDoc.ring?.enabled ? { "ring.subject.texture": original.ring } : {})
+                })
+                await tokenDoc.unsetFlag(sys_id, "originalTokenImg")
+            }
+        }
+    }
+
+    async setPolymorphActiveEffect(polyFlag: PolymorphFlag, changes?: any[]) {
+        const oldPolymorphEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph"))?.map(eff => eff.id) ?? []
+        const polymorphEffect = {
+            name: "Polymorph: " + polyFlag.statBlock.name,
+            img: "/icons/creatures/amphibians/bullfrog-glass-teal.webp",
+            showIcon: 2,
+            flags: { [sys_id]: { polymorph: true } },
+            changes: changes ?? []
+        }
+
+        await this.setPolymorphFlag(polyFlag)
+
+        if (oldPolymorphEffects.length) {
+            await this.deletePolymorphEffects(oldPolymorphEffects)
+        }
+
+        await this.parent?.createEmbeddedDocuments("ActiveEffect", [polymorphEffect])
+    }
+
+    /**
+     * Delete polymorph effects one at a time. An effect may already be gone from the database
+     * (e.g. a stale local copy or a concurrent cancel), which makes a batched delete throw and
+     * abort the whole polymorph change, so missing effects are skipped.
+     */
+    async deletePolymorphEffects(ids: (string | null)[]) {
+        for (const id of ids) {
+            if (!id || !this.parent?.effects?.has(id)) continue
+            try {
+                await this.parent.deleteEmbeddedDocuments("ActiveEffect", [id])
+            }
+            catch (error) {
+                console.warn(`Unable to delete polymorph effect ${id}`, error)
+            }
+        }
+    }
+
+    async setPolymorphFlag(polyFlag: PolymorphFlag | undefined) {
+        if (polyFlag) {
+            await this.parent.setFlag(sys_id, "polymorph", polyFlag)
         }
         else {
             await this.parent.unsetFlag(sys_id, "polymorph")

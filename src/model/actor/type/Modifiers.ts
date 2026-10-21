@@ -67,6 +67,8 @@ export const modifierSchema = () => {
             damageUpcastDiscount: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             deliveryUpcastDiscount: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             studyDiceDamage: new fields.BooleanField({ initial: false }),
+            effectiveLevelBonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            effectDamageBonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             deliveryDiscounts: new fields.SchemaField({
                 aura: new fields.NumberField({ ...requiredInteger, initial: 0 }),
                 cone: new fields.NumberField({ ...requiredInteger, initial: 0 }),
