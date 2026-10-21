@@ -4,7 +4,7 @@
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 49,
       "max": 0
     },
     "armor": {
@@ -264,7 +264,7 @@
     "threatLevel": 1,
     "threatLevelOverride": 9.6,
     "description": "<p><span style=\"white-space: pre-wrap;\">An oathbroken knight, their soul corrupted by necromantic manipulation.</span></p>",
-    "hitDice": 1,
+    "hitDice": 11,
     "zone": "front",
     "numberAppearing": "1",
     "actions": [
@@ -285,6 +285,7 @@
         "saves": [
           "will"
         ],
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "paralyzed",
@@ -308,13 +309,15 @@
         },
         "saves": [
           "reflex"
-        ]
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": []
       },
       {
         "name": "Hellfire",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 20-foot Sphere | Reflex] (1/Day): 35</span></p><p><span style=\"white-space: pre-wrap;\">(10d6) and Burning (Cd6)</span></p>",
         "type": "cast",
-        "range": "close",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 10,
@@ -326,6 +329,13 @@
         },
         "saves": [
           "reflex"
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd6"
+          }
         ]
       }
     ],
@@ -544,9 +554,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.27",
+    "systemVersion": "0.2.93",
     "createdTime": 1790089776823,
-    "modifiedTime": 1790098556304,
+    "modifiedTime": 1792613375569,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

@@ -4,7 +4,7 @@
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 18,
       "max": 0
     },
     "armor": {
@@ -252,7 +252,7 @@
     "threatLevel": 1,
     "threatLevelOverride": 4.2,
     "description": "<p><span style=\"white-space: pre-wrap;\">Scorpions roughly the size of a cow. Extremely aggressive predators that kill on-sight.</span></p>",
-    "hitDice": 1,
+    "hitDice": 4,
     "zone": "front",
     "numberAppearing": "d6",
     "actions": [
@@ -452,9 +452,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.93",
     "createdTime": 1790035580213,
-    "modifiedTime": 1790035765176,
+    "modifiedTime": 1792612997702,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

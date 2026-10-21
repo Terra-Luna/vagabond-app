@@ -4,7 +4,7 @@
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 27,
       "max": 0
     },
     "armor": {
@@ -254,8 +254,8 @@
     "threatLevel": 1,
     "threatLevelOverride": 2,
     "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
-    "zone": "front",
+    "hitDice": 6,
+    "zone": "back",
     "numberAppearing": "d3",
     "actions": [
       {
@@ -520,9 +520,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.93",
     "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "modifiedTime": 1792613049262,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

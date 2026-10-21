@@ -4,7 +4,7 @@
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 36,
       "max": 0
     },
     "armor": {
@@ -246,16 +246,57 @@
         }
       }
     },
-    "beingSize": "medium",
+    "beingSize": "huge",
     "beingType": "cryptid",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": null,
+    "threatLevelOverride": 3.9,
     "description": "",
-    "hitDice": 1,
+    "hitDice": 8,
     "zone": "front",
     "numberAppearing": "d4",
-    "actions": [],
+    "actions": [
+      {
+        "name": "Greatclub",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, 10']: 9 (2d8)</span></p>",
+        "type": "melee",
+        "range": "close",
+        "damage": {
+          "dice": {
+            "count": 2,
+            "faces": 8,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": []
+      },
+      {
+        "name": "Rock",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 9 (2d6)</span></p>",
+        "type": "ranged",
+        "damage": {
+          "dice": {
+            "count": 2,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "range": "close",
+        "saves": [
+          "reflex"
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": []
+      }
+    ],
     "combo": {
       "name": "",
       "actions": []
@@ -371,9 +412,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.2.93",
     "createdTime": 1790109121859,
-    "modifiedTime": 1790112956954,
+    "modifiedTime": 1792613282234,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
