@@ -4,6 +4,7 @@ import ReactHtmlParser from 'react-html-parser'
 import { addCountdown, checkCountdownPermission } from '../../apps/vagabond-tools/usecase/VagabondSettingsHelper'
 import { SkillCheck, SkillCheckResult } from '../../combat/engine/roll/SkillCheck'
 import { HeroDataModel } from '../../model/actor/HeroDataModel'
+import { sys_id } from '../../utils/foundryUtils'
 import { getId } from '../../utils/modelUtil'
 import { sendVagabondChatCard } from '../chat/ChatCardSerializer'
 
@@ -108,7 +109,7 @@ export const EnrichedContent = ({ content, styleClasses = '', actor, setRollResu
                         (document.sheet as any).render(true)
                     }
                     else {
-                        console.warn(`Could not render sheet. Document with UUID "${uuid}" is invalid.`)
+                        console.warn(`${sys_id} | Could not render sheet. Document with UUID "${uuid}" is invalid.`)
                     }
                 })
             }

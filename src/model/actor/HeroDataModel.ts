@@ -377,7 +377,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                 }
             }
             catch {
-                console.warn(`Failed to delete ActiveEffect for item: ${activeEffectFlag}`)
+                console.warn(`${sys_id} | Failed to delete ActiveEffect for item: ${activeEffectFlag}`)
             }
         }
         else {
@@ -425,7 +425,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                     }
                 }
                 catch (e) {
-                    console.warn(`Failed to sync status effect ${statusName}`, e)
+                    console.warn(`${sys_id} | Failed to sync status effect ${statusName}`, e)
                 }
             }
         }
@@ -435,22 +435,22 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         if (polyFlag && Object.keys(polyFlag).length > 0) {
             // Set equipment id history
             if (!this.polymorph) {
+                const gear = [
+                    ...this.equippedWeapons().filter(it => it.name.toUpperCase() !== "BREATH ATTACK"),
+                    ...this.equippedArmor()
+                ]
                 polyFlag.equipHistory ??= []
-                for (const weapon of this.equippedWeapons().filter(it => it.name.toUpperCase() !== "BREATH ATTACK")) {
-                    polyFlag.equipHistory?.push(weapon.id)
-                    await this.equip(weapon)
-                }
-                for (const armor of this.equippedArmor()) {
-                    polyFlag.equipHistory?.push(armor.id)
-                    await this.equip(armor)
-                }
+                polyFlag.equipHistory.push(...gear.map(it => it.id))
+                await Promise.all(gear.map(it => this.equip(it as any)))
             }
 
             polyFlag.statBlock.system.actions.forEach((action: any) => {
                 action.damage.dice.modifier += this.modifiers.polymorph.attackBonus
             })
 
-            await this.setPolymorphActiveEffect(polyFlag, [
+            await Promise.all([
+                this.setPolymorphFlag(polyFlag),
+                this.setPolymorphActiveEffect(polyFlag, [
                 { key: "system.ancestry.beingType", value: polyFlag.statBlock.system.beingType, type: "override", priority: 1 },
                 { key: "system.ancestry.beingSize", value: polyFlag.statBlock.system.beingSize, type: "override", priority: 1 },
                 { key: "system.armor.rating", value: polyFlag.statBlock.system.armor.rating, type: "add", priority: 1 },
@@ -459,17 +459,19 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                 ...polyFlag.statBlock.system.modifiers.damage.in.weaknesses.map((weakness: string) => ({ key: "system.modifiers.damage.in.weaknesses", value: weakness, type: "add", priority: 1 })),
                 ...polyFlag.statBlock.system.modifiers.damage.in.statusImmunities.map((status: string) => ({ key: "system.modifiers.damage.in.statusImmunities", value: status, type: "add", priority: 1 })),
                 ...polyFlag.statBlock.system.senses.map((sense: string) => ({ key: "system.senses", value: sense, type: "add", priority: 1 }))
+            ]),
+                this.swapTokenImages(polyFlag)
             ])
-            await this.swapTokenImages(polyFlag)
         }
         else {
-            // Clear polymorph effect(s)
-            const polymorphEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph")).map(eff => eff.id) ?? []
-            await this.deletePolymorphEffects(polymorphEffects)
-            await this.swapTokenImages(undefined)
-
+            // Read the history before the flag is cleared.
             const equipHistory = this.polymorph?.equipHistory ?? []
-            await super.setPolymorphFlag(polyFlag)
+            const polymorphEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph")).map(eff => eff.id) ?? []
+            await Promise.all([
+                this.deletePolymorphEffects(polymorphEffects),
+                this.swapTokenImages(undefined),
+                super.setPolymorphFlag(undefined)
+            ])
 
             // Re-equip previous gear
             for (const id of equipHistory) {

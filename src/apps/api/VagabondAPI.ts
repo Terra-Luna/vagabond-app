@@ -96,8 +96,6 @@ export const api: VagabondAPI = {
             let polymorphFlag: PolymorphFlag | undefined = undefined
 
             if (form) {
-                console.log(form.prototypeToken?.texture?.src, form.prototypeToken?.ring?.subject?.texture, form.img)
-
                 polymorphFlag = {
                     casterId: caster.id,
                     duration: caster.system.modifiers.polymorph.continualSelf && caster.id === target.id ? 'continual' : 'focus',

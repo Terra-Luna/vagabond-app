@@ -1,6 +1,7 @@
 import { X } from "lucide-react"
 
 import { ActorDataModel, BaseActorSchema } from "../../../../model/actor/ActorDataModel"
+import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
 import { PolymorphFlag } from "../../../../model/actor/type/PolymorphFlag"
 import { sys_id } from "../../../../utils/foundryUtils"
 import { appLang } from "../../../../utils/lang"
@@ -61,7 +62,7 @@ export const ActorPortrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema
                 {polymorphCancelButton}
 
                 {/* POLYMORPH IMAGE INLAY */}
-                {polymorphActor
+                {polymorphActor && actor instanceof HeroDataModel
                     ? <Tooltip content={
                         <div className="flex w-[300px] max-h-[80vh] bg-sheet-main-fill">
                             <NpcSheetComponent actor={polymorphActor} hidePortrait={true} />

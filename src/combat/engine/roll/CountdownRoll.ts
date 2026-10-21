@@ -1,4 +1,4 @@
-import { showFloatingText } from "../../../utils/foundryUtils"
+import { showFloatingText, sys_id } from "../../../utils/foundryUtils"
 import { sendVagabondChatCard } from "../../../view/chat/ChatCardSerializer"
 import { getDiceTerms } from "../util/dice-utils"
 import { CountdownResult } from "./CountdownResult"
@@ -57,7 +57,7 @@ export class CountdownRoll {
             ? await fromUuid(this.result.actorUuid) as Actor | null
             : null)
         if (!actor) {
-            console.warn(`Actor not found: "${this.result.name}"`)
+            console.warn(`${sys_id} | Actor not found: "${this.result.name}"`)
             return
         }
 

@@ -1,6 +1,7 @@
 import { ToggleLeft, ToggleRight } from 'lucide-react'
 import { ReactNode, useCallback } from 'react'
 
+import { sys_id } from '../../utils/foundryUtils'
 import { tableBorderRounded } from '../common/border-styles'
 import { CardHeader } from './CardHeader'
 import {
@@ -99,7 +100,7 @@ export const ItemRuleToggleSwitch = ({ actor, item }) => {
             actor.toggleItemRule(item)
         }
         else {
-            console.warn("Item ID undefined for", { item })
+            console.warn(`${sys_id} | Item ID undefined for`, { item })
         }
     }, [actor.flags, actor.getRuleToggleState(itemId)])
 

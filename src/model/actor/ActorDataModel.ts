@@ -76,60 +76,70 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
         if (["adversary", "npc"].includes(this.parent.type)) {
             if (polyFlag && Object.keys(polyFlag).length > 0) {
                 const originalSystem = { ...this, name: this.parent.name, img: this.parent.img }
-                await this.parent.setFlag(sys_id, "originalSystem", originalSystem)
+                // One actor update carries the name, system, original-system backup and polymorph flag.
                 await this.parent.update({
                     "name": `${polyFlag.statBlock.name} (${this.parent.name})`,
                     "system": {
                         ...polyFlag.statBlock.system,
                         health: { ...this.health },
                         hitDice: (this as any).hitDice
-                    }
+                    },
+                    "flags": { [sys_id]: { originalSystem, polymorph: polyFlag } }
                 })
-                await this.setPolymorphActiveEffect(polyFlag)
-                await this.swapTokenImages(polyFlag)
+                await Promise.all([
+                    this.setPolymorphActiveEffect(polyFlag),
+                    this.swapTokenImages(polyFlag)
+                ])
             }
             else {
-                const originalSystem = await this.parent.getFlag(sys_id, "originalSystem")
-                if (originalSystem) {
-                    await this.parent.update({
-                        "name": originalSystem.name,
-                        "system": {
-                            ...originalSystem,
-                            health: { ...this.health }
-                        }
-                    })
-                }
-
+                const originalSystem = this.parent.getFlag(sys_id, "originalSystem") as any
                 const oldEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph"))?.map(eff => eff.id) ?? []
-                await this.deletePolymorphEffects(oldEffects)
-                await this.swapTokenImages(undefined)
+                await Promise.all([
+                    this.parent.update({
+                        ...(originalSystem
+                            ? { "name": originalSystem.name, "system": { ...originalSystem, health: { ...this.health } } }
+                            : {}),
+                        [`flags.${sys_id}.-=polymorph`]: null
+                    }),
+                    this.deletePolymorphEffects(oldEffects),
+                    this.swapTokenImages(undefined)
+                ])
             }
         }
     }
 
+    /**
+     * Swaps token image to the polymorph form's (or restores it when polyFlag is undefined).
+     * The original image is stored in a flag on each token.
+     * NOTE: Ring-enabled tokens display ring.subject.texture instead of texture.src.
+     */
     async swapTokenImages(polyFlag: PolymorphFlag | undefined) {
         const tokenDocs = this.parent.getActiveTokens(false, true) as any[]
+        const updates: any[] = []
         for (const tokenDoc of tokenDocs) {
             const original = tokenDoc.getFlag(sys_id, "originalTokenImg") as { src: string, ring: string } | undefined
+            const ringEnabled = tokenDoc.ring?.enabled
             if (polyFlag) {
                 const src = polyFlag.statBlock.tokenImg
                 if (!src) continue
-                if (!original) {
-                    await tokenDoc.setFlag(sys_id, "originalTokenImg", { src: tokenDoc.texture.src, ring: tokenDoc.ring?.subject?.texture ?? "" })
-                }
-
-                await tokenDoc.update({
+                updates.push({
+                    _id: tokenDoc.id,
                     "texture.src": src,
-                    ...(tokenDoc.ring?.enabled ? { "ring.subject.texture": src } : {})
+                    ...(ringEnabled ? { "ring.subject.texture": src } : {}),
+                    ...(original ? {} : { [`flags.${sys_id}.originalTokenImg`]: { src: tokenDoc.texture.src, ring: tokenDoc.ring?.subject?.texture ?? "" } })
                 })
             }
             else if (original) {
-                await tokenDoc.update({
+                updates.push({
+                    _id: tokenDoc.id,
                     "texture.src": original.src,
-                    ...(tokenDoc.ring?.enabled ? { "ring.subject.texture": original.ring } : {})
+                    ...(ringEnabled ? { "ring.subject.texture": original.ring } : {}),
+                    [`flags.${sys_id}.-=originalTokenImg`]: null
                 })
-                await tokenDoc.unsetFlag(sys_id, "originalTokenImg")
             }
+        }
+        if (updates.length) {
+            await (tokenDocs[0].parent as any).updateEmbeddedDocuments("Token", updates)
         }
     }
 
@@ -143,29 +153,20 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
             changes: changes ?? []
         }
 
-        await this.setPolymorphFlag(polyFlag)
-
-        if (oldPolymorphEffects.length) {
-            await this.deletePolymorphEffects(oldPolymorphEffects)
-        }
-
-        await this.parent?.createEmbeddedDocuments("ActiveEffect", [polymorphEffect])
+        await Promise.all([
+            this.deletePolymorphEffects(oldPolymorphEffects),
+            this.parent?.createEmbeddedDocuments("ActiveEffect", [polymorphEffect])
+        ])
     }
 
-    /**
-     * Delete polymorph effects one at a time. An effect may already be gone from the database
-     * (e.g. a stale local copy or a concurrent cancel), which makes a batched delete throw and
-     * abort the whole polymorph change, so missing effects are skipped.
-     */
     async deletePolymorphEffects(ids: (string | null)[]) {
-        for (const id of ids) {
-            if (!id || !this.parent?.effects?.has(id)) continue
-            try {
-                await this.parent.deleteEmbeddedDocuments("ActiveEffect", [id])
-            }
-            catch (error) {
-                console.warn(`Unable to delete polymorph effect ${id}`, error)
-            }
+        const existing = ids.filter((id): id is string => !!id && !!this.parent?.effects?.has(id))
+        if (!existing.length) return
+        try {
+            await this.parent.deleteEmbeddedDocuments("ActiveEffect", existing)
+        }
+        catch (error) {
+            console.warn(`${sys_id} | Unable to delete polymorph effects ${existing.join(", ")}`, error)
         }
     }
 

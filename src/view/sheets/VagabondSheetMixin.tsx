@@ -1,5 +1,6 @@
 import ReactDom from "react-dom/client"
 
+import { sys_id } from "../../utils/foundryUtils"
 import { onClose, onDetach, onRender, onRenderHTML, onRenderWithWrappers, onUpdatePosition } from "../../utils/sheetUtils"
 
 export const VagabondSheetMixin = (superclass) => class extends superclass {
@@ -80,7 +81,7 @@ export const VagabondSheetMixin = (superclass) => class extends superclass {
             super._toggleDisabled(disabled)
         }
         catch (error) {
-            console.warn("Vagabond | Form permission check exception:", error)
+            console.warn(`${sys_id} | Form permission check exception`, error)
         }
     }
 
