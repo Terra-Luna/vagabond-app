@@ -161,6 +161,7 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
     override baseManaCost = 2
     baseSize = 0
     size = 0
+    increment = 5
 
     private spellManaBase = 0
     private damageCost = 0
@@ -215,6 +216,7 @@ export class Line extends AreaOfEffectDelivery {
     override description = appLang.SpellDeliveries.line.description
     override targetLabel = appLang.SpellDeliveries.line.targetLabel
     override baseManaCost: number = 2
+    override increment = 10
     baseSize: number = 30
     baseHeight: number = 10
     baseWidth: number = 5

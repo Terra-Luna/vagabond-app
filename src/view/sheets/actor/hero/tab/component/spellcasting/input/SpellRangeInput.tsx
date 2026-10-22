@@ -1,12 +1,12 @@
 import { NumericCounterInput } from "../../../../../../../component/EditableTextField"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
-export const SpellRangeInput = ({ size, label, onUpdateAreaSize }) => {
+export const SpellRangeInput = ({ size, label, onUpdateAreaSize, increment }) => {
     return (
         <div className="flex flex-col justify-center">
             <SpellcastingLabel text={label} />
             <span className="flex justify-center text-xl font-eskapade">
-                <NumericCounterInput value={size} valueAppend={"'"} onChange={onUpdateAreaSize} incrementBy={5} />
+                <NumericCounterInput value={size} valueAppend={"'"} onChange={onUpdateAreaSize} incrementBy={increment} />
             </span>
         </div>
     )

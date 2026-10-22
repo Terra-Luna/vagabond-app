@@ -797,7 +797,7 @@
       "line": {
         "name": "Line",
         "targetLabel": "Length",
-        "description": "5' wide, 30' long, 10' tall Area. Expanding the width by 5' or height by up to 10' doubles the Cost."
+        "description": "5' wide, 30' long, 10' tall Area. +1 Mana per 10' of extra length.Expanding the width by 5' or height by up to 10' doubles the Cost."
       },
       "remote": {
         "name": "Remote",

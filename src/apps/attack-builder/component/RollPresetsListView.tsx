@@ -20,7 +20,7 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
     const { dragIndex, onDragStart, onDragEnter, onDrop, onDragEnd } = useReorderPreset(actor)
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col px-1">
             <CollapsibleSection
                 title={<div className="flex gap-x-2">
                     {appLang.AttackBuilder.presets.toUpperCase()}

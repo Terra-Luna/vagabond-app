@@ -149,12 +149,13 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                             subtitles={[{ label: appLang.HeroCreation.beingSize, value: beingSize }, { label: appLang.HeroCreation.beingType, value: beingType }]}
                             description={hero.ancestry?.description}
                         />
-                    </div>}
+                    </div>
+                }
             </span>
 
             {/* PERK AND TRAINING SELECTION BUTTONS */}
             {hero.class && <>
-                <div className={`flex gap-x-1 mt-2 w-full justify-between`}>
+                <div className={`flex gap-x-1 mt-1 w-full justify-between`}>
                     {showTrainingSelection &&
                         <SecondaryButton onClick={() => new TrainingSelectionApp(hero.parent).render({ force: true })}>
                             Training Selections

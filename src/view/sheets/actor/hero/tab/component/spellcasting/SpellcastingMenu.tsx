@@ -161,7 +161,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
         setDeliveries(deliveries.map(d => {
             if (d instanceof AreaOfEffectDelivery) {
                 const clone = d.clone()
-                clone.setSize(Math.round(size / 5) * 5)
+                clone.setSize(Math.round(size / d.increment) * d.increment)
                 return clone
             }
             else return d
@@ -262,6 +262,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
                     size={deliveries[deliveryIndex].size}
                     label={deliveries[deliveryIndex].targetLabel}
                     onUpdateAreaSize={onUpdateAreaSize}
+                    increment={deliveries[deliveryIndex].increment}
                 />
             </>)
         }

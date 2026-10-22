@@ -15,10 +15,11 @@ export const RollsTab = ({ actor }: { actor: Actor & { system: HeroDataModel } }
     return (
         <div>
             <RollPresetsListView actor={actor} />
-            <div className="mt-4" />
-            <CollapsibleSection title={"QUICK ROLL"} startCollapsed={false} content={
-                <RollBuilderView actor={actor} preset={customAttack} showHeader={false} />
-            } />
+            <div className="mt-2 px-1">
+                <CollapsibleSection title={"QUICK ROLL"} startCollapsed={false} content={
+                    <RollBuilderView actor={actor} preset={customAttack} showHeader={false} />
+                } />
+            </div>
             <div className="mb-4" />
         </div>
     )
