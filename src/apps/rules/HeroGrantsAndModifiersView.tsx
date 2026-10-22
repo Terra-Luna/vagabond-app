@@ -1,8 +1,11 @@
 import { HeroDataModel } from '../../model/actor/HeroDataModel'
 import { EffectCardContainer,GrantsAndModifiersCard } from '../../rules/shared/GrantsAndModifiersCard'
+import { findExtraGrantsFeature } from '../../rules/util/extra-grants-util'
 import { calculateRecurringRuleScale, getItemRuleSources, RuleSelection } from '../../rules/util/item-rules-util'
 import { getRuleSelectors, normalizeSelector } from '../../rules/util/selector-util'
+import { appLang } from '../../utils/lang'
 import { tableBorder } from '../../view/common/border-styles'
+import { UtilityButton } from '../../view/component/Button'
 import { CollapsibleSection } from '../../view/component/Collapsible'
 import { HeroCreationLabel, HeroCreationSubtext } from '../hero-creator/component/HeroCreationTypography'
 
@@ -25,6 +28,7 @@ interface ActiveRuleDisplay {
 
 export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const currentLevel = actor.system.level.current ?? 0
+    const extraFeature = findExtraGrantsFeature(actor)
 
     // Extract and format active rule elements along with their parent details
     const allRules: ActiveRuleDisplay[] = actor.items.contents.flatMap((item: any) => {
@@ -149,10 +153,18 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             {/* HEADER AND LEVEL PILL */}
             <div className="flex justify-between items-center">
                 <HeroCreationLabel text={"GRANTS & MODIFIERS"} />
+
                 <span className={`text-sm text-text-header-tertiary bg-sheet-main-fill px-2 py-0.5 ${tableBorder}/50 rounded-sm`}>
                     Level {currentLevel}
                 </span>
+
+                {extraFeature && (
+                    <div className="flex">
+                        <UtilityButton onClick={() => extraFeature.sheet?.render(true)}>{appLang.HeroChoices.openExtraFeatures}</UtilityButton>
+                    </div>
+                )}
             </div>
+
 
             {/* ACTIVE RULES LIST */}
             <CollapsibleSection title={`Active (${activeRules.length})`} settingsKey={'rules-active-features'} content={

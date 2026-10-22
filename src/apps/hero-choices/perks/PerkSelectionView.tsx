@@ -4,13 +4,16 @@ import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "re
 import { statsSchema } from "../../../model/actor/type/Stats"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
+import { addExtraPerk, getExtraPerkRules, removeExtraPerkRule } from "../../../rules/util/extra-grants-util"
 import { getItemChoiceRules, getItemGrants, getItemRules, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../utils/lang"
 import { localizeString } from "../../../utils/localeUtils"
+import { wealthBorderRounded } from "../../../view/common/border-styles"
 import { Header } from "../../../view/component/Header"
 import { SearchBar } from "../../../view/component/SearchBar"
 import { SkillCard } from "../../../view/component/SkillCard"
+import { TrashButton } from "../../../view/component/TrashButton"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
@@ -24,7 +27,8 @@ export const usePerkSelectionView = (
     spells: string[],
     navButtons: ReactNode[],
     level: number,
-    lockAncestrySlots: boolean = false
+    lockAncestrySlots: boolean = false,
+    actor?: Actor
 ) => {
 
     const allPerks = useMemo(() => {
@@ -222,6 +226,27 @@ export const usePerkSelectionView = (
         </div>
     ), [])
 
+    const [extraRules, setExtraRules] = useState<any[]>(() => getExtraPerkRules(actor))
+    const [isExtraDragOver, setIsExtraDragOver] = useState(false)
+
+    const extraPerks = useMemo(() => extraRules.flatMap(rule => {
+        const perk = selectablePerks.find(it => it.value === rule.uuid)
+        return perk ? [{ rule, perk }] : []
+    }), [extraRules, selectablePerks])
+
+    const addExtraPerkFromDrop = useCallback(async (perkId: string) => {
+        const perk = allPerks.find(it => it.uuid === perkId)
+        if (!actor || !perk) return
+        await addExtraPerk(actor, { uuid: perk.uuid, name: perk.name ?? "" })
+        setExtraRules(getExtraPerkRules(actor))
+    }, [actor, allPerks])
+
+    const removeExtraPerk = useCallback(async (ruleId: string) => {
+        if (!actor) return
+        await removeExtraPerkRule(actor, ruleId)
+        setExtraRules(getExtraPerkRules(actor))
+    }, [actor])
+
     const [activeSlot, setActiveSlot] = useState<any>()
     const [isSlotFilterEnabled, setIsSlotFilterEnabled] = useState(true)
 
@@ -397,6 +422,43 @@ export const usePerkSelectionView = (
                             {ancestryPerkSlots.map((slot, index) => renderSlot(slot, index, setAncestryPerkSlots, "ancestry", bonusChoices, lockAncestrySlots && Boolean(slot.value)))}
                             {classPerkSlots.map((slot, index) => renderSlot(slot, index, setClassPerkSlots, "class", bonusChoices))}
                         </div>
+
+                        {actor && <>
+                            {/* EXTRA PERKS DROP-ZONE */}
+                            <div
+                                className={`flex flex-col w-full items-center justify-center py-4 px-4 rounded text-text-header-primary/80 text-center bg-sheet-header-fill font-paradigm font-normal italic ${isExtraDragOver ? wealthBorderRounded : "border border-dashed border-table-border"}`}
+                                onDragOver={event => {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                    event.dataTransfer.dropEffect = "copy"
+                                    setIsExtraDragOver(true)
+                                }}
+                                onDragLeave={event => {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                    setIsExtraDragOver(false)
+                                }}
+                                onDrop={event => {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                    setIsExtraDragOver(false)
+                                    const perkId = event.dataTransfer.getData("application/x-vagabond-perk") || event.dataTransfer.getData("text/plain")
+                                    if (perkId) addExtraPerkFromDrop(perkId)
+                                }}
+                            >
+                                {appLang.HeroChoices.extraPerksDropZone}
+                            </div>
+
+                            {/* LIST OF EXTRA PERKS */}
+                            <div className="flex flex-col gap-1 w-full mt-2">
+                                {extraPerks.map(({ rule, perk }) => (
+                                    <div key={rule.id} className="flex items-start gap-1">
+                                        <div className="flex-1 min-w-0">{renderPerkCard(perk)}</div>
+                                        <TrashButton onClick={() => removeExtraPerk(rule.id)} className="mt-2" />
+                                    </div>
+                                ))}
+                            </div>
+                        </>}
                     </div>
                 </div>
             </div>

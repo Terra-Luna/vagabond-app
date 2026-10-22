@@ -143,7 +143,7 @@ export const equippedItemContextMenu = (hero: any, item: ArmorDataModel | Weapon
         })
         if (item.grip.style === 'V') {
             menuItems.push(
-                { icon: HandFist, label: appLang.ButtonActions.grip, action: () => hero.toggleVersatileGrip(item) }
+                { icon: HandFist, label: appLang.HeroSheet.Inventory.ctxGrip, action: () => hero.toggleVersatileGrip(item.parent) }
             )
         }
     }
@@ -157,9 +157,8 @@ export const equippedItemContextMenu = (hero: any, item: ArmorDataModel | Weapon
 
 export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
-    const isPolymorphed = hero.polymorph
 
-    if (!isPolymorphed && item instanceof WeaponDataModel && item.properties.includes("thrown")) {
+    if (item instanceof WeaponDataModel && item.properties.includes("thrown")) {
         menuItems.push({
             icon: Sword,
             label: appLang.ButtonActions.throw,
@@ -169,7 +168,7 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
         })
     }
 
-    if (!isPolymorphed && item.isEquippable) {
+    if (item.isEquippable) {
         if (item.isEquipped) {
             if (item instanceof WeaponDataModel && item.grip.style === 'V') {
                 menuItems.push({
@@ -192,7 +191,7 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
             })
         }
     }
-    else if (!isPolymorphed && item.isConsumable) {
+    else if (item.isConsumable) {
         menuItems.push(useItemContextOption(hero.parent, item.parent))
     }
 

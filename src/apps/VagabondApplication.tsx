@@ -80,7 +80,7 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
         if (this.usesActorScope) {
             this.onActorUpdateHook = Hooks.on("updateActor", (actor) => {
                 if (this.actorId === actor.id) {
-                    this.render({ force: true })
+                    if (this.rendered) this.render({ force: false })
                 }
             })
         }
