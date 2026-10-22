@@ -123,7 +123,7 @@ export abstract class SpellDelivery {
 
     applyEffectManaCost() {
         this._manaCost += this.upcast
-        this._manaCost += this.applyEffect && this.damageDice > 0 && !this.spell?.ignoreEffectCost
+        this._manaCost += this.applyEffect && this.damageDice > 0 && this.spell?.damageType !== 'none' && !this.spell?.ignoreEffectCost
             ? 1
             : 0
     }
