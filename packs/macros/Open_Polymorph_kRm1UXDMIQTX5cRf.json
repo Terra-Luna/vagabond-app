@@ -1,5 +1,5 @@
 {
-  "name": "Polymorph Menu (GM Only)",
+  "name": "Open Polymorph",
   "type": "script",
   "author": "KyorYoEvge7ElSaj",
   "img": "/icons/creatures/amphibians/bullfrog-glass-teal.webp",
@@ -16,7 +16,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.2.95",
     "createdTime": 1792652554344,
-    "modifiedTime": 1792652556080,
+    "modifiedTime": 1792681105816,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

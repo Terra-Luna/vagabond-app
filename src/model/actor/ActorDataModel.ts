@@ -79,6 +79,7 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
         if (polyFlag && Object.keys(polyFlag).length > 0) {
             const originalSystem = this.parent.getFlag(sys_id, "originalSystem") as any
                 ?? { ...this, name: this.parent.name, img: this.parent.img }
+
             await this.parent.update({
                 "name": `${polyFlag.statBlock.name} (${originalSystem.name ?? this.parent.name})`,
                 "system": {
@@ -101,8 +102,11 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
                         ? { "name": originalSystem.name, "system": { ...originalSystem, health: { ...this.health } } }
                         : {}),
                     [`flags.${sys_id}.polymorph`]: (globalThis as any)._del,
-                    [`flags.${sys_id}.originalSystem`]: (globalThis as any)._del                }, { vagabondPolymorph: true } as any),
+                    [`flags.${sys_id}.originalSystem`]: (globalThis as any)._del
+                }, { vagabondPolymorph: true } as any),
+
                 this.deletePolymorphEffects(oldEffects),
+
                 this.swapTokenImages(undefined)
             ])
         }

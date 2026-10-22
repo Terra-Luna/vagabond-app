@@ -1,6 +1,7 @@
 import { HeroAttack } from "../../combat/engine/HeroAttack"
 import { SkillCheck } from "../../combat/engine/roll/SkillCheck"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { PolymorphUtil } from "../../model/actor/util/PolymorphUtil"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { sys_id } from "../../utils/foundryUtils"
@@ -23,7 +24,8 @@ export interface VagabondAPI {
         openSpellcasting: (actor: Actor & { system: HeroDataModel }) => void
     },
     util: {
-        polymorphApp: (actor?: Actor & { system: HeroDataModel }) => void
+        polymorphApp: (actor?: Actor & { system: HeroDataModel }) => void,
+        cancelPolymorph: (targets?: (Actor & { system: HeroDataModel })[]) => void,
         rest: () => void,
         travel: () => void,
         syncAncestryAndClass: (actor: (Actor & { system: HeroDataModel }), sendChat?: boolean) => Promise<void>
@@ -81,9 +83,17 @@ export const api: VagabondAPI = {
 
     util: {
         polymorphApp: (actor?: Actor & { system: HeroDataModel }) => {
-            const caster = actor ?? getControlledHeroToken()
-            if (!caster || (!game.user?.isActiveGM && !(actor && actor.isOwner))) return
-            new PolymorphApp({ caster }).render({ force: true })
+            const caster = actor ?? game.user?.character ?? getControlledHeroToken()
+            if (!caster || (!game.user?.isActiveGM && !(actor && actor.isOwner && !actor.system.spells.map(it => it.parent).some(it => it.getFlag(sys_id, "polymorph"))))) {
+                ui.notifications?.warn("Select an Actor who can Polymorph")
+                return
+            }
+            new PolymorphApp({ caster: caster as any }).render({ force: true })
+        },
+
+        cancelPolymorph: (targets?: (Actor & { system: any })[]) => {
+            if (!targets || targets.length === 0 || !game.user?.isActiveGM) return
+            PolymorphUtil.polymorph({ targets: targets })
         },
 
         rest: () => {

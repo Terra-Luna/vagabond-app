@@ -26,7 +26,7 @@ export class PolymorphUtil {
      * Requires either a caster and a form or just a target to release from polymorph.
      */
     static polymorph = async ({ caster, targets, form, duration }: {
-        caster: Actor & { system: HeroDataModel | NpcDataModel | AdversaryDataModel },
+        caster?: Actor & { system: HeroDataModel | NpcDataModel | AdversaryDataModel },
         targets: (Actor & { system: HeroDataModel | NpcDataModel | AdversaryDataModel })[],
         form?: Actor & { system: NpcDataModel | AdversaryDataModel },
         duration?: 'focus' | 'continual' | 'turn'
@@ -47,7 +47,7 @@ export class PolymorphUtil {
              */
             game.socket?.emit(`system.${sys_id}`, {
                 action: "polymorph",
-                data: { casterUuid: caster.uuid, targetUuids: targets.map(t => t.uuid), formUuid: form?.uuid, duration }
+                data: { casterUuid: caster?.uuid, targetUuids: targets.map(t => t.uuid), formUuid: form?.uuid, duration }
             })
             return
         }
@@ -56,10 +56,10 @@ export class PolymorphUtil {
 
         if (form) {
             polymorphFlag = {
-                casterId: caster.id,
+                casterId: caster?.id,
                 duration: duration,
                 statBlock: {
-                    casterId: caster.id,
+                    casterId: caster?.id,
                     id: form.id,
                     name: form.name,
                     tokenImg: form.prototypeToken?.texture?.src || form.prototypeToken?.ring?.subject?.texture || form.img,
@@ -69,7 +69,7 @@ export class PolymorphUtil {
             } as unknown as PolymorphFlag
         }
 
-        if (polymorphFlag && duration === 'focus') {
+        if (polymorphFlag && duration === 'focus' && caster) {
             await PolymorphUtil.focusOnNewPolymorph(caster, targets)
         }
 
@@ -80,8 +80,8 @@ export class PolymorphUtil {
         /**
          * Automatically set NPC's to Focus on this effect.
          */
-        if (polymorphFlag && (caster.type as string) !== "hero") {
-            await caster.toggleStatusEffect("focusing", { active: true })
+        if (polymorphFlag && (caster?.type as string) !== "hero") {
+            await caster?.toggleStatusEffect("focusing", { active: true })
         }
     }
 
