@@ -307,7 +307,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     equippedWeapons = (): (Item & { system: SundryDataModel | WeaponDataModel })[] => {
         const allEquippedWeapons = this.parent.items.filter((it: any) => it.system.isEquipped && (it.type === "sundry" || it.type === "weapon"))
-        return allEquippedWeapons.filter(it => it.system instanceof SundryDataModel || (it.system instanceof WeaponDataModel && it.system.grip.style !== '-'))
+        return allEquippedWeapons.filter(it => (it.system instanceof SundryDataModel && !it.system.isWearable) || (it.system instanceof WeaponDataModel && it.system.grip.style !== '-'))
     }
 
     defenseWeapons = (): (Item & { system: WeaponDataModel })[] => {
