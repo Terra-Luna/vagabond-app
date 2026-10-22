@@ -89,10 +89,10 @@ export const PolymorphAppView = ({ caster, header }: {
             })
         }
 
-        if (statBlock?.documentName === "Actor"
-            && (statBlock.system instanceof AdversaryDataModel || statBlock.system instanceof NpcDataModel)
-            && statBlock.system.hitDice <= castingLevel
-            && (statBlock.system.beingType === "beast" || statBlock.system.beingSubtype === "beast")
+        if (statBlock?.documentName === "Actor" && (statBlock.system instanceof AdversaryDataModel || statBlock.system instanceof NpcDataModel) && (
+            game.user?.isActiveGM || ( // <-- Let GMs polymorph things into whatever
+                statBlock.system.hitDice <= castingLevel && (statBlock.system.beingType === "beast" || statBlock.system.beingSubtype === "beast")
+            ))
         ) {
             return statBlock as Actor & { system: AdversaryDataModel | NpcDataModel }
         }
