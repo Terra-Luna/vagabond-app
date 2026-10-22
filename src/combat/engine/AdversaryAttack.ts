@@ -1,8 +1,7 @@
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { appLang } from "../../utils/lang"
-import { getTargetIds } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
-import { Attack, AttackResolutionArgs } from "./Attack"
+import { AppliedFx, Attack, AttackResolutionArgs } from "./Attack"
 import { HeroAttack } from "./HeroAttack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
@@ -12,18 +11,28 @@ import { serializeAttack } from "./util/attack-serializer"
 
 export type SavingThrowType = 'reflex' | 'endure' | 'will' | 'defend'
 
-export interface AdversaryAttackArgs { attackName: string, dmgType: string, dice: DiceRoll[], saveTypes?: SavingThrowType[], description?: string, statuses?: string[] }
+export interface AdversaryAttackArgs {
+    attackName: string,
+    dmgType: string,
+    dice: DiceRoll[],
+    saveTypes?: SavingThrowType[],
+    description?: string,
+    halfDamageOnSave?: boolean,
+    appliedEffects?: AppliedFx[]
+}
 
 export class AdversaryAttack extends Attack {
 
     override readonly attackType = 'adversary' as const
+
+    protected override get prefixCountdownWithTargetName(): boolean { return true }
 
     saveTypes: SavingThrowType[] = []
     saveResults: Record<string, SkillCheckResult> = {}
     defenseArmorBonuses: Record<string, number> = {}
     rerolledSaveTargetIds: string[] = []
     description: string = ''
-    statuses: string[] = []
+    halfDamageOnSave: boolean = false
 
     constructor(
         actor: Actor,
@@ -37,7 +46,8 @@ export class AdversaryAttack extends Attack {
         }))
         this.saveTypes = args.saveTypes ?? []
         this.description = args.description ?? ''
-        this.statuses = args.statuses ?? []
+        this.halfDamageOnSave = args.halfDamageOnSave ?? false
+        this.appliedEffects = args.appliedEffects ?? []
     }
 
     async initiate() {
@@ -129,8 +139,6 @@ export class AdversaryAttack extends Attack {
 
     /**
      * A target who succeeded (or crit) their saving throw takes no damage.
-     * @param targetId 
-     * @returns 
      */ 
     protected override shouldApplyDamageToTarget(targetId: string): boolean {
         const result = this.saveResults[targetId]
@@ -138,33 +146,28 @@ export class AdversaryAttack extends Attack {
             return result.outcome !== appLang.RollResult.crit
         }
         else {
-            return !result || result.outcome === appLang.RollResult.failure
+            return !result
+                || result.outcome === appLang.RollResult.failure
+                || (result.outcome === appLang.RollResult.success && this.halfDamageOnSave)
         }
     }
 
-    protected override processDamageRoll(args: AttackResolutionArgs) {
-        super.processDamageRoll(args)
-        this.applyStatusEffects(args)
+    protected override isHalfDamageForTarget(targetId: string): boolean {
+        return this.halfDamageOnSave
+            && this.defenseArmorBonuses[targetId] === undefined
+            && this.saveResults[targetId]?.outcome === appLang.RollResult.success
     }
 
-    private applyStatusEffects(args: AttackResolutionArgs) {
-        if (this.statuses.length === 0) return
-
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
-
-        targetIds.forEach(id => {
-            // Skip targets who wouldn't have taken any damage from this attack (e.g. fully mitigated).
-            if (this.calculateAdjustedDamage(id, args) < 1) return
-            const actor = canvas?.scene?.tokens?.get(id)?.actor
-            this.statuses
-                .filter(status => !Attack.isImmuneToStatus(actor, status))
-                .forEach(status => actor?.toggleStatusEffect(status, { active: true }))
-        })
+    // Effects only apply to targets who failed (or didn't make) a save and still took damage.
+    protected override shouldApplyEffectsToTarget(targetId: string, args: AttackResolutionArgs): boolean {
+        return this.shouldApplyDamageToTarget(targetId)
+            && !this.isHalfDamageForTarget(targetId)
+            && this.calculateAdjustedDamage(targetId, args) >= 1
     }
 
     async applyStatusesAndResolve(args: AttackResolutionArgs, serialize: (attack: Attack) => AttackSnapshot | undefined) {
         if (this.isResolved) return
-        this.applyStatusEffects(args)
+        await this.processStatusFx(args)
         await this.resolve(serialize)
     }
 

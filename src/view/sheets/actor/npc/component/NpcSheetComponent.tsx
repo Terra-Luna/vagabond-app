@@ -1,20 +1,24 @@
-import { ChevronLeft, ChevronRight, Heart, Shield } from "lucide-react"
+import { ChevronLeft, ChevronRight, Heart, Plus, Shield } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
 import { ActiveEffectsView } from "../../../../../apps/active-effects/ActiveEffectsView"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDocumentAtPath, updateDocument } from "../../../../../utils/documentUtils"
 import { sys_id } from "../../../../../utils/foundryUtils"
 import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries, damageTypesWithPhysicalThresholds, localizeString } from "../../../../../utils/localeUtils"
+import { formatSpeeds } from "../../../../../utils/speedUtils"
 import { tableBorder } from "../../../../common/border-styles"
+import { CardSubHeader } from "../../../../component/CardSubHeader"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableNameField, EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
+import { IconOnlyButton } from "../../../../component/IconOnlyButton"
 import { DamageTypeIconDisplay, OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
-import { CardSubHeader } from "../../../../component/SkillCard"
 import { Tooltip } from "../../../../component/Tooltip"
+import { TrashButton } from "../../../../component/TrashButton"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -34,7 +38,7 @@ const locale = appLang.NpcSheet
  */
 const usePortraitOpenFlag = (actor: Actor) => {
 
-    const token = actor.isToken ? actor.token : actor.getActiveTokens()[0]?.document
+    const token = actor.isToken ? actor.token : actor.getActiveTokens?.()[0]?.document
 
     const [isPortraitOpen, setIsPortraitOpenState] = useState<boolean>(
         (token?.getFlag(sys_id, "portraitOpen" as any) as boolean | undefined) ?? true
@@ -57,11 +61,14 @@ const usePortraitOpenFlag = (actor: Actor) => {
     return { isPortraitOpen, setIsPortraitOpen }
 }
 
-export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: AdversaryDataModel | NpcDataModel } }) => {
+export const NpcSheetComponent = ({ actor, hidePortrait }: { actor: Actor & { system: AdversaryDataModel | NpcDataModel }, hidePortrait?: boolean }) => {
     const npc = actor.system
     const { isEditMode } = useEditMode()
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
-    const { isPortraitOpen, setIsPortraitOpen } = usePortraitOpenFlag(actor)
+    const { isPortraitOpen: storedPortraitOpen, setIsPortraitOpen: setStoredPortraitOpen } = usePortraitOpenFlag(actor)
+
+    const isPortraitOpen = !hidePortrait && storedPortraitOpen
+    const setIsPortraitOpen = hidePortrait ? () => { } : setStoredPortraitOpen
 
     useEffect(() => {
         if (!isEditMode) {
@@ -70,7 +77,7 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
     }, [isEditMode, setIsAddActionOpen])
 
     return (
-        <div className="@container flex grow overflow-y-hidden">
+        <div className="@container flex grow overflow-y-hidden font-paradigm font-normal text-base text-text-primary">
             <div className="absolute left-0 flex items-start">
                 <div className={`
                     overflow-hidden transition-all duration-300 ease-in-out
@@ -78,12 +85,12 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
                     ${isPortraitOpen ? 'border-2 rounded-l-md' : 'border'}
                     ${isPortraitOpen ? 'w-[100px] -ml-[100px]' : 'w-0 ml-0'}`}
                 >
-                    <ActorPortrait actor={npc} />
+                    {!hidePortrait && <ActorPortrait actor={npc} />}
                 </div>
             </div>
 
             <div className="flex flex-col grow">
-                <NpcSheetHeader npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} />
+                <NpcSheetHeader npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} hidePortrait={hidePortrait} />
                 <div className="overflow-y-auto">
                     <Description item={npc.parent} showFullView={true} />
                     <StatBlock npc={npc} />
@@ -105,7 +112,7 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
     )
 }
 
-const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
+const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen, hidePortrait }: { npc: any, isPortraitOpen: boolean, setIsPortraitOpen: any, hidePortrait?: boolean }) => {
     const { editModeToggleBtn } = useEditMode()
     return (
         <div>
@@ -132,17 +139,17 @@ const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
                     {editModeToggleBtn}
                 </div>
             </div>
-            <TraitSelectors npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} />
+            <TraitSelectors npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} hidePortrait={hidePortrait} />
         </div>
     )
 }
 
-const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
+const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen, hidePortrait }: { npc: any, isPortraitOpen: boolean, setIsPortraitOpen: any, hidePortrait?: boolean }) => {
     const { isEditMode } = useEditMode()
     return (
         <div className="flex text-text-header-secondary">
             {/* EXPAND / COLLAPSE BUTTON */}
-            <button
+            {!hidePortrait && <button
                 onClick={() => setIsPortraitOpen(open => !open)}
                 title={isPortraitOpen ? appLang.AdversarySheet.collapsePortrait : appLang.AdversarySheet.expandPortrait}
                 className={`bg-sheet-header-fill -mt-1 px-0.5 py-2 hover-glow cursor-pointer ${tableBorder}`}
@@ -151,7 +158,7 @@ const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
                     ? <ChevronRight size={14} className="text-text-header-primary" />
                     : <ChevronLeft size={14} className="text-text-header-primary" />
                 }
-            </button>
+            </button>}
             {isEditMode
                 ? <div className="flex gap-x-1 px-1 mt-1">
                     <DropDown
@@ -273,16 +280,10 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                 {/* SPEED */}
                 <StatBlockField label={locale.speed} content={
                     <div className="flex space-x-1">
-                        <div className="flex">
-                            {isEditMode
-                                ? <EditableTextField
-                                    boundValue={npc.movement?.speed ?? '30'}
-                                    updateProps={{ object: npc.parent, path: ['movement', 'speed'] }}
-                                    placeholder="30"
-                                />
-                                : <StatBlockValue value={npc.movement?.speed} />
-                            }
-                        </div>
+                        {isEditMode
+                            ? <SpeedsEditor npc={npc} />
+                            : <StatBlockValue value={formatSpeeds(npc.speeds)} />
+                        }
                     </div>
                 } />
             </StatBlockRow>
@@ -316,10 +317,52 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
             {/* SENSES, IMMUNITIES, & WEAKNESSES */}
             <div className="w-full space-y-2 text-base text-text-header-tertiary font-normal">
                 <SelectableTextOptions obj={npc.parent} label={locale.senses} path={['senses']} localeObj={appLang.Senses} />
-                <DamageTypeSelector npc={npc} label={locale.immune} path={['modifiers', 'damage', 'in', 'immunities']} localeObj={damageTypesWithPhysicalThresholds()} />
-                <DamageTypeSelector npc={npc} label={locale.weak} path={['modifiers', 'damage', 'in', 'weaknesses']} localeObj={appLang.DamageTypes} />
+                <DamageTypeSelector actorModel={npc} label={locale.immune} path={['modifiers', 'damage', 'in', 'immunities']} localeObj={damageTypesWithPhysicalThresholds()} />
+                <DamageTypeSelector actorModel={npc} label={locale.weak} path={['modifiers', 'damage', 'in', 'weaknesses']} localeObj={appLang.DamageTypes} />
                 <SelectableTextOptions obj={npc.parent} label={locale.status_immunities} path={['modifiers', 'damage', 'in', 'statusImmunities']} localeObj={appLang.StatusConditions} />
             </div>
+        </div>
+    )
+}
+
+const SpeedsEditor = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
+    const speeds = (npc.speeds ?? []).map(s => ({ value: s.value, type: s.type }))
+
+    const saveSpeeds = (next: { value: number, type: string }[]) => {
+        npc.parent.update({ 'system.speeds': next })
+    }
+
+    const usedTypes = speeds.map(s => s.type)
+    const nextType = Object.keys(appLang.Movement).find(t => !usedTypes.includes(t)) ?? 'walk'
+
+    return (
+        <div className="flex flex-col items-center">
+            {speeds.map((speed, index) => (
+                <div key={index} className="flex items-center gap-x-0.5">
+                    <NumericCounterInput
+                        value={speed.value}
+                        incrementBy={5}
+                        valueAppend="'"
+                        onChange={(value: number) => {
+                            if (value === speed.value) return
+                            saveSpeeds(speeds.map((s, i) => i === index ? { ...s, value } : s))
+                        }}
+                    />
+                    <DropDown
+                        value={speed.type}
+                        options={createDropdownEntries(appLang.Movement)}
+                        updateMechanism={{ onChange: (type: string) => saveSpeeds(speeds.map((s, i) => i === index ? { ...s, type } : s)) }}
+                    />
+                    <IconOnlyButton
+                        Icon={Plus}
+                        size={16}
+                        title={appLang.ButtonActions.add}
+                        onClick={() => saveSpeeds([...speeds, { value: 30, type: nextType }])}
+                    />
+
+                    <TrashButton onClick={() => saveSpeeds(speeds.filter((_, i) => i !== index))} />
+                </div>
+            ))}
         </div>
     )
 }
@@ -353,9 +396,9 @@ const StatBlockValue = ({ value }) => {
     )
 }
 
-const DamageTypeSelector = ({ npc, label, path, localeObj }: { npc: AdversaryDataModel | NpcDataModel, label: string, path: string[], localeObj: any }) => {
+export const DamageTypeSelector = ({ actorModel, label, path, localeObj }: { actorModel: AdversaryDataModel | NpcDataModel | HeroDataModel, label: string, path: string[], localeObj: any }) => {
     const { isEditMode } = useEditMode()
-    const field = getDocumentAtPath(npc.parent, path)
+    const field = getDocumentAtPath(actorModel.parent, path)
     const damageTypes = Object.keys(localeObj).filter(k => k !== 'none').map(k => (
         { key: k, value: localeObj[k], isSelected: field.indexOf(k) > -1 }
     ))
@@ -365,7 +408,7 @@ const DamageTypeSelector = ({ npc, label, path, localeObj }: { npc: AdversaryDat
             ? <></>
             : <div className="flex space-x-2 mt-2">
                 {isEditMode
-                    ? <OptionsSelectionMenu obj={npc.parent} label={label} path={path} options={damageTypes} />
+                    ? <OptionsSelectionMenu obj={actorModel.parent} label={label} path={path} options={damageTypes} />
                     : <StatBlockLabel text={label} />
                 }
                 <DamageTypeIconDisplay dmgTypes={field} />

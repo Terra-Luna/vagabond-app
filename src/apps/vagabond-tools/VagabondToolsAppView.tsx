@@ -8,7 +8,8 @@ import { TrashButton } from "../../view/component/TrashButton"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { ConfirmationDialog } from "./dialog/ConfirmationDialog"
-import { addCountdown, deleteAllCountdowns, deleteAllProgressClocks, getCountdowns, getItemShopToggle, getProgressClocks, ProgressClockSchema, setItemShopToggle, setProgressClocks } from "./usecase/VagabondSettingsHelper"
+import { PolymorphApp } from "./polymorph/PolymorphApp"
+import { addCountdown, addProgressClock, deleteAllCountdowns, deleteAllProgressClocks, getCountdowns, getItemShopToggle, getProgressClocks, setItemShopToggle } from "./usecase/VagabondSettingsHelper"
 
 export const VagabondToolsAppView = () => {
     const [shopToggle, setShopToggle] = useState<boolean>(getItemShopToggle())
@@ -24,24 +25,13 @@ export const VagabondToolsAppView = () => {
     }, [])
 
     const createNewProgressClock = useCallback(async (clockName = appLang.VagabondTools.defaultClockName, duration = 4) => {
-        const existingClocks = getProgressClocks()
-
-        const newClock = {
-            id: foundry.utils.randomID(),
-            x: 0.5, y: 0.5,
-            centered: true,
-            label: clockName,
-            segments: duration,
-            filled: 0
-        } as ProgressClockSchema
-
-        setProgressClocks([...existingClocks, newClock])
+        await addProgressClock(clockName, duration)
     }, [])
 
     return (
         <FoundryHotkeyBlocker>
             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                <div className="flex flex-col gap-y-2 grow bg-sheet-main-fill p-2 font-eskapade font-bold">
+                <div className="flex flex-col gap-y-2 grow bg-sheet-main-fill p-2 text-text-primary font-eskapade font-bold">
                     <div>
                         <p>{appLang.VagabondTools.countdowns}</p>
                         <div className="flex gap-x-1 items-center">
@@ -89,9 +79,26 @@ export const VagabondToolsAppView = () => {
                         </div>
                     </div>
 
+                    <div>
+                        <p>{appLang.VagabondTools.specialEffects}</p>
+                        <div className="flex gap-x-2 items-end">
+                            <UtilityButton onClick={() => {
+                                const selected = canvas?.tokens?.controlled[0]?.actor as any ?? game.user?.targets?.first()?.actor as any
+                                if (selected) {
+                                    new PolymorphApp({ caster: selected }).render({ force: true })
+                                }
+                            }}>
+                                Polymorph
+                            </UtilityButton>
+                            <p className="text-text-secondary font-normal">as selected token</p>
+                        </div>
+                    </div>
+
                     <div className="mt-4">
+                        <p>{appLang.VagabondTools.settings}</p>
                         <Checkbox
                             label={appLang.VagabondTools.toggleItemShop}
+                            color="text-text-primary font-normal"
                             checked={shopToggle}
                             onCheckedChanged={(checked) => handleShopToggle(checked)}
                         />

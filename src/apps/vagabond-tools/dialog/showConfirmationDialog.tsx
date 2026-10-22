@@ -8,7 +8,9 @@ interface ConfirmDialogOptions {
     title?: string
     description?: string
     confirmText?: string
+    onConfirm?: () => void
     cancelText?: string
+    onCancel?: () => void
     variant?: "destructive" | "primary" | "info"
 }
 
@@ -39,8 +41,14 @@ export const showConfirmationDialog = (options: ConfirmDialogOptions): Promise<b
                 <ConfirmationDialog
                     {...options}
                     isOpen={true}
-                    onClose={() => cleanup(false)}
-                    onConfirm={() => cleanup(true)}
+                    onClose={() => {
+                        options.onCancel?.()
+                        cleanup(false)
+                    }}
+                    onConfirm={() => {
+                        options.onConfirm?.()
+                        cleanup(true)
+                    }}
                 />
             </div>
         )

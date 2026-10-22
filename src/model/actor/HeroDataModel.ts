@@ -31,6 +31,8 @@ import { skillsSchema } from "./type/Skills"
 import { speedSchema } from "./type/Speed"
 import { statsSchema } from "./type/Stats"
 import { getArmor } from "./util/HeroEquipmentUtil"
+import { PolymorphFlag, PolymorphUtil } from "./util/PolymorphUtil"
+import { StatusEffectUtil } from "./util/StatusEffectUtil"
 
 export { getArmor }
 
@@ -118,9 +120,10 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         super.prepareDerivedData()
         if (!this.parent) return
         validateCurrentHP(this)
-        validateCurrentFocus(this)
+        StatusEffectUtil.validateCurrentFocus(this)
         PerkRulesSelectionsApplicator.apply(this.parent)
         RelicPowerProcessor.applyHeroBonuses(this.parent)
+        PolymorphUtil.applyPolymorphChanges(this, calcTurnSpeed(this))
     }
 
     override async _preUpdate(changes, options, user) {
@@ -152,10 +155,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                 (options as any).resourceTrackerUpdate = { verb: verb, resource: 'studied' }
             }
         }
-
-        /**
-         * TODO: add a tracker for changes in Fatigue?
-         */
     }
 
     override async _onUpdate(changes, options, userId) {
@@ -197,41 +196,41 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
         if (removeFatigue > 0 && this.statuses.counters.fatigue > 0) {
             await this.parent.update({
-                'system.statuses.counters.fatigue': this.statuses.counters.fatigue - removeFatigue,
+                'system.statuses.counters.fatigue': this.statuses.counters.fatigue - removeFatigue
             } as Record<any, any>)
         }
     }
 
-    async equip(item: Item & { system: ArmorDataModel | SundryDataModel | WeaponDataModel }) {
+    async equip(item: Item & { system: ArmorDataModel | SundryDataModel | WeaponDataModel }, skipCurseMessage?: boolean, bypassCurseCheck?: boolean) {
         if (item.system.isEquipped) {
-            await item.system.toggleEquipped()
+            await item.system.toggleEquipped(skipCurseMessage, bypassCurseCheck)
             return
         }
 
         if (item.system instanceof WeaponDataModel && item.system.grip.style === '-') {
-            await item.system.toggleEquipped()
+            await item.system.toggleEquipped(skipCurseMessage)
             return
         }
 
         if (item.system instanceof ArmorDataModel) {
             for (const armor of [...this.equippedArmor(), item]) {
-                await armor.system.toggleEquipped()
+                await armor.system.toggleEquipped(skipCurseMessage)
             }
             return
         }
 
         if (item.system instanceof SundryDataModel && item.system.isWearable) {
-            await item.system.toggleEquipped()
+            await item.system.toggleEquipped(skipCurseMessage)
             return
         }
 
-        await this.equipHandheldItem(item as any)
+        await this.equipHandheldItem(item as any, skipCurseMessage)
     }
 
     /**
      * Recursive function that will unequip weapons til there's a free hand slot for the new one.
      */
-    async equipHandheldItem(item: Item & { system: SundryDataModel | WeaponDataModel }) {
+    async equipHandheldItem(item: Item & { system: SundryDataModel | WeaponDataModel }, skipCurseMessage?: boolean) {
         const getHandSlot = (it: any, prop: string): number => {
             return it.system instanceof WeaponDataModel
                 ? (it.system.grip[prop] === 'HH' ? 2 : 1)
@@ -265,7 +264,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
 
         if (freeHands >= itemHandReq && itemBulk <= maxBulk && itemBulk <= availableBulk) {
-            await item.system.toggleEquipped()
+            await item.system.toggleEquipped(skipCurseMessage)
             return
         }
         else {
@@ -276,7 +275,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             else {
                 let result = false
                 for (const weapon of equippedWeapons) {
-                    result = await weapon.system.toggleEquipped(true)
+                    result = await weapon.system.toggleEquipped(skipCurseMessage)
                     if (result) break
                 }
                 // If we couldn't unequip any weapon we can't equip the new one, so bail.
@@ -285,7 +284,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
 
         // Try again...
-        await this.equipHandheldItem(item)
+        await this.equipHandheldItem(item, skipCurseMessage)
     }
 
     async toggleVersatileGrip(item: Item & { system: WeaponDataModel }) {
@@ -374,7 +373,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                 }
             }
             catch {
-                console.warn(`Failed to delete ActiveEffect for item: ${activeEffectFlag}`)
+                console.warn(`${sys_id} | Failed to delete ActiveEffect for item: ${activeEffectFlag}`)
             }
         }
         else {
@@ -422,11 +421,55 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                     }
                 }
                 catch (e) {
-                    console.warn(`Failed to sync status effect ${statusName}`, e)
+                    console.warn(`${sys_id} | Failed to sync status effect ${statusName}`, e)
                 }
             }
         }
     }
+
+    override async setPolymorph(polyFlag: PolymorphFlag | undefined) {
+        if (polyFlag && Object.keys(polyFlag).length > 0) {
+            // Set equipment id history so it can re-equip stuff later.
+            if (!this.polymorph) {
+                const gear = [
+                    ...this.equippedWeapons().filter(it => it.name.toUpperCase() !== "BREATH ATTACK"),
+                    ...this.equippedArmor()
+                ]
+                polyFlag.equipHistory ??= []
+                polyFlag.equipHistory.push(...gear.map(it => it.id))
+                await Promise.all(gear.map(it => this.equip(it as any, true, true)))
+            }
+
+            polyFlag.statBlock.system.actions.forEach((action: any) => {
+                action.damage.dice.modifier += this.modifiers.polymorph.damageBonus
+            })
+
+            await Promise.all([
+                this.setPolymorphFlag(polyFlag),
+                this.swapTokenImages(polyFlag)
+            ])
+        }
+        else {
+            // Read the history before the flag is cleared.
+            const equipHistory = this.polymorph?.equipHistory ?? []
+            // Cleans up "Polymorphed" Active Effects created by older versions.
+            const legacyEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph")).map(eff => eff.id) ?? []
+            await Promise.all([
+                this.deletePolymorphEffects(legacyEffects),
+                this.swapTokenImages(undefined),
+                super.setPolymorphFlag(undefined)
+            ])
+
+            // Re-equip previous gear
+            for (const id of equipHistory) {
+                if (!id) continue
+                const item = this.parent?.items?.get(id)
+                if (!item || item.system.isEquipped) continue
+                await this.equip(item as any, true)
+            }
+        }
+    }
+
 }
 
 export function validateCurrentHP(hero: HeroDataModel) {
@@ -444,38 +487,33 @@ export function setMaxHP(hero: HeroDataModel) {
     }
 }
 
-export function validateCurrentFocus(hero: HeroDataModel) {
-    if (!hero.statuses.toggles.focusing && hero.statuses.counters.focus > 0) {
-        hero.parent.toggleStatusEffect("focusing", { active: true })
-    }
-    else if (hero.statuses.toggles.focusing && hero.statuses.counters.focus === 0) {
-        hero.parent.toggleStatusEffect("focusing", { active: false })
-    }
-    if (hero.statuses.counters.focus! > hero.maxFocus!) {
-        hero.statuses.counters.focus = hero.maxFocus!
-    }
-}
-
 export function setArmorRating(hero: HeroDataModel) {
     const equippedArmor = getArmor(hero)
     hero.armor.rating += equippedArmor?.rating ?? 0
 }
 
+function calcTurnSpeed(hero: HeroDataModel): number {
+    const dex = hero.stats.dexterity ?? 2
+    if (dex < 4) return 25
+    if (dex < 6) return 30
+    return 35
+}
 export function setSpeeds(hero: HeroDataModel) {
     const dex = hero.stats.dexterity ?? 0
+    const turnSpeed = calcTurnSpeed(hero)
     if (dex < 4) {
-        hero.speed.turn += 25
-        hero.speed.crawl += hero.speed.turn * 3
+        hero.speed.turn += turnSpeed
+        hero.speed.crawl += turnSpeed * 3
         hero.speed.travel += 5
     }
     else if (dex < 6) {
-        hero.speed.turn += 30
-        hero.speed.crawl += hero.speed.turn * 3
+        hero.speed.turn += turnSpeed
+        hero.speed.crawl += turnSpeed * 3
         hero.speed.travel += 6
     }
     else {
-        hero.speed.turn += 35
-        hero.speed.crawl += hero.speed.turn * 3
+        hero.speed.turn += turnSpeed
+        hero.speed.crawl += turnSpeed * 3
         hero.speed.travel += 7
     }
 

@@ -2,28 +2,35 @@ import { PenSquare, Save,Trash } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
 import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRollSchema"
-import { VagabondActiveEffect } from "../../../../../combat/documents/VagabondActiveEffect"
+import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
+import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 import { SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
+import { AppliedFx } from "../../../../../combat/engine/Attack"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
+import { AppliedEffectInput } from "../../../../../combat/ui/AppliedEffectInput"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDamageAverage } from "../../../../../model/actor/type/NpcAction"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
 import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
-import { subMenuLayout,tableBorderRounded } from "../../../../common/border-styles"
+import { subMenuLayout, tableBorder, tableBorderRounded } from "../../../../common/border-styles"
 import { damageRoll } from "../../../../common/text-styles"
 import { DestructiveButton, PrimaryButton, UtilityButton } from "../../../../component/Button"
+import { Checkbox } from "../../../../component/Checkbox"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
-import { OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
 import { RichTextField } from "../../../../component/RichTextField"
+import { Tooltip } from "../../../../component/Tooltip"
+import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { onClickAction, onClickActionCombo } from "./hooksAndUtils"
+import { buildPolymorphAttack, onClickAction, onClickActionAsWeaponAttack, onClickActionCombo } from "./hooksAndUtils"
 
 const locale = appLang.NpcSheet
 
@@ -47,21 +54,23 @@ export const AddNewIconButton = ({ onClick }) => {
     )
 }
 
-export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: AdversaryDataModel | NpcDataModel, setIsAddMenuOpen: any, setEditTarget: any }) => {
+export const Actions = ({ npc, hero, setIsAddMenuOpen, setEditTarget, isPolymorph }: {
+    npc: AdversaryDataModel | NpcDataModel, hero?: Actor & { system: HeroDataModel }, setIsAddMenuOpen?: any, setEditTarget?: any, isPolymorph?: boolean
+}) => {
     const { isEditMode } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
     return (
         <div className="mx-2 mt-2">
             {/* HEADER W/ ADD BUTTON */}
-            {(isEditMode || npc.actions.length > 0) &&
-                <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} />
+            {!isPolymorph && (isEditMode || npc.actions.length > 0) &&
+                <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen?.(true)} />
             }
 
             {/* DISPLAY COMBO FIRST */}
             <div
-                className={`hover-glow`}
-                onClick={() => onClickActionCombo(npc)}
+                className={`${isPolymorph ? '' : 'hover-glow'}`}
+                onClick={() => !isPolymorph ? onClickActionCombo(npc) : {}}
                 onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteCombo(npc), isDestructive: true }])}
             >
                 {npc.combo.name !== '' &&
@@ -78,63 +87,94 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
             {/* DISPLAY ALL ACTIONS */}
             <div className="flex flex-col gap-1">
                 {
-                    npc.actions.map((act, i) => {
-                        const avgDamage = getDamageAverage(act.damage.dice as DiceRollSchema)
+                    npc.actions.map((action, idx) => {
+                        const avgDamage = getDamageAverage(action.damage.dice as DiceRollSchema)
 
-                        const attack = (useAvgDmg?: boolean) => {
+                        const attack = (e: React.MouseEvent, useAvgDmg?: boolean) => {
                             const roll: DiceRollSchema = useAvgDmg
                                 ? { count: 0, faces: avgDamage }
-                                : act.damage.dice as DiceRollSchema
+                                : action.damage.dice as DiceRollSchema
 
-                            onClickAction(npc, act.name, act.description, act.damage.type, roll, act.saves as SavingThrowType[], act.statuses as string[])
+                            isPolymorph && hero
+                                ? onClickActionAsWeaponAttack(hero, action, e)
+                                : onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.appliedEffects as AppliedFx[], action.halfDamageOnSave)
                         }
 
+                        const polyAttack = isPolymorph && hero ? buildPolymorphAttack(hero, action) : undefined
+                        const polyPreset: RollPreset | undefined = polyAttack ? {
+                            id: "",
+                            title: action.name,
+                            description: '',
+                            weaponId: '',
+                            skill: polyAttack.skillCheck?.skill ?? '',
+                            d20Count: polyAttack.skillCheck?.d20Count ?? 1,
+                            skillCheckMod: polyAttack.skillCheck?.modifier ?? 0,
+                            critThreshold: polyAttack.skillCheck?.critThreshold ?? 20,
+                            critSum: polyAttack.skillCheck?.critSum,
+                            explodeFavor: polyAttack.skillCheck?.explodeFavor,
+                            favorHinder: polyAttack.skillCheck?.favorHinder ?? 'none',
+                            damageRolls: polyAttack.damageRoll?.dice ?? [],
+                            flatModifier: polyAttack.damageRoll?.flatDmgBonus ?? 0,
+                            perDieBonus: polyAttack.damageRoll?.perDieDmgBonus ?? 0,
+                            armorPiercing: polyAttack.damageRoll?.armorPiercing ?? 0
+                        } as RollPreset : undefined
+                        const damageElement = (
+                            <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={(e) => attack(e)}>
+                                {polyAttack?.damageRoll?.toString() ?? new DiceRoll(action.damage.dice as any).toRollFormula()}
+                            </p>
+                        )
+
                         return (
-                            <div key={i} className={`flex gap-2 p-2 justify-between ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
-                                { icon: PenSquare, label: appLang.ButtonActions.edit, action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
-                                { icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteAction(npc, act), isDestructive: true }
+                            <div key={idx} className={`flex gap-2 p-2 justify-between ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
+                                { icon: PenSquare, label: appLang.ButtonActions.edit, action: () => { setEditTarget?.(action); setIsAddMenuOpen?.(true); } },
+                                { icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteAction(npc, action), isDestructive: true }
                             ])}>
                                 <div className="flex flex-col">
 
                                     {/* ACTION NAME */}
-                                    <p className="font-bold hover-glow cursor-pointer" onClick={() => attack()}>
-                                        {act.name}
+                                    <p className="font-bold hover-glow cursor-pointer" onClick={(e) => attack(e)}>
+                                        {action.name}
                                     </p>
 
                                     {/* ACTION TRAITS... */}
                                     <div>
                                         {/* ATTACK DESCRIPTION */}
-                                        {act.description && act.description.length > 0 &&
-                                            <EnrichedContent content={act.description} styleClasses="text-text-secondary italic" actor={npc.parent} />
+                                        {action.description && action.description.length > 0 &&
+                                            <EnrichedContent content={action.description} styleClasses="text-text-secondary italic" actor={npc.parent} />
                                         }
 
                                         {/* ATTACK DAMAGE AND COUNTDOWN INFO */}
-                                        {act.damage.dice.count > 0 &&
+                                        {action.damage.dice.count > 0 &&
                                             <div className="flex items-center gap-2">
                                                 <p className="text-text-secondary leading-none">{appLang.AdversarySheet.damageAbbreviation}</p>
-                                                <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={() => attack()}>
-                                                    {new DiceRoll(act.damage.dice as any).toRollFormula()}
-                                                </p>
-                                                <p className="leading-none text-text-secondary">|</p>
-                                                <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={() => attack(true)}>
-                                                    {avgDamage}
-                                                </p>
+                                                {polyPreset && hero
+                                                    ? <Tooltip content={<RollBuilderView actor={hero} showHeader={true} preset={polyPreset} lockWeaponSelection={true} saveOnRoll={false} baseAttack={polyAttack} />} interactive={true}>
+                                                        {damageElement}
+                                                    </Tooltip>
+                                                    : damageElement
+                                                }
+                                                {!isPolymorph && <>
+                                                    <p className="leading-none text-text-secondary">|</p>
+                                                    <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={(e) => attack(e, true)}>
+                                                        {avgDamage}
+                                                    </p>
+                                                </>}
                                             </div>
                                         }
 
                                         {/* RECHARGE ROLL */}
-                                        {act.recharge != null && act.recharge != '' &&
+                                        {action.recharge != null && action.recharge != '' &&
                                             <div className="flex gap-x-2 text-text-secondary">
                                                 {appLang.AdversarySheet.recharge}
                                                 <EnrichedContent
                                                     actor={npc.parent}
-                                                    content={`[[/r ${act.recharge}#Recharge: ${act.name}]]{${act.recharge}}`}
+                                                    content={`[[/r ${action.recharge}#Recharge: ${action.name}]]{${action.recharge}}`}
                                                 />
                                             </div>
                                         }
                                     </div>
                                 </div>
-                                <DamageTypeIcon dmgType={act.damage.type} size={24} />
+                                <DamageTypeIcon dmgType={action.damage.type} size={24} />
                             </div>
                         )
                     })
@@ -156,8 +196,12 @@ const deleteAction = (npc: AdversaryDataModel | NpcDataModel, action: any) => {
 export interface NpcAction {
     name: string,
     description: string,
+    type: string,
     damage: { dice: DiceRollSchema, type: string },
+    range: string,
     saves: string[],
+    halfDamageOnSave: boolean,
+    appliedEffects: { effect: string, duration: string | null }[]
     statuses: string[],
     recharge: string,
     comboCount: number
@@ -168,8 +212,12 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
     const [newAction, setNewAction] = useState<Partial<NpcAction>>(editTarget ?? {
         name: "",
         description: "",
+        type: "",
         damage: { dice: { count: 1, faces: 4 }, type: "physical" },
+        range: "close",
         saves: ['reflex'],
+        halfDamageOnSave: false,
+        appliedEffects: [],
         statuses: [],
         recharge: "",
         comboCount: 0
@@ -281,16 +329,47 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                     <div className="flex items-end">
                         <p>{appLang.AdversarySheet.name}&nbsp;</p>
                         <div className={`font-eskapade font-bold hover-glow`}>
-                            <EditableTextField boundValue={newAction?.name ?? null} onSave={(name) => updateAction({ name: name ?? '' })} placeholder={appLang.AdversarySheet.actionNamePlaceholder} />
+                            <EditableTextField
+                                boundValue={newAction?.name ?? null}
+                                onSave={(name) => updateAction({ name: name ?? '' })}
+                                placeholder={appLang.AdversarySheet.actionNamePlaceholder}
+                            />
                         </div>
                     </div>
 
                     {/* EFFECT DESCRIPTION */}
-                    <div className="flex items-end">
+                    <div className="flex flex-col items-start">
                         <p>{appLang.AdversarySheet.effect}&nbsp;</p>
                         <div className={`w-full font-eskapade font-bold hover-glow`}>
-                            <RichTextField defaultValue={newAction?.description ?? ''} onChange={(description) => updateAction({ description })} className="text-xs font-paradigm font-normal" />
+                            <RichTextField
+                                defaultValue={newAction?.description ?? ''}
+                                onChange={(description) => updateAction({ description })}
+                                className="text-xs font-paradigm font-normal"
+                            />
                         </div>
+                    </div>
+
+                    {/* ATTACK TYPE SELECTOR */}
+                    <div className="flex items-end gap-x-1">
+                        <p>{appLang.ItemSheet.type}:</p>
+                        <div className={`font-eskapade font-bold hover-glow`}>
+                            <DropDown
+                                value={newAction?.type ?? ''}
+                                options={createDropdownEntries(locale.actionTypes)}
+                                updateMechanism={{
+                                    onChange: (attackType) => updateAction({ type: attackType ?? '' })
+                                }}
+                                parent={undefined}
+                            />
+                        </div>
+                        <DropDown
+                            value={newAction?.range ?? ''}
+                            options={createDropdownEntries(appLang.Ranges)}
+                            updateMechanism={{
+                                onChange: (range) => updateAction({ range: range ?? '' })
+                            }}
+                            parent={undefined}
+                        />
                     </div>
 
                     {/* DAMAGE ROLL */}
@@ -298,12 +377,14 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                         <DiceRollInputComponent
                             diceRoll={newAction?.damage?.dice ?? { count: 1, faces: 4 }}
                             onChange={(dice) => updateDamage({ dice: { ...newAction?.damage?.dice, ...dice } as DiceRollSchema })}
+                            extendedSettings={true}
+                            hideCritFields={true}
                         />
                     </div>
 
                     {/* DAMAGE TYPE */}
-                    <div className="flex items-end">
-                        <p>{appLang.AdversarySheet.damageType}&nbsp;</p>
+                    <div className="flex items-end gap-x-1">
+                        <p>{appLang.AdversarySheet.damageType}:</p>
                         <div className={`font-eskapade font-bold hover-glow`}>
                             <DropDown
                                 value={newAction?.damage?.type ?? ''}
@@ -317,9 +398,9 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                     </div>
 
                     {/* SAVING THROWS */}
-                    <div className="flex items-end">
-                        <p>{appLang.AdversarySheet.saves}&nbsp;</p>
-                        <div className="flex gap-x-3">
+                    <div className="flex items-end gap-x-2">
+                        <p>{appLang.AdversarySheet.saves}:</p>
+                        <div className={`flex gap-x-2 ${tableBorder} px-2`}>
                             {Object.entries(appLang.Saves).map(([key, save]) =>
                                 key !== "defend"
                                     ? <div key={key} className="flex items-center gap-1">
@@ -332,28 +413,29 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                                     </div>
                                     : null
                             )}
-                        </div>
+                        </div>  
                     </div>
+                    <Checkbox
+                        label={appLang.AdversarySheet.halfDamageOnSave}
+                        color="text-text-primary"
+                        checked={newAction?.halfDamageOnSave ?? false}
+                        onCheckedChanged={(isChecked) => updateAction({ halfDamageOnSave: isChecked })}
+                    />
 
                     {/* STATUS EFFECTS */}
-                    <div className="flex items-end">
-                        <p>{appLang.AdversarySheet.statuses}&nbsp;</p>
-                        <OptionsSelectionMenu
-                            options={VagabondActiveEffect.statusEffects.map(effect => ({
-                                key: effect.id,
-                                value: appLang.StatusConditions[effect.id]?.name ?? effect.id,
-                                isSelected: (newAction?.statuses ?? []).includes(effect.id)
-                            }))}
-                            onChange={(statuses) => updateAction({ statuses })}
-                        />
-                        <p className="text-text-secondary italic">
-                            {(newAction?.statuses ?? []).map(id => appLang.StatusConditions[id]?.name ?? id).join(", ")}
-                        </p>
+                    <div className="flex items-end gap-x-1">
+                        <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                            <AppliedEffectInput
+                                effects={newAction?.appliedEffects as any}
+                                onChange={(appliedEffects) => updateAction({ appliedEffects: appliedEffects as NpcAction["appliedEffects"] })}
+                                hideCritDuration={true}
+                            />
+                        </EditModeContextProvider>
                     </div>
 
                     {/* RECHARGE */}
-                    <div className="flex items-end">
-                        <p>{appLang.AdversarySheet.recharge}&nbsp;</p>
+                    <div className="flex items-end gap-x-1">
+                        <p>{appLang.AdversarySheet.recharge}:</p>
                         <div className={`font-eskapade font-bold hover-glow`}>
                             <EditableTextField
                                 boundValue={newAction?.recharge ?? null}
@@ -378,7 +460,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
 
 export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
     return (
-        < div className="flex w-full justify-between mt-8" >
+        <div className="flex w-full justify-between mt-8" >
             <DestructiveButton onClick={() => {
                 setEditTarget(null)
                 setIsAddMenuOpen(false)
@@ -386,9 +468,10 @@ export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
                 Cancel
             </DestructiveButton>
             <PrimaryButton icon={<Save size={14} />} onClick={() => {
-                onSave()
-                setEditTarget(null)
-                setIsAddMenuOpen(false)
+                if (onSave()) {
+                    setEditTarget(null)
+                    setIsAddMenuOpen(false)
+                }
             }}>
                 Save
             </PrimaryButton>
@@ -396,29 +479,32 @@ export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
     )
 }
 
-const saveNewAction = (npc, isCombo, comboSelections, comboName, comboDescription, newAction, editTarget, editTargetIndex) => {
+const saveNewAction = (npc, isCombo, comboSelections, comboName, comboDescription, newAction, editTarget, editTargetIndex): boolean => {
     if (isCombo) {
         if (comboName && comboSelections.length > 0 && comboSelections.every(it => it.comboCount > 0)) {
             const comboActions = comboSelections.map(cs => ({
                 ...npc.actions.find(it => it.name === cs.action.name), comboCount: cs.comboCount
             }))
             updateDocumentAtPath(npc.parent, ['combo'], { name: comboName, description: comboDescription, actions: comboActions })
+            return true
         }
         else {
             ui.notifications?.error(appLang.Notifications.actionComboRequiredFields)
-            return
+            return false
         }
     }
     else if (!newAction?.name) {
         ui.notifications?.error(appLang.Notifications.actionNameRequired)
-        return
+        return false
     }
     else if (editTarget == null) {
         updateDocumentAtPath(npc.parent, ['actions'], [...npc.actions, newAction])
+        return true
     }
     else {
         const actions = npc.actions
         actions[editTargetIndex] = newAction
         updateDocumentAtPath(npc.parent, ['actions'], [...actions])
+        return true
     }
 }

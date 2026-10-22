@@ -1,3 +1,4 @@
+import { api } from "../../apps/api/VagabondAPI"
 import type { RollPreset } from "../../apps/attack-builder/model/RollPreset"
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
@@ -5,12 +6,12 @@ import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
-import { roll3dDice } from "../../utils/foundryUtils"
+import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { getTargetIds, inventoryItemTypes } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
-import { Attack } from "./Attack"
+import { AppliedFx, Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
 import { SkillCheck, type SkillCheckResult, type SkillCheckType } from "./roll/SkillCheck"
@@ -137,10 +138,20 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             }
         }
 
+        // Take user to polymorph menu.
+        if (game.user?.id === this.userId && this.isSpellAttack && (fromUuidSync(this.itemId) as any)?.getFlag?.(sys_id, "polymorph")) {
+            if (this.actor.sheet?.rendered) {
+                (Hooks as any).callAll("vagabondSelectHeroTab", this.actor.id, "polymorph")
+            }
+            else {
+                api.util.polymorphApp(this.actor)
+            }
+        }
+
         if (options?.skipChatCard) return
 
-        await this.save(serializeAttack)
-        await sendVagabondChatCard(
+        this.save(serializeAttack)
+        sendVagabondChatCard(
             this.actor,
             "InteractiveAttackChatCard",
             { actorId: this.actor.id!, attackId: this.id }
@@ -510,6 +521,12 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             }
         }
 
+        // Weapons have no applied effects of their own; polymorph actions supply them.
+        const weaponEffects: AppliedFx[] | undefined = item.system["appliedEffects"]
+        if (weaponEffects?.length) {
+            attack.appliedEffects = weaponEffects.map(eff => ({ ...eff, damageType: weapon.damage.type }))
+        }
+
         return attack
     }
 
@@ -639,7 +656,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         return attack
     }
 
-    static async buildCustomRoll(actor: Actor & { system: HeroDataModel }, preset: RollPreset, clickEvent?: any) {
+    static async buildCustomRoll(actor: Actor & { system: HeroDataModel }, preset: RollPreset, clickEvent?: any, baseAttack?: HeroAttack) {
         const makeSkillCheck = (type: SkillCheckType) => {
             return new SkillCheck(actor.system, {
                 type: type,
@@ -661,11 +678,24 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
                 dmgType: weapon?.system?.damage?.type ?? 'physical',
                 flatDmgBonus: preset.flatModifier,
                 perDieDmgBonus: preset.perDieBonus,
-                armorPiercing: preset.armorPiercing
+                armorPiercing: preset.armorPiercing,
+                relicLevel: baseAttack?.damageRoll?.relicLevel
             })
         }
 
-        if (preset.skill && preset.damageRolls && preset.damageRolls.length > 0) {
+        if (baseAttack && preset.skill && preset.damageRolls?.length > 0) {
+            const title = baseAttack.title + (preset.description ? `: ${preset.description}` : "")
+            const damageRoll = makeDamageRoll(undefined, title)
+            damageRoll.dmgType = baseAttack.damageRoll?.dmgType ?? 'physical'
+
+            const attack = new HeroAttack(title, actor, getTargetIds(), makeSkillCheck('attack'), false, damageRoll)
+            attack.itemId = baseAttack.itemId
+            attack.appliedEffects = baseAttack.appliedEffects
+            attack.skipSkillCheck = preset.skill === '-'
+
+            attack.initiate(clickEvent)
+        }
+        else if (preset.skill && preset.damageRolls && preset.damageRolls.length > 0) {
             const weapon = actor.items.find(it => it.id === preset.weaponId) as Item & { system: WeaponDataModel }
             if (!weapon || !weapon.system.isEquipped) return
 

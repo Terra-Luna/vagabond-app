@@ -5,7 +5,20 @@
   "img": "icons/magic/death/skeleton-reptile-while-purple.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Your damage from Spell effects and your effective Level for the purpose of Spell effects are both increased by {{feature-value:1:1}} against your hexed Target, and increased 1 more every 4 Levels hereafter.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "ymGSez1zkxuGXxFO",
+        "key": "FlatModifier",
+        "label": "Spell Eff. Level Bonus",
+        "level": 2,
+        "value": "1",
+        "selector": [
+          "modifiers.casting.effectiveLevelBonus"
+        ],
+        "scale": 4,
+        "toggleableEffect": true
+      }
+    ],
     "level": 2,
     "scale": 4,
     "maxLevel": 0
@@ -21,9 +34,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.2.93",
     "createdTime": 1789505525795,
-    "modifiedTime": 1791389304078,
+    "modifiedTime": 1792555501613,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

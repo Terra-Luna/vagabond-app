@@ -5,7 +5,30 @@
   "img": "/icons/creatures/abilities/bear-roar-bite-brown-green.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">The damage you deal with the attacks of Beasts and your effective Level for the purposes of the Polymorph Spell are both increased by {{feature-value:1:1}}.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">This bonus increases by 1 every 4 levels hereafter.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "8A8HqOn8ONXtaxSM",
+        "key": "FlatModifier",
+        "label": "Polymorph Level Bonus",
+        "level": 2,
+        "value": "1",
+        "selector": [
+          "modifiers.polymorph.castingLevelBonus"
+        ],
+        "scale": 4
+      },
+      {
+        "id": "gsTAwmXRtPZ579Tb",
+        "key": "FlatModifier",
+        "label": "Polymorph Damage Bonus",
+        "level": 2,
+        "value": "1",
+        "selector": [
+          "modifiers.polymorph.damageBonus"
+        ],
+        "scale": 4
+      }
+    ],
     "level": 2,
     "scale": 4,
     "maxLevel": 0
@@ -21,9 +44,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.2.93",
     "createdTime": 1789495144526,
-    "modifiedTime": 1789605452962,
+    "modifiedTime": 1792640299783,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

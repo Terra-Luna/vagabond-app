@@ -51,9 +51,9 @@ export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {
                     onBlur={handleSave}
                     onKeyDown={handleKeyDown}
                     className={`
-                        text-sm text-text-primary font-eskapade font-normal
-                        bg-sheet-main-fill ${tableBorderRounded}
-                        mt-2 px-1 text-center focus:outline-none focus:border-destructive-action/50 w-32
+                        text-sm text-text-primary text-center font-eskapade font-normal
+                        bg-sheet-main-fill ${tableBorderRounded} mt-2 px-1
+                        focus:outline-none focus:border-destructive-action/50 w-32
                     `}
                 />
                 : <span title={appLang.Overlay.doubleClickToEdit}

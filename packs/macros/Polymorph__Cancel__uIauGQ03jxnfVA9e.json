@@ -1,0 +1,28 @@
+{
+  "name": "Polymorph (Cancel)",
+  "type": "script",
+  "_id": "uIauGQ03jxnfVA9e",
+  "author": "KyorYoEvge7ElSaj",
+  "img": "/icons/creatures/amphibians/bullfrog-glowing-green.webp",
+  "scope": "global",
+  "command": "const targets = game.canvas?.tokens?.controlled?.map(it => it.actor);\nfor (const target of targets ?? []) {\n  await game.system.api.util.polymorph({ target});\n}",
+  "folder": "dNSZ8oo7EphDRyO4",
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.2.93",
+    "createdTime": 1792625355821,
+    "modifiedTime": 1792625546151,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 275000,
+  "_key": "!macros!uIauGQ03jxnfVA9e"
+}

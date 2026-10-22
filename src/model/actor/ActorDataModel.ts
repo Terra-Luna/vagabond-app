@@ -1,9 +1,11 @@
+import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { fields, requiredString } from "../common/sharedSchemas"
 import { armorSchema } from "./type/Armor"
 import { healthSchema } from "./type/Health"
 import { modifierSchema } from "./type/Modifiers"
 import { statusFxSchema } from "./type/StatusFx"
+import type { PolymorphFlag } from "./util/PolymorphUtil"
 
 export const baseActorSchema = () => {
     return {
@@ -57,4 +59,112 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
             }
         }
     }
+
+    /**
+        The Target becomes a Beast of your choice with HD no higher than your Level for the duration.
+        If the Target is unwilling and its HD are higher than your Level, the Spell fails. During this
+        time, the Target uses:
+
+        • The Beast's Speed, Passives, Senses, Armor, Immune, Weak, Actions, and Abilities.
+        • The Target's HP and, if possible, its Actions and Abilities.
+
+        You must spend 1 Mana on your Turns to Focus on this Spell, even for willing Targets.
+
+        Overridden by HeroDataModel.
+     */
+    async setPolymorph(polyFlag: PolymorphFlag | undefined) {
+        const isNpc = ["adversary", "npc"].includes(this.parent.type)
+        if (!this.parent.isOwner || !isNpc) return
+
+        if (polyFlag && Object.keys(polyFlag).length > 0) {
+            const originalSystem = this.parent.getFlag(sys_id, "originalSystem") as any
+                ?? { ...this, name: this.parent.name, img: this.parent.img }
+            await this.parent.update({
+                "name": `${polyFlag.statBlock.name} (${originalSystem.name ?? this.parent.name})`,
+                "system": {
+                    ...polyFlag.statBlock.system,
+                    health: { ...this.health },
+                    hitDice: (this as any).hitDice
+                },
+                "flags": { [sys_id]: { originalSystem, polymorph: polyFlag } }
+            }, { vagabondPolymorph: true } as any)
+
+            await this.swapTokenImages(polyFlag)
+        }
+        else {
+            const originalSystem = this.parent.getFlag(sys_id, "originalSystem") as any
+            const oldEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph"))?.map(eff => eff.id) ?? []
+
+            await Promise.all([
+                this.parent.update({
+                    ...(originalSystem
+                        ? { "name": originalSystem.name, "system": { ...originalSystem, health: { ...this.health } } }
+                        : {}),
+                    [`flags.${sys_id}.polymorph`]: (globalThis as any)._del,
+                    [`flags.${sys_id}.originalSystem`]: (globalThis as any)._del                }, { vagabondPolymorph: true } as any),
+                this.deletePolymorphEffects(oldEffects),
+                this.swapTokenImages(undefined)
+            ])
+        }
+    }
+
+    /**
+     * Swaps token image to the polymorph form's (or restores it when polyFlag is undefined).
+     * The original image is stored in a flag on each token.
+     * NOTE: Ring-enabled tokens display ring.subject.texture instead of texture.src.
+     */
+    async swapTokenImages(polyFlag: PolymorphFlag | undefined) {
+        const tokenDocs = this.parent.getActiveTokens(false, true) as any[]
+        const updates: any[] = []
+        for (const tokenDoc of tokenDocs) {
+            const original = tokenDoc.getFlag(sys_id, "originalTokenImg") as { src: string, ring: string } | undefined
+            const ringEnabled = tokenDoc.ring?.enabled
+            if (polyFlag) {
+                const src = polyFlag.statBlock.tokenImg
+                if (!src) continue
+                updates.push({
+                    _id: tokenDoc.id,
+                    "texture.src": src,
+                    ...(ringEnabled ? { "ring.subject.texture": src } : {}),
+                    ...(original ? {} : { [`flags.${sys_id}.originalTokenImg`]: { src: tokenDoc.texture.src, ring: tokenDoc.ring?.subject?.texture ?? "" } })
+                })
+            }
+            else if (original) {
+                updates.push({
+                    _id: tokenDoc.id,
+                    "texture.src": original.src,
+                    ...(ringEnabled ? { "ring.subject.texture": original.ring } : {}),
+                    [`flags.${sys_id}.originalTokenImg`]: (globalThis as any)._del
+                })
+            }
+        }
+        if (updates.length) {
+            await (tokenDocs[0].parent as any).updateEmbeddedDocuments("Token", updates)
+        }
+    }
+
+    async deletePolymorphEffects(ids: (string | null)[]) {
+        const existing = ids.filter((id): id is string => !!id && !!this.parent?.effects?.has(id))
+        if (!existing.length) return
+        try {
+            await this.parent.deleteEmbeddedDocuments("ActiveEffect", existing)
+        }
+        catch (error) {
+            console.warn(`${sys_id} | Unable to delete polymorph effects ${existing.join(", ")}`, error)
+        }
+    }
+
+    async setPolymorphFlag(polyFlag: PolymorphFlag | undefined) {
+        if (polyFlag) {
+            await this.parent.setFlag(sys_id, "polymorph", polyFlag)
+        }
+        else {
+            await this.parent.unsetFlag(sys_id, "polymorph")
+        }
+    }
+
+    get polymorph(): PolymorphFlag | undefined {
+        return this.parent.getFlag(sys_id, "polymorph")
+    }
+
 }

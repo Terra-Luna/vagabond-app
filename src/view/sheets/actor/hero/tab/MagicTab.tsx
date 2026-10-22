@@ -1,7 +1,7 @@
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { ManaHUD } from "./component/spellcasting/ManaHUD"
 import { SpellcastingMenuContextProvider } from "./component/spellcasting/SpellcastingMenuContextProvider"
-import { SpellsList } from "./component/SpellsList"
+import { SpellsList } from "./component/spellcasting/SpellsList"
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (

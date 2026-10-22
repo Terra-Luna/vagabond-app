@@ -26,8 +26,7 @@ const hasOffensiveSpell = (actor: any): boolean =>
     !!actor?.system?.spells?.some(sp => sp.damageType !== 'none' && sp.damageType !== 'healing')
 
 /**
- * The user's character if it has an offensive spell, otherwise (for the active GM)
- * the first controlled token's actor that does.
+ * The user's character if it has an offensive spell, otherwise (for the active GM) the first controlled token's actor that does.
  */
 const getImbueActor = (): (Actor & { system: HeroDataModel }) | undefined => {
     const heroes = game.actors?.contents?.filter(it => (it.type as any) === "hero" && it.isOwner && hasOffensiveSpell(it)) ?? []
@@ -43,8 +42,11 @@ const getImbueActor = (): (Actor & { system: HeroDataModel }) | undefined => {
     return controlled.map(token => token.actor).find(hasOffensiveSpell)
 }
 
-export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
-    actor: Actor & { system: HeroDataModel }, attack: HeroAttack, source: Item | undefined, setRevision: any
+export const HeroAttackComponent =  ({ actor, attack, source, setRevision }: {
+    actor: Actor & { system: HeroDataModel },
+    attack: HeroAttack,
+    source: Item | undefined,
+    setRevision: any
 }) => {
     const isEligibleForImbue = !attack.isResolved
         && !attack.isDefenseCheck
@@ -131,15 +133,6 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
 
     return (
         <div>
-            {/* TARGET TOKENS ARRAY */}
-            {attack.showTargets && !attack.isDefenseCheck &&
-                <div className="flex">
-                    <div className="flex flex-col w-full">
-                        <TargetsDisplay targets={targets} />
-                    </div>
-                </div>
-            }
-
             {/* SKILL CHECK */}
             {attack.showSkillCheck &&
                 <div>
@@ -202,6 +195,15 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                                 </div>
                             </div>
                         }
+                    </div>
+                </div>
+            }
+
+            {/* TARGET TOKENS ARRAY */}
+            {attack.showTargets && !attack.isDefenseCheck &&
+                <div className="flex">
+                    <div className="flex flex-col w-full">
+                        <TargetsDisplay targets={targets} />
                     </div>
                 </div>
             }

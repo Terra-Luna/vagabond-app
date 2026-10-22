@@ -10,6 +10,7 @@ import type { RollPreset } from "../attack-builder/model/RollPreset"
 import { RestApp } from "../rest/RestApp"
 import { SpellcastingApp } from "../spellcasting/SpellcastingApp"
 import { TravelApp } from "../travel/TravelApp"
+import { PolymorphApp } from "../vagabond-tools/polymorph/PolymorphApp"
 
 export interface VagabondAPI {
     rules: {
@@ -19,9 +20,10 @@ export interface VagabondAPI {
         skillCheck: ({ skill, event }: { skill: string, event: any }) => void
         weaponAttack: ({ actor, itemId, skill, event }: { actor: Actor & { system: HeroDataModel }, itemId: string, skill?: string, event: any }) => void,
         rollPreset: ({ actor, presetId, event }: { actor: Actor & { system: HeroDataModel }, presetId: string, event: any }) => void,
-        openSpellcasting: (actor: Actor & { system: HeroDataModel }) => void  
+        openSpellcasting: (actor: Actor & { system: HeroDataModel }) => void
     },
     util: {
+        polymorphApp: (actor?: Actor & { system: HeroDataModel }) => void
         rest: () => void,
         travel: () => void,
         syncAncestryAndClass: (actor: (Actor & { system: HeroDataModel }), sendChat?: boolean) => Promise<void>
@@ -78,6 +80,12 @@ export const api: VagabondAPI = {
     },
 
     util: {
+        polymorphApp: (actor?: Actor & { system: HeroDataModel }) => {
+            const caster = actor ?? getControlledHeroToken()
+            if (!caster || (!game.user?.isActiveGM && !(actor && actor.isOwner))) return
+            new PolymorphApp({ caster }).render({ force: true })
+        },
+
         rest: () => {
             const actor = getControlledHeroToken()
             if (!actor) return

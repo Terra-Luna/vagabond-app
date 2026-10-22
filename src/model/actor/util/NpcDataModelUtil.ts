@@ -1,3 +1,4 @@
+import { sys_id } from "../../../utils/foundryUtils"
 import { getName } from "../../../utils/modelUtil"
 import type { AdversaryDataModel } from "../AdversaryDataModel"
 import type { NpcDataModel } from "../NpcDataModel"
@@ -17,13 +18,13 @@ export const onNpcPreCreate = (npc, options, data, allowed, actorLink, dispositi
     })
 }
 
-export const onUpdateNpc = (npc, changed) => {
+export const onUpdateNpc = (npc, changed, options?: any) => {
     if (!npc.parent.isOwner) return
 
     if (changed.name) {
         npc.parent.update({ 'prototypeToken.name': changed.name })
     }
-    if (changed?.system?.hitDice || changed?.system?.beingSize) {
+    if (!options?.vagabondPolymorph && (changed?.system?.hitDice || changed?.system?.beingSize)) {
         npc.parent.update({
             'system.health.value': calcNpcMaxHP(
                 changed.system.hitDice ?? npc.hitDice!,
@@ -35,8 +36,15 @@ export const onUpdateNpc = (npc, changed) => {
 
 export const prepareNpcBaseData = (npc) => {
     npc.parent.prototypeToken.name = getName(npc)
-    npc.health.max = calcNpcMaxHP(npc.hitDice ?? 1, npc.beingSize)
+    const originalSize = npc.parent.getFlag(sys_id, "polymorph")
+        ? (npc.parent.getFlag(sys_id, "originalSystem") as any)?.beingSize
+        : undefined
+    npc.health.max = calcNpcMaxHP(npc.hitDice ?? 1, originalSize ?? npc.beingSize)
     npc.threatLevel = setThreatLevel(npc)
+    npc.modifiers.polymorph = {
+        castingLevel: npc.hitDice ?? 1,
+        resistanceLevel: npc.hitDice ?? 1
+    }
 }
 
 export const calcNpcMaxHP = (hitDice: number, size: string): number => {
@@ -79,9 +87,6 @@ export const setThreatLevel = (npc: AdversaryDataModel | NpcDataModel): number =
  * is to import them into the world's DB. This function will intercept subsequent drag/
  * drop events and prevent duplicated world Actor entries from being created in the Actors
  * sidebar.
- * @param data 
- * @param canvas 
- * @returns 
  */
 export const enforceSingletonPlaceholder = async (data: Record<string, any>, canvas: Canvas): Promise<void> => {
     const compendiumActor = await fromUuid(data.uuid) as any
@@ -102,7 +107,7 @@ export const enforceSingletonPlaceholder = async (data: Record<string, any>, can
         }
     }
 
-    // TODO: maybe figure out how to make this snap-to-grid.
+    // TODO: maybe figure out how to make this snap-to-grid?
     if (worldActor && canvas.scene) {
         const gridSize = canvas.grid?.size ?? 100
         const x = data.x - (gridSize / 2)

@@ -1,11 +1,13 @@
 import { addCountdown, getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel"
 import { physicalDamageTypes } from "../../model/common/sharedSchemas"
-import { roll3dDice, showFloatingText, sys_id } from "../../utils/foundryUtils"
+import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTargetIds } from "../../utils/modelUtil"
 import { DamageRoll } from "./roll/DamageRoll"
 import type { AttackSnapshot } from "./util/attack-serializer"
+
+const FOCUS_DAMAGE_LIMIT = 5
 
 export interface AttackResolutionArgs {
     flanked?: boolean
@@ -110,11 +112,9 @@ export abstract class Attack<TActor extends Actor = Actor> {
     private applyFatigueDamage(args: AttackResolutionArgs) {
         const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
         targetIds.forEach(id => {
-            const token = getCanvasToken(id)
-            const actor = token?.actor ?? canvas?.scene?.tokens?.get(id)?.actor
+            const actor = canvas?.scene?.tokens?.get(id)?.actor
             const damage = this.damageRoll?.result?.total
             if (!damage || !actor) return
-            showFloatingText(token ?? actor, damage, { isHealing: false, color: "#f39c12" })
             actor.update({
                 'system.statuses.counters.fatigue':
                     (actor.system as any).statuses.counters.fatigue + damage
@@ -129,10 +129,11 @@ export abstract class Attack<TActor extends Actor = Actor> {
             if (!actor) continue
 
             const adjDamage = this.calculateAdjustedDamage(id, args)
-            if ((actor.system as ActorDataModel<BaseActorSchema>).statuses.toggles.focusing && adjDamage >= 5) {
+            if ((actor.system as ActorDataModel<BaseActorSchema>).statuses.toggles.focusing && adjDamage >= FOCUS_DAMAGE_LIMIT) {
                 actor.update({ 'system.statuses.counters.focus': 0 } as Record<string, number>)
                 actor.toggleStatusEffect("focusing", { active: false })
             }
+
             this.updateHP(actor?.system, this.getHP(actor?.system) - adjDamage)
         }
     }
@@ -151,13 +152,15 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
-        return Attack.computeAdjustedDamage(this.damageRoll, targetId, args, this.getAdditionalArmorRating(targetId))
+        return Attack.computeAdjustedDamage(this.damageRoll, targetId, args, this.getAdditionalArmorRating(targetId), this.isHalfDamageForTarget(targetId))
     }
+
+    protected isHalfDamageForTarget(_targetId: string): boolean { return false }
 
     /**
      * Shared damage mitigation (resistances, per-die reduction, armor, flanking) for any damage roll.
      */
-    static computeAdjustedDamage(damageRoll: DamageRoll | undefined, targetId: string, args: AttackResolutionArgs, additionalArmorRating = 0): number {
+    static computeAdjustedDamage(damageRoll: DamageRoll | undefined, targetId: string, args: AttackResolutionArgs, additionalArmorRating = 0, halfDamage = false): number {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
         const aSys = actor?.system as any
 
@@ -168,7 +171,8 @@ export abstract class Attack<TActor extends Actor = Actor> {
         const isResistant = mods?.resistances?.includes(dmgType)
         const perDieMit = perDieMitigation * damageDiceCount
 
-        const damage = isResistant ? Math.floor((damageRoll?.result?.total ?? 0) / 2) : damageRoll?.result?.total ?? 0
+        // Resistance and a passed save each halve the damage; they don't stack.
+        const damage = (isResistant || halfDamage) ? Math.floor((damageRoll?.result?.total ?? 0) / 2) : damageRoll?.result?.total ?? 0
 
         const armorRating = aSys?.armor?.rating ?? 0
         const armorPiercing = damageRoll?.result?.armorPiercing ?? 0
@@ -183,17 +187,24 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
     protected get isCriticalHit(): boolean { return false }
 
-    private async processStatusFx(args: AttackResolutionArgs) {
+    protected shouldApplyEffectsToTarget(targetId: string, _args: AttackResolutionArgs): boolean {
+        return this.shouldApplyDamageToTarget(targetId)
+    }
+
+    protected async processStatusFx(args: AttackResolutionArgs) {
         if (this.appliedEffects.length === 0) return
 
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
+        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyEffectsToTarget(id, args))
+        await this.applyFxToTargets(this.appliedEffects, targetIds)
+    }
 
+    protected async applyFxToTargets(effects: AppliedFx[], targetIds: string[]) {
         for (const id of targetIds) {
             const token = getCanvasToken(id)
             const actor = token?.actor ?? canvas?.scene?.tokens?.get(id)?.actor
             if (!actor) continue
 
-            for (const eff of this.appliedEffects) {
+            for (const eff of effects) {
                 if (Attack.isImmuneToStatus(actor, eff.effect)) continue
 
                 const duration = (this.isCriticalHit && eff.critDuration) ? eff.critDuration : eff.duration
@@ -201,6 +212,8 @@ export abstract class Attack<TActor extends Actor = Actor> {
             }
         }
     }
+
+    protected get prefixCountdownWithTargetName(): boolean { return false }
 
     // Countdown durations (e.g. "Cd6") additionally spawn a Countdown die to track it.
     private async applyEffects(actor: Actor, token: Token | undefined, status: string, duration?: string, damageType?: string) {
@@ -210,8 +223,12 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
         const countdownFaces = duration?.match(/^Cd(\d+)$/)?.[1]
         if (countdownFaces) {
+            const statusName = appLang.StatusConditions[status]?.name ?? status
+            const label = this.prefixCountdownWithTargetName
+                ? `${token?.name ?? actor.name}: ${statusName}`
+                : statusName
             await addCountdown(
-                appLang.StatusConditions[status]?.name ?? status,
+                label,
                 Number(countdownFaces),
                 undefined, undefined,
                 actor.uuid,
@@ -231,13 +248,6 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
     protected async updateHP(target, hp) {
         if (target) {
-            const currentHp = this.getHP(target) ?? 0
-            const diff = hp - currentHp
-            if (diff !== 0) {
-                const actor = target?.parent
-                const token = actor ? (actor.getActiveTokens()[0] ?? actor) : null
-                showFloatingText(token ?? target, Math.abs(diff), { isHealing: diff > 0 })
-            }
             await target?.parent?.update({ "system.health.value": hp })
         }
     }

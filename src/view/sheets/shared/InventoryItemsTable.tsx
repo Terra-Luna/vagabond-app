@@ -94,7 +94,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                                 }
                                             />
                                         </td>
-                                        : (item.isConsumable
+                                        : (item.isConsumable && !(actor as HeroDataModel).polymorph
                                             ? <td className="flex flex-col mt-1.5 items-center">
                                                 <Tooltip title={appLang.HeroSheet.Inventory.ctxUse} content={appLang.HeroSheet.skills_tooltip}>
                                                     <UtilityButton onClick={async (e) => useItem((actor as any).parent, item.parent, false, e)}>

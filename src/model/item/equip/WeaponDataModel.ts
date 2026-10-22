@@ -63,6 +63,7 @@ export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
     isDefenseWeapon(): boolean {
         return this.properties.includes('defense')
     }
+
 }
 
 export const isEquippedWeapon = (item: any): boolean => {

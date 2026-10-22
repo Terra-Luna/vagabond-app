@@ -27,6 +27,7 @@ export const RollBuilderView = ({
     showDamageRolls = true,
     lockWeaponSelection,
     saveOnRoll = true,
+    baseAttack,
     setClosed
 }: {
     actor: Actor & { system: HeroDataModel },
@@ -38,6 +39,7 @@ export const RollBuilderView = ({
     showDamageRolls?: boolean,
     lockWeaponSelection?: boolean,
     saveOnRoll?: boolean,
+    baseAttack?: HeroAttack,
     setClosed?: () => void
 }) => {
 
@@ -211,7 +213,7 @@ export const RollBuilderView = ({
                                 if (saveOnRoll) {
                                     await saveCustomRoll()
                                 }
-                                HeroAttack.buildCustomRoll(actor, rollForm, e)
+                                HeroAttack.buildCustomRoll(actor, rollForm, e, baseAttack)
                             }} icon={<Dices size={16} className="text-btn-primary-text" />}>
                                 {appLang.ButtonActions.roll}
                             </PrimaryButton>

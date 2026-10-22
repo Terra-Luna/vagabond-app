@@ -75,7 +75,7 @@ export const ProgressClockAppView = () => {
     return (<>
         <CanvasOverlayObjectWrapper objects={visibleItems} onMouseDown={handleMouseDown}>
             {(clock) => (
-                <div title={`Click to advance\nR-click for options`} onContextMenu={(e) => {
+                <div className="flex flex-col items-center" title={`Click to advance\nR-click for options`} onContextMenu={(e) => {
                     const items = clockMenuItems(clock)
                     if (items.length === 0) { e.preventDefault(); return }
                     onCtxMenu(e, items)

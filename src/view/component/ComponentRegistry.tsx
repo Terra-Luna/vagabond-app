@@ -7,6 +7,7 @@ import { DieIcon } from "../chat/component/DieIcon"
 import { CountdownRollChatCard } from "../chat/CountdownChatCard"
 import { InlineRollChatCard } from "../chat/InlineRollChatCard"
 import { ItemChatCard } from "../chat/ItemChatCard"
+import { PolymorphRequestChatCard } from "../chat/PolymorphRequestChatCard"
 import { SkillCheckChatCard } from "../chat/SkillCheckChatCard"
 import { TrackerUpdateChatCard } from "../chat/TrackerUpdateChatCard"
 
@@ -19,6 +20,7 @@ export const ComponentRegistry = {
     "InlineRollChatCard": InlineRollChatCard,
     "InteractiveAttackChatCard": InteractiveAttackChatCard,
     "ItemChatCard": ItemChatCard,
+    "PolymorphRequestChatCard": PolymorphRequestChatCard,
     "SkillCheckChatCard": SkillCheckChatCard,
     "SpellCastChatCard": SpellAttackInfoComponent,
     "TrackerUpdateChatCard": TrackerUpdateChatCard

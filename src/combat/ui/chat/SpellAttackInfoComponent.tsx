@@ -12,11 +12,14 @@ import { SpellcastingSubtext } from "../../../view/sheets/actor/hero/tab/compone
 import { DamageRollResult } from "../../engine/roll/DamageRoll"
 
 export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined, img }: {
-    spell: Item & { system: SpellDataModel }, delivery: any, dmgRoll?: DamageRollResult | undefined, img?: ReactNode
+    spell?: Item & { system: SpellDataModel },
+    delivery: any,
+    dmgRoll?: DamageRollResult | undefined,
+    img?: ReactNode
 }) => {
     const subtitle: CardSubHeaderValues[] = []
 
-    if (delivery.damageDice > 0 && spell.system.damageType !== 'none') {
+    if (delivery.damageDice > 0 && spell?.system?.damageType && spell.system.damageType !== 'none') {
         subtitle.push({ label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[spell.system.damageType] })
     }
     subtitle.push({ label: appLang.HeroSheet.Magic.labelMana, value: delivery.manaCost })
@@ -35,25 +38,24 @@ export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined,
 
     return (
         <div>
-            {
-                dmgRoll && <div className="flex flex-col gap-1 justify-center">
-                    <DamageRollsComponent result={dmgRoll} />
-                    <div className="flex items-center justify-center">
-                        {img && <div>{img}</div>}
-                        <TotalDmgFooter total={
-                            <div className="flex gap-x-1 items-center">
-                                <p>{dmgRoll.total}</p>
-                                <DamageTypeIcon dmgType={dmgRoll.dmgType} />
-                            </div>
-                        } />
-                    </div>
-                    <div>
-                        <CardSubHeader showRightBorder={false} values={subheaders} />
-                    </div>
+            {dmgRoll && <div className="flex flex-col gap-1 justify-center">
+                <DamageRollsComponent result={dmgRoll} />
+                <div className="flex items-center justify-center">
+                    {img && <div>{img}</div>}
+                    <TotalDmgFooter total={
+                        <div className="flex gap-x-1 items-center">
+                            <p>{dmgRoll.total}</p>
+                            <DamageTypeIcon dmgType={dmgRoll.dmgType} />
+                        </div>
+                    } />
                 </div>
+                <div>
+                    <CardSubHeader showRightBorder={false} values={subheaders} />
+                </div>
+            </div>
             }
             {delivery.applyEffect && <div className="flex px-1">
-                <SpellcastingSubtext text={ReactHtmlParser(spell.system.description)} />
+                <SpellcastingSubtext text={ReactHtmlParser(spell?.system?.description)} />
             </div>}
         </div>
     )

@@ -2,6 +2,7 @@
 import React, { createElement, ReactNode, useEffect, useRef } from "react"
 
 import { ComponentRegistry } from "../component/ComponentRegistry"
+import { subscribeToChatMessage } from "./ChatMessageStore"
 
 export const RehydratedChatCard = React.memo(({ blueprint, messageId }: { blueprint: any, messageId: string }) => {
     const [subRev, setSubRev] = React.useState(0)
@@ -13,9 +14,7 @@ export const RehydratedChatCard = React.memo(({ blueprint, messageId }: { bluepr
      */
     useEffect(() => {
         const triggerUpdate = () => setSubRev(p => p + 1)
-        const chatHook = Hooks.on("updateChatMessage", (msg: any) => {
-            if (msg.id === messageId) triggerUpdate()
-        })
+        const unsubscribe = subscribeToChatMessage(messageId, triggerUpdate)
         if (game.ready) {
             triggerUpdate()
         }
@@ -23,12 +22,14 @@ export const RehydratedChatCard = React.memo(({ blueprint, messageId }: { bluepr
             Hooks.once("ready", triggerUpdate)
             Hooks.once("canvasReady", triggerUpdate)
         }
-        return () => {
-            Hooks.off("updateChatMessage", chatHook)
-        }
+        return unsubscribe
     }, [messageId])
 
-    return <div key={`${blueprint?.id || 'card'}-${subRev}`}>{rehydrateElement(blueprint, true)}</div>
+    const cardBlueprint = blueprint?.type === "PolymorphRequestChatCard"
+        ? { ...blueprint, props: { ...blueprint.props, messageId } }
+        : blueprint
+
+    return <div key={`${blueprint?.id || 'card'}-${subRev}`}>{rehydrateElement(cardBlueprint, true)}</div>
 }, (prevProps, nextProps) => {
     return prevProps.blueprint?.id === nextProps.blueprint?.id && prevProps.messageId === nextProps.messageId
 })

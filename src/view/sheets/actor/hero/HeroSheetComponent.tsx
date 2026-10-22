@@ -1,4 +1,4 @@
-import { ArrowBigUpDash, BookText, Dices, FlaskConical, Handbag, Swords, WandSparkles } from "lucide-react"
+import { ArrowBigUpDash, BookText, Dices, FlaskConical, Handbag, PawPrint, Swords, WandSparkles } from "lucide-react"
 import { ReactNode, useEffect, useRef, useState } from "react"
 import { Tab, TabList, TabPanel,Tabs } from "react-tabs"
 
@@ -26,6 +26,7 @@ import { AlchemyTab } from "./tab/AlchemyTab"
 import { GearTab } from "./tab/GearTab"
 import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
+import { PolymorphTab } from "./tab/PolymorphTab"
 import { RollsTab } from "./tab/RollsTab"
 import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextProvider"
 import { CustomTrackers, Focus, HPArmorFatigueHUD, Luck, Saves, Skills, Speeds, StatsDrawer, Studied } from "./tab/TopSection"
@@ -98,7 +99,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                         <div className="min-w-0 grow truncate whitespace-nowrap">
                             <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
                             <span>&nbsp;•&nbsp;</span>
-                            <span className="cursor-pointer" onClick={() => openItemSheet(hero.ancestry)}>{getName(hero.ancestry) ?? ''}</span>
+                            <span className="cursor-pointer" onClick={() => openItemSheet(hero.ancestry)}>{hero.polymorph ? hero.polymorph.statBlock.name : getName(hero.ancestry) ?? ''}</span>
                             {hero.class
                                 ? <span className="cursor-pointer" onClick={() => openItemSheet(hero.class)}>{` ${getName(hero.class)}`}</span>
                                 : <span>{" Vagabond"}</span>
@@ -169,6 +170,7 @@ const HeroSheetBody = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondAc
         ...hero.perks?.flatMap(perk => (perk as any).rules ?? []) ?? [],
         ...inventoryItems.flatMap(item => getItemRules(item))
     ]
+    const canPolymorph = hero.spells.some(spell => spell.parent.flags[sys_id].polymorph)
 
     const showAlchemyTab = isAlchemist(hero)
     const showMagicTab = getItemChoiceRules(hero.level.current ?? 0, spellRules).some(rule => rule.pack === "spell" && rule.maxChoices > 0)
@@ -249,6 +251,15 @@ const HeroSheetBody = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondAc
             }]
             : []
         ),
+        ...(canPolymorph
+            ? [{
+                id: "polymorph",
+                title: locale["tab-polymorph"],
+                icon: <PawPrint size={iconSize} className="hover-glow" />,
+                content: <PolymorphTab actor={hero.parent} />
+            }]
+            : []
+        ),
         {
             id: "rolls",
             title: appLang.AttackBuilder.presets,
@@ -261,6 +272,13 @@ const HeroSheetBody = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondAc
     ]
 
     const [selectedId, setSelectedId] = useState("main")
+
+    useEffect(() => {
+        const hookId = (Hooks as any).on("vagabondSelectHeroTab", (actorId: string, tabId: string) => {
+            if (actorId === hero.parent.id) setSelectedId(tabId)
+        })
+        return () => (Hooks as any).off("vagabondSelectHeroTab", hookId)
+    }, [hero.parent.id])
 
     /**
      * Hero sheet tabbed sections get broken out into separate columns as the sheet is widened.

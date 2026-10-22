@@ -55,9 +55,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
         const allSpells = ItemsCache.spells()
             .filter(it => hero.spells.map(sp => sp._sourceId).includes(it.uuid))
             .map(sp => SpellDelivery.getSpellSnapshot(sp))
-        return imbueMode
-            ? allSpells.filter(sp => sp.damageType !== 'none' && sp.damageType !== 'healing')
-            : allSpells
+        return allSpells
     }, [actor, JSON.stringify(actor.system.class?.rules ?? []), JSON.stringify(hero.spells.map(sp => sp._sourceId))])
 
     useEffect(() => {

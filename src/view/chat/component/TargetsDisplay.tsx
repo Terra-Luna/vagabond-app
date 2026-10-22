@@ -5,9 +5,7 @@ import { useContextMenu } from "../../component/ContextMenu"
 import { ClearHeader } from "../../component/Header"
 
 /**
- * Displays an array of Token icons. Utilize target-sync.tsx to get live token target tracking updates.
- * @param param0 
- * @returns 
+ * Displays an array of Token icons.
  */
 export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], onRemoveTarget?: any }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
@@ -31,8 +29,7 @@ export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], on
                             }}
                             onContextMenu={(e) => {
                                 if (onRemoveTarget) {
-                                    onCtxMenu(e, [
-                                        {
+                                    onCtxMenu(e, [{
                                             icon: Trash,
                                             label: appLang.ButtonActions.remove,
                                             action: () => onRemoveTarget(index),

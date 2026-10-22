@@ -1,17 +1,17 @@
 import { MessageSquareText } from "lucide-react"
 
-import { SpellSelectionApp } from "../../../../../../apps/hero-choices/spells/SpellSelectionApp"
-import { getMiniCardsPref } from "../../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
-import { HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
-import { spellDamageBase } from "../../../../../../model/item/character/SpellDataModel"
-import { appLang } from "../../../../../../utils/lang"
-import { getId } from "../../../../../../utils/modelUtil"
-import { sendVagabondChatCard } from "../../../../../chat/ChatCardSerializer"
-import { PrimaryButton } from "../../../../../component/Button"
-import { useContextMenu } from "../../../../../component/ContextMenu"
-import { DynamicGrid } from "../../../../../component/DynamicGrid"
-import { SkillCard, SkillCardTitle } from "../../../../../component/SkillCard"
-import { useSpellcastingMenuContext } from "./spellcasting/SpellcastingMenuContext"
+import { SpellSelectionApp } from "../../../../../../../apps/hero-choices/spells/SpellSelectionApp"
+import { getMiniCardsPref } from "../../../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
+import { spellDamageBase } from "../../../../../../../model/item/character/SpellDataModel"
+import { appLang } from "../../../../../../../utils/lang"
+import { getId } from "../../../../../../../utils/modelUtil"
+import { sendVagabondChatCard } from "../../../../../../chat/ChatCardSerializer"
+import { PrimaryButton } from "../../../../../../component/Button"
+import { useContextMenu } from "../../../../../../component/ContextMenu"
+import { DynamicGrid } from "../../../../../../component/DynamicGrid"
+import { SkillCard, SkillCardTitle } from "../../../../../../component/SkillCard"
+import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
 
 export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
 
@@ -56,14 +56,14 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                     </div>
                 </div>
             ))}
-
-            <div className="flex justify-start items-end w-full h-full">
-                <PrimaryButton onClick={() => new SpellSelectionApp(hero.parent).render({ force: true })}>
-                    {'Select Spells'}
-                </PrimaryButton>
-            </div>
-
         </DynamicGrid>
+
+        <div className="flex justify-between items-end w-full h-full mt-1">
+            {/* LAUCH SPELL SELECTION APP */}
+            <PrimaryButton onClick={() => new SpellSelectionApp(hero.parent).render({ force: true })}>
+                {'Select Spells'}
+            </PrimaryButton>
+        </div>
 
         <ContextMenu />
 

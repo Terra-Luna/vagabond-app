@@ -67,6 +67,8 @@ export const modifierSchema = () => {
             damageUpcastDiscount: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             deliveryUpcastDiscount: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             studyDiceDamage: new fields.BooleanField({ initial: false }),
+            effectiveLevelBonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            effectDamageBonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             deliveryDiscounts: new fields.SchemaField({
                 aura: new fields.NumberField({ ...requiredInteger, initial: 0 }),
                 cone: new fields.NumberField({ ...requiredInteger, initial: 0 }),
@@ -89,6 +91,15 @@ export const modifierSchema = () => {
             rest: new fields.SchemaField({
                 extraLuck: new fields.NumberField({ ...requiredInteger, initial: 0 })
             })
+        }),
+
+        polymorph: new fields.SchemaField({
+            castingLevelBonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            resistanceLevel: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            continualSelf: new fields.BooleanField({ initial: false }),
+            useCastSkill: new fields.BooleanField({ initial: false }),
+            relicAttacks: new fields.BooleanField({ initial: false }),
+            damageBonus: new fields.NumberField({ ...requiredInteger, initial: 0 })
         })
     }
 }

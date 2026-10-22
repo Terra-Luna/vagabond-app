@@ -14,7 +14,8 @@
         "value": 5,
         "selector": [
           "speed.turn"
-        ]
+        ],
+        "toggleableEffect": true
       }
     ],
     "prerequisites": [
@@ -60,9 +61,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.41",
+    "systemVersion": "0.2.93",
     "createdTime": 1786728336654,
-    "modifiedTime": 1790217751082,
+    "modifiedTime": 1792451019052,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

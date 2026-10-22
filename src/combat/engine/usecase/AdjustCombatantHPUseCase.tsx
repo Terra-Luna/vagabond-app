@@ -1,8 +1,6 @@
 import { useCallback, useState } from "react"
 
 import { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
-import { showFloatingText } from "../../../utils/foundryUtils"
-import { getCanvasToken } from "../../../utils/modelUtil"
 import { VagabondCombatant } from "../../documents/VagabondCombat"
 
 export const useAdjustCombatantHP = (combatants: VagabondCombatant[]) => {
@@ -20,8 +18,6 @@ export const useAdjustCombatantHP = (combatants: VagabondCombatant[]) => {
             .map(c => {
                 const currentHp = (c.token?.actor?.system as ActorDataModel<BaseActorSchema>).health.value ?? 0
                 const diff = hpAdjustment * (mode === 'add' ? 1 : -1)
-                const tokenObj = c.token?.object ?? getCanvasToken(c.tokenId ?? c.token?.id)
-                showFloatingText(tokenObj ?? c.token?.actor, Math.abs(diff), { isHealing: mode === 'add' })
                 return c.token?.actor?.update({ system: { health: { value: currentHp + diff } } })
             }))
     }, [combatants, mode, hpAdjustment])

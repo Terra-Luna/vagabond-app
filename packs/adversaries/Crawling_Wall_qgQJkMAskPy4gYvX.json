@@ -143,106 +143,8 @@
           "extraDice": 0
         }
       },
-      "dice": {
-        "size": {
-          "melee": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "finesse": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "brawl": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "ranged": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "thrown": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "defense": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spell": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spellHealing": {
-            "minimum": 0,
-            "bonus": 0
-          }
-        },
-        "exploding": {
-          "melee": {
-            "values": []
-          },
-          "finesse": {
-            "values": []
-          },
-          "brawl": {
-            "values": []
-          },
-          "ranged": {
-            "values": []
-          },
-          "thrown": {
-            "values": []
-          },
-          "defense": {
-            "values": []
-          },
-          "spell": {
-            "values": []
-          },
-          "spellHealing": {
-            "values": []
-          }
-        },
-        "crit": {
-          "melee": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "finesse": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "brawl": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "ranged": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "thrown": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "defense": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "spell": {
-            "extraDice": 0,
-            "explodes": false
-          }
-        }
-      },
       "damage": {
         "in": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0,
           "immunities": [
             "poison"
           ],
@@ -256,12 +158,7 @@
           ]
         },
         "out": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0
+          "spell": 0
         }
       },
       "healing": {
@@ -288,15 +185,13 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">A silent, moving wall that catches its prey by crushing it and soaking the pulp through its cracks. They may have arms and a mouth.</span></p>",
     "hitDice": 13,
     "zone": "front",
-    "movement": {
-      "type": "walk",
-      "speed": "20'"
-    },
     "numberAppearing": "1",
     "actions": [
       {
         "name": "Grasp",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and Restrained</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -308,12 +203,13 @@
         },
         "saves": [
           "reflex"
-        ],
-        "statuses": []
+        ]
       },
       {
         "name": "Crush",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Rush]:</strong></b><span style=\"white-space: pre-wrap;\"> Any Huge or smaller Being in its path is pushed in front of it for the Move. If there is no open space within Close for the Being to go when this happens, it takes 3 (d6) for every 5' of Speed this Being has remaining.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Rush]: Any Huge or smaller Being in its path is pushed in front of it for the Move. If there is no open space within Close for the Being to go when this happens, it takes 3 (d6) for every 5' of Speed this Being has remaining.</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -323,8 +219,7 @@
           },
           "type": "physical"
         },
-        "saves": [],
-        "statuses": []
+        "saves": []
       }
     ],
     "combo": {
@@ -332,7 +227,6 @@
       "actions": [
         {
           "name": "Grasp",
-          "effect": "[Melee Attack]: Restrained",
           "damage": {
             "dice": {
               "count": 1,
@@ -342,11 +236,12 @@
             },
             "type": "physical"
           },
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         },
         {
           "name": "Crush",
-          "effect": "[Rush]: Any Huge or smaller Being in its path is pushed in front of it for the Move. If there is no open space within Close for the Being to go when this happens, it takes 3 (d6) for every 5' of Speed this Being has remaining.",
           "damage": {
             "dice": {
               "count": 1,
@@ -356,17 +251,19 @@
             },
             "type": "physical"
           },
-          "comboCount": 1
+          "comboCount": 1,
+          "type": "melee",
+          "range": "close"
         }
       ]
     },
-    "abilities": [
+    "morale": 12,
+    "speeds": [
       {
-        "name": "Immutable",
-        "description": "<p><span style=\"white-space: pre-wrap;\">It can't be transformed.</span></p>"
+        "value": 20,
+        "type": "walk"
       }
-    ],
-    "morale": 12
+    ]
   },
   "prototypeToken": {
     "name": "Crawling Wall",

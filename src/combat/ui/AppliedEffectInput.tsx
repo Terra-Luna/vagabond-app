@@ -10,15 +10,24 @@ import { VagabondActiveEffect } from "../documents/VagabondActiveEffect";
 
 type AppliedEffect = { effect: string, duration?: string, critDuration?: string }
 
-export const AppliedEffectInput = ({ item }: { item: Item & { system: AlchemicalItemDataModel | SpellDataModel } }) => {
+type AppliedEffectInputProps =
+    | { item: Item & { system: AlchemicalItemDataModel | SpellDataModel }, effects?: undefined, onChange?: undefined, hideCritDuration?: boolean }
+    | { item?: undefined, effects: AppliedEffect[] | undefined, onChange: (effects: AppliedEffect[]) => unknown, hideCritDuration?: boolean }
+
+
+export const AppliedEffectInput = ({ item, effects, onChange, hideCritDuration }: AppliedEffectInputProps) => {
 
     const { isEditMode } = useEditMode()
-    const appliedEffects: AppliedEffect[] = item.system.appliedEffects ?? []
+    const appliedEffects: AppliedEffect[] = (item ? (item.system?.appliedEffects ?? (item as any).appliedEffects) : effects) ?? []
     const statusEffectChoices = VagabondActiveEffect.statusEffects.map(it => it.id)
     const statusEffectOptions = statusEffectChoices.map(id => ({ value: id, label: appLang.StatusConditions[id].name }))
 
     const updateEffects = async (newEffects: AppliedEffect[]) => {
-        await item.update({ 'system.appliedEffects': newEffects } as Record<string, AppliedEffect[]>)
+        if (onChange) {
+            await onChange(newEffects)
+            return
+        }
+        await item?.update({ 'system.appliedEffects': newEffects } as Record<string, AppliedEffect[]>)
     }
 
     const handleAddEffect = async () => {
@@ -71,14 +80,14 @@ export const AppliedEffectInput = ({ item }: { item: Item & { system: Alchemical
                             </div>
 
                             {isEditMode && <>
-                                <div title={appLang.Effects.durationOnCrit}>
+                                {!hideCritDuration && <div title={appLang.Effects.durationOnCrit}>
                                     {index === 0 && <p className="text-sm">{appLang.Effects.crit}</p>}
                                     <CustomDropDown
                                         value={applied.critDuration ?? ''}
                                         options={appLang.Duration}
                                         onChange={(e) => handleFieldChange(index, 'critDuration', e.target.value)}
                                     />
-                                </div>
+                                </div>}
                                 <TrashButton title={appLang.Effects.removeEffect} onClick={() => handleRemoveEffect(index)} />
                             </>}
                         </div>

@@ -201,129 +201,6 @@
           "d8": false
         }
       },
-      "dice": {
-        "size": {
-          "melee": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "finesse": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "brawl": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "ranged": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "thrown": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "defense": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spell": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spellHealing": {
-            "minimum": 0,
-            "bonus": 0
-          }
-        },
-        "exploding": {
-          "melee": {
-            "max": false,
-            "values": []
-          },
-          "finesse": {
-            "max": false,
-            "values": []
-          },
-          "brawl": {
-            "max": false,
-            "values": []
-          },
-          "ranged": {
-            "max": false,
-            "values": []
-          },
-          "thrown": {
-            "max": false,
-            "values": []
-          },
-          "defense": {
-            "max": false,
-            "values": []
-          },
-          "spell": {
-            "max": false,
-            "values": []
-          },
-          "spellHealing": {
-            "max": false,
-            "values": []
-          }
-        },
-        "crit": {
-          "melee": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "finesse": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "brawl": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "ranged": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "thrown": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "defense": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "spell": {
-            "extraDice": 0,
-            "explodes": false
-          }
-        },
-        "reroll": {
-          "melee": {
-            "HH": []
-          },
-          "finesse": {
-            "HH": []
-          },
-          "brawl": {
-            "HH": []
-          },
-          "ranged": {
-            "HH": []
-          },
-          "thrown": {
-            "HH": []
-          },
-          "defense": {
-            "HH": []
-          },
-          "spell": {
-            "HH": []
-          }
-        }
-      },
       "damage": {
         "in": {
           "flatReduction": 0,
@@ -334,357 +211,19 @@
           "statusImmunities": []
         },
         "out": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "special": {
-            "sneakAttack": {
-              "flatBonus": 0,
-              "perDieBonus": 0,
-              "exploding": {
-                "max": false,
-                "values": []
-              },
-              "extraDice": {
-                "count": 0,
-                "faces": 4,
-                "modifier": 0,
-                "explodesOn": []
-              },
-              "active": false
-            }
-          }
+          "melee": {},
+          "finesse": {},
+          "brawl": {},
+          "ranged": {},
+          "thrown": {},
+          "defense": {},
+          "spell": {}
         }
       },
       "healing": {
-        "in": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "special": {
-            "sneakAttack": {
-              "flatBonus": 0,
-              "perDieBonus": 0,
-              "exploding": {
-                "max": false,
-                "values": []
-              },
-              "extraDice": {
-                "count": 0,
-                "faces": 4,
-                "modifier": 0,
-                "explodesOn": []
-              },
-              "active": false
-            }
-          }
-        },
+        "in": {},
         "out": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "special": {
-            "sneakAttack": {
-              "flatBonus": 0,
-              "perDieBonus": 0,
-              "exploding": {
-                "max": false,
-                "values": []
-              },
-              "extraDice": {
-                "count": 0,
-                "faces": 4,
-                "modifier": 0,
-                "explodesOn": []
-              },
-              "active": false
-            }
-          }
+          "spell": {}
         }
       },
       "casting": {
@@ -697,20 +236,6 @@
           "line": 0,
           "sphere": 0,
           "imbue": 0
-        }
-      },
-      "alchemy": {
-        "flatBonus": 0,
-        "perDieBonus": 0,
-        "exploding": {
-          "max": false,
-          "values": []
-        },
-        "extraDice": {
-          "count": 0,
-          "faces": 4,
-          "modifier": 0,
-          "explodesOn": []
         }
       },
       "downtime": {
@@ -731,14 +256,13 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Overgrown reptiles, often used as mounts.</span></p>",
     "hitDice": 3,
     "zone": "front",
-    "movement": {
-      "speed": "40' (Climb)"
-    },
     "numberAppearing": "2d6",
     "actions": [
       {
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "faces": 8,
@@ -750,15 +274,24 @@
         },
         "saves": [
           "reflex"
-        ],
-        "statuses": []
+        ]
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 10
+    "morale": 10,
+    "speeds": [
+      {
+        "value": 40,
+        "type": "walk"
+      },
+      {
+        "type": "climb",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Lizard, Giant Gecko",

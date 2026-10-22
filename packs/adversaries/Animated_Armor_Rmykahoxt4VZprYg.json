@@ -143,106 +143,8 @@
           "extraDice": 0
         }
       },
-      "dice": {
-        "size": {
-          "melee": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "finesse": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "brawl": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "ranged": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "thrown": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "defense": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spell": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spellHealing": {
-            "minimum": 0,
-            "bonus": 0
-          }
-        },
-        "exploding": {
-          "melee": {
-            "values": []
-          },
-          "finesse": {
-            "values": []
-          },
-          "brawl": {
-            "values": []
-          },
-          "ranged": {
-            "values": []
-          },
-          "thrown": {
-            "values": []
-          },
-          "defense": {
-            "values": []
-          },
-          "spell": {
-            "values": []
-          },
-          "spellHealing": {
-            "values": []
-          }
-        },
-        "crit": {
-          "melee": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "finesse": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "brawl": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "ranged": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "thrown": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "defense": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "spell": {
-            "extraDice": 0,
-            "explodes": false
-          }
-        }
-      },
       "damage": {
         "in": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0,
           "immunities": [
             "poison"
           ],
@@ -258,12 +160,7 @@
           ]
         },
         "out": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0
+          "spell": 0
         }
       },
       "healing": {
@@ -290,15 +187,13 @@
     "description": "",
     "hitDice": 2,
     "zone": "front",
-    "movement": {
-      "type": "walk",
-      "speed": "30'"
-    },
     "numberAppearing": "1d4",
     "actions": [
       {
         "name": "Weapon",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 3 (d6) or (by Weapon)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) or (by Weapon)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -311,24 +206,20 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "halfDamageOnSave": false
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "abilities": [
+    "morale": 12,
+    "speeds": [
       {
-        "name": "Antimagic Vulnerability",
-        "description": "<p><span style=\"white-space: pre-wrap;\">It is Dazed for Cd4 if affected by the Dispel Spell or other antimagic.</span></p>"
-      },
-      {
-        "name": "Immutable",
-        "description": "<p><span style=\"white-space: pre-wrap;\">It can't be transformed.</span></p>"
+        "value": 30,
+        "type": "walk"
       }
-    ],
-    "morale": 12
+    ]
   },
   "prototypeToken": {
     "name": "Animated Armor",
@@ -500,9 +391,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.19",
+    "systemVersion": "0.2.93",
     "createdTime": 1787708617762,
-    "modifiedTime": 1790022045786,
+    "modifiedTime": 1792463530351,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

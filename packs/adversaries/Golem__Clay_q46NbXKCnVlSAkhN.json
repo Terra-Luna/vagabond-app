@@ -203,159 +203,8 @@
           "d8": false
         }
       },
-      "dice": {
-        "size": {
-          "melee": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "finesse": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "brawl": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "ranged": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "thrown": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "defense": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spell": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spellHealing": {
-            "minimum": 0,
-            "bonus": 0
-          }
-        },
-        "exploding": {
-          "melee": {
-            "max": false,
-            "values": []
-          },
-          "finesse": {
-            "max": false,
-            "values": []
-          },
-          "brawl": {
-            "max": false,
-            "values": []
-          },
-          "ranged": {
-            "max": false,
-            "values": []
-          },
-          "thrown": {
-            "max": false,
-            "values": []
-          },
-          "defense": {
-            "max": false,
-            "values": []
-          },
-          "spell": {
-            "max": false,
-            "values": []
-          },
-          "spellHealing": {
-            "max": false,
-            "values": []
-          }
-        },
-        "crit": {
-          "melee": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "finesse": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "brawl": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "ranged": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "thrown": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "defense": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "spell": {
-            "extraDice": 0,
-            "explodes": false
-          }
-        },
-        "reroll": {
-          "melee": {
-            "HH": []
-          },
-          "finesse": {
-            "HH": []
-          },
-          "brawl": {
-            "HH": []
-          },
-          "ranged": {
-            "HH": []
-          },
-          "thrown": {
-            "HH": []
-          },
-          "defense": {
-            "HH": []
-          },
-          "spell": {
-            "HH": []
-          }
-        }
-      },
       "damage": {
         "in": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
           "immunities": [
             "physical"
           ],
@@ -371,34 +220,13 @@
           ]
         },
         "out": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          }
+          "melee": {},
+          "finesse": {},
+          "brawl": {},
+          "ranged": {},
+          "thrown": {},
+          "defense": {},
+          "spell": {}
         }
       },
       "healing": {
@@ -435,14 +263,13 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relic weapons.</span></p>",
     "hitDice": 12,
     "zone": "front",
-    "movement": {
-      "speed": "15'"
-    },
     "numberAppearing": "1d4",
     "actions": [
       {
         "name": "Slam",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 9 (2d8)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -454,8 +281,7 @@
         },
         "saves": [
           "reflex"
-        ],
-        "statuses": []
+        ]
       }
     ],
     "combo": {
@@ -463,7 +289,9 @@
       "actions": [
         {
           "name": "Slam",
-          "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 9 (2d8)</span></p>",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8)</span></p>",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 2,
@@ -476,30 +304,17 @@
           "saves": [
             "reflex"
           ],
-          "statuses": [],
           "comboCount": 2
         }
       ]
     },
-    "abilities": [
+    "morale": 12,
+    "speeds": [
       {
-        "name": "Acid Bather",
-        "description": "<p><span style=\"white-space: pre-wrap;\">Acid damage rolls affect it as healing rolls.</span></p>"
-      },
-      {
-        "name": "Immutable",
-        "description": "<p><span style=\"white-space: pre-wrap;\">It can't be transformed.</span></p>"
-      },
-      {
-        "name": "Magic Ward I",
-        "description": "<p><span style=\"white-space: pre-wrap;\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 1 or more.</span></p>"
-      },
-      {
-        "name": "Unbaked",
-        "description": "<p><span style=\"white-space: pre-wrap;\">If it takes 5 or more Fire damage at once, it is Dazed (Cd4).</span></p>"
+        "value": 15,
+        "type": "walk"
       }
-    ],
-    "morale": 12
+    ]
   },
   "prototypeToken": {
     "name": "Golem, Clay",

@@ -12,7 +12,7 @@ export const Grimoire = ({ spellGrants, spellSlots, spellsList }) => {
                 <HeroCreationLabel text={strings.grimoire} />
                 {/* SPELLS COMPENDIUM LINK */}
                 <button onClick={() => game.packs?.get("vagabond-app.spells")?.render(true)} className={`hover-glow cursor-pointer ${buttonAnimation}`}>
-                    <HeroCreationSubtext text={"Browse Compendium"} />
+                    <HeroCreationSubtext text={appLang.ItemSheet.browseCompendium} />
                 </button>
             </div>
 

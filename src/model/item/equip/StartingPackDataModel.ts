@@ -78,7 +78,6 @@ export class StartingPackDataModel extends ItemDataModel<StartingPackSchema> {
             const itemData = fullDoc.toObject()
             if (itemData.system?.bulk) {
                 if (itemData.system.bulk.isStackable) {
-                    console.log({ group })
                     itemData.system.bulk.quantity = group[0].qty > 1
                         ? group[0].qty
                         : group.length

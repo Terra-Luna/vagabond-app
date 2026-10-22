@@ -22,6 +22,7 @@ import { ItemActorDataModel } from "./model/actor/ItemActorDataModel"
 import { NpcDataModel } from "./model/actor/NpcDataModel"
 import { isInventoryItem } from "./model/actor/type/Inventory"
 import { enforceSingletonPlaceholder } from "./model/actor/util/NpcDataModelUtil"
+import { PolymorphUtil } from "./model/actor/util/PolymorphUtil"
 import { VagabondActor } from "./model/actor/VagabondActor"
 import { VagabondCombatantModel } from "./model/combat/VagabondCombatant"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
@@ -117,7 +118,12 @@ Hooks.once("init", () => {
         CONFIG.ui.combat = VagabondCombatTracker
     )
 
-    foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = `systems/${sys_id}/react-placeholder.hbs`
+    foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = `systems/${sys_id}/react-placeholder.hbs`;
+
+    /**
+     * Allows players to drag Actors from the sidebar onto their sheet without the Create Token permission.
+     */
+    (foundry.applications.sidebar.tabs.ActorDirectory.prototype as any)._canDragStart = () => true
 
     VagabondSettingsRegistry.register()
 
@@ -161,6 +167,15 @@ Hooks.once("ready", async () => {
             const attackData = packet.data
             if (!attackData || !attackData.actorId) return
             Attack.handleIncomingAttackSnapshot(attackData)
+        }
+        else if (packet?.action === "polymorph") {
+            const { casterUuid, targetUuids, formUuid, duration } = packet.data ?? {}
+            const [caster, targets, form] = await Promise.all([
+                fromUuid(casterUuid),
+                Promise.all((targetUuids ?? []).map((uuid: string) => fromUuid(uuid))),
+                formUuid ? fromUuid(formUuid) : undefined
+            ])
+            await PolymorphUtil.polymorph({ caster: caster as any, targets: targets as any, form: form as any, duration })
         }
         else if (packet?.action === "createTagalongItems") {
             await TagalongItemCreator.handleIncomingItemCreation(packet)
@@ -549,6 +564,7 @@ Hooks.on("deleteCombat", (combat: Combat, options: any, userId: string) => {
 });
 
 Hooks.on("dropCanvasData", (canvas: Canvas, data: Record<string, any>): boolean | void => {
+    if (data.type === "Actor" && !game.user?.can("TOKEN_CREATE")) return false
     if (data.type !== "Actor" || !data.uuid || !data.uuid.startsWith("Compendium.")) return true
 
     /**

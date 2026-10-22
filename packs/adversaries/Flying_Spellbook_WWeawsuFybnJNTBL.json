@@ -146,136 +146,8 @@
           "extraDice": 0
         }
       },
-      "dice": {
-        "size": {
-          "melee": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "finesse": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "brawl": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "ranged": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "thrown": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "defense": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spell": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spellHealing": {
-            "minimum": 0,
-            "bonus": 0
-          }
-        },
-        "exploding": {
-          "melee": {
-            "max": false,
-            "values": []
-          },
-          "finesse": {
-            "max": false,
-            "values": []
-          },
-          "brawl": {
-            "max": false,
-            "values": []
-          },
-          "ranged": {
-            "max": false,
-            "values": []
-          },
-          "thrown": {
-            "max": false,
-            "values": []
-          },
-          "defense": {
-            "max": false,
-            "values": []
-          },
-          "spell": {
-            "max": false,
-            "values": []
-          },
-          "spellHealing": {
-            "max": false,
-            "values": []
-          }
-        },
-        "crit": {
-          "melee": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "finesse": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "brawl": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "ranged": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "thrown": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "defense": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "spell": {
-            "extraDice": 0,
-            "explodes": false
-          }
-        }
-      },
       "damage": {
         "in": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
           "immunities": [
             "poison"
           ],
@@ -288,34 +160,13 @@
           ]
         },
         "out": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          }
+          "melee": {},
+          "finesse": {},
+          "brawl": {},
+          "ranged": {},
+          "thrown": {},
+          "defense": {},
+          "spell": {}
         }
       },
       "healing": {
@@ -343,15 +194,13 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">An animated spellbook that flies like a bird, capable of casting the magic written on its pages.</span></p>",
     "hitDice": 1,
     "zone": "back",
-    "movement": {
-      "type": "fly",
-      "speed": "0' (Fly 30')"
-    },
     "numberAppearing": "d6",
     "actions": [
       {
         "name": "Freeze",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Remote | Endure] (Recharge Cd4):</strong></b><span style=\"white-space: pre-wrap;\"> 3 (d6) and its Speed is reduced by 10' (Cd4).</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Endure] (Recharge Cd4): 3 (d6) and its Speed is reduced by 10' (Cd4).</span></p>",
+        "type": "cast",
+        "range": "far",
         "damage": {
           "dice": {
             "count": 1,
@@ -364,12 +213,13 @@
         "saves": [
           "endure"
         ],
-        "statuses": [],
         "recharge": "Cd4"
       },
       {
         "name": "Zap",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Bolt | Reflex] (Recharge Cd4):</strong></b><span style=\"white-space: pre-wrap;\"> 3 (d6) and Dazed (Cd4)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Bolt | Reflex] (Recharge Cd4): 3 (d6) and Dazed (Cd4)</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -382,27 +232,30 @@
         "saves": [
           "reflex"
         ],
-        "statuses": [
-          "dazed"
-        ],
-        "recharge": "Cd4"
+        "recharge": "Cd4",
+        "appliedEffects": [
+          {
+            "effect": "dazed",
+            "duration": "Cd4"
+          }
+        ]
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "abilities": [
+    "morale": 12,
+    "speeds": [
       {
-        "name": "Antimagic Vulnerability",
-        "description": "<p><span style=\"white-space: pre-wrap;\">It is [[/r Cd4#Dazed]]{Dazed for Cd4} if affected by the Dispel Spell or other antimagic.</span></p>"
+        "value": 0,
+        "type": "walk"
       },
       {
-        "name": "Nimble",
-        "description": "<p><span style=\"white-space: pre-wrap;\">Attacks against it can't be Favored if it can Move.</span></p>"
+        "type": "fly",
+        "value": 30
       }
-    ],
-    "morale": 12
+    ]
   },
   "prototypeToken": {
     "name": "Flying Spellbook",

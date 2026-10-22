@@ -204,159 +204,8 @@
           "d8": false
         }
       },
-      "dice": {
-        "size": {
-          "melee": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "finesse": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "brawl": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "ranged": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "thrown": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "defense": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spell": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spellHealing": {
-            "minimum": 0,
-            "bonus": 0
-          }
-        },
-        "exploding": {
-          "melee": {
-            "max": false,
-            "values": []
-          },
-          "finesse": {
-            "max": false,
-            "values": []
-          },
-          "brawl": {
-            "max": false,
-            "values": []
-          },
-          "ranged": {
-            "max": false,
-            "values": []
-          },
-          "thrown": {
-            "max": false,
-            "values": []
-          },
-          "defense": {
-            "max": false,
-            "values": []
-          },
-          "spell": {
-            "max": false,
-            "values": []
-          },
-          "spellHealing": {
-            "max": false,
-            "values": []
-          }
-        },
-        "crit": {
-          "melee": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "finesse": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "brawl": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "ranged": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "thrown": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "defense": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "spell": {
-            "extraDice": 0,
-            "explodes": false
-          }
-        },
-        "reroll": {
-          "melee": {
-            "HH": []
-          },
-          "finesse": {
-            "HH": []
-          },
-          "brawl": {
-            "HH": []
-          },
-          "ranged": {
-            "HH": []
-          },
-          "thrown": {
-            "HH": []
-          },
-          "defense": {
-            "HH": []
-          },
-          "spell": {
-            "HH": []
-          }
-        }
-      },
       "damage": {
         "in": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
           "immunities": [
             "poison"
           ],
@@ -367,34 +216,13 @@
           ]
         },
         "out": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          }
+          "melee": {},
+          "finesse": {},
+          "brawl": {},
+          "ranged": {},
+          "thrown": {},
+          "defense": {},
+          "spell": {}
         }
       },
       "healing": {
@@ -431,14 +259,13 @@
     "description": "",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "speed": "10' (Fly 40')"
-    },
     "numberAppearing": "1",
     "actions": [
       {
         "name": "Bite",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 1 (d3) and (1/Day) pass [Endure] or become Sickened (Cd6 Rounds, Unconscious until it takes damage).</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 1 (d3) and (1/Day) pass [Endure] or become Sickened (Cd6 Rounds, Unconscious until it takes damage).</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -450,12 +277,13 @@
         },
         "saves": [
           "reflex"
-        ],
-        "statuses": []
+        ]
       },
       {
         "name": "Spit Acid",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Ranged Attack, Near]:</strong></b><span style=\"white-space: pre-wrap;\"> 2 (d4) and Burning (Cd4).</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 2 (d4) and Burning (Cd4).</span></p>",
+        "type": "ranged",
+        "range": "near",
         "damage": {
           "dice": {
             "count": 1,
@@ -468,8 +296,11 @@
         "saves": [
           "reflex"
         ],
-        "statuses": [
-          "burning"
+        "appliedEffects": [
+          {
+            "effect": "burning",
+            "duration": "Cd4"
+          }
         ]
       }
     ],
@@ -477,8 +308,17 @@
       "name": "",
       "actions": []
     },
-    "abilities": [],
-    "morale": 3
+    "morale": 3,
+    "speeds": [
+      {
+        "value": 10,
+        "type": "walk"
+      },
+      {
+        "type": "fly",
+        "value": 40
+      }
+    ]
   },
   "prototypeToken": {
     "name": "Homunculus",

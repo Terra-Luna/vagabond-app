@@ -20,7 +20,7 @@ export class NpcDataModel extends ActorDataModel<NpcSchema> {
 
     override async _onUpdate(changed, options, userId) {
         super._onUpdate(changed, options, userId)
-        onUpdateNpc(this, changed)
+        onUpdateNpc(this, changed, options)
     }
 
     override prepareBaseData() {

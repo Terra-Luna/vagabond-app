@@ -11,15 +11,23 @@ import { SundryDataModel } from "../../../../../model/item/equip/SundryDataModel
 import { isEquippedSundry, isEquippedWeapon, WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
 import { equippedItemContextMenu, inventoryItemDragDropHandler } from "../../../../../utils/heroInventoryUtil"
 import { appLang } from "../../../../../utils/lang"
+import { damageTypesWithPhysicalThresholds } from "../../../../../utils/localeUtils"
 import { getId } from "../../../../../utils/modelUtil"
+import { formatSpeeds } from "../../../../../utils/speedUtils"
 import { buttonAnimation } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { Tooltip } from "../../../../component/Tooltip"
+import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { RelicEffectList } from "../../../item/equip/component/RelicEffectList"
 import { WeaponPropsList } from "../../../item/equip/component/WeaponPropsList"
 import { ItemIconImg } from "../../../shared/ItemIconImg"
+import { SelectableTextOptions } from "../../../shared/SelectableTextOptions"
+import { Abilities } from "../../npc/component/Abilities"
+import { Actions } from "../../npc/component/Actions"
+import { DamageTypeSelector } from "../../npc/component/NpcSheetComponent"
 
 export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
     const [documentUpdateKey, setDocumentUpdateKey] = useState(0)
@@ -50,6 +58,7 @@ export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
 
     const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
     const equippedSundries = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => it instanceof SundryDataModel && isEquippedSundry(it) && !it.isWearable) as SundryDataModel[])
+
     const armor = getArmor(hero) as any as ArmorDataModel
     const wearables = hero.inventory.items.filter(it =>
         it instanceof SundryDataModel && isEquippedSundry(it) && it.isWearable
@@ -60,12 +69,12 @@ export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
 
     return (
         <div className="flex flex-col h-full">
-            {(!hasEquippedWeapons && !hasEquippedArmor)
+            {(!hasEquippedWeapons && !hasEquippedArmor && !hero.polymorph)
                 ? <div className="text-text-aux text-center italic mt-4 mb-8">
                     {appLang.HeroSheet.noEquipment}
                 </div>
                 : <div className="space-y-2 mb-4">
-                    {hasEquippedWeapons && <Weapons hero={hero} equippedWeapons={equippedWeapons} equippedSundries={equippedSundries} documentUpdateKey={documentUpdateKey} />}
+                    {(hasEquippedWeapons || hero.polymorph) && <Weapons hero={hero} equippedWeapons={equippedWeapons} equippedSundries={equippedSundries} documentUpdateKey={documentUpdateKey} />}
                     {hasEquippedArmor && <Armor hero={hero} armor={armor} wearables={wearables} />}
                 </div>
             }
@@ -88,7 +97,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
         )
     )
 
-    const equipDependency = combinedEquipped.map(i => i.parent.id).join(',')
+    const equipDependency = combinedEquipped.map(i => i?.parent?.id)?.join(',')
     const [targetIds, setTargetIds] = useState("")
 
     useEffect(() => {
@@ -176,7 +185,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
 
     return (
         <div className="w-full">
-            <Header title={appLang.HeroSheet.weapons} />
+            <Header title={hero.polymorph ? appLang.HeroSheet.attacks : appLang.HeroSheet.weapons} />
             {
                 equipDisplayData?.map(({ item, damageString, skill, preset, initiateAttack, rollDefenseCheck }, index: number) => {
                     const isDefense = hero.skills[skill]?.trained && item instanceof WeaponDataModel
@@ -262,6 +271,22 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
                     )
                 })
             }
+
+            {/* POLYMORPH SECTION */}
+            {hero.polymorph &&
+                <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                    <Actions npc={hero.polymorph.statBlock.system} hero={hero.parent} isPolymorph={true} />
+                    <Abilities actor={hero.polymorph.statBlock} disabled={true} />
+                    <div className="w-full space-y-2 px-2 pb-2 text-base text-text-header-tertiary font-normal">
+                        {appLang.NpcSheet.speed}: {formatSpeeds(hero.polymorph.statBlock.system.speeds)}
+                        <SelectableTextOptions obj={hero.parent} label={appLang.NpcSheet.senses} path={['senses']} localeObj={appLang.Senses} />
+                        <DamageTypeSelector actorModel={hero} label={appLang.NpcSheet.immune} path={['modifiers', 'damage', 'in', 'immunities']} localeObj={damageTypesWithPhysicalThresholds()} />
+                        <DamageTypeSelector actorModel={hero} label={appLang.NpcSheet.weak} path={['modifiers', 'damage', 'in', 'weaknesses']} localeObj={appLang.DamageTypes} />
+                        <SelectableTextOptions obj={hero.parent} label={appLang.NpcSheet.status_immunities} path={['modifiers', 'damage', 'in', 'statusImmunities']} localeObj={appLang.StatusConditions} />
+                    </div>
+                </EditModeContextProvider>
+            }
+
             <ContextMenu />
         </div>
     )

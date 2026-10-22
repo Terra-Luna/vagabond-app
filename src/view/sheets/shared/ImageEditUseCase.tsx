@@ -61,5 +61,5 @@ export const useImageEdit = (item: Actor | Item) => {
         )
     }
 
-    return { viewImage, editImage: changeImage, removeImage, imageEditCtxMenuItems }
+    return { viewImage, changeImage, removeImage, imageEditCtxMenuItems }
 }

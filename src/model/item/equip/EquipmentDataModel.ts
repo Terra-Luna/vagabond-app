@@ -154,9 +154,9 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         }
     }
 
-    toggleEquipped = async (skipNotification?: boolean) => {
-        if (this.isEquipped && this.isCursed()) {
-            if (!skipNotification) {
+    toggleEquipped = async (skipCurseMessage?: boolean, bypassCurseCheck?: boolean) => {
+        if (this.isEquipped && this.isCursed() && !bypassCurseCheck) {
+            if (!skipCurseMessage) {
                 ui.notifications?.info(localizeString(appLang.Notifications.boundItemCannotBeRemoved, { name: this.parent.name }))
             }
             return false

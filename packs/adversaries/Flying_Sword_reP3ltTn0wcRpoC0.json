@@ -203,159 +203,8 @@
           "d8": false
         }
       },
-      "dice": {
-        "size": {
-          "melee": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "finesse": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "brawl": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "ranged": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "thrown": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "defense": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spell": {
-            "minimum": 0,
-            "bonus": 0
-          },
-          "spellHealing": {
-            "minimum": 0,
-            "bonus": 0
-          }
-        },
-        "exploding": {
-          "melee": {
-            "max": false,
-            "values": []
-          },
-          "finesse": {
-            "max": false,
-            "values": []
-          },
-          "brawl": {
-            "max": false,
-            "values": []
-          },
-          "ranged": {
-            "max": false,
-            "values": []
-          },
-          "thrown": {
-            "max": false,
-            "values": []
-          },
-          "defense": {
-            "max": false,
-            "values": []
-          },
-          "spell": {
-            "max": false,
-            "values": []
-          },
-          "spellHealing": {
-            "max": false,
-            "values": []
-          }
-        },
-        "crit": {
-          "melee": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "finesse": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "brawl": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "ranged": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "thrown": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "defense": {
-            "extraDice": 0,
-            "explodes": false
-          },
-          "spell": {
-            "extraDice": 0,
-            "explodes": false
-          }
-        },
-        "reroll": {
-          "melee": {
-            "HH": []
-          },
-          "finesse": {
-            "HH": []
-          },
-          "brawl": {
-            "HH": []
-          },
-          "ranged": {
-            "HH": []
-          },
-          "thrown": {
-            "HH": []
-          },
-          "defense": {
-            "HH": []
-          },
-          "spell": {
-            "HH": []
-          }
-        }
-      },
       "damage": {
         "in": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
           "immunities": [
             "poison"
           ],
@@ -369,34 +218,13 @@
           ]
         },
         "out": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0
-          }
+          "melee": {},
+          "finesse": {},
+          "brawl": {},
+          "ranged": {},
+          "thrown": {},
+          "defense": {},
+          "spell": {}
         }
       },
       "healing": {
@@ -433,15 +261,13 @@
     "description": "<p><span style=\"white-space: pre-wrap;\">An enchanted sword that dances through the air.</span></p>",
     "hitDice": 1,
     "zone": "front",
-    "movement": {
-      "type": "fly",
-      "speed": "0' (Fly 50')"
-    },
     "numberAppearing": "1d4",
     "actions": [
       {
         "name": "Slash",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 4 (d8)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8)</span></p>",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "faces": 8,
@@ -453,25 +279,24 @@
         },
         "saves": [
           "reflex"
-        ],
-        "statuses": []
+        ]
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "abilities": [
+    "morale": 12,
+    "speeds": [
       {
-        "name": "Antimagic Vulnerability",
-        "description": "<p><span style=\"white-space: pre-wrap;\">It is Dazed (Cd4) if affected by the Dispel Spell or other antimagic.</span></p>"
+        "value": 0,
+        "type": "walk"
       },
       {
-        "name": "Nimble",
-        "description": "<p><span style=\"white-space: pre-wrap;\">Attacks against it can't be Favored if it can Move.</span></p>"
+        "type": "fly",
+        "value": 50
       }
-    ],
-    "morale": 12
+    ]
   },
   "prototypeToken": {
     "name": "Flying Sword",
