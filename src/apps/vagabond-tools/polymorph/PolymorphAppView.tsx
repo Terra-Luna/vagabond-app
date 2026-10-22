@@ -61,7 +61,10 @@ export const PolymorphAppView = ({ caster, header }: {
         return () => Hooks.off("updateActor", hookId)
     }, [caster])
 
-    const [favorites, setFavorites] = useState<string[]>(caster.getFlag(sys_id, "polymorphFavorites") as string[])
+    const [favorites, setFavorites] = useState<string[]>(() => {
+        const stored = caster.getFlag(sys_id, "polymorphFavorites") as unknown
+        return Array.isArray(stored) ? stored : []
+    })
 
     const saveFavorites = async (updated: string[]) => {
         setFavorites(updated)
@@ -299,7 +302,6 @@ export const PolymorphAppView = ({ caster, header }: {
                                             key={index}
                                             uuid={favorite}
                                             index={index}
-                                            isCurrent={selfPolymorph?.statBlock?.id === favorite}
                                             isHovered={isFavDragOverIdx === index}
                                             onDragOver={() => setIsFavDragOverIdx(index)}
                                             onDragLeave={() => setIsFavDragOverIdx(false)}
@@ -378,11 +380,10 @@ const PolymorphCard = ({ polymorph, onCancel, isHovered }: {
     )
 }
 
-const PolymorphFavoriteCard = ({ uuid, index, isHovered, isCurrent, onDragOver, onDragLeave, onDrop, onDelete }: {
+const PolymorphFavoriteCard = ({ uuid, index, isHovered, onDragOver, onDragLeave, onDrop, onDelete }: {
     uuid?: string,
     index?: number,
     isHovered: boolean,
-    isCurrent?: boolean,
     onDragOver: (e: React.DragEvent<HTMLDivElement>) => void,
     onDragLeave: (e: React.DragEvent<HTMLDivElement>) => void,
     onDrop: (e: React.DragEvent<HTMLDivElement>) => void,
@@ -418,9 +419,9 @@ const PolymorphFavoriteCard = ({ uuid, index, isHovered, isCurrent, onDragOver, 
                 if (index !== undefined) e.dataTransfer.setData(FAVORITE_DRAG_TYPE, String(index))
             }}
             onDrop={onDrop}
-            className={`flex items-center gap-2 bg-sheet-header-fill p-2 min-h-[56px]
+            className={`flex items-center gap-2 p-2 min-h-[56px]
                 ${uuid ? "cursor-grab justify-between" : "justify-center"}
-                ${isCurrent || isHovered ? `${wealthBorderRounded}` : `${tableBorderRounded}`}
+                ${isHovered ? `${wealthBorderRounded} bg-sheet-header-fill/66` : `${tableBorderRounded} bg-sheet-header-fill`}
             `}
         >
             {statBlock

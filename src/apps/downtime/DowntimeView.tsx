@@ -19,8 +19,7 @@ const textCss = "py-2 whitespace-pre-line"
 
 const Section = ({ children }) => <div className={sectionCss}>{children}</div>
 
-export const DowntimeView = ({ onCancel, actor }: {
-    onCancel: () => void,
+export const DowntimeView = ({ actor }: {
     actor: Actor & { system: HeroDataModel }
 }) => {
 

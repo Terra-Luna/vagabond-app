@@ -1,0 +1,28 @@
+{
+  "name": "Polymorph Menu (GM Only)",
+  "type": "script",
+  "author": "KyorYoEvge7ElSaj",
+  "img": "/icons/creatures/amphibians/bullfrog-glass-teal.webp",
+  "scope": "global",
+  "command": "game.system.api.util.polymorphApp();",
+  "folder": "dNSZ8oo7EphDRyO4",
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.2.95",
+    "createdTime": 1792652554344,
+    "modifiedTime": 1792652556080,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "_id": "kRm1UXDMIQTX5cRf",
+  "sort": 262500,
+  "_key": "!macros!kRm1UXDMIQTX5cRf"
+}
