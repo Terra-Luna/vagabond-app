@@ -28,13 +28,20 @@ export class CompendiumAccessor {
             return localizeString(appLang.General.compendiumAccessQuestionRoot, { page: page.toString() })
         }
 
+        /**
+         * These values were originally encrypted, but we have nowhere to securely
+         * get the code so it was ultimately pointless. While this doesn't need to
+         * be so secure, we could set up some HMAC later if needed.
+         * 
+         * Original code
+         */
         const questionSets = [
-            { question: makeQuestion(13), answer: '1AkI/9IR6zKAnl+AQaaF6Zsn3UwU7IS+ty1KGtJF2B8' },
-            { question: makeQuestion(17), answer: 'Rvk6PvWkc+qzPn8lq17PETuUSmTF3JCslTWVVHH0kPc' },
-            { question: makeQuestion(19), answer: 'WXP53mr21mVmMFXwtD7i0hNOXNOyQDcQXAGfii6ZXFE' },
-            { question: makeQuestion(23), answer: 'FWR0H0eK+c9IwgpL0qit+d6yXkmHiu1G6w4ah/h0O0A' },
-            { question: makeQuestion(25), answer: 'GejxpOwFdXVzStFYoy19U1VPvPWSr8KvTTghvt7C71k' },
-            { question: makeQuestion(27), answer: 'OPC4KE11eiht/YPviM9ofsvSz5Yhvzejt+Kqkz5H9yM' }
+            { question: makeQuestion(13), answer: '331210' },
+            { question: makeQuestion(17), answer: '15859' },
+            { question: makeQuestion(19), answer: '12677' },
+            { question: makeQuestion(23), answer: '16568' },
+            { question: makeQuestion(25), answer: '42783' },
+            { question: makeQuestion(27), answer: '32608' }
         ]
 
         return questionSets[Math.floor(Math.random() * questionSets.length)]
@@ -45,24 +52,7 @@ export class CompendiumAccessor {
      * to bypass it they could, but at least we made a bit of an obfiscutory effort here.
      */
     static checkAnswer = async (input: string, answer: string): Promise<boolean> => {
-        const key = await crypto.subtle.importKey(
-            "raw",
-            new TextEncoder().encode("jKHz7c}(3r1^>:ops)4xau?BqMr2#4m#"),
-            { name: "HMAC", hash: "SHA-256" },
-            false,
-            ["sign"]
-        )
-
-        const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(input.trim().toLocaleLowerCase()))
-        const cipher = CompendiumAccessor.toBase64Url(new Uint8Array(sig))
-
-        return cipher === answer
+        return input === answer
     }
 
-    private static toBase64Url = (bytes: Uint8Array): string => {
-        return btoa(String.fromCharCode(...bytes))
-            .replace(/\+/g, "-")
-            .replace(/\//g, "_")
-            .replace(/=+$/, "")
-    }
 }
