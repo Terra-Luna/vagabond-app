@@ -25,7 +25,7 @@ import { TrashButton } from "../../../view/component/TrashButton"
 import { usePolymorphActor } from "../../../view/sheets/actor/component/usePolymorphActor"
 import { NpcSheetComponent } from "../../../view/sheets/actor/npc/component/NpcSheetComponent"
 import { HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
-import { showConfirmationDialog } from "../dialog/showConfirmationDialog"
+import { showConfirmationDialog } from "../dialog/ConfirmationDialogUseCase"
 
 const FAVORITE_DRAG_TYPE = "application/x-vagabond-polymorph-favorite"
 

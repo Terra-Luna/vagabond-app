@@ -17,7 +17,7 @@ import { usePerkBonusSelection } from "../../hero-choices/perks/PerkBonusSelecti
 import { usePerkSelectionView } from "../../hero-choices/perks/PerkSelectionView"
 import { useSpellSelectionView } from "../../hero-choices/spells/SpellSelectionView"
 import { useTrainingSelection } from "../../hero-choices/training/TrainingSelection"
-import { showConfirmationDialog } from "../../vagabond-tools/dialog/showConfirmationDialog"
+import { showConfirmationDialog } from "../../vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { useAncestrySelection } from "./AncestrySelection"

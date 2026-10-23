@@ -7,7 +7,11 @@ import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../../view
 interface ConfirmModalProps {
     isOpen: boolean
     onClose: () => void
-    onConfirm: () => Promise<void> | void
+    onConfirm: (input?: string) => Promise<void> | void
+    /** When true, shows a text field; its value is passed to onConfirm. */
+    showInput?: boolean
+    inputPlaceholder?: string
+    inputDefaultValue?: string
     title?: string
     description?: string
     confirmText?: string
@@ -24,15 +28,19 @@ export const ConfirmationDialog = ({
     confirmText = appLang.General.confirm,
     cancelText = appLang.ButtonActions.cancel,
     variant = "destructive",
+    showInput = false,
+    inputPlaceholder,
+    inputDefaultValue = "",
 }: ConfirmModalProps) => {
     const [isLoading, setIsLoading] = useState(false)
+    const [inputValue, setInputValue] = useState(inputDefaultValue)
 
     if (!isOpen) return null
 
     const handleConfirm = async () => {
         try {
             setIsLoading(true)
-            await onConfirm()
+            await onConfirm(showInput ? inputValue : undefined)
             onClose()
         } catch (error) {
             console.error("Action failed:", error)
@@ -58,6 +66,23 @@ export const ConfirmationDialog = ({
                 <p className="mt-2 text-base text-text-primary font-paradigm font-normal whitespace-pre-line">
                     {description}
                 </p>
+
+                {showInput && (
+                    <input
+                        type="text"
+                        autoFocus
+                        className={`mt-4 w-full px-2 py-1 text-text-primary font-paradigm ${tableBorderRounded} bg-transparent`}
+                        value={inputValue}
+                        placeholder={inputPlaceholder}
+                        disabled={isLoading}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyDown={(e) => {
+                            e.stopPropagation()
+                            if (e.key === "Enter") handleConfirm()
+                            else if (e.key === "Escape") onClose()
+                        }}
+                    />
+                )}
 
                 {/* BUTTONS */}
                 <div className="mt-6 flex justify-end gap-3 text-text-primary">

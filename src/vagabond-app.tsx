@@ -7,7 +7,7 @@ import { registerAlchemicalItemCompendiumFilters } from "./apps/compendium/Alche
 import { CountdownApp } from "./apps/countdown/CountdownApp"
 import { TagalongItemCreator } from "./apps/importer/TagalongItemCreator"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
-import { showConfirmationDialog } from "./apps/vagabond-tools/dialog/showConfirmationDialog"
+import { showConfirmationDialog, showInputDialog } from "./apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { CompendiumAccessor } from "./apps/vagabond-tools/usecase/CompendiumAccessor"
 import { resolveAllAttacks } from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondSettingsRegistry } from "./apps/vagabond-tools/VagabondSettingsRegistry"
@@ -353,6 +353,19 @@ Hooks.on("activateCompendiumDirectory" as any, (app: any) => {
      * Our compendium content is hidden til the user inputs an answer to prove possession of the book.
      */
     if (CompendiumAccessor.isLocked()) {
+        /**
+         * Foundry's Compendium directory search bar will circumvent our lock if we allow it to
+         * display our entries in search results. Further, it would cause it to re-render without
+         * checking our lock status.
+         */
+        const styleId = "vagabond-app-locked-compendium-style"
+        if (!document.getElementById(styleId)) {
+            const style = document.createElement("style")
+            style.id = styleId
+            style.textContent = `[data-pack^="vagabond-app."], [data-uuid^="Compendium.vagabond-app."], [data-entry-uuid^="Compendium.vagabond-app."] { display: none !important; }`
+            document.head.appendChild(style)
+        }
+
         const rootElement: HTMLElement | null = app.element instanceof HTMLElement
             ? app.element
             : app.element?.[0] ?? null
@@ -376,7 +389,12 @@ Hooks.on("activateCompendiumDirectory" as any, (app: any) => {
         button.textContent = appLang.General.compendiumAccessButton
         button.addEventListener("click", async () => {
             const { question, answer } = CompendiumAccessor.getQuestion()
-            const input = prompt(question, 'E.g., 4681012')
+            const input = await showInputDialog({
+                title: appLang.General.compendiumAccessHeader,
+                description: question,
+                inputPlaceholder: 'E.g., 4681012',
+            })
+            if (input == null) return
             if (await CompendiumAccessor.checkAnswer(input ?? "", answer)) {
                 await CompendiumAccessor.unlock()
                 location.reload()

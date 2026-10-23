@@ -8,7 +8,7 @@ import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { addItemToActor, TypedIndexEntry } from "../../utils/modelUtil"
 import { api } from "../api/VagabondAPI"
-import { showConfirmationDialog } from "../vagabond-tools/dialog/showConfirmationDialog"
+import { showConfirmationDialog } from "../vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { cleanTagalongItemName, fetchHero, TagalongItem } from "./TagalongApi"
 import { TagalongItemCreator } from "./TagalongItemCreator"
 
