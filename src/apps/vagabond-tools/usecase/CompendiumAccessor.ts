@@ -32,8 +32,7 @@ export class CompendiumAccessor {
          * These values were originally encrypted, but we have nowhere to securely
          * get the code so it was ultimately pointless. While this doesn't need to
          * be so secure, we could set up some HMAC later if needed.
-         * 
-         * Original code
+         * Commit: e28ebd6ddabceb9921df9f4a053da6eb549209bf
          */
         const questionSets = [
             { question: makeQuestion(13), answer: '331210' },
