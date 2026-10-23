@@ -290,7 +290,7 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
 
             <StatBlockRow>
                 {/* MORALE */}
-                <div onClick={() => inlineRoll(npc.morale?.toString() ?? '12', localizeString(appLang.NpcSheet.moraleCheckRoll, { morale: locale.morale }))} className="hover-glow cursor-pointer" title={appLang.Combat.moraleRollTooltip}>
+                <div onClick={() => inlineRoll("2d6", localizeString(appLang.NpcSheet.moraleCheckRoll, { morale: locale.morale }))} className="hover-glow cursor-pointer" title={appLang.Combat.moraleRollTooltip}>
                     <StatBlockField label={locale.morale} content={
                         <NumericCounterInput
                             value={npc.morale ?? 6}

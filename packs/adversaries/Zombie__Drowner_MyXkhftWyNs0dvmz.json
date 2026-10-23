@@ -1,5 +1,5 @@
 {
-  "name": "Zombie",
+  "name": "Zombie, Drowner",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
@@ -322,11 +322,15 @@
       {
         "value": 20,
         "type": "walk"
+      },
+      {
+        "value": 20,
+        "type": "swim"
       }
     ]
   },
   "prototypeToken": {
-    "name": "Zombie",
+    "name": "Zombie, Drowner",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -457,9 +461,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.93",
+    "systemVersion": "0.2.109",
     "createdTime": 1790099858199,
-    "modifiedTime": 1792539869797,
+    "modifiedTime": 1792762508458,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
