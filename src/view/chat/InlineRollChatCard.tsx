@@ -21,20 +21,20 @@ const InlineRoll = ({ roll }: { roll: InlineRollData }) => {
         <div className="flex flex-col items-center justify-center gap-1">
             <div className="flex flex-wrap items-center justify-center gap-1">
                 {roll.terms.map((term, i) => {
-                    if (Array.isArray(term.results) && term.faces) {
-                        return term.results.map((r, j) => (
-                            <DiceRollComponent
-                                key={`${i}-${j}`}
-                                faces={term.faces!}
-                                result={r.result}
-                                textSize="text-4xl"
-                                discarded={r.discarded === true}
-                                exploded={!!r.exploded}
-                                rerolled={!!r.rerolled}
-                            />
-                        ))
-                    }
-                    return <span key={i} className="text-2xl">{term.expression}</span>
+                    // Skip non-DiceTerms.
+                    if (!Array.isArray(term.results) || !term.faces) return null
+
+                    return term.results.map((r, j) => (
+                        <DiceRollComponent
+                            key={`${i}-${j}`}
+                            faces={term.faces!}
+                            result={r.result}
+                            textSize="text-4xl"
+                            discarded={r.discarded === true}
+                            exploded={!!r.exploded}
+                            rerolled={!!r.rerolled}
+                        />
+                    ))
                 })}
                 <span className="text-2xl">= {roll.total}</span>
             </div>

@@ -70,6 +70,11 @@ export abstract class Attack<TActor extends Actor = Actor> {
         await this.resolve(serialize)
     }
 
+    async removeTarget(targetId: string, serialize: (attack: Attack) => AttackSnapshot | undefined) {
+        this.targetIds = this.targetIds.filter(id => id !== targetId)
+        await this.save(serialize)
+    }
+
     async resolve(serialize: (attack: Attack) => AttackSnapshot | undefined) {
         this.isResolved = true
         await this.save(serialize)

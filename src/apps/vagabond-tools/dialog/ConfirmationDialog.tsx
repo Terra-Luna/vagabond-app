@@ -56,9 +56,9 @@ export const ConfirmationDialog = ({
 
             {/* DIALOG BOX */}
             <div className={`
-                relative w-full max-w-md transform overflow-hidden 
-                rounded-xl bg-sheet-main-fill p-6 text-left align-middle shadow-xl 
-                transition-all ${tableBorderRounded}    
+                relative w-full max-w-md transform overflow-hidden
+                rounded-xl bg-sheet-main-fill p-6 text-left align-middle shadow-xl
+                transition-all ${tableBorderRounded}
             `}>
                 <p className="text-text-primary text-lg font-eskapade font-bold">
                     {title}

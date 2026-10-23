@@ -1,4 +1,4 @@
-import { Check, Clover, Shield, Swords, X } from "lucide-react"
+import { Check, Clover, MinusCircle, Shield, Swords, X } from "lucide-react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { appLang } from "../../../utils/lang"
@@ -6,6 +6,7 @@ import { DamageRollsComponent } from "../../../view/chat/component/DamageRollsCo
 import { TotalDmgFooter } from "../../../view/chat/TotalDamageFooter"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
+import { CtxMenuItem, useContextMenu } from "../../../view/component/ContextMenu"
 import { DamageTypeIcon } from "../../../view/component/DamageTypeIcon"
 import { ClearHeader, Divider } from "../../../view/component/Header"
 import { Tooltip } from "../../../view/component/Tooltip"
@@ -16,7 +17,7 @@ import { SkillCheckResult } from "../../engine/roll/SkillCheck"
 import { TargetDisplayItem, useAdversaryAttack, useAdversaryAttackSaveHandlers, useAdversaryAttackTargets } from "../hooks"
 
 export const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAttack, setRevision: any }) => {
-    const { targets, ownedTargets, handleSave, handleRerollSave } = useAdversaryAttack(attack, setRevision)
+    const { targets, ownedTargets, handleSave, handleRerollSave, handleSetSaveOutcome, handleRemoveTarget } = useAdversaryAttack(attack, setRevision)
     const unownedTargets = targets.filter(target => !ownedTargets.some(ownedTarget => ownedTarget.id === target.id))
 
     return (
@@ -32,6 +33,8 @@ export const AdversaryAttackComponent = ({ attack, setRevision }: { attack: Adve
                 unownedTargets={unownedTargets}
                 onRollSave={handleSave}
                 onRerollSave={handleRerollSave}
+                onSetSaveOutcome={handleSetSaveOutcome}
+                onRemoveTarget={handleRemoveTarget}
             />
         </div>
     )
@@ -59,7 +62,7 @@ const AdversaryComboAttackSection = ({ attack, sub, subIndex, ownedTargets, unow
     unownedTargets: TargetDisplayItem[]
     setRevision: any
 }) => {
-    const { handleSave, handleRerollSave } = useAdversaryAttackSaveHandlers(attack, setRevision, subIndex)
+    const { handleSave, handleRerollSave, handleSetSaveOutcome, handleRemoveTarget } = useAdversaryAttackSaveHandlers(attack, setRevision, subIndex)
 
     return (
         <div className={`${tableBorderRounded} bg-context-menu-fill/25`}>
@@ -75,14 +78,20 @@ const AdversaryComboAttackSection = ({ attack, sub, subIndex, ownedTargets, unow
                 unownedTargets={unownedTargets}
                 onRollSave={handleSave}
                 onRerollSave={handleRerollSave}
+                onSetSaveOutcome={handleSetSaveOutcome}
+                onRemoveTarget={handleRemoveTarget}
             />
         </div>
     )
 }
 
-// Renders one action's damage roll and save/defend/reroll buttons.
+/**
+ * GM context menu options for manually setting targets' saving throws or removing them from the attack.
+ */
 const AttackDamageAndSavesSection = ({
-    title, damageRoll, saveTypes, saveResults, defenseArmorBonuses, rerolledSaveTargetIds, isResolved, ownedTargets, unownedTargets, onRollSave, onRerollSave
+    title, damageRoll, saveTypes, saveResults, defenseArmorBonuses,
+    rerolledSaveTargetIds, isResolved, ownedTargets, unownedTargets,
+    onRollSave, onRerollSave, onSetSaveOutcome, onRemoveTarget
 }: {
     title?: string
     damageRoll: DamageRoll | undefined
@@ -95,11 +104,32 @@ const AttackDamageAndSavesSection = ({
     unownedTargets: TargetDisplayItem[]
     onRollSave: (targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent) => void
     onRerollSave: (targetId: string) => void
+        onSetSaveOutcome: (targetId: string, outcome: string) => void
+        onRemoveTarget: (targetId: string) => void
 }) => {
     const showDamage = (damageRoll?.result?.total ?? 0) > 0
 
+    const { onCtxMenu, ContextMenu } = useContextMenu()
+
+    /**
+     * Options for a GM to manually set targets' saving throws in instances that the target
+     * is a Hero's pet or a player who is playing via pen & paper.
+     * >> Critical, Success, Failure
+     */
+    const gmContextMenu = (targetId: string): CtxMenuItem[] => [
+        { icon: Swords, label: appLang.RollResult.crit, action: () => onSetSaveOutcome(targetId, appLang.RollResult.crit) },
+        { icon: Check, label: appLang.RollResult.success, action: () => onSetSaveOutcome(targetId, appLang.RollResult.success) },
+        { icon: X, label: appLang.RollResult.failure, action: () => onSetSaveOutcome(targetId, appLang.RollResult.failure) },
+        { icon: MinusCircle, label: "Remove", isDestructive: true, action: () => onRemoveTarget(targetId) }
+    ]
+
+    const targetCtxMenuHandler = (targetId: string) => game.user?.isActiveGM && !isResolved
+        ? (e: React.MouseEvent) => onCtxMenu(e, gmContextMenu(targetId))
+        : undefined
+
     return (
         <div className="flex flex-col gap-1 pb-1">
+            <ContextMenu />
 
             {/* SAVING THROW BUTTONS */}
             {saveTypes.length > 0 && (ownedTargets.length > 0 || unownedTargets.length > 0) &&
@@ -123,14 +153,20 @@ const AttackDamageAndSavesSection = ({
                             const defenseBonus = result?.outcome === appLang.RollResult.failure ? undefined : defenseArmorBonuses?.[target.id]
 
                             return (
-                                <div key={target.id} className="flex min-w-0 items-center gap-1 whitespace-nowrap font-normal">
+                                <div key={target.id}
+                                    title={game.user?.isActiveGM ? "R-click for options" : undefined}
+                                    onContextMenu={targetCtxMenuHandler(target.id)}
+                                    className="flex min-w-0 items-center gap-1 whitespace-nowrap font-normal"
+                                >
                                     {result
                                         ? <div className="flex shrink-0 items-center gap-1">
                                             {/* SAVING THROW OUTCOME */}
                                             <SaveOutcomeIcon result={result} />
-                                            <p>{defenseBonus !== undefined
-                                                ? `(${defenseBonus})`
-                                                : `(${result.total} vs. ${result.difficulty})`}</p>
+                                            <p>{result.isManual
+                                                ? "(GM)"
+                                                : defenseBonus !== undefined
+                                                    ? `(${defenseBonus})`
+                                                    : `(${result.total} vs. ${result.difficulty})`}</p>
 
                                             {/* REROLL BUTTON */}
                                             {canReroll &&
@@ -175,7 +211,7 @@ const AttackDamageAndSavesSection = ({
                                 const result = saveResults[target.id]
 
                                 return (
-                                    <div key={target.id} className="flex min-w-0 items-center gap-2 font-normal">
+                                    <div key={target.id} onContextMenu={targetCtxMenuHandler(target.id)} className="flex min-w-0 items-center gap-2 font-normal">
                                         <TargetPortrait target={target} result={result} />
                                         <p className="min-w-0 truncate" title={target.token?.name}>{target.token?.name}</p>
                                     </div>

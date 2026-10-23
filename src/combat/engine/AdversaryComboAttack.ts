@@ -7,7 +7,7 @@ import { AppliedFx, Attack, AttackResolutionArgs } from "./Attack"
 import { HeroAttack } from "./HeroAttack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
-import { SkillCheck, SkillCheckResult } from "./roll/SkillCheck"
+import { buildManualSaveResult, SkillCheck, SkillCheckResult } from "./roll/SkillCheck"
 import type { AttackSnapshot, ComboSubAttackSnapshot } from "./util/attack-serializer"
 import { serializeAttack } from "./util/attack-serializer"
 
@@ -101,6 +101,14 @@ export class ComboSubAttack {
         this.saveResults = { ...this.saveResults, [targetId]: result }
 
         return result
+    }
+
+    setSaveOutcome(targetId: string, outcome: string) {
+        const skill = this.saveTypes.find(type => type !== 'defend') ?? 'reflex'
+        this.saveResults = { ...this.saveResults, [targetId]: buildManualSaveResult(skill, outcome) }
+        this.defenseArmorBonuses = Object.fromEntries(
+            Object.entries(this.defenseArmorBonuses).filter(([id]) => id !== targetId)
+        )
     }
 
     async rerollSave(targetId: string): Promise<SkillCheckResult | undefined> {
@@ -230,6 +238,14 @@ export class AdversaryComboAttack extends Attack {
         const result = await sub.rerollSave(targetId)
         if (result) await this.save(serializeAttack)
         return result
+    }
+
+    async setSaveOutcome(subIndex: number, targetId: string, outcome: string): Promise<void> {
+        const sub = this.subAttacks[subIndex]
+        if (!sub) return
+
+        sub.setSaveOutcome(targetId, outcome)
+        await this.save(serializeAttack)
     }
 
     static build(actor: Actor, args: AdversaryComboAttackArgs, targetIds?: string[]): AdversaryComboAttack {

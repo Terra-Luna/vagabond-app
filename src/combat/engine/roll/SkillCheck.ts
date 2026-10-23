@@ -42,7 +42,28 @@ export interface SkillCheckResult {
     outcome: string
     success: boolean
     rolls: Roll.Evaluated<Roll<EmptyObject>>[]
+    isManual?: boolean
 }
+
+/**
+ * For when a GM manually sets the outcome of a skill check.
+ */ 
+export const buildManualSaveResult = (skill: string, outcome: string): SkillCheckResult => ({
+    skill,
+    skillName: skill,
+    difficulty: 0,
+    critThreshold: 0,
+    d20Count: 0,
+    modifier: 0,
+    favorHinder: 'none',
+    d20s: [],
+    d6s: [],
+    total: 0,
+    outcome,
+    success: outcome !== appLang.RollResult.failure,
+    rolls: [],
+    isManual: true
+})
 
 export class SkillCheck {
     type: SkillCheckType

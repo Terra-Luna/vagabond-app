@@ -12,6 +12,7 @@ export class VagabondSettingsRegistry {
 
     static register() {
         VagabondSettingsRegistry.registerMaxLevel()
+        VagabondSettingsRegistry.registerStartingGold()
         VagabondSettingsRegistry.registerLevelPacing()
         VagabondSettingsRegistry.registerXpQuestionnaire()
         VagabondSettingsRegistry.registerAttackRegistry()
@@ -20,6 +21,7 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerProgressClocks()
         VagabondSettingsRegistry.registerCountdowns()
         VagabondSettingsRegistry.registerManaEnforcement()
+        VagabondSettingsRegistry.registerPlayerRelicForgeAccess()
         VagabondSettingsRegistry.registerShowTrainingSelectionToggle()
         VagabondSettingsRegistry.registerAllowLateLuckStudy()
         CompendiumAccessor.registerCompendiumAccess()
@@ -80,6 +82,18 @@ export class VagabondSettingsRegistry {
             config: true,
             type: Number,
             default: 10,
+            onChange: () => { VagabondSettingsRegistry.refreshActorSheets() }
+        })
+    }
+
+    private static registerStartingGold() {
+        game.settings?.register(sys_id, "startingGold" as any, {
+            name: appLang.Settings.startingGold,
+            hint: appLang.Settings.startingGoldHint,
+            scope: "world",
+            config: true,
+            type: Number,
+            default: 3,
             onChange: () => { VagabondSettingsRegistry.refreshActorSheets() }
         })
     }
@@ -215,6 +229,17 @@ export class VagabondSettingsRegistry {
         game.settings?.register(sys_id, "enforceMana" as any, {
             name: appLang.Settings.enforceMana,
             hint: appLang.Settings.manaEnforcementHint,
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: true
+        })
+    }
+
+    private static registerPlayerRelicForgeAccess() {
+        game.settings?.register(sys_id, "relicForgeAccess" as any, {
+            name: appLang.Settings.relicForgeAccess,
+            hint: appLang.Settings.relicForgeAccessHint,
             scope: "world",
             config: true,
             type: Boolean,

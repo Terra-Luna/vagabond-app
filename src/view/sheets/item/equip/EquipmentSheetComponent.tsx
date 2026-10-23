@@ -1,4 +1,5 @@
 import { ActiveEffectsView } from "../../../../apps/active-effects/ActiveEffectsView"
+import { getRelicForgeAccess } from "../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel"
 import { ItemRulesManager } from "../../../../rules/ItemRulesManager"
 import { Divider } from "../../../component/Header"
@@ -72,7 +73,7 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
                 {sheet}
                 {sharedContent}
                 {isEditMode
-                    && game.user?.isActiveGM
+                    && (game.user?.isActiveGM || getRelicForgeAccess())
                     && (item.type as string) !== 'alchemical'
                     && (item.type as string) !== 'startingpack'
                     && <div className="flex flex-col mb-4">

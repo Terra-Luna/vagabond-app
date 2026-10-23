@@ -1,5 +1,6 @@
 import type { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
 import { CountdownResult } from "../../../combat/engine/roll/CountdownResult"
+import { Coins } from "../../../model/common/CoinValue"
 import { sys_id } from "../../../utils/foundryUtils"
 
 /**
@@ -8,6 +9,11 @@ import { sys_id } from "../../../utils/foundryUtils"
  */
 export const getMaxLevel = (): number => {
     return (game as any).settings.get(sys_id, "maxLevel") || 10
+}
+
+export const getStartingGold = (): Coins => {
+    const startingGold = (game as any).settings.get(sys_id, "startingGold") || 3
+    return { g: startingGold, s: 0, c: 0 }
 }
 
 /**
@@ -256,6 +262,10 @@ export const removeAllBurns = (actorUuid: string | null | undefined) => {
 
 export const getManaEnforcement = (): boolean => {
     return (game.settings as any)?.get(sys_id, "enforceMana")
+}
+
+export const getRelicForgeAccess = (): boolean => {
+    return (game.settings as any)?.get(sys_id, "relicForgeAccess")
 }
 
 export const getShowTrainingSelectionToggle = (): boolean => {

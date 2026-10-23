@@ -11,7 +11,7 @@ export const findExtraGrantsFeature = (actor: Actor | undefined): (Item & { syst
 export const getExtraPerkRules = (actor: Actor | undefined): any[] =>
     (findExtraGrantsFeature(actor)?.system.rules ?? []).filter((rule: any) => rule.key === "GrantItem" && rule.type === "perk")
 
-const getOrCreateExtraGrantsFeature = async (actor: Actor): Promise<Item & { system: any }> => {
+export const getOrCreateExtraGrantsFeature = async (actor: Actor): Promise<Item & { system: any }> => {
     const existing = findExtraGrantsFeature(actor)
     if (existing) return existing
 

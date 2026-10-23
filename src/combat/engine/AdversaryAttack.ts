@@ -5,7 +5,7 @@ import { AppliedFx, Attack, AttackResolutionArgs } from "./Attack"
 import { HeroAttack } from "./HeroAttack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
-import { SkillCheck, SkillCheckResult } from "./roll/SkillCheck"
+import { buildManualSaveResult, SkillCheck, SkillCheckResult } from "./roll/SkillCheck"
 import type { AttackSnapshot } from "./util/attack-serializer"
 import { serializeAttack } from "./util/attack-serializer"
 
@@ -94,7 +94,23 @@ export class AdversaryAttack extends Attack {
         return result
     }
 
-    // Spends a Luck to reroll a failed save with the same skill as the original attempt. Only one reroll per target is allowed.
+    /**
+     * GM override: sets (or replaces) a target's save outcome.
+     */
+    async setSaveOutcome(targetId: string, outcome: string): Promise<void> {
+        const skill = this.saveTypes.find(type => type !== 'defend') ?? 'reflex'
+        this.saveResults = { ...this.saveResults, [targetId]: buildManualSaveResult(skill, outcome) }
+        this.defenseArmorBonuses = Object.fromEntries(
+            Object.entries(this.defenseArmorBonuses).filter(([id]) => id !== targetId)
+        )
+        await this.save(serializeAttack)
+    }
+
+    /**
+     * Spends a Luck to reroll a failed save with the same skill as
+     * the original attempt. Only one reroll per target is allowed via
+     * this method. GM's can override the save outcome directly if needed.
+     */
     async rerollSave(targetId: string): Promise<SkillCheckResult | undefined> {
         const existing = this.saveResults[targetId]
         if (!existing || existing.outcome !== appLang.RollResult.failure || this.rerolledSaveTargetIds.includes(targetId)) return
@@ -119,7 +135,8 @@ export class AdversaryAttack extends Attack {
             if (!defense) return
             result = defense.result
             this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: defense.armorBonus }
-        } else {
+        }
+        else {
             result = await new SkillCheck(hero, { type: 'save', skill: existing.skill, favorHinder }).roll()
         }
         this.saveResults = { ...this.saveResults, [targetId]: result }

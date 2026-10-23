@@ -6,15 +6,14 @@ import { Header } from "../../../view/component/Header"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { useItemShopView } from "../../shop/ItemShopView"
+import { getStartingGold } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 import { TopNavButtons } from "../component/TopNavButtons"
 
 export const useEquipmentSelection = (
     clazz: (Item & { system: ClassDataModel }) | undefined,
     navButtons: ReactNode[]
 ) => {
-    const { ItemShopView, wallet, cart, selectedPack } = useItemShopView(
-        { g: 3, s: 0, c: 0 }, clazz
-    )
+    const { ItemShopView, wallet, cart, selectedPack } = useItemShopView(getStartingGold(), clazz)
 
     const strings = appLang.HeroCreation
 

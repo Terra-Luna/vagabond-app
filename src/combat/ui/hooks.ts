@@ -4,6 +4,7 @@ import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { AdversaryAttack, SavingThrowType } from "../engine/AdversaryAttack"
 import { AdversaryComboAttack } from "../engine/AdversaryComboAttack"
+import { serializeAttack } from "../engine/util/attack-serializer"
 
 export interface TargetDisplayItem { id: string, src: string, token: Token | undefined }
 
@@ -65,7 +66,23 @@ export const useAdversaryAttackSaveHandlers = (
         setRevision(previous => previous + 1)
     }, [attack, setRevision, subIndex])
 
-    return { handleSave, handleRerollSave }
+    const handleSetSaveOutcome = useCallback(async (targetId: string, outcome: string) => {
+        if (attack instanceof AdversaryComboAttack) {
+            if (subIndex === undefined) return
+            await attack.setSaveOutcome(subIndex, targetId, outcome)
+        }
+        else {
+            await attack.setSaveOutcome(targetId, outcome)
+        }
+        setRevision(previous => previous + 1)
+    }, [attack, setRevision, subIndex])
+
+    const handleRemoveTarget = useCallback(async (targetId: string) => {
+        await attack.removeTarget(targetId, serializeAttack)
+        setRevision(previous => previous + 1)
+    }, [attack, setRevision])
+
+    return { handleSave, handleRerollSave, handleSetSaveOutcome, handleRemoveTarget }
 }
 
 export const useAdversaryAttack = (

@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
+
 import { HeroDataModel } from '../../model/actor/HeroDataModel'
 import { EffectCardContainer,GrantsAndModifiersCard } from '../../rules/shared/GrantsAndModifiersCard'
-import { findExtraGrantsFeature } from '../../rules/util/extra-grants-util'
+import { findExtraGrantsFeature, getOrCreateExtraGrantsFeature } from '../../rules/util/extra-grants-util'
 import { calculateRecurringRuleScale, getItemRuleSources, RuleSelection } from '../../rules/util/item-rules-util'
 import { getRuleSelectors, normalizeSelector } from '../../rules/util/selector-util'
 import { appLang } from '../../utils/lang'
@@ -28,7 +30,23 @@ interface ActiveRuleDisplay {
 
 export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const currentLevel = actor.system.level.current ?? 0
-    const extraFeature = findExtraGrantsFeature(actor)
+    const [createdFeature, setCreatedFeature] = useState<Item | undefined>()
+    const extraFeature = findExtraGrantsFeature(actor) ?? createdFeature
+
+    /**
+     * Fetches (or creates) the Extra Grants Feature on render so
+     * the button can be displayed, allowing the user to configure
+     * any extra modifiers. The other place this is created is in
+     * the Perks selection menu's extra perks drop-box.
+     */
+    useEffect(() => {
+        if (findExtraGrantsFeature(actor) || !actor.isOwner) return
+        let cancelled = false
+        getOrCreateExtraGrantsFeature(actor).then(feature => {
+            if (!cancelled) setCreatedFeature(feature)
+        })
+        return () => { cancelled = true }
+    }, [actor])
 
     // Extract and format active rule elements along with their parent details
     const allRules: ActiveRuleDisplay[] = actor.items.contents.flatMap((item: any) => {
@@ -160,11 +178,12 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
 
                 {extraFeature && (
                     <div className="flex">
-                        <UtilityButton onClick={() => extraFeature.sheet?.render(true)}>{appLang.HeroChoices.openExtraFeatures}</UtilityButton>
+                        <UtilityButton onClick={() => extraFeature.sheet?.render(true)}>
+                            {appLang.HeroChoices.openExtraFeatures}
+                        </UtilityButton>
                     </div>
                 )}
             </div>
-
 
             {/* ACTIVE RULES LIST */}
             <CollapsibleSection title={`Active (${activeRules.length})`} settingsKey={'rules-active-features'} content={
