@@ -369,9 +369,9 @@
     "name": "Unicorn",
     "displayName": 0,
     "actorLink": false,
-    "width": 1,
-    "height": 1,
-    "depth": 1,
+    "width": 2,
+    "height": 2,
+    "depth": 2,
     "texture": {
       "src": "systems/vagabond-app/assets/icons/ic_adversary.webp",
       "anchorX": 0.5,

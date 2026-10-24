@@ -409,9 +409,9 @@
     "name": "Ancient Blue Dragon",
     "displayName": 0,
     "actorLink": false,
-    "width": 1,
-    "height": 1,
-    "depth": 1,
+    "width": 4,
+    "height": 4,
+    "depth": 4,
     "texture": {
       "src": "systems/vagabond-app/assets/icons/ic_adversary.webp",
       "anchorX": 0.5,
@@ -431,7 +431,7 @@
       "attribute": "health"
     },
     "bar2": {
-      "attribute": "mana"
+      "attribute": null
     },
     "light": {
       "negative": false,
@@ -479,7 +479,7 @@
         "ring": null,
         "background": null
       },
-      "effects": 1,
+      "effects": 0,
       "subject": {
         "scale": 1,
         "texture": null
@@ -603,7 +603,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.79",
     "createdTime": 1790105724200,
-    "modifiedTime": 1790635165576,
+    "modifiedTime": 1792863248439,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

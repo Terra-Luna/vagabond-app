@@ -262,6 +262,10 @@
         "name": "Frightened",
         "description": "It has a -2 penalty to damage it deals."
       },
+      "flanked": {
+        "name": "Flanked",
+        "description": "It is flanked by enemies, making it Vulnerable and takes +2 damage from attacks."
+      },
       "grappling": {
         "name": "Grappling",
         "description": "Physically causing a Target to be Restrained by using your body is Grappling. A Being that is physically restraining a Target has its Speed halved, unless the Target is smaller."
@@ -1139,8 +1143,8 @@
       "remaining": "{{name}} Remaining",
       "moraleRollTooltip": "Click to roll morale check",
       "numberAppearingRollTooltip": "Click to roll number appearing",
-      "toggleVisibilitySelected": "Toggle Visibility of Selected Tokens",
-      "removeAll": "Remove all"
+      "toggleVisibilitySelected": "Hide all selected",
+      "removeAll": "Remove all selected"
       },
       "DiceRoll": {
         "title": "Roll",
@@ -1274,7 +1278,9 @@
         "showTrainingSelection": "Show Training Selection",
         "trainingSelectionHint": "Allows players to access training (re)selection via a button on their Abilities tab.",
         "allowLateLuckStudy": "Allow Late Luck/Study",
-        "lateLuckStudyHint": "Allow Heroes to spend Luck/Study dice after a failed check."
+        "lateLuckStudyHint": "Allow Heroes to spend Luck/Study dice after a failed check.",
+        "combatAutoFlanking": "Combat Auto-Flanking",
+        "combatAutoFlankingHint": "Enable automatic Flank detection while in combat."
       },
       "RulesEditor": {
         "windowTitle": "Grants & Modifiers",

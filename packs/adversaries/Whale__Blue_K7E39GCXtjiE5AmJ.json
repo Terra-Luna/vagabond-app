@@ -293,9 +293,9 @@
     "name": "Whale, Blue",
     "displayName": 0,
     "actorLink": false,
-    "width": 1,
-    "height": 1,
-    "depth": 1,
+    "width": 4,
+    "height": 4,
+    "depth": 4,
     "texture": {
       "src": "systems/vagabond-app/assets/icons/ic_adversary.webp",
       "anchorX": 0.5,

@@ -304,8 +304,8 @@
       "anchorX": 0.5,
       "anchorY": 0.5,
       "fit": "contain",
-      "scaleX": 1,
-      "scaleY": 1,
+      "scaleX": 0.5,
+      "scaleY": 0.5,
       "tint": "#ffffff",
       "alphaThreshold": 0.75
     },
