@@ -1,11 +1,12 @@
-import { X } from "lucide-react"
+import { ArrowLeftRight, X } from "lucide-react"
 
 import { ActorDataModel, BaseActorSchema } from "../../../../model/actor/ActorDataModel"
 import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
+import { ActorTypeConverter, CONVERTIBLE_ACTOR_TYPES } from "../../../../model/actor/util/ActorTypeConverter"
 import type { PolymorphFlag } from "../../../../model/actor/util/PolymorphUtil"
 import { sys_id } from "../../../../utils/foundryUtils"
 import { appLang } from "../../../../utils/lang"
-import { useContextMenu } from "../../../component/ContextMenu"
+import { type CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { Tooltip } from "../../../component/Tooltip"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
@@ -18,7 +19,6 @@ import { usePolymorphActor } from "./usePolymorphActor"
  */
 export const ActorPortrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
-    const { imageEditCtxMenuItems } = useImageEdit(actor.parent)
 
     const { aspect, onLoad } = useImageAspect()
     const frame = (actor.parent.getFlag(sys_id, portraitFrameFlag) as PortraitFrameData | undefined) ?? defaultPortraitFrame
@@ -47,6 +47,18 @@ export const ActorPortrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema
             onClick={async () => await actor.setPolymorph(undefined)}
         />
     )
+
+    const convertCtxMenuItems: CtxMenuItem[] = game.user?.isActiveGM
+        ? [{
+            icon: ArrowLeftRight,
+            label: "Convert to",
+            subMenuItems: CONVERTIBLE_ACTOR_TYPES
+                .filter(type => type !== actor.parent.type)
+                .map(type => ({ label: type, action: () => ActorTypeConverter.convert(actor.parent, type) }))
+        }]
+        : []
+
+    const { imageEditCtxMenuItems } = useImageEdit(actor.parent, convertCtxMenuItems)
 
     return (
         <div onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>

@@ -27,12 +27,13 @@ export const onClickAction = async (
     dice?: DiceRollSchema,
     saveTypes?: SavingThrowType[],
     appliedEffects?: AppliedFx[],
-    halfDamageOnSave?: boolean
+    halfDamageOnSave?: boolean,
+    type?: string
 ) => {
     if (dice) {
         const attack = AdversaryAttack.build(
             npc.parent,
-            { attackName: name, dmgType: dmgType ?? 'physical', dice: [new DiceRoll(dice)], saveTypes, description, appliedEffects, halfDamageOnSave },
+            { attackName: name, dmgType: dmgType ?? 'physical', dice: [new DiceRoll(dice)], saveTypes, description, appliedEffects, halfDamageOnSave, isSpellAttack: type === 'cast' },
             getTargetIds()
         )
         await attack.initiate()
@@ -109,6 +110,7 @@ export const onClickActionCombo = async (npc: AdversaryDataModel | NpcDataModel)
                 dice: [new DiceRoll(act.damage.dice as any)],
                 saveTypes: act.saves as SavingThrowType[],
                 halfDamageOnSave: act.halfDamageOnSave,
+                isSpellAttack: (act as any).type === 'cast',
                 appliedEffects: act.appliedEffects as AppliedFx[]
             })
         }

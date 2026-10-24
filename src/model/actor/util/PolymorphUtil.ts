@@ -81,7 +81,7 @@ export class PolymorphUtil {
          * Automatically set NPC's to Focus on this effect.
          */
         if (polymorphFlag && (caster?.type as string) !== "hero") {
-            await caster?.toggleStatusEffect("focusing", { active: true })
+            StatusEffectUtil.toggleStatusEffectOnce(caster, "focusing", true)
         }
     }
 

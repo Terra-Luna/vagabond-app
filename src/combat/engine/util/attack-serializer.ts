@@ -9,6 +9,7 @@ export interface ComboSubAttackSnapshot {
     name: string
     saveTypes: SavingThrowType[]
     halfDamageOnSave?: boolean
+    isSpellAttack?: boolean
     appliedEffects: { effect: string, duration?: string, critDuration?: string }[]
     damageRoll: any | undefined
     saveResults: Record<string, any>
@@ -37,6 +38,7 @@ export interface AttackSnapshot {
     defenseArmorBonuses: Record<string, number> | undefined
     description: string | undefined
     halfDamageOnSave: boolean | undefined
+    isSpellAttack?: boolean
     rerolledSaveTargetIds: string[] | undefined
     subAttacks: ComboSubAttackSnapshot[] | undefined
 }
@@ -128,6 +130,7 @@ function serializeAdversaryAttack(atk: AdversaryAttack): AttackSnapshot {
         defenseArmorBonuses: atk.defenseArmorBonuses,
         description: atk.description,
         halfDamageOnSave: atk.halfDamageOnSave,
+        isSpellAttack: atk.isSpellAttack,
         rerolledSaveTargetIds: atk.rerolledSaveTargetIds
     } as AttackSnapshot
 }

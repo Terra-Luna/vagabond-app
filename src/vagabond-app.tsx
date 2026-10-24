@@ -15,6 +15,7 @@ import { VagabondToolsApp } from "./apps/vagabond-tools/VagabondToolsApp"
 import { VagabondActiveEffect } from './combat/documents/VagabondActiveEffect'
 import { VagabondCombat, VagabondCombatant } from './combat/documents/VagabondCombat'
 import { Attack } from "./combat/engine/Attack"
+import { FlankStatusManager } from "./combat/engine/util/FlankStatusManager"
 import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
 import { AdversaryDataModel } from "./model/actor/AdversaryDataModel"
 import { HeroDataModel } from "./model/actor/HeroDataModel"
@@ -88,6 +89,7 @@ let clocksOverlay: ProgressClockApp | null = null
 let countdownOverlay: CountdownApp | null = null
 
 Hooks.once("init", () => {
+    FlankStatusManager.register()
     Object.assign(
         // Actors
         CONFIG.Actor.documentClass = VagabondActor,

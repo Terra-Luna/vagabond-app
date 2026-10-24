@@ -4,7 +4,7 @@ import { PortraitAdjustApp } from "../../../apps/portrait/PortraitAdjustApp"
 import { appLang } from "../../../utils/lang"
 import { CtxMenuItem } from "../../component/ContextMenu"
 
-export const useImageEdit = (item: Actor | Item) => {
+export const useImageEdit = (item: Actor | Item, itemsBeforeRemove: CtxMenuItem[] = []) => {
 
     const viewImage = () => {
         new foundry.applications.apps.ImagePopout(
@@ -57,6 +57,7 @@ export const useImageEdit = (item: Actor | Item) => {
             ...(item instanceof Actor && item.img
                 ? [{ icon: Crop, label: appLang.ButtonActions.adjust, action: () => new PortraitAdjustApp(item).render({ force: true }) }]
                 : []),
+            ...itemsBeforeRemove,
             { icon: Trash, label: appLang.ButtonActions.remove, action: () => removeImage(), isDestructive: true }
         )
     }

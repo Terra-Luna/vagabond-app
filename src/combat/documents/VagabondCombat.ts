@@ -1,5 +1,6 @@
 import { getCountdowns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
+import { StatusEffectUtil } from "../../model/actor/util/StatusEffectUtil"
 import { sys_id } from "../../utils/foundryUtils"
 
 export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
@@ -159,7 +160,7 @@ export class VagabondCombatant<T extends Combatant.SubType = "base"> extends Com
                 actor.effects?.some((e: any) => e.statuses?.has?.("burning") || e._id === "vBurning00000000")
 
             if (isBurning !== currentBurning) {
-                return actor.toggleStatusEffect("burning", { active: isBurning })
+                StatusEffectUtil.toggleStatusEffectOnce(actor, "burning", isBurning)
             }
         }
     }

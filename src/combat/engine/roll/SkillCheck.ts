@@ -121,7 +121,7 @@ export class SkillCheck {
         this.explodeFavor = args.explodeFavor ?? false
         this.favorHinder = args.skipCalculations
             ? args.favorHinder ?? 'none'
-            : this.getFavorHinderFromHotkey(args.clickEvent, heroMods) ?? args.favorHinder ?? 'none'
+            : this.calculateFavorHinder(args.clickEvent, heroMods) ?? args.favorHinder ?? 'none'
         this.clickEvent = args.clickEvent
     }
 
@@ -257,21 +257,23 @@ export class SkillCheck {
 
     setFavorHinder(e?: React.MouseEvent<HTMLDivElement>, heroMods?: any) {
         this.clickEvent = e
-        this.favorHinder = this.getFavorHinderFromHotkey(e, heroMods) ?? 'none'
+        this.favorHinder = this.calculateFavorHinder(e, heroMods) ?? 'none'
     }
 
-    private getFavorHinderFromHotkey(e?: React.MouseEvent<HTMLDivElement>, heroMods?: any): 'favor' | 'hinder' | undefined {
+    private calculateFavorHinder(e?: React.MouseEvent<HTMLDivElement>, heroMods?: any): 'favor' | 'hinder' | undefined {
         const keyMod = e?.shiftKey ? 1 : (e?.ctrlKey ? -1 : 0)
 
         const modFavor = (
             (this.type === 'attack' && heroMods?.skillCheck?.attack?.favored) ||
             (this.type === 'cast' && heroMods?.skillCheck?.cast?.favored) ||
+            (this.type === 'save' && heroMods?.skillCheck?.[this.skill]?.favored) ||
             heroMods?.skillCheck[this.skill]?.favored
         ) ? 1 : 0
 
         const modHinder = (
             (this.type === 'attack' && heroMods?.skillCheck?.attack?.hindered) ||
             (this.type === 'cast' && heroMods?.skillCheck?.cast?.hindered) ||
+            (this.type === 'save' && heroMods?.skillCheck?.[this.skill]?.hindered) ||
             heroMods?.skillCheck[this.skill]?.hindered
         ) ? -1 : 0
 

@@ -18,6 +18,7 @@ export interface AdversaryAttackArgs {
     saveTypes?: SavingThrowType[],
     description?: string,
     halfDamageOnSave?: boolean,
+    isSpellAttack?: boolean,
     appliedEffects?: AppliedFx[]
 }
 
@@ -26,6 +27,11 @@ export class AdversaryAttack extends Attack {
     override readonly attackType = 'adversary' as const
 
     protected override get prefixCountdownWithTargetName(): boolean { return true }
+
+    // The base class getter is read-only; adversary actions choose Attack vs. Cast per action.
+    private _isSpellAttack: boolean = false
+    override get isSpellAttack(): boolean { return this._isSpellAttack }
+    override set isSpellAttack(value: boolean) { this._isSpellAttack = value }
 
     saveTypes: SavingThrowType[] = []
     saveResults: Record<string, SkillCheckResult> = {}
@@ -47,6 +53,7 @@ export class AdversaryAttack extends Attack {
         this.saveTypes = args.saveTypes ?? []
         this.description = args.description ?? ''
         this.halfDamageOnSave = args.halfDamageOnSave ?? false
+        this._isSpellAttack = args.isSpellAttack ?? false
         this.appliedEffects = args.appliedEffects ?? []
     }
 

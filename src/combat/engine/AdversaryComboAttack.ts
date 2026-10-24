@@ -150,6 +150,7 @@ export class ComboSubAttack {
             name: this.name,
             saveTypes: this.saveTypes,
             halfDamageOnSave: this.halfDamageOnSave,
+            isSpellAttack: this.isSpellAttack,
             appliedEffects: this.appliedEffects,
             damageRoll: {
                 ...rawDmg,
@@ -177,6 +178,7 @@ export class ComboSubAttack {
             dice: damageRoll?.dice ?? [],
             saveTypes: snapshot.saveTypes,
             halfDamageOnSave: snapshot.halfDamageOnSave,
+            isSpellAttack: snapshot.isSpellAttack,
             appliedEffects: snapshot.appliedEffects
         })
         sub.damageRoll = damageRoll ?? sub.damageRoll

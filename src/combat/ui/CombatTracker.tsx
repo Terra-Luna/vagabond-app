@@ -1,5 +1,5 @@
 import { Clover, Eye, PlayIcon, RefreshCw, Sparkles, StopCircle, Trash } from "lucide-react"
-import { forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react"
 
 import { addCountdowns, removeBurns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
@@ -33,7 +33,11 @@ const getCombatantById = (id: string) => {
     return combatants.find(c => c.id === id || c._id === id)
 }
 
-const getSortedCombatants = (combatants) => [...getHeroes(combatants), ...getNpcs(combatants), ...getAdversaries(combatants)]
+const getSortedCombatants = (combatants) => [
+    ...getHeroes(combatants),
+    ...getNpcs(combatants),
+    ...getAdversaries(combatants)
+]
 
 const getIndexOfCombatant = (combatant) => {
     const combatants = getCombat()?.combatants?.contents
@@ -49,6 +53,10 @@ const getCombatantsBetweenIndices = (idx1, idx2) => {
     const combatants = getCombat()?.combatants?.contents
 
     if (!combatants?.length) {
+        return []
+    }
+
+    if (idx1 < 0 || idx2 < 0) {
         return []
     }
 
@@ -181,7 +189,7 @@ const CombatantHeader = ({ token, combatant, name, children, onClick, tooltipDes
 
 
     const isActiveCombatant = game.combat?.combatant === combatant
-    const opacityClass = isActiveCombatant || (combatant.activations.value ?? 0 > 0) ? '' : 'opacity-90 grayscale-[85%]'
+    const opacityClass = isActiveCombatant || ((combatant.activations?.value ?? 0) > 0) ? '' : 'opacity-90 grayscale-[85%]'
     const disposition = combatant.token?.disposition
 
     return (
@@ -235,6 +243,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
     }, [token])
 
     const onClick = useCallback((e: MouseEvent, rightClick?: boolean, tokenWasClicked?: boolean) => {
+        if (!token) return
         if (token.controlled && (e.shiftKey || e.ctrlKey)) {
             token.release()
             setlastClickedCombatants(lastClickedCombatants.filter(c => c !== combatant.id))
@@ -265,8 +274,8 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
     useImperativeHandle(ref, () => ({ onClick }))
 
     const onDoubleClick = useCallback(() => {
-        token.actor?.sheet?.render(true)
-    }, [token])
+        combatant.actor?.sheet?.render(true)
+    }, [combatant])
 
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
@@ -397,17 +406,18 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                     action: updateVisibility,
                 },
                 ...(controlledTokens
-                    ().find(token => (token.combatant as VagabondCombatant).activations.value === 0) ? [{
+                    ().find(token => (token.combatant as VagabondCombatant | null)?.activations?.value === 0) ? [{
                         icon: RefreshCw,
                         label: appLang.Combat.refreshActivations,
                         action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations(), combatant)
                     }] : []),
                 {
                     icon: Trash,
-                    label: appLang.ButtonActions.remove,
+                    label: controlledTokens().size > 1 ? appLang.Combat.removeAll : appLang.ButtonActions.remove,
                     action: (e) => {
                         e.keepOpen = true
-                        getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id])
+                        const ids = combineCombatantWithControlledCombatants(combatant).map(c => c?.id).filter(Boolean) as string[]
+                        if (ids.length) getCombat()?.deleteEmbeddedDocuments("Combatant", ids)
                     },
                     isDestructive: true
                 }
@@ -443,7 +453,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
 
 const CombatTrackerPortrait = ({ src, isControlled, isHovered, disposition, isHidden, onClick }) => {
     const dispositionColor = isControlled ? CONFIG.Canvas.dispositionColors.CONTROLLED : isHovered ? CONFIG.Canvas.dispositionColors[disposition] : ""
-    const borderColor = `#${dispositionColor.toString(16)}`
+    const borderColor = `#${(dispositionColor ?? "").toString(16)}`
     const borderStyle = (isHovered || isControlled) ? "border-solid border-2" : "";
     return (
         <Tooltip content={appLang.Combat.keyExplainer}>
@@ -461,8 +471,8 @@ const getStatusIcons = (combatant) => {
     const statuses = getCombatantStatuses(combatant)
     return statuses.map((status, index) => {
         const img = CONFIG.statusEffects.find(e => e.id === status)?.img
-        const title = appLang.StatusConditions[status].name
-        const description = appLang.StatusConditions[status].description
+        const title = appLang.StatusConditions[status]?.name ?? status
+        const description = appLang.StatusConditions[status]?.description ?? ""
         return img
             ? <Tooltip key={index} title={title} content={description}>
                 <img src={img} height={12} width={12} />
@@ -473,8 +483,8 @@ const getStatusIcons = (combatant) => {
 
 const StatusIcon = ({ status, size, className }: { status: string, size?: number, className?: string }) => {
     const img = CONFIG.statusEffects.find(e => e.id === status)?.img
-    const title = appLang.StatusConditions[status].name
-    const description = appLang.StatusConditions[status].description
+    const title = appLang.StatusConditions[status]?.name ?? status
+    const description = appLang.StatusConditions[status]?.description ?? ""
     return img
         ? <Tooltip title={title} content={description}>
             <img key={status} src={img} height={size ?? 12} width={size ?? 12} className={className} />
@@ -491,7 +501,7 @@ const StatusIcons = ({ combatant }) => {
 }
 
 const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
-    const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.tokenId) as Token, [hero])
+    const token = canvas?.tokens?.placeables?.find(t => t.id === hero.tokenId) as Token
     const heroActorModel = hero.actor.system
     const combatantComponentRef = useRef<{ onClick: any }>(null)
 
@@ -527,24 +537,25 @@ const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
 
 const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }) => {
     let component = <div className="min-w-[24px] mr-4" />
-    if (!combatant.isOwner && !game.user?.isActiveGM) { return component }
 
     const isCurrentCombatant = useIsCurrentCombatant(combatant)
-    const hasActivationsLeft = combatant.activations.value ?? 0 > 0
+    const hasActivationsLeft = (combatant.activations?.value ?? 0) > 0
 
     const id = combatant?._id
 
     const activateCombatant = useCallback(() => {
         if (id) {
-            getCombat().activateCombatant(id)
+            getCombat()?.activateCombatant(id)
         }
     }, [combatant])
 
     const deactivateCombatant = useCallback(() => {
         if (id) {
-            getCombat().deactivateCombatant(id)
+            getCombat()?.deactivateCombatant(id)
         }
     }, [combatant])
+
+    if (!combatant.isOwner && !game.user?.isActiveGM) { return component }
 
     if (isCurrentCombatant) {
         component = <Tooltip content={appLang.Combat.end}>
@@ -571,7 +582,7 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }
 }
 
 const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants }) => {
-    const token = useMemo(() => canvas?.tokens?.placeables?.find(t => t?.id === adversary?.token?._id) as Token, [adversary])
+    const token = canvas?.tokens?.placeables?.find(t => t?.id === adversary?.token?._id) as Token
     const adversaryModel = adversary.actor.system
     const combatantComponentRef = useRef<{ onClick: any }>(null)
     const tooltipDescription = localizeString(appLang.Combat.hpTooltip, { hp: adversaryModel.health.value?.toString(), hpMax: adversaryModel.health.max?.toString() })
@@ -599,6 +610,6 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
     )
 }
 
-const getHeroes = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.combatGroup === "heroes")
-const getAdversaries = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.combatGroup === "adversaries")
-const getNpcs = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.combatGroup === "npcs")
+const getHeroes = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.actor && c.combatGroup === "heroes")
+const getAdversaries = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.actor && c.combatGroup === "adversaries")
+const getNpcs = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.actor && c.combatGroup === "npcs")

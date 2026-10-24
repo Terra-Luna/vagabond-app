@@ -97,7 +97,7 @@ export const Actions = ({ npc, hero, setIsAddMenuOpen, setEditTarget, isPolymorp
 
                             isPolymorph && hero
                                 ? onClickActionAsWeaponAttack(hero, action, e)
-                                : onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.appliedEffects as AppliedFx[], action.halfDamageOnSave)
+                                : onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.appliedEffects as AppliedFx[], action.halfDamageOnSave, action.type)
                         }
 
                         const polyAttack = isPolymorph && hero ? buildPolymorphAttack(hero, action) : undefined

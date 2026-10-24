@@ -68,6 +68,7 @@ function deserializeAdversaryAttack(snapshot: AttackSnapshot): AdversaryAttack |
         saveTypes: snapshot.saveTypes,
         description: snapshot.description,
         halfDamageOnSave: snapshot.halfDamageOnSave,
+        isSpellAttack: snapshot.isSpellAttack,
         appliedEffects: snapshot.appliedEffects
     }, [...snapshot.targetIds])
 

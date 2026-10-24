@@ -17,13 +17,13 @@ import { HeroAttack } from "../../engine/HeroAttack"
 import { deserializeAttack } from "../../engine/util/attack-deserializer"
 import { serializeAttack } from "../../engine/util/attack-serializer"
 import { AdversaryAttackComponent, AdversaryComboAttackComponent } from "./AdversaryAttackComponent"
-import { subscribeToAttack } from "./attackRegistryStore"
+import { subscribeToAttack } from "./AttackRegistryStore"
 import { HeroAttackComponent } from "./HeroAttackComponent"
 import { InteractiveChatCardButton } from "./InteractiveChatCardButton"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
+
     const [revision, setRevision] = useState(0)
-    const [flanked, setFlanked] = useState<boolean>(false)
     const [targetsToggle, setTargetsToggle] = useState<boolean>(false)
     const [armorBypassToggle, setArmorBypassToggle] = useState<boolean>(false)
 
@@ -48,6 +48,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     /**
      * Subscribes to the shared attack registry store. A single updateSetting
      * hook serves all cards and only notifies cards whose own attack changed.
+     * Prevents huge lag spikes when there are many attack cards in the chat.
      */
     useEffect(() => {
         if (isResolved) return
@@ -105,11 +106,6 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                     <div className="flex items-end justify-between px-1">
                                         <div>
                                             <Checkbox
-                                                label={"Flanked"}
-                                                checked={flanked}
-                                                onCheckedChanged={(e) => { setFlanked(e) }}
-                                            />
-                                            <Checkbox
                                                 label={"GM Target Override"}
                                                 checked={targetsToggle}
                                                 onCheckedChanged={(e) => { setTargetsToggle(e) }}
@@ -127,7 +123,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                                 <InteractiveChatCardButton label={appLang.ButtonActions.apply} tooltip={appLang.Combat.applyDamageTooltip}
                                                     fn={async () => {
                                                         await attack.applyDamageAndResolve(
-                                                            { flanked: flanked, bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle },
+                                                            { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle },
                                                             serializeAttack
                                                         )
                                                         setRevision(prev => prev + 1)

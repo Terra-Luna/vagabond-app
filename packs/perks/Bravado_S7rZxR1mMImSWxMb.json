@@ -5,7 +5,18 @@
   "img": "/icons/skills/melee/maneuver-greatsword-yellow.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">If a Close Target of your attack is not Close to any of its Allies, the Target is considered Flanked for your attacks.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "6pDx2K9cLSYjkz8c",
+        "key": "ToggleRule",
+        "label": "Solo Flanking",
+        "level": 0,
+        "value": true,
+        "selector": [
+          "modifiers.combat.constant.flanking.solo"
+        ]
+      }
+    ],
     "prerequisites": [
       {
         "type": "trained",
@@ -37,10 +48,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.123",
     "createdTime": 1786633664559,
-    "modifiedTime": 1786633800154,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1792862899096,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -1,5 +1,6 @@
 import { addCountdown, getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel"
+import { StatusEffectUtil } from "../../model/actor/util/StatusEffectUtil"
 import { physicalDamageTypes } from "../../model/common/sharedSchemas"
 import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
@@ -10,7 +11,7 @@ import type { AttackSnapshot } from "./util/attack-serializer"
 const FOCUS_DAMAGE_LIMIT = 5
 
 export interface AttackResolutionArgs {
-    flanked?: boolean
+    isSpellAttack?: boolean
     bypassArmor?: boolean
     gmTargetsOnly?: boolean
 }
@@ -108,8 +109,6 @@ export abstract class Attack<TActor extends Actor = Actor> {
             const perDieMod = (Number(mods?.perDie ?? 0)) * diceCount
             const perDieOverrideMod = (Number(mods?.perDieOverride ?? 0)) * diceCount
 
-            console.log({ perDieOverrideMod }, this.damageRoll?.result?.rolls)
-
             this.updateHP(
                 target?.system,
                 this.getHP(target?.system) +
@@ -147,7 +146,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
             if ((targetActor.system as ActorDataModel<BaseActorSchema>).statuses.toggles.focusing && adjDamage >= FOCUS_DAMAGE_LIMIT) {
                 targetActor.update({ 'system.statuses.counters.focus': 0 } as Record<string, number>)
-                targetActor.toggleStatusEffect("focusing", { active: false })
+                StatusEffectUtil.toggleStatusEffectOnce(targetActor, "focusing", false)
             }
 
             const hp = this.getHP(targetActor?.system)
@@ -186,9 +185,11 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
+        args.isSpellAttack = this.isSpellAttack
         return Attack.computeAdjustedDamage(
             this.damageRoll,
-            targetId, args,
+            targetId,
+            args,
             this.getAdditionalArmorRating(targetId),
             this.isHalfDamageForTarget(targetId)
         )
@@ -197,7 +198,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
     protected isHalfDamageForTarget(_targetId: string): boolean { return false }
 
     /**
-     * Shared damage mitigation (resistances, per-die reduction, armor, flanking) for any damage roll.
+     * Shared damage mitigation (resistances, flat reduction,per-die reduction, armor) for any damage roll.
      */
     static computeAdjustedDamage(damageRoll: DamageRoll | undefined, targetId: string, args: AttackResolutionArgs, additionalArmorRating = 0, halfDamage = false): number {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
@@ -205,18 +206,21 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
         const dmgType = damageRoll?.dmgType ?? ''
         const mods = aSys?.modifiers?.damage?.in ?? {}
-        const perDieMitigation = (mods?.perDieReduction?.global ?? 0) + (mods?.perDieReduction?.[dmgType] ?? 0)
+        const flatReduction = (mods?.flatReduction?.global ?? 0) + (args.isSpellAttack ? (mods?.flatReduction?.[dmgType] ?? 0) : (mods?.flatReduction?.attack ?? 0))
+        const perDieReduction = (mods?.perDieReduction?.global ?? 0) + (mods?.perDieReduction?.[dmgType] ?? 0)
         const damageDiceCount = damageRoll?.result?.rollSummaries?.filter(it => !it.rerolled).length ?? 0
         const isResistant = mods?.resistances?.includes(dmgType)
-        const perDieMit = perDieMitigation * damageDiceCount
+        const perDieMit = perDieReduction * damageDiceCount
 
         // Resistance and a passed save each halve the damage; they don't stack.
-        const damage = (isResistant || halfDamage) ? Math.floor((damageRoll?.result?.total ?? 0) / 2) : damageRoll?.result?.total ?? 0
+        const damage = (isResistant || halfDamage)
+            ? Math.floor((damageRoll?.result?.total ?? 0) / 2)
+            : damageRoll?.result?.total ?? 0
 
         const armorRating = aSys?.armor?.rating ?? 0
         const armorPiercing = damageRoll?.result?.armorPiercing ?? 0
         const armor = args.bypassArmor ? 0 : Math.max(0, armorRating + additionalArmorRating - armorPiercing)
-        return Math.max(0, (damage + (args.flanked ? 2 : 0)) - armor - perDieMit)
+        return Math.max(0, (damage - flatReduction - perDieMit - armor))
     }
 
     /**
@@ -258,7 +262,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
     private async applyEffects(actor: Actor, token: Token | undefined, status: string, duration?: string, damageType?: string) {
         if (!duration || duration === "-") return
 
-        await actor.toggleStatusEffect(status, { active: true })
+        StatusEffectUtil.toggleStatusEffectOnce(actor, status, true)
 
         const countdownFaces = duration?.match(/^Cd(\d+)$/)?.[1]
         if (countdownFaces) {

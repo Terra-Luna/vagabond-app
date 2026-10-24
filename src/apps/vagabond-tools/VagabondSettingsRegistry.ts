@@ -11,21 +11,22 @@ import { CompendiumAccessor } from "./usecase/CompendiumAccessor"
 export class VagabondSettingsRegistry {
 
     static register() {
+        VagabondSettingsRegistry.registerXpQuestionnaire()
         VagabondSettingsRegistry.registerMaxLevel()
         VagabondSettingsRegistry.registerStartingGold()
         VagabondSettingsRegistry.registerLevelPacing()
-        VagabondSettingsRegistry.registerXpQuestionnaire()
-        VagabondSettingsRegistry.registerAttackRegistry()
-        VagabondSettingsRegistry.registerPolymorphRequestRegistry()
-        VagabondSettingsRegistry.registerItemShopToggle()
         VagabondSettingsRegistry.registerProgressClocks()
         VagabondSettingsRegistry.registerCountdowns()
         VagabondSettingsRegistry.registerManaEnforcement()
         VagabondSettingsRegistry.registerPlayerRelicForgeAccess()
         VagabondSettingsRegistry.registerShowTrainingSelectionToggle()
         VagabondSettingsRegistry.registerAllowLateLuckStudy()
-        CompendiumAccessor.registerCompendiumAccess()
+        VagabondSettingsRegistry.registerCombatAutoFlanking()
 
+        VagabondSettingsRegistry.registerItemShopToggle()
+        VagabondSettingsRegistry.registerAttackRegistry()
+        VagabondSettingsRegistry.registerPolymorphRequestRegistry()
+        CompendiumAccessor.registerCompendiumAccess()
         RelicPowers.register()
     }
 
@@ -267,6 +268,17 @@ export class VagabondSettingsRegistry {
             config: true,
             type: Boolean,
             default: false
+        })
+    }
+
+    private static registerCombatAutoFlanking() {
+        game.settings?.register(sys_id, "combatAutoFlanking" as any, {
+            name: appLang.Settings.combatAutoFlanking,
+            hint: appLang.Settings.combatAutoFlankingHint,
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: true
         })
     }
 

@@ -72,6 +72,17 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             ]
         },
         {
+            _id: "vFlanked00000000",
+            id: "flanked",
+            name: "APP.StatusConditions.flanked.name",
+            img: "/icons/svg/downgrade.svg",
+            changes: [
+                { key: "system.statuses.toggles.flanked", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true", priority: 20 },
+                { key: "system.modifiers.damage.in.flatReduction.attack", mode: "ADD", value: "-2", priority: 20 }
+            ]
+        },
+        {
             _id: "vGrappling000000",
             id: "grappling",
             name: "APP.StatusConditions.grappling.name",
@@ -160,7 +171,9 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             id: "vulnerable",
             name: "APP.StatusConditions.vulnerable.name",
             img: "/icons/svg/dice-target.svg",
-            changes: [{ key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true", priority: 20 }]
+            changes: [
+                { key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true", priority: 20 }
+            ]
         },
         {
             _id: "vDead00000000000",

@@ -276,6 +276,10 @@ export const getAllowLateLuckStudy = (): boolean => {
     return (game.settings as any)?.get(sys_id, "allowLateLuckStudy")
 }
 
+export const getCombatAutoFlanking = (): boolean => {
+    return (game.settings as any)?.get(sys_id, "combatAutoFlanking")
+}
+
 /**
  * Use this function to provide access for players with ganted permissions.
  * @param setting 
