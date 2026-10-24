@@ -2,7 +2,7 @@ import { fields } from "../common/sharedSchemas"
 import { ActorDataModel } from "./ActorDataModel"
 import { inventorySchema } from "./type/Inventory"
 import { NpcSchema, npcSchema } from "./type/NpcSchema"
-import { onNpcPreCreate, onUpdateNpc, prepareNpcBaseData } from "./util/NpcDataModelUtil"
+import { getNpcActiveRules, getNpcRuleToggleState, onNpcPreCreate, onUpdateNpc, prepareNpcBaseData, toggleNpcItemRule } from "./util/NpcDataModelUtil"
 
 export class NpcDataModel extends ActorDataModel<NpcSchema> {
     static defineSchema() {
@@ -27,5 +27,11 @@ export class NpcDataModel extends ActorDataModel<NpcSchema> {
         super.prepareBaseData()
         prepareNpcBaseData(this)
     }
+
+    getActiveRules = () => getNpcActiveRules(this)
+
+    getRuleToggleState = (itemId: string) => getNpcRuleToggleState(this, itemId)
+
+    toggleItemRule = (item: any, stateOverride?: boolean) => toggleNpcItemRule(this, item, stateOverride)
 
 }

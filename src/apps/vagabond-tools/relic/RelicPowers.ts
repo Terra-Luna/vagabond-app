@@ -343,7 +343,13 @@ export class RelicPowers {
         {
             id: 'cursed-doom',
             category: { value: 'cursed', label: 'Cursed' },
-            power: { value: 'doom', label: 'Doom' },
+            power: {
+                value: 'doom',
+                label: 'Doom',
+                modifiers: [
+                    { selector: ['system.modifiers.healing.in.modifier.perDieOverride'], value: 1 }
+                ]
+            },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,

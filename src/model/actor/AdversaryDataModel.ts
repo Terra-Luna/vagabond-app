@@ -1,6 +1,6 @@
 import { ActorDataModel } from "./ActorDataModel"
 import { NpcSchema, npcSchema } from "./type/NpcSchema"
-import { onNpcPreCreate, onUpdateNpc, prepareNpcBaseData, setThreatLevel } from "./util/NpcDataModelUtil"
+import { getNpcActiveRules, getNpcRuleToggleState, onNpcPreCreate, onUpdateNpc, prepareNpcBaseData, setThreatLevel, toggleNpcItemRule } from "./util/NpcDataModelUtil"
 
 export { setThreatLevel }
 
@@ -26,5 +26,11 @@ export class AdversaryDataModel extends ActorDataModel<NpcSchema> {
         super.prepareBaseData()
         prepareNpcBaseData(this)
     }
+
+    getActiveRules = () => getNpcActiveRules(this)
+
+    getRuleToggleState = (itemId: string) => getNpcRuleToggleState(this, itemId)
+
+    toggleItemRule = (item: any, stateOverride?: boolean) => toggleNpcItemRule(this, item, stateOverride)
 
 }

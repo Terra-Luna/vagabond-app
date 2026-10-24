@@ -16,27 +16,38 @@ export interface InlineRollData {
     terms: InlineRollTermData[]
 }
 
+const OPERATORS = ["+", "-", "*", "/"]
+
+const shouldShowTotal = (terms: InlineRollTermData[]): boolean => {
+    const dieCount = terms.reduce((count, term) => count + (term.faces ? (term.results?.length ?? 0) : 0), 0)
+    const hasOperator = terms.some(term => !term.faces && OPERATORS.includes(term.expression?.trim() ?? ""))
+    return dieCount > 1 || hasOperator
+}
+
 const InlineRoll = ({ roll }: { roll: InlineRollData }) => {
     return (
         <div className="flex flex-col items-center justify-center gap-1">
             <div className="flex flex-wrap items-center justify-center gap-1">
                 {roll.terms.map((term, i) => {
-                    // Skip non-DiceTerms.
-                    if (!Array.isArray(term.results) || !term.faces) return null
-
-                    return term.results.map((r, j) => (
-                        <DiceRollComponent
-                            key={`${i}-${j}`}
-                            faces={term.faces!}
-                            result={r.result}
-                            textSize="text-4xl"
-                            discarded={r.discarded === true}
-                            exploded={!!r.exploded}
-                            rerolled={!!r.rerolled}
-                        />
-                    ))
+                    if (Array.isArray(term.results) && term.faces) {
+                        return term.results.map((r, j) => (
+                            <DiceRollComponent
+                                key={`${i}-${j}`}
+                                faces={term.faces!}
+                                result={r.result}
+                                textSize="text-4xl"
+                                discarded={r.discarded === true}
+                                exploded={!!r.exploded}
+                                rerolled={!!r.rerolled}
+                            />
+                        ))
+                    }
+                    return <span key={i} className="text-2xl">{term.expression}</span>
                 })}
-                <span className="text-2xl">= {roll.total}</span>
+
+                {/* SHOW TOTAL IF MORE THAN ONE DIE OR ANY ARITHMETIC OPERATOR */}
+                {shouldShowTotal(roll.terms) && <span className="text-2xl">= {roll.total}</span>}
+
             </div>
             <span className="text-base text-text-tertiary font-normal italic">{roll.formula}</span>
         </div>

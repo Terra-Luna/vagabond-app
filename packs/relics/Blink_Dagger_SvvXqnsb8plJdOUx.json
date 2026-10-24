@@ -4,7 +4,7 @@
   "_id": "SvvXqnsb8plJdOUx",
   "img": "icons/weapons/daggers/dagger-serrated-purple.webp",
   "system": {
-    "description": "",
+    "description": "<p><span style=\"white-space:pre-wrap\">Dagger that a Being must Bind themselves to</span></p><p><span style=\"white-space:pre-wrap\">access its Powers, which are as follows:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Blinking:</strong></b><span style=\"white-space:pre-wrap\"> They can use their Action or skip their Move to teleport to the Item if it is within Far.</span></li><li value=\"2\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Loyalty:</strong></b><span style=\"white-space:pre-wrap\"> They can will it to return to their hand (no Action).</span></li></ul>",
     "rules": [],
     "category": "weapons",
     "value": {
@@ -48,21 +48,6 @@
     "copperValue": 1000,
     "relicPowers": [
       {
-        "id": "movement-blinking",
-        "category": {
-          "value": "movement",
-          "label": "Movement"
-        },
-        "power": {
-          "value": "blinking",
-          "label": "Blinking",
-          "modifiers": []
-        },
-        "goldValue": 2000,
-        "bound": false,
-        "description": "Wearer is under the effects of the Blink Spell."
-      },
-      {
         "id": "utility-loyalty",
         "category": {
           "value": "utility",
@@ -90,9 +75,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.35",
+    "systemVersion": "0.2.117",
     "createdTime": 1790011938331,
-    "modifiedTime": 1790216132041,
+    "modifiedTime": 1792789880939,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

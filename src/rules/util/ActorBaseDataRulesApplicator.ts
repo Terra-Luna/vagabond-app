@@ -6,16 +6,19 @@ import { calculateRecurringRuleScale, getRuleSelectionValues, normalizeRuleSelec
 import { ItemsCache } from "./ItemsCache"
 import { getRuleSelectors, normalizeSelector } from "./selector-util"
 
-export class HeroBaseDataRulesApplicator {
+export class ActorBaseDataRulesApplicator {
 
     /**
      * Applies active rules from actor items and their referenced Feature Items.
      * @param actor 
+     * @param options.npcMode Applies only Toggle and FlatModifier rules, for every user. Used by NPCs/Adversaries.
      * @returns 
      */
-    static apply(actor: Actor & { system: any }) {
-        if (!actor || !actor.isOwner) return
+    static apply(actor: Actor & { system: any }, options: { npcMode?: boolean } = {}) {
+        if (!actor || (!actor.isOwner && !options.npcMode)) return
 
+        const npcMode = options.npcMode === true
+        const actorLevel = actor.system.level?.current ?? actor.system.hitDice ?? 1
         const activeRules = actor.system.getActiveRules()
         const perkGrants = activeRules.filter(r => r.key === "GrantItem" && r.type === "perk")
         const chosenPerkRules = activeRules.filter(r => r.key === "ChoiceSet" && r.pack === "perk")
@@ -76,6 +79,8 @@ export class HeroBaseDataRulesApplicator {
             const paths = getRuleSelectors(rule).map(it => normalizeSelector(it))
 
             for (const path of paths) {
+                if ((path.startsWith("statuses.toggles.") || path.startsWith("flags.")) && !actor.isOwner) continue
+
                 if (path.startsWith("statuses.toggles.")) {
                     const effectName = path?.split(".")?.pop()
                     if (!effectName) continue
@@ -140,7 +145,7 @@ export class HeroBaseDataRulesApplicator {
                 const currentValue = foundry.utils.getProperty(actor.system, path) ?? foundry.utils.getProperty(actor.system, path.split(".").slice(0, -1).join("."))
                 const multiplierValue = foundry.utils.getProperty(actor.system, rule.valueMultiplier) as number
                 const scale = rule.scale > 0
-                    ? calculateRecurringRuleScale(actor.system.level.current ?? 1, rule.level, rule.scale)
+                    ? calculateRecurringRuleScale(actorLevel, rule.level, rule.scale)
                     : 1
 
                 if (typeof currentValue === "number") {
@@ -273,6 +278,17 @@ export class HeroBaseDataRulesApplicator {
                     actorLockSet.delete(rule.uuid)
                 }, 500)
             }
+        }
+
+        if (npcMode) {
+            activeTogglePaths = new Set(
+                toggleRules
+                    .filter(isToggleRuleActive)
+                    .flatMap(rule => getRuleSelectors(rule).map(path => normalizeSelector(path)))
+            )
+            for (const rule of toggleRules) { applyToggleRule(rule) }
+            for (const rule of flatModifiers) { applyFlatModifier(rule) }
+            return
         }
 
         injectGrantedPerkRules(perkGrants)

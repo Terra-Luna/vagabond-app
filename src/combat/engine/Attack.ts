@@ -106,10 +106,18 @@ export abstract class Attack<TActor extends Actor = Actor> {
             const flatMod = Number(mods?.flat ?? 0)
             const diceCount = this.damageRoll?.result?.rollSummaries?.length ?? 0
             const perDieMod = (Number(mods?.perDie ?? 0)) * diceCount
+            const perDieOverrideMod = (Number(mods?.perDieOverride ?? 0)) * diceCount
+
+            console.log({ perDieOverrideMod }, this.damageRoll?.result?.rolls)
+
             this.updateHP(
                 target?.system,
                 this.getHP(target?.system) +
-                Math.max(0, (this.damageRoll?.result?.total ?? 0) + flatMod + perDieMod)
+                Math.max(
+                    0,
+                    perDieOverrideMod > 0
+                        ? perDieOverrideMod
+                        : (this.damageRoll?.result?.total ?? 0) + flatMod + perDieMod)
             )
         })
     }
@@ -130,16 +138,29 @@ export abstract class Attack<TActor extends Actor = Actor> {
     private applyDamage(args: AttackResolutionArgs) {
         const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
         for (const id of targetIds) {
-            const actor = canvas?.scene?.tokens?.get(id)?.actor
-            if (!actor) continue
+            const targetActor = canvas?.scene?.tokens?.get(id)?.actor
+            if (!targetActor) continue
 
             const adjDamage = this.calculateAdjustedDamage(id, args)
-            if ((actor.system as ActorDataModel<BaseActorSchema>).statuses.toggles.focusing && adjDamage >= FOCUS_DAMAGE_LIMIT) {
-                actor.update({ 'system.statuses.counters.focus': 0 } as Record<string, number>)
-                actor.toggleStatusEffect("focusing", { active: false })
+            const weaknesses = (targetActor?.system as any)?.modifiers?.damage?.in?.weaknesses ?? []
+            const deathRequirements = (targetActor?.system as any)?.modifiers?.damage?.in?.deathRequirements
+
+            if ((targetActor.system as ActorDataModel<BaseActorSchema>).statuses.toggles.focusing && adjDamage >= FOCUS_DAMAGE_LIMIT) {
+                targetActor.update({ 'system.statuses.counters.focus': 0 } as Record<string, number>)
+                targetActor.toggleStatusEffect("focusing", { active: false })
             }
 
-            this.updateHP(actor?.system, this.getHP(actor?.system) - adjDamage)
+            const hp = this.getHP(targetActor?.system)
+            const newHp = hp - adjDamage
+
+            const canDie = newHp < 1 && this.checkDeathRequirements(deathRequirements, weaknesses)
+
+            this.updateHP(
+                targetActor?.system,
+                canDie || newHp >= 1
+                    ? newHp
+                    : Math.min(hp, 1)
+            )
         }
     }
 
@@ -153,11 +174,24 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
         if (immunities.includes("magical") && isCast && !physicalDamageTypes().includes(damageRoll?.dmgType ?? "")) return true
         if (immunities.includes("physical") && physicalDamageTypes().includes(damageRoll?.dmgType ?? "")) return true
+
         return immunities.includes(damageRoll?.dmgType ?? '')
     }
 
+    /**
+     * Override as needed to implement custom death requirement checks for different attack types.
+     */
+    protected checkDeathRequirements(deathRequirements: any, weaknesses: any[]): boolean {
+        return true
+    }
+
     protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
-        return Attack.computeAdjustedDamage(this.damageRoll, targetId, args, this.getAdditionalArmorRating(targetId), this.isHalfDamageForTarget(targetId))
+        return Attack.computeAdjustedDamage(
+            this.damageRoll,
+            targetId, args,
+            this.getAdditionalArmorRating(targetId),
+            this.isHalfDamageForTarget(targetId)
+        )
     }
 
     protected isHalfDamageForTarget(_targetId: string): boolean { return false }
@@ -263,7 +297,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
         /**
          * IF USER IS GM: Write to the database directly
-         */ 
+         */
         if (game.user?.isGM) {
             await Attack.handleIncomingAttackSnapshot({ actorId: this.actor.id, snapshot })
             return

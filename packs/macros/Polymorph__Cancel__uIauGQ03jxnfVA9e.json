@@ -5,7 +5,7 @@
   "author": "KyorYoEvge7ElSaj",
   "img": "/icons/creatures/amphibians/bullfrog-glowing-green.webp",
   "scope": "global",
-  "command": "const targets = game.canvas?.tokens?.controlled?.map(it => it.actor);\n\nconsole.log(targets);\n\ngame.system.api.util.cancelPolymorph(targets);",
+  "command": "const targets = game.canvas?.tokens?.controlled?.map(it => it.actor);\n\ngame.system.api.util.cancelPolymorph(targets);",
   "folder": "dNSZ8oo7EphDRyO4",
   "ownership": {
     "default": 0,

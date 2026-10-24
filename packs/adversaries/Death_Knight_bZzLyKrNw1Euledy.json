@@ -349,7 +349,8 @@
         "value": 25,
         "type": "walk"
       }
-    ]
+    ],
+    "forceUpdateTrack": true
   },
   "prototypeToken": {
     "name": "Death Knight",
@@ -517,7 +518,20 @@
       "img": "/icons/magic/death/hand-dirt-undead-zombie.webp",
       "system": {
         "description": "<p><span style=\"white-space:pre-wrap\">It can't be reduced below 1 HP unless damaged by a Crit, damage it is Weak to, or while in Sunlight.</span></p>",
-        "rules": [],
+        "rules": [
+          {
+            "id": "i4i6tCnjA832cBy2",
+            "key": "ToggleRule",
+            "label": "Death Resistant",
+            "level": 0,
+            "value": true,
+            "selector": [
+              "modifiers.damage.in.deathRequirements.crit",
+              "modifiers.damage.in.deathRequirements.weak",
+              "modifiers.damage.in.deathRequirements.sunlight"
+            ]
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0
@@ -527,9 +541,9 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.27",
-        "createdTime": 1790090126697,
-        "modifiedTime": 1790090126697,
+        "systemVersion": "0.2.117",
+        "createdTime": 1792796296227,
+        "modifiedTime": 1792796296227,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
         "compendiumSource": "Compendium.vagabond-app.features.Item.8fIBmbehU7Ai6VXn",
         "duplicateSource": null,
@@ -554,9 +568,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.93",
+    "systemVersion": "0.2.117",
     "createdTime": 1790089776823,
-    "modifiedTime": 1792613375569,
+    "modifiedTime": 1792796259731,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

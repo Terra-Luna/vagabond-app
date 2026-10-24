@@ -487,7 +487,20 @@
       "img": "/icons/magic/death/hand-dirt-undead-zombie.webp",
       "system": {
         "description": "<p><span style=\"white-space:pre-wrap\">It can't be reduced below 1 HP unless damaged by a Crit, damage it is Weak to, or while in Sunlight.</span></p>",
-        "rules": [],
+        "rules": [
+          {
+            "id": "i4i6tCnjA832cBy2",
+            "key": "ToggleRule",
+            "label": "Death Resistant",
+            "level": 0,
+            "value": true,
+            "selector": [
+              "modifiers.damage.in.deathRequirements.crit",
+              "modifiers.damage.in.deathRequirements.weak",
+              "modifiers.damage.in.deathRequirements.sunlight"
+            ]
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0

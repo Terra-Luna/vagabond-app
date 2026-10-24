@@ -1,8 +1,9 @@
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
-import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
+import { ActorBaseDataRulesApplicator } from "../../rules/util/ActorBaseDataRulesApplicator"
 import { getItemChoiceRules, getItemRules } from "../../rules/util/item-rules-util"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/PerkRulesSelectionsApplicator"
+import { getRuleToggleState, toggleItemRule } from "../../rules/util/rule-toggle-util"
 import { getRuleSelectors, normalizeSelector } from "../../rules/util/selector-util"
 import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
@@ -101,7 +102,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         /**
          * Apply bonuses from Item Rules...
          */
-        HeroBaseDataRulesApplicator.apply(this.parent)
+        ActorBaseDataRulesApplicator.apply(this.parent)
 
         /**
          * Set remaining base data last, to preserve the bonuses...
@@ -353,79 +354,9 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         return itemRules
     }
 
-    getRuleToggleState = (itemId: string) => {
-        const state = this.parent.getFlag(sys_id, `ruleToggle_${itemId}`)
-        return state
-    }
+    getRuleToggleState = (itemId: string) => getRuleToggleState(this.parent, itemId)
 
-    toggleItemRule = async (item: any, stateOverride?: boolean) => {
-        const itemId = item.id?.split('.').pop() || item._sourceId?.split('.').pop() || undefined
-        if (!itemId) return
-
-        const activeEffectFlag = removeWhitespace(`${item.name ?? item.parent.name}_${itemId}`)
-        const state = stateOverride ?? this.getRuleToggleState(itemId)
-
-        if (state) {
-            try {
-                const effects = this.parent.effects.filter(it => it.flags?.[sys_id]?.[activeEffectFlag])
-                if (effects.length > 0) {
-                    this.parent.deleteEmbeddedDocuments('ActiveEffect', effects.map(it => it.id))
-                }
-            }
-            catch {
-                console.warn(`${sys_id} | Failed to delete ActiveEffect for item: ${activeEffectFlag}`)
-            }
-        }
-        else {
-            const rules = item.rules ?? item.system.rules ?? []
-            const buffs = rules.filter(rule => rule.toggleableEffect && !getRuleSelectors(rule).some(s => s.includes("flags.")))
-
-            if (buffs.length > 0) {
-                const data = {
-                    name: item.name ?? item.parent.name,
-                    img: item.img ?? item.parent.img,
-                    showIcon: 2,
-                    flags: { [sys_id]: { [activeEffectFlag]: true } },
-                    changes: [/* Intentionally left blank - this merely serves as a buff icon while the rules engine applies effects */]
-                }
-                await this.parent.createEmbeddedDocuments('ActiveEffect', [data])
-            }
-        }
-        await this.parent.setFlag(sys_id, `ruleToggle_${itemId}`, !state)
-        await this.syncToggledStatusEffects(item, !state)
-    }
-
-    private syncToggledStatusEffects = async (item: any, active: boolean) => {
-        const actor = this.parent
-        const rules = item.rules ?? item.system.rules ?? []
-
-        for (const rule of rules) {
-            if (rule.key !== "ToggleRule" || !rule.toggleableEffect) continue
-
-            const statusNames = getRuleSelectors(rule)
-                .map((it: string) => normalizeSelector(it))
-                .filter((it: string) => it.startsWith("statuses.toggles."))
-                .map((it: string) => it.split(".").pop() as string)
-
-            for (const statusName of statusNames) {
-                try {
-                    const existing = actor.effects.find(fx => fx.statuses?.has(statusName))
-                    if (active && !existing) {
-                        const effect = await actor.toggleStatusEffect(statusName, { active: true })
-                        if (effect && effect instanceof ActiveEffect) {
-                            await effect.setFlag(sys_id, "appliedByRule", rule.id)
-                        }
-                    }
-                    else if (!active && existing?.id && existing.getFlag(sys_id, "appliedByRule") === rule.id) {
-                        await actor.deleteEmbeddedDocuments("ActiveEffect", [existing.id])
-                    }
-                }
-                catch (e) {
-                    console.warn(`${sys_id} | Failed to sync status effect ${statusName}`, e)
-                }
-            }
-        }
-    }
+    toggleItemRule = (item: any, stateOverride?: boolean) => toggleItemRule(this.parent, item, stateOverride)
 
     override async setPolymorph(polyFlag: PolymorphFlag | undefined) {
         if (polyFlag && Object.keys(polyFlag).length > 0) {

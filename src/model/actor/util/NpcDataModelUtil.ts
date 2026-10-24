@@ -1,3 +1,6 @@
+import { ActorBaseDataRulesApplicator } from "../../../rules/util/ActorBaseDataRulesApplicator"
+import { getItemRules } from "../../../rules/util/item-rules-util"
+import { getRuleToggleState, toggleItemRule } from "../../../rules/util/rule-toggle-util"
 import { sys_id } from "../../../utils/foundryUtils"
 import { getName } from "../../../utils/modelUtil"
 import type { AdversaryDataModel } from "../AdversaryDataModel"
@@ -40,12 +43,27 @@ export const prepareNpcBaseData = (npc) => {
         ? (npc.parent.getFlag(sys_id, "originalSystem") as any)?.beingSize
         : undefined
     npc.health.max = calcNpcMaxHP(npc.hitDice ?? 1, originalSize ?? npc.beingSize)
-    npc.threatLevel = setThreatLevel(npc)
     npc.modifiers.polymorph = {
         castingLevel: npc.hitDice ?? 1,
         resistanceLevel: npc.hitDice ?? 1
     }
+
+    // Apply Feature modifiers before the threat level, since they can change armor, HP, etc.
+    if (npc.parent.items) ActorBaseDataRulesApplicator.apply(npc.parent, { npcMode: true })
+    npc.threatLevel = setThreatLevel(npc)
 }
+
+// NPCs and Adversaries only have Features, which are always active.
+export const getNpcActiveRules = (npc: AdversaryDataModel | NpcDataModel): any[] =>
+    npc.parent.items.contents
+        .filter((item: any) => item.type === "feature")
+        .flatMap((item: any) => getItemRules(item))
+
+export const getNpcRuleToggleState = (npc: AdversaryDataModel | NpcDataModel, itemId: string) =>
+    getRuleToggleState(npc.parent, itemId)
+
+export const toggleNpcItemRule = (npc: AdversaryDataModel | NpcDataModel, item: any, stateOverride?: boolean) =>
+    toggleItemRule(npc.parent, item, stateOverride)
 
 export const calcNpcMaxHP = (hitDice: number, size: string): number => {
     return size.toUpperCase() === "SMALL" ? hitDice ?? 1 : Math.floor(hitDice! * 4.5)

@@ -54,7 +54,8 @@ export const modifierSchema = () => {
             in: new fields.SchemaField({
                 modifier: new fields.SchemaField({
                     flat: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
-                    perDie: new fields.NumberField({ ...uncappedInteger, initial: 0 })
+                    perDie: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+                    perDieOverride: new fields.NumberField({ ...uncappedInteger, initial: 0 })
                 })
             }),
             out: new fields.SchemaField({
@@ -217,7 +218,14 @@ const damageInSchema = () => {
         statusImmunities: new fields.ArrayField(
             new fields.StringField({ ...requiredString, choices: Object.keys(appLang.StatusConditions) }),
             { initial: [] }
-        )
+        ),
+        // Requirements for the target to die - "or"'d together in Attack / HeroAttack.
+        deathRequirements: new fields.SchemaField({
+            relic: new fields.BooleanField({ initial: false }),
+            crit: new fields.BooleanField({ initial: false }),
+            weak: new fields.BooleanField({ initial: false }),
+            sunlight: new fields.BooleanField({ initial: false })
+        })
     }
 }
 
