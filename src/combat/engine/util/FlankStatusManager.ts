@@ -81,7 +81,7 @@ export class FlankStatusManager {
 
         const { FRIENDLY, NEUTRAL, HOSTILE } = CONST.TOKEN_DISPOSITIONS
 
-        // Group proximal tokens by their Disposition.
+        // Group proximal tokens by Disposition.
         const byDisposition = groupBy(
             "disposition",
             proximimalTokens.map(token => ({ token, disposition: token.document.disposition }))

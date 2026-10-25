@@ -143,6 +143,7 @@
     "BeingTypes": {
       "humanlike": "Humanlike",
       "fae": "Fae",
+      "hellspawn": "Hellspawn",
       "cryptid": "Cryptid",
       "artificial": "Artificial",
       "beast": "Beast",
