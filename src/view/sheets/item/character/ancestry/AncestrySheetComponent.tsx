@@ -52,6 +52,14 @@ export const AncestrySheetComponent = ({ item }: { item: Item & { system: Ancest
                                         updateMechanism={{ updatePath: ['beingType'] }}
                                         value={ancestry.beingType}
                                     />
+                                    <DropDown
+                                        label={appLang.ItemSheet.type}
+                                        variant="alternate"
+                                        options={createDropdownEntries(appLang.BeingSubtypes, true)}
+                                        parent={ancestry.parent}
+                                        updateMechanism={{ updatePath: ['beingSubType'] }}
+                                        value={ancestry.beingSubType}
+                                    />
                                 </div>
                             )}
 

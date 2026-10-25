@@ -103,6 +103,7 @@ export const modifierSchema = () => {
             attackBonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             damageBonus: new fields.NumberField({ ...requiredInteger, initial: 0 })
         })
+
     }
 }
 
