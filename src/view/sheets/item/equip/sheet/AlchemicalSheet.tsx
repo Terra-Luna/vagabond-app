@@ -26,7 +26,13 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
         <EquipmentSheetSubtypeBody>
             <div className="flex flex-col gap-2 items-start">
                 <DiceRollInputComponent
-                    label={appLang.ItemSheet.damage}
+                    label={item.system.damage.type === "healing"
+                        ? appLang.ItemSheet.healing
+                        : (item.system.damage.type === "mana"
+                            ? appLang.ItemSheet.mana
+                            : appLang.ItemSheet.damage
+                        )
+                    }
                     diceRoll={damageDice}
                     onChange={handleDiceChange}
                 />

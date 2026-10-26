@@ -871,6 +871,8 @@
       "mitReq": "Might Req.",
       "grip": "Grip",
       "damage": "Damage",
+      "healing": "Healing",
+      "mana": "Mana",
       "damageMod": "Bonus",
       "dmg": "Dmg",
       "damageType": "Damage Type",
