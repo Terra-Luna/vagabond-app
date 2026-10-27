@@ -5,7 +5,7 @@ import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
 import { ActorTypeConverter, CONVERTIBLE_ACTOR_TYPES } from "../../../../model/actor/util/ActorTypeConverter"
 import type { PolymorphFlag } from "../../../../model/actor/util/PolymorphUtil"
 import { sys_id } from "../../../../utils/foundryUtils"
-import { appLang } from "../../../../utils/lang"
+import { appLang, appTypes } from "../../../../utils/lang"
 import { type CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { Tooltip } from "../../../component/Tooltip"
@@ -54,7 +54,7 @@ export const ActorPortrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema
             label: "Convert to",
             subMenuItems: CONVERTIBLE_ACTOR_TYPES
                 .filter(type => type !== actor.parent.type)
-                .map(type => ({ label: type, action: () => ActorTypeConverter.convert(actor.parent, type) }))
+                .map(type => ({ label: appTypes.Actor[type], action: () => ActorTypeConverter.convert(actor.parent, type) }))
         }]
         : []
 

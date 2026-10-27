@@ -276,6 +276,10 @@ export const getAllowLateLuckStudy = (): boolean => {
     return (game.settings as any)?.get(sys_id, "allowLateLuckStudy")
 }
 
+export const getPolymorphEquipPrefs = (): string => {
+    return (game.settings as any)?.get(sys_id, "polymorphEquipPrefs")
+}
+
 export const getCombatAutoFlanking = (): boolean => {
     return (game.settings as any)?.get(sys_id, "combatAutoFlanking")
 }

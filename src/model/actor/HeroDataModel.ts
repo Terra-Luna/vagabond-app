@@ -1,15 +1,13 @@
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
-import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { getPolymorphEquipPrefs, getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { ActorBaseDataRulesApplicator } from "../../rules/util/ActorBaseDataRulesApplicator"
 import { getItemChoiceRules, getItemRules } from "../../rules/util/item-rules-util"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/PerkRulesSelectionsApplicator"
 import { getRuleToggleState, toggleItemRule } from "../../rules/util/rule-toggle-util"
-import { getRuleSelectors, normalizeSelector } from "../../rules/util/selector-util"
 import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { getId, inventoryItemTypes } from "../../utils/modelUtil"
-import { removeWhitespace } from "../../utils/stringUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { CapacityInfo } from "../../view/sheets/shared/CapacityGauge"
 import { consolidateCoins } from "../common/CoinValue"
@@ -311,6 +309,10 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         return allEquippedWeapons.filter(it => (it.system instanceof SundryDataModel && !it.system.isWearable) || (it.system instanceof WeaponDataModel && it.system.grip.style !== '-'))
     }
 
+    equippedWearables = (): (Item & { system: SundryDataModel })[] => {
+        return this.parent.items.filter((it: any) => it.type === "sundry" && it.system.isEquipped && it.system.isWearable)
+    }
+
     defenseWeapons = (): (Item & { system: WeaponDataModel })[] => {
         return this.parent.items.filter((it: any) =>
             it.type === "weapon" && it.system.isEquipped && it.system.isDefenseWeapon() && it.system.skills.some(skill => this.skills[skill].trained)
@@ -362,13 +364,32 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         if (polyFlag && Object.keys(polyFlag).length > 0) {
             // Set equipment id history so it can re-equip stuff later.
             if (!this.polymorph) {
+                const prefs = getPolymorphEquipPrefs()
+
                 const gear = [
                     ...this.equippedWeapons().filter(it => it.name.toUpperCase() !== "BREATH ATTACK"),
-                    ...this.equippedArmor()
+                    ...this.equippedArmor(),
+                    ...this.equippedWearables()
                 ]
+
+                const gearToUnequip = gear.filter((it: any) => {
+                    const isWeapon = it.type === 'weapon'
+                    const isArmor = it.type === 'armor'
+                    const isTool = it.type === 'sundry' && !it.system.isWearable
+                    const isCursed = it.system.isCursed?.() && it.system.isEquipped
+                    const isRelic = it.system.relicPowers?.some(rel => rel.bound)
+
+                    if (isCursed) return false
+                    if (prefs === 'none') return false
+                    if (prefs === 'weapons') return isWeapon || isTool
+                    if (prefs === 'weaponsArmor') return isWeapon || isTool || isArmor
+                    if (prefs === 'unbound') return !isRelic
+                    if (prefs === 'all') return true
+                })
+
                 polyFlag.equipHistory ??= []
-                polyFlag.equipHistory.push(...gear.map(it => it.id))
-                await Promise.all(gear.map(it => this.equip(it as any, true, true)))
+                polyFlag.equipHistory.push(...gearToUnequip.map(it => it.id))
+                await Promise.all(gearToUnequip.map(it => this.equip(it as any, true, true)))
             }
 
             polyFlag.statBlock.system.actions.forEach((action: any) => {

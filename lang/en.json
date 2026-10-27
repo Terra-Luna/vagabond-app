@@ -1283,7 +1283,14 @@
         "allowLateLuckStudy": "Allow Late Luck/Study",
         "lateLuckStudyHint": "Allow Heroes to spend Luck/Study dice after a failed check.",
         "combatAutoFlanking": "Combat Auto-Flanking",
-        "combatAutoFlankingHint": "Enable automatic Flank detection while in combat."
+        "combatAutoFlankingHint": "Enable automatic Flank detection while in combat.",
+        "polymorphEquipPrefs": "Polymorph & Gear Preferences",
+        "polymorphEquipPrefsHint": "Configure what active gear is kept while polymorphing. Unequipped gear will be automatically re-equipped when Polymorph ends. Cursed Relics will always be kept.",
+        "polymorphEquipPrefsNone": "Keep All",
+        "polymorphEquipPrefsWeapons": "Keep Armor & Wearables",
+        "polymorphEquipPrefsWeaponsArmor": "Keep Wearables Only",
+        "polymorphEquipPrefsUnbound": "Keep Bound Relics Only",
+        "polymorphEquipPrefsUnequipAll": "Unequip All"
       },
       "RulesEditor": {
         "windowTitle": "Grants & Modifiers",

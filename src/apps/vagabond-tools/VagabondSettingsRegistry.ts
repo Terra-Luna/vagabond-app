@@ -21,6 +21,7 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerPlayerRelicForgeAccess()
         VagabondSettingsRegistry.registerShowTrainingSelectionToggle()
         VagabondSettingsRegistry.registerAllowLateLuckStudy()
+        VagabondSettingsRegistry.registerPolymorphEquipPrefs()
         VagabondSettingsRegistry.registerCombatAutoFlanking()
 
         VagabondSettingsRegistry.registerItemShopToggle()
@@ -268,6 +269,25 @@ export class VagabondSettingsRegistry {
             config: true,
             type: Boolean,
             default: false
+        })
+    }
+
+    private static registerPolymorphEquipPrefs() {
+        game.settings?.register(sys_id, "polymorphEquipPrefs" as any, {
+            name: appLang.Settings.polymorphEquipPrefs,
+            hint: appLang.Settings.polymorphEquipPrefsHint,
+            scope: "world",
+            config: true,
+            type: String,
+            default: 'unbound',
+            choices: {
+                "none": appLang.Settings.polymorphEquipPrefsNone,
+                "weapons": appLang.Settings.polymorphEquipPrefsWeapons,
+                "weaponsArmor": appLang.Settings.polymorphEquipPrefsWeaponsArmor,
+                "unbound": appLang.Settings.polymorphEquipPrefsUnbound,
+                "all": appLang.Settings.polymorphEquipPrefsUnequipAll
+            },
+            onChange: () => { VagabondSettingsRegistry.refreshActorSheets() }
         })
     }
 

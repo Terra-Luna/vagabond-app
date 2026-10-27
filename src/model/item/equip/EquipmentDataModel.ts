@@ -23,6 +23,12 @@ const baseEquipmentSchema = () => {
         isEquippable: new fields.BooleanField({ initial: false }),
         isEquipped: new fields.BooleanField({ initial: false }),
         isConsumable: new fields.BooleanField({ initial: false }),
+        lightSourceData: new fields.SchemaField({
+            isLightSource: new fields.BooleanField({ initial: false }),
+            range: new fields.NumberField({ ...requiredInteger, initial: 30 }),
+            color: new fields.StringField({ ...requiredString, initial: `#FFFFFF` }),
+            duration: new fields.NumberField({ ...requiredInteger, initial: 3600 })
+        }),
         relicPowers: new fields.ArrayField(
             new fields.SchemaField({
                 id: new fields.StringField({ ...requiredString }),
