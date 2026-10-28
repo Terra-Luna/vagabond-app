@@ -64,9 +64,13 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
 
             {/* MAIN HEADER CONTENT + MENU BUTTON */}
             <div className="flex flex-col grow min-w-0 border-b border-solid border-sheet-header-fill">
-                <div className="bg-sheet-header-fill font-eskapade min-w-0">
-                    <div className="flex text-text-header-primary text-4xl font-bold mt-1 ml-2 min-w-0">
-                        <div className="min-w-0 truncate"><EditableNameField actor={hero.parent} /></div>
+                <div className="bg-sheet-header-fill font-eskapade px-1 min-w-0">
+                    <div className="flex  min-w-0">
+
+                        {/* HERO NAME FIELD */}
+                        <div className="text-text-header-primary text-3xl font-bold mt-1 truncate">
+                            <EditableNameField actor={hero.parent} />
+                        </div>
 
                         <div className="flex gap-x-2 ml-auto shrink-0 pl-2">
                             {/* LEVEL-UP BUTTON */}
@@ -91,10 +95,12 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                                 </Tooltip>
                             }
 
+                            {/* HERO SHEET MENU BUTTON */}
                             <HeroSheetMenu hero={hero} sheet={sheet} className="ml-auto" />
+
                         </div>
                     </div>
-                    <div className="flex text-text-header-secondary ml-2 pb-1 min-w-0">
+                    <div className="flex text-text-header-secondary pb-1 min-w-0">
                         {/* ANCESTRY & CLASS LABELS */}
                         <div className="min-w-0 grow truncate whitespace-nowrap">
                             <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
@@ -108,14 +114,14 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
 
                         {/* EXPERIENCE POINTS */}
                         {(hero.level.xpToLevel ?? -1) > 0 &&
-                            <div className="ml-2 mr-2 shrink-0 whitespace-nowrap cursor-pointer hover-glow" onClick={() => new XpQuestionnairePlayerApp(hero.parent).render({ force: true })}>
+                            <div className="ml-2 shrink-0 whitespace-nowrap cursor-pointer hover-glow" onClick={() => new XpQuestionnairePlayerApp(hero.parent).render({ force: true })}>
                                 {localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}
                             </div>
                         }
                     </div>
                 </div>
                 {/* HP, ARMOR, FATIGUE HUD */}
-                <div className="mt-2 -ml-1 w-full">
+                <div className="mt-3 -ml-1 w-full">
                     <HPArmorFatigueHUD health={hero.health} armor={hero.armor} hero={hero} />
                 </div>
             </div>

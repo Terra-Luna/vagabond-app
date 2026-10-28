@@ -10,7 +10,7 @@ import { groupBy } from "../../../../../utils/collectionUtil"
 import { appLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../../../chat/ChatCardSerializer"
-import { PrimaryButton, SecondaryButton } from "../../../../component/Button"
+import { UtilityButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../component/DynamicGrid"
 import { ClearHeader } from "../../../../component/Header"
@@ -155,15 +155,15 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
 
             {/* PERK AND TRAINING SELECTION BUTTONS */}
             {hero.class && <>
-                <div className={`flex gap-x-1 mt-1 w-full justify-between`}>
-                    {showTrainingSelection &&
-                        <SecondaryButton onClick={() => new TrainingSelectionApp(hero.parent).render({ force: true })}>
-                            Training Selections
-                        </SecondaryButton>
-                    }
-                    <PrimaryButton onClick={() => new PerkSelectionApp(hero.parent).render({ force: true })}>
+                <div className={`flex gap-x-1 mt-1 w-full mb-4`}>
+                    <UtilityButton onClick={() => new PerkSelectionApp(hero.parent).render({ force: true })}>
                         Perk Selections
-                    </PrimaryButton>
+                    </UtilityButton>
+                    {showTrainingSelection &&
+                        <UtilityButton onClick={() => new TrainingSelectionApp(hero.parent).render({ force: true })}>
+                            Training Selections
+                        </UtilityButton>
+                    }
                 </div>
             </>}
 

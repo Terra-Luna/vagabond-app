@@ -54,7 +54,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
             setIsOpen(false)
         }}>
             {/* MENU BUTTON */}
-            <button onClick={toggleMenu} className="flex items-center justify-center p-2 cursor-pointer">
+            <button onClick={toggleMenu} className="flex items-center justify-center pt-2 pr-1 cursor-pointer">
                 <div className="relative w-6 h-6">
                     <Menu className={`absolute inset-0 w-6 h-6 transition-all duration-300 transform ${isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`} />
                     <X className={`absolute inset-0 w-6 h-6 transition-all duration-300 transform ${isOpen ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'}`} />

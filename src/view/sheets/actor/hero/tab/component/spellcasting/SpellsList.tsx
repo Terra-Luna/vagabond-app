@@ -7,7 +7,7 @@ import { spellDamageBase } from "../../../../../../../model/item/character/Spell
 import { appLang } from "../../../../../../../utils/lang"
 import { getId } from "../../../../../../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../../../../../chat/ChatCardSerializer"
-import { PrimaryButton } from "../../../../../../component/Button"
+import { UtilityButton } from "../../../../../../component/Button"
 import { useContextMenu } from "../../../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../../../component/DynamicGrid"
 import { SkillCard, SkillCardTitle } from "../../../../../../component/SkillCard"
@@ -60,9 +60,9 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
 
         <div className="flex justify-between items-end w-full h-full mt-1">
             {/* LAUCH SPELL SELECTION APP */}
-            <PrimaryButton onClick={() => new SpellSelectionApp(hero.parent).render({ force: true })}>
+            <UtilityButton onClick={() => new SpellSelectionApp(hero.parent).render({ force: true })}>
                 {'Select Spells'}
-            </PrimaryButton>
+            </UtilityButton>
         </div>
 
         <ContextMenu />

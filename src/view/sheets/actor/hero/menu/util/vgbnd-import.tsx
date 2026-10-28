@@ -1,4 +1,4 @@
-import { importHero } from "../../../../../../apps/importer/TagalongImporter"
+import { importHero } from "../../../../../../apps/io/TagalongImporter"
 import { showInputDialog } from "../../../../../../apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
 
