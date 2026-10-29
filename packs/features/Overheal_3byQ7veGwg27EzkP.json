@@ -5,7 +5,19 @@
   "img": "icons/magic/life/cross-beam-green.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">When you restore HP, you add half your Level to the total HP restored and, if you restore HP that exceeds the Being’s Max HP, you can give the excess to yourself or a Being you can see.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "IwwbzpbWsb2zJEk7",
+        "key": "FlatModifier",
+        "label": "Healing Bonus",
+        "level": 2,
+        "value": "0.5",
+        "selector": [
+          "modifiers.healing.out.spell.bonus.flat"
+        ],
+        "valueMultiplier": "level.current"
+      }
+    ],
     "level": 2,
     "scale": 0,
     "maxLevel": 0
@@ -21,9 +33,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.2.143",
     "createdTime": 1789498925331,
-    "modifiedTime": 1789524294381,
+    "modifiedTime": 1793238923558,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

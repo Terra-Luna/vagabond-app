@@ -65,6 +65,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
         const deliveryOptions = imbueMode
             ? allDeliveryOptions.filter(d => d.name === appLang.SpellDeliveries.imbue.name)
             : allDeliveryOptions
+        
         if (imbueMode) setDeliveryIndex(0)
 
         if (savedState && Object.keys(savedState).length > 0) {
@@ -88,10 +89,12 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
                 }
                 setDeliveryIndex(index)
             }
+            
             setSelectedSpellId(hero.spells.some(sp => sp._sourceId === savedState?.spellUuid)
                 ? savedState.spellUuid ?? null
                 : hero.spells[0]?._sourceId ?? null
             )
+
             setSkill(savedState.skill)
         }
 

@@ -4,7 +4,7 @@
   "_id": "2EcaU8g8KwRNUAct",
   "img": "icons/weapons/guns/gun-pistol-flintlock-metal.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Attacking a Close Target with a Ranged attack doesn’t Hinder the Check, and you can Move up to half your Speed when you skip your Move to make an attack.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Your Ranged attacks don’t have Hinder due to Close Targets while you are dual wielding 1H Ranged Weapons.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -48,10 +48,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.141",
     "createdTime": 1784497586604,
-    "modifiedTime": 1785020904961,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1793236012356,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

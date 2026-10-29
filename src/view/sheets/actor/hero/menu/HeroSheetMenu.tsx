@@ -55,7 +55,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         }}>
             {/* MENU BUTTON */}
             <button onClick={toggleMenu} className="flex items-center justify-center pt-2 pr-1 cursor-pointer">
-                <div className="relative w-6 h-6">
+                <div className="relative w-6 h-6 text-text-header-primary">
                     <Menu className={`absolute inset-0 w-6 h-6 transition-all duration-300 transform ${isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`} />
                     <X className={`absolute inset-0 w-6 h-6 transition-all duration-300 transform ${isOpen ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'}`} />
                 </div>
@@ -70,7 +70,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
             `}>
                 {/* DARK/LIGHT THEME SELECTOR */}
                 <div className={`flex gap-x-2 items-center justify-between mb-4 px-2 py-1 bg-sheet-header-fill cursor-pointer ${tableBorderRounded}`} onClick={toggleTheme}>
-                    <p className="text-sm">{appLang.HeroSheet.Menu.theme}</p>
+                    <p className="text-sm text-text-header-primary">{appLang.HeroSheet.Menu.theme}</p>
                     <div className="flex gap-x-2 px-2 py-1 border border-solid border-text-header-tertiary rounded-sm">
                         <Sun size={18} className={`${isDarkMode ? 'text-text-header-primary hover-glow' : 'text-text-header-secondary'}`} />
                         <Moon size={18} className={`${isDarkMode ? 'text-text-header-secondary' : 'text-text-header-primary hover-glow'}`} />

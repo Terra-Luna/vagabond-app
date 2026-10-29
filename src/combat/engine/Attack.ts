@@ -91,6 +91,9 @@ export abstract class Attack<TActor extends Actor = Actor> {
             if (this.damageRoll.dmgType === 'healing') {
                 this.applyHealing(args)
             }
+            else if (this.damageRoll.dmgType === 'mana') {
+                this.applyMana(args)
+            }
             else if (this.damageRoll.dmgType === 'fatigue') {
                 this.applyFatigueDamage(args)
             }
@@ -117,6 +120,17 @@ export abstract class Attack<TActor extends Actor = Actor> {
                     perDieOverrideMod > 0
                         ? perDieOverrideMod
                         : (this.damageRoll?.result?.total ?? 0) + flatMod + perDieMod)
+            )
+        })
+    }
+
+    private applyMana(args: AttackResolutionArgs) {
+        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
+        this.getActors(targetIds).forEach(target => {
+            this.updateMana(
+                target?.system,
+                this.getMana(target?.system) +
+                this.damageRoll?.result?.total
             )
         })
     }
@@ -289,9 +303,19 @@ export abstract class Attack<TActor extends Actor = Actor> {
         return target?.health?.value
     }
 
+    protected getMana(target) {
+        return target?.mana?.value
+    }
+
     protected async updateHP(target, hp) {
         if (target) {
             await target?.parent?.update({ "system.health.value": hp })
+        }
+    }
+
+    protected async updateMana(target, mp) {
+        if (target) {
+            await target?.parent?.update({ "system.mana.value": mp })
         }
     }
 

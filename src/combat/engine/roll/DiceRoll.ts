@@ -25,7 +25,7 @@ export class DiceRoll {
     }
 
     toRollFormula(isCrit?: boolean): string {
-        const mod = `${this.modifier ? `+${this.modifier}` : ''}`
+        const mod = `${this.modifier ? `+${this.modifier}`.replace("+-", "-") : ''}`
         const explode = `${(this.explodesOn?.length ?? 0) > 0 ? `!${this.explodeOnCritOnly ? '*' : ''}` : ''}`
 
         if (isCrit) this.count += (this.extraDiceOnCrit ?? 0)

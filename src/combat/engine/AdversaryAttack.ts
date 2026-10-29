@@ -70,8 +70,16 @@ export class AdversaryAttack extends Attack {
     }
 
     override async rollDamage(isCrit?: boolean) {
+        const dmgMods = (this.actor.system as any)?.modifiers?.damage?.out
+        if (dmgMods && this.damageRoll) {
+            this.damageRoll.flatDmgBonus += dmgMods.global.bonus.flat ?? 0
+            this.damageRoll.perDieDmgBonus += dmgMods.global.bonus.perDie ?? 0
+        }
         if (this.damageRoll && this.damageRoll.dice.length > 0 && !this.damageRoll?.result) {
             await this.damageRoll.roll(isCrit)
+            if (this.damageRoll && this.damageRoll.result) {
+                this.damageRoll.result.total += this.damageRoll.flatDmgBonus + (this.damageRoll.perDieDmgBonus * this.damageRoll.dice.length)
+            }
         }
     }
 

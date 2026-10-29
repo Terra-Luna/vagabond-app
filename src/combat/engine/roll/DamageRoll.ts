@@ -57,7 +57,7 @@ export class DamageRoll {
             if (d.explodesOn && d.explodesOn.length > 0) formula += `!`
             if (d.modifier) formula += `+${d.modifier}`
             return formula
-        }).join('+')
+        }).join('+').replace("+-", "-")
     }
 
     toJson() {
