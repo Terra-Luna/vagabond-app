@@ -622,10 +622,10 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
                 })],
                 flatDmgBonus: isHealing
                     ? (mods.healing.out.spell.bonus.flat ?? 0)
-                    : (mods.damage.out.spell.bonus.flat ?? 0),
+                    : (mods.damage.out.global.bonus.flat ?? 0) + (mods.damage.out.spell.bonus.flat ?? 0),
                 perDieDmgBonus: isHealing
                     ? (mods.healing.out.spell.bonus.perDie ?? 0)
-                    : (mods.damage.out.spell.bonus.perDie ?? 0)
+                    : (mods.damage.out.global.bonus.perDie ?? 0) + (mods.damage.out.spell.bonus.perDie ?? 0)
             })
         }
         else {

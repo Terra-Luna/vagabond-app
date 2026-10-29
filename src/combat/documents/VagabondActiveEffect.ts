@@ -210,14 +210,9 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             img: "/icons/svg/paralysis.svg",
             changes: [
                 { key: "system.statuses.toggles.exalted", mode: "OVERRIDE", value: "true", priority: 20 },
-                { key: "system.modifiers.damage.out.melee.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
-                { key: "system.modifiers.damage.out.brawl.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
-                { key: "system.modifiers.damage.out.finesse.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
-                { key: "system.modifiers.damage.out.ranged.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
-                { key: "system.modifiers.damage.out.thrown.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
-                { key: "system.modifiers.damage.out.defense.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
-                { key: "system.modifiers.damage.out.spell.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
-                { key: "system.modifiers.damage.out.alchemy.bonus.perDie", mode: "ADD", value: "1", priority: 20 }
+                { key: "system.modifiers.damage.out.global.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
+                { key: "system.modifiers.damage.out.global.beingType.hellspawn.bonus.perDie", mode: "ADD", value: "1", priority: 20 },
+                { key: "system.modifiers.damage.out.global.beingType.undead.bonus.perDie", mode: "ADD", value: "1", priority: 20 }
             ]
         },
         {

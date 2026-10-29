@@ -1,17 +1,18 @@
 {
   "name": "Cloak of Displacement",
-  "type": "sundry",
-  "_id": "ltpmK1RIKUw30Lxz",
+  "type": "armor",
+  "_id": "SfAhVtbXDSXeInhF",
   "img": "/icons/equipment/back/cloak-collared-blue-gold.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Coat made of the fur of an omlarcat.</span></p>",
     "rules": [],
-    "category": "clothing",
+    "category": "armor",
     "value": {
       "g": 0,
-      "s": 5,
+      "s": 0,
       "c": 0
     },
+    "copperValue": 0,
     "bulk": {
       "slots": 1,
       "isStackable": false,
@@ -19,9 +20,15 @@
       "quantity": 1,
       "totalSlots": 0
     },
-    "isEquippable": true,
+    "isEquippable": false,
     "isEquipped": false,
     "isConsumable": false,
+    "lightSourceData": {
+      "isLightSource": false,
+      "range": 30,
+      "color": "#FFFFFF",
+      "duration": 3600
+    },
     "relicPowers": [
       {
         "id": "utility-other-bound",
@@ -54,31 +61,29 @@
         "bound": false
       }
     ],
-    "isWearable": true,
-    "copperValue": 500,
-    "isRation": false,
-    "isMaterials": false,
-    "isAlchemyTools": false
+    "armorType": "light",
+    "rating": 1,
+    "mightReq": 3,
+    "material": "steel"
   },
   "effects": [],
   "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.55",
-    "createdTime": 1790012427332,
-    "modifiedTime": 1790371007040,
+    "systemVersion": "0.2.147",
+    "createdTime": 1793285116040,
+    "modifiedTime": 1793285163173,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
-    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
-  "ownership": {
-    "default": 0,
-    "LxjckWttmatU52UJ": 3,
-    "KyorYoEvge7ElSaj": 3
-  },
-  "sort": 2500000,
-  "_key": "!items!ltpmK1RIKUw30Lxz"
+  "_key": "!items!SfAhVtbXDSXeInhF"
 }

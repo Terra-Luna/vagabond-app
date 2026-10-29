@@ -149,14 +149,30 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     private applyDamage(args: AttackResolutionArgs) {
+
         const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
         for (const id of targetIds) {
-            const targetActor = canvas?.scene?.tokens?.get(id)?.actor
+            const targetActor = canvas?.scene?.tokens?.get(id)?.actor as any
             if (!targetActor) continue
 
-            const adjDamage = this.calculateAdjustedDamage(id, args)
-            const weaknesses = (targetActor?.system as any)?.modifiers?.damage?.in?.weaknesses ?? []
-            const deathRequirements = (targetActor?.system as any)?.modifiers?.damage?.in?.deathRequirements
+            let adjDamage = this.calculateAdjustedDamage(id, args)
+            const weaknesses = targetActor?.system?.modifiers?.damage?.in?.weaknesses ?? []
+            const deathRequirements = targetActor?.system?.modifiers?.damage?.in?.deathRequirements
+            const beingTypes = [
+                targetActor?.system?.beingType,
+                targetActor?.system?.beingSubtype,
+                targetActor?.system?.ancestry?.beingType,
+                targetActor?.system?.ancestry?.beingSubtype
+            ].filter(Boolean)
+
+            const actorMods = (this.actor?.system as any)?.modifiers ?? {}
+            if (actorMods) {
+                const beingTypeMods = beingTypes.map(type => actorMods.damage.out.global.beingType[type]).filter(Boolean)
+                if (beingTypeMods && beingTypeMods.length > 0) {
+                    adjDamage += Math.max(...beingTypeMods.map(mod => mod.bonus.flat))
+                    adjDamage += Math.max(...beingTypeMods.map(mod => mod.bonus.perDie)) * (this.damageRoll?.result?.rollSummaries.length ?? 0)
+                }
+            }
 
             if ((targetActor.system as ActorDataModel<BaseActorSchema>).statuses.toggles.focusing && adjDamage >= FOCUS_DAMAGE_LIMIT) {
                 targetActor.update({ 'system.statuses.counters.focus': 0 } as Record<string, number>)

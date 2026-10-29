@@ -4,7 +4,7 @@
   "_id": "TU8frsbwItG3Y0E1",
   "img": "/icons/consumables/potions/bottle-metal-yellow-gray.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Acts as basic oil. However, when coated on a Weapon that is then ignited, the Weapon counts as Silvered (Blacksmith, p. 79).</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Acts as basic oil. However, when coated on a Weapon that is then ignited, the Weapon counts as Silvered.</span></p>",
     "rules": [],
     "category": "alchemy",
     "value": {
@@ -45,10 +45,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.147",
     "createdTime": 1786821727991,
-    "modifiedTime": 1786825645467,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1793285670523,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

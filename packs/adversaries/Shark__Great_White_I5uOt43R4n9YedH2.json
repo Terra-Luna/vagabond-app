@@ -273,6 +273,7 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "restrained",
@@ -282,10 +283,12 @@
       },
       {
         "name": "Bite (Blood Sense)",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 3,
-            "faces": 20,
+            "faces": 10,
             "modifier": 0,
             "explodesOn": []
           },
@@ -294,8 +297,7 @@
         "saves": [
           "reflex"
         ],
-        "type": "melee",
-        "range": "close",
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "restrained",
@@ -486,9 +488,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.150",
     "createdTime": 1790035777932,
-    "modifiedTime": 1790036075166,
+    "modifiedTime": 1793307470394,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
