@@ -1,6 +1,6 @@
 import { getCountdowns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
-import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { StatusEffectUtil } from "../../model/actor/util/StatusEffectUtil"
+import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { sys_id } from "../../utils/foundryUtils"
 
 export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {

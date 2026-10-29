@@ -63,7 +63,19 @@ export class CountdownRoll {
 
         const damage = this.result.rollSummary?.result ?? 0
         const health = (actor.system as any)?.health?.value ?? 0
-        await actor.update({ "system.health.value": health - damage } as Record<string, number>)
+
+        if (this.result.damageType === "mana") {
+            if (!(actor.system as any)?.mana) return
+            const adjMana = damage + (actor.system as any).mana.value
+            await actor.update({ "system.mana.value": adjMana } as Record<string, number>)
+        }
+        else {
+            const adjHp = this.result.damageType === "healing"
+                ? health + damage
+                : health - damage
+
+            await actor.update({ "system.health.value": adjHp } as Record<string, number>)
+        }
     }
 
     /**

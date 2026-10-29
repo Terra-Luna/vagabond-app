@@ -35,7 +35,7 @@
     },
     "appliedEffects": [
       {
-        "effect": "restrained",
+        "effect": "burning",
         "duration": "Cd6",
         "critDuration": "Cd6"
       }
@@ -52,9 +52,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.1",
+    "systemVersion": "0.2.145",
     "createdTime": 1786824628223,
-    "modifiedTime": 1789666498937,
+    "modifiedTime": 1793280934987,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
