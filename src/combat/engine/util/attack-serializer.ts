@@ -22,6 +22,7 @@ export interface AttackSnapshot {
     id: string
     itemId: string
     userId: string
+    createdAt?: number
     actorId: string
     targetIds: string[]
     title: string
@@ -72,6 +73,7 @@ function serializeCommonFields(atk: Attack): Omit<AttackSnapshot, 'skillCheck' |
         id: atk.id,
         type: atk.attackType,
         userId: atk.userId,
+        createdAt: atk.createdAt,
         title: atk.title,
         actorId: atk.actor.id ?? '',
         targetIds: atk.targetIds ?? [],

@@ -238,7 +238,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
                 roll3dDice([d6])
 
                 if (newResult.outcome !== appLang.RollResult.failure) {
-                    await this.damageRoll?.roll()
+                    await this.damageRoll?.roll(false, this.hasWeakTarget)
                     roll3dDice(this.damageRoll?.result?.rolls ?? [])
                 }
                 else {
@@ -492,6 +492,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             atkName: item.name,
             dmgType: weapon.damage.type,
             dice: [damageDice, ...extraDice ?? []],
+            weaknessDie: { faces: damageDice.faces, count: 1 },
             relicLevel: relicLevel,
             perDieDmgBonus: (dmgMods.global?.bonus?.perDie ?? 0) + (dmgMods[weaponSkill]?.bonus?.perDie ?? 0),
             armorPiercing: dmgMods.global?.armorPiercing?.flat
@@ -620,6 +621,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
                     modifier: 0,
                     explodesOn: explosionsMod as number[]
                 })],
+                weaknessDie: isHealing ? undefined : { faces: HeroAttack.SPELL_DIE_SIZE + dieSizeMod, count: 1 },
                 flatDmgBonus: isHealing
                     ? (mods.healing.out.spell.bonus.flat ?? 0)
                     : (mods.damage.out.global.bonus.flat ?? 0) + (mods.damage.out.spell.bonus.flat ?? 0),

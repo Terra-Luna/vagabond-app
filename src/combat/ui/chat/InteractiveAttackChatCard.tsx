@@ -17,6 +17,7 @@ import { HeroAttack } from "../../engine/HeroAttack"
 import { deserializeAttack } from "../../engine/util/attack-deserializer"
 import { serializeAttack } from "../../engine/util/attack-serializer"
 import { AdversaryAttackComponent, AdversaryComboAttackComponent } from "./AdversaryAttackComponent"
+import { AttackDamageSummary } from "./AttackDamageSummary"
 import { subscribeToAttack } from "./AttackRegistryStore"
 import { HeroAttackComponent } from "./HeroAttackComponent"
 import { InteractiveChatCardButton } from "./InteractiveChatCardButton"
@@ -26,6 +27,15 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     const [revision, setRevision] = useState(0)
     const [targetsToggle, setTargetsToggle] = useState<boolean>(false)
     const [armorBypassToggle, setArmorBypassToggle] = useState<boolean>(false)
+    const [damageOverrides, setDamageOverrides] = useState<Record<string, number>>({})
+    const resolutionArgs = { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle, damageOverrides }
+
+    const handleOverrideChange = (key: string, value: number | undefined) => {
+        setDamageOverrides(previous => {
+            const { [key]: _removed, ...rest } = previous
+            return value === undefined ? rest : { ...rest, [key]: value }
+        })
+    }
 
     const actor = useMemo(() => {
         return getCanvasToken(actorId)?.actor ?? game.actors?.get(actorId)
@@ -98,6 +108,11 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                             <AdversaryComboAttackComponent attack={attack} setRevision={setRevision} />
                         }
 
+                        {/* DAMAGE SUMMARY (PREVIEW OF "APPLY") */}
+                        {attack.showDamage &&
+                            <AttackDamageSummary attack={attack} args={resolutionArgs} onOverrideChange={handleOverrideChange} />
+                        }
+
                         {/* GM TOOLS */}
                         {(game.user?.isActiveGM && !attack.isResolved && !(attack as any).showCritChoices && !(attack as any).isDefenseCheck) &&
                             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
@@ -123,7 +138,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                                 <InteractiveChatCardButton label={appLang.ButtonActions.apply} tooltip={appLang.Combat.applyDamageTooltip}
                                                     fn={async () => {
                                                         await attack.applyDamageAndResolve(
-                                                            { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle },
+                                                            resolutionArgs,
                                                             serializeAttack
                                                         )
                                                         setRevision(prev => prev + 1)

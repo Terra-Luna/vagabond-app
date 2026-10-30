@@ -2,10 +2,10 @@
   "id": "vagabond-app",
   "title": "Vagabond - React",
   "description": "A lightweight system for the pulp fantasy RPG, Vagabond!",
-  "version": "0.2.150",
+  "version": "0.2.152",
   "url": "https://github.com/Terra-Luna/vagabond-app",
   "manifest": "https://github.com/Terra-Luna/vagabond-app/releases/latest/download/system.json",
-  "download": "https://github.com/Terra-Luna/vagabond-app/releases/download/v0.2.149/vagabond-app-v0.2.149.zip",
+  "download": "https://github.com/Terra-Luna/vagabond-app/releases/download/v0.2.151/vagabond-app-v0.2.151.zip",
   "license": "LICENSE",
   "compatibility": {
     "minimum": "14",

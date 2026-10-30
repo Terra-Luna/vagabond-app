@@ -6,6 +6,7 @@ import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderV
 import { SpellcastingApp } from "../../../../../apps/spellcasting/SpellcastingApp"
 import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
+import { recordSheetSaveOnActiveAttacks } from "../../../../../combat/engine/util/attack-save-sync"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { sys_id } from "../../../../../utils/foundryUtils"
@@ -302,7 +303,8 @@ const Save = ({ hero, save }: {
             <div className={`flex items-center font-eskapade hover-glow ${tableBorder}/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await new SkillCheck(hero, { type: 'save', skill: save.key, clickEvent: e }).roll()
-                    sendVagabondChatCard(hero, "SkillCheckChatCard", { actorId: getId(hero), result: skillCheck })
+                    const recorded = await recordSheetSaveOnActiveAttacks(hero.parent, skillCheck)
+                    if (!recorded) sendVagabondChatCard(hero, "SkillCheckChatCard", { actorId: getId(hero), result: skillCheck })
                 }
             }>
                 <div className="mx-1 w-full line-clamp-1">

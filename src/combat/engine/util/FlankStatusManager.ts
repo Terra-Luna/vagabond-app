@@ -15,11 +15,17 @@ export class FlankStatusManager {
         Hooks.on("deleteCombat", () => FlankStatusManager.refreshAll())
         Hooks.on("combatStart", () => FlankStatusManager.refreshAll())
         Hooks.on("createToken", (doc: TokenDocument) => FlankStatusManager.onTokenChanged(doc))
+        const onDeadStatusChanged = (effect: ActiveEffect) => {
+            if ((effect as any).statuses?.has("dead")) FlankStatusManager.refreshAll()
+        }
+        Hooks.on("createActiveEffect", onDeadStatusChanged)
+        Hooks.on("deleteActiveEffect", onDeadStatusChanged)
         Hooks.on("deleteToken", (doc: TokenDocument) => FlankStatusManager.onTokenChanged(doc))
         Hooks.on("updateActor", (actor: Actor, changes: Record<string, any>) => {
             const polymorphChanged = foundry.utils.hasProperty(changes, `flags.${sys_id}.polymorph`)
                 || foundry.utils.hasProperty(changes, `flags.${sys_id}.-=polymorph`)
-            const sizeChanged = polymorphChanged
+            const hpChanged = foundry.utils.hasProperty(changes, "system.health.value")
+            const sizeChanged = hpChanged || polymorphChanged
                 || foundry.utils.hasProperty(changes, "system.beingSize")
                 || foundry.utils.hasProperty(changes, "system.ancestry.beingSize")
             if (!sizeChanged) return
@@ -142,12 +148,17 @@ export class FlankStatusManager {
             return { left, top, right: left + (doc.width ?? 1) * size, bottom: top + (doc.height ?? 1) * size, doc, size }
         }
 
+        const isDown = (token: Token) => {
+            const actor = token.actor as any
+            return actor?.system?.health?.value <= 0 || !!actor?.statuses?.has("dead")
+        }
+
         // Gridless: tokens within 5 ft of each other are proximal.
         if (grid.isGridless) {
             const a = rectOf(subject)
             const feetPerPixel = (grid.distance ?? 5) / (grid.size || 100)
             return canvas.tokens.placeables.filter(token => {
-                if (token === subject) return false
+                if (token === subject || isDown(token)) return false
                 const b = rectOf(token)
                 const dx = Math.max(0, a.left - b.right, b.left - a.right)
                 const dy = Math.max(0, a.top - b.bottom, b.top - a.bottom)
@@ -181,7 +192,7 @@ export class FlankStatusManager {
         }
 
         return canvas.tokens.placeables.filter(token =>
-            token !== subject && occupiedOffsets(token).some(o => adjacent.has(key(o)))
+            token !== subject && !isDown(token) && occupiedOffsets(token).some(o => adjacent.has(key(o)))
         )
     }
 }

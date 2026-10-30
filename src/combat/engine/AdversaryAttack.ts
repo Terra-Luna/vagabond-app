@@ -110,6 +110,26 @@ export class AdversaryAttack extends Attack {
     }
 
     /**
+     * Injects a save rolled from the Hero sheet (or wherever) into the attack's chat card save results.
+     */
+    async recordSaveResult(targetId: string, saveType: SavingThrowType, result: SkillCheckResult): Promise<boolean> {
+        if (this.isResolved || !this.targetIds.includes(targetId) || !this.saveTypes.includes(saveType)) return false
+
+        const existing = this.saveResults[targetId]
+        if (existing) {
+            if (existing.outcome !== appLang.RollResult.failure || this.rerolledSaveTargetIds.includes(targetId)) return false
+            this.rerolledSaveTargetIds = [...this.rerolledSaveTargetIds, targetId]
+            this.defenseArmorBonuses = Object.fromEntries(
+                Object.entries(this.defenseArmorBonuses).filter(([id]) => id !== targetId)
+            )
+        }
+
+        this.saveResults = { ...this.saveResults, [targetId]: result }
+        await this.save(serializeAttack)
+        return true
+    }
+
+    /**
      * GM override: sets (or replaces) a target's save outcome.
      */
     async setSaveOutcome(targetId: string, outcome: string): Promise<void> {

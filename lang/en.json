@@ -890,6 +890,7 @@
       "explodesOnTooltip": "Separate values with comma",
       "range": "Range",
       "type": "Type",
+      "subtype": "Subtype",
       "props": "Properties",
       "material": "Material",
       "capacity": "CAPACITY",

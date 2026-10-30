@@ -15,6 +15,13 @@ export interface DamageRollArgs {
     armorPiercingPerDie?: number
     armorPiercingPerExtraDie?: number
     relicLevel?: number
+    weaknessDie?: WeaknessDie
+}
+
+// Extra die rolled when a target is weak to the damage type; kept apart from the main roll.
+export interface WeaknessDie {
+    faces: number
+    count: number
 }
 
 export interface DamageRollResult {
@@ -24,6 +31,7 @@ export interface DamageRollResult {
     total: number
     armorPiercing: number
     rollSummaries: RollSummary[]
+    weaknessRolls?: RollSummary[]
     rolls: Roll.Evaluated<Roll<EmptyObject>>[]
 }
 
@@ -37,9 +45,11 @@ export class DamageRoll {
     armorPiercingPerDie: number
     armorPiercingPerExtraDie: number
     relicLevel: number
+    weaknessDie?: WeaknessDie
     result: DamageRollResult | undefined
 
     constructor(args: DamageRollArgs) {
+        this.weaknessDie = args.weaknessDie
         this.atkName = args.atkName
         this.dice = args.dice
         this.dmgType = args.dmgType ?? 'physical'
@@ -71,6 +81,7 @@ export class DamageRoll {
             armorPiercingPerDie: this.armorPiercingPerDie,
             armorPiercingPerExtraDie: this.armorPiercingPerExtraDie,
             relicLevel: this.relicLevel,
+            weaknessDie: this.weaknessDie,
             result: this.result
         }
     }
@@ -87,7 +98,8 @@ export class DamageRoll {
                 armorPiercing: json.armorPiercing,
                 armorPiercingPerDie: json.armorPiercingPerDie,
                 armorPiercingPerExtraDie: json.armorPiercingPerExtraDie,
-                relicLevel: json.relicLevel
+                relicLevel: json.relicLevel,
+                weaknessDie: json.weaknessDie
             })
             roll.result = json.result
             return roll
@@ -98,7 +110,7 @@ export class DamageRoll {
         }
     }
 
-    async roll(isCrit?: boolean): Promise<DamageRollResult> {
+    async roll(isCrit?: boolean, includeWeaknessDie: boolean = false): Promise<DamageRollResult> {
         const straightRolls = this.dice.filter(d => !d.explodesOn || d.explodesOn.length === 0).map(d => new DiceRoll(d))
         const explodingRolls = this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0).map(d => new DiceRoll(d))
 
@@ -149,6 +161,14 @@ export class DamageRoll {
         } as DamageRollResult
 
         if (canExplode && combinedExplosions) result.rolls.push(combinedExplosions)
+
+        if (includeWeaknessDie && this.weaknessDie && this.weaknessDie.count > 0) {
+            const weaknessRoll = await new Roll(`${this.weaknessDie.count}d${this.weaknessDie.faces}`).evaluate()
+            result.weaknessRolls = getDiceTerms(weaknessRoll).flatMap(term =>
+                term.results.map(res => ({ result: res.result, faces: term.faces as number, rerolled: false, exploded: false }))
+            )
+            result.rolls.push(weaknessRoll)
+        }
 
         this.result = result
         return result

@@ -50,10 +50,11 @@ export const onClickAction = async (
 
 export const buildPolymorphAttack = (actor: Actor & { system: HeroDataModel }, action: any): HeroAttack | undefined => {
     const polyMods = actor.system.modifiers.polymorph
+    const findRelic = (id: string) => [...RelicPowers.bonus, ...RelicPowers.utility].find(it => it.id === id)
     const relicPower = polyMods.relicAttacks
         ? (polyMods.attackBonus > 0
-            ? RelicPowers.bonus.find(it => it.id === `bonus-weapon-${Math.min(3, polyMods.attackBonus)}`)
-            : RelicPowers.bonus.find(it => it.id === `utility-other`)
+            ? findRelic(`bonus-weapon-${Math.min(3, polyMods.attackBonus)}`)
+            : findRelic(`utility-other`)
         )
         : undefined
 

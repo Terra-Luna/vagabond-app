@@ -26,6 +26,7 @@ function deserializeHeroAttack(
 
     atk.id = snapshot.id
     atk.userId = snapshot.userId
+    atk.createdAt = snapshot.createdAt ?? 0
     atk.itemId = snapshot.itemId
     atk.spellDelivery = snapshot.spellDelivery
     atk.critChoice = snapshot.critChoice
@@ -74,6 +75,7 @@ function deserializeAdversaryAttack(snapshot: AttackSnapshot): AdversaryAttack |
 
     atk.id = snapshot.id
     atk.userId = snapshot.userId
+    atk.createdAt = snapshot.createdAt ?? 0
     atk.isResolved = snapshot.isResolved
     atk.damageRoll = damageRoll
     atk.appliedEffects = snapshot.appliedEffects ?? []
@@ -98,6 +100,7 @@ function deserializeComboAttack(snapshot: AttackSnapshot): AdversaryComboAttack 
 
     atk.id = snapshot.id
     atk.userId = snapshot.userId
+    atk.createdAt = snapshot.createdAt ?? 0
     atk.isResolved = snapshot.isResolved
     atk.appliedEffects = snapshot.appliedEffects ?? []
     atk.subAttacks = (snapshot.subAttacks ?? []).map(sub => ComboSubAttack.fromJson(sub))

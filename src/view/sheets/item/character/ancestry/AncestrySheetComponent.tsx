@@ -1,5 +1,6 @@
 import { AncestryDataModel } from "../../../../../model/item/character/AncestryDataModel"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
+import { normalizeRuleSelections, randomId } from "../../../../../rules/util/item-rules-util"
 import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { useContextMenu } from "../../../../component/ContextMenu"
@@ -17,6 +18,22 @@ export const AncestrySheetComponent = ({ item }: { item: Item & { system: Ancest
     const { imageEditCtxMenuItems } = useImageEdit(item)
 
     const ancestry = item.system
+
+    const choiceRules = (ancestry.rules as any[] | undefined)?.filter(r =>
+        r.key === "ChoiceSet" &&
+        r.channel === "path" &&
+        (r.choices as any[])?.some(choice => !choice.value.includes("skills.")) &&
+        (r.choices as any[])?.some(choice => !choice.value.includes("stats."))
+    ) ?? []
+
+    const onSelectChoice = (ruleId: string, value: string) => {
+        const rules = foundry.utils.deepClone(ancestry.rules as any[])
+        const rule = rules.find(r => r.id === ruleId)
+        if (!rule) return
+        const existing = normalizeRuleSelections(rule.selections)[0]
+        rule.selections = value ? [{ id: existing?.id ?? randomId(), value, subselect: "" }] : []
+        item.update({ "system.rules": rules } as Record<string, any>)
+    }
 
     return (
         <div className="flex h-full w-full overflow-hidden">
@@ -53,13 +70,43 @@ export const AncestrySheetComponent = ({ item }: { item: Item & { system: Ancest
                                         value={ancestry.beingType}
                                     />
                                     <DropDown
-                                        label={appLang.ItemSheet.type}
+                                        label={appLang.ItemSheet.subtype}
                                         variant="alternate"
                                         options={createDropdownEntries(appLang.BeingSubtypes, true)}
                                         parent={ancestry.parent}
                                         updateMechanism={{ updatePath: ['beingSubType'] }}
                                         value={ancestry.beingSubType}
                                     />
+                                </div>
+                            )}
+
+                            {isEditMode && item.parent && item.isOwner && choiceRules.length > 0 && (
+                                <div className="text-header-text-secondary flex gap-2 mb-2">
+                                    {choiceRules.map(rule => (
+                                        <DropDown
+                                            key={rule.id}
+                                            label={rule.label}
+                                            variant="alternate"
+                                            options={[{ value: '', label: '-' }, ...rule.choices.map((c: any) => ({ value: c.value, label: c.label }))]}
+                                            updateMechanism={{ onChange: (val: string) => onSelectChoice(rule.id, val) }}
+                                            value={normalizeRuleSelections(rule.selections)[0]?.value ?? ''}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+
+                            {!isEditMode && item.parent && choiceRules.some(rule => normalizeRuleSelections(rule.selections)[0]) && (
+                                <div className="flex flex-wrap gap-x-4 mb-2 text-text-primary font-eskapade">
+                                    {choiceRules.map(rule => {
+                                        const selected = normalizeRuleSelections(rule.selections)[0]?.value
+                                        const choice = rule.choices.find((c: any) => c.value === selected)
+                                        if (!selected) return null
+                                        return (
+                                            <div key={rule.id}>
+                                                <span className="font-bold">{rule.label}:</span> {choice?.label ?? selected}
+                                            </div>
+                                        )
+                                    })}
                                 </div>
                             )}
 
