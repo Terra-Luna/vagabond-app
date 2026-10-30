@@ -123,6 +123,14 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
                 this.damageRoll.perDieDmgBonus = 0
             }
             await this.rollDamage(this.skillCheck?.result?.outcome === appLang.RollResult.crit)
+            if (this.isDefenseCheck && this.skillCheck?.result?.outcome === appLang.RollResult.crit && this.damageRoll?.result) {
+                const skill = this.skillCheck.skill ? this.actor.system.skills[this.skillCheck.skill] : undefined
+                if (skill) {
+                    const critArmor = skill.trained ? (20 - skill.value) / 2 : 20 - skill.value
+                    this.damageRoll.result.bonus += critArmor
+                    this.damageRoll.result.total += critArmor
+                }
+            }
         }
 
         /**
@@ -381,9 +389,26 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         const result = checkAttack.skillCheck?.result
         if (!result) return
 
-        const armorBonus = result.outcome !== appLang.RollResult.failure ? checkAttack.damageRoll?.result?.total ?? 0 : 0
+        return { result, armorBonus: HeroAttack.getDefenseArmorBonus(hero, checkAttack) }
+    }
 
-        return { result, armorBonus }
+    /**
+     * Armor granted by a completed defense check: the rolled defense dice (which already include
+     * the crit bonus) on a success.
+     */
+    static getDefenseArmorBonus(_hero: HeroDataModel, checkAttack: HeroAttack): number {
+        const result = checkAttack.skillCheck?.result
+        if (!result || result.outcome === appLang.RollResult.failure) return 0
+        return checkAttack.damageRoll?.result?.total ?? 0
+    }
+
+    async sendChatCard() {
+        await this.save(serializeAttack)
+        sendVagabondChatCard(
+            this.actor,
+            "InteractiveAttackChatCard",
+            { actorId: this.actor.id!, attackId: this.id }
+        )
     }
 
     static buildWeaponAttack(
@@ -522,10 +547,17 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             }
         }
 
-        // Weapons have no applied effects of their own; polymorph actions supply them.
-        const weaponEffects: AppliedFx[] | undefined = item.system["appliedEffects"]
-        if (weaponEffects?.length) {
-            attack.appliedEffects = weaponEffects.map(eff => ({ ...eff, damageType: weapon.damage.type }))
+        // Weapons carry their own applied effects plus any granted by relic powers (e.g. Burning).
+        const weaponEffects: AppliedFx[] = [...(item.system["appliedEffects"] ?? [])]
+        const relicEffects = RelicPowerProcessor.getRelicAppliedEffects(weapon.relicPowers as any)
+        relicEffects.forEach(fx => {
+            if (!weaponEffects.some(eff => eff.effect === fx.effect && (eff.duration ?? '') === fx.duration)) weaponEffects.push(fx)
+        })
+        if (weaponEffects.length) {
+            attack.appliedEffects = weaponEffects.map(eff => {
+                const relicType = relicEffects.find(fx => fx.effect === eff.effect && fx.duration === (eff.duration ?? ''))?.damageType
+                return { ...eff, damageType: relicType ?? weapon.damage.type }
+            })
         }
 
         return attack

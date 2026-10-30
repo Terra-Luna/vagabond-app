@@ -9,7 +9,8 @@ export interface RelicPower {
         modifiers: {
             selector: string[],
             value: number
-        }[]
+        }[],
+        appliedEffect?: { effect: string, duration: string, damageType?: string } | null
     },
     goldValue: number,
     bound: boolean,
@@ -41,12 +42,14 @@ export class RelicPowers {
 
     static get(itemType: string): RelicPower[] {
         const relics = (game.settings as any)?.get(sys_id, "relics")
+        const defaults = [...RelicPowers.utility] as any[]
         return relics
             .filter(rel => rel.types.includes(itemType))
             .map(rel => ({
                 ...rel,
                 power: {
                     ...rel.power,
+                    appliedEffect: rel.power?.appliedEffect ?? defaults.find(it => it.id === rel.id)?.power?.appliedEffect,
                     modifiers: rel.power?.modifiers?.map(({ path, ...mod }: any) => ({
                         ...mod,
                         selector: Array.isArray(mod.selector) ? mod.selector : (path ? [path] : [])
@@ -852,7 +855,12 @@ export class RelicPowers {
         {
             id: 'utility-burning-1',
             category: { value: 'utility', label: 'Utility' },
-            power: { value: 'burning-1', label: 'Burning I' },
+            power: {
+                value: 'burning-1',
+                label: 'Burning I',
+                modifiers: [],
+                appliedEffect: { effect: 'burning', duration: 'Cd4' }
+            },
             types: ['weapon'],
             goldValue: 4000,
             description: "Burning (Cd4) on a hit."
@@ -860,7 +868,12 @@ export class RelicPowers {
         {
             id: 'utility-burning-2',
             category: { value: 'utility', label: 'Utility' },
-            power: { value: 'burning-2', label: 'Burning II' },
+            power: {
+                value: 'burning-2',
+                label: 'Burning II',
+                modifiers: [],
+                appliedEffect: { effect: 'burning', duration: 'Cd6' }
+            },
             types: ['weapon'],
             goldValue: 15000,
             description: "Burning (Cd6) on a hit."
@@ -868,7 +881,12 @@ export class RelicPowers {
         {
             id: 'utility-burning-3',
             category: { value: 'utility', label: 'Utility' },
-            power: { value: 'burning-3', label: 'Burning III' },
+            power: {
+                value: 'burning-3',
+                label: 'Burning III',
+                modifiers: [],
+                appliedEffect: { effect: 'burning', duration: 'Cd8' }
+            },
             types: ['weapon'],
             goldValue: 64000,
             description: "Burning (Cd8) on a hit."

@@ -9,7 +9,8 @@ import { EditModeContextProvider } from "../../view/context/EditModeContext/Edit
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { ConfirmationDialog } from "./dialog/ConfirmationDialog"
 import { PolymorphApp } from "./polymorph/PolymorphApp"
-import { addCountdown, addProgressClock, deleteAllCountdowns, deleteAllProgressClocks, getCountdowns, getItemShopToggle, getProgressClocks, setItemShopToggle } from "./usecase/VagabondSettingsHelper"
+import { CountdownManager } from "./usecase/CountdownManager"
+import { addProgressClock, deleteAllProgressClocks, getItemShopToggle, getProgressClocks, setItemShopToggle } from "./usecase/VagabondSettingsHelper"
 
 export const VagabondToolsAppView = () => {
     const [shopToggle, setShopToggle] = useState<boolean>(getItemShopToggle())
@@ -21,7 +22,7 @@ export const VagabondToolsAppView = () => {
     }, [])
 
     const createNewCountdown = useCallback(async (label: string, duration: number) => {
-        await addCountdown(label, duration)
+        await CountdownManager.add(label, duration)
     }, [])
 
     const createNewProgressClock = useCallback(async (clockName = appLang.VagabondTools.defaultClockName, duration = 4) => {
@@ -43,12 +44,12 @@ export const VagabondToolsAppView = () => {
                             <UtilityButton onClick={() => createNewCountdown("Cd20", 20)}>Cd20</UtilityButton>
                             <div className="ml-2">
                                 <TrashButton title={appLang.VagabondTools.deleteAllCountdownsTooltip} onClick={async () => {
-                                    if (getCountdowns().length > 0) {
+                                    if (CountdownManager.getAll().length > 0) {
                                         setDeleteConfirmation({
                                             isOpen: true,
                                             title: appLang.VagabondTools.deleteAllCountdowns,
                                             message: appLang.VagabondTools.deleteCountdownsConfirmation,
-                                            onAccept: deleteAllCountdowns
+                                            onAccept: CountdownManager.deleteAll
                                         })
                                     }
                                 }} />

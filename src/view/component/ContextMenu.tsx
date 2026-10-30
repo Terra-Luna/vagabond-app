@@ -97,7 +97,10 @@ const OneMenuItem = ({ item, length, onItemAction }: { item: CtxMenuItem, length
 
     if (subMenuItems) {
         return (
-            <SubMenu label={<LabelAndIcon item={item} isSubMenu />} className={isSelected ? ctxMenuSelectedTextStyle : ctxMenuTextStyle} menuClassName={ctxSubMenuContainerStyle}>
+            <SubMenu
+                label={<LabelAndIcon item={item} isSubMenu={!item.action} />}
+                itemProps={item.action ? { onClick: (e: any) => { item.action?.(e); onItemAction(e) } } : undefined}
+                className={isSelected ? ctxMenuSelectedTextStyle : ctxMenuTextStyle} menuClassName={ctxSubMenuContainerStyle}>
                 {subMenuItems.map((subItem, index) => <OneMenuItem key={index} item={subItem} length={item.subMenuItems?.length} onItemAction={onItemAction} />)}
             </SubMenu>)
     }

@@ -64,7 +64,7 @@ const usePortraitOpenFlag = (actor: Actor) => {
 export const NpcSheetComponent = ({ actor, hidePortrait }: { actor: Actor & { system: AdversaryDataModel | NpcDataModel }, hidePortrait?: boolean }) => {
     const npc = actor.system
     const { isEditMode } = useEditMode()
-    const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
+    const { isAddActionOpen, setIsAddActionOpen } = useAddActionMenu()
     const { isPortraitOpen: storedPortraitOpen, setIsPortraitOpen: setStoredPortraitOpen } = usePortraitOpenFlag(actor)
 
     const isPortraitOpen = !hidePortrait && storedPortraitOpen
@@ -95,10 +95,10 @@ export const NpcSheetComponent = ({ actor, hidePortrait }: { actor: Actor & { sy
                     <Description item={npc.parent} showFullView={true} />
                     <StatBlock npc={npc} />
 
-                    <Actions npc={npc} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
+                    <Actions npc={npc} setIsAddMenuOpen={setIsAddActionOpen} />
 
                     {isAddActionOpen &&
-                        <NewActionWindow npc={npc} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} />
+                        <NewActionWindow npc={npc} setIsAddMenuOpen={setIsAddActionOpen} />
                     }
 
                     <Abilities actor={actor} />

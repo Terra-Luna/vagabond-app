@@ -243,6 +243,11 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
         }
     ]
 
+    static statusesWithoutDuration = [
+        "exalted", "warded", "hexed", "marked", "blessed",
+        "flanked", "dead", "grappling", "focusing", "prone"
+    ]
+
     /**
      * Intercepts when an effect is created so the canvas scrolling text 
      * for modifications and token status updates reads correctly.

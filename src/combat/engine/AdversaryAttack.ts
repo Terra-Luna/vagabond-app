@@ -54,7 +54,7 @@ export class AdversaryAttack extends Attack {
         this.description = args.description ?? ''
         this.halfDamageOnSave = args.halfDamageOnSave ?? false
         this._isSpellAttack = args.isSpellAttack ?? false
-        this.appliedEffects = args.appliedEffects ?? []
+        this.appliedEffects = (args.appliedEffects ?? []).map(eff => ({ ...eff, damageType: eff.damageType ?? args.dmgType }))
     }
 
     async initiate() {
@@ -112,8 +112,9 @@ export class AdversaryAttack extends Attack {
     /**
      * Injects a save rolled from the Hero sheet (or wherever) into the attack's chat card save results.
      */
-    async recordSaveResult(targetId: string, saveType: SavingThrowType, result: SkillCheckResult): Promise<boolean> {
-        if (this.isResolved || !this.targetIds.includes(targetId) || !this.saveTypes.includes(saveType)) return false
+    async recordSaveResult(targetId: string, saveType: SavingThrowType, result: SkillCheckResult, armorBonus?: number): Promise<boolean> {
+        const isAllowed = saveType === 'defend' ? this.saveTypes.includes('reflex') : this.saveTypes.includes(saveType)
+        if (this.isResolved || !this.targetIds.includes(targetId) || !isAllowed) return false
 
         const existing = this.saveResults[targetId]
         if (existing) {
@@ -124,6 +125,7 @@ export class AdversaryAttack extends Attack {
             )
         }
 
+        if (saveType === 'defend') this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: armorBonus ?? 0 }
         this.saveResults = { ...this.saveResults, [targetId]: result }
         await this.save(serializeAttack)
         return true
@@ -190,12 +192,13 @@ export class AdversaryAttack extends Attack {
     }
 
     /**
-     * A target who succeeded (or crit) their saving throw takes no damage.
+     * A target who succeeded (or crit) their saving throw takes no damage. A defense check never
+     * negates damage outright; it only adds armor.
      */ 
     protected override shouldApplyDamageToTarget(targetId: string): boolean {
         const result = this.saveResults[targetId]
         if (this.defenseArmorBonuses[targetId] !== undefined) {
-            return result.outcome !== appLang.RollResult.crit
+            return true
         }
         else {
             return !result

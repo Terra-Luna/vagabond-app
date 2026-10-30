@@ -1,6 +1,7 @@
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
 import type { RelicPower } from "./RelicPowers"
+import { RelicPowers } from "./RelicPowers"
 
 const getModifierSelectors = (mod: any): string[] => {
     if (Array.isArray(mod?.selector) && mod.selector.length > 0) return mod.selector
@@ -65,6 +66,7 @@ export class RelicPowerProcessor {
      * Update the item with DB-backed properties based on the relic's modifiers and the specified event ('add' or 'remove').
      */
     static updateItemProperties = async (item: Item, relic: RelicPower, event: 'add' | 'remove') => {
+        await RelicPowerProcessor.syncAppliedEffect(item, relic, event)
         if (!relic.power.modifiers || relic.power.modifiers.length === 0) return
 
         for (const mod of relic.power.modifiers) {
@@ -75,6 +77,45 @@ export class RelicPowerProcessor {
                 await item.update({ [selector]: currentValue + delta })
             }
         }
+    }
+
+    /**
+     * Status effects granted by an item's relic powers. Falls back to the built-in definition so
+     * powers stored before `appliedEffect` existed still work.
+     */
+    static getRelicAppliedEffects = (relics?: RelicPower[]): { effect: string, duration: string, damageType?: string }[] => {
+        const builtIn = RelicPowers.utility as unknown as RelicPower[]
+        return (relics ?? []).flatMap(relic => {
+            const fx = relic.power?.appliedEffect ?? builtIn.find(it => it.id === relic.id)?.power?.appliedEffect
+            return fx?.effect ? [{ effect: fx.effect, duration: fx.duration ?? '', damageType: fx.damageType || undefined }] : []
+        })
+    }
+
+    /**
+     * Sets the damage type carried by a relic's applied effect (e.g. the type of Burning).
+     */
+    static setRelicDamageType = async (item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower, damageType: string) => {
+        const fx = RelicPowerProcessor.getRelicAppliedEffects([relic])[0]
+        if (!fx) return
+        const updated = item.system.relicPowers.map(p => p.id === relic.id
+            ? { ...p, power: { ...p.power, appliedEffect: { effect: fx.effect, duration: fx.duration, damageType } } }
+            : p)
+        await item.update({ 'system.relicPowers': updated } as Record<string, any>)
+    }
+
+    /**
+     * Adds or removes the relic's status effect (e.g. Burning) on the item's appliedEffects.
+     */
+    private static syncAppliedEffect = async (item: Item, relic: RelicPower, event: 'add' | 'remove') => {
+        const fx = RelicPowerProcessor.getRelicAppliedEffects([relic])[0]
+        if (!fx) return
+        const current: any[] = (item.system as any).appliedEffects ?? []
+        const isSame = (it: any) => it.effect === fx.effect && (it.duration ?? '') === (fx.duration ?? '')
+
+        const updated = event === 'add'
+            ? [...current.filter(it => !isSame(it)), { effect: fx.effect, duration: fx.duration ?? '', critDuration: '' }]
+            : current.filter(it => !isSame(it))
+        await item.update({ 'system.appliedEffects': updated } as Record<string, any>)
     }
 
     /**

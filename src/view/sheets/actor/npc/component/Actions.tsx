@@ -6,6 +6,8 @@ import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
 import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 import { SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
 import { AppliedFx } from "../../../../../combat/engine/Attack"
+import { CountdownResult } from "../../../../../combat/engine/roll/CountdownResult"
+import { CountdownRoll } from "../../../../../combat/engine/roll/CountdownRoll"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { AppliedEffectInput } from "../../../../../combat/ui/AppliedEffectInput"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
@@ -14,6 +16,7 @@ import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDamageAverage } from "../../../../../model/actor/type/NpcAction"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
+import { sys_id } from "../../../../../utils/foundryUtils"
 import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { subMenuLayout, tableBorder, tableBorderRounded } from "../../../../common/border-styles"
@@ -22,6 +25,7 @@ import { DestructiveButton, PrimaryButton, UtilityButton } from "../../../../com
 import { Checkbox } from "../../../../component/Checkbox"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
+import { DiceRollButton } from "../../../../component/DiceRollButton"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
@@ -54,11 +58,89 @@ export const AddNewIconButton = ({ onClick }) => {
     )
 }
 
-export const Actions = ({ npc, hero, setIsAddMenuOpen, setEditTarget, isPolymorph }: {
-    npc: AdversaryDataModel | NpcDataModel, hero?: Actor & { system: HeroDataModel }, setIsAddMenuOpen?: any, setEditTarget?: any, isPolymorph?: boolean
+export const Actions = ({ npc, hero, setIsAddMenuOpen, isPolymorph }: {
+    npc: AdversaryDataModel | NpcDataModel,
+    hero?: Actor & { system: HeroDataModel },
+    setIsAddMenuOpen?: any,
+    isPolymorph?: boolean
 }) => {
     const { isEditMode } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
+    const [dragIndex, setDragIndex] = useState<number | null>(null)
+    const canReorder = isEditMode && !isPolymorph
+    const [editingIndices, setEditingIndices] = useState<number[]>([])
+    const rechargeFlag = "rechargeCountdowns"
+    const readRecharge = (): Record<string, CountdownResult> => {
+        const stored = (npc.parent?.getFlag(sys_id, rechargeFlag as any) ?? []) as { action: string, result: CountdownResult }[]
+        return Object.fromEntries(stored.map(it => [it.action, it.result]))
+    }
+    const [rechargeCountdowns, setRechargeCountdownsState] = useState<Record<string, CountdownResult>>(readRecharge)
+
+    const setRechargeCountdowns = (update: (prev: Record<string, CountdownResult>) => Record<string, CountdownResult>) => {
+        const next = update(rechargeCountdowns)
+        setRechargeCountdownsState(next)
+        const entries = Object.entries(next).map(([action, result]) => ({ action, result }))
+        if (entries.length) npc.parent?.setFlag(sys_id, rechargeFlag as any, entries)
+        else npc.parent?.unsetFlag(sys_id, rechargeFlag as any)
+    }
+
+    const startRecharge = async (idx: number, action: any, duration: number) => {
+        const id = await getOrCreateActionId(idx, action)
+        setRechargeCountdowns(prev => ({
+            ...prev,
+            [id]: { name: `${npc.parent.name}: ${action.name}`, duration }
+        }))
+    }
+
+    const rollRecharge = async (actionId: string) => {
+        const current = rechargeCountdowns[actionId]
+        if (!current) return
+        const roll = new CountdownRoll(current)
+        const result = await roll.roll(true)
+        setRechargeCountdowns(prev => {
+            const rest = { ...prev }
+            delete rest[actionId]
+            return result.duration === 0 ? rest : { ...rest, [actionId]: result }
+        })
+    }
+
+    const getOrCreateActionId = async (idx: number, action: any): Promise<string> => {
+        if (action.id) return action.id
+        const id = foundry.utils.randomID()
+        const actions = [...npc.actions]
+        actions[idx] = { ...actions[idx], id }
+        await updateDocumentAtPath(npc.parent, ['actions'], actions)
+        return id
+    }
+
+    useEffect(() => {
+        if (!isEditMode) setEditingIndices([])
+    }, [isEditMode])
+
+    const openEditor = (idx: number) => setEditingIndices(prev => prev.includes(idx) ? prev : [...prev, idx])
+    const closeEditor = (idx: number) => setEditingIndices(prev => prev.filter(it => it !== idx))
+
+    const reorderAction = (from: number, to: number) => {
+        if (from === to || from < 0 || to < 0 || from >= npc.actions.length || to >= npc.actions.length) return
+        const actions = [...npc.actions]
+        const [moved] = actions.splice(from, 1)
+        actions.splice(to, 0, moved)
+        const remap = (i: number) => i === from ? to : from < to && i > from && i <= to ? i - 1 : from > to && i >= to && i < from ? i + 1 : i
+        setEditingIndices(prev => prev.map(remap))
+        updateDocumentAtPath(npc.parent, ['actions'], actions)
+    }
+
+    const removeAction = (idx: number, action: any) => {
+        if (action.id && rechargeCountdowns[action.id]) {
+            setRechargeCountdowns(prev => {
+                const rest = { ...prev }
+                delete rest[action.id]
+                return rest
+            })
+        }
+        setEditingIndices(prev => prev.filter(it => it !== idx).map(it => it > idx ? it - 1 : it))
+        deleteAction(npc, action)
+    }
 
     return (
         <div className="mx-2 mt-2">
@@ -90,14 +172,26 @@ export const Actions = ({ npc, hero, setIsAddMenuOpen, setEditTarget, isPolymorp
                     npc.actions.map((action, idx) => {
                         const avgDamage = getDamageAverage(action.damage.dice as DiceRollSchema)
 
-                        const attack = (e: React.MouseEvent, useAvgDmg?: boolean) => {
+                        const attack = async (e: React.MouseEvent, useAvgDmg?: boolean) => {
                             const roll: DiceRollSchema = useAvgDmg
                                 ? { count: 0, faces: avgDamage }
                                 : action.damage.dice as DiceRollSchema
 
-                            isPolymorph && hero
-                                ? onClickActionAsWeaponAttack(hero, action, e)
-                                : onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.appliedEffects as AppliedFx[], action.halfDamageOnSave, action.type)
+                            if (isPolymorph && hero) {
+                                onClickActionAsWeaponAttack(hero, action, e)
+                                return
+                            }
+
+                            // The ID must exist before the attack is built and started.
+                            const actionId = await getOrCreateActionId(idx, action)
+                            const rechargeFaces = Number(action.recharge?.trim().match(/^cd(\d+)$/i)?.[1])
+                            if (rechargeFaces && !rechargeCountdowns[actionId]) {
+                                setRechargeCountdowns(prev => ({
+                                    ...prev,
+                                    [actionId]: { name: `${npc.parent.name}: ${action.name}`, duration: rechargeFaces }
+                                }))
+                            }
+                            onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.appliedEffects as AppliedFx[], action.halfDamageOnSave, action.type)
                         }
 
                         const polyAttack = isPolymorph && hero ? buildPolymorphAttack(hero, action) : undefined
@@ -125,9 +219,33 @@ export const Actions = ({ npc, hero, setIsAddMenuOpen, setEditTarget, isPolymorp
                         )
 
                         return (
-                            <div key={idx} className={`flex gap-2 p-2 justify-between ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
-                                { icon: PenSquare, label: appLang.ButtonActions.edit, action: () => { setEditTarget?.(action); setIsAddMenuOpen?.(true); } },
-                                { icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteAction(npc, action), isDestructive: true }
+                            <div key={idx} className="flex flex-col gap-1">
+                            <div
+                                className={`flex gap-2 p-2 justify-between ${tableBorderRounded} ${canReorder ? 'cursor-grab' : ''} ${dragIndex === idx ? 'opacity-40' : ''}`}
+                                draggable={canReorder}
+                                onDragStart={(e) => {
+                                    if (!canReorder) return
+                                    e.stopPropagation()
+                                    e.dataTransfer.effectAllowed = 'move'
+                                    setDragIndex(idx)
+                                }}
+                                onDragOver={(e) => {
+                                    if (dragIndex === null) return
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    e.dataTransfer.dropEffect = 'move'
+                                }}
+                                onDrop={(e) => {
+                                    if (dragIndex === null) return
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    reorderAction(dragIndex, idx)
+                                    setDragIndex(null)
+                                }}
+                                onDragEnd={() => setDragIndex(null)}
+                                onContextMenu={(e) => onCtxMenu(e, [
+                                { icon: PenSquare, label: appLang.ButtonActions.edit, action: () => openEditor(idx) },
+                                { icon: Trash, label: appLang.ButtonActions.delete, action: () => removeAction(idx, action), isDestructive: true }
                             ])}>
                                 <div className="flex flex-col">
 
@@ -163,18 +281,40 @@ export const Actions = ({ npc, hero, setIsAddMenuOpen, setEditTarget, isPolymorp
                                         }
 
                                         {/* RECHARGE ROLL */}
-                                        {action.recharge != null && action.recharge != '' &&
+                                            {action.recharge != null && action.recharge != '' && !rechargeCountdowns[action.id] &&
                                             <div className="flex gap-x-2 text-text-secondary">
                                                 {appLang.AdversarySheet.recharge}
                                                 <EnrichedContent
                                                     actor={npc.parent}
                                                     content={`[[/r ${action.recharge}#Recharge: ${action.name}]]{${action.recharge}}`}
+                                                        onCountdown={(faces) => startRecharge(idx, action, faces)}
                                                 />
                                             </div>
                                         }
                                     </div>
                                 </div>
-                                <DamageTypeIcon dmgType={action.damage.type} size={24} />
+                                    <div className="flex items-start gap-2">
+                                        {rechargeCountdowns[action.id] &&
+                                            <DiceRollButton
+                                                title={appLang.Overlay.countdownRollTooltip}
+                                            faces={rechargeCountdowns[action.id].rollSummary?.faces ?? rechargeCountdowns[action.id].duration}
+                                            result={rechargeCountdowns[action.id].rollSummary?.result ?? ''}
+                                                textSize="text-3xl"
+                                            onClick={() => rollRecharge(action.id)}
+                                            />
+                                        }
+                                        <DamageTypeIcon dmgType={action.damage.type} size={24} />
+
+                                    </div>
+                            </div>
+                            {isEditMode && editingIndices.includes(idx) &&
+                                <NewActionWindow
+                                    npc={npc}
+                                    editTarget={action}
+                                    editIndex={idx}
+                                    setIsAddMenuOpen={(open: boolean) => { if (!open) closeEditor(idx) }}
+                                />
+                            }
                             </div>
                         )
                     })
@@ -207,8 +347,10 @@ export interface NpcAction {
     comboCount: number
 }
 
-export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setEditTarget }) => {
-    const editTargetIndex = npc.actions.indexOf(editTarget as any)
+export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, editIndex }: {
+    npc: any, setIsAddMenuOpen: (open: boolean) => void, editTarget?: any, editIndex?: number
+}) => {
+    const editTargetIndex = editIndex ?? npc.actions.indexOf(editTarget as any)
     const [newAction, setNewAction] = useState<Partial<NpcAction>>(editTarget ?? {
         name: "",
         description: "",
@@ -415,6 +557,8 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                             )}
                         </div>  
                     </div>
+
+                    {/* HALF DAMAGE ON SAVE SUCCESS */}
                     <Checkbox
                         label={appLang.AdversarySheet.halfDamageOnSave}
                         color="text-text-primary"
@@ -451,25 +595,22 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
             {/* SAVE & CANCEL BUTTONS*/}
             <AddMenuButtons
                 onSave={() => saveNewAction(npc, isCombo, comboSelections, comboName, comboDescr, newAction, editTarget, editTargetIndex)}
-                setEditTarget={setEditTarget}
                 setIsAddMenuOpen={setIsAddMenuOpen}
             />
         </div>
     )
 }
 
-export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
+export const AddMenuButtons = ({ setIsAddMenuOpen, onSave }) => {
     return (
         <div className="flex w-full justify-between mt-8" >
             <DestructiveButton onClick={() => {
-                setEditTarget(null)
                 setIsAddMenuOpen(false)
             }}>
                 Cancel
             </DestructiveButton>
             <PrimaryButton icon={<Save size={14} />} onClick={() => {
                 if (onSave()) {
-                    setEditTarget(null)
                     setIsAddMenuOpen(false)
                 }
             }}>
@@ -498,7 +639,7 @@ const saveNewAction = (npc, isCombo, comboSelections, comboName, comboDescriptio
         return false
     }
     else if (editTarget == null) {
-        updateDocumentAtPath(npc.parent, ['actions'], [...npc.actions, newAction])
+        updateDocumentAtPath(npc.parent, ['actions'], [...npc.actions, { ...newAction, id: newAction.id || foundry.utils.randomID() }])
         return true
     }
     else {

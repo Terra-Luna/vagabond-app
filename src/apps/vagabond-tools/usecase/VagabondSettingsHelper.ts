@@ -1,5 +1,3 @@
-import type { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
-import { CountdownResult } from "../../../combat/engine/roll/CountdownResult"
 import { Coins } from "../../../model/common/CoinValue"
 import { sys_id } from "../../../utils/foundryUtils"
 
@@ -181,85 +179,6 @@ export const deleteAllProgressClocks = async () => {
     await updateSetting("progressClocks", [])
 }
 
-/**
- * Countdown Timers
- */
-export interface CountdownSchema extends OverlayObjectPermissions {
-    id: string
-    x: number
-    y: number
-    label?: string
-    result: CountdownResult
-}
-export const getCountdowns = (): CountdownSchema[] => {
-    return (game.settings as any)?.get(sys_id, "countdowns") || []
-}
-export const setCountdowns = async (countdowns: CountdownSchema[]) => {
-    await updateSetting("countdowns", countdowns)
-    const combatants = game.combat?.combatants.contents as VagabondCombatant[]
-    if (combatants) {
-        for (const combatant of combatants) {
-            await combatant.updateBurningStatus()
-        }
-    }
-}
-export const checkCountdownPermission = (): boolean => {
-    return checkPermissionLevel("countdownPermissionLevel")
-}
-export const deleteAllCountdowns = () => {
-    return setCountdowns([])
-}
-export const addCountdowns = async (
-    countdownsToAdd: {
-        label: string
-        duration: number
-        x?: number
-        y?: number
-        actorId?: string
-        tokenUuid?: string
-        status?: { id: string, damageType?: string }
-    }[]
-) => {
-    if (!countdownsToAdd.length) return
-    const existing = getCountdowns()
-    const slots = findOpenOverlaySlots("countdown", existing.filter(isVisibleInCurrentScene), countdownsToAdd.length)
-    const newCountdowns: CountdownSchema[] = countdownsToAdd.map((item, index) => {
-        const hasPosition = item.x !== undefined || item.y !== undefined
-        return {
-            id: foundry.utils.randomID(),
-            x: hasPosition ? item.x ?? 0.5 : slots[index].x,
-            y: hasPosition ? item.y ?? 0.5 : slots[index].y,
-            centered: false,
-            result: {
-                actorUuid: item.actorId,
-                tokenUuid: item.tokenUuid,
-                name: item.label,
-                duration: item.duration,
-                status: item.status?.id,
-                damageType: item.status?.damageType
-            }
-        }
-    })
-    await setCountdowns([...existing, ...newCountdowns])
-}
-export const addCountdown = async (
-    label: string,
-    duration: number, x?: number, y?: number,
-    actorId?: string, tokenUuid?: string,
-    status?: { id: string, damageType?: string }
-) => {
-    return addCountdowns([{ label, duration, x, y, actorId, tokenUuid, status }])
-}
-export const removeBurns = (actorUuids: (string | null | undefined)[] | Set<string>) => {
-    const uuidSet = new Set(Array.from(actorUuids).filter(Boolean) as string[])
-    if (uuidSet.size === 0) return Promise.resolve(true)
-    return setCountdowns(getCountdowns().filter(countdown => countdown.result.status !== "burning" || !countdown.result.actorUuid || !uuidSet.has(countdown.result.actorUuid)))
-}
-export const removeAllBurns = (actorUuid: string | null | undefined) => {
-    if (!actorUuid) return Promise.resolve(true)
-    return removeBurns([actorUuid])
-}
-
 export const getManaEnforcement = (): boolean => {
     return (game.settings as any)?.get(sys_id, "enforceMana")
 }
@@ -290,7 +209,7 @@ export const getCombatAutoFlanking = (): boolean => {
  * @param update 
  * @returns 
  */
-const updateSetting = async (setting: string, update: any) => {
+export const updateSetting = async (setting: string, update: any) => {
     if (!game.user) return
 
     if (game.user.isActiveGM) {
@@ -309,7 +228,7 @@ const updateSetting = async (setting: string, update: any) => {
  * Universal settings permission checker. Options are 'gmOnly' or 'everyone'.
  * Enhance as needed to additionally control visibility as well as editability.
  */
-const checkPermissionLevel = (settingName: string): boolean => {
+export const checkPermissionLevel = (settingName: string): boolean => {
     const setting = (game.settings as any)?.get(sys_id, settingName) || 'gmOnly'
     return setting === 'everyone' || (
         setting === 'gmOnly' && (game.user?.isActiveGM ?? false)
@@ -321,11 +240,10 @@ const checkPermissionLevel = (settingName: string): boolean => {
  * progress clocks or countdown timers. The settings will default to the global
  * "everyone/gmOnly" setting.
  */
-const isPermissionLevelEveryone = (settingName: string): boolean => {
+export const isPermissionLevelEveryone = (settingName: string): boolean => {
     return ((game.settings as any)?.get(sys_id, settingName) || 'gmOnly') === 'everyone'
 }
 export const getClockPlayerDefaultPermission = (): boolean => isPermissionLevelEveryone("clockPermissionLevel")
-export const getCountdownPlayerDefaultPermission = (): boolean => isPermissionLevelEveryone("countdownPermissionLevel")
 
 /**
  * Per-object overrides shared by Progress Clocks and Countdown Timers.

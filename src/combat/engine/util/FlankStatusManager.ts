@@ -7,6 +7,7 @@ import { appLang } from "../../../utils/lang"
 export class FlankStatusManager {
 
     private static readonly RELEVANT_CHANGES = ["x", "y", "width", "height", "elevation", "disposition", "hidden"]
+    private static readonly deletedTokenIds = new Set<string>()
     private static readonly pendingPositions = new Map<string, { x?: number, y?: number, width?: number, height?: number }>()
 
     static register() {
@@ -20,7 +21,13 @@ export class FlankStatusManager {
         }
         Hooks.on("createActiveEffect", onDeadStatusChanged)
         Hooks.on("deleteActiveEffect", onDeadStatusChanged)
-        Hooks.on("deleteToken", (doc: TokenDocument) => FlankStatusManager.onTokenChanged(doc))
+        Hooks.on("deleteToken", (doc: TokenDocument) => {
+            if (doc.id) {
+                FlankStatusManager.deletedTokenIds.add(doc.id)
+                setTimeout(() => FlankStatusManager.deletedTokenIds.delete(doc.id as string), 1000)
+            }
+            FlankStatusManager.onTokenChanged(doc)
+        })
         Hooks.on("updateActor", (actor: Actor, changes: Record<string, any>) => {
             const polymorphChanged = foundry.utils.hasProperty(changes, `flags.${sys_id}.polymorph`)
                 || foundry.utils.hasProperty(changes, `flags.${sys_id}.-=polymorph`)
@@ -74,7 +81,7 @@ export class FlankStatusManager {
         const enabled = FlankStatusManager.isEnabled()
         for (const token of canvas?.tokens?.placeables ?? []) {
             const actor = token.actor
-            if (!actor) continue
+            if (!actor || FlankStatusManager.deletedTokenIds.has(token.document.id ?? "")) continue
             StatusEffectUtil.toggleStatusEffectOnce(actor, "flanked", enabled && FlankStatusManager.isFlanked(token))
         }
     }
@@ -149,6 +156,7 @@ export class FlankStatusManager {
         }
 
         const isDown = (token: Token) => {
+            if (FlankStatusManager.deletedTokenIds.has(token.document.id ?? "")) return true
             const actor = token.actor as any
             return actor?.system?.health?.value <= 0 || !!actor?.statuses?.has("dead")
         }

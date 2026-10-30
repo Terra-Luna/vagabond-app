@@ -5,7 +5,7 @@ import { DiceRollComponent } from "./DiceRollComponent"
 
 export const DamageRollsComponent = ({ result }: { result: DamageRollResult }) => {
     return (
-        <div className="flex flex-wrap grow justify-center items-start">
+        <div className="flex flex-wrap grow justify-center items-start gap-0.25">
             {result?.rollSummaries?.map((r, index) => (
                 <div key={index}>
                     <DiceRollComponent faces={r.faces} result={r.result} textSize={"text-4xl"} rerolled={r.rerolled} exploded={r.exploded} />

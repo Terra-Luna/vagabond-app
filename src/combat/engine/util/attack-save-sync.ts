@@ -11,9 +11,9 @@ const SAVE_TYPES: string[] = ['reflex', 'endure', 'will']
  * makes the GM's job quite annoying. This will check for the lastest active attack and if the
  * Hero is a Target, it will slot the save into the interactive attack chat card.
  */
-export async function recordSheetSaveOnActiveAttacks(hero: Actor, result: SkillCheckResult): Promise<boolean> {
-    const saveType = result?.skill
-    if (!SAVE_TYPES.includes(saveType)) return false
+export async function recordSheetSaveOnActiveAttacks(hero: Actor, result: SkillCheckResult, defense?: { armorBonus: number }): Promise<boolean> {
+    const saveType = defense ? 'defend' : result?.skill
+    if (!defense && !SAVE_TYPES.includes(saveType)) return false
 
     const tokenIds = hero.getActiveTokens().map(token => token.id)
     if (tokenIds.length === 0) return false
@@ -31,7 +31,7 @@ export async function recordSheetSaveOnActiveAttacks(hero: Actor, result: SkillC
         const attack = deserializeAttack(latest, () => undefined as never)
         if (!(attack instanceof AdversaryAttack || attack instanceof AdversaryComboAttack)) continue
 
-        recorded = await attack.recordSaveResult(tokenId, saveType as SavingThrowType, foundry.utils.deepClone(result)) || recorded
+        recorded = await attack.recordSaveResult(tokenId, saveType as SavingThrowType, foundry.utils.deepClone(result), defense?.armorBonus) || recorded
     }
     return recorded
 }

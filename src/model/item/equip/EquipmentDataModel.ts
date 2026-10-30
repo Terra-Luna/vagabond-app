@@ -45,7 +45,12 @@ const baseEquipmentSchema = () => {
                             value: new fields.NumberField({ ...uncappedInteger })
                         }),
                         { initial: [] }
-                    )
+                    ),
+                    appliedEffect: new fields.SchemaField({
+                        effect: new fields.StringField({ ...requiredString }),
+                        duration: new fields.StringField({ ...optionalString }),
+                        damageType: new fields.StringField({ ...optionalString })
+                    }, { required: false, nullable: true, initial: null })
                 }),
                 goldValue: new fields.NumberField({ ...requiredInteger }),
                 bound: new fields.BooleanField({ initial: false }),

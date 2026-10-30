@@ -21,7 +21,7 @@ export const AttackDamageSummary = ({ attack, args, onOverrideChange }: {
 
     return (
         <div className="px-1 pb-1">
-            <ClearHeader title={"Summary"} />
+            <ClearHeader title={`${attack.isResolved ? "Summary" : "Review"}`} />
             <div className="flex flex-col gap-1 mt-1 px-1">
                 {rows.map((row, index) =>
                     <SummaryRow
@@ -71,7 +71,17 @@ const SummaryRow = ({ row, isResolved, onOverrideChange }: { row: TargetDamageSu
                 {row.label && <p className="min-w-0 truncate" title={row.label}>{row.label}:</p>}
                 <p>{row.damage}</p>
 
-                <div className="flex items-center gap-0.5" title={row.armorPiercing > 0 ? `Armor after ${row.armorPiercing} armor piercing` : "Armor"}>
+                {row.healing && <>
+                    {row.healing.setValue > 0
+                        ? <p title="Healing is set to a fixed amount per die">→ {row.healing.setValue}</p>
+                        : <>
+                            {row.healing.flat !== 0 && <p title="Flat healing modifier">{row.healing.flat > 0 ? `+ ${row.healing.flat}` : `− ${Math.abs(row.healing.flat)}`}</p>}
+                            {row.healing.perDie !== 0 && <p title="Per-die healing modifier">{row.healing.perDie > 0 ? `+ ${row.healing.perDie}` : `− ${Math.abs(row.healing.perDie)}`}</p>}
+                        </>
+                    }
+                </>}
+
+                {!row.healing && <div className="flex items-center gap-0.5" title={row.armorPiercing > 0 ? `Armor after ${row.armorPiercing} armor piercing` : "Armor"}>
 
 
                     <p>−</p>
@@ -91,7 +101,7 @@ const SummaryRow = ({ row, isResolved, onOverrideChange }: { row: TargetDamageSu
                         </p>
                     )}
 
-                </div>
+                </div>}
 
                 {row.bonus !== 0 && <p title="Bonus damage">{row.bonus > 0 ? `+ ${row.bonus}` : `− ${Math.abs(row.bonus)}`}</p>}
 
@@ -114,7 +124,7 @@ const SummaryRow = ({ row, isResolved, onOverrideChange }: { row: TargetDamageSu
                     </FoundryHotkeyBlocker>
                     : <p
                         className={`font-bold ${row.isOverridden ? "text-ic-luck" : ""}`}
-                        title={row.isOverridden ? `Overridden (calculated: ${row.calculatedTotal})` : "Total damage\n(Double-click to override)"}
+                        title={row.isOverridden ? `Overridden (calculated: ${row.calculatedTotal})` : `${row.healing ? "Total healing" : "Total damage"}\n(Double-click to override)`}
                         onDoubleClick={game.user?.isActiveGM && !isResolved
                             ? () => { setDraft(String(row.total)); setIsEditing(true) }
                             : undefined}

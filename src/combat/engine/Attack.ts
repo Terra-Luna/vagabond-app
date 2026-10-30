@@ -1,4 +1,5 @@
-import { addCountdown, getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { CountdownManager } from "../../apps/vagabond-tools/usecase/CountdownManager"
+import { getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel"
 import { StatusEffectUtil } from "../../model/actor/util/StatusEffectUtil"
 import { physicalDamageTypes } from "../../model/common/sharedSchemas"
@@ -7,6 +8,7 @@ import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTargetIds } from "../../utils/modelUtil"
 import { DamageRoll } from "./roll/DamageRoll"
 import type { AttackSnapshot } from "./util/attack-serializer"
+import { isImmuneToBurning } from "./util/burning-mitigation"
 
 const FOCUS_DAMAGE_LIMIT = 5
 
@@ -42,6 +44,7 @@ export interface TargetDamageSummary extends DamageBreakdown {
     total: number
     calculatedTotal: number
     isOverridden: boolean
+    healing?: { flat: number, perDie: number, setValue: number }
 }
 
 export interface AppliedFx {
@@ -134,24 +137,41 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     private applyHealing(args: AttackResolutionArgs) {
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
-        this.getActors(targetIds).forEach(target => {
-            const mods = (target?.system as any)?.modifiers?.healing?.in?.modifier ?? {}
-            const flatMod = Number(mods?.flat ?? 0)
-            const diceCount = this.damageRoll?.result?.rollSummaries?.length ?? 0
-            const perDieMod = (Number(mods?.perDie ?? 0)) * diceCount
-            const perDieOverrideMod = (Number(mods?.perDieOverride ?? 0)) * diceCount
+        for (const row of this.getHealingSummary(args)) {
+            const target = canvas?.scene?.tokens?.get(row.targetId)?.actor
+            if (!target) continue
+            this.updateHP(target.system, this.getHP(target.system) + row.total)
+        }
+    }
 
-            this.updateHP(
-                target?.system,
-                this.getHP(target?.system) +
-                Math.max(
-                    0,
-                    perDieOverrideMod > 0
-                        ? perDieOverrideMod
-                        : (this.damageRoll?.result?.total ?? 0) + flatMod + perDieMod)
+    private getHealingSummary(args: AttackResolutionArgs): TargetDamageSummary[] {
+        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
+        const rolled = this.damageRoll?.result?.total ?? 0
+        const diceCount = this.damageRoll?.result?.rollSummaries?.length ?? 0
+        const rows: TargetDamageSummary[] = []
+        for (const id of targetIds) {
+            const target = canvas?.scene?.tokens?.get(id)?.actor
+            if (!target) continue
+            const mods = (target.system as any)?.modifiers?.healing?.in?.modifier ?? {}
+            const flat = Number(mods?.flat ?? 0)
+            const perDieMod = Number(mods?.perDie ?? 0)
+            // A negative per-die modifier can reduce each die to 0 at most.
+            const perDie = (this.damageRoll?.result?.rollSummaries ?? [])
+                .filter(it => !it.rerolled)
+                .reduce((acc, it) => {
+                    const value = it.result + (this.damageRoll?.perDieDmgBonus ?? 0)
+                    return acc + Math.max(0, value + perDieMod) - value
+                }, 0)
+            const setValue = Number(mods?.perDieOverride ?? 0) * diceCount
+            const calculated = Math.max(0, setValue > 0 ? setValue : rolled + flat + perDie)
+            const row = Attack.buildSummaryRow(
+                id, 0,
+                { damage: rolled, halved: false, armor: 0, armorPiercing: 0, otherMitigation: 0, mitigated: calculated },
+                0, args, 'healing', undefined
             )
-        })
+            rows.push({ ...row, healing: { flat, perDie, setValue } })
+        }
+        return rows
     }
 
     private applyMana(args: AttackResolutionArgs) {
@@ -235,7 +255,8 @@ export abstract class Attack<TActor extends Actor = Actor> {
      */
     getDamageSummary(args: AttackResolutionArgs): TargetDamageSummary[] {
         const dmgType = this.damageRoll?.dmgType
-        if (!this.damageRoll?.result || dmgType === 'healing' || dmgType === 'mana' || dmgType === 'fatigue') return []
+        if (this.damageRoll?.result && dmgType === 'healing') return this.getHealingSummary(args)
+        if (!this.damageRoll?.result || dmgType === 'mana' || dmgType === 'fatigue') return []
 
         const summaries: TargetDamageSummary[] = []
         const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
@@ -388,6 +409,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
             for (const eff of effects) {
                 if (Attack.isImmuneToStatus(actor, eff.effect)) continue
+                if (eff.effect === "burning" && isImmuneToBurning(actor, eff.damageType)) continue
 
                 const duration = (this.isCriticalHit && eff.critDuration) ? eff.critDuration : eff.duration
                 await this.applyEffects(actor, token, eff.effect, duration, eff.damageType)
@@ -409,7 +431,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
             const label = this.prefixCountdownWithTargetName
                 ? `${token?.name ?? actor.name}: ${statusName}`
                 : statusName
-            await addCountdown(
+            await CountdownManager.add(
                 label,
                 Number(countdownFaces),
                 undefined, undefined,

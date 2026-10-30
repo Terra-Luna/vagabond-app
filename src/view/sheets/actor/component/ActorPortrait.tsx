@@ -1,11 +1,13 @@
 import { ArrowLeftRight, X } from "lucide-react"
 
+import { StatusCountdowns } from "../../../../combat/ui/CombatTracker"
 import { ActorDataModel, BaseActorSchema } from "../../../../model/actor/ActorDataModel"
 import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
 import { ActorTypeConverter, CONVERTIBLE_ACTOR_TYPES } from "../../../../model/actor/util/ActorTypeConverter"
 import type { PolymorphFlag } from "../../../../model/actor/util/PolymorphUtil"
 import { sys_id } from "../../../../utils/foundryUtils"
 import { appLang, appTypes } from "../../../../utils/lang"
+import { tableBorder } from "../../../common/border-styles"
 import { type CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { Tooltip } from "../../../component/Tooltip"
@@ -71,6 +73,15 @@ export const ActorPortrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema
                     style={portraitFrameImageStyle(frame, aspect)}
                 />
                 {polymorphCancelButton}
+
+                {/* BURNING COUNTDOWNS */}
+                <StatusCountdowns
+                    actorUuid={actor.parent.uuid}
+                    tokenUuid={actor.parent.token?.uuid}
+                    burningOnly
+                    alwaysClickable
+                    className={`absolute bottom-0 left-0 z-10 flex flex-row flex-wrap-reverse justify-center gap-0.5 p-0.5 max-w-full -mb-1 bg-context-menu-fill/80 empty:hidden ${tableBorder}`}
+                />
 
                 {/* POLYMORPH IMAGE INLAY */}
                 {polymorphActor && actor instanceof HeroDataModel

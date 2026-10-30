@@ -216,13 +216,13 @@ export const RichTextField = ({
 
     return (
         <IFrameWrapper width={width} height={height}>
-            <div className={`vb-rtf ${className ?? ""} text-text-primary font-paradigm font-normal bg-sheet-main-fill`}>
+            <div className={`vb-rtf flex flex-col min-h-screen ${className ?? ""} text-text-primary font-paradigm font-normal bg-sheet-main-fill`}>
                 <LexicalComposer initialConfig={initialConfig}>
                     {isEditMode && <Toolbar />}
-                    <div className="flex flex-col min-h-full min-w-full bg-transparent">
+                    <div className="flex flex-col grow min-w-full bg-transparent">
                         <div className="flex grow-1 relative">
                             <RichTextPlugin
-                                contentEditable={<ContentEditable className="p-1 min-h-full min-w-full text-sm leading-5" />}
+                                contentEditable={<ContentEditable className="p-1 min-w-full text-sm leading-5" />}
                                 placeholder={<Placeholder />}
                                 ErrorBoundary={LexicalErrorBoundary}
                             />

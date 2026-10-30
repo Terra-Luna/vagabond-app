@@ -1,5 +1,6 @@
 import { HeroAttack } from "../../combat/engine/HeroAttack"
 import { SkillCheck } from "../../combat/engine/roll/SkillCheck"
+import { activateCombatantAndRollCountdowns } from "../../combat/ui/CombatTracker"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { PolymorphUtil } from "../../model/actor/util/PolymorphUtil"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
@@ -22,6 +23,10 @@ export interface VagabondAPI {
         weaponAttack: ({ actor, itemId, skill, event }: { actor: Actor & { system: HeroDataModel }, itemId: string, skill?: string, event: any }) => void,
         rollPreset: ({ actor, presetId, event }: { actor: Actor & { system: HeroDataModel }, presetId: string, event: any }) => void,
         openSpellcasting: (actor: Actor & { system: HeroDataModel }) => void
+    },
+    combat: {
+        claimSpotlight: () => void,
+        next: () => void
     },
     util: {
         polymorphApp: (actor?: Actor & { system: HeroDataModel }) => void,
@@ -259,6 +264,87 @@ export const api: VagabondAPI = {
                     whisper: game.user?.id ? [game.user.id] : [],
                     content: `<p><b>${title}</b></p><ul>${report.join("")}</ul>`
                 })
+            }
+        }
+    },
+
+    combat: {
+        /**
+         * Let's players take the spotlight and cycle it thru their characters.
+         */
+        claimSpotlight: async () => {
+            const combat = game.combat as any
+            if (!combat?.started) return
+
+            const token = canvas?.tokens?.controlled?.[0]
+            const actor = token?.actor ?? game.user?.character
+            const activeCombatant = combat.combatant
+
+            // Ending the turn of any combatant the user owns takes priority.
+            if (activeCombatant?.isOwner && !game.user?.isGM) {
+                await combat.deactivateCombatant(activeCombatant.id)
+                return
+            }
+
+            let combatant = (actor ? (token?.combatant
+                ?? combat.combatants.find(c => c.actorId === actor.id && (!token || c.tokenId === token.id))
+                ?? combat.combatants.find(c => c.actorId === actor.id)) : undefined) as any
+
+            // Players with multiple characters advance to the next one who has an activation left.
+            if ((!combatant || !(combatant.activations?.value ?? 0)) && !game.user?.isGM) {
+                combatant = combat.turns.find(c => c.isOwner && (c.activations?.value ?? 0) > 0) ?? combatant
+            }
+            if (!combatant) return
+
+            if (activeCombatant?.id === combatant.id) {
+                await combat.deactivateCombatant(combatant.id)
+            }
+            else if (!activeCombatant && (combatant.activations?.value ?? 0) > 0) {
+                await activateCombatantAndRollCountdowns(combatant)
+            }
+        },
+
+        /**
+         * Lets the GM advance thru the combatant list w/o having to click on buttons.
+         */
+        next: async () => {
+            const combat = game.combat as any
+            if (!game.user?.isGM || !combat) return
+            if (!combat.started) {
+                await combat.startCombat()
+                return
+            }
+
+            const groupOrder = ["heroes", "npcs", "adversaries"]
+            const displayed = (combat.turns as any[]).filter(c => c.actor)
+            const ordered = groupOrder.flatMap(group => displayed.filter(c => c.combatGroup === group))
+
+            const current = combat.combatant
+            const startIndex = current ? ordered.findIndex(c => c.id === current.id) : -1
+            if (current) await combat.deactivateCombatant(current.id)
+
+            const next = ordered.find((c, i) => i > startIndex && (c.activations?.value ?? 0) > 0)
+            if (!next) {
+                await combat.nextRound()
+                return
+            }
+
+            await activateCombatantAndRollCountdowns(next)
+
+            const token = next.token?.object as Token | undefined
+            if (token) {
+                await canvas?.animatePan({ x: token.center.x, y: token.center.y, duration: 500 })
+            }
+
+            /**
+             * Automatically opens the hostile combatant's sheet for the GM.
+             */
+            if (next.token?.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE && next.actor) {
+                const sheets: any[] = Array.from((foundry.applications.instances as Map<string, any>).values())
+                await Promise.all(sheets
+                    .filter(app => app.document?.documentName === "Actor")
+                    .map(app => app.close()))
+                next.actor.sheet?.render({ force: true })
             }
         }
     }

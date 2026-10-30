@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ReactHtmlParser from 'react-html-parser'
 
-import { addCountdown, checkCountdownPermission } from '../../apps/vagabond-tools/usecase/VagabondSettingsHelper'
+import { CountdownManager } from '../../apps/vagabond-tools/usecase/CountdownManager'
 import { SkillCheck, SkillCheckResult } from '../../combat/engine/roll/SkillCheck'
 import { HeroDataModel } from '../../model/actor/HeroDataModel'
 import { sys_id } from '../../utils/foundryUtils'
@@ -10,7 +10,10 @@ import { sendVagabondChatCard } from '../chat/ChatCardSerializer'
 
 const countdownFormulaPattern = /^cd(\d+)$/i
 
-export const EnrichedContent = ({ content, styleClasses = '', actor, setRollResult }: { content: any, styleClasses?: string, actor?: Actor | null, setRollResult?: (result: SkillCheckResult | Roll) => void }) => {
+export const EnrichedContent = ({ content, styleClasses = '', actor, setRollResult, onCountdown }: {
+    content: any, styleClasses?: string, actor?: Actor | null, setRollResult?: (result: SkillCheckResult | Roll) => void,
+    onCountdown?: (faces: number) => void
+}) => {
     const ref = useRef(null)
     const [enrichedText, setEnrichedText] = useState('')
 
@@ -35,12 +38,16 @@ export const EnrichedContent = ({ content, styleClasses = '', actor, setRollResu
 
             const countdownMatch = formula?.match(countdownFormulaPattern)
             if (countdownMatch) {
-                if (!checkCountdownPermission()) return
+                if (onCountdown) {
+                    onCountdown(Number(countdownMatch[1]))
+                    return
+                }
+                if (!CountdownManager.checkPermission()) return
                 const speakerName = speaker.alias ?? ''
                 const label = flavor ? `${speakerName}: ${flavor}` : speakerName
                 const actorId: string | undefined = actor?.id ?? undefined
                 const tokenUuid: string | undefined = (actor?.isToken ? actor.token?.uuid : undefined) ?? undefined
-                await addCountdown(label, Number(countdownMatch[1]), undefined, undefined, actorId, tokenUuid)
+                await CountdownManager.add(label, Number(countdownMatch[1]), undefined, undefined, actorId, tokenUuid)
                 return
             }
 

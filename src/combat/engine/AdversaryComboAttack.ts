@@ -40,7 +40,7 @@ export class ComboSubAttack {
         this.name = args.name
         this.saveTypes = args.saveTypes ?? []
         this.halfDamageOnSave = args.halfDamageOnSave ?? false
-        this.appliedEffects = args.appliedEffects ?? []
+        this.appliedEffects = (args.appliedEffects ?? []).map(eff => ({ ...eff, damageType: eff.damageType ?? args.dmgType }))
         this.isSpellAttack = args.isSpellAttack ?? false
         this.damageRoll = new DamageRoll({
             atkName: args.name,
@@ -103,8 +103,9 @@ export class ComboSubAttack {
         return result
     }
 
-    recordSaveResult(targetId: string, saveType: SavingThrowType, result: SkillCheckResult): boolean {
-        if (!this.saveTypes.includes(saveType)) return false
+    recordSaveResult(targetId: string, saveType: SavingThrowType, result: SkillCheckResult, armorBonus?: number): boolean {
+        const isAllowed = saveType === 'defend' ? this.saveTypes.includes('reflex') : this.saveTypes.includes(saveType)
+        if (!isAllowed) return false
 
         const existing = this.saveResults[targetId]
         if (existing) {
@@ -115,6 +116,7 @@ export class ComboSubAttack {
             )
         }
 
+        if (saveType === 'defend') this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: armorBonus ?? 0 }
         this.saveResults = { ...this.saveResults, [targetId]: result }
         return true
     }
@@ -258,9 +260,9 @@ export class AdversaryComboAttack extends Attack {
         return result
     }
 
-    async recordSaveResult(targetId: string, saveType: SavingThrowType, result: SkillCheckResult): Promise<boolean> {
+    async recordSaveResult(targetId: string, saveType: SavingThrowType, result: SkillCheckResult, armorBonus?: number): Promise<boolean> {
         if (this.isResolved || !this.targetIds.includes(targetId)) return false
-        const recorded = this.subAttacks.map(sub => sub.recordSaveResult(targetId, saveType, result))
+        const recorded = this.subAttacks.map(sub => sub.recordSaveResult(targetId, saveType, result, armorBonus))
         if (!recorded.some(Boolean)) return false
         await this.save(serializeAttack)
         return true

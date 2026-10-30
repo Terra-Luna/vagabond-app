@@ -6,6 +6,7 @@
  */
 import ReactDom from "react-dom/client"
 
+import { api } from "../../apps/api/VagabondAPI"
 import { getTheme } from "../../utils/foundryUtils"
 import { createStyleTag } from "../../utils/styleUtils"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
@@ -14,6 +15,12 @@ import { CombatTracker } from "./CombatTracker"
 import { CombatContext } from "./hooks"
 
 export class VagabondCombatTracker extends foundry.applications.sidebar.tabs.CombatTracker {
+    static DEFAULT_OPTIONS = {
+        actions: {
+            nextTurn: async () => { await api.combat.next() }
+        }
+    } as any
+
     htmlRoot?: HTMLElement
     scaduRoot?: ShadowRoot
     reactRoot?: ReactDom.Root

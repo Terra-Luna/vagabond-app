@@ -136,6 +136,7 @@ const AttackDamageAndSavesSection = ({
                 <div className="px-1">
                     <ClearHeader title={appLang.Combat.targets} />
                     <div className="flex flex-col gap-1 mt-1 px-1">
+                        
                         {/* OWNED TARGETS */}
                         {ownedTargets.map(target => {
                             const result = saveResults[target.id]

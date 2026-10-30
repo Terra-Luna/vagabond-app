@@ -1,4 +1,4 @@
-import { getCountdowns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { CountdownManager } from "../../apps/vagabond-tools/usecase/CountdownManager"
 import { StatusEffectUtil } from "../../model/actor/util/StatusEffectUtil"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { sys_id } from "../../utils/foundryUtils"
@@ -146,10 +146,21 @@ export class VagabondCombatant<T extends Combatant.SubType = "base"> extends Com
         return (this.system as any).combatGroup
     }
 
+    /** NPCs and adversaries use a fixed, non-random initiative: hitDice + threatLevel. */
+    override getInitiativeRoll(formula?: string): Roll {
+        const actor = this.actor as any
+        if (actor?.type === "npc" || actor?.type === "adversary") {
+            const hitDice = Number(actor.system?.hitDice ?? 0)
+            const threat = Number(actor.system?.threatLevel ?? 0)
+            return new Roll(String(hitDice + threat))
+        }
+        return super.getInitiativeRoll(formula)
+    }
+
     updateBurningStatus() {
         const actor = this.token?.actor
         if (actor) {
-            const isBurning = !!getCountdowns().find(countdown =>
+            const isBurning = !!CountdownManager.getAll().find(countdown =>
                 countdown.result.actorUuid === actor.uuid &&
                 countdown.result.status === "burning" &&
                 (countdown.result.tokenUuid ? countdown.result.tokenUuid === this.token?.uuid : true)

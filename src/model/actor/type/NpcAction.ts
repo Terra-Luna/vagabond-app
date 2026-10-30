@@ -38,7 +38,8 @@ export const npcActionSchema = () => {
             }),
             { initial: [] }
         ),
-        recharge: new fields.StringField({ ...optionalString })
+        recharge: new fields.StringField({ ...optionalString }),
+        id: new fields.StringField({ required: false, blank: true, initial: "" })
     }
 }
 

@@ -1,12 +1,18 @@
 import { Clover, Eye, PlayIcon, RefreshCw, Sparkles, StopCircle, Trash } from "lucide-react"
 import { forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react"
 
-import { addCountdowns, removeBurns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { useOverlayItemSync } from "../../apps/overlay/usecase/OverlayItemSyncUseCase"
+import { CountdownManager, CountdownSchema } from "../../apps/vagabond-tools/usecase/CountdownManager"
+import { canInteractWithOverlayObject } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
+import { sys_id } from "../../utils/foundryUtils"
+import { DieIcon } from "../../view/chat/component/DieIcon"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { getCanvasToken } from "../../utils/modelUtil"
+import { UtilityButton } from "../../view/component/Button"
 import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
+import { DiceRollButton } from "../../view/component/DiceRollButton"
 import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
 import { Gauge } from "../../view/component/Gauge"
 import { IconOnlyButton } from "../../view/component/IconOnlyButton"
@@ -15,13 +21,14 @@ import { Tooltip } from "../../view/component/Tooltip"
 import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
 import { useFoundryHook } from "../../view/wrappers/hooks"
 import { combineCombatantWithControlledCombatants, getControlledCombatants, getControlledTokens, performAsyncActionOnControlledCombatants } from "../combat-utils"
+import { VagabondActiveEffect } from "../documents/VagabondActiveEffect"
 import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
+import { CountdownRoll } from "../engine/roll/CountdownRoll"
 import { controlledCombatantsHaveStatus, getCombatantStatuses } from "../engine/util/status"
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
-import { useIsCurrentCombatant } from "./hooks"
+import { useCombatContext, useIsCurrentCombatant } from "./hooks"
 
 const getCombat = () => game.combat as VagabondCombat
-
 
 const getCombatantById = (id: string) => {
     const combatants = getCombat()?.combatants?.contents
@@ -103,20 +110,44 @@ export const CombatTracker = ({ combat }) => {
                 <div className="flex flex-col gap-1 overflow-auto" ref={containerRef} onScroll={handleScroll}>
                     {heroes?.length > 0 &&
                         <Group groupName="heroes">
-                            <GroupHeader groupName="heroes" label={appLang.Combat.heroes} />
-                            <GroupBody>{heroes?.map((hero) => <Hero key={hero.id} hero={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
+                            <GroupHeader groupName="heroes" label={appLang.Combat.heroes} combatants={heroes} />
+                            <GroupBody>
+                                {heroes?.map((hero) =>
+                                    <Hero key={hero.id}
+                                        hero={hero}
+                                        lastClickedCombatants={lastClickedCombatants}
+                                        setlastClickedCombatants={setlastClickedCombatants}
+                                    />)
+                                }
+                            </GroupBody>
                         </Group>
                     }
                     {npcs?.length > 0 &&
                         <Group groupName="npcs">
-                            <GroupHeader groupName="npcs" label={appLang.Combat.npcs} />
-                            <GroupBody>{npcs?.map(npc => <Adversary key={npc.id} adversary={npc} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
+                            <GroupHeader groupName="npcs" label={appLang.Combat.npcs} combatants={npcs} />
+                            <GroupBody>
+                                {npcs?.map(npc =>
+                                    <Adversary key={npc.id}
+                                        adversary={npc}
+                                        lastClickedCombatants={lastClickedCombatants}
+                                        setlastClickedCombatants={setlastClickedCombatants}
+                                    />)
+                                }
+                            </GroupBody>
                         </Group>
                     }
                     {adversaries?.length > 0 &&
                         <Group groupName="adversaries">
-                            <GroupHeader groupName="adversaries" label={appLang.Combat.adversaries} />
-                            <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
+                            <GroupHeader groupName="adversaries" label={appLang.Combat.adversaries} combatants={adversaries} />
+                            <GroupBody>
+                                {adversaries?.map(adv =>
+                                    <Adversary key={adv.id}
+                                        adversary={adv}
+                                        lastClickedCombatants={lastClickedCombatants}
+                                        setlastClickedCombatants={setlastClickedCombatants}
+                                    />)
+                                }
+                            </GroupBody>
                         </Group>
                     }
                 </div>
@@ -139,10 +170,60 @@ const Group = ({ children }: { groupName: CombatGroup, children: ReactNode }) =>
     )
 }
 
-const GroupHeader = ({ label }: { groupName: CombatGroup, label: string }) => {
+const rolledThisRound = new Set<string>()
+const rolledListeners = new Set<() => void>()
+const roundKey = (suffix: string) => `${getCombat()?.id}:${getCombat()?.round}:${suffix}`
+const groupRolledKey = (groupName: string) => roundKey(`group:${groupName}`)
+const dieRolledKey = (cdId: string) => roundKey(`die:${cdId}`)
+const markRolled = (key: string) => {
+    rolledThisRound.add(key)
+    rolledListeners.forEach(listener => listener())
+}
+const useRolledTracking = () => {
+    const [, forceRender] = useState(0)
+    useEffect(() => {
+        const listener = () => forceRender(n => n + 1)
+        rolledListeners.add(listener)
+        // re-render on round changes so buttons re-enable
+        const hookId = Hooks.on("updateCombat", listener)
+        return () => {
+            rolledListeners.delete(listener)
+            Hooks.off("updateCombat", hookId)
+        }
+    }, [])
+}
+
+const GroupHeader = ({ groupName, label, combatants }: { groupName: CombatGroup, label: string, combatants: VagabondCombatant[] }) => {
+    const [cds, setCds] = useState<CountdownSchema[]>(CountdownManager.getAll())
+    useRolledTracking()
+    useOverlayItemSync(setCds, CountdownManager.getAll, `${sys_id}.countdowns`)
+
+    const hasRolled = rolledThisRound.has(groupRolledKey(groupName))
+
+    const groupCdIds = combatants.flatMap(c => getCombatantStatusCountdowns(cds, c).map(cd => cd.id))
+    const uniqueIds = Array.from(new Set(groupCdIds))
+    const allDiceRolled = uniqueIds.every(id => rolledThisRound.has(dieRolledKey(id)))
+
+    const rollAll = async () => {
+        if (hasRolled) return
+        const idsToRoll = uniqueIds.filter(id => !rolledThisRound.has(dieRolledKey(id)))
+        markRolled(groupRolledKey(groupName))
+        idsToRoll.forEach(id => markRolled(dieRolledKey(id)))
+        for (const id of idsToRoll) {
+            await rollStatusCountdown(id)
+        }
+    }
+
     return (
-        <div className="flex bg-section-header-fill px-1 font-eskapade font-bold py-1 mb-1">
+        <div className="flex items-center justify-between bg-section-header-fill px-1 font-eskapade font-bold py-1 mb-1">
             <p className={`flex text-xl text-text-header-secondary`}>{`${label}`}</p>
+            {uniqueIds.length > 0 && game.user?.isActiveGM &&
+                <span className="text-text-primary">
+                    <UtilityButton onClick={rollAll} disabled={hasRolled || allDiceRolled}>
+                        {appLang.Combat.rollCountdowns}
+                    </UtilityButton>
+                </span>
+            }
         </div>
     )
 }
@@ -298,7 +379,30 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                 const shouldBeActive = !controlledCombatantsHaveStatus(statusKey, combatant)
                 await performAsyncActionOnControlledCombatants(comb => comb.actor?.toggleStatusEffect(statusKey, { active: shouldBeActive }), combatant)
             }
-            return { label: appLang.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: () => controlledCombatantsHaveStatus(statusKey, combatant) } as CtxMenuItem
+            const applyWithDuration = async (e, duration: number) => {
+                e.keepOpen = true
+                const combatants = combineCombatantWithControlledCombatants(combatant)
+                const existing = CountdownManager.getAll()
+                const toRemove = new Set(combatants.map(c => `${c.token?.uuid ?? ""}|${c.actor?.uuid ?? ""}`))
+                const kept = existing.filter(cd => cd.result.status !== statusKey || !toRemove.has(`${cd.result.tokenUuid ?? ""}|${cd.result.actorUuid ?? ""}`))
+                if (kept.length !== existing.length) await CountdownManager.setAll(kept)
+                await performAsyncActionOnControlledCombatants(comb => comb.actor?.toggleStatusEffect(statusKey, { active: true }), combatant)
+                await CountdownManager.addAll(combatants.map(comb => ({
+                    label: `${comb.actor?.name}: ${appLang.StatusConditions[statusKey].name}`,
+                    duration,
+                    actorId: comb.actor?.uuid ?? '',
+                    tokenUuid: comb.token?.uuid,
+                    status: { id: statusKey }
+                })))
+            }
+            const subMenuItems = [4, 6, 8, 10, 12, 20].map(d => ({ label: `Cd${d}`, action: (e) => applyWithDuration(e, d) })) as CtxMenuItem[]
+            return {
+                label: appLang.StatusConditions[statusKey].name,
+                icon: StatusMenuItemIcon,
+                action,
+                ...(VagabondActiveEffect.statusesWithoutDuration.includes(statusKey) ? {} : { subMenuItems }),
+                isSelected: () => controlledCombatantsHaveStatus(statusKey, combatant)
+            } as CtxMenuItem
         }
 
         const makeBurnMenuItem = () => {
@@ -343,7 +447,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                     }
                 }
 
-                await addCountdowns(countdownsToAdd)
+                await CountdownManager.addAll(countdownsToAdd)
             }
 
             const subMenuItems = () => {
@@ -367,7 +471,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                             e.keepOpen = true
                             const combatants = combineCombatantWithControlledCombatants(combatant)
                             const actorUuids = combatants.map(c => c.token?.actor?.uuid).filter(Boolean) as string[]
-                            await removeBurns(actorUuids)
+                            await CountdownManager.removeBurns(actorUuids)
                         }, isSelected: true
                     })
                 }
@@ -500,6 +604,129 @@ const StatusIcons = ({ combatant }) => {
     )
 }
 
+const rollStatusCountdown = async (cdId: string) => {
+    const current = CountdownManager.getAll().find(cd => cd.id === cdId)
+    if (!current || current.result.duration === 0) return
+    if (!canInteractWithOverlayObject(current, CountdownManager.checkPermission)) return
+
+    const roll = new CountdownRoll(current.result)
+    await roll.roll(true)
+
+    const expired = roll.result.duration === 0
+    await CountdownManager.setAll(CountdownManager.getAll().flatMap(cd =>
+        cd.id !== cdId ? [cd] : (expired ? [] : [{ ...cd, result: roll.result }])
+    ))
+
+    if (current.result.status === "burning") await roll.applyBurningDamage()
+}
+
+const getCombatantStatusCountdowns = (cds: CountdownSchema[], combatant: VagabondCombatant) =>
+    cds.filter(cd =>
+        cd.result.status &&
+        cd.result.duration > 0 &&
+        cd.result.actorUuid === combatant.actor?.uuid &&
+        (!cd.result.tokenUuid || cd.result.tokenUuid === combatant.token?.uuid)
+    )
+
+export const rollPendingCountdowns = async (combatant: VagabondCombatant) => {
+    if (rolledThisRound.has(groupRolledKey(combatant.combatGroup))) return
+    const pending = getCombatantStatusCountdowns(CountdownManager.getAll(), combatant)
+        .map(cd => cd.id)
+        .filter(id => !rolledThisRound.has(dieRolledKey(id)))
+    pending.forEach(id => markRolled(dieRolledKey(id)))
+    for (const id of pending) {
+        await rollStatusCountdown(id)
+    }
+}
+
+export const activateCombatantAndRollCountdowns = async (combatant: VagabondCombatant) => {
+    const id = combatant?._id
+    if (!id) return
+    await getCombat()?.activateCombatant(id)
+    if (game.user?.isActiveGM) {
+        await rollPendingCountdowns(combatant)
+    }
+    else if (game.users?.activeGM) {
+        // Players can't roll countdowns themselves; ask the active GM's client to.
+        game.socket?.emit(`system.${sys_id}`, {
+            action: "rollCombatantCountdowns",
+            user: game.user?.id,
+            data: { combatId: getCombat()?.id, combatantId: id }
+        })
+    }
+}
+
+export const StatusCountdowns = ({ combatant, actorUuid, tokenUuid, burningOnly, alwaysClickable, className = "flex flex-wrap gap-0.5" }: {
+    combatant?: VagabondCombatant, actorUuid?: string, tokenUuid?: string, burningOnly?: boolean, alwaysClickable?: boolean, className?: string
+}) => {
+    const targetActorUuid = actorUuid ?? combatant?.actor?.uuid
+    const targetTokenUuid = tokenUuid ?? combatant?.token?.uuid
+    const [cds, setCds] = useState<CountdownSchema[]>(CountdownManager.getAll())
+    const { onCtxMenu, ContextMenu } = useContextMenu()
+    useOverlayItemSync(setCds, CountdownManager.getAll, `${sys_id}.countdowns`)
+
+    const combatantCountdowns = cds.filter(cd =>
+        cd.result.status &&
+        (!burningOnly || (cd.result.status === "burning" && cd.result.duration > 0)) &&
+        cd.result.actorUuid === targetActorUuid &&
+        (!cd.result.tokenUuid || !targetTokenUuid || cd.result.tokenUuid === targetTokenUuid)
+    )
+
+    const rollCountdown = (cdId: string) => {
+        if (!game.user?.isActiveGM || isDieDisabled(cdId)) return
+        markRolled(dieRolledKey(cdId))
+        return rollStatusCountdown(cdId)
+    }
+
+    useRolledTracking()
+
+    const isDieDisabled = (cdId: string) =>
+        !game.user?.isActiveGM ||
+        (!alwaysClickable && (rolledThisRound.has(dieRolledKey(cdId)) || (!!combatant && rolledThisRound.has(groupRolledKey(combatant.combatGroup)))))
+
+    const deleteCountdown = async (cdId: string) => {
+        await CountdownManager.setAll(CountdownManager.getAll().filter(cd => cd.id !== cdId))
+    }
+
+    if (!combatantCountdowns.length) return <></>
+
+    return (
+        <div className={className}>
+            <ContextMenu />
+            {combatantCountdowns.map(cd => {
+                const statusName = appLang.StatusConditions[cd.result.status as string]?.name ?? cd.result.status
+                const damageTypeName = cd.result.status === "burning" && cd.result.damageType
+                    ? (appLang.DamageTypes[cd.result.damageType] ?? cd.result.damageType)
+                    : undefined
+                const tooltipName = damageTypeName ? `${statusName} - ${damageTypeName}` : statusName
+                return (
+                    <DiceRollButton
+                        key={cd.id}
+                        faces={cd.result.rollSummary?.faces ?? cd.result.duration}
+                        result={cd.result.rollSummary?.result ?? ''}
+                        textSize="text-2xl"
+                        title={`${tooltipName} (Cd${cd.result.duration})`}
+                        disabled={isDieDisabled(cd.id)}
+                        onClick={(e) => { e.stopPropagation(); rollCountdown(cd.id) }}
+                        onDoubleClick={(e) => e.stopPropagation()}
+                        onAuxClick={(e) => e.stopPropagation()}
+                        onContextMenu={(e) => {
+                            e.stopPropagation()
+                            if (!game.user?.isActiveGM) return
+                            onCtxMenu(e, [{
+                                label: appLang.ButtonActions.delete,
+                                icon: Trash,
+                                isDestructive: true,
+                                action: () => deleteCountdown(cd.id)
+                            }])
+                        }}
+                    />
+                )
+            })}
+        </div>
+    )
+}
+
 const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
     const token = canvas?.tokens?.placeables?.find(t => t.id === hero.tokenId) as Token
     const heroActorModel = hero.actor.system
@@ -527,8 +754,9 @@ const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
                         {hasMana && <Gauge max={manaMax} value={mana} fillColorClassName="bg-mana/75" size="sm" rounded={false} />}
                     </div>
                 </Tooltip>
-                <div>
+                <div className="flex flex-col gap-0.5">
                     <StatusIcons combatant={hero} />
+                    <StatusCountdowns combatant={hero} />
                 </div>
             </CombatantHeader>
         </Combatant>
@@ -539,14 +767,14 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }
     let component = <div className="min-w-[24px] mr-4" />
 
     const isCurrentCombatant = useIsCurrentCombatant(combatant)
+    const { activeCombatantId } = useCombatContext()
+    const hasOtherActiveCombatant = !!activeCombatantId && !isCurrentCombatant
     const hasActivationsLeft = (combatant.activations?.value ?? 0) > 0
 
     const id = combatant?._id
 
-    const activateCombatant = useCallback(() => {
-        if (id) {
-            getCombat()?.activateCombatant(id)
-        }
+    const activateCombatant = useCallback(async () => {
+        if (id) await activateCombatantAndRollCountdowns(combatant)
     }, [combatant])
 
     const deactivateCombatant = useCallback(() => {
@@ -555,7 +783,15 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }
         }
     }, [combatant])
 
-    if (!combatant.isOwner && !game.user?.isActiveGM) { return component }
+    if (!combatant.isOwner && !game.user?.isActiveGM) {
+        // Spotlight indicator for combatants the user doesn't control.
+        if (isCurrentCombatant) {
+            return <div className="ml-auto mr-4 text-2xl" title={`${combatant.name}`}>
+                <DieIcon faces={20} exploded={false} />
+            </div>
+        }
+        return component
+    }
 
     if (isCurrentCombatant) {
         component = <Tooltip content={appLang.Combat.end}>
@@ -567,7 +803,7 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }
             />
         </Tooltip>
     }
-    else if (hasActivationsLeft) {
+    else if (hasActivationsLeft && !hasOtherActiveCombatant) {
         component = <Tooltip content={appLang.Combat.activate}>
             <IconOnlyButton
                 Icon={PlayIcon}
@@ -601,8 +837,9 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
                         />
                     </div>
                 </Tooltip>
-                <div>
+                <div className="flex flex-col gap-0.5">
                     <StatusIcons combatant={adversary} />
+                    <StatusCountdowns combatant={adversary} />
                 </div>
             </CombatantHeader>
         </Combatant>
@@ -610,6 +847,17 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
     )
 }
 
-const getHeroes = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.actor && c.combatGroup === "heroes")
-const getAdversaries = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.actor && c.combatGroup === "adversaries")
-const getNpcs = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.actor && c.combatGroup === "npcs")
+// Each group is listed in turn order (the combat's turn sorting) rather than creation order.
+const inTurnOrder = (combatants: VagabondCombatant[], group: string) => {
+    const turns = (getCombat()?.turns ?? []) as VagabondCombatant[]
+    const turnIndex = (c: VagabondCombatant) => {
+        const i = turns.findIndex(t => t.id === c.id)
+        return i < 0 ? Number.MAX_SAFE_INTEGER : i
+    }
+    return (combatants ?? [])
+        .filter(c => c.actor && c.combatGroup === group)
+        .sort((a, b) => turnIndex(a) - turnIndex(b))
+}
+const getHeroes = (combatants: VagabondCombatant[]) => inTurnOrder(combatants, "heroes")
+const getAdversaries = (combatants: VagabondCombatant[]) => inTurnOrder(combatants, "adversaries")
+const getNpcs = (combatants: VagabondCombatant[]) => inTurnOrder(combatants, "npcs")

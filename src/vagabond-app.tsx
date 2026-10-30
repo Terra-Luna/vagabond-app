@@ -16,6 +16,7 @@ import { VagabondActiveEffect } from './combat/documents/VagabondActiveEffect'
 import { VagabondCombat, VagabondCombatant } from './combat/documents/VagabondCombat'
 import { Attack } from "./combat/engine/Attack"
 import { FlankStatusManager } from "./combat/engine/util/FlankStatusManager"
+import { rollPendingCountdowns } from "./combat/ui/CombatTracker"
 import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
 import { AdversaryDataModel } from "./model/actor/AdversaryDataModel"
 import { HeroDataModel } from "./model/actor/HeroDataModel"
@@ -112,6 +113,7 @@ Hooks.once("init", () => {
         CONFIG.Item.dataModels.weapon = WeaponDataModel,
         // Combat
         CONFIG.Combat.documentClass = VagabondCombat,
+        CONFIG.Combat.initiative = { formula: "3d8 + @stats.dexterity + @stats.awareness", decimals: 2 },
         CONFIG.Combatant.documentClass = VagabondCombatant,
         CONFIG.Combatant.dataModels.base = VagabondCombatantModel,
         CONFIG.ActiveEffect.documentClass = VagabondActiveEffect,
@@ -181,6 +183,13 @@ Hooks.once("ready", async () => {
         }
         else if (packet?.action === "createTagalongItems") {
             await TagalongItemCreator.handleIncomingItemCreation(packet)
+        }
+        else if (packet?.action === "rollCombatantCountdowns") {
+            const { combatId, combatantId } = packet.data ?? {}
+            const requester = game.users?.get(packet.user)
+            const combatant = game.combats?.get(combatId)?.combatants.get(combatantId) as any
+            if (!requester || !combatant || !combatant.testUserPermission(requester, "OWNER")) return
+            await rollPendingCountdowns(combatant)
         }
         else if (packet?.action === "updateGameSetting") {
             const data = packet.data

@@ -21,7 +21,10 @@ export const ItemRuleInput = ({ label, value, placeholder = '', onChange, type =
         }
     }
 
+    const focused = useRef(false)
+
     useEffect(() => {
+        if (focused.current || pendingChange.current !== null) return
         setLocalValue(value)
     }, [value])
 
@@ -45,7 +48,11 @@ export const ItemRuleInput = ({ label, value, placeholder = '', onChange, type =
                     type={type}
                     value={localValue}
                     onChange={handleInputChange}
-                    onBlur={flushPendingChange}
+                    onFocus={() => { focused.current = true }}
+                    onBlur={() => {
+                        focused.current = false
+                        flushPendingChange()
+                    }}
                     style={type === 'number' ? { maxWidth: '8ch' } : undefined}
                     className={`
                         ${tableBorderRounded}

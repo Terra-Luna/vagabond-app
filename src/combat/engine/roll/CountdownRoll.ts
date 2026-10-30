@@ -1,6 +1,7 @@
-import { sys_id } from "../../../utils/foundryUtils"
+import { roll3dDice, sys_id } from "../../../utils/foundryUtils"
 import { sendVagabondChatCard } from "../../../view/chat/ChatCardSerializer"
 import { getDiceTerms } from "../util/dice-utils"
+import { mitigateBurningDamage } from "../util/burning-mitigation"
 import { CountdownResult } from "./CountdownResult"
 import { RollSummary } from "./RollSummary"
 
@@ -12,7 +13,7 @@ export class CountdownRoll {
         this.result = countdown
     }
 
-    public async roll() {
+    public async roll(silent = false) {
         const formula = `d${this.result.duration}`
         const roll = await new Roll(formula).evaluate()
         const nextDuration = this.adjustCountdownDuration(roll.total)
@@ -35,7 +36,10 @@ export class CountdownRoll {
                 )
         }
 
-        if (this.result.status !== "burning") {
+        if (silent) {
+            roll3dDice([roll])
+        }
+        else if (this.result.status !== "burning") {
             sendVagabondChatCard(
                 null,
                 "CountdownRollChatCard",
@@ -61,7 +65,7 @@ export class CountdownRoll {
             return
         }
 
-        const damage = this.result.rollSummary?.result ?? 0
+        const damage = mitigateBurningDamage(actor, this.result.damageType, this.result.rollSummary?.result ?? 0)
         const health = (actor.system as any)?.health?.value ?? 0
 
         if (this.result.damageType === "mana") {

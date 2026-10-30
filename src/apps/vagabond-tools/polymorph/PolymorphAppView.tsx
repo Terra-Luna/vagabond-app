@@ -271,7 +271,7 @@ export const PolymorphAppView = ({ caster, header }: {
                                 onDrop={handleMorphDrop}
                             >
                                 <span className="italic">
-                                    {`${localizeString(appLang.Polymorph.dropZone, { noun: isTargetSelf() ? appLang.Polymorph.self : appLang.Polymorph.targets })}\n${caster.system instanceof HeroDataModel ? localizeString(appLang.Polymorph.hdLimit, { hd: String(castingLevel) }) : ""}`}
+                                    {`${localizeString(appLang.Polymorph.dropZone, { noun: isTargetSelf() ? appLang.Polymorph.self : appLang.Combat.targets })}\n${caster.system instanceof HeroDataModel ? localizeString(appLang.Polymorph.hdLimit, { hd: String(castingLevel) }) : ""}`}
                                 </span>
 
                                 <div className="flex gap-x-1 mt-2 -mb-2 ml-auto">

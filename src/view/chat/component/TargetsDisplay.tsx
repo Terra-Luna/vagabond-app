@@ -12,7 +12,7 @@ export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], on
     return (
         <div className="-mt-1 pb-2">
 
-            <ClearHeader title={`Targets [${targets.length}]`} />
+            <ClearHeader title={`Targets`} />
 
             {targets && targets.length > 0 &&
                 <div className="flex flex-wrap -space-x-4 justify-center items-center px-2">

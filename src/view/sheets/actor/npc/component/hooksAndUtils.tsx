@@ -15,8 +15,7 @@ import { sendVagabondChatCard } from "../../../../chat/ChatCardSerializer"
 
 export const useAddActionMenu = () => {
     const [isAddActionOpen, setIsAddActionOpen] = useState(false)
-    const [editActionTarget, setEditActionTarget] = useState(null)
-    return { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget }
+    return { isAddActionOpen, setIsAddActionOpen }
 }
 
 export const onClickAction = async (

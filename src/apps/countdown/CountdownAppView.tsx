@@ -4,41 +4,39 @@ import { useCallback, useState } from "react"
 import { CountdownRoll } from "../../combat/engine/roll/CountdownRoll"
 import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
-import { DiceRollComponent } from "../../view/chat/component/DiceRollComponent"
 import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
+import { DiceRollButton } from "../../view/component/DiceRollButton"
 import { CanvasOverlayObjectWrapper } from "../overlay/component/CanvasOverlayObjectWrapper"
 import { WidgetLabel } from "../overlay/component/WidgetLabel"
 import { useDragOverlayComponent } from "../overlay/usecase/DragOverlayUseCase"
 import { useOverlayItemSync } from "../overlay/usecase/OverlayItemSyncUseCase"
 import { useOverlayObjectPermissionsMenu } from "../overlay/usecase/OverlayObjectPermissionsMenuUseCase"
-import {
-    canInteractWithOverlayObject, checkCountdownPermission, CountdownSchema, getCountdownPlayerDefaultPermission, getCountdowns,
-    setCountdowns
-} from "../vagabond-tools/usecase/VagabondSettingsHelper"
+import { CountdownManager, CountdownSchema } from "../vagabond-tools/usecase/CountdownManager"
+import { canInteractWithOverlayObject } from "../vagabond-tools/usecase/VagabondSettingsHelper"
 
 export const CountdownAppView = () => {
 
     const [cds, setCds] = useState<CountdownSchema[]>([])
-    const { dragInfo, handleMouseDown } = useDragOverlayComponent(setCds, setCountdowns,
-        (countdown: CountdownSchema) => canInteractWithOverlayObject(countdown, checkCountdownPermission))
+    const { dragInfo, handleMouseDown } = useDragOverlayComponent(setCds, CountdownManager.setAll,
+        (countdown: CountdownSchema) => canInteractWithOverlayObject(countdown, CountdownManager.checkPermission))
     const { ContextMenu, onCtxMenu } = useContextMenu()
 
-    useOverlayItemSync(setCds, getCountdowns, `${sys_id}.countdowns`)
+    useOverlayItemSync(setCds, CountdownManager.getAll, `${sys_id}.countdowns`)
 
     const { itemsRef: cdsRef, visibleItems, gmMenuItems } = useOverlayObjectPermissionsMenu(
-        cds, setCountdowns, getCountdownPlayerDefaultPermission)
+        cds, CountdownManager.setAll, CountdownManager.checkPlayerDefaultPermission)
 
     const handleCountdownClick = useCallback(async (cdId: string) => {
         if (dragInfo.current?.hasMoved) return
 
         const countdown = cdsRef.current.find(cd => cd.id === cdId)
         if (!countdown || countdown.result.duration === 0) return
-        if (!canInteractWithOverlayObject(countdown, checkCountdownPermission)) return
+        if (!canInteractWithOverlayObject(countdown, CountdownManager.checkPermission)) return
 
         const roll = new CountdownRoll(countdown.result)
         await roll.roll()
 
-        await setCountdowns(cdsRef.current.map((countdown: any) => {
+        await CountdownManager.setAll(cdsRef.current.map((countdown: any) => {
             if (countdown.id === cdId) {
                 return { ...countdown, result: roll.result }
             }
@@ -61,7 +59,7 @@ export const CountdownAppView = () => {
                 : target.result.duration + 2
             )
 
-        await setCountdowns(cdsRef.current.map((countdown: any) => {
+        await CountdownManager.setAll(cdsRef.current.map((countdown: any) => {
             if (countdown.id === cdId) return updateCountdownDuration(countdown, duration)
             return countdown
         }))
@@ -77,7 +75,7 @@ export const CountdownAppView = () => {
                 : target.result.duration - 2
             )
 
-        await setCountdowns(cdsRef.current.map((countdown: any) => {
+        await CountdownManager.setAll(cdsRef.current.map((countdown: any) => {
             if (countdown.id === cdId) return updateCountdownDuration(countdown, duration)
             return countdown
         }))
@@ -100,14 +98,14 @@ export const CountdownAppView = () => {
             }
         }
 
-        await setCountdowns(cdsRef.current.map((cd: CountdownSchema) => {
+        await CountdownManager.setAll(cdsRef.current.map((cd: CountdownSchema) => {
             if (cd.id === countdown.id) return updatedCountdown
             else return cd
         }))
     }, [cdsRef])
 
     const deleteCountdown = useCallback(async (cdId: string) => {
-        await setCountdowns(cdsRef.current.filter(cd => cd.id !== cdId))
+        await CountdownManager.setAll(cdsRef.current.filter(cd => cd.id !== cdId))
     }, [cdsRef])
 
     const openLinkedActorSheet = useCallback(async (actorId?: string, tokenUuid?: string) => {
@@ -124,7 +122,7 @@ export const CountdownAppView = () => {
     }, [])
 
     const countdownMenuItems = (countdown: CountdownSchema): CtxMenuItem[] => {
-        const canInteract = canInteractWithOverlayObject(countdown, checkCountdownPermission)
+        const canInteract = canInteractWithOverlayObject(countdown, CountdownManager.checkPermission)
         const options: any[] = []
 
         if (canInteract && countdown.result.duration > 0) {
@@ -146,7 +144,7 @@ export const CountdownAppView = () => {
     }
 
     return (<>
-        <CanvasOverlayObjectWrapper objects={visibleItems} onMouseDown={handleMouseDown}>
+        <CanvasOverlayObjectWrapper objects={visibleItems.filter((cd: CountdownSchema) => !cd.result.status)} onMouseDown={handleMouseDown}>
             {(countdown: CountdownSchema) => (
                 <div className={`flex flex-col rounded pointer-events-auto items-center`}
                     onContextMenu={(e) => {
@@ -162,21 +160,18 @@ export const CountdownAppView = () => {
                         relative flex items-center justify-center rounded-full aspect-square border border-solid border-dice
                         ${countdown.result.duration === 0 ? 'bg-destructive-action/33' : 'bg-sheet-main-fill/40'}
                     `}>
-                        <button
+                        <DiceRollButton
                             title={appLang.Overlay.countdownRollTooltip}
-                            className="hover-glow transition-transform active:scale-95 focus:outline-none mt-1 -m-1"
+                            className="mt-1 -m-1"
+                            faces={countdown.result.rollSummary?.faces ?? countdown.result.duration}
+                            result={countdown.result.rollSummary?.result ?? ''}
+                            textSize="text-4xl"
                             onClick={() => handleCountdownClick(countdown.id)}
-                        >
-                            <DiceRollComponent
-                                faces={countdown.result.rollSummary?.faces ?? countdown.result.duration}
-                                result={countdown.result.rollSummary?.result ?? ''}
-                                textSize="text-4xl"
-                            />
-                        </button>
+                        />
                     </div>
 
                     {/* LABEL */}
-                    <WidgetLabel label={countdown.result.name} onLabelChange={(newlabel) => updateLabel(countdown, newlabel)} permissionCheck={checkCountdownPermission} />
+                    <WidgetLabel label={countdown.result.name} onLabelChange={(newlabel) => updateLabel(countdown, newlabel)} permissionCheck={CountdownManager.checkPermission} />
                 </div>
             )}
         </CanvasOverlayObjectWrapper>

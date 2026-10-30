@@ -8,6 +8,7 @@ import { appLang } from "../../../../../utils/lang"
 import { tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
+import { Option, Select } from "../../../../component/Dropdown"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 
 export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
@@ -36,7 +37,11 @@ export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataMode
                     {/* ACTIVE POWERS */}
                     <div className="flex flex-wrap gap-1 mt-0.5 w-full">
                         {item.system.relicPowers?.map(relic => (
-                            <RelicCard key={relic.id} item={item} relic={relic} />
+                            <div key={relic.id} className="flex flex-col items-center gap-0.5">
+                                <RelicCard item={item} relic={relic} />
+                                {RelicPowerProcessor.getRelicAppliedEffects([relic as RelicPower])
+                                    .some(fx => fx.effect === 'burning') && <RelicDamageTypeSelect item={item} relic={relic as RelicPower} />}
+                            </div>
                         ))}
                     </div>
 
@@ -59,6 +64,19 @@ export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataMode
             } />
         </div>}
     </>)
+}
+
+const RelicDamageTypeSelect = ({ item, relic }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower }) => {
+    const excluded = ["none", "mana", "silvered", "coldiron", "adamant", "fatigue"]
+    const options = Object.keys(appLang.DamageTypes).filter(it => !excluded.includes(it))
+    const current = RelicPowerProcessor.getRelicAppliedEffects([relic])[0]?.damageType ?? ''
+
+    return (
+        <Select value={current} onChange={e => RelicPowerProcessor.setRelicDamageType(item, relic, e.target.value)}>
+            <Option value="">{`Weapon (${appLang.DamageTypes[(item.system as any).damage?.type] ?? '-'})`}</Option>
+            {options.map(it => <Option key={it} value={it}>{appLang.DamageTypes[it]}</Option>)}
+        </Select>
+    )
 }
 
 const RelicCard = ({ item, relic }) => {

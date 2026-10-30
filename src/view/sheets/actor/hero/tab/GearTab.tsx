@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
 import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
+import { recordSheetSaveOnActiveAttacks } from "../../../../../combat/engine/util/attack-save-sync"
 import { getArmor, HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
@@ -171,7 +172,12 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
                 },
                 rollDefenseCheck: async (e: React.MouseEvent) => {
                     attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, true)
-                    await attackInstance.initiate(e, { isDefenseCheck: true })
+                    await attackInstance.initiate(e, { isDefenseCheck: true, skipChatCard: true })
+                    const result = attackInstance.skillCheck?.result
+                    if (!result) return
+                    const armorBonus = HeroAttack.getDefenseArmorBonus(hero, attackInstance)
+                    const recorded = await recordSheetSaveOnActiveAttacks(hero.parent, result, { armorBonus })
+                    if (!recorded) await attackInstance.sendChatCard()
                 }
             }
         })

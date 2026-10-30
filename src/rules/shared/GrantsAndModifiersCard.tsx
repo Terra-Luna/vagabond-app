@@ -57,13 +57,15 @@ export const GrantsAndModifiersCard = ({ rule, isActive = true }) => {
             <div className="flex items-center gap-2.5">
                 <img src={rule.sourceImg} className={`${tableBorder}/50 rounded-sm h-8 object-cover shrink-0`} alt="" />
                 <div>
-                    <div className="flex gap-x-2">
-                        <div className="text-text-primary font-bold">
+                    <div>
+                        <span className="text-text-primary font-bold">
                             {`${rule.label || "Unnamed Feature"}`}
-                        </div>
-                        <div className="text-text-secondary font-normal italic">
-                            {displaySelections.length > 0 ? ` (${displaySelections.join(", ")})` : ""}
-                        </div>
+                        </span>
+                        {displaySelections.length > 0 &&
+                            <span className="text-text-secondary font-normal italic">
+                                {` (${displaySelections.join(", ")})`}
+                            </span>
+                        }
                     </div>
                     <div className="text-xs text-text-primary">
                         Source Item: <span className="text-text-header-tertiary">{rule.sourceName}</span>

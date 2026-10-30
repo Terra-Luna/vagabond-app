@@ -1,4 +1,4 @@
-import { KeyboardEvent, useRef, useState } from 'react'
+import { KeyboardEvent, useMemo, useRef, useState } from 'react'
 import Select, { ClassNamesConfig, MultiValue } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 
@@ -13,6 +13,8 @@ interface MultiSelectProps {
     placeholder?: string
     isValidNewOption?: (input: string) => boolean
 }
+
+const MAX_VISIBLE_OPTIONS = 50
 
 /**
  * "ClassNamesConfig" documentation: https://react-select.com/props
@@ -69,8 +71,22 @@ export const MultiSelect = ({ options = [], value = [], handleOnChange, placehol
         setInputValue("")
     }
 
+    const visibleOptions = useMemo(() => {
+        const selected = new Set(value.map(v => v.value))
+        const needle = inputValue.trim().toLowerCase()
+        const out: SelectOption[] = []
+        for (const o of options) {
+            if (selected.has(o.value)) continue
+            if (needle && !o.label.toLowerCase().includes(needle)) continue
+            out.push(o)
+            if (out.length >= MAX_VISIBLE_OPTIONS) break
+        }
+        return out
+    }, [options, value, inputValue])
+
     const commonProps = {
-        options,
+        options: visibleOptions,
+        filterOption: null,
         value,
         isMulti: true as const,
         placeholder,

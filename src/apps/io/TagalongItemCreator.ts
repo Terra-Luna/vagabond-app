@@ -245,6 +245,11 @@ export class TagalongItemCreator {
         if (!source) return
         const relics = TagalongItemCreator.resolveRelicPowers(source)
         relics.forEach(relic => {
+            const fx = relic.power.appliedEffect
+            if (fx?.effect) {
+                const existing: any[] = itemData.system.appliedEffects ?? []
+                itemData.system.appliedEffects = [...existing, { effect: fx.effect, duration: fx.duration ?? '', critDuration: '' }]
+            }
             relic.power.modifiers?.forEach(mod => {
                 (mod.selector ?? []).forEach(selector => {
                     const current = foundry.utils.getProperty(itemData, selector)

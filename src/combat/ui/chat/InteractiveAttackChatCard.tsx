@@ -109,7 +109,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                         }
 
                         {/* DAMAGE SUMMARY (PREVIEW OF "APPLY") */}
-                        {attack.showDamage &&
+                        {attack.showDamage && !(attack as any).isDefenseCheck &&
                             <AttackDamageSummary attack={attack} args={resolutionArgs} onOverrideChange={handleOverrideChange} />
                         }
 
@@ -117,9 +117,43 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                         {(game.user?.isActiveGM && !attack.isResolved && !(attack as any).showCritChoices && !(attack as any).isDefenseCheck) &&
                             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                                 <div className="mt-0.5 text-base font-normal">
+
                                     <Header title={"GM Tools"} />
-                                    <div className="flex items-end justify-between px-1">
-                                        <div>
+                                    
+                                    <div className="flex flex-col items-end justify-between px-1">
+
+                                        {/* GM TOOL BUTTONS FOR APPLYING OUTCOMES */}
+                                        <div className="flex gap-1 w-full mt-1 [&>span]:flex-1 [&>span>button]:w-full">
+                                            {(attack.showDamage || attack.appliedEffects.length > 0) &&
+                                                <InteractiveChatCardButton label={appLang.ButtonActions.apply} tooltip={appLang.Combat.applyDamageTooltip}
+                                                    fn={async () => {
+                                                        await attack.applyDamageAndResolve(resolutionArgs, serializeAttack)
+                                                        setRevision(prev => prev + 1)
+                                                    }}
+                                                />
+                                            }
+
+                                            {((attack instanceof AdversaryAttack && attack.appliedEffects.length > 0) ||
+                                                (attack instanceof AdversaryComboAttack && attack.subAttacks.some(sub => sub.appliedEffects.length > 0))) &&
+                                                <InteractiveChatCardButton label={appLang.Combat.applyStatuses} tooltip={appLang.Combat.applyStatusesTooltip}
+                                                    fn={async () => {
+                                                        await attack.applyStatusesAndResolve({ gmTargetsOnly: targetsToggle }, serializeAttack)
+                                                        setRevision(prev => prev + 1)
+                                                    }}
+                                                />
+                                            }
+
+                                            <InteractiveChatCardButton
+                                                label={appLang.ButtonActions.resolve} tooltip={appLang.Combat.resolveWithoutUpdatesTooltip}
+                                                fn={async () => {
+                                                    await attack.resolve(serializeAttack)
+                                                    setRevision(prev => prev + 1)
+                                                }}
+                                            />
+                                        </div>
+
+                                        {/* CHECK BOXES FOR OPTIONAL GM OVERRIDES */}
+                                        <div className="flex flex-col w-full items-start">
                                             <Checkbox
                                                 label={"GM Target Override"}
                                                 checked={targetsToggle}
@@ -129,37 +163,6 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                                 label={"Ignore Armor"}
                                                 checked={armorBypassToggle}
                                                 onCheckedChanged={(e) => { setArmorBypassToggle(e) }}
-                                            />
-                                        </div>
-
-                                        {/* GM TOOL BUTTONS FOR MANAGING OUTCOMES */}
-                                        <div className="flex flex-col gap-1 mt-1">
-                                            {(attack.showDamage || attack.appliedEffects.length > 0) &&
-                                                <InteractiveChatCardButton label={appLang.ButtonActions.apply} tooltip={appLang.Combat.applyDamageTooltip}
-                                                    fn={async () => {
-                                                        await attack.applyDamageAndResolve(
-                                                            resolutionArgs,
-                                                            serializeAttack
-                                                        )
-                                                        setRevision(prev => prev + 1)
-                                                    }}
-                                                />}
-
-                                            {((attack instanceof AdversaryAttack && attack.appliedEffects.length > 0) ||
-                                                (attack instanceof AdversaryComboAttack && attack.subAttacks.some(sub => sub.appliedEffects.length > 0))) &&
-                                                <InteractiveChatCardButton label={appLang.Combat.applyStatuses} tooltip={appLang.Combat.applyStatusesTooltip}
-                                                    fn={async () => {
-                                                        await attack.applyStatusesAndResolve({ gmTargetsOnly: targetsToggle }, serializeAttack)
-                                                        setRevision(prev => prev + 1)
-                                                    }}
-                                                />}
-
-                                            <InteractiveChatCardButton
-                                                label={appLang.ButtonActions.resolve} tooltip={appLang.Combat.resolveWithoutUpdatesTooltip}
-                                                fn={async () => {
-                                                    await attack.resolve(serializeAttack)
-                                                    setRevision(prev => prev + 1)
-                                                }}
                                             />
                                         </div>
                                     </div>

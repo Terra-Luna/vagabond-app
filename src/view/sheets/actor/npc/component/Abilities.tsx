@@ -1,5 +1,6 @@
 import { appLang } from "../../../../../utils/lang"
 import { tableBorderRounded } from "../../../../common/border-styles"
+import { UtilityButton } from "../../../../component/Button"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { TrashButton } from "../../../../component/TrashButton"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -12,7 +13,16 @@ export const Abilities = ({ actor, disabled = false }) => {
     const features = actor.items.filter(it => it.type === 'feature').sort((a, b) => a.name.localeCompare(b.name))
     return (
         <div className="m-2 space-y-1">
-            {(features.length > 0 || isEditMode) && <ActionMenuHeader label={locale.abilities} />}
+            {(features.length > 0 || isEditMode) &&
+                <div className="flex items-center justify-between">
+                    <ActionMenuHeader label={locale.abilities} />
+                    {isEditMode && !disabled &&
+                        <UtilityButton onClick={() => createFeature(actor)}>
+                            {appLang.ButtonActions.add}
+                        </UtilityButton>
+                    }
+                </div>
+            }
 
             {features.length === 0 && isEditMode &&
                 <p className="text-xs font-paradigm font-normal italic">{appLang.AdversarySheet.abilitiesDropHint}</p>
@@ -24,6 +34,11 @@ export const Abilities = ({ actor, disabled = false }) => {
             ))}
         </div>
     )
+}
+
+const createFeature = async (actor) => {
+    const [feature] = await actor.createEmbeddedDocuments("Item", [{ name: appLang.NpcSheet.newFeature, type: "feature" }])
+    feature?.sheet?.render(true)
 }
 
 const FeatureCard = ({ actor, feature, disabled = false }) => {
