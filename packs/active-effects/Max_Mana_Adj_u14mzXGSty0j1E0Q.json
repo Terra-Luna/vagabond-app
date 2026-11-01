@@ -1,15 +1,14 @@
 {
-  "folder": "9aUCdt8m47aFb8f5",
-  "name": "Otyugh Disease",
-  "_id": "NZnOYlOxrYO1jJPF",
-  "img": "/icons/commodities/biological/pustules-brown.webp",
+  "name": "Max Mana Adj",
+  "_id": "u14mzXGSty0j1E0Q",
+  "img": "icons/magic/symbols/circle-ouroboros.webp",
   "type": "base",
   "system": {
     "changes": [
       {
-        "key": "system.health.max",
-        "type": "subtract",
-        "value": "",
+        "key": "system.mana.max",
+        "type": "add",
+        "value": 0,
         "phase": "initial",
         "priority": 20
       }
@@ -30,18 +29,19 @@
   "transfer": false,
   "statuses": [],
   "showIcon": 1,
+  "folder": null,
   "sort": 0,
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.31",
-    "createdTime": 1790188597456,
-    "modifiedTime": 1790188631386,
+    "systemVersion": "0.2.160",
+    "createdTime": 1793503218964,
+    "modifiedTime": 1793503310813,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!effects!NZnOYlOxrYO1jJPF"
+  "_key": "!effects!u14mzXGSty0j1E0Q"
 }

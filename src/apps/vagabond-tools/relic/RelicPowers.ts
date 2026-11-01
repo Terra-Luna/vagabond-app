@@ -10,7 +10,8 @@ export interface RelicPower {
             selector: string[],
             value: number
         }[],
-        appliedEffect?: { effect: string, duration: string, damageType?: string } | null
+        appliedEffect?: { effect: string, duration: string, damageType?: string } | null,
+        beingTypes?: string[]
     },
     goldValue: number,
     bound: boolean,
@@ -122,7 +123,7 @@ export class RelicPowers {
 
     static bane = [
         {
-            id: 'bane-nice',
+            id: 'bane-niche',
             category: { value: 'bane', label: 'Bane' },
             power: { value: 'niche', label: 'Niche' },
             types: ['weapon'],
@@ -130,7 +131,7 @@ export class RelicPowers {
             description: "Adds an extra damage die to extremely specific Beings, such as Trolls (not all giants)."
         },
         {
-            id: 'specific-nice',
+            id: 'bane-specific',
             category: { value: 'bane', label: 'Bane' },
             power: { value: 'specific', label: 'Specific' },
             types: ['weapon'],
@@ -502,9 +503,15 @@ export class RelicPowers {
             description: "Those killed by it can't be resurrected unless a wish is granted to do so."
         },
         {
-            id: 'fabled-vicious',
+            id: 'fabled-visceral',
             category: { value: 'fabled', label: 'Fabled' },
-            power: { value: 'vicious', label: 'Vicious' },
+            power: {
+                value: 'visceral',
+                label: 'Visceral',
+                modifiers: [{
+                    selector: ['damage.out.global.bonus.hdMultiplier'], value: 2
+                }]
+            },
             types: ['weapon'],
             goldValue: 25000,
             description: "On a Crit, the Target takes extra damage equal to twice its HD."

@@ -1,4 +1,5 @@
 import { RelicPowerProcessor } from "../../../../../apps/vagabond-tools/relic/RelicPowerProcessor"
+import { appLang } from "../../../../../utils/lang"
 import { Tooltip } from "../../../../component/Tooltip"
 
 export const RelicEffectList = ({ relicPowers, textColor }: { relicPowers: any[], textColor?: string }) => {
@@ -6,7 +7,14 @@ export const RelicEffectList = ({ relicPowers, textColor }: { relicPowers: any[]
         {relicPowers && relicPowers.length > 0 && (
             <div className="flex flex-wrap gap-x-1">
                 {relicPowers.map((relic: any, index: number) => {
-                    const name = RelicPowerProcessor.getFormattedRelicName(relic)
+                    const isProtection = ['protection-niche', 'protection-specific', 'protection-general'].includes(relic.id)
+                    const typedLabel = isProtection ? 'Protection' : 'Bane'
+                    const isNiche = RelicPowerProcessor.isNiche(relic)
+                    const chosenTypes = ((RelicPowerProcessor.hasBeingTypeChoice(relic) || isNiche) ? (relic.power?.beingTypes ?? []) : []).filter(Boolean) as string[]
+                    const typeNames = RelicPowerProcessor.usesBeingSubtype(relic) ? appLang.BeingSubtypes : appLang.BeingTypes
+                    const name = chosenTypes.length > 0
+                        ? `${typedLabel} (${chosenTypes.map(type => isNiche ? type : (typeNames[type] ?? type)).join(", ")})`
+                        : RelicPowerProcessor.getFormattedRelicName(relic)
                     return (
                         <Tooltip key={index} title={name} content={relic.description}>
                             <p className={`text-xs font-paradigm font-normal italic ${textColor ?? "text-text-header-secondary"}`}>

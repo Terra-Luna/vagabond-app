@@ -46,7 +46,8 @@ export class ComboSubAttack {
         this.damageRoll = new DamageRoll({
             atkName: args.name,
             dmgType: args.dmgType,
-            dice: args.dice
+            dice: args.dice,
+            weaknessDie: args.dice[0] ? { faces: args.dice[0].faces, count: 1 } : undefined
         })
     }
 
@@ -54,9 +55,10 @@ export class ComboSubAttack {
         return (this.damageRoll.result?.total ?? 0) > 0
     }
 
-    async rollDamage(isCrit?: boolean) {
+    async rollDamage(isCrit?: boolean, targetIds: string[] = []) {
         if (this.damageRoll.dice.length > 0 && !this.damageRoll.result) {
-            await this.damageRoll.roll(isCrit)
+            const hasWeakTarget = targetIds.some(id => Attack.isWeakToDamage(id, this.damageRoll))
+            await this.damageRoll.roll(isCrit, hasWeakTarget)
         }
     }
 
@@ -237,7 +239,7 @@ export class AdversaryComboAttack extends Attack {
     async initiate() {
         this.id = foundry.utils.randomID()
         for (const sub of this.subAttacks) {
-            await sub.rollDamage()
+            await sub.rollDamage(false, this.targetIds)
         }
         await this.save(serializeAttack)
         await sendVagabondChatCard(

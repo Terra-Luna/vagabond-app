@@ -70,13 +70,12 @@ export const ImbueButton = ({ attack }: { attack: Attack }) => {
     if (!isEligible) return null
 
     return (
-        <div className="flex items-center justify-center my-2 px-1 [&>span]:flex-1 [&>span>button]:w-full">
+        <div className="flex items-center justify-center my-2 px-1 [&>span>button]:w-full">
             <InteractiveChatCardButton
                 label={
                     <div className="flex gap-x-2 justify-center items-center">
-                        <Wand2 size={16} className="text-mana mr-2" />
+                        <Wand2 size={16} className="text-mana" />
                         Imbue
-                        <Wand2 size={16} className="text-mana mr-2" />
                     </div>
                 }
                 tooltip={appLang.Combat.imbueAttack}

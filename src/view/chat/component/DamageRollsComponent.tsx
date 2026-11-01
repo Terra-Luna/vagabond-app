@@ -26,9 +26,11 @@ export const DamageRollsComponent = ({ attack }: { attack: any }) => {
                 </div>
             }
 
+            <TotalDamage attack={attack} />
+
             {/* WEAKNESS DIE (EXTRA DAMAGE DIE AGAINST WEAK TARGETS) */}
             {result?.weaknessRolls?.map((r, index) => (
-                <div key={`weak-${index}`} className="flex items-start space-x-1">
+                <div key={`weak-${index}`} className="flex items-start gap-x-1 ml-1">
                     <div className="content-center text-text-secondary h-9">
                         <Plus size={20} strokeWidth={2} />
                     </div>
@@ -38,8 +40,6 @@ export const DamageRollsComponent = ({ attack }: { attack: any }) => {
                     </div>
                 </div>
             ))}
-
-            <TotalDamage attack={attack} />
         </div>
     )
 }

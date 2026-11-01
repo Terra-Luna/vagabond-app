@@ -165,7 +165,8 @@ const baseDamageOutSchema = () => {
         }),
         bonus: new fields.SchemaField({
             flat: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
-            perDie: new fields.NumberField({ ...uncappedInteger, initial: 0 })
+            perDie: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+            hdMultiplier: new fields.NumberField({ ...uncappedInteger, initial: 0 })
         }),
         armorPiercing: new fields.SchemaField({
             flat: new fields.NumberField({ ...requiredInteger, initial: 0 }),

@@ -16,6 +16,8 @@ export interface DamageRollArgs {
     armorPiercingPerExtraDie?: number
     relicLevel?: number
     weaknessDie?: WeaknessDie
+    baneTypes?: string[]
+    hdMultiplier?: number
 }
 
 // Extra die rolled when a target is weak to the damage type; kept apart from the main roll.
@@ -46,10 +48,14 @@ export class DamageRoll {
     armorPiercingPerExtraDie: number
     relicLevel: number
     weaknessDie?: WeaknessDie
+    baneTypes?: string[]
+    hdMultiplier: number
     result: DamageRollResult | undefined
 
     constructor(args: DamageRollArgs) {
         this.weaknessDie = args.weaknessDie
+        this.baneTypes = args.baneTypes
+        this.hdMultiplier = args.hdMultiplier ?? 0
         this.atkName = args.atkName
         this.dice = args.dice
         this.dmgType = args.dmgType ?? 'physical'
@@ -82,6 +88,8 @@ export class DamageRoll {
             armorPiercingPerExtraDie: this.armorPiercingPerExtraDie,
             relicLevel: this.relicLevel,
             weaknessDie: this.weaknessDie,
+            baneTypes: this.baneTypes,
+            hdMultiplier: this.hdMultiplier,
             result: this.result
         }
     }
@@ -99,7 +107,9 @@ export class DamageRoll {
                 armorPiercingPerDie: json.armorPiercingPerDie,
                 armorPiercingPerExtraDie: json.armorPiercingPerExtraDie,
                 relicLevel: json.relicLevel,
-                weaknessDie: json.weaknessDie
+                weaknessDie: json.weaknessDie,
+                baneTypes: json.baneTypes,
+                hdMultiplier: json.hdMultiplier
             })
             roll.result = json.result
             return roll

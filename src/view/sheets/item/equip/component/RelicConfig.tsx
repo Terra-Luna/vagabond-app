@@ -1,5 +1,5 @@
-import { Diamond } from "lucide-react"
-import { useMemo } from "react"
+import { Diamond, Plus } from "lucide-react"
+import { useMemo, useState } from "react"
 
 import { RelicPowerProcessor } from "../../../../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { RelicPower, RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPowers"
@@ -9,6 +9,9 @@ import { tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { Option, Select } from "../../../../component/Dropdown"
+import { FoundryHotkeyBlocker } from "../../../../component/FoundryHotkeyBlocker"
+import { IconOnlyButton } from "../../../../component/IconOnlyButton"
+import { TrashButton } from "../../../../component/TrashButton"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 
 export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
@@ -41,6 +44,8 @@ export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataMode
                                 <RelicCard item={item} relic={relic} />
                                 {RelicPowerProcessor.getRelicAppliedEffects([relic as RelicPower])
                                     .some(fx => fx.effect === 'burning') && <RelicDamageTypeSelect item={item} relic={relic as RelicPower} />}
+                                {RelicPowerProcessor.hasBeingTypeChoice(relic as RelicPower) && <RelicBeingTypeSelect item={item} relic={relic as RelicPower} />}
+                                {RelicPowerProcessor.isNiche(relic as RelicPower) && <RelicNicheInput item={item} relic={relic as RelicPower} />}
                             </div>
                         ))}
                     </div>
@@ -76,6 +81,49 @@ const RelicDamageTypeSelect = ({ item, relic }: { item: Item & { system: Equipme
             <Option value="">{`Weapon (${appLang.DamageTypes[(item.system as any).damage?.type] ?? '-'})`}</Option>
             {options.map(it => <Option key={it} value={it}>{appLang.DamageTypes[it]}</Option>)}
         </Select>
+    )
+}
+
+const RelicBeingTypeSelect = ({ item, relic }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower }) => {
+    const isSubtype = RelicPowerProcessor.usesBeingSubtype(relic)
+    const options = Object.entries(isSubtype ? appLang.BeingSubtypes : appLang.BeingTypes).filter(([key]) => key !== 'none')
+    const selected = relic.power.beingTypes?.length ? relic.power.beingTypes : ['']
+    const save = (types: string[]) => RelicPowerProcessor.setRelicBeingTypes(item, relic, types)
+
+    return (
+        <div className="flex flex-col items-stretch gap-0.5">
+            {selected.map((type, index) => (
+                <div key={index} className="flex items-center gap-x-1">
+                    <Select value={type} onChange={e => save(selected.map((it, i) => i === index ? e.target.value : it))}>
+                        <Option value="">{isSubtype ? "Select Being Subtype" : "Select Being Type"}</Option>
+                        {options.map(([key, label]) => <Option key={key} value={key}>{label as string}</Option>)}
+                    </Select>
+                    <TrashButton onClick={() => save(selected.filter((_, i) => i !== index))} />
+                </div>
+            ))}
+            <IconOnlyButton Icon={Plus} size={18} title="Add" className="self-start" onClick={() => save([...selected, ''])} />
+        </div>
+    )
+}
+
+// Display-only text; saved on blur so the item isn't updated on every keystroke.
+const RelicNicheInput = ({ item, relic }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower }) => {
+    const saved = relic.power.beingTypes?.[0] ?? ''
+    const [text, setText] = useState(saved)
+    return (
+        <FoundryHotkeyBlocker>
+            <input
+                type="text"
+                value={text}
+                placeholder="Being type"
+                autoComplete="off"
+                className={`w-28 text-sm text-text-secondary font-paradigm font-normal italic px-1 ${tableBorderRounded}`}
+                onChange={e => setText(e.target.value)}
+                onBlur={() => {
+                    if (text !== saved) RelicPowerProcessor.setRelicBeingTypes(item, relic, [text])
+                }}
+            />
+        </FoundryHotkeyBlocker>
     )
 }
 

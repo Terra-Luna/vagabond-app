@@ -50,7 +50,8 @@ export class AdversaryAttack extends Attack {
         super(args.attackName, actor, targetIds, new DamageRoll({
             atkName: args.attackName,
             dmgType: args.dmgType,
-            dice: args.dice
+            dice: args.dice,
+            weaknessDie: args.dice[0] ? { faces: args.dice[0].faces, count: 1 } : undefined
         }))
         this.saveTypes = args.saveTypes ?? []
         this.description = args.description ?? ''
@@ -91,7 +92,7 @@ export class AdversaryAttack extends Attack {
             this.damageRoll.perDieDmgBonus += dmgMods.global.bonus.perDie ?? 0
         }
         if (this.damageRoll && this.damageRoll.dice.length > 0 && !this.damageRoll?.result) {
-            await this.damageRoll.roll(isCrit)
+            await this.damageRoll.roll(isCrit, this.hasWeakTarget)
             if (this.damageRoll && this.damageRoll.result) {
                 this.damageRoll.result.total += this.damageRoll.flatDmgBonus + (this.damageRoll.perDieDmgBonus * this.damageRoll.dice.length)
             }

@@ -10,16 +10,16 @@ export const isImmuneToBurning = (actor: Actor | null | undefined, damageType?: 
 
 /**
  * Damage dealt by a single burning countdown roll after resistance (half, rounded down),
- * flat reduction, and per-die reduction. At this time, I don't know whether the flat or
- * per-die modifiers should be applied. I'm thinking 'no' since it's technically not a
- * "damage die".
+ * flat reduction, and per-die reduction. According to Taron via a Discord message, flat
+ * and per-die reductions should be applied to Burning damage.
+ * Discussion: https://discord.com/channels/1347974074084888606/1541349723804409877/1566120397433217037
  */
 export const mitigateBurningDamage = (actor: Actor, damageType: string | undefined, roll: number): number => {
     if (!damageType || nonDamageTypes.includes(damageType)) return roll
 
     const mods = (actor.system as any)?.modifiers?.damage?.in ?? {}
-    const flat = 0 /* (mods.flatReduction?.global ?? 0) + (mods.flatReduction?.[damageType] ?? 0) */
-    const perDie = 0 /* (mods.perDieReduction?.global ?? 0) + (mods.perDieReduction?.[damageType] ?? 0) */
+    const flat = (mods.flatReduction?.global ?? 0) + (mods.flatReduction?.[damageType] ?? 0)
+    const perDie = (mods.perDieReduction?.global ?? 0) + (mods.perDieReduction?.[damageType] ?? 0)
     const damage = mods.resistances?.includes(damageType) ? Math.floor(roll / 2) : roll
 
     return Math.max(0, damage - Math.max(0, flat) - Math.min(damage, Math.max(0, perDie)))

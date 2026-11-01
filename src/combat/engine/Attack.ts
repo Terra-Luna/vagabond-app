@@ -284,6 +284,10 @@ export abstract class Attack<TActor extends Actor = Actor> {
                 bonus += Math.max(...beingTypeMods.map(mod => mod.bonus.perDie)) * (damageRoll?.result?.rollSummaries.length ?? 0)
             }
         }
+        if (damageRoll?.hdMultiplier) {
+            const targetHD = targetActor?.system?.hitDice ?? targetActor?.system?.level?.current ?? 0
+            bonus += targetHD * damageRoll.hdMultiplier
+        }
         return bonus
     }
 
@@ -359,17 +363,32 @@ export abstract class Attack<TActor extends Actor = Actor> {
         return true
     }
 
+    /**
+     * A target is weak if it's weak to the damage type, or its being type matches the weapon's Bane power.
+     */
     static isWeakToDamage(targetId: string, damageRoll?: DamageRoll): boolean {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
         const weaknesses: string[] = (actor?.system as any)?.modifiers?.damage?.in?.weaknesses ?? []
-        return !!damageRoll?.dmgType && weaknesses.includes(damageRoll.dmgType)
+        if (!!damageRoll?.dmgType && weaknesses.includes(damageRoll.dmgType)) return true
+
+        const baneTypes = damageRoll?.baneTypes ?? []
+        return baneTypes.length > 0 && Attack.getBeingTypes(actor).some(type => baneTypes.includes(type))
     }
 
     /**
-     * Whether any target is weak to this attack's damage type (i.e. the weakness die should be rolled).
+     * Whether any target is weak to this attack (i.e. the weakness die should be rolled).
      */
     protected get hasWeakTarget(): boolean {
         return (this.targetIds ?? []).some(id => Attack.isWeakToDamage(id, this.damageRoll))
+    }
+
+    static getBeingTypes(actor: any): string[] {
+        return [
+            actor?.system?.beingType,
+            actor?.system?.beingSubtype,
+            actor?.system?.ancestry?.beingType,
+            actor?.system?.ancestry?.beingSubtype
+        ].filter(Boolean)
     }
 
     protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
@@ -404,15 +423,17 @@ export abstract class Attack<TActor extends Actor = Actor> {
         const isResistant = mods?.resistances?.includes(dmgType)
         const weaknessDice = Attack.isWeakToDamage(targetId, damageRoll) ? (damageRoll?.result?.weaknessRolls ?? []) : []
         const weaknessDamage = weaknessDice.reduce((acc, it) => acc + it.result, 0)
+
         // Each die's damage (including its per-die bonus) can be reduced to a minimum of zero.
         const reduceDice = (dice: number[], reduction: number) =>
             dice.reduce((acc, value) => acc + Math.min(Math.max(0, value), Math.max(0, reduction)), 0)
+
         let perDieMit = reduceDice([
             ...(damageRoll?.result?.rollSummaries ?? []).filter(it => !it.rerolled).map(it => it.result + (damageRoll?.perDieDmgBonus ?? 0)),
             ...weaknessDice.map(it => it.result)
         ], perDieReduction)
 
-        // Resistance and a passed save each halve the damage; they don't stack.
+        // Resistance and a passed save each halve the damage - non-stacking.
         const totalDamage = (damageRoll?.result?.total ?? 0) + weaknessDamage
         const damage = (isResistant || halfDamage)
             ? Math.floor(totalDamage / 2)

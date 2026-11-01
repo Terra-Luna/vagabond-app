@@ -50,7 +50,8 @@ const baseEquipmentSchema = () => {
                         effect: new fields.StringField({ ...requiredString }),
                         duration: new fields.StringField({ ...optionalString }),
                         damageType: new fields.StringField({ ...optionalString })
-                    }, { required: false, nullable: true, initial: null })
+                    }, { required: false, nullable: true, initial: null }),
+                    beingTypes: new fields.ArrayField(new fields.StringField({ ...optionalString }), { initial: [] })
                 }),
                 goldValue: new fields.NumberField({ ...requiredInteger }),
                 bound: new fields.BooleanField({ initial: false }),

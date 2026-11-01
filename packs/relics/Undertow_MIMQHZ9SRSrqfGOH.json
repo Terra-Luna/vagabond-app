@@ -3,7 +3,7 @@
   "type": "weapon",
   "img": "/icons/weapons/polearms/trident-silver-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Trident that must be Bound to to access its Powers, which are as follows:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Fish Command:</strong></b><span style=\"white-space:pre-wrap\"> (3 charges) You can Target a Beast with a Swim Speed and spend 1 charge to attempt to cause it to be Charmed for 1 Minute, giving you control of it.</span></li><li value=\"2\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Marine Ambassador:</strong></b><span style=\"white-space:pre-wrap\"> They can speak with Beasts with a Swim Speed.</span></li><li value=\"3\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Safe Space:</strong></b><span style=\"white-space:pre-wrap\"> Create an impenetrable barrier out to Close. This barrier has 36 HP, which is regained each day. The barrier ignores the results of damage rolls, and instead only takes 1 damage per die used for the damage. While the barrier has HP, the area within is safe, comfortable, nothing can enter or exit the barrier, and nothing within can be affected by any attacks or magic from outside it. Action to activate or deactivate.</span></li><li value=\"4\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Visceral:</strong></b><span style=\"white-space:pre-wrap\"> On a Crit Attack, the Target takes extra damage equal to (2 × its HD).</span></li></ul><p><br></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Trident that must be Bound to access its Powers, which are as follows:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Fish Command:</strong></b><span style=\"white-space:pre-wrap\"> (3 charges) You can Target a Beast with a Swim Speed and spend 1 charge to attempt to cause it to be Charmed for 1 Minute, giving you control of it.</span></li><li value=\"2\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Marine Ambassador:</strong></b><span style=\"white-space:pre-wrap\"> They can speak with Beasts with a Swim Speed.</span></li><li value=\"3\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Safe Space:</strong></b><span style=\"white-space:pre-wrap\"> Create an impenetrable barrier out to Close. This barrier has 36 HP, which is regained each day. The barrier ignores the results of damage rolls, and instead only takes 1 damage per die used for the damage. While the barrier has HP, the area within is safe, comfortable, nothing can enter or exit the barrier, and nothing within can be affected by any attacks or magic from outside it. Action to activate or deactivate.</span></li></ul><p><br></p>",
     "rules": [],
     "category": "weapons",
     "value": {
@@ -53,7 +53,8 @@
         "power": {
           "value": "fabled-other",
           "label": "Fabled Relic",
-          "modifiers": []
+          "modifiers": [],
+          "appliedEffect": null
         },
         "goldValue": 0,
         "bound": true,
@@ -75,11 +76,35 @@
               ],
               "value": 3
             }
-          ]
+          ],
+          "appliedEffect": null
         },
         "goldValue": 5000,
         "bound": false,
         "description": "+3 bonus to Attack damage."
+      },
+      {
+        "id": "fabled-visceral",
+        "category": {
+          "value": "fabled",
+          "label": "Fabled"
+        },
+        "power": {
+          "value": "visceral",
+          "label": "Visceral",
+          "modifiers": [
+            {
+              "selector": [
+                "damage.out.global.bonus.hdMultiplier"
+              ],
+              "value": 2
+            }
+          ],
+          "appliedEffect": null
+        },
+        "goldValue": 25000,
+        "bound": false,
+        "description": "On a Crit, the Target takes extra damage equal to twice its HD."
       },
       {
         "id": "utility-aqua",
@@ -90,7 +115,8 @@
         "power": {
           "value": "aqua",
           "label": "Aqua Lung",
-          "modifiers": []
+          "modifiers": [],
+          "appliedEffect": null
         },
         "goldValue": 5000,
         "bound": false,
@@ -105,6 +131,7 @@
         "power": {
           "value": "warning",
           "label": "Warning",
+          "appliedEffect": null,
           "modifiers": []
         },
         "goldValue": 7500,
@@ -124,9 +151,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.63",
+    "systemVersion": "0.2.160",
     "createdTime": 1790023477459,
-    "modifiedTime": 1792084079329,
+    "modifiedTime": 1793503105076,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

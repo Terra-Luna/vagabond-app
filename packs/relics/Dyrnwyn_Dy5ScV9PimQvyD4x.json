@@ -54,7 +54,9 @@
         "power": {
           "value": "fabled-other",
           "label": "Fabled Relic",
-          "modifiers": []
+          "modifiers": [],
+          "appliedEffect": null,
+          "beingTypes": []
         },
         "goldValue": 0,
         "bound": true,
@@ -69,7 +71,9 @@
         "power": {
           "value": "silvering",
           "label": "Silvering",
-          "modifiers": []
+          "modifiers": [],
+          "appliedEffect": null,
+          "beingTypes": []
         },
         "goldValue": 0,
         "bound": false,
@@ -84,7 +88,13 @@
         "power": {
           "value": "burning-1",
           "label": "Burning I",
-          "modifiers": []
+          "modifiers": [],
+          "appliedEffect": {
+            "effect": "burning",
+            "duration": "Cd4",
+            "damageType": "fire"
+          },
+          "beingTypes": []
         },
         "goldValue": 4000,
         "bound": false,
@@ -99,11 +109,16 @@
         "power": {
           "value": "general",
           "label": "General",
-          "modifiers": []
+          "modifiers": [],
+          "appliedEffect": null,
+          "beingTypes": [
+            "hellspawn",
+            "undead"
+          ]
         },
         "goldValue": 5000,
-        "description": "Adds an extra damage die to an entire Being Type, such as Cryptids (not just giants).",
-        "bound": false
+        "bound": false,
+        "description": "Adds an extra damage die to an entire Being Type, such as Cryptids (not just giants)."
       }
     ]
   },
@@ -118,9 +133,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.1",
+    "systemVersion": "0.2.160",
     "createdTime": 1790013191890,
-    "modifiedTime": 1791481042407,
+    "modifiedTime": 1793503707206,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

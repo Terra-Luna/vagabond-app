@@ -264,6 +264,7 @@
     "numberAppearing": "1",
     "actions": [
       {
+        "id": "",
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (d10) and pass [Endure] or become Sickened (until cured, Otyugh Disease)</span></p>",
         "type": "melee",
@@ -279,9 +280,12 @@
         },
         "saves": [
           "reflex"
-        ]
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": []
       },
       {
+        "id": "",
         "name": "Tentacle",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and Restrained. If the Target is already Restrained this way, it is instead slammed into something and takes 7 (2d6) and must pass an [Endure] Save or be Dazed for 1 Round.</span></p>",
         "type": "melee",
@@ -298,6 +302,7 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "restrained",
@@ -306,8 +311,9 @@
         ]
       },
       {
+        "id": "7OoNEBpSelt6rdCd",
         "name": "Otyugh Disease",
-        "description": "<p><span style=\"white-space: pre-wrap;\">@UUID[Compendium.vagabond-app.active-effects.ActiveEffect.NZnOYlOxrYO1jJPF]{Otyugh Disease:} Beings that aren't Otyughs that are Sickened this way must pass an an [Endure] Save every day or lose 3 (d6) from their Max HP. This reduction to their Max HP lasts while they are Sickened by this disease.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">@UUID[Compendium.vagabond-app.active-effects.ActiveEffect.Uz2hvvr7uYqgsuYb]{Otyugh Disease:} Beings that aren't Otyughs that are Sickened this way must pass an an [Endure] Save every day or lose 3 (d6) from their Max HP. This reduction to their Max HP lasts while they are Sickened by this disease.</span></p>",
         "type": "melee",
         "range": "close",
         "damage": {
@@ -322,6 +328,7 @@
         "saves": [
           "endure"
         ],
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "sickened",
@@ -445,9 +452,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.31",
+    "systemVersion": "0.2.160",
     "createdTime": 1790188347022,
-    "modifiedTime": 1790188769003,
+    "modifiedTime": 1793503435988,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

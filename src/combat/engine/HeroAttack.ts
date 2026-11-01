@@ -621,11 +621,15 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             }
         }
 
+        const baneTypes = RelicPowerProcessor.getBaneBeingTypes(weapon.relicPowers as any)
+
         const damageRoll = new DamageRoll({
             atkName: item.name,
             dmgType: weapon.damage.type,
             dice: [damageDice, ...extraDice ?? []],
             weaknessDie: { faces: damageDice.faces, count: 1 },
+            baneTypes: baneTypes.length > 0 ? baneTypes : undefined,
+            hdMultiplier: (dmgMods.global?.bonus?.hdMultiplier ?? 0) + (dmgMods[weaponSkill]?.bonus?.hdMultiplier ?? 0),
             relicLevel: relicLevel,
             perDieDmgBonus: (dmgMods.global?.bonus?.perDie ?? 0) + (dmgMods[weaponSkill]?.bonus?.perDie ?? 0),
             armorPiercing: dmgMods.global?.armorPiercing?.flat

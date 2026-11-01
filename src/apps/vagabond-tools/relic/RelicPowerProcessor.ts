@@ -103,6 +103,39 @@ export class RelicPowerProcessor {
         await item.update({ 'system.relicPowers': updated } as Record<string, any>)
     }
 
+    static isBaneSpecific = (relic: RelicPower): boolean => relic.id === 'bane-specific'
+
+    static isBaneGeneral = (relic: RelicPower): boolean => relic.id === 'bane-general'
+
+    static isProtectionSpecific = (relic: RelicPower): boolean => relic.id === 'protection-specific'
+
+    static isProtectionGeneral = (relic: RelicPower): boolean => relic.id === 'protection-general'
+
+    static isNiche = (relic: RelicPower): boolean => relic.id === 'bane-niche' || relic.id === 'protection-niche'
+
+    static hasBeingTypeChoice = (relic: RelicPower): boolean =>
+        RelicPowerProcessor.isBaneGeneral(relic) || RelicPowerProcessor.isBaneSpecific(relic)
+        || RelicPowerProcessor.isProtectionGeneral(relic) || RelicPowerProcessor.isProtectionSpecific(relic)
+
+    static usesBeingSubtype = (relic: RelicPower): boolean =>
+        RelicPowerProcessor.isBaneSpecific(relic) || RelicPowerProcessor.isProtectionSpecific(relic)
+
+    /**
+     * Being types (or subtypes) chosen on the given relics' Bane (General / Specific) powers.
+     */
+    static getBaneBeingTypes = (relics?: RelicPower[]): string[] =>
+        (relics ?? [])
+            .filter(it => RelicPowerProcessor.isBaneGeneral(it) || RelicPowerProcessor.isBaneSpecific(it))
+            .flatMap(it => it.power?.beingTypes ?? [])
+            .filter(it => !!it)
+
+    static setRelicBeingTypes = async (item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower, beingTypes: string[]) => {
+        const updated = item.system.relicPowers.map(p => p.id === relic.id
+            ? { ...p, power: { ...p.power, beingTypes } }
+            : p)
+        await item.update({ 'system.relicPowers': updated } as Record<string, any>)
+    }
+
     /**
      * Adds or removes the relic's status effect (e.g. Burning) on the item's appliedEffects.
      */
