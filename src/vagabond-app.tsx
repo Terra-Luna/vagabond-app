@@ -671,6 +671,23 @@ Hooks.on("dropCanvasData", (canvas: Canvas, data: Record<string, any>): boolean 
 });
 
 Hooks.on("hotbarDrop", (_bar: any, data: any, slot: number): boolean | void => {
+    // Dragging a system compendium macro (from the compendium or a UUID link) onto the hotbar.
+    if (data.type === "Macro" && typeof data.uuid === "string" && data.uuid.startsWith(`Compendium.${sys_id}.macros.`)) {
+        fromUuid(data.uuid).then(async (source: any) => {
+            if (!source) return
+            const existing = game.macros?.find(m => m.getFlag(sys_id, "hotbarOnly") && m.getFlag(sys_id, "sourceUuid") === data.uuid && m.isOwner) as any
+            const macro = existing ?? await Macro.create({
+                ...source.toObject(),
+                _id: undefined,
+                folder: null,
+                ownership: { default: 0 },
+                flags: { [sys_id]: { hotbarOnly: true, sourceUuid: data.uuid } }
+            } as any)
+            if (macro) await game.user?.assignHotbarMacro(macro, slot)
+        })
+        return false
+    }
+
     if (data.type !== "RollPreset") return
 
     const actor = game.actors?.get(data.owner) as any
