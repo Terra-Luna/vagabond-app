@@ -91,7 +91,9 @@ export const api: VagabondAPI = {
     util: {
         polymorphApp: (actor?: Actor & { system: HeroDataModel }) => {
             const caster = actor ?? game.user?.character ?? getControlledHeroToken()
-            if (!caster || (!game.user?.isActiveGM && !(actor && actor.isOwner && !actor.system.spells.map(it => it.parent).some(it => it.getFlag(sys_id, "polymorph"))))) {
+            const canPolymorph = !!caster && (game.user?.isActiveGM
+                || ((caster as any).isOwner && (caster as any).system?.spells?.some((it: any) => it.parent?.flags?.[sys_id]?.polymorph)))
+            if (!canPolymorph) {
                 ui.notifications?.warn("Select an Actor who can Polymorph")
                 return
             }

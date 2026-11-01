@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 import type { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
+import { VagabondActiveEffect } from "../../../combat/documents/VagabondActiveEffect"
 import { CountdownResult } from "../../../combat/engine/roll/CountdownResult"
 import { CountdownRoll } from "../../../combat/engine/roll/CountdownRoll"
 import { isImmuneToBurning } from "../../../combat/engine/util/burning-mitigation"
@@ -196,8 +197,11 @@ export class CountdownManager {
         for (const cd of toClear.values()) {
             const token = cd.result.tokenUuid ? await fromUuid(cd.result.tokenUuid) as TokenDocument | null : null
             const actor = token?.actor ?? (cd.result.actorUuid ? await fromUuid(cd.result.actorUuid) as Actor | null : null)
-            if (actor?.statuses?.has(cd.result.status as string)) {
-                await actor.toggleStatusEffect(cd.result.status as string, { active: false })
+            const status = cd.result.status as string
+            const effectId = VagabondActiveEffect.statusEffects.find(it => it.id === status)?._id
+            const isActive = actor?.statuses?.has(status) || (!!effectId && actor?.effects?.has(effectId))
+            if (actor && isActive) {
+                await StatusEffectUtil.toggleStatusEffectOnce(actor, status, false)
             }
         }
     }

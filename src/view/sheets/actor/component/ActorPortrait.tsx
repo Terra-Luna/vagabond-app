@@ -74,11 +74,10 @@ export const ActorPortrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema
                 />
                 {polymorphCancelButton}
 
-                {/* BURNING COUNTDOWNS */}
+                {/* STATUS COUNTDOWNS */}
                 <StatusCountdowns
                     actorUuid={actor.parent.uuid}
                     tokenUuid={actor.parent.token?.uuid}
-                    burningOnly
                     alwaysClickable
                     className={`absolute bottom-0 left-0 z-10 flex flex-row flex-wrap-reverse justify-center gap-0.5 p-0.5 max-w-full -mb-1 bg-context-menu-fill/80 empty:hidden ${tableBorder}`}
                 />
