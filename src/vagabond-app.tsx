@@ -17,6 +17,7 @@ import { VagabondActiveEffect } from './combat/documents/VagabondActiveEffect'
 import { VagabondCombat, VagabondCombatant } from './combat/documents/VagabondCombat'
 import { Attack } from "./combat/engine/Attack"
 import { FlankStatusManager } from "./combat/engine/util/FlankStatusManager"
+import { handleMarkRequest } from "./combat/engine/util/hunters-mark"
 import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
 import { AdversaryDataModel } from "./model/actor/AdversaryDataModel"
 import { HeroDataModel } from "./model/actor/HeroDataModel"
@@ -190,6 +191,9 @@ Hooks.once("ready", async () => {
                 formUuid ? fromUuid(formUuid) : undefined
             ])
             await PolymorphUtil.polymorph({ caster: caster as any, targets: targets as any, form: form as any, duration })
+        }
+        else if (packet?.action === "huntersMark") {
+            await handleMarkRequest(packet)
         }
         else if (packet?.action === "createTagalongItems") {
             await TagalongItemCreator.handleIncomingItemCreation(packet)

@@ -228,14 +228,6 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             ]
         },
         {
-            _id: "vMarked000000000",
-            id: "marked",
-            name: "APP.StatusConditions.marked.name",
-            img: "/icons/svg/target.svg",
-            changes: [{ key: "system.statuses.toggles.marked", mode: "OVERRIDE", value: "true", priority: 20 }]
-        },
-        {
-            _id: "vHexed0000000000",
             id: "hexed",
             name: "APP.StatusConditions.hexed.name",
             img: "/icons/svg/cancel.svg",
@@ -244,8 +236,8 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
     ]
 
     static statusesWithoutDuration = [
-        "exalted", "warded", "hexed", "marked", "blessed",
-        "flanked", "dead", "grappling", "focusing", "prone"
+        "exalted", "warded", "hexed", "blessed", "flanked",
+        "dead", "grappling", "focusing", "prone"
     ]
 
     /**

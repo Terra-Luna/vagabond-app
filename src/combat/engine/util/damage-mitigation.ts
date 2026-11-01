@@ -1,6 +1,7 @@
 import { physicalDamageTypes } from "../../../model/common/sharedSchemas"
 import { getTargetActor } from "../../../utils/modelUtil"
 import type { DamageRoll } from "../roll/DamageRoll"
+import { getLethalPrecisionBonus, isWeakToHunter } from "./hunters-mark"
 
 export interface AttackResolutionArgs {
     isSpellAttack?: boolean
@@ -71,7 +72,9 @@ export const isWeakToDamage = (targetId: string, damageRoll?: DamageRoll): boole
     if (!!damageRoll?.dmgType && weaknesses.includes(damageRoll.dmgType)) return true
 
     const baneTypes = damageRoll?.baneTypes ?? []
-    return baneTypes.length > 0 && getBeingTypes(actor).some(type => baneTypes.includes(type))
+    if (baneTypes.length > 0 && getBeingTypes(actor).some(type => baneTypes.includes(type))) return true
+
+    return isWeakToHunter(actor, damageRoll?.attackerId)
 }
 
 /**

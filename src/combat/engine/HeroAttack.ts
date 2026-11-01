@@ -10,6 +10,7 @@ import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { getTargetIds } from "../../utils/modelUtil"
+import { applyMarkBenefitsToModifiers, isAttackingMark } from "./util/hunters-mark"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { AppliedFx, Attack } from "./Attack"
@@ -26,6 +27,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     override readonly attackType = 'hero' as const
 
     itemId: string = ''
+    weaponProperties: string[] = []
     skipSkillCheck: boolean = false
     requiresTargets: boolean = false
     spellDelivery: SpellDeliverySnapshot | undefined
@@ -536,8 +538,9 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         defenseCheck?: boolean
     ): HeroAttack {
         const hero = actor.system
-        const weapon = foundry.utils.deepClone(item.system)
+        const weapon: WeaponDataModel = Object.create(item.system)
         const mods = foundry.utils.deepClone(hero.modifiers)
+        if (isAttackingMark(actor.id ?? undefined, getTargetIds())) applyMarkBenefitsToModifiers(mods)
 
         let weaponSkill = skill
 
@@ -560,7 +563,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
         const skillCheck = new SkillCheck(hero, {
             type: 'attack',
-            item: item.system,
+            item: weapon,
             skill: weaponSkill!,
             critSum: mods?.skillCheck?.attack?.sumCrit || mods?.skillCheck?.[weaponSkill!]?.sumCrit
         })
@@ -585,6 +588,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             dice: [damageDice, ...extraDice],
             weaknessDie: { faces: damageDice.faces, count: 1 },
             baneTypes: baneTypes.length > 0 ? baneTypes : undefined,
+            attackerId: actor.id ?? undefined,
             hdMultiplier: (dmgMods.global?.bonus?.hdMultiplier ?? 0) + (dmgMods[weaponSkill]?.bonus?.hdMultiplier ?? 0),
             relicLevel: relicLevel,
             perDieDmgBonus: (dmgMods.global?.bonus?.perDie ?? 0) + (dmgMods[weaponSkill]?.bonus?.perDie ?? 0),
@@ -601,6 +605,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)
         attack.itemId = item.uuid
+        attack.weaponProperties = [...weapon.properties]
         attack.requiresTargets = !defenseCheck
 
         if (defenseCheck) {

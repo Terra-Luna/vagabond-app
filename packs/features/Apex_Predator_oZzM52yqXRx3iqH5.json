@@ -7,17 +7,6 @@
     "description": "<p><span style=\"white-space:pre-wrap\">Your Mark is Weak to your attacks.</span></p>",
     "rules": [
       {
-        "id": "nkTyfwFSE2Pik9ja",
-        "key": "ToggleRule",
-        "label": "Bonus Damage Die",
-        "level": 10,
-        "value": true,
-        "selector": [
-          "modifiers.damage.out.global.conditional.weak"
-        ],
-        "toggleableEffect": true
-      },
-      {
         "id": "EF86lsmYezNEh7ci",
         "key": "ToggleRule",
         "label": "Flag",

@@ -5,6 +5,8 @@ import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
 import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { recordSheetSaveOnActiveAttacks } from "../../../../../combat/engine/util/attack-save-sync"
+import { HUNTERS_MARK_FLAG } from "../../../../../combat/engine/util/hunters-mark"
+import { sys_id } from "../../../../../utils/foundryUtils"
 import { getArmor, HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
@@ -120,7 +122,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
 
     useEffect(() => {
         const onEffectChange = (effect: ActiveEffect) => {
-            if (effect.parent?.id === hero.parent?.id) {
+            if (effect.parent?.id === hero.parent?.id || effect.flags?.[sys_id]?.[HUNTERS_MARK_FLAG]) {
                 setEffectUpdateKey(prev => prev + 1)
             }
         }
@@ -150,6 +152,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
             return {
                 item,
                 damageString: attackInstance?.damageRoll?.toString() ?? '',
+                properties: attackInstance?.weaponProperties ?? [],
                 skill: attackInstance?.skillCheck?.skill ?? '',
                 preset: {
                     id: "",
@@ -169,6 +172,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
                     armorPiercing: attackInstance?.damageRoll?.armorPiercing ?? 0
                 } as RollPreset,
                 initiateAttack: async (e: React.MouseEvent) => {
+                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent)
                     await attackInstance.initiate(e)
                     attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent)
                 },
@@ -185,7 +189,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
         })
 
         const sundriesData = equippedSundries.map(item => {
-            return { item, damageString: "", skill: "", preset: undefined as RollPreset | undefined, initiateAttack: () => { }, rollDefenseCheck: () => { } }
+            return { item, damageString: "", properties: [] as string[], skill: "", preset: undefined as RollPreset | undefined, initiateAttack: () => { }, rollDefenseCheck: () => { } }
         })
 
         return [...weaponData, ...sundriesData].sort((a, b) => a.item.parent.sort - b.item.parent.sort)
@@ -195,7 +199,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
         <div className="w-full">
             <Header title={hero.polymorph ? appLang.HeroSheet.attacks : appLang.HeroSheet.weapons} />
             {
-                equipDisplayData?.map(({ item, damageString, skill, preset, initiateAttack, rollDefenseCheck }, index: number) => {
+                equipDisplayData?.map(({ item, damageString, properties, skill, preset, initiateAttack, rollDefenseCheck }, index: number) => {
                     const isDefense = hero.skills[skill]?.trained && item instanceof WeaponDataModel
                         ? (item.properties.includes('defense') || hero.modifiers.damage.out[skill]?.properties?.granted?.includes('defense'))
                         : false
@@ -268,7 +272,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
 
                                     {/* WEAPON PROPERTIES AND RANGE */}
                                     <div className="flex justify-between items-center pb-1">
-                                        <WeaponPropsList weaponProps={(item as any).properties ?? []} />
+                                        <WeaponPropsList weaponProps={properties.length > 0 ? properties : ((item as any).properties ?? [])} />
                                         <div className={propsStyle + " text-right"}>{appLang.Ranges[(item as any).range ?? '']}</div>
                                     </div>
                                 </div>

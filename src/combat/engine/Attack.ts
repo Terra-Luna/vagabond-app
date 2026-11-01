@@ -5,6 +5,7 @@ import { StatusEffectUtil } from "../../model/actor/util/StatusEffectUtil"
 import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTargetActor, getTargetIds } from "../../utils/modelUtil"
+import { getLethalPrecisionBonus } from "./util/hunters-mark"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { DamageRoll } from "./roll/DamageRoll"
 import type { AttackSnapshot } from "./util/attack-serializer"
@@ -262,7 +263,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
      * Extra damage from the attacker's being-type modifiers and hit-dice multiplier.
      */
     protected calculateBonusDamage(targetActor: any, sourceActor: any = this.getModifierSourceActor(), damageRoll: DamageRoll | undefined = this.damageRoll): number {
-        return calculateBonusDamage(targetActor, sourceActor, damageRoll)
+        return calculateBonusDamage(targetActor, sourceActor, damageRoll) + getLethalPrecisionBonus(targetActor)
     }
 
     /**

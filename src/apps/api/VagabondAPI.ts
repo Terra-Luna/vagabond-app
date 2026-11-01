@@ -1,5 +1,6 @@
 import { HeroAttack } from "../../combat/engine/HeroAttack"
 import { SkillCheck } from "../../combat/engine/roll/SkillCheck"
+import { findHunter, requestMark } from "../../combat/engine/util/hunters-mark"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { PolymorphUtil } from "../../model/actor/util/PolymorphUtil"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
@@ -26,7 +27,8 @@ export interface VagabondAPI {
     },
     combat: {
         claimSpotlight: () => void,
-        next: () => void
+        next: () => void,
+        huntersMark: (target?: Token) => Promise<void>
     },
     util: {
         polymorphApp: (actor?: Actor & { system: HeroDataModel }) => void,
@@ -353,6 +355,23 @@ export const api: VagabondAPI = {
                 await closeActorSheets()
                 next.actor.sheet?.render({ force: true })
             }
+        },
+
+        /**
+         * Applies 'Hunter's Mark' to the target, clearing any previous Mark from the same Hunter.
+         * See hunters-mark.ts.
+         */
+        huntersMark: async (target?: Token) => {
+            const marked = target ?? game.user?.targets?.first()
+            if (!marked?.document?.parent?.id) {
+                ui.notifications?.warn("Target a token to mark.")
+                return
+            }
+
+            const hunter = findHunter()
+            if (!hunter?.id) return
+
+            await requestMark({ sceneId: marked.document.parent.id, tokenId: marked.id, hunterId: hunter.id })
         }
     }
 }

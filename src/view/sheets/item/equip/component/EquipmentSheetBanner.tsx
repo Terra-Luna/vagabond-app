@@ -9,7 +9,10 @@ import { RelicEffectList } from "./RelicEffectList"
 export const EquipmentSheetBanner = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     const { editModeToggleBtn } = useEditMode(item)
 
-    const relicPowers = item.system.effectiveRelicPowers().filter(relic => relic.category.value !== 'cursed' || item.system.isBound)
+    const isEquipment = typeof item.system.effectiveRelicPowers === "function"
+    const relicPowers = isEquipment
+        ? item.system.effectiveRelicPowers().filter(relic => relic.category.value !== 'cursed' || item.system.isBound)
+        : []
 
     return (<>
         <div className="flex space-x-1 items-center bg-section-header-fill py-1 px-2 font-eskapade font-bold">
@@ -25,7 +28,7 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
                     {editModeToggleBtn}
                 </div>
 
-                {item.system.isBoundRelic() && !item.system.isBound
+                {isEquipment && item.system.isBoundRelic() && !item.system.isBound
                     ? <p className="text-xs font-paradigm font-normal italic text-text-header-secondary">{appLang.HeroSheet.Inventory.relicRequiresBinding}</p>
                     : <RelicEffectList relicPowers={relicPowers} />
                 }
