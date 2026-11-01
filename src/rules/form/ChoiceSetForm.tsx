@@ -63,9 +63,17 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
         const dropData = JSON.parse(rawData)
         if (dropData.type === "Item" && dropData.uuid) {
             const droppedItem = await fromUuid(dropData.uuid)
-            handleUpdateOption(index, {
-                value: dropData.uuid,
-                label: (droppedItem ? droppedItem.name : choices[index].label) ?? ''
+            const itemType = (droppedItem as any)?.type
+            const channel = itemType === "spell" || itemType === "perk" || itemType === "alchemical" ? itemType : rule.channel
+            onChange({
+                ...rule,
+                channel,
+                pack: channel === "item" ? rule.pack : channel,
+                choices: choices.map((choice, idx) => idx !== index ? choice : {
+                    ...choice,
+                    value: dropData.uuid,
+                    label: (droppedItem ? droppedItem.name : choice.label) ?? ''
+                })
             })
         }
     }

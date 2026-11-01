@@ -2,9 +2,9 @@
 import { useSpellCastingMenu } from "./SpellcastingMenu"
 import { SpellcastingMenuContext } from "./SpellcastingMenuContext"
 
-export const SpellcastingMenuContextProvider = ({ actor, children, imbueMode, windowedMode }: { actor: any, children: any, imbueMode?: boolean, windowedMode?: boolean }) => {
+export const SpellcastingMenuContextProvider = ({ actor, children, imbueMode, windowedMode, imbueTarget, onClose }: { actor: any, children: any, imbueMode?: boolean, windowedMode?: boolean, imbueTarget?: { actorId: string, attackId: string }, onClose?: () => void }) => {
 
-    const {isSpellcastingOpen, setIsSpellcastingOpen, onSelectSpell, selectedSpellId, SpellcastingMenu } = useSpellCastingMenu(actor, imbueMode, windowedMode)
+    const {isSpellcastingOpen, setIsSpellcastingOpen, onSelectSpell, selectedSpellId, SpellcastingMenu } = useSpellCastingMenu(actor, imbueMode, windowedMode, undefined, imbueTarget, onClose)
 
     return (
         <SpellcastingMenuContext.Provider value={{

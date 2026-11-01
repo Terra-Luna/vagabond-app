@@ -59,6 +59,8 @@ export class VagabondCombatTracker extends foundry.applications.sidebar.tabs.Com
         );
 
         super._replaceHTML(result, content, options)
+
+        this.element?.querySelectorAll('[data-action="rollNPC"]').forEach(el => el.remove())
     }
 }
 

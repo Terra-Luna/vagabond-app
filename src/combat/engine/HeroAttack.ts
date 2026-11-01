@@ -1,13 +1,14 @@
 import { api } from "../../apps/api/VagabondAPI"
 import type { RollPreset } from "../../apps/attack-builder/model/RollPreset"
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
-import { getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { getAttackRegistry, getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
+import { localizeString } from "../../utils/localeUtils"
 import { getTargetIds, inventoryItemTypes } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
@@ -15,6 +16,7 @@ import { AppliedFx, Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
 import { SkillCheck, type SkillCheckResult, type SkillCheckType } from "./roll/SkillCheck"
+import { deserializeAttack } from "./util/attack-deserializer"
 import { serializeAttack } from "./util/attack-serializer"
 import { getDiceTerms } from "./util/dice-utils"
 
@@ -83,6 +85,18 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         return !!this.spellDelivery
     }
 
+    override get isImbuable(): boolean {
+        if (this.isSpellAttack || this.isDefenseCheck) return false
+
+        const items = this.actor.items as Collection<Item>
+        let weapon: any = items.get(this.itemId) ?? items.get(this.itemId?.split(".").pop() ?? "")
+        if (!weapon && this.itemId?.includes(".")) {
+            try { weapon = fromUuidSync(this.itemId as any) }
+            catch { weapon = undefined }
+        }
+        return weapon?.type !== "alchemical" && !weapon?.system?.imbueExempt
+    }
+
     override get isEffectOnlySpellAttack(): boolean {
         return (this.spellDelivery?.applyEffect ?? false) && (!this.damageRoll || this.damageRoll?.result?.total === 0)
     }
@@ -137,13 +151,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
          * Update Focus, if available.
          */
         if (this.isSpellAttack && this.spellDelivery?.isFocused && (this.skipSkillCheck || this.isSuccessOrCrit)) {
-            const focus = this.actor.system.statuses.counters.focus ?? 0
-            if (focus >= this.actor.system.maxFocus) {
-                ui.notifications?.warn(appLang.Spellcasting.maxFocusMessage)
-            }
-            else {
-                this.actor.update({ 'system.statuses.counters.focus': focus + 1 } as Record<string, number>)
-            }
+            this.addFocus()
         }
 
         // Take user to polymorph menu.
@@ -164,6 +172,102 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             "InteractiveAttackChatCard",
             { actorId: this.actor.id!, attackId: this.id }
         )
+    }
+
+    private addFocus() {
+        const focus = this.actor.system.statuses.counters.focus ?? 0
+        if (focus >= this.actor.system.maxFocus) {
+            ui.notifications?.warn(appLang.Spellcasting.maxFocusMessage)
+        }
+        else {
+            this.actor.update({ 'system.statuses.counters.focus': focus + 1 } as Record<string, number>)
+        }
+    }
+
+    static findLatestWeaponAttack(): { actorId: string, attackId: string, isResolved: boolean } | undefined {
+        const latest = Object.values(getAttackRegistry() as Record<string, any[]>)
+            .flat()
+            .filter(snapshot =>
+                (snapshot.type === 'hero' && !snapshot.isSpellAttack && !snapshot.spellDelivery && !snapshot.isDefenseCheck))
+            .sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))[0]
+        return latest ? { actorId: latest.actorId, attackId: latest.id, isResolved: !!latest.isResolved } : undefined
+    }
+
+    static announceImbue(heroName: string) {
+        const message = localizeString(appLang.Notifications.imbuingAttack, { name: heroName })
+        game.socket?.emit(`system.${sys_id}`, { action: "notifyInfo", data: { message } })
+    }
+
+    /**
+     * Casts a spell with the Imbue delivery into an existing (unresolved) attack's chat card instead of
+     * sending a new one. The spell's damage is rolled and stored on the target attack as an array
+     * entry so several Heroes can imbue the same attack.
+     */
+    static async imbueAttack(
+        actor: Actor & { system: HeroDataModel },
+        skill: string,
+        delivery: SpellDelivery,
+        target: { actorId: string, attackId: string },
+        clickEvent?: any
+    ): Promise<boolean> {
+        const snapshot = (getAttackRegistry()[target.actorId] ?? []).find(atk => atk.id === target.attackId)
+        const baseAttack = snapshot
+            ? deserializeAttack(snapshot, (title, owner, targetIds) => new HeroAttack(title, owner, targetIds))
+            : undefined
+
+        if (!baseAttack?.isImbuable || baseAttack.isResolved) {
+            ui.notifications?.warn(appLang.Notifications.imbueTargetUnavailable)
+            return false
+        }
+
+        if (baseAttack.imbues.some(imbue => imbue.actorId === actor.id)) {
+            ui.notifications?.warn(localizeString(appLang.Notifications.alreadyImbued, { name: actor.name ?? "" }))
+            return false
+        }
+
+        const dmgType = delivery.spell.damageType
+
+        if (['healing', 'mana'].includes(dmgType) || delivery.damageDice < 1) {
+            ui.notifications?.warn(appLang.Notifications.imbueRequiresDamage)
+            return false
+        }
+
+        const casterTargets = getTargetIds()
+        if (casterTargets.length === 0 || casterTargets.some(id => !baseAttack.targetIds.includes(id))) {
+            ui.notifications?.warn(appLang.Notifications.imbueNoTargets)
+            return false
+        }
+
+        const spellAttack = HeroAttack.buildSpellAttack(actor, skill, delivery, clickEvent)
+        if (!spellAttack?.damageRoll) return false
+
+        spellAttack.targetIds = [...casterTargets]
+        await spellAttack.rollDamage(false)
+
+        /**
+         * Reload the latest snapshot after the (animated) roll so other heroes' imbues
+         * made in the meantime aren't overwritten.
+         */
+        const latest = (getAttackRegistry()[target.actorId] ?? []).find(atk => atk.id === target.attackId)
+        const latestAttack = latest
+            ? deserializeAttack(latest, (title, owner, targetIds) => new HeroAttack(title, owner, targetIds))
+            : undefined
+        if (!latestAttack?.isImbuable || latestAttack.isResolved) return false
+        if (latestAttack.imbues.some(imbue => imbue.actorId === actor.id)) {
+            ui.notifications?.warn(localizeString(appLang.Notifications.alreadyImbued, { name: actor.name ?? "" }))
+            return false
+        }
+        latestAttack.imbues.push({
+            actorId: actor.id!,
+            spellName: delivery.spell.name,
+            spellUuid: delivery.spell.uuid,
+            damageRoll: spellAttack.damageRoll,
+            targetIds: casterTargets,
+            appliedEffects: spellAttack.appliedEffects
+        })
+        await latestAttack.save(serializeAttack)
+        if (spellAttack.spellDelivery?.isFocused) spellAttack.addFocus()
+        return true
     }
 
     setFavored() {
@@ -350,6 +454,10 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             this.damageRoll.result.total += critDmg
             await this.save(serializeAttack)
         }
+    }
+
+    async removeTarget(targetId: string) {
+        await super.removeTarget(targetId, serializeAttack)
     }
 
     async addCritSpellFx() {
@@ -644,19 +752,21 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
             const weak = !isHealing && (mods.damage.out.global.conditional.weak || mods.damage.out.spell.conditional.weak)
 
+            const flatBonus = isHealing
+                ? (mods.healing.out.spell.bonus.flat ?? 0)
+                : (mods.damage.out.global.bonus.flat ?? 0) + (mods.damage.out.spell.bonus.flat ?? 0)
+
             damageRoll = new DamageRoll({
                 atkName: delivery.spell.name,
                 dmgType: delivery.spell.damageType,
                 dice: [new DiceRoll({
                     count: delivery.damageDice + delivery.studyDamageDice + (weak ? 1 : 0),
                     faces: HeroAttack.SPELL_DIE_SIZE + dieSizeMod,
-                    modifier: 0,
+                    modifier: flatBonus,
                     explodesOn: explosionsMod as number[]
                 })],
                 weaknessDie: isHealing ? undefined : { faces: HeroAttack.SPELL_DIE_SIZE + dieSizeMod, count: 1 },
-                flatDmgBonus: isHealing
-                    ? (mods.healing.out.spell.bonus.flat ?? 0)
-                    : (mods.damage.out.global.bonus.flat ?? 0) + (mods.damage.out.spell.bonus.flat ?? 0),
+                flatDmgBonus: flatBonus,
                 perDieDmgBonus: isHealing
                     ? (mods.healing.out.spell.bonus.perDie ?? 0)
                     : (mods.damage.out.global.bonus.perDie ?? 0) + (mods.damage.out.spell.bonus.perDie ?? 0)

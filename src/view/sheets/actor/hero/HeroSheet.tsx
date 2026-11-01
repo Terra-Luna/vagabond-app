@@ -8,8 +8,8 @@ export class HeroSheet extends VagabondActorSheet {
         position: {
             width: 360,
             height: 815 as any,
-            top: 60,
-            left: 400
+            top: 133,
+            left: 100
         },
         window: {
             resizable: true

@@ -7,6 +7,7 @@ import { damageTypeOptions, fields, optionalString, requiredInteger, requiredStr
  */
 export const npcActionSchema = () => {
     return {
+        id: new fields.StringField({ required: false, blank: true, initial: "" }),
         name: new fields.StringField({ required: true }),
         description: new fields.StringField({ ...optionalString }),
         type: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.NpcSheet.actionTypes), initial: "melee" }),
@@ -38,8 +39,7 @@ export const npcActionSchema = () => {
             }),
             { initial: [] }
         ),
-        recharge: new fields.StringField({ ...optionalString }),
-        id: new fields.StringField({ required: false, blank: true, initial: "" })
+        recharge: new fields.StringField({ ...optionalString })
     }
 }
 

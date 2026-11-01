@@ -14,7 +14,7 @@ export const tooltipContainerStyle = "pointer-events-none z-99"
 export const tooltipContentStyle = ""
 
 export interface TooltipProps {
-    title?: string
+    title?: string | ReactNode
     content?: ReactNode
     children: ReactNode
     interactive?: boolean

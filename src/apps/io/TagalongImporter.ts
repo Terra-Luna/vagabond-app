@@ -1,5 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { findOrCreateElectiveTrainingsRule, getItemChoiceRules, getItemGrants, getItemRules, getSkillTrainingChoiceRules, getStatChoiceRules, normalizeRuleSelections, randomId, RuleSelection, saveItemRuleSelections } from "../../rules/util/item-rules-util"
+import { isItemChoiceRule, findOrCreateElectiveTrainingsRule, getItemChoiceRules, getItemGrants, getItemRules, getSkillTrainingChoiceRules, getStatChoiceRules, normalizeRuleSelections, randomId, RuleSelection, saveItemRuleSelections } from "../../rules/util/item-rules-util"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { getRuleSelectors } from "../../rules/util/selector-util"
 import { updateDocument } from "../../utils/documentUtils"
@@ -235,7 +235,7 @@ async function importPerkSpells(
         for (const owner of owners) {
             if (!owner || assigned) continue
             const updates: Record<string, RuleSelection[]> = {}
-            for (const rule of getItemRules(owner).filter(rule => rule.key === "ChoiceSet" && rule.channel === "item")) {
+            for (const rule of getItemRules(owner).filter(isItemChoiceRule)) {
                 const selections = normalizeRuleSelections(rule.selections)
                 const selection = selections.find(candidate => candidate.value === perkItem.uuid && !candidate.subselect)
                 if (!selection) continue
@@ -275,7 +275,7 @@ async function importAdvancementStats(
     for (const owner of owners) {
         if (!owner || pendingStats.length === 0) continue
         const updates: Record<string, RuleSelection[]> = {}
-        for (const rule of getItemRules(owner).filter(rule => rule.key === "ChoiceSet" && rule.channel === "item")) {
+        for (const rule of getItemRules(owner).filter(isItemChoiceRule)) {
             const selections = normalizeRuleSelections(rule.selections)
             let changed = false
             for (const selection of selections) {
@@ -408,7 +408,7 @@ async function importPerkTrainings(owners: (RuleBearingItem | undefined)[], pend
     for (const owner of owners) {
         if (!owner || pendingSkills.length === 0) continue
         const updates: Record<string, RuleSelection[]> = {}
-        for (const rule of getItemRules(owner).filter(rule => rule.key === "ChoiceSet" && rule.channel === "item")) {
+        for (const rule of getItemRules(owner).filter(isItemChoiceRule)) {
             const selections = normalizeRuleSelections(rule.selections)
             let changed = false
             for (const selection of selections) {

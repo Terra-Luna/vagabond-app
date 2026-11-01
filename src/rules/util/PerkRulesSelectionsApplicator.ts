@@ -1,7 +1,7 @@
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { sys_id } from "../../utils/foundryUtils"
-import { normalizeRuleSelections } from "./item-rules-util"
+import { isItemChoiceRule, normalizeRuleSelections } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 
 export class PerkRulesSelectionsApplicator {
@@ -19,10 +19,10 @@ export class PerkRulesSelectionsApplicator {
         const activeRules = actor.system.getActiveRules()
 
         const itemRuleSelections = activeRules
-            .filter(r => r.key === "ChoiceSet" && r.channel === "item")
+            .filter(r => isItemChoiceRule(r))
             .flatMap(r => normalizeRuleSelections(r.selections).flatMap(selection => {
                 const selectedItem = ItemsCache.items.get(selection.value)
-                const hasItemSubselect = selectedItem?.system?.rules?.some(rule => rule.key === "ChoiceSet" && rule.channel === "item")
+                const hasItemSubselect = selectedItem?.system?.rules?.some(rule => isItemChoiceRule(rule))
                 return [selection.value, ...(hasItemSubselect && selection.subselect ? [selection.subselect] : [])]
             }))
 
@@ -37,7 +37,7 @@ export class PerkRulesSelectionsApplicator {
         })
 
         const selectedPerkSelections = activeRules
-            .filter(r => r.key === "ChoiceSet" && r.channel === "item")
+            .filter(r => isItemChoiceRule(r))
             .flatMap(r => normalizeRuleSelections(r.selections))
             .filter(selection => ItemsCache.perks().some(perk => perk.uuid === selection.value))
         

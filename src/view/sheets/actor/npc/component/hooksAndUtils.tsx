@@ -10,6 +10,7 @@ import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
+import type { FollowerContext } from "../../../../../model/actor/util/NpcDataModelUtil"
 import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../../../chat/ChatCardSerializer"
 
@@ -93,6 +94,51 @@ export const onClickActionAsWeaponAttack = async (actor: Actor & { system: HeroD
     }
     else {
         ui.notifications?.warn("No valid skills available for this polymorph attack.")
+    }
+}
+
+export const buildFollowerAttack = (follower: FollowerContext, action: any): HeroAttack => {
+    const weapon = {
+        id: action.id,
+        name: action.name,
+        img: "/icons/creatures/claws/claw-straight-orange.webp",
+        system: {
+            damage: action.damage,
+            appliedEffects: action.appliedEffects ?? [],
+            relicPowers: [],
+            properties: [],
+            skills: [follower.skill]
+        }
+    }
+    const attack = HeroAttack.buildWeaponAttack(follower.hero, weapon as any, follower.skill)
+    attack.portraitActorId = follower.npcId
+    return attack
+}
+
+/**
+ * An NPC following a Hero attacks as that Hero's weapon attack (like a polymorph), rolling the
+ * NPC's chosen follower skill.
+ */
+export const onClickActionAsFollowerAttack = async (follower: FollowerContext, action: any, e: React.MouseEvent) => {
+    await buildFollowerAttack(follower, action).initiate(e)
+}
+
+/**
+ * Converts each step of the combo into its own Hero attack (follower or polymorph) so each gets a skill check.
+ */
+export const onClickComboAsHeroAttacks = async (
+    npc: AdversaryDataModel | NpcDataModel,
+    build: (action: any) => HeroAttack | undefined,
+    e: React.MouseEvent
+) => {
+    for (const comboAct of npc.combo.actions) {
+        const act = npc.actions.find(it => it.name === comboAct.name) ?? comboAct
+        const repeatCount = comboAct.comboCount ?? 0
+
+        for (let i = 0; i < repeatCount; i++) {
+            const attack = build({ ...act, name: repeatCount > 1 ? `${act.name} (${i + 1})` : act.name })
+            if (attack) await attack.initiate(e)
+        }
     }
 }
 

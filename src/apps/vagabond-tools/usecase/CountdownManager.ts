@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react"
+
 import type { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
 import { CountdownResult } from "../../../combat/engine/roll/CountdownResult"
+import { CountdownRoll } from "../../../combat/engine/roll/CountdownRoll"
 import { isImmuneToBurning } from "../../../combat/engine/util/burning-mitigation"
 import { sys_id } from "../../../utils/foundryUtils"
 import {
-    checkPermissionLevel, findOpenOverlaySlots, isPermissionLevelEveryone, isVisibleInCurrentScene, OverlayObjectPermissions, updateSetting
+    canInteractWithOverlayObject, checkPermissionLevel, findOpenOverlaySlots, isPermissionLevelEveryone, isVisibleInCurrentScene, OverlayObjectPermissions, updateSetting
 } from "./VagabondSettingsHelper"
 
 export interface CountdownSchema extends OverlayObjectPermissions {
@@ -177,6 +180,97 @@ export class CountdownManager {
     static removeAllBurns(actorUuid: string | null | undefined) {
         if (!actorUuid) return Promise.resolve(true)
         return CountdownManager.removeBurns([actorUuid])
+    }
+
+    private static rolledThisRound = new Set<string>()
+    private static rolledListeners = new Set<() => void>()
+
+    private static roundKey(suffix: string) {
+        return `${game.combat?.id}:${game.combat?.round}:${suffix}`
+    }
+
+    static groupRolledKey(groupName: string) {
+        return CountdownManager.roundKey(`group:${groupName}`)
+    }
+
+    static dieRolledKey(cdId: string) {
+        return CountdownManager.roundKey(`die:${cdId}`)
+    }
+
+    static wasRolled(key: string) {
+        return CountdownManager.rolledThisRound.has(key)
+    }
+
+    static markRolled(key: string) {
+        CountdownManager.rolledThisRound.add(key)
+        CountdownManager.rolledListeners.forEach(listener => listener())
+    }
+
+    static useRolledTracking() {
+        const [, forceRender] = useState(0)
+        useEffect(() => {
+            const listener = () => forceRender(n => n + 1)
+            CountdownManager.rolledListeners.add(listener)
+            // re-render on round changes so buttons re-enable
+            const hookId = Hooks.on("updateCombat", listener)
+            return () => {
+                CountdownManager.rolledListeners.delete(listener)
+                Hooks.off("updateCombat", hookId)
+            }
+        }, [])
+    }
+
+    static async rollStatusCountdown(cdId: string) {
+        const current = CountdownManager.getAll().find(cd => cd.id === cdId)
+        if (!current || current.result.duration === 0) return
+        if (!canInteractWithOverlayObject(current, CountdownManager.checkPermission)) return
+
+        const roll = new CountdownRoll(current.result)
+        await roll.roll(true)
+
+        const expired = roll.result.duration === 0
+        await CountdownManager.setAll(CountdownManager.getAll().flatMap(cd =>
+            cd.id !== cdId ? [cd] : (expired ? [] : [{ ...cd, result: roll.result }])
+        ))
+
+        if (current.result.status === "burning") await roll.applyBurningDamage()
+    }
+
+    static getCombatantStatusCountdowns(cds: CountdownSchema[], combatant: VagabondCombatant) {
+        return cds.filter(cd =>
+            cd.result.status &&
+            cd.result.duration > 0 &&
+            cd.result.actorUuid === combatant.actor?.uuid &&
+            (!cd.result.tokenUuid || cd.result.tokenUuid === combatant.token?.uuid)
+        )
+    }
+
+    static async rollPendingCountdowns(combatant: VagabondCombatant) {
+        if (CountdownManager.wasRolled(CountdownManager.groupRolledKey(combatant.combatGroup))) return
+        const pending = CountdownManager.getCombatantStatusCountdowns(CountdownManager.getAll(), combatant)
+            .map(cd => cd.id)
+            .filter(id => !CountdownManager.wasRolled(CountdownManager.dieRolledKey(id)))
+        pending.forEach(id => CountdownManager.markRolled(CountdownManager.dieRolledKey(id)))
+        for (const id of pending) {
+            await CountdownManager.rollStatusCountdown(id)
+        }
+    }
+
+    static async activateCombatantAndRollCountdowns(combatant: VagabondCombatant) {
+        const id = combatant?._id
+        if (!id) return
+        await (game.combat as any)?.activateCombatant(id)
+        if (game.user?.isActiveGM) {
+            await CountdownManager.rollPendingCountdowns(combatant)
+        }
+        else if (game.users?.activeGM) {
+            // Players can't roll countdowns themselves; ask the active GM's client to.
+            game.socket?.emit(`system.${sys_id}`, {
+                action: "rollCombatantCountdowns",
+                user: game.user?.id,
+                data: { combatId: game.combat?.id, combatantId: id }
+            })
+        }
     }
 
 }

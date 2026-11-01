@@ -1,7 +1,8 @@
 import { Shield, Undo2 } from "lucide-react"
-import { useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 
 import { getTokenImg } from "../../../utils/modelUtil"
+import { DamageTypeIcon } from "../../../view/component/DamageTypeIcon"
 import { FoundryHotkeyBlocker } from "../../../view/component/FoundryHotkeyBlocker"
 import { ClearHeader, ItemDivider } from "../../../view/component/Header"
 import { IconOnlyButton } from "../../../view/component/IconOnlyButton"
@@ -42,7 +43,23 @@ const SummaryRow = ({ row, isResolved, onOverrideChange }: { row: TargetDamageSu
     const name = token?.name ?? actor?.name
     const [isEditing, setIsEditing] = useState(false)
     const [draft, setDraft] = useState("")
+    const nameRef = useRef<HTMLDivElement>(null)
+    const damageRef = useRef<HTMLDivElement>(null)
+    const [wrapped, setWrapped] = useState(false)
 
+    useLayoutEffect(() => {
+        const container = nameRef.current?.parentElement
+        if (!container) return
+        const measure = () => {
+            const nameEl = nameRef.current
+            const damageEl = damageRef.current
+            if (nameEl && damageEl) setWrapped(damageEl.offsetTop >= nameEl.offsetTop + nameEl.offsetHeight / 2)
+        }
+        measure()
+        const observer = new ResizeObserver(measure)
+        observer.observe(container)
+        return () => observer.disconnect()
+    }, [])
     const commit = () => {
         const value = Number.parseInt(draft, 10)
         if (!Number.isNaN(value) && value >= 0) {
@@ -52,25 +69,32 @@ const SummaryRow = ({ row, isResolved, onOverrideChange }: { row: TargetDamageSu
     }
 
     return (
-        <div className="flex min-w-0 items-center justify-between gap-1 whitespace-nowrap font-normal">
+        <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-1 gap-y-0 font-normal">
             {/* TOKEN IMG AND NAME */}
-            <div className="flex items-center gap-1">
+            <div ref={nameRef} className="flex items-center gap-1">
                 <img
                     src={actor ? getTokenImg(actor) : undefined}
                     alt={name}
                     title={name}
                     className="object-contain h-[28px] w-[28px] shrink-0"
                 />
-                <p className="min-w-0 truncate mr-1" title={name}>{name}</p>
+                <p className="min-w-0 max-w-[4.5rem] truncate mr-1" title={name}>{name}</p>
             </div>
 
             <ItemDivider />
 
             {/* DAMAGE LABEL AND VALUE */}
-            <div className="flex items-center gap-1">
+            <div ref={damageRef} className={`flex shrink-0 items-center gap-1 whitespace-nowrap ml-auto ${wrapped ? "-mt-2" : ""}`}>
                 {row.label && <p className="min-w-0 truncate" title={row.label}>{row.label}:</p>}
                 <p>{row.damage}</p>
-
+                {row.bonus !== 0 && <p title="Bonus damage">{row.bonus > 0 ? `+ ${row.bonus}` : `− ${Math.abs(row.bonus)}`}</p>}
+                {row.imbueParts.map((part, index) => {
+                    const tip = `${part.label ?? part.dmgType}: ${part.bonus > 0 ? `${part.amount - part.bonus} + ${part.bonus}` : part.amount} damage`
+                    return <div key={index} className="flex items-center gap-0.5" title={tip}>
+                        <p>+</p>
+                        <DamageTypeIcon dmgType={part.dmgType} size={24} title={tip} />
+                    </div>
+                })}
                 {row.healing && <>
                     {row.healing.setValue > 0
                         ? <p title="Healing is set to a fixed amount per die">→ {row.healing.setValue}</p>
@@ -81,29 +105,23 @@ const SummaryRow = ({ row, isResolved, onOverrideChange }: { row: TargetDamageSu
                     }
                 </>}
 
-                {!row.healing && <div className="flex items-center gap-0.5" title={row.armorPiercing > 0 ? `Armor after ${row.armorPiercing} armor piercing` : "Armor"}>
-
-
-                    <p>−</p>
-
-
-                    <div className="relative w-[24px] h-[24px] shrink-0">
-                        <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-sm leading-none text-text-armor font-eskapade font-bold">{row.armor}</span>
-                        </div>
-                    </div>
-
-
+                {!row.healing && <div className="flex items-center gap-1">
                     {row.otherMitigation !== 0 && (
                         <p title={row.otherMitigation > 0 ? "Bonus mitigation" : "Bonus damage"}>
                             {row.otherMitigation > 0 ? `− ${row.otherMitigation}` : `+ ${Math.abs(row.otherMitigation)}`}
                         </p>
                     )}
 
+                    <div className="flex items-center gap-0.5" title={row.armorPiercing > 0 ? `Armor after ${row.armorPiercing} armor piercing` : "Armor"}>
+                        <p>−</p>
+                        <div className="relative w-[24px] h-[24px] shrink-0">
+                            <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="text-sm leading-none text-text-armor font-eskapade font-bold">{row.armor}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>}
-
-                {row.bonus !== 0 && <p title="Bonus damage">{row.bonus > 0 ? `+ ${row.bonus}` : `− ${Math.abs(row.bonus)}`}</p>}
 
                 <p>=</p>
                 {isEditing

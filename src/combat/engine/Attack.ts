@@ -22,8 +22,19 @@ export interface AttackResolutionArgs {
 
 export const damageOverrideKey = (targetId: string, subIndex = 0) => `${subIndex}:${targetId}`
 
+export interface ExtraDamage {
+    damageRoll: DamageRoll
+    // Flat damage added to the roll's total (e.g. the caster's beingType bonuses)
+    bonus: number
+    label?: string
+}
+
 export interface DamageBreakdown {
     damage: number
+    // Damage from imbued spells, already summed into the pre-mitigation total
+    imbueDamage: number
+    // Each imbue's post-resistance damage with its type, for display
+    imbueParts: { dmgType: string, amount: number, bonus: number, label?: string }[]
     halved: boolean
     // Effective armor after armor piercing (minimum 0)
     armor: number
@@ -54,6 +65,18 @@ export interface AppliedFx {
     damageType?: string
 }
 
+/**
+ * Spell damage that a Hero imbued into another attack. Several Heroes can imbue the same attack.
+ */
+export interface ImbueEntry {
+    actorId: string
+    spellName: string
+    spellUuid: string
+    damageRoll: DamageRoll
+    targetIds?: string[]
+    appliedEffects: AppliedFx[]
+}
+
 export abstract class Attack<TActor extends Actor = Actor> {
 
     abstract readonly attackType: 'adversary' | 'hero' | 'combo'
@@ -64,6 +87,8 @@ export abstract class Attack<TActor extends Actor = Actor> {
     userId: string = game.userId ?? ''
     // Used to find the most recent attack targeting a given token
     createdAt: number = Date.now()
+    // Actor whose token is shown on the chat card when it differs from the rolling actor (e.g. a follower).
+    portraitActorId?: string
 
     actor: TActor
     targetIds: string[]
@@ -71,6 +96,9 @@ export abstract class Attack<TActor extends Actor = Actor> {
     damageRoll?: DamageRoll
     get isSpellAttack(): boolean { return false }
     get isEffectOnlySpellAttack(): boolean { return false }
+    // Weapon attacks can have a Hero's spell imbued into them.
+    get isImbuable(): boolean { return false }
+    imbues: ImbueEntry[] = []
     isResolved: boolean = false
     appliedEffects: AppliedFx[] = []
 
@@ -106,6 +134,9 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
     async removeTarget(targetId: string, serialize: (attack: Attack) => AttackSnapshot | undefined) {
         this.targetIds = this.targetIds.filter(id => id !== targetId)
+        this.imbues.forEach(imbue => {
+            if (imbue.targetIds) imbue.targetIds = imbue.targetIds.filter(id => id !== targetId)
+        })
         await this.save(serialize)
     }
 
@@ -166,7 +197,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
             const calculated = Math.max(0, setValue > 0 ? setValue : rolled + flat + perDie)
             const row = Attack.buildSummaryRow(
                 id, 0,
-                { damage: rolled, halved: false, armor: 0, armorPiercing: 0, otherMitigation: 0, mitigated: calculated },
+                { damage: rolled, imbueDamage: 0, imbueParts: [], halved: false, armor: 0, armorPiercing: 0, otherMitigation: 0, mitigated: calculated },
                 0, args, 'healing', undefined
             )
             rows.push({ ...row, healing: { flat, perDie, setValue } })
@@ -198,19 +229,25 @@ export abstract class Attack<TActor extends Actor = Actor> {
         })
     }
 
-    // Applies exactly the HP change shown in the damage summary (including any GM overrides).
+    // Applies the HP change shown in the damage summary (including any GM overrides).
     private applyDamage(args: AttackResolutionArgs) {
+        // Sum rows per target so multiple damage sources (e.g. Imbues) are applied in one HP update.
+        const totals = new Map<string, number>()
         for (const row of this.getDamageSummary({ ...args, isSpellAttack: this.isSpellAttack })) {
-            const targetActor = canvas?.scene?.tokens?.get(row.targetId)?.actor as any
+            totals.set(row.targetId, (totals.get(row.targetId) ?? 0) + row.total)
+        }
+
+        for (const [targetId, adjDamage] of totals) {
+            const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor as any
             if (!targetActor) continue
 
-            const adjDamage = row.total
             const weaknesses = targetActor?.system?.modifiers?.damage?.in?.weaknesses ?? []
             const deathRequirements = targetActor?.system?.modifiers?.damage?.in?.deathRequirements
 
             if ((targetActor.system as ActorDataModel<BaseActorSchema>).statuses.toggles.focusing && adjDamage >= FOCUS_DAMAGE_LIMIT) {
+                // For Heroes, validateCurrentFocus removes the "focusing" effect once Focus is zero; toggling here too races with it.
                 targetActor.update({ 'system.statuses.counters.focus': 0 } as Record<string, number>)
-                StatusEffectUtil.toggleStatusEffectOnce(targetActor, "focusing", false)
+                if (targetActor.type !== "hero") StatusEffectUtil.toggleStatusEffectOnce(targetActor, "focusing", false)
             }
 
             const hp = this.getHP(targetActor?.system)
@@ -228,9 +265,9 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     /**
-     * Extra damage from the attacker's being-type modifiers (e.g. bonus vs. undead).
+     * Extra damage from the attacker's being-type modifiers (e.g. bonus vs. undead / hellspawn / etc...).
      */
-    protected calculateBonusDamage(targetActor: any): number {
+    protected calculateBonusDamage(targetActor: any, sourceActor: any = this.actor, damageRoll: DamageRoll | undefined = this.damageRoll): number {
         const beingTypes = [
             targetActor?.system?.beingType,
             targetActor?.system?.beingSubtype,
@@ -239,12 +276,12 @@ export abstract class Attack<TActor extends Actor = Actor> {
         ].filter(Boolean)
 
         let bonus = 0
-        const actorMods = (this.actor?.system as any)?.modifiers ?? {}
+        const actorMods = (sourceActor?.system as any)?.modifiers ?? {}
         if (actorMods) {
             const beingTypeMods = beingTypes.map(type => actorMods.damage.out.global.beingType[type]).filter(Boolean)
             if (beingTypeMods && beingTypeMods.length > 0) {
                 bonus += Math.max(...beingTypeMods.map(mod => mod.bonus.flat))
-                bonus += Math.max(...beingTypeMods.map(mod => mod.bonus.perDie)) * (this.damageRoll?.result?.rollSummaries.length ?? 0)
+                bonus += Math.max(...beingTypeMods.map(mod => mod.bonus.perDie)) * (damageRoll?.result?.rollSummaries.length ?? 0)
             }
         }
         return bonus
@@ -283,12 +320,21 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     protected calculateDamageBreakdown(targetId: string, args: AttackResolutionArgs): DamageBreakdown {
+        const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor as any
+        const extras: ExtraDamage[] = this.imbues
+            .filter(imbue => !imbue.targetIds || imbue.targetIds.includes(targetId))
+            .map(imbue => ({
+                damageRoll: imbue.damageRoll,
+                label: imbue.spellName,
+                bonus: this.calculateBonusDamage(targetActor, game.actors?.get(imbue.actorId) ?? this.actor, imbue.damageRoll)
+            }))
         return Attack.computeDamageBreakdown(
             this.damageRoll,
             targetId,
             args,
             this.getAdditionalArmorRating(targetId),
-            this.isHalfDamageForTarget(targetId)
+            this.isHalfDamageForTarget(targetId),
+            extras
         )
     }
 
@@ -346,22 +392,25 @@ export abstract class Attack<TActor extends Actor = Actor> {
         return Attack.computeDamageBreakdown(damageRoll, targetId, args, additionalArmorRating, halfDamage).mitigated
     }
 
-    static computeDamageBreakdown(damageRoll: DamageRoll | undefined, targetId: string, args: AttackResolutionArgs, additionalArmorRating = 0, halfDamage = false): DamageBreakdown {
+    static computeDamageBreakdown(damageRoll: DamageRoll | undefined, targetId: string, args: AttackResolutionArgs, additionalArmorRating = 0, halfDamage = false, extras: ExtraDamage[] = []): DamageBreakdown {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
         const aSys = actor?.system as any
 
         const dmgType = damageRoll?.dmgType ?? ''
         const mods = aSys?.modifiers?.damage?.in ?? {}
         const flatReduction = (mods?.flatReduction?.global ?? 0) + (args.isSpellAttack ? (mods?.flatReduction?.[dmgType] ?? 0) : (mods?.flatReduction?.attack ?? 0))
-        const perDieReduction = (mods?.perDieReduction?.global ?? 0) + (mods?.perDieReduction?.[dmgType] ?? 0)
+        const perDieReductionFor = (type: string) => (mods?.perDieReduction?.global ?? 0) + (mods?.perDieReduction?.[type] ?? 0)
+        const perDieReduction = perDieReductionFor(dmgType)
         const isResistant = mods?.resistances?.includes(dmgType)
         const weaknessDice = Attack.isWeakToDamage(targetId, damageRoll) ? (damageRoll?.result?.weaknessRolls ?? []) : []
         const weaknessDamage = weaknessDice.reduce((acc, it) => acc + it.result, 0)
         // Each die's damage (including its per-die bonus) can be reduced to a minimum of zero.
-        const perDieMit = [
+        const reduceDice = (dice: number[], reduction: number) =>
+            dice.reduce((acc, value) => acc + Math.min(Math.max(0, value), Math.max(0, reduction)), 0)
+        let perDieMit = reduceDice([
             ...(damageRoll?.result?.rollSummaries ?? []).filter(it => !it.rerolled).map(it => it.result + (damageRoll?.perDieDmgBonus ?? 0)),
             ...weaknessDice.map(it => it.result)
-        ].reduce((acc, value) => acc + Math.min(Math.max(0, value), Math.max(0, perDieReduction)), 0)
+        ], perDieReduction)
 
         // Resistance and a passed save each halve the damage; they don't stack.
         const totalDamage = (damageRoll?.result?.total ?? 0) + weaknessDamage
@@ -369,17 +418,37 @@ export abstract class Attack<TActor extends Actor = Actor> {
             ? Math.floor(totalDamage / 2)
             : totalDamage
 
+        // Extra damage sources (e.g. imbued spells) are added in before any mitigation, each resisted by its own type.
+        let imbueDamage = 0
+        const imbueParts: { dmgType: string, amount: number, bonus: number, label?: string }[] = []
+        for (const extra of extras) {
+            const extraRoll = extra.damageRoll
+            if (!extraRoll.result || Attack.isImmuneToDamage(targetId, extraRoll, true)) continue
+
+            const extraWeakDice = Attack.isWeakToDamage(targetId, extraRoll) ? (extraRoll.result.weaknessRolls ?? []) : []
+            const extraTotal = extraRoll.result.total + extraWeakDice.reduce((acc, it) => acc + it.result, 0) + extra.bonus
+            const amount = mods?.resistances?.includes(extraRoll.dmgType) ? Math.floor(extraTotal / 2) : extraTotal
+            imbueDamage += amount
+            imbueParts.push({ dmgType: extraRoll.dmgType, amount, bonus: Math.min(extra.bonus, amount), label: extra.label })
+            perDieMit += reduceDice([
+                ...extraRoll.result.rollSummaries.filter(it => !it.rerolled).map(it => it.result + (extraRoll.perDieDmgBonus ?? 0)),
+                ...extraWeakDice.map(it => it.result)
+            ], perDieReductionFor(extraRoll.dmgType))
+        }
+
         const armorRating = aSys?.armor?.rating ?? 0
         const armorPiercing = damageRoll?.result?.armorPiercing ?? 0
         const armor = args.bypassArmor ? 0 : Math.max(0, armorRating + additionalArmorRating - armorPiercing)
         const otherMitigation = flatReduction + perDieMit
         return {
             damage,
+            imbueDamage,
+            imbueParts,
             halved: !!(isResistant || halfDamage),
             armor,
             armorPiercing,
             otherMitigation,
-            mitigated: Math.max(0, damage - otherMitigation - armor)
+            mitigated: Math.max(0, damage + imbueDamage - otherMitigation - armor)
         }
     }
 
@@ -395,10 +464,18 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     protected async processStatusFx(args: AttackResolutionArgs) {
-        if (this.appliedEffects.length === 0) return
+        if (this.appliedEffects.length > 0) {
+            const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyEffectsToTarget(id, args))
+            await this.applyFxToTargets(this.appliedEffects, targetIds)
+        }
 
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyEffectsToTarget(id, args))
-        await this.applyFxToTargets(this.appliedEffects, targetIds)
+        for (const imbue of this.imbues) {
+            if (imbue.appliedEffects.length === 0) continue
+            const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
+                .filter(id => !imbue.targetIds || imbue.targetIds.includes(id))
+                .filter(id => !Attack.isImmuneToDamage(id, imbue.damageRoll, true))
+            await this.applyFxToTargets(imbue.appliedEffects, targetIds)
+        }
     }
 
     protected async applyFxToTargets(effects: AppliedFx[], targetIds: string[]) {

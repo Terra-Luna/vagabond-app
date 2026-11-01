@@ -15,6 +15,7 @@ import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataMode
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDamageAverage } from "../../../../../model/actor/type/NpcAction"
+import { getFollowerContext } from "../../../../../model/actor/util/NpcDataModelUtil"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
 import { sys_id } from "../../../../../utils/foundryUtils"
 import { appLang } from "../../../../../utils/lang"
@@ -34,7 +35,7 @@ import { Tooltip } from "../../../../component/Tooltip"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { buildPolymorphAttack, onClickAction, onClickActionAsWeaponAttack, onClickActionCombo } from "./hooksAndUtils"
+import { buildFollowerAttack, buildPolymorphAttack, onClickAction, onClickActionAsFollowerAttack, onClickActionAsWeaponAttack, onClickActionCombo, onClickComboAsHeroAttacks } from "./hooksAndUtils"
 
 const locale = appLang.NpcSheet
 
@@ -151,8 +152,13 @@ export const Actions = ({ npc, hero, setIsAddMenuOpen, isPolymorph }: {
 
             {/* DISPLAY COMBO FIRST */}
             <div
-                className={`${isPolymorph ? '' : 'hover-glow'}`}
-                onClick={() => !isPolymorph ? onClickActionCombo(npc) : {}}
+                className={`${isPolymorph && !hero ? '' : 'hover-glow'}`}
+                onClick={(e) => {
+                    const follower = isPolymorph ? undefined : getFollowerContext(npc.parent)
+                    if (isPolymorph && hero) onClickComboAsHeroAttacks(npc, action => buildPolymorphAttack(hero, action), e)
+                    else if (follower) onClickComboAsHeroAttacks(npc, action => buildFollowerAttack(follower, action), e)
+                    else if (!isPolymorph) onClickActionCombo(npc)
+                }}
                 onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteCombo(npc), isDestructive: true }])}
             >
                 {npc.combo.name !== '' &&
@@ -179,6 +185,12 @@ export const Actions = ({ npc, hero, setIsAddMenuOpen, isPolymorph }: {
 
                             if (isPolymorph && hero) {
                                 onClickActionAsWeaponAttack(hero, action, e)
+                                return
+                            }
+
+                            const follower = getFollowerContext(npc.parent)
+                            if (follower && action.damage?.dice) {
+                                onClickActionAsFollowerAttack(follower, action, e)
                                 return
                             }
 

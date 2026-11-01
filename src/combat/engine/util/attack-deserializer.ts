@@ -1,6 +1,8 @@
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { getFollowerContext } from "../../../model/actor/util/NpcDataModelUtil"
 import { AdversaryAttack } from "../AdversaryAttack"
 import { AdversaryComboAttack, ComboSubAttack } from "../AdversaryComboAttack"
+import type { ImbueEntry } from "../Attack"
 import type { HeroAttack } from "../HeroAttack"
 import { DamageRoll } from "../roll/DamageRoll"
 import { SkillCheck } from "../roll/SkillCheck"
@@ -27,6 +29,7 @@ function deserializeHeroAttack(
     atk.id = snapshot.id
     atk.userId = snapshot.userId
     atk.createdAt = snapshot.createdAt ?? 0
+    atk.portraitActorId = snapshot.portraitActorId
     atk.itemId = snapshot.itemId
     atk.spellDelivery = snapshot.spellDelivery
     atk.critChoice = snapshot.critChoice
@@ -49,7 +52,16 @@ function deserializeHeroAttack(
             : undefined
     )
 
+    atk.imbues = deserializeImbues(snapshot)
+
     return atk
+}
+
+function deserializeImbues(snapshot: AttackSnapshot): ImbueEntry[] {
+    return (snapshot.imbues ?? []).flatMap(imbue => {
+        const damageRoll = DamageRoll.fromJson(foundry.utils.deepClone(imbue.damageRoll))
+        return damageRoll ? [{ ...foundry.utils.deepClone(imbue), damageRoll }] : []
+    })
 }
 
 function deserializeAdversaryAttack(snapshot: AttackSnapshot): AdversaryAttack | undefined {
@@ -78,6 +90,11 @@ function deserializeAdversaryAttack(snapshot: AttackSnapshot): AdversaryAttack |
     atk.createdAt = snapshot.createdAt ?? 0
     atk.isResolved = snapshot.isResolved
     atk.damageRoll = damageRoll
+    const follower = snapshot.skillCheck ? getFollowerContext(actor) : undefined
+    atk.skillCheck = follower
+        ? SkillCheck.fromJson(follower.hero, foundry.utils.deepClone(snapshot.skillCheck))
+        : undefined
+    atk.imbues = deserializeImbues(snapshot)
     atk.appliedEffects = snapshot.appliedEffects ?? []
     atk.saveResults = snapshot.saveResults
         ? foundry.utils.deepClone(snapshot.saveResults)

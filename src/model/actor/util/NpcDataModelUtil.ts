@@ -4,8 +4,33 @@ import { getRuleToggleState, toggleItemRule } from "../../../rules/util/rule-tog
 import { sys_id } from "../../../utils/foundryUtils"
 import { getName } from "../../../utils/modelUtil"
 import type { AdversaryDataModel } from "../AdversaryDataModel"
+import type { HeroDataModel } from "../HeroDataModel"
 import type { NpcDataModel } from "../NpcDataModel"
 import { getDamageAverage } from "../type/NpcAction"
+
+export const FOLLOWER_HERO_FLAG = "followerHeroId"
+export const FOLLOWER_SKILL_FLAG = "followerSkill"
+
+export interface FollowerContext {
+    hero: Actor & { system: HeroDataModel }
+    skill: string
+    npcId: string
+}
+
+/**
+ * Followers use Hero skills for checks, defaulting to Leadership.
+ */
+export const getFollowerContext = (actor: Actor | null | undefined): FollowerContext | undefined => {
+    if (!actor || (actor.type as string) !== "npc") return
+    const heroId = actor.getFlag(sys_id, FOLLOWER_HERO_FLAG as any) as string | undefined
+    const hero = heroId ? game.actors?.get(heroId) : undefined
+    if (!hero || (hero.type as string) !== "hero") return
+    const skill = (actor.getFlag(sys_id, FOLLOWER_SKILL_FLAG as any) as string | undefined) || "leadership"
+    return { hero: hero as Actor & { system: HeroDataModel }, skill, npcId: actor.id! }
+}
+
+export const canRollForActor = (actor: Actor | null | undefined): boolean =>
+    !!(game.user?.isActiveGM || actor?.isOwner || getFollowerContext(actor)?.hero.isOwner)
 
 export const onNpcPreCreate = (npc, options, data, allowed, actorLink, disposition) => {
     if (allowed === false) return false

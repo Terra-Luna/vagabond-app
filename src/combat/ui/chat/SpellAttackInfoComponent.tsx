@@ -5,8 +5,6 @@ import ReactHtmlParser from 'react-html-parser'
 import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
 import { appLang } from "../../../utils/lang"
 import { DamageRollsComponent } from "../../../view/chat/component/DamageRollsComponent"
-import { TotalDmgFooter } from "../../../view/chat/TotalDamageFooter"
-import { DamageTypeIcon } from "../../../view/component/DamageTypeIcon"
 import { CardSubHeader, CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { SpellcastingSubtext } from "../../../view/sheets/actor/hero/tab/component/spellcasting/input/SpellcastingTypography"
 import { DamageRollResult } from "../../engine/roll/DamageRoll"
@@ -39,16 +37,8 @@ export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined,
     return (
         <div>
             {dmgRoll && <div className="flex flex-col gap-1 justify-center">
-                <DamageRollsComponent result={dmgRoll} />
-                <div className="flex items-center justify-center">
-                    {img && <div>{img}</div>}
-                    <TotalDmgFooter total={
-                        <div className="flex gap-x-1 items-center">
-                            <p>{dmgRoll.total}</p>
-                            <DamageTypeIcon dmgType={dmgRoll.dmgType} />
-                        </div>
-                    } />
-                </div>
+                {img && <div className="flex justify-center">{img}</div>}
+                <DamageRollsComponent attack={{ damageRoll: { result: dmgRoll } }} />
                 <div>
                     <CardSubHeader showRightBorder={false} values={subheaders} />
                 </div>

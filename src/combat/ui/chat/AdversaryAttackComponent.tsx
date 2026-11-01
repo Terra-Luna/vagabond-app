@@ -1,20 +1,22 @@
 import { Check, Clover, MinusCircle, Shield, Swords, X } from "lucide-react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { canRollForActor, getFollowerContext } from "../../../model/actor/util/NpcDataModelUtil"
 import { appLang } from "../../../utils/lang"
 import { DamageRollsComponent } from "../../../view/chat/component/DamageRollsComponent"
-import { TotalDmgFooter } from "../../../view/chat/TotalDamageFooter"
+import { SkillCheckDiceComponent } from "../../../view/chat/SkillCheckChatCard"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
 import { CtxMenuItem, useContextMenu } from "../../../view/component/ContextMenu"
-import { DamageTypeIcon } from "../../../view/component/DamageTypeIcon"
-import { ClearHeader, Divider } from "../../../view/component/Header"
+import { ClearHeader, Divider, Header } from "../../../view/component/Header"
+import { CardSubHeader } from "../../../view/component/SkillCard"
 import { Tooltip } from "../../../view/component/Tooltip"
 import { AdversaryAttack, SavingThrowType } from "../../engine/AdversaryAttack"
 import { AdversaryComboAttack } from "../../engine/AdversaryComboAttack"
 import { DamageRoll } from "../../engine/roll/DamageRoll"
 import { SkillCheckResult } from "../../engine/roll/SkillCheck"
 import { TargetDisplayItem, useAdversaryAttack, useAdversaryAttackSaveHandlers, useAdversaryAttackTargets } from "../hooks"
+import { ImbuedDamageSections } from "./ImbueComponents"
 
 export const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAttack, setRevision: any }) => {
     const { targets, ownedTargets, handleSave, handleRerollSave, handleSetSaveOutcome, handleRemoveTarget } = useAdversaryAttack(attack, setRevision)
@@ -22,7 +24,26 @@ export const AdversaryAttackComponent = ({ attack, setRevision }: { attack: Adve
 
     return (
         <div className="flex flex-col gap-1">
+            {attack.skillCheck?.result &&
+                <div>
+                    <Header title={`${attack.skillCheck.result.skillName} Check`} textLeft={true} />
+                    <CardSubHeader showRightBorder={false} values={[
+                        { label: appLang.Combat.difficulty, value: attack.skillCheck.difficulty?.toString() },
+                        { label: appLang.Combat.result, value: attack.skillCheck.result.outcome }
+                    ]} />
+                    <div className="flex flex-col justify-center items-center">
+                        <SkillCheckDiceComponent
+                            d20s={attack.skillCheck.result.d20s}
+                            d6s={attack.skillCheck.result.d6s}
+                            modifier={attack.skillCheck.modifier}
+                            favHinder={attack.skillCheck.favorHinder}
+                            bonusDice={[]}
+                        />
+                    </div>
+                </div>
+            }
             <AttackDamageAndSavesSection
+                attack={attack}
                 damageRoll={attack.damageRoll}
                 saveTypes={attack.saveTypes}
                 saveResults={attack.saveResults}
@@ -36,6 +57,7 @@ export const AdversaryAttackComponent = ({ attack, setRevision }: { attack: Adve
                 onSetSaveOutcome={handleSetSaveOutcome}
                 onRemoveTarget={handleRemoveTarget}
             />
+            <ImbuedDamageSections attack={attack} />
         </div>
     )
 }
@@ -67,6 +89,7 @@ const AdversaryComboAttackSection = ({ attack, sub, subIndex, ownedTargets, unow
     return (
         <div className={`${tableBorderRounded} bg-context-menu-fill/25`}>
             <AttackDamageAndSavesSection
+                attack={sub}
                 title={sub.name}
                 damageRoll={sub.damageRoll}
                 saveTypes={sub.saveTypes}
@@ -89,10 +112,11 @@ const AdversaryComboAttackSection = ({ attack, sub, subIndex, ownedTargets, unow
  * GM context menu options for manually setting targets' saving throws or removing them from the attack.
  */
 const AttackDamageAndSavesSection = ({
-    title, damageRoll, saveTypes, saveResults, defenseArmorBonuses,
+    attack, title, damageRoll, saveTypes, saveResults, defenseArmorBonuses,
     rerolledSaveTargetIds, isResolved, ownedTargets, unownedTargets,
     onRollSave, onRerollSave, onSetSaveOutcome, onRemoveTarget
 }: {
+    attack?: any
     title?: string
     damageRoll: DamageRoll | undefined
     saveTypes: SavingThrowType[]
@@ -104,8 +128,8 @@ const AttackDamageAndSavesSection = ({
     unownedTargets: TargetDisplayItem[]
     onRollSave: (targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent) => void
     onRerollSave: (targetId: string) => void
-        onSetSaveOutcome: (targetId: string, outcome: string) => void
-        onRemoveTarget: (targetId: string) => void
+    onSetSaveOutcome: (targetId: string, outcome: string) => void
+    onRemoveTarget: (targetId: string) => void
 }) => {
     const showDamage = (damageRoll?.result?.total ?? 0) > 0
 
@@ -136,20 +160,24 @@ const AttackDamageAndSavesSection = ({
                 <div className="px-1">
                     <ClearHeader title={appLang.Combat.targets} />
                     <div className="flex flex-col gap-1 mt-1 px-1">
-                        
+
                         {/* OWNED TARGETS */}
                         {ownedTargets.map(target => {
                             const result = saveResults[target.id]
-                            const canRollSave = !isResolved && !result && target.token?.actor?.system instanceof HeroDataModel && (game.user?.isActiveGM || target.token?.actor?.isOwner)
-                            const luck = (target.token?.actor?.system as HeroDataModel | undefined)?.statuses?.counters?.luck ?? 0
+                            const follower = getFollowerContext(target.token?.actor)
+                            const canRollSave = !isResolved && !result && (target.token?.actor?.system instanceof HeroDataModel || !!follower) && canRollForActor(target.token?.actor)
+                            const luckActor = follower?.hero ?? target.token?.actor
+                            const luck = (luckActor?.system as HeroDataModel | undefined)?.statuses?.counters?.luck ?? 0
                             const canReroll = !isResolved && result?.outcome === appLang.RollResult.failure &&
                                 !rerolledSaveTargetIds.includes(target.id) && luck > 0 &&
-                                (game.user?.isActiveGM || target.token?.actor?.isOwner)
+                                canRollForActor(target.token?.actor)
 
-                            const canDefend = canRollSave && (target.token?.actor?.system as HeroDataModel)?.defenseWeapons()?.length > 0 && saveTypes.includes('reflex')
-                            const targetSaveTypes: SavingThrowType[] = canDefend && !saveTypes.includes('defend')
-                                ? [...saveTypes, 'defend']
-                                : saveTypes
+                            const canDefend = canRollSave && !follower && (target.token?.actor?.system as HeroDataModel)?.defenseWeapons()?.length > 0 && saveTypes.includes('reflex')
+                            const targetSaveTypes: SavingThrowType[] = follower
+                                ? [saveTypes[0]]
+                                : canDefend && !saveTypes.includes('defend')
+                                    ? [...saveTypes, 'defend']
+                                    : saveTypes
 
                             const defenseBonus = result?.outcome === appLang.RollResult.failure ? undefined : defenseArmorBonuses?.[target.id]
 
@@ -162,7 +190,7 @@ const AttackDamageAndSavesSection = ({
                                     {result
                                         ? <div className="flex shrink-0 items-center gap-1">
                                             {/* SAVING THROW OUTCOME */}
-                                            <SaveOutcomeIcon result={result} />
+                                            <SaveOutcomeIcon result={result} isFollower={!!follower} />
                                             <p>{result.isManual
                                                 ? "(GM)"
                                                 : defenseBonus !== undefined
@@ -184,17 +212,22 @@ const AttackDamageAndSavesSection = ({
                                         </div>
                                         : canRollSave && <div className="flex gap-1">
                                             {/* ROLL SAVE BUTTONS */}
-                                            {targetSaveTypes.map(saveType => (
-                                                <Tooltip key={saveType} title={`${appLang.Saves[saveType]?.name} Save`} content={`${appLang.HeroSheet[`${saveType}_tooltip`]}<br>${appLang.HeroSheet.skills_tooltip}`}>
-                                                    <UtilityButton onClick={(e) => {
-                                                        e?.stopPropagation()
-                                                        e?.preventDefault()
-                                                        onRollSave(target.id, saveType, e)
-                                                    }}>
-                                                        {`${appLang.Saves[saveType]?.name ?? saveType}`}
-                                                    </UtilityButton>
-                                                </Tooltip>
-                                            ))}
+                                            {targetSaveTypes.map(saveType => {
+                                                const label = follower
+                                                    ? (appLang.Skills[follower.skill]?.name ?? follower.skill)
+                                                    : (appLang.Saves[saveType]?.name ?? saveType)
+                                                return (
+                                                    <Tooltip key={saveType} title={`${label} Save`} content={follower ? (appLang.Skills[follower.skill]?.description ?? '') : `${appLang.HeroSheet[`${saveType}_tooltip`]}<br>${appLang.HeroSheet.skills_tooltip}`}>
+                                                        <UtilityButton onClick={(e) => {
+                                                            e?.stopPropagation()
+                                                            e?.preventDefault()
+                                                            onRollSave(target.id, saveType, e)
+                                                        }}>
+                                                            {label}
+                                                        </UtilityButton>
+                                                    </Tooltip>
+                                                )
+                                            })}
                                         </div>
                                     }
                                     <div className="flex min-w-0 items-center gap-2">
@@ -230,15 +263,7 @@ const AttackDamageAndSavesSection = ({
                         ? <ClearHeader title={title} />
                         : <ClearHeader title={appLang.Combat.damage} />
                     }
-                    <DamageRollsComponent result={damageRoll!.result!} />
-                    <div className="flex items-center justify-center">
-                        <TotalDmgFooter total={
-                            <div className="flex gap-x-1 items-center">
-                                <p>{damageRoll?.result?.total}</p>
-                                <DamageTypeIcon dmgType={damageRoll?.result?.dmgType ?? ''} />
-                            </div>
-                        } />
-                    </div>
+                    <DamageRollsComponent attack={attack} />
                 </div>
             }
         </div>
@@ -249,17 +274,17 @@ const TargetPortrait = ({ target, result }: { target: TargetDisplayItem, result?
     return (
         <div className="relative h-[28px] w-[28px] shrink-0">
             <img src={target.src} alt={target.token?.name} className="object-contain h-[28px] w-[28px]" />
-            <SaveOutcomeIcon result={result} overlay />
+            <SaveOutcomeIcon result={result} overlay isFollower={!!getFollowerContext(target.token?.actor)} />
         </div>
     )
 }
 
-const SaveOutcomeIcon = ({ result, overlay = false }: { result?: SkillCheckResult, overlay?: boolean }) => {
+const SaveOutcomeIcon = ({ result, overlay = false, isFollower = false }: { result?: SkillCheckResult, overlay?: boolean, isFollower?: boolean }) => {
     if (!result) return null
 
     const isFailure = result.outcome === appLang.RollResult.failure
     const isSuccess = result.outcome === appLang.RollResult.success || result.outcome === appLang.RollResult.crit
-    const isDefense = result.skill !== 'reflex' && result.skill !== 'will' && result.skill !== 'endure'
+    const isDefense = !isFollower && result.skill !== 'reflex' && result.skill !== 'will' && result.skill !== 'endure'
     const isSuccessfulDefense = isSuccess && isDefense
     if (!isFailure && !isSuccess) return null
 

@@ -17,7 +17,7 @@ import { DiceCountInput } from "./input/DiceCountInput"
 import { LineExpansionInut } from "./input/LineExpansionInput"
 import { ManaDiscount } from "./input/ManaDiscount"
 import { SkillSelector } from "./input/SkillSelector"
-import { SpellcastingErrMsg, SpellcastingSubtext } from "./input/SpellcastingTypography"
+import { SpellcastingErrMsg, SpellcastingLabel, SpellcastingSubtext } from "./input/SpellcastingTypography"
 import { SpellEffectToggle } from "./input/SpellEffectToggle"
 import { SpellFocusToggle } from "./input/SpellFocusToggle"
 import { SpellRangeInput } from "./input/SpellRangeInput"
@@ -41,7 +41,7 @@ interface SpellcastingMenuState {
     targetCount?: number
 }
 
-export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, imbueMode?: boolean, windowedMode?: boolean, onCast?: () => void) => {
+export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, imbueMode?: boolean, windowedMode?: boolean, onCast?: () => void, imbueTarget?: { actorId: string, attackId: string }, onClose?: () => void) => {
     const hero = actor.system
     const useMiniCards = getMiniCardsPref(actor.id!)
 
@@ -318,8 +318,24 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
             onUpdateStudyDamageDice('0')
             await saveSpellcastingMenuState(delivery)
             const sk = skill && skill.length > 0 ? skill : 'arcana'
-            HeroAttack.buildSpellAttack(hero.parent, sk, delivery, e)?.initiate(e)
+            let cast = true
+            let target = imbueTarget
+            if (!target && delivery instanceof Imbue) {
+                const latest = HeroAttack.findLatestWeaponAttack()
+                if (!latest || latest.isResolved) {
+                    ui.notifications?.error(appLang.Notifications.imbueAttackResolved)
+                    return
+                }
+                target = { actorId: latest.actorId, attackId: latest.attackId }
+            }
+            if (target) {
+                cast = await HeroAttack.imbueAttack(hero.parent, sk, delivery, target, e)
+            }
+            else {
+                HeroAttack.buildSpellAttack(hero.parent, sk, delivery, e)?.initiate(e)
+            }
             onCast?.()
+            if (imbueMode && cast) onClose?.()
         }
     }
 
@@ -336,6 +352,12 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, im
                         {/* SELECTORS */}
                         {(!useMiniCards || imbueMode || windowedMode) && <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />}
                         {!imbueMode && <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />}
+                        {imbueMode &&
+                            <div>
+                                <SpellcastingLabel text={appLang.HeroSheet.Magic.labelDelivery} />
+                                <p className="px-1 py-0.5 text-base">{delivery.name}</p>
+                            </div>
+                        }
 
                         {!hero.class.castingSkill && <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />}
 

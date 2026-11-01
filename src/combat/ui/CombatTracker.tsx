@@ -3,13 +3,12 @@ import { forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, use
 
 import { useOverlayItemSync } from "../../apps/overlay/usecase/OverlayItemSyncUseCase"
 import { CountdownManager, CountdownSchema } from "../../apps/vagabond-tools/usecase/CountdownManager"
-import { canInteractWithOverlayObject } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { sys_id } from "../../utils/foundryUtils"
-import { DieIcon } from "../../view/chat/component/DieIcon"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { getCanvasToken } from "../../utils/modelUtil"
+import { DieIcon } from "../../view/chat/component/DieIcon"
 import { UtilityButton } from "../../view/component/Button"
 import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
 import { DiceRollButton } from "../../view/component/DiceRollButton"
@@ -23,7 +22,6 @@ import { useFoundryHook } from "../../view/wrappers/hooks"
 import { combineCombatantWithControlledCombatants, getControlledCombatants, getControlledTokens, performAsyncActionOnControlledCombatants } from "../combat-utils"
 import { VagabondActiveEffect } from "../documents/VagabondActiveEffect"
 import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
-import { CountdownRoll } from "../engine/roll/CountdownRoll"
 import { controlledCombatantsHaveStatus, getCombatantStatuses } from "../engine/util/status"
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
 import { useCombatContext, useIsCurrentCombatant } from "./hooks"
@@ -170,47 +168,24 @@ const Group = ({ children }: { groupName: CombatGroup, children: ReactNode }) =>
     )
 }
 
-const rolledThisRound = new Set<string>()
-const rolledListeners = new Set<() => void>()
-const roundKey = (suffix: string) => `${getCombat()?.id}:${getCombat()?.round}:${suffix}`
-const groupRolledKey = (groupName: string) => roundKey(`group:${groupName}`)
-const dieRolledKey = (cdId: string) => roundKey(`die:${cdId}`)
-const markRolled = (key: string) => {
-    rolledThisRound.add(key)
-    rolledListeners.forEach(listener => listener())
-}
-const useRolledTracking = () => {
-    const [, forceRender] = useState(0)
-    useEffect(() => {
-        const listener = () => forceRender(n => n + 1)
-        rolledListeners.add(listener)
-        // re-render on round changes so buttons re-enable
-        const hookId = Hooks.on("updateCombat", listener)
-        return () => {
-            rolledListeners.delete(listener)
-            Hooks.off("updateCombat", hookId)
-        }
-    }, [])
-}
-
 const GroupHeader = ({ groupName, label, combatants }: { groupName: CombatGroup, label: string, combatants: VagabondCombatant[] }) => {
     const [cds, setCds] = useState<CountdownSchema[]>(CountdownManager.getAll())
-    useRolledTracking()
+    CountdownManager.useRolledTracking()
     useOverlayItemSync(setCds, CountdownManager.getAll, `${sys_id}.countdowns`)
 
-    const hasRolled = rolledThisRound.has(groupRolledKey(groupName))
+    const hasRolled = CountdownManager.wasRolled(CountdownManager.groupRolledKey(groupName))
 
-    const groupCdIds = combatants.flatMap(c => getCombatantStatusCountdowns(cds, c).map(cd => cd.id))
+    const groupCdIds = combatants.flatMap(c => CountdownManager.getCombatantStatusCountdowns(cds, c).map(cd => cd.id))
     const uniqueIds = Array.from(new Set(groupCdIds))
-    const allDiceRolled = uniqueIds.every(id => rolledThisRound.has(dieRolledKey(id)))
+    const allDiceRolled = uniqueIds.every(id => CountdownManager.wasRolled(CountdownManager.dieRolledKey(id)))
 
     const rollAll = async () => {
         if (hasRolled) return
-        const idsToRoll = uniqueIds.filter(id => !rolledThisRound.has(dieRolledKey(id)))
-        markRolled(groupRolledKey(groupName))
-        idsToRoll.forEach(id => markRolled(dieRolledKey(id)))
+        const idsToRoll = uniqueIds.filter(id => !CountdownManager.wasRolled(CountdownManager.dieRolledKey(id)))
+        CountdownManager.markRolled(CountdownManager.groupRolledKey(groupName))
+        idsToRoll.forEach(id => CountdownManager.markRolled(CountdownManager.dieRolledKey(id)))
         for (const id of idsToRoll) {
-            await rollStatusCountdown(id)
+            await CountdownManager.rollStatusCountdown(id)
         }
     }
 
@@ -604,58 +579,6 @@ const StatusIcons = ({ combatant }) => {
     )
 }
 
-const rollStatusCountdown = async (cdId: string) => {
-    const current = CountdownManager.getAll().find(cd => cd.id === cdId)
-    if (!current || current.result.duration === 0) return
-    if (!canInteractWithOverlayObject(current, CountdownManager.checkPermission)) return
-
-    const roll = new CountdownRoll(current.result)
-    await roll.roll(true)
-
-    const expired = roll.result.duration === 0
-    await CountdownManager.setAll(CountdownManager.getAll().flatMap(cd =>
-        cd.id !== cdId ? [cd] : (expired ? [] : [{ ...cd, result: roll.result }])
-    ))
-
-    if (current.result.status === "burning") await roll.applyBurningDamage()
-}
-
-const getCombatantStatusCountdowns = (cds: CountdownSchema[], combatant: VagabondCombatant) =>
-    cds.filter(cd =>
-        cd.result.status &&
-        cd.result.duration > 0 &&
-        cd.result.actorUuid === combatant.actor?.uuid &&
-        (!cd.result.tokenUuid || cd.result.tokenUuid === combatant.token?.uuid)
-    )
-
-export const rollPendingCountdowns = async (combatant: VagabondCombatant) => {
-    if (rolledThisRound.has(groupRolledKey(combatant.combatGroup))) return
-    const pending = getCombatantStatusCountdowns(CountdownManager.getAll(), combatant)
-        .map(cd => cd.id)
-        .filter(id => !rolledThisRound.has(dieRolledKey(id)))
-    pending.forEach(id => markRolled(dieRolledKey(id)))
-    for (const id of pending) {
-        await rollStatusCountdown(id)
-    }
-}
-
-export const activateCombatantAndRollCountdowns = async (combatant: VagabondCombatant) => {
-    const id = combatant?._id
-    if (!id) return
-    await getCombat()?.activateCombatant(id)
-    if (game.user?.isActiveGM) {
-        await rollPendingCountdowns(combatant)
-    }
-    else if (game.users?.activeGM) {
-        // Players can't roll countdowns themselves; ask the active GM's client to.
-        game.socket?.emit(`system.${sys_id}`, {
-            action: "rollCombatantCountdowns",
-            user: game.user?.id,
-            data: { combatId: getCombat()?.id, combatantId: id }
-        })
-    }
-}
-
 export const StatusCountdowns = ({ combatant, actorUuid, tokenUuid, burningOnly, alwaysClickable, className = "flex flex-wrap gap-0.5" }: {
     combatant?: VagabondCombatant, actorUuid?: string, tokenUuid?: string, burningOnly?: boolean, alwaysClickable?: boolean, className?: string
 }) => {
@@ -674,15 +597,15 @@ export const StatusCountdowns = ({ combatant, actorUuid, tokenUuid, burningOnly,
 
     const rollCountdown = (cdId: string) => {
         if (!game.user?.isActiveGM || isDieDisabled(cdId)) return
-        markRolled(dieRolledKey(cdId))
-        return rollStatusCountdown(cdId)
+        CountdownManager.markRolled(CountdownManager.dieRolledKey(cdId))
+        return CountdownManager.rollStatusCountdown(cdId)
     }
 
-    useRolledTracking()
+    CountdownManager.useRolledTracking()
 
     const isDieDisabled = (cdId: string) =>
         !game.user?.isActiveGM ||
-        (!alwaysClickable && (rolledThisRound.has(dieRolledKey(cdId)) || (!!combatant && rolledThisRound.has(groupRolledKey(combatant.combatGroup)))))
+        (!alwaysClickable && (CountdownManager.wasRolled(CountdownManager.dieRolledKey(cdId)) || (!!combatant && CountdownManager.wasRolled(CountdownManager.groupRolledKey(combatant.combatGroup)))))
 
     const deleteCountdown = async (cdId: string) => {
         await CountdownManager.setAll(CountdownManager.getAll().filter(cd => cd.id !== cdId))
@@ -774,7 +697,7 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }
     const id = combatant?._id
 
     const activateCombatant = useCallback(async () => {
-        if (id) await activateCombatantAndRollCountdowns(combatant)
+        if (id) await CountdownManager.activateCombatantAndRollCountdowns(combatant)
     }, [combatant])
 
     const deactivateCombatant = useCallback(() => {
@@ -847,7 +770,6 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
     )
 }
 
-// Each group is listed in turn order (the combat's turn sorting) rather than creation order.
 const inTurnOrder = (combatants: VagabondCombatant[], group: string) => {
     const turns = (getCombat()?.turns ?? []) as VagabondCombatant[]
     const turnIndex = (c: VagabondCombatant) => {

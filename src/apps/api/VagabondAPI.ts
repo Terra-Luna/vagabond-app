@@ -1,6 +1,5 @@
 import { HeroAttack } from "../../combat/engine/HeroAttack"
 import { SkillCheck } from "../../combat/engine/roll/SkillCheck"
-import { activateCombatantAndRollCountdowns } from "../../combat/ui/CombatTracker"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { PolymorphUtil } from "../../model/actor/util/PolymorphUtil"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
@@ -13,6 +12,7 @@ import { RestApp } from "../rest/RestApp"
 import { SpellcastingApp } from "../spellcasting/SpellcastingApp"
 import { TravelApp } from "../travel/TravelApp"
 import { PolymorphApp } from "../vagabond-tools/polymorph/PolymorphApp"
+import { CountdownManager } from "../vagabond-tools/usecase/CountdownManager"
 
 export interface VagabondAPI {
     rules: {
@@ -300,7 +300,7 @@ export const api: VagabondAPI = {
                 await combat.deactivateCombatant(combatant.id)
             }
             else if (!activeCombatant && (combatant.activations?.value ?? 0) > 0) {
-                await activateCombatantAndRollCountdowns(combatant)
+                await CountdownManager.activateCombatantAndRollCountdowns(combatant)
             }
         },
 
@@ -319,9 +319,19 @@ export const api: VagabondAPI = {
             const displayed = (combat.turns as any[]).filter(c => c.actor)
             const ordered = groupOrder.flatMap(group => displayed.filter(c => c.combatGroup === group))
 
+            const closeActorSheets = async () => {
+                const sheets: any[] = Array.from((foundry.applications.instances as Map<string, any>).values())
+                await Promise.all(sheets
+                    .filter(app => app.document?.documentName === "Actor")
+                    .map(app => app.close()))
+            }
+
             const current = combat.combatant
             const startIndex = current ? ordered.findIndex(c => c.id === current.id) : -1
-            if (current) await combat.deactivateCombatant(current.id)
+            if (current) {
+                await closeActorSheets()
+                await combat.deactivateCombatant(current.id)
+            }
 
             const next = ordered.find((c, i) => i > startIndex && (c.activations?.value ?? 0) > 0)
             if (!next) {
@@ -329,7 +339,7 @@ export const api: VagabondAPI = {
                 return
             }
 
-            await activateCombatantAndRollCountdowns(next)
+            await CountdownManager.activateCombatantAndRollCountdowns(next)
 
             const token = next.token?.object as Token | undefined
             if (token) {
@@ -340,10 +350,7 @@ export const api: VagabondAPI = {
              * Automatically opens the hostile combatant's sheet for the GM.
              */
             if (next.token?.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE && next.actor) {
-                const sheets: any[] = Array.from((foundry.applications.instances as Map<string, any>).values())
-                await Promise.all(sheets
-                    .filter(app => app.document?.documentName === "Actor")
-                    .map(app => app.close()))
+                await closeActorSheets()
                 next.actor.sheet?.render({ force: true })
             }
         }

@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useMemo } from "react"
 
+import { canRollForActor } from "../../model/actor/util/NpcDataModelUtil"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { AdversaryAttack, SavingThrowType } from "../engine/AdversaryAttack"
@@ -33,7 +34,7 @@ export const useAdversaryAttackTargets = (attack: AdversaryAttack | AdversaryCom
     }, [attack?.targetIds])
 
     const ownedTargets = useMemo(() => {
-        return targets.filter(target => game.user?.isActiveGM || target.token?.actor?.isOwner)
+        return targets.filter(target => canRollForActor(target.token?.actor))
     }, [targets])
 
     return { targets, ownedTargets }

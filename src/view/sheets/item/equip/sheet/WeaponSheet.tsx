@@ -7,13 +7,16 @@ import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { CustomDropDown } from "../../../../component/Dropdown"
 import { OptionsSelectionMenu, StringOptionsDisplay } from "../../../../component/OptionsSelectionMenu"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { ItemSheetPropLabel } from "../component/ItemSheetLabelComponent"
+import { ItemToggleOption } from "../component/ItemToggleOption"
 import { MaterialSelection } from "../component/MaterialSelectionComponent"
 import { WeaponPropsList } from "../component/WeaponPropsList"
 
 export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
+    const { isEditMode } = useEditMode()
 
     const damageDice = item.system.damage.dice as DiceRoll
 
@@ -32,6 +35,9 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
                 <DiceRollInputComponent label={appLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} />
                 <DamageTypeSelector item={item} path={'system.damage.type'} />
                 <MaterialSelection item={item} />
+                {(isEditMode || item.system.imbueExempt) &&
+                    <ItemToggleOption label={appLang.ItemSheet.imbueExempt} item={item} path={'system.imbueExempt'} />
+                }
             </div>
         </EquipmentSheetSubtypeBody>
     )

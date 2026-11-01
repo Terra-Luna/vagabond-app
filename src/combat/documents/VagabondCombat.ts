@@ -33,6 +33,26 @@ export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> ext
         }
     }
 
+    override async rollInitiative(ids: string | string[], options: any = {}): Promise<this> {
+        const idList = typeof ids === "string" ? [ids] : ids
+        const silentIds = idList.filter(id => {
+            const type = (this.combatants.get(id)?.actor as any)?.type
+            return type === "npc" || type === "adversary"
+        })
+        const rollIds = idList.filter(id => !silentIds.includes(id))
+
+        if (silentIds.length > 0) {
+            const updates = silentIds.map(id => ({
+                _id: id,
+                initiative: this.combatants.get(id)!.getInitiativeRoll().total
+            }))
+            await this.updateEmbeddedDocuments("Combatant", updates)
+        }
+
+        if (rollIds.length > 0) await super.rollInitiative(rollIds, options)
+        return this
+    }
+
     callAllHooks(name, updateData, updateOptions = {}) {
         Hooks.callAll(name, this, updateData, updateOptions)
     }

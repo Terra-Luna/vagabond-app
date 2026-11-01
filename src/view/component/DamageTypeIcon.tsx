@@ -4,7 +4,7 @@ import { ReactElement } from "react"
 import { appLang } from "../../utils/lang"
 import { damageTypesWithPhysicalThresholds } from "../../utils/localeUtils"
 
-export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
+export const DamageTypeIcon = ({ dmgType, size, title }: { dmgType: string, size?: number, title?: string }) => {
     size = size ? size : 20
     let element: ReactElement | undefined
 
@@ -98,7 +98,7 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
         element = <p>{appLang.DamageTypes[dmgType]}</p>
     }
     return (
-        <div title={allTypes[dmgType] ?? appLang.DamageTypes[dmgType]}>{element}</div>
+        <div title={title ?? allTypes[dmgType] ?? appLang.DamageTypes[dmgType]}>{element}</div>
     )
 }
 

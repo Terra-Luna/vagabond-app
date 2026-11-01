@@ -1,4 +1,5 @@
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { getFollowerContext } from "../../model/actor/util/NpcDataModelUtil"
 import { appLang } from "../../utils/lang"
 import { getTargetIds } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
@@ -87,9 +88,13 @@ export class ComboSubAttack {
         const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
         if (!targetActor) return
 
-        const hero = targetActor.system as HeroDataModel
+        const follower = getFollowerContext(targetActor)
+        const hero = (follower?.hero ?? targetActor).system as HeroDataModel
         let result: SkillCheckResult
-        if (saveType === 'defend') {
+        if (follower) {
+            result = await new SkillCheck(hero, { type: 'save', skill: follower.skill, clickEvent: clickEvent as any }).roll()
+        }
+        else if (saveType === 'defend') {
             const defense = await HeroAttack.rollDefense(hero, { clickEvent })
             if (!defense) return
             result = defense.result
@@ -136,11 +141,12 @@ export class ComboSubAttack {
         const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
         if (!targetActor) return
 
-        const hero = targetActor.system as HeroDataModel
+        const luckActor = getFollowerContext(targetActor)?.hero ?? targetActor
+        const hero = luckActor.system as HeroDataModel
         const luck = hero.statuses?.counters?.luck ?? 0
         if (luck <= 0) return
 
-        await targetActor.update(
+        await luckActor.update(
             { 'system.statuses.counters.luck': luck - 1 } as Record<string, number>,
             { ['skipTrackerChatCard' as string]: true }
         )

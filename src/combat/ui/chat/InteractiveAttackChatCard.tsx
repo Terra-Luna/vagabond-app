@@ -32,7 +32,8 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 
     const handleOverrideChange = (key: string, value: number | undefined) => {
         setDamageOverrides(previous => {
-            const { [key]: _removed, ...rest } = previous
+            const rest = { ...previous }
+            delete rest[key]
             return value === undefined ? rest : { ...rest, [key]: value }
         })
     }
@@ -52,6 +53,8 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
             ? deserializeAttack(snapshot, (title, actor, targetIds) => new HeroAttack(title, actor, targetIds))
             : null
     }, [snapshot])
+
+    const portraitActor = attack?.portraitActorId ? game.actors?.get(attack.portraitActorId) : undefined
 
     const isResolved = attack?.isResolved ?? false
 
@@ -82,8 +85,8 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
             {actor && attack && <BaseChatCardHost
                 banner={
                     <ChatCardBanner
-                        tokenId={actor?.getActiveTokens()[0]?.id}
-                        portrait={getTokenImg(actor)}
+                        tokenId={(portraitActor ?? actor)?.getActiveTokens()[0]?.id}
+                        portrait={getTokenImg(portraitActor ?? actor)}
                         title={attack.title}
                     />}
                 contents={
@@ -122,10 +125,13 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                     
                                     <div className="flex flex-col items-end justify-between px-1">
 
-                                        {/* GM TOOL BUTTONS FOR APPLYING OUTCOMES */}
+                                        {/* GM TOOL BUTTONS */}
                                         <div className="flex gap-1 w-full mt-1 [&>span]:flex-1 [&>span>button]:w-full">
                                             {(attack.showDamage || attack.appliedEffects.length > 0) &&
-                                                <InteractiveChatCardButton label={appLang.ButtonActions.apply} tooltip={appLang.Combat.applyDamageTooltip}
+                                                <InteractiveChatCardButton
+                                                    label={appLang.ButtonActions.apply}
+                                                    tooltip={appLang.Combat.applyDamageTooltip}
+                                                    borderClassName={"border-2 border-solid border-wealth-denom-label"}
                                                     fn={async () => {
                                                         await attack.applyDamageAndResolve(resolutionArgs, serializeAttack)
                                                         setRevision(prev => prev + 1)
@@ -135,7 +141,10 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 
                                             {((attack instanceof AdversaryAttack && attack.appliedEffects.length > 0) ||
                                                 (attack instanceof AdversaryComboAttack && attack.subAttacks.some(sub => sub.appliedEffects.length > 0))) &&
-                                                <InteractiveChatCardButton label={appLang.Combat.applyStatuses} tooltip={appLang.Combat.applyStatusesTooltip}
+                                                <InteractiveChatCardButton
+                                                    label={appLang.Combat.applyStatuses}
+                                                    tooltip={appLang.Combat.applyStatusesTooltip}
+                                                    borderClassName={"border-2 border-solid border-table-border"}
                                                     fn={async () => {
                                                         await attack.applyStatusesAndResolve({ gmTargetsOnly: targetsToggle }, serializeAttack)
                                                         setRevision(prev => prev + 1)
@@ -144,7 +153,9 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                             }
 
                                             <InteractiveChatCardButton
-                                                label={appLang.ButtonActions.resolve} tooltip={appLang.Combat.resolveWithoutUpdatesTooltip}
+                                                label={appLang.ButtonActions.resolve}
+                                                tooltip={appLang.Combat.resolveWithoutUpdatesTooltip}
+                                                borderClassName={"border-2 border-solid border-table-border/75"}
                                                 fn={async () => {
                                                     await attack.resolve(serializeAttack)
                                                     setRevision(prev => prev + 1)

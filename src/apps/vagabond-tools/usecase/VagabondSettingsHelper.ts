@@ -47,7 +47,7 @@ export const setXpQuestionnaire = async (updatedQuestions) => {
 }
 
 /**
- * Attack registry (keeps last 50)
+ * Attack registry (keeps last 50) per actor.
  */
 export const getAttackRegistry = () => {
     return (game.settings as any)?.get(sys_id, "attackRegistry") || {}

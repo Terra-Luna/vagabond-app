@@ -44,7 +44,8 @@
       "will"
     ],
     "properties": [],
-    "material": "none"
+    "material": "none",
+    "imbueExempt": true
   },
   "effects": [],
   "folder": null,
@@ -57,10 +58,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.158",
     "createdTime": 1785939927301,
-    "modifiedTime": 1785950802500,
-    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "modifiedTime": 1793487283368,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

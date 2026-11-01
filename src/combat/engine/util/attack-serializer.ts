@@ -1,7 +1,7 @@
 import type { SpellDeliverySnapshot } from "../../spellcasting/SpellDelivery"
 import type { AdversaryAttack, SavingThrowType } from "../AdversaryAttack"
 import type { AdversaryComboAttack, ComboSubAttack } from "../AdversaryComboAttack"
-import type { Attack } from "../Attack"
+import type { AppliedFx,Attack } from "../Attack"
 import type { HeroAttack } from "../HeroAttack"
 import { SkillCheck } from "../roll/SkillCheck"
 
@@ -23,6 +23,7 @@ export interface AttackSnapshot {
     itemId: string
     userId: string
     createdAt?: number
+    portraitActorId?: string
     actorId: string
     targetIds: string[]
     title: string
@@ -33,6 +34,7 @@ export interface AttackSnapshot {
     spellDelivery: SpellDeliverySnapshot | undefined
     critChoice: "luck" | "damage" | "spellFx" | undefined
     isRerolled: boolean
+    imbues?: { actorId: string, spellName: string, spellUuid: string, damageRoll: any, targetIds?: string[], appliedEffects: AppliedFx[] }[]
     isResolved: boolean
     saveTypes: SavingThrowType[] | undefined
     saveResults: Record<string, any> | undefined
@@ -50,56 +52,59 @@ export function serializeAttack(atk: Attack): AttackSnapshot | undefined {
     return serializeHeroAttack(atk as HeroAttack)
 }
 
+function cleanDamageRollJson(damageRoll: any) {
+    const rawDmg = damageRoll.toJson ? damageRoll.toJson() : damageRoll
+    return {
+        ...rawDmg,
+        result: rawDmg.result ? {
+            ...rawDmg.result,
+            rolls: rawDmg.result.rolls?.map((r: any) =>
+                r && typeof r.toJSON === "function" ? r.toJSON() : r
+            ) ?? []
+        } : undefined
+    }
+}
+
 function serializeCommonFields(atk: Attack): Omit<AttackSnapshot, 'skillCheck' | 'itemId' | 'isRerolled' | 'spellDelivery' | 'critChoice'> {
     /**
      * Need to serialize the damage rolls so they can be sent over Foundry's socket.
      */
-    let cleanDamageRoll: any = undefined
-    if (atk.damageRoll) {
-        const rawDmg = atk.damageRoll.toJson ? atk.damageRoll.toJson() : atk.damageRoll
-
-        cleanDamageRoll = {
-            ...rawDmg,
-            result: rawDmg.result ? {
-                ...rawDmg.result,
-                rolls: rawDmg.result.rolls?.map((r: any) =>
-                    r && typeof r.toJSON === "function" ? r.toJSON() : r
-                ) ?? []
-            } : undefined
-        }
-    }
+    const cleanDamageRoll = atk.damageRoll ? cleanDamageRollJson(atk.damageRoll) : undefined
 
     return {
         id: atk.id,
         type: atk.attackType,
         userId: atk.userId,
         createdAt: atk.createdAt,
+        portraitActorId: atk.portraitActorId,
         title: atk.title,
         actorId: atk.actor.id ?? '',
         targetIds: atk.targetIds ?? [],
         damageRoll: cleanDamageRoll,
         appliedEffects: atk.appliedEffects ?? [],
+        imbues: atk.imbues.map(imbue => ({ ...imbue, damageRoll: cleanDamageRollJson(imbue.damageRoll) })),
         isResolved: atk.isResolved
     } as any
+}
+
+function cleanSkillCheckJson(skillCheck: any) {
+    const rawCheck = skillCheck.toJson ? skillCheck.toJson() : skillCheck
+    return {
+        ...rawCheck,
+        result: rawCheck.result ? {
+            ...rawCheck.result,
+            rolls: rawCheck.result.rolls?.map((r: any) =>
+                r && typeof r.toJSON === "function" ? r.toJSON() : r
+            ) ?? []
+        } : undefined
+    }
 }
 
 function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
     /**
      * Need to serialize the skill check rolls so they can be sent over Foundry's socket.
      */
-    let cleanSkillCheck: any = undefined
-    if (atk.skillCheck) {
-        const rawCheck = (atk.skillCheck as any).toJson ? (atk.skillCheck as any).toJson() : atk.skillCheck
-        cleanSkillCheck = {
-            ...rawCheck,
-            result: rawCheck.result ? {
-                ...rawCheck.result,
-                rolls: rawCheck.result.rolls?.map((r: any) =>
-                    r && typeof r.toJSON === "function" ? r.toJSON() : r
-                ) ?? []
-            } : undefined
-        }
-    }
+    const cleanSkillCheck = atk.skillCheck ? cleanSkillCheckJson(atk.skillCheck) : undefined
 
     return {
         ...serializeCommonFields(atk),
@@ -127,6 +132,7 @@ function serializeAdversaryAttack(atk: AdversaryAttack): AttackSnapshot {
     return {
         ...serializeCommonFields(atk),
         type: 'adversary',
+        skillCheck: atk.skillCheck ? cleanSkillCheckJson(atk.skillCheck) : undefined,
         saveTypes: atk.saveTypes,
         saveResults: cleanSaveResults,
         defenseArmorBonuses: atk.defenseArmorBonuses,

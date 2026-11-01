@@ -35,7 +35,8 @@ const weaponSchema = () => {
         ),
         material: new fields.StringField({
             ...requiredString, initial: 'steel', choices: Object.keys(appLang.Metals)
-        })
+        }),
+        imbueExempt: new fields.BooleanField({ initial: false })
     }
 }
 

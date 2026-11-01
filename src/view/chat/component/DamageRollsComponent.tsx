@@ -1,9 +1,11 @@
 import { Minus, Plus } from "lucide-react"
 
-import { DamageRollResult } from "../../../combat/engine/roll/DamageRoll"
+import { TotalDamage } from "../TotalDamage"
 import { DiceRollComponent } from "./DiceRollComponent"
 
-export const DamageRollsComponent = ({ result }: { result: DamageRollResult }) => {
+export const DamageRollsComponent = ({ attack }: { attack: any }) => {
+    const result = attack?.damageRoll?.result
+
     return (
         <div className="flex flex-wrap grow justify-center items-start gap-0.25">
             {result?.rollSummaries?.map((r, index) => (
@@ -12,8 +14,8 @@ export const DamageRollsComponent = ({ result }: { result: DamageRollResult }) =
                 </div>
             ))}
 
-            {result?.bonus !== 0 &&
-                <div className="flex space-x-2">
+            {result && result.bonus !== 0 &&
+                <div className="flex gap-x-0.25">
                     <div className="content-center text-text-secondary h-9">
                         {result.bonus > 0
                             ? <Plus size={20} strokeWidth={2} />
@@ -36,6 +38,8 @@ export const DamageRollsComponent = ({ result }: { result: DamageRollResult }) =
                     </div>
                 </div>
             ))}
+
+            <TotalDamage attack={attack} />
         </div>
     )
 }

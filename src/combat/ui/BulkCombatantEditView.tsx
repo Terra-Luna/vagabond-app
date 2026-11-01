@@ -1,13 +1,10 @@
 import { Eye, HeartMinusIcon, HeartPlusIcon, Trash } from "lucide-react"
 
-import { resolveAllAttacks } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { tableBorderRounded } from "../../view/common/border-styles"
-import { SecondaryButton } from "../../view/component/Button"
 import { useContextMenu } from "../../view/component/ContextMenu"
 import { Header } from "../../view/component/Header"
-import { Tooltip } from "../../view/component/Tooltip"
 import { Widget } from "../../view/component/Widget"
 import { getControlledTokens } from "../combat-utils"
 import { VagabondCombatant } from "../documents/VagabondCombat"
@@ -45,38 +42,46 @@ export const BulkCombatantEditView = ({ combatants }: { combatants: VagabondComb
                 })}
                 <ContextMenu />
             </div>
+
             <Header title={appLang.Combat.gmTools} />
-            <div className="flex justify-between items-center">
+
+            <div className="flex items-center [&>*]:flex-1 [&>*]:min-w-0 [&>*]:box-border">
                 <Widget>
-                    <div className="text-text-primary font-eskapade">
+                    <div className="flex-1 min-w-0 text-text-primary font-eskapade">
                         {appLang.Combat.editCombatantHp}
                         <div className="flex items-center gap-x-2">
-                            <div className={`flex items-center cursor-pointer h-full w-full ${tableBorderRounded}`} onClick={() => setMode(mode === 'add' ? 'subtr' : 'add')}>
+                            <div className={`flex items-center cursor-pointer h-full ${tableBorderRounded}`} onClick={() => setMode(mode === 'add' ? 'subtr' : 'add')}>
                                 <div className={`text-4xl text-text-primary font-eskapade font-bold px-2 rounded-l-md ${mode === 'add' ? 'bg-ic-luck/50' : 'bg-sheet-main-fill'}`}>+</div>
                                 <div className={`text-4xl text-text-primary font-eskapade font-bold px-2 rounded-r-md ${mode === 'add' ? 'bg-sheet-main-fill' : 'bg-destructive-action/50'}`}>-</div>
                             </div>
-                            <div className={`flex items-end text-3xl text-text-primary ${tableBorderRounded} p-1`}>
+                            <div className={`flex flex-1 min-w-0 items-end text-3xl text-text-primary ${tableBorderRounded} p-1`}>
                                 <input
-                                    className="w-16 mr-1 hover-glow"
+                                    className="min-w-0 flex-1 mr-1 hover-glow"
                                     value={hpAdjustment}
                                     placeholder="0"
                                     type="number"
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") updateHP()
+                                    }}
                                     onChange={(e) => {
                                         setHpAdjustment(Number(e.target.value))
                                     }}
                                 />
-                                {mode === "add" ? <HeartPlusIcon className="fill-text-hp-current hover-glow cursor-pointer" size={36} onClick={updateHP} />
-                                    : <HeartMinusIcon className="fill-text-hp-current hover-glow" size={36} onClick={updateHP} />}
+                                {mode === "add"
+                                    ? <HeartPlusIcon
+                                        className="shrink-0 fill-ic-luck/66 hover-glow cursor-pointer"
+                                        size={36}
+                                        onClick={updateHP}
+                                    />
+                                    : <HeartMinusIcon
+                                        className="shrink-0 fill-destructive-action/66 hover-glow cursor-pointer"
+                                        size={36}
+                                        onClick={updateHP}
+                                    />}
                             </div>
                         </div>
                     </div>
                 </Widget>
-
-                <div className="p-2">
-                    <Tooltip title={appLang.Combat.resolveAllAttacks} content={appLang.Combat.resolveAllAttacksTooltip}>
-                        <SecondaryButton onClick={() => resolveAllAttacks()}>{appLang.Combat.resolveAttacks}</SecondaryButton>
-                    </Tooltip>
-                </div>
             </div>
         </>
     )

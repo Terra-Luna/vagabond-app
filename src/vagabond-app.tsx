@@ -9,6 +9,7 @@ import { TagalongItemCreator } from "./apps/io/TagalongItemCreator"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
 import { showConfirmationDialog, showInputDialog } from "./apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { CompendiumAccessor } from "./apps/vagabond-tools/usecase/CompendiumAccessor"
+import { CountdownManager } from "./apps/vagabond-tools/usecase/CountdownManager"
 import { resolveAllAttacks } from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondSettingsRegistry } from "./apps/vagabond-tools/VagabondSettingsRegistry"
 import { VagabondToolsApp } from "./apps/vagabond-tools/VagabondToolsApp"
@@ -16,7 +17,6 @@ import { VagabondActiveEffect } from './combat/documents/VagabondActiveEffect'
 import { VagabondCombat, VagabondCombatant } from './combat/documents/VagabondCombat'
 import { Attack } from "./combat/engine/Attack"
 import { FlankStatusManager } from "./combat/engine/util/FlankStatusManager"
-import { rollPendingCountdowns } from "./combat/ui/CombatTracker"
 import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
 import { AdversaryDataModel } from "./model/actor/AdversaryDataModel"
 import { HeroDataModel } from "./model/actor/HeroDataModel"
@@ -161,6 +161,10 @@ Hooks.once("ready", async () => {
             TagalongItemCreator.handleItemCreationResult(packet)
             return
         }
+        if (packet?.action === "notifyInfo") {
+            if (typeof packet.data?.message === "string") ui.notifications?.info(packet.data.message)
+            return
+        }
         if (!game.user?.isActiveGM) return
 
         const activeGM = game.users?.activeGM
@@ -189,7 +193,7 @@ Hooks.once("ready", async () => {
             const requester = game.users?.get(packet.user)
             const combatant = game.combats?.get(combatId)?.combatants.get(combatantId) as any
             if (!requester || !combatant || !combatant.testUserPermission(requester, "OWNER")) return
-            await rollPendingCountdowns(combatant)
+            await CountdownManager.rollPendingCountdowns(combatant)
         }
         else if (packet?.action === "updateGameSetting") {
             const data = packet.data

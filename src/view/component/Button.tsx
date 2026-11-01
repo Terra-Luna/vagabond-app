@@ -65,7 +65,7 @@ export const UtilityButton = ({ type = "button", title = "", children, icon = nu
                 disabled={disabled}
                 onClick={onClick}
                 onMouseDown={(e) => e.preventDefault()}
-                className={`${disabled ? disabledButtonStyle : `hover-glow ${buttonAnimation}`} text-sm font-eskapade font-normal ${tableBorder} px-2 bg-sheet-main-fill`}
+                className={`${disabled ? disabledButtonStyle : `hover-glow ${buttonAnimation}`} text-sm font-eskapade font-normal ${tableBorder} px-2 bg-sheet-main-fill rounded-sm`}
             >
                 {icon}
                 {children

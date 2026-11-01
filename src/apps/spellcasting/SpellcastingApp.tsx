@@ -13,8 +13,15 @@ export class SpellcastingApp extends VagabondApplication {
 
     actor: (Actor & { system: HeroDataModel }) | undefined
 
-    constructor(actor: (Actor & { system: HeroDataModel }) | undefined, imbueMode?: boolean, windowedMode?: boolean) {
+    constructor(
+        actor: (Actor & { system: HeroDataModel }) | undefined,
+        imbueMode?: boolean,
+        windowedMode?: boolean,
+        imbueTarget?: { actorId: string, attackId: string }
+    ) {
         if (!actor) return
+
+        let closeApp: () => void = () => { }
         
         const RenderOpened = () => {
             const { setIsSpellcastingOpen } = useSpellcastingMenuContext()
@@ -35,7 +42,7 @@ export class SpellcastingApp extends VagabondApplication {
         const SpellcastingMenuView = () => {
             return <div className="">
                 <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                <SpellcastingMenuContextProvider actor={actor} imbueMode={imbueMode} windowedMode={windowedMode}>
+                <SpellcastingMenuContextProvider actor={actor} imbueMode={imbueMode} windowedMode={windowedMode} imbueTarget={imbueTarget} onClose={() => closeApp()}>
                     <RenderOpened />
                 </SpellcastingMenuContextProvider>
             </EditModeContextProvider>
@@ -52,11 +59,13 @@ export class SpellcastingApp extends VagabondApplication {
                 height: "auto"
             },
             actorId: actor.id ?? undefined,
-            enforceSingleInstancePerActor: true,
+            enforceSingleInstancePerActor: !imbueTarget,
+            enforceSingleInstance: !imbueTarget,
             Component: SpellcastingMenuView,
         } as VagabondAppArgs)
 
         this.actor = actor
+        closeApp = () => { this.close() }
     }
 
 }

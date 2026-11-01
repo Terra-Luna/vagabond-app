@@ -554,10 +554,16 @@ export function getAlchemyChoices(): { value: string, label: string, coinValue: 
     return ItemsCache.alchemical().map(item => ({ value: item.uuid, label: item.name, coinValue: toCopper(item.system.value) }))
 }
 
+export const ITEM_CHOICE_CHANNELS = ["item", "spell", "perk", "alchemical"]
+
+export function isItemChoiceRule(rule: any): boolean {
+    return rule?.key === "ChoiceSet" && ITEM_CHOICE_CHANNELS.includes(rule.channel)
+}
+
 export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] {
     if (!Array.isArray(rulesData)) return []
 
-    const choiceSetRules = rulesData.filter(rule => rule.level <= level && rule.key === "ChoiceSet" && rule.channel === "item")
+    const choiceSetRules = rulesData.filter(rule => rule.level <= level && isItemChoiceRule(rule))
 
     const parsedRules = choiceSetRules.map((rule) => {
         let finalizedChoices = Array.isArray(rule.choices) ? [...rule.choices] : []

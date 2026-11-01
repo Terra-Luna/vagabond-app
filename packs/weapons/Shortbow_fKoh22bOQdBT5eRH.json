@@ -43,7 +43,10 @@
     "properties": [
       "keen"
     ],
-    "material": "steel"
+    "material": "steel",
+    "skills": [
+      "ranged"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -56,10 +59,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.154",
     "createdTime": 1784508273703,
-    "modifiedTime": 1785708823808,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1793482666296,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

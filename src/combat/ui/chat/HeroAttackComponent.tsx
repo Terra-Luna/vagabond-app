@@ -1,7 +1,6 @@
 import { BookMarked, Clover } from "lucide-react"
 import { useCallback, useEffect, useMemo } from "react"
 
-import { SpellcastingApp } from "../../../apps/spellcasting/SpellcastingApp"
 import { getAllowLateLuckStudy } from "../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
@@ -10,52 +9,23 @@ import { getCanvasToken, getTokenImg } from "../../../utils/modelUtil"
 import { DamageRollsComponent } from "../../../view/chat/component/DamageRollsComponent"
 import { TargetsDisplay } from "../../../view/chat/component/TargetsDisplay"
 import { SkillCheckDiceComponent } from "../../../view/chat/SkillCheckChatCard"
-import { TotalDmgFooter } from "../../../view/chat/TotalDamageFooter"
-import { UtilityButton } from "../../../view/component/Button"
-import { DamageTypeIcon } from "../../../view/component/DamageTypeIcon"
 import { EnrichedContent } from "../../../view/component/EnrichedContent"
 import { ClearHeader, Divider, Header } from "../../../view/component/Header"
 import { CardSubHeader } from "../../../view/component/SkillCard"
 import { ItemPortraitComponent } from "../../../view/sheets/item/shared/ItemPortraitComponent"
 import { HeroAttack } from "../../engine/HeroAttack"
+import { serializeAttack } from "../../engine/util/attack-serializer"
 import { TargetDisplayItem } from "../hooks"
+import { ImbueButton, ImbuedDamageSections } from "./ImbueComponents"
 import { InteractiveChatCardButton } from "./InteractiveChatCardButton"
 import { SpellAttackInfoComponent } from "./SpellAttackInfoComponent"
 
-const hasOffensiveSpell = (actor: any): boolean =>
-    !!actor?.system?.spells?.some(sp => sp.damageType !== 'none' && sp.damageType !== 'healing')
-
-/**
- * The user's character if it has an offensive spell, otherwise (for the active GM) the first controlled token's actor that does.
- */
-const getImbueActor = (): (Actor & { system: HeroDataModel }) | undefined => {
-    const heroes = game.actors?.contents?.filter(it => (it.type as any) === "hero" && it.isOwner && hasOffensiveSpell(it)) ?? []
-    if (heroes.length === 1) {
-        return heroes[0] as Actor & { system: HeroDataModel }
-    }
-    else if (heroes.length > 1) {
-        return (canvas?.tokens?.controlled?.find(it => heroes?.some(h => h.id === it.actor?.id))?.actor ?? heroes[0]) as Actor & { system: HeroDataModel }
-    }
-
-    if (!game.user?.isActiveGM) return undefined
-    const controlled: any[] = game.canvas?.tokens?.controlled ?? []
-    return controlled.map(token => token.actor).find(hasOffensiveSpell)
-}
-
-export const HeroAttackComponent =  ({ actor, attack, source, setRevision }: {
+export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
     actor: Actor & { system: HeroDataModel },
     attack: HeroAttack,
     source: Item | undefined,
     setRevision: any
 }) => {
-    const isEligibleForImbue = !attack.isResolved
-        && !attack.isDefenseCheck
-        && attack.damageRoll
-        && attack.damageRoll.dmgType !== "healing"
-        && attack.damageRoll.dmgType !== "fatigue"
-        && attack.damageRoll.dmgType !== "mana"
-        && !!getImbueActor()
-
     const hasPermission = game.user?.isActiveGM || game.user?.id === attack.userId
     const isFailure = attack.skillCheck?.result?.outcome === appLang.RollResult.failure
     const needsResourceUpdates = hasPermission && !attack.isResolved && (
@@ -153,16 +123,30 @@ export const HeroAttackComponent =  ({ actor, attack, source, setRevision }: {
 
                         {/* CRIT CHOICE BUTTONS */}
                         {attack.showCritChoices &&
-                            <div className="flex wrap gap-1 mb-1 justify-center text-center text-base font-normal content-center">
-                                {/* GAIN A LUCK */}
-                                <InteractiveChatCardButton label={appLang.Combat.plusLuck} tooltip={appLang.Combat.gainLuckTooltip} fn={addCritLuck} />
-                                {/* ADD DAMAGE EQUAL TO SKILL'S STAT */}
-                                {!attack.isEffectOnlySpellAttack && !attack.isDefenseCheck &&
-                                    <InteractiveChatCardButton label={appLang.Combat.plusDamage} tooltip={appLang.Combat.addDamageTooltip} fn={addCritDamage} />
-                                }
+                            <div className="flex flex-col gap-1 mb-1 px-1 w-full text-center text-base font-normal [&_span:has(>button)]:flex-1 [&_button]:w-full [&_button]:whitespace-nowrap">
+                                <div className="flex gap-1 w-full">
+                                    {/* GAIN A LUCK */}
+                                    <InteractiveChatCardButton
+                                        label={appLang.Combat.plusLuck}
+                                        tooltip={appLang.Combat.gainLuckTooltip}
+                                        fn={addCritLuck}
+                                        borderClassName="border-2 border-solid border-ic-luck/66"
+                                    />
+                                    {/* ADD DAMAGE EQUAL TO SKILL'S STAT */}
+                                    {!attack.isEffectOnlySpellAttack && !attack.isDefenseCheck &&
+                                        <InteractiveChatCardButton
+                                            label={appLang.Combat.plusDamage}
+                                            tooltip={appLang.Combat.addDamageTooltip}
+                                            fn={addCritDamage}
+                                            borderClassName="border-2 border-solid border-destructive-action/66"
+                                        />
+                                    }
+                                </div>
                                 {/* ADD SPELL'S CRIT FX */}
-                                {source?.system instanceof SpellDataModel && !attack.isEffectOnlySpellAttack &&
-                                    <InteractiveChatCardButton label={appLang.Combat.spellEffect} tooltip={appLang.Combat.applySpellOnCritTooltip} fn={addSpellFx} />
+                                {source?.system instanceof SpellDataModel && !attack.isEffectOnlySpellAttack && !attack.spellDelivery?.applyEffect &&
+                                    <div className="flex w-full">
+                                        <InteractiveChatCardButton label={appLang.Combat.spellEffect} tooltip={appLang.Combat.applySpellOnCritTooltip} fn={addSpellFx} />
+                                    </div>
                                 }
                             </div>
                         }
@@ -171,17 +155,19 @@ export const HeroAttackComponent =  ({ actor, attack, source, setRevision }: {
                         {canUpdateSkillCheck && (luck > 0 || (studied > 0 && getAllowLateLuckStudy())) &&
                             <div className="flex flex-col w-full gap-2">
                                 <Divider />
-                                <div className="flex gap-x-1 items-center justify-center text-base font-normal px-1 mb-2">
+                                <div className="grid grid-cols-2 gap-1 w-full items-center text-base font-normal px-1 mb-2 [&>span]:min-w-0 [&>span:last-child:nth-child(odd)]:col-span-2 [&>span>button]:w-full">
                                     {luck > 0 && <>
                                         <InteractiveChatCardButton
                                             icon={<Clover size={18} className="text-ic-luck h-full" />}
                                             label={appLang.ItemSheet.reroll} tooltip={appLang.AttackBuilder.spendLuckToReroll}
+                                            borderClassName="border-2 border-solid border-ic-luck/66"
                                             fn={() => handleLuckReroll()}
                                         />
                                         {getAllowLateLuckStudy() &&
                                             <InteractiveChatCardButton
                                                 icon={<Clover size={18} className="text-ic-luck h-full" />}
                                                 label={appLang.AttackBuilder.plusFavor} tooltip={appLang.AttackBuilder.spendLuckToAddFavor}
+                                            borderClassName="border-2 border-solid border-ic-luck/66"
                                                 fn={() => handleLateD6('luck', luck)}
                                             />}
                                     </>}
@@ -189,7 +175,17 @@ export const HeroAttackComponent =  ({ actor, attack, source, setRevision }: {
                                         <InteractiveChatCardButton
                                             icon={<BookMarked size={18} className="text-ic-studied h-full" />}
                                             label={appLang.AttackBuilder.plusFavor} tooltip={appLang.AttackBuilder.spendStudyToAddFavor}
+                                        borderClassName="border-2 border-solid border-ic-studied/66"
                                             fn={() => handleLateD6('studied', studied)}
+                                        />
+                                    }
+                                    {!game.user?.isActiveGM &&
+                                        <InteractiveChatCardButton
+                                            label={appLang.ButtonActions.resolve} tooltip={appLang.Combat.resolveWithoutUpdatesTooltip}
+                                            fn={async () => {
+                                                await attack.resolve(serializeAttack)
+                                                setRevision(prev => prev + 1)
+                                            }}
                                         />
                                     }
                                 </div>
@@ -203,7 +199,17 @@ export const HeroAttackComponent =  ({ actor, attack, source, setRevision }: {
             {attack.showTargets && !attack.isDefenseCheck &&
                 <div className="flex">
                     <div className="flex flex-col w-full">
-                        <TargetsDisplay targets={targets} />
+                        <TargetsDisplay
+                            targets={targets}
+                            onRemoveTarget={game.user?.isActiveGM && !attack.isResolved
+                                ? async (index: number) => {
+                                    const id = targets[index]?.id
+                                    if (!id) return
+                                    await attack.removeTarget(id)
+                                    setRevision(prev => prev + 1)
+                                }
+                                : undefined}
+                        />
                     </div>
                 </div>
             }
@@ -231,28 +237,12 @@ export const HeroAttackComponent =  ({ actor, attack, source, setRevision }: {
                         />
                         : <div className="w-full">
                             {/* WEAPON ATTACK DAMAGE */}
-                            <DamageRollsComponent result={attack.damageRoll!.result!} />
-                            {/* IMBUE BUTTON FOR WEAPON ATTACKS */}
-                            {isEligibleForImbue &&
-                                <div className="flex items-center justify-center mb-1">
-                                    <UtilityButton title={appLang.Combat.imbueAttack} onClick={() =>
-                                        new SpellcastingApp(getImbueActor(), true).render({ force: true })
-                                    }>
-                                        Imbue
-                                    </UtilityButton>
-                                </div>
-                            }
-                            <div className="flex items-center justify-center">
-                                {source && <ItemPortraitComponent item={source} size={32} disableCtxMenu={true} />}
-                                <TotalDmgFooter total={
-                                    <div className="flex gap-x-1 items-center">
-                                        <p>{attack.damageRoll?.result?.total}</p>
-                                        <DamageTypeIcon dmgType={attack.isDefenseCheck ? 'defense' : attack.damageRoll?.result?.dmgType ?? ''} />
-                                    </div>
-                                } />
-                            </div>
+                            <DamageRollsComponent attack={attack} />
                         </div>
                     }
+
+                    {/* IMBUED SPELL DAMAGE (ONE SECTION PER IMBUING HERO) */}
+                    <ImbuedDamageSections attack={attack} />
                 </div>
             }
 
@@ -262,6 +252,9 @@ export const HeroAttackComponent =  ({ actor, attack, source, setRevision }: {
                     <EnrichedContent content={(source as any).system.description} styleClasses="text-sm font-paradigm font-normal px-2" />
                 </div>
             }
+
+            {/* IMBUE BUTTON FOR WEAPON ATTACKS */}
+            <ImbueButton attack={attack} />
         </div>
     )
 }

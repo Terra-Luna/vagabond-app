@@ -13,8 +13,8 @@ export const VagabondSheetMixin = (superclass) => class extends superclass {
         position: {
             width: 440,
             height: "auto",
-            top: 100,
-            left: 100
+            top: 20,
+            left: 60
         },
         window: {
             resizable: false

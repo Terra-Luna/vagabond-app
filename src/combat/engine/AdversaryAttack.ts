@@ -1,4 +1,5 @@
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { getFollowerContext } from "../../model/actor/util/NpcDataModelUtil"
 import { appLang } from "../../utils/lang"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { AppliedFx, Attack, AttackResolutionArgs } from "./Attack"
@@ -38,6 +39,7 @@ export class AdversaryAttack extends Attack {
     defenseArmorBonuses: Record<string, number> = {}
     rerolledSaveTargetIds: string[] = []
     description: string = ''
+    skillCheck?: SkillCheck
     halfDamageOnSave: boolean = false
 
     constructor(
@@ -57,15 +59,28 @@ export class AdversaryAttack extends Attack {
         this.appliedEffects = (args.appliedEffects ?? []).map(eff => ({ ...eff, damageType: eff.damageType ?? args.dmgType }))
     }
 
-    async initiate() {
+    async initiate(clickEvent?: any) {
         this.id = foundry.utils.randomID()
-        await this.rollDamage()
+
+        // An NPC following a Hero attacks with that Hero's skill; failing the check means no damage.
+        const follower = getFollowerContext(this.actor)
+        if (follower) {
+            this.skillCheck = new SkillCheck(follower.hero.system, { type: 'attack', skill: follower.skill, clickEvent })
+            await this.skillCheck.roll()
+        }
+
+        if (this.skillCheck?.result?.outcome === appLang.RollResult.failure) {
+            this.isResolved = true
+        }
+        else {
+            await this.rollDamage(this.skillCheck?.result?.outcome === appLang.RollResult.crit)
+        }
         await this.save(serializeAttack)
         await sendVagabondChatCard(
             this.actor,
             "InteractiveAttackChatCard",
             { actorId: this.actor.id!, attackId: this.id },
-            [...this.damageRoll?.result?.rolls ?? []]
+            [...this.skillCheck?.result?.rolls ?? [], ...this.damageRoll?.result?.rolls ?? []]
         )
     }
 
@@ -91,10 +106,14 @@ export class AdversaryAttack extends Attack {
         const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
         if (!targetActor) return
 
-        const hero = targetActor.system as HeroDataModel
+        const follower = getFollowerContext(targetActor)
+        const hero = (follower?.hero ?? targetActor).system as HeroDataModel
 
         let result: SkillCheckResult
-        if (saveType === 'defend') {
+        if (follower) {
+            result = await new SkillCheck(hero, { type: 'save', skill: follower.skill, clickEvent: clickEvent as any }).roll()
+        }
+        else if (saveType === 'defend') {
             const defense = await HeroAttack.rollDefense(hero, { clickEvent })
             if (!defense) return
             result = defense.result
@@ -155,11 +174,12 @@ export class AdversaryAttack extends Attack {
         const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
         if (!targetActor) return
 
-        const hero = targetActor.system as HeroDataModel
+        const luckActor = getFollowerContext(targetActor)?.hero ?? targetActor
+        const hero = luckActor.system as HeroDataModel
         const luck = hero.statuses?.counters?.luck ?? 0
         if (luck <= 0) return
 
-        await targetActor.update(
+        await luckActor.update(
             { 'system.statuses.counters.luck': luck - 1 } as Record<string, number>,
             { ['skipTrackerChatCard' as string]: true }
         )

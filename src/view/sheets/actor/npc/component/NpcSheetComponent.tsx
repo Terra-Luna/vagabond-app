@@ -28,6 +28,7 @@ import { SelectableTextOptions } from "../../../shared/SelectableTextOptions"
 import { ActorPortrait } from "../../component/ActorPortrait"
 import { Abilities } from "./Abilities"
 import { Actions, NewActionWindow } from "./Actions"
+import { FollowerSettings } from "./FollowerSettings"
 import { useAddActionMenu } from "./hooksAndUtils"
 
 const locale = appLang.NpcSheet
@@ -93,6 +94,11 @@ export const NpcSheetComponent = ({ actor, hidePortrait }: { actor: Actor & { sy
                 <NpcSheetHeader npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} hidePortrait={hidePortrait} />
                 <div className="overflow-y-auto">
                     <Description item={npc.parent} showFullView={true} />
+                    {(actor.type as string) !== "adversary" &&
+                        <div className="px-2 pb-1">
+                            <FollowerSettings actor={actor} />
+                        </div>
+                    }
                     <StatBlock npc={npc} />
 
                     <Actions npc={npc} setIsAddMenuOpen={setIsAddActionOpen} />

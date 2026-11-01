@@ -44,7 +44,8 @@
     "properties": [
       "defense"
     ],
-    "material": "steel"
+    "material": "steel",
+    "imbueExempt": true
   },
   "effects": [],
   "folder": null,
@@ -57,9 +58,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.103",
+    "systemVersion": "0.2.158",
     "createdTime": 1791398318632,
-    "modifiedTime": 1791398443559,
+    "modifiedTime": 1793487319533,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
