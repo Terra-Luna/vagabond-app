@@ -37,7 +37,8 @@
       "state": "H"
     },
     "properties": [
-      "defense"
+      "defense",
+      "thrown"
     ],
     "material": "steel",
     "skills": [
@@ -54,7 +55,9 @@
         "power": {
           "value": "loyalty",
           "label": "Loyalty",
-          "modifiers": []
+          "modifiers": [],
+          "appliedEffect": null,
+          "beingTypes": []
         },
         "goldValue": 1000,
         "bound": true,
@@ -76,7 +79,9 @@
               ],
               "value": 1
             }
-          ]
+          ],
+          "appliedEffect": null,
+          "beingTypes": []
         },
         "goldValue": 100,
         "description": "+1 bonus to Armor.",
@@ -95,10 +100,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.160",
     "createdTime": 1790014128621,
-    "modifiedTime": 1790023201616,
-    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "modifiedTime": 1793515830223,
+    "lastModifiedBy": "pcHXNIbwXTDCVlqw",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null

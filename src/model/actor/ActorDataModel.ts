@@ -5,7 +5,7 @@ import { armorSchema } from "./type/Armor"
 import { healthSchema } from "./type/Health"
 import { modifierSchema } from "./type/Modifiers"
 import { statusFxSchema } from "./type/StatusFx"
-import type { PolymorphFlag } from "./util/PolymorphUtil"
+import { PolymorphUtil, type PolymorphFlag } from "./util/PolymorphUtil"
 
 export const baseActorSchema = () => {
     return {
@@ -93,6 +93,7 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
             await this.swapTokenImages(polyFlag)
         }
         else {
+            const previousPolymorph = this.polymorph
             const originalSystem = this.parent.getFlag(sys_id, "originalSystem") as any
             const oldEffects = this.parent?.effects?.filter(eff => eff.getFlag(sys_id, "polymorph"))?.map(eff => eff.id) ?? []
 
@@ -107,7 +108,7 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
 
                 this.deletePolymorphEffects(oldEffects),
 
-                this.swapTokenImages(undefined)
+                this.swapTokenImages(undefined, previousPolymorph)
             ])
         }
     }
@@ -117,7 +118,7 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
      * The original image is stored in a flag on each token.
      * NOTE: Ring-enabled tokens display ring.subject.texture instead of texture.src.
      */
-    async swapTokenImages(polyFlag: PolymorphFlag | undefined) {
+    async swapTokenImages(polyFlag: PolymorphFlag | undefined, previousPolymorph: PolymorphFlag | undefined = this.polymorph) {
         const tokenDocs = this.parent.getActiveTokens(false, true) as any[]
         const updates: any[] = []
         for (const tokenDoc of tokenDocs) {
@@ -129,6 +130,8 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
                 updates.push({
                     _id: tokenDoc.id,
                     "texture.src": src,
+                    ...PolymorphUtil.tokenSizeUpdate(polyFlag.statBlock.token),
+                    ...PolymorphUtil.centeredPositionUpdate(tokenDoc, polyFlag.statBlock.token),
                     ...(ringEnabled ? { "ring.subject.texture": src } : {}),
                     ...(original ? {} : { [`flags.${sys_id}.originalTokenImg`]: { src: tokenDoc.texture.src, ring: tokenDoc.ring?.subject?.texture ?? "" } })
                 })
@@ -136,7 +139,8 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
             else if (original) {
                 updates.push({
                     _id: tokenDoc.id,
-                    "texture.src": original.src,
+                    ...PolymorphUtil.tokenSizeUpdate(previousPolymorph?.originalTokens?.[tokenDoc.id]),
+                                        ...PolymorphUtil.centeredPositionUpdate(tokenDoc, previousPolymorph?.originalTokens?.[tokenDoc.id]),                    "texture.src": original.src,
                     ...(ringEnabled ? { "ring.subject.texture": original.ring } : {}),
                     [`flags.${sys_id}.originalTokenImg`]: (globalThis as any)._del
                 })

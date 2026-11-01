@@ -6,9 +6,8 @@ import { Tooltip } from "../../component/Tooltip"
 import { getItemTooltipComponent } from "./ItemTooltipSheet"
 
 export const ItemIconImg = ({ item, size = 28 }) => {
-    const isEquipped = item.isEquipped
-    const isBound = item.isBoundRelic?.()
-    const isCursed = item.isCursed?.()
+    const isBoundToHero = item.isBound
+    const isBindable = item.isBoundRelic?.()
     const TooltipSheet = getItemTooltipComponent()
 
     return (
@@ -24,15 +23,14 @@ export const ItemIconImg = ({ item, size = 28 }) => {
                     className={`rounded-sm border border-solid border-section-header-fill/60`}
                 />
 
-                {/* DO NOT SHOW DIAMOND IF CURSED AND UNEQUIPPED */}
                 <span>
-                    {isEquipped && isBound &&
+                    {isBoundToHero && isBindable &&
                         <Diamond
                             size={12}
                             className={`absolute bottom-0 right-0 text-text-header-tertiary fill-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
                         />
                     }
-                    {!isEquipped && isBound && !isCursed &&
+                    {!isBoundToHero && isBindable &&
                         <Diamond
                             size={12}
                             className={`absolute bottom-0 right-0 text-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}

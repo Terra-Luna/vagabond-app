@@ -10,7 +10,7 @@ import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { SundryDataModel } from "../../../../../model/item/equip/SundryDataModel"
 import { isEquippedSundry, isEquippedWeapon, WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
-import { equippedItemContextMenu, inventoryItemDragDropHandler } from "../../../../../utils/heroInventoryUtil"
+import { equipmentContextMenuItems, equippedItemContextMenu, inventoryItemDragDropHandler } from "../../../../../utils/heroInventoryUtil"
 import { appLang } from "../../../../../utils/lang"
 import { damageTypesWithPhysicalThresholds } from "../../../../../utils/localeUtils"
 import { getId } from "../../../../../utils/modelUtil"
@@ -65,8 +65,10 @@ export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
         it instanceof SundryDataModel && isEquippedSundry(it) && it.isWearable
     ) as SundryDataModel[]
 
+    const boundRelics = hero.boundRelics().filter(it => !it.isEquipped) as any[]
+
     const hasEquippedWeapons = [...equippedWeapons, ...equippedSundries, ...wearables].length > 0
-    const hasEquippedArmor = !!armor || wearables.length > 0
+    const hasEquippedArmor = !!armor || wearables.length > 0 || boundRelics.length > 0
 
     return (
         <div className="flex flex-col h-full">
@@ -76,7 +78,7 @@ export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
                 </div>
                 : <div className="space-y-2 mb-4">
                     {(hasEquippedWeapons || hero.polymorph) && <Weapons hero={hero} equippedWeapons={equippedWeapons} equippedSundries={equippedSundries} documentUpdateKey={documentUpdateKey} />}
-                    {hasEquippedArmor && <Armor hero={hero} armor={armor} wearables={wearables} />}
+                    {hasEquippedArmor && <Armor hero={hero} armor={armor} wearables={wearables} boundRelics={boundRelics} />}
                 </div>
             }
         </div>
@@ -261,7 +263,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
 
                                     {/* WEAPON RELIC LISTS */}
                                     <div className="flex justify-between items-center -mt-1">
-                                        <RelicEffectList relicPowers={item.relicPowers ?? []} textColor="text-text-header-tertiary" />
+                                        <RelicEffectList relicPowers={item.effectiveRelicPowers()} textColor="text-text-header-tertiary" />
                                     </div>
 
                                     {/* WEAPON PROPERTIES AND RANGE */}
@@ -298,7 +300,8 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
     )
 }
 
-const Armor = ({ hero, armor, wearables }: { hero: any, armor: ArmorDataModel, wearables: SundryDataModel[] }) => {
+const Armor = ({ hero, armor, wearables, boundRelics }: { hero: any, armor: ArmorDataModel, wearables: SundryDataModel[], boundRelics: any[] }) => {
+    const miscItems = [...wearables, ...boundRelics]
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
     return (
@@ -323,7 +326,7 @@ const Armor = ({ hero, armor, wearables }: { hero: any, armor: ArmorDataModel, w
                             {/* ARMOR CATEGORY AND MATERIAL */}
                             <div className="flex items-center justify-between -mt-1">
                                 {/* RELIC INFO */}
-                                <RelicEffectList relicPowers={armor.relicPowers ?? []} textColor="text-text-header-tertiary" />
+                                <RelicEffectList relicPowers={armor.effectiveRelicPowers()} textColor="text-text-header-tertiary" />
                                 <div className={"text-text-aux text-sm italic line-clamp-1 text-right mr-1"}>{appLang.Metals[armor.material]?.name ?? '-'}</div>
                             </div>
 
@@ -334,18 +337,18 @@ const Armor = ({ hero, armor, wearables }: { hero: any, armor: ArmorDataModel, w
             }
 
             {/* WEARABLE ITEMS */}
-            {wearables.length > 0 && (
+            {miscItems.length > 0 && (
                 <div className="flex flex-col gap-1 mt-1">
                     <Header title={"MISC"} />
-                    {wearables.map((item, index) => (
+                    {miscItems.map((item, index) => (
                         <div key={index}>
-                            <div className="flex items-center gap-x-1" onContextMenu={(e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}>
+                            <div className="flex items-center gap-x-1" onContextMenu={(e) => onCtxMenu(e, equipmentContextMenuItems(hero, item))}>
                                 <ItemImage item={item} />
                                 <div className="flex flex-col gap-0.5 pl-2">
                                     {/* WEARABLE NAME */}
                                     <p className="text-base line-clamp-1">{item.parent.name}</p>
                                     {/* RELIC INFO */}
-                                    <RelicEffectList relicPowers={item.relicPowers ?? []} textColor="text-text-header-tertiary -mt-1" />
+                                    <RelicEffectList relicPowers={item.effectiveRelicPowers()} textColor="text-text-header-tertiary -mt-1" />
                                 </div>
                             </div>
                             <ItemDivider />

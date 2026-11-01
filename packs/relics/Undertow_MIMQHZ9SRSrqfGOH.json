@@ -54,7 +54,8 @@
           "value": "fabled-other",
           "label": "Fabled Relic",
           "modifiers": [],
-          "appliedEffect": null
+          "appliedEffect": null,
+          "beingTypes": []
         },
         "goldValue": 0,
         "bound": true,
@@ -77,11 +78,46 @@
               "value": 3
             }
           ],
-          "appliedEffect": null
+          "appliedEffect": null,
+          "beingTypes": []
         },
         "goldValue": 5000,
         "bound": false,
         "description": "+3 bonus to Attack damage."
+      },
+      {
+        "id": "utility-aqua",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "aqua",
+          "label": "Aqua Lung",
+          "modifiers": [],
+          "appliedEffect": null,
+          "beingTypes": []
+        },
+        "goldValue": 5000,
+        "bound": false,
+        "description": "Wearer can breathe water."
+      },
+      {
+        "id": "utility-warning",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "warning",
+          "label": "Warning",
+          "modifiers": [],
+          "appliedEffect": null,
+          "beingTypes": []
+        },
+        "goldValue": 7500,
+        "bound": true,
+        "description": "Bound Being can't be surprised, and is awoken if foes are Near."
       },
       {
         "id": "fabled-visceral",
@@ -100,43 +136,12 @@
               "value": 2
             }
           ],
-          "appliedEffect": null
+          "appliedEffect": null,
+          "beingTypes": []
         },
         "goldValue": 25000,
-        "bound": false,
-        "description": "On a Crit, the Target takes extra damage equal to twice its HD."
-      },
-      {
-        "id": "utility-aqua",
-        "category": {
-          "value": "utility",
-          "label": "Utility"
-        },
-        "power": {
-          "value": "aqua",
-          "label": "Aqua Lung",
-          "modifiers": [],
-          "appliedEffect": null
-        },
-        "goldValue": 5000,
-        "bound": false,
-        "description": "Wearer can breathe water."
-      },
-      {
-        "id": "utility-warning",
-        "category": {
-          "value": "utility",
-          "label": "Utility"
-        },
-        "power": {
-          "value": "warning",
-          "label": "Warning",
-          "appliedEffect": null,
-          "modifiers": []
-        },
-        "goldValue": 7500,
-        "bound": true,
-        "description": "Bound Being can't be surprised, and is awoken if foes are Near."
+        "description": "On a Crit, the Target takes extra damage equal to twice its HD.",
+        "bound": false
       }
     ]
   },
@@ -153,8 +158,8 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.2.160",
     "createdTime": 1790023477459,
-    "modifiedTime": 1793503105076,
-    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "modifiedTime": 1793516059374,
+    "lastModifiedBy": "pcHXNIbwXTDCVlqw",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null

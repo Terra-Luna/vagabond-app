@@ -1,4 +1,5 @@
 import type { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
+import { appLang } from "../../../../../utils/lang"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -8,7 +9,7 @@ import { RelicEffectList } from "./RelicEffectList"
 export const EquipmentSheetBanner = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     const { editModeToggleBtn } = useEditMode(item)
 
-    const relicPowers = item.system.relicPowers?.filter(relic => relic.category.value !== 'cursed')
+    const relicPowers = item.system.effectiveRelicPowers().filter(relic => relic.category.value !== 'cursed' || item.system.isBound)
 
     return (<>
         <div className="flex space-x-1 items-center bg-section-header-fill py-1 px-2 font-eskapade font-bold">
@@ -24,7 +25,10 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
                     {editModeToggleBtn}
                 </div>
 
-                <RelicEffectList relicPowers={relicPowers} />
+                {item.system.isBoundRelic() && !item.system.isBound
+                    ? <p className="text-xs font-paradigm font-normal italic text-text-header-secondary">{appLang.HeroSheet.Inventory.relicRequiresBinding}</p>
+                    : <RelicEffectList relicPowers={relicPowers} />
+                }
             </div>
         </div>
     </>)

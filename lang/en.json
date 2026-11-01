@@ -175,6 +175,7 @@
       "fatigue": "Fatigue",
       "fire": "Fire",
       "healing": "Healing",
+      "holy": "Holy",
       "necrotic": "Necrotic",
       "magical": "Magical",
       "mana": "Mana",
@@ -716,6 +717,10 @@
         "ctxGrip": "Change grip",
         "ctxEquip": "Equip",
         "ctxUnequip": "Unequip",
+        "ctxBind": "Bind",
+        "ctxRemoveCurses": "Remove Curses",
+        "relicRequiresBinding": "Relic (Requires Binding Ritual)",
+        "ctxUnbind": "Unbind",
         "ctxDelete": "Delete",
         "ctxDeleteAll": "Delete All",
         "splittingStack": "Splitting Stack"
@@ -1157,6 +1162,9 @@
         "craftTooltipTitle": "Craft",
         "useTooltipTitle": "Use"
       },
+      "Attack": {
+        "noTargetsSelected": "Select at least one target before attacking."
+      },
       "Spellcasting": {
         "title": "Spellcasting",
         "deliveryAbbreviation": "Dlv.",
@@ -1234,14 +1242,7 @@
         "allowLateLuckStudy": "Allow Late Luck/Study",
         "lateLuckStudyHint": "Allow Heroes to spend Luck/Study dice after a failed check.",
         "combatAutoFlanking": "Combat Auto-Flanking",
-        "combatAutoFlankingHint": "Enable automatic Flank detection while in combat.",
-        "polymorphEquipPrefs": "Polymorph & Gear Preferences",
-        "polymorphEquipPrefsHint": "Configure what active gear is kept while polymorphing. Unequipped gear will be automatically re-equipped when Polymorph ends. Cursed Relics will always be kept.",
-        "polymorphEquipPrefsNone": "Keep All",
-        "polymorphEquipPrefsWeapons": "Keep Armor & Wearables",
-        "polymorphEquipPrefsWeaponsArmor": "Keep Wearables Only",
-        "polymorphEquipPrefsUnbound": "Keep Bound Relics Only",
-        "polymorphEquipPrefsUnequipAll": "Unequip All"
+        "combatAutoFlankingHint": "Enable automatic Flank detection while in combat."
       },
       "RulesEditor": {
         "windowTitle": "Grants & Modifiers",
@@ -1522,8 +1523,11 @@
         "cannotNestContainers": "Cannot place containers within containers!",
         "unequipBeforeStorage": "Unequip gear before placing in storage!",
         "containerFull": "Not enough space available in container!",
-        "boundItemCannotBeRemoved": "Unable to remove Bound item: {{name}}...the curse must be lifted.",
+        "boundItemCannotBeRemoved": "Unable to unbind from item: {{name}}...the curse must be lifted.",
         "weaponSlotLimitExceeded": "Equipped items slot limit ({{slots}}) exceeded.",
+        "cursesLiftedTitle": "Curses Lifted",
+        "cursesLifted": "All curses have been lifted from {{itemName}}. It may now be unbound.",
+        "boundRelicLimitExceeded": "Bound relic limit ({{limit}}) reached. Unbind a relic first.",
         "onlyGearInStartingPack": "Only gear can be added to a Starting Pack.",
         "materialsNotFound": "Could not find crafting Materials.",
         "alchemyToolsNotFound": "Alchemy tools not equipped.",

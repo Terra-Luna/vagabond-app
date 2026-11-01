@@ -9,7 +9,7 @@ import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
-import { getTargetIds, inventoryItemTypes } from "../../utils/modelUtil"
+import { getTargetIds } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { AppliedFx, Attack } from "./Attack"
@@ -27,6 +27,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
     itemId: string = ''
     skipSkillCheck: boolean = false
+    requiresTargets: boolean = false
     spellDelivery: SpellDeliverySnapshot | undefined
     skillCheck?: SkillCheck
     isDefenseCheck: boolean = false
@@ -114,47 +115,65 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     }
 
     async initiate(clickEvent?: any, options?: { isDefenseCheck?: boolean, skipChatCard?: boolean }) {
+        if (this.requiresTargets && !options?.isDefenseCheck && this.targetIds.length === 0) {
+            ui.notifications?.error(appLang.Attack.noTargetsSelected)
+            return
+        }
         this.id = foundry.utils.randomID()
         this.skipSkillCheck = this.skipSkillCheck || clickEvent?.altKey
         this.isDefenseCheck = !!options?.isDefenseCheck
 
-        if (this.skillCheck && (
-            this.hasHostileTargets ||
-            options?.isDefenseCheck || (
-                this.isSpellAttack && (this.spellDelivery?.upcast ?? 0) > 0 &&
-                this.spellDelivery?.spell?.upcastableEffectDieRoll
-            )
-        ) && !this.skipSkillCheck) {
+        if (this.shouldRollSkillCheck) {
             if (clickEvent?.shiftKey || clickEvent?.ctrlKey) {
-                this.skillCheck.setFavorHinder(clickEvent, foundry.utils.deepClone(this.actor?.system?.modifiers))
+                this.skillCheck!.setFavorHinder(clickEvent, foundry.utils.deepClone(this.actor?.system?.modifiers))
             }
             await this.rollSkillCheck()
         }
 
         if (this.isEligibleForDmgRoll && this.isSuccessOrCrit) {
-            if (this.isDefenseCheck && this.damageRoll) {
-                this.damageRoll.flatDmgBonus = 0
-                this.damageRoll.perDieDmgBonus = 0
-            }
-            await this.rollDamage(this.skillCheck?.result?.outcome === appLang.RollResult.crit)
-            if (this.isDefenseCheck && this.skillCheck?.result?.outcome === appLang.RollResult.crit && this.damageRoll?.result) {
-                const skill = this.skillCheck.skill ? this.actor.system.skills[this.skillCheck.skill] : undefined
-                if (skill) {
-                    const critArmor = skill.trained ? (20 - skill.value) / 2 : 20 - skill.value
-                    this.damageRoll.result.bonus += critArmor
-                    this.damageRoll.result.total += critArmor
-                }
-            }
+            await this.rollInitialDamage()
         }
 
-        /**
-         * Update Focus, if available.
-         */
+        this.applyPostRollEffects()
+
+        if (options?.skipChatCard) return
+
+        await this.sendChatCard()
+    }
+
+    private get shouldRollSkillCheck(): boolean {
+        if (!this.skillCheck || this.skipSkillCheck) return false
+        const isUpcastEffectRoll = this.isSpellAttack
+            && (this.spellDelivery?.upcast ?? 0) > 0
+            && !!this.spellDelivery?.spell?.upcastableEffectDieRoll
+        return this.hasHostileTargets || this.isDefenseCheck || isUpcastEffectRoll
+    }
+
+    private async rollInitialDamage() {
+        // A defense roll is only the weapon's dice - damage bonuses don't apply to armor.
+        if (this.isDefenseCheck) this.damageRoll?.clearBonuses()
+
+        const isCrit = this.skillCheck?.result?.outcome === appLang.RollResult.crit
+        await this.rollDamage(isCrit)
+        if (this.isDefenseCheck && isCrit) this.damageRoll?.addResultBonus(this.critSkillBonus)
+    }
+
+    /**
+     * A crit's bonus damage (or defense armor), based on the skill used for the check.
+     */
+    private get critSkillBonus(): number {
+        const skill = this.skillCheck?.skill ? this.actor.system.skills[this.skillCheck.skill] : undefined
+        if (!skill) return 0
+        return skill.trained ? (20 - skill.value) / 2 : 20 - skill.value
+    }
+
+    private applyPostRollEffects() {
+        // Update Focus, if available.
         if (this.isSpellAttack && this.spellDelivery?.isFocused && (this.skipSkillCheck || this.isSuccessOrCrit)) {
             this.addFocus()
         }
 
-        // Take user to polymorph menu.
+        // Take user to polymorph menu...
         if (game.user?.id === this.userId && this.isSpellAttack && (fromUuidSync(this.itemId) as any)?.getFlag?.(sys_id, "polymorph")) {
             if (this.actor.sheet?.rendered) {
                 (Hooks as any).callAll("vagabondSelectHeroTab", this.actor.id, "polymorph")
@@ -163,15 +182,6 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
                 api.util.polymorphApp(this.actor)
             }
         }
-
-        if (options?.skipChatCard) return
-
-        this.save(serializeAttack)
-        sendVagabondChatCard(
-            this.actor,
-            "InteractiveAttackChatCard",
-            { actorId: this.actor.id!, attackId: this.id }
-        )
     }
 
     private addFocus() {
@@ -244,19 +254,17 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         spellAttack.targetIds = [...casterTargets]
         await spellAttack.rollDamage(false)
 
-        /**
-         * Reload the latest snapshot after the (animated) roll so other heroes' imbues
-         * made in the meantime aren't overwritten.
-         */
         const latest = (getAttackRegistry()[target.actorId] ?? []).find(atk => atk.id === target.attackId)
         const latestAttack = latest
             ? deserializeAttack(latest, (title, owner, targetIds) => new HeroAttack(title, owner, targetIds))
             : undefined
         if (!latestAttack?.isImbuable || latestAttack.isResolved) return false
+
         if (latestAttack.imbues.some(imbue => imbue.actorId === actor.id)) {
             ui.notifications?.warn(localizeString(appLang.Notifications.alreadyImbued, { name: actor.name ?? "" }))
             return false
         }
+
         latestAttack.imbues.push({
             actorId: actor.id!,
             spellName: delivery.spell.name,
@@ -265,8 +273,10 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             targetIds: casterTargets,
             appliedEffects: spellAttack.appliedEffects
         })
+
         await latestAttack.save(serializeAttack)
         if (spellAttack.spellDelivery?.isFocused) spellAttack.addFocus()
+
         return true
     }
 
@@ -316,7 +326,6 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
     /**
      * Inserts a D6 roll into the results and adds it to the total.
-     * @returns 
      */
     async addLateFavor(resource: 'luck' | 'studied', currentValue: number) {
         if (this.skillCheck?.isFavored ?? false) {
@@ -372,7 +381,6 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
     /**
      * Inserts a D6 roll into the results and subtracts it to the total.
-     * @returns 
      */
     async addLateHinder() {
         if (this.skillCheck && this.skillCheck.result && !this.skillCheck.result.d6s?.length) {
@@ -446,12 +454,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
         if (this.skillCheck.skill && this.damageRoll?.result) {
             this.critChoice = 'damage'
-            const skill = this.actor.system.skills[this.skillCheck.skill]
-            const critDmg = skill.trained
-                ? (20 - skill.value) / 2
-                : 20 - skill.value
-            this.damageRoll.result.bonus += critDmg
-            this.damageRoll.result.total += critDmg
+            this.damageRoll.addResultBonus(this.critSkillBonus)
             await this.save(serializeAttack)
         }
     }
@@ -512,11 +515,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
     async sendChatCard() {
         await this.save(serializeAttack)
-        sendVagabondChatCard(
-            this.actor,
-            "InteractiveAttackChatCard",
-            { actorId: this.actor.id!, attackId: this.id }
-        )
+        await this.postChatCard()
     }
 
     static buildWeaponAttack(
@@ -538,28 +537,13 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         }
 
         if (weapon instanceof WeaponDataModel) {
-            RelicPowerProcessor.applyRelicPowers(weapon.relicPowers as any, mods, { skillTrained: hero.skills[weaponSkill]?.trained ?? false })
+            RelicPowerProcessor.applyRelicPowers(RelicPowerProcessor.getEffectivePowers(item.system) as any, mods, { skillTrained: hero.skills[weaponSkill]?.trained ?? false })
         }
 
         /**
          * Add weapon props granted by modifiers.
          */
-        const weaponPropGrants = [
-            ...mods?.damage?.out?.global?.properties?.granted ?? [],
-            ...mods?.damage?.out[weaponSkill!]?.properties?.granted ?? []
-        ]
-        weapon.properties = [...weapon.properties, ...weaponPropGrants.filter(prop => !weapon.properties.includes(prop))]
-
-        /**
-         * Add linked weapon properties defined by modifiers.
-         */
-        const weaponPropLinks = [
-            ...mods?.damage?.out?.global?.properties?.linked ?? [],
-            ...mods?.damage?.out[weaponSkill!]?.properties?.linked ?? []
-        ]
-        if (weapon.properties?.some(prop => weaponPropLinks.includes(prop))) {
-            weapon.properties = [...weapon.properties, ...weaponPropLinks.filter(prop => !weapon.properties.includes(prop))]
-        }
+        weapon.properties = HeroAttack.getModifiedWeaponProperties(weapon.properties, mods, weaponSkill)
 
         const isKeen = hero.skills[weaponSkill]?.trained && weapon.properties.includes('keen')
 
@@ -579,54 +563,15 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             DiceRoll.getItemDamageWithHeroMods(hero, weaponSkill, weapon)
         )
 
-        /**
-         * Add any extra dice granted by modifiers.
-         */
         const dmgMods = foundry.utils.deepClone(mods.damage.out)
-        const extraDice: DiceRoll[] = []
-        const globalExtraDice = dmgMods.global?.dice?.extra
-        const skillExtraDice = dmgMods[weaponSkill!]?.dice?.extra
-        const keenExtraDice = isKeen ? dmgMods.keen?.dice?.extra : undefined
-
-        const addRoll = (roll: typeof globalExtraDice | typeof skillExtraDice | typeof keenExtraDice) => {
-            extraDice.push(new DiceRoll({
-                count: roll.count,
-                faces: roll.faces > 0 ? roll.faces : damageDice.faces,
-                modifier: roll.modifier,
-                explodesOn: roll.explodesOn?.filter((value): value is number => typeof value === 'number')
-            }))
-        }
-
-        if (globalExtraDice?.count ?? 0 > 0) addRoll(globalExtraDice)
-        else if (skillExtraDice?.count ?? 0 > 0) addRoll(skillExtraDice)
-        else if (keenExtraDice?.count ?? 0 > 0) addRoll(keenExtraDice)
-
-        /**
-         * Determine weapon's Relic level.
-         */
-        let relicLevel = -1
-        if (weapon.relicPowers.length > 0) {
-            relicLevel = 0
-            if (weapon.relicPowers.some(it => it.id.includes('bonus-weapon'))) {
-                const weaponPowers = weapon.relicPowers.filter(it => it.id.includes('bonus-weapon'))
-                relicLevel = weaponPowers.some(it => it.id === 'bonus-weapon-3')
-                    ? 3
-                    : (weaponPowers.some(it => it.id === 'bonus-weapon-2')
-                        ? 2
-                        : (weaponPowers.some(it => it.id === 'bonus-weapon-1')
-                            ? 1
-                            : 0
-                        )
-                    )
-            }
-        }
-
-        const baneTypes = RelicPowerProcessor.getBaneBeingTypes(weapon.relicPowers as any)
+        const extraDice = HeroAttack.getExtraDamageDice(dmgMods, weaponSkill, !!isKeen, damageDice.faces)
+        const relicLevel = HeroAttack.getRelicLevel(RelicPowerProcessor.getEffectivePowers(item.system))
+        const baneTypes = RelicPowerProcessor.getBaneBeingTypes(RelicPowerProcessor.getEffectivePowers(item.system) as any)
 
         const damageRoll = new DamageRoll({
             atkName: item.name,
             dmgType: weapon.damage.type,
-            dice: [damageDice, ...extraDice ?? []],
+            dice: [damageDice, ...extraDice],
             weaknessDie: { faces: damageDice.faces, count: 1 },
             baneTypes: baneTypes.length > 0 ? baneTypes : undefined,
             hdMultiplier: (dmgMods.global?.bonus?.hdMultiplier ?? 0) + (dmgMods[weaponSkill]?.bonus?.hdMultiplier ?? 0),
@@ -645,6 +590,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)
         attack.itemId = item.uuid
+        attack.requiresTargets = !defenseCheck
 
         if (defenseCheck) {
             const defenseWeapons = actor.system.defenseWeapons()
@@ -659,20 +605,64 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             }
         }
 
-        // Weapons carry their own applied effects plus any granted by relic powers (e.g. Burning).
-        const weaponEffects: AppliedFx[] = [...(item.system["appliedEffects"] ?? [])]
-        const relicEffects = RelicPowerProcessor.getRelicAppliedEffects(weapon.relicPowers as any)
-        relicEffects.forEach(fx => {
-            if (!weaponEffects.some(eff => eff.effect === fx.effect && (eff.duration ?? '') === fx.duration)) weaponEffects.push(fx)
-        })
-        if (weaponEffects.length) {
-            attack.appliedEffects = weaponEffects.map(eff => {
-                const relicType = relicEffects.find(fx => fx.effect === eff.effect && fx.duration === (eff.duration ?? ''))?.damageType
-                return { ...eff, damageType: relicType ?? weapon.damage.type }
-            })
-        }
+        const weaponEffects = HeroAttack.getWeaponAppliedEffects(item.system["appliedEffects"] ?? [], RelicPowerProcessor.getEffectivePowers(item.system), weapon.damage.type)
+        if (weaponEffects.length) attack.appliedEffects = weaponEffects
 
         return attack
+    }
+
+    /**
+     * Weapon properties plus any granted by modifiers, and those linked to a property the weapon already has.
+     */
+    private static getModifiedWeaponProperties(properties: string[], mods: HeroDataModel["modifiers"], skill: string): string[] {
+        const out = mods?.damage?.out
+        const granted = [...out?.global?.properties?.granted ?? [], ...out?.[skill]?.properties?.granted ?? []]
+        const linked = [...out?.global?.properties?.linked ?? [], ...out?.[skill]?.properties?.linked ?? []]
+
+        let result = [...properties, ...granted.filter(prop => !properties.includes(prop))]
+        if (result.some(prop => linked.includes(prop))) {
+            result = [...result, ...linked.filter(prop => !result.includes(prop))]
+        }
+        return result
+    }
+
+    /**
+     * Extra dice granted by modifiers: global first, else the skill's, else Keen's.
+     */
+    private static getExtraDamageDice(dmgMods: any, skill: string, isKeen: boolean, defaultFaces: number): DiceRoll[] {
+        const extra = [dmgMods.global?.dice?.extra, dmgMods[skill]?.dice?.extra, isKeen ? dmgMods.keen?.dice?.extra : undefined]
+            .find(roll => (roll?.count ?? 0) > 0)
+        if (!extra) return []
+
+        return [new DiceRoll({
+            count: extra.count,
+            faces: extra.faces > 0 ? extra.faces : defaultFaces,
+            modifier: extra.modifier,
+            explodesOn: extra.explodesOn?.filter((value): value is number => typeof value === 'number')
+        })]
+    }
+
+    /**
+     * A weapon's Relic level: -1 if it isn't a relic, else the highest bonus-weapon tier (0 if none).
+     */
+    private static getRelicLevel(relicPowers: { id: string }[]): number {
+        if (relicPowers.length === 0) return -1
+        return [3, 2, 1].find(tier => relicPowers.some(it => it.id === `bonus-weapon-${tier}`)) ?? 0
+    }
+
+    /**
+     * A weapon's own applied effects plus any granted by relic powers (e.g. Burning).
+     */
+    private static getWeaponAppliedEffects(baseEffects: AppliedFx[], relicPowers: any, damageType: string): AppliedFx[] {
+        const effects: AppliedFx[] = [...baseEffects]
+        const relicEffects = RelicPowerProcessor.getRelicAppliedEffects(relicPowers)
+        relicEffects.forEach(fx => {
+            if (!effects.some(eff => eff.effect === fx.effect && (eff.duration ?? '') === fx.duration)) effects.push(fx)
+        })
+        return effects.map(eff => {
+            const relicType = relicEffects.find(fx => fx.effect === eff.effect && fx.duration === (eff.duration ?? ''))?.damageType
+            return { ...eff, damageType: relicType ?? damageType }
+        })
     }
 
     static buildAlchemyAttack(
@@ -743,8 +733,8 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             const mods = foundry.utils.deepClone(hero.modifiers)
             const isHealing = delivery.spell.damageType === 'healing'
 
-            const equippedItems = actor.items.filter(it => inventoryItemTypes().includes(it.type) && (it as any).system.isEquipped) as any[]
-            RelicPowerProcessor.applyRelicPowers(equippedItems.flatMap(it => it.system.relicPowers), mods)
+            const activeItems = actor.system.activeRelics() as any[]
+            RelicPowerProcessor.applyRelicPowers(activeItems.flatMap(it => it.system.relicPowers), mods)
 
             const dieSizeMod = isHealing
                 ? mods.healing.out.spell.dice.size.bonus ?? 0

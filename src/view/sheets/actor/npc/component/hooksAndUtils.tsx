@@ -5,6 +5,7 @@ import { RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPower
 import { AdversaryAttack, SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
 import { AdversaryComboAttack, ComboSubAttackArgs } from "../../../../../combat/engine/AdversaryComboAttack"
 import { AppliedFx } from "../../../../../combat/engine/Attack"
+import { applyAdversaryDamageMods } from "../../../../../combat/engine/util/adversary-damage-mods"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
@@ -112,6 +113,25 @@ export const buildFollowerAttack = (follower: FollowerContext, action: any): Her
     }
     const attack = HeroAttack.buildWeaponAttack(follower.hero, weapon as any, follower.skill)
     attack.portraitActorId = follower.npcId
+
+    // The skill check uses the Hero's skill, but damage uses only the follower's own modifiers.
+    // Use the actual (possibly unlinked token) actor, since status effects live on it rather than the base actor.
+    const npc = follower.npc
+    const damageRoll = attack.damageRoll
+    if (npc && damageRoll) {
+        const dice = new DiceRoll(action.damage.dice)
+        damageRoll.dice = [dice]
+        damageRoll.weaknessDie = { faces: dice.faces, count: 1 }
+        damageRoll.baneTypes = undefined
+        damageRoll.hdMultiplier = 0
+        damageRoll.relicLevel = -1
+        damageRoll.flatDmgBonus = 0
+        damageRoll.perDieDmgBonus = 0
+        damageRoll.armorPiercing = 0
+        damageRoll.armorPiercingPerDie = 0
+        damageRoll.armorPiercingPerExtraDie = 0
+        applyAdversaryDamageMods(npc, damageRoll, action.type === 'cast')
+    }
     return attack
 }
 

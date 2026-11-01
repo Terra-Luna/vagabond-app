@@ -4,7 +4,7 @@
   "_id": "3kDct4sf6vJRsyVB",
   "img": "/icons/weapons/swords/greatsword-crossguard-flanged-purple.webp",
   "system": {
-    "description": "",
+    "description": "<p><span style=\"white-space:pre-wrap\">Greatsword that a Being must Bind themselves to to access its Powers, which are as follows:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Blasting:</strong></b><span style=\"white-space:pre-wrap\"> Can make a Melee attack as an arc of moonlight energy at a Near Target. The Target is then illuminated with moonlight for the Round, can't benefit from being Invisible, and turns to its normal form if it was shapeshifted.</span></li><li value=\"2\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Moonlit:</strong></b><span style=\"white-space:pre-wrap\"> Sheds Moonlight out to Near.</span></li></ul>",
     "rules": [],
     "category": "weapons",
     "value": {
@@ -28,7 +28,7 @@
       "dice": {
         "count": 1,
         "faces": 10,
-        "modifier": 3,
+        "modifier": 6,
         "explodesOn": []
       }
     },
@@ -55,7 +55,9 @@
         "power": {
           "value": "fabled-other",
           "label": "Fabled Relic",
-          "modifiers": []
+          "modifiers": [],
+          "appliedEffect": null,
+          "beingTypes": []
         },
         "goldValue": 0,
         "bound": true,
@@ -70,7 +72,9 @@
         "power": {
           "value": "blasting",
           "label": "Blasting",
-          "modifiers": []
+          "modifiers": [],
+          "appliedEffect": null,
+          "beingTypes": []
         },
         "goldValue": 5000,
         "bound": false,
@@ -85,10 +89,36 @@
         "power": {
           "value": "moonlit-1",
           "label": "Moonlit I",
-          "modifiers": []
+          "modifiers": [],
+          "appliedEffect": null,
+          "beingTypes": []
         },
         "goldValue": 500,
-        "description": "Sheds Moonlight out to Close while Equipped.",
+        "bound": false,
+        "description": "Sheds Moonlight out to Close while Equipped."
+      },
+      {
+        "id": "bonus-weapon-3",
+        "category": {
+          "value": "bonus",
+          "label": "Bonus"
+        },
+        "power": {
+          "value": "weapon-3",
+          "label": "Weapon +3",
+          "modifiers": [
+            {
+              "selector": [
+                "system.damage.dice.modifier"
+              ],
+              "value": 3
+            }
+          ],
+          "appliedEffect": null,
+          "beingTypes": []
+        },
+        "goldValue": 5000,
+        "description": "+3 bonus to Attack damage.",
         "bound": false
       }
     ]
@@ -104,10 +134,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.160",
     "createdTime": 1790015134849,
-    "modifiedTime": 1790023201615,
-    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "modifiedTime": 1793515938547,
+    "lastModifiedBy": "pcHXNIbwXTDCVlqw",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null

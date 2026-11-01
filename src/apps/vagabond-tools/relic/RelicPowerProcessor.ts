@@ -23,10 +23,15 @@ export class RelicPowerProcessor {
      * Called from Hero's prepareDerivedData - applies relic bonuses in-memory only.
      */
     static applyHeroBonuses = (actor: Actor & { system: HeroDataModel }) => {
-        const equippedRelics = actor.system.equippedRelics()
-        if (!equippedRelics || equippedRelics.length === 0) return
+        const activeRelics = actor.system.activeRelics()
+        if (!activeRelics || activeRelics.length === 0) return
 
-        equippedRelics.forEach(item => {
+        activeRelics.forEach(item => {
+            const resistances = actor.system.modifiers.damage.in.resistances as string[]
+            ;(item.system.relicPowers as RelicPower[]).forEach(relic => {
+                const type = relic.power.damageType
+                if (RelicPowerProcessor.isResistance(relic) && type && !resistances.includes(type)) resistances.push(type)
+            })
             const filteredRelics = (item.system.relicPowers as RelicPower[]).flatMap(it => ({
                 ...it,
                 power: {
@@ -128,6 +133,18 @@ export class RelicPowerProcessor {
             .filter(it => RelicPowerProcessor.isBaneGeneral(it) || RelicPowerProcessor.isBaneSpecific(it))
             .flatMap(it => it.power?.beingTypes ?? [])
             .filter(it => !!it)
+
+    static getEffectivePowers = (item: any): RelicPower[] =>
+        item?.effectiveRelicPowers?.() ?? item?.relicPowers ?? []
+
+    static isResistance = (relic: RelicPower): boolean => relic.id === 'resistance-resistance'
+
+    static setRelicResistanceType = async (item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower, damageType: string) => {
+        const updated = item.system.relicPowers.map(p => p.id === relic.id
+            ? { ...p, power: { ...p.power, damageType } }
+            : p)
+        await item.update({ 'system.relicPowers': updated } as Record<string, any>)
+    }
 
     static setRelicBeingTypes = async (item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower, beingTypes: string[]) => {
         const updated = item.system.relicPowers.map(p => p.id === relic.id

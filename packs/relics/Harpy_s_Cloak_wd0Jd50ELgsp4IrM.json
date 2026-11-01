@@ -25,23 +25,32 @@
     "isConsumable": false,
     "relicPowers": [
       {
-        "id": "utility-other",
+        "id": "bonus-armor-1",
         "category": {
-          "value": "utility",
-          "label": "Utility"
+          "value": "bonus",
+          "label": "Bonus"
         },
         "power": {
-          "value": "other",
-          "label": "Relic",
-          "modifiers": []
+          "value": "armor-1",
+          "label": "Armor +1",
+          "modifiers": [
+            {
+              "selector": [
+                "system.armor.rating"
+              ],
+              "value": 1
+            }
+          ],
+          "appliedEffect": null,
+          "beingTypes": []
         },
-        "goldValue": 0,
+        "goldValue": 100,
         "bound": false,
-        "description": "Unbound relic of a miscellaneous nature."
+        "description": "+1 bonus to Armor."
       }
     ],
     "armorType": "light",
-    "rating": 2,
+    "rating": 1,
     "mightReq": 3,
     "material": "steel"
   },
@@ -56,10 +65,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.31",
+    "systemVersion": "0.2.160",
     "createdTime": 1790013732657,
-    "modifiedTime": 1791841168474,
-    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "modifiedTime": 1793515763006,
+    "lastModifiedBy": "pcHXNIbwXTDCVlqw",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

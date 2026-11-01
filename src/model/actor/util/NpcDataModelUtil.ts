@@ -15,6 +15,7 @@ export interface FollowerContext {
     hero: Actor & { system: HeroDataModel }
     skill: string
     npcId: string
+    npc: Actor
 }
 
 /**
@@ -26,7 +27,7 @@ export const getFollowerContext = (actor: Actor | null | undefined): FollowerCon
     const hero = heroId ? game.actors?.get(heroId) : undefined
     if (!hero || (hero.type as string) !== "hero") return
     const skill = (actor.getFlag(sys_id, FOLLOWER_SKILL_FLAG as any) as string | undefined) || "leadership"
-    return { hero: hero as Actor & { system: HeroDataModel }, skill, npcId: actor.id! }
+    return { hero: hero as Actor & { system: HeroDataModel }, skill, npcId: actor.id!, npc: actor }
 }
 
 export const canRollForActor = (actor: Actor | null | undefined): boolean =>

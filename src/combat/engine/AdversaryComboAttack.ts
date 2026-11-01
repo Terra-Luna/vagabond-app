@@ -1,16 +1,19 @@
-import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { getFollowerContext } from "../../model/actor/util/NpcDataModelUtil"
-import { appLang } from "../../utils/lang"
-import { getTargetIds } from "../../utils/modelUtil"
-import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
+import { getTargetActor } from "../../utils/modelUtil"
 import type { SavingThrowType } from "./AdversaryAttack"
-import { AppliedFx, Attack, AttackResolutionArgs, TargetDamageSummary } from "./Attack"
-import { HeroAttack } from "./HeroAttack"
+import { AppliedFx, Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
-import { buildManualSaveResult, SkillCheck, SkillCheckResult } from "./roll/SkillCheck"
+import type { SkillCheckResult } from "./roll/SkillCheck"
+import { applyAdversaryDamageMods } from "./util/adversary-damage-mods"
 import type { AttackSnapshot, ComboSubAttackSnapshot } from "./util/attack-serializer"
 import { serializeAttack } from "./util/attack-serializer"
+import {
+    AttackResolutionArgs, buildSummaryRow, computeDamageBreakdown, isImmuneToDamage, isWeakToDamage, TargetDamageSummary
+} from "./util/damage-mitigation"
+import {
+    isDamagedAfterSave, isHalvedBySave, overrideTargetSave, recordTargetSave, rerollTargetSave, rollTargetSave
+} from "./util/save-state"
 
 export interface ComboSubAttackArgs {
     name: string,
@@ -43,11 +46,10 @@ export class ComboSubAttack {
         this.halfDamageOnSave = args.halfDamageOnSave ?? false
         this.appliedEffects = (args.appliedEffects ?? []).map(eff => ({ ...eff, damageType: eff.damageType ?? args.dmgType }))
         this.isSpellAttack = args.isSpellAttack ?? false
-        this.damageRoll = new DamageRoll({
+        this.damageRoll = DamageRoll.forAdversary({
             atkName: args.name,
             dmgType: args.dmgType,
-            dice: args.dice,
-            weaknessDie: args.dice[0] ? { faces: args.dice[0].faces, count: 1 } : undefined
+            dice: args.dice
         })
     }
 
@@ -55,119 +57,41 @@ export class ComboSubAttack {
         return (this.damageRoll.result?.total ?? 0) > 0
     }
 
-    async rollDamage(isCrit?: boolean, targetIds: string[] = []) {
+    async rollDamage(actor: Actor, targetIds: string[] = []) {
         if (this.damageRoll.dice.length > 0 && !this.damageRoll.result) {
-            const hasWeakTarget = targetIds.some(id => Attack.isWeakToDamage(id, this.damageRoll))
-            await this.damageRoll.roll(isCrit, hasWeakTarget)
+            const { alwaysWeak } = applyAdversaryDamageMods(actor, this.damageRoll, this.isSpellAttack)
+            await this.damageRoll.roll(false, alwaysWeak || targetIds.some(id => isWeakToDamage(id, this.damageRoll)))
+            const rolled = this.damageRoll as DamageRoll
+            if (rolled.result) rolled.result.total += rolled.flatDmgBonus
         }
     }
 
-    // Same rules as AdversaryAttack: a Block meeting/beating its difficulty negates all damage.
     shouldApplyDamageToTarget(targetId: string): boolean {
-        if (Attack.isImmuneToDamage(targetId, this.damageRoll, this.isSpellAttack)) return false
-        const result = this.saveResults[targetId]
-        // A defense only adds armor; it doesn't negate the damage.
-        if (this.defenseArmorBonuses[targetId] !== undefined) return true
-        return !result || result.outcome === appLang.RollResult.failure
-            || (result.outcome === appLang.RollResult.success && this.halfDamageOnSave)
+        return !isImmuneToDamage(targetId, this.damageRoll, this.isSpellAttack) && isDamagedAfterSave(this, targetId)
     }
 
     isHalfDamageForTarget(targetId: string): boolean {
-        return this.halfDamageOnSave
-            && this.defenseArmorBonuses[targetId] === undefined
-            && this.saveResults[targetId]?.outcome === appLang.RollResult.success
+        return isHalvedBySave(this, targetId)
     }
 
     calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
-        return Attack.computeAdjustedDamage(this.damageRoll, targetId, args, this.defenseArmorBonuses[targetId] ?? 0, this.isHalfDamageForTarget(targetId))
+        return computeDamageBreakdown(this.damageRoll, targetId, args, this.defenseArmorBonuses[targetId] ?? 0, this.isHalfDamageForTarget(targetId)).mitigated
     }
 
-    async rollSave(targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
-        // Defend is offered whenever a Reflex save is allowed.
-        const isAllowed = saveType === 'defend' ? this.saveTypes.includes('reflex') : this.saveTypes.includes(saveType)
-        if (!isAllowed || this.saveResults[targetId]) return
-
-        const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
-        if (!targetActor) return
-
-        const follower = getFollowerContext(targetActor)
-        const hero = (follower?.hero ?? targetActor).system as HeroDataModel
-        let result: SkillCheckResult
-        if (follower) {
-            result = await new SkillCheck(hero, { type: 'save', skill: follower.skill, clickEvent: clickEvent as any }).roll()
-        }
-        else if (saveType === 'defend') {
-            const defense = await HeroAttack.rollDefense(hero, { clickEvent })
-            if (!defense) return
-            result = defense.result
-            this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: defense.armorBonus }
-        } else {
-            result = await new SkillCheck(hero, { type: 'save', skill: saveType, clickEvent: clickEvent as any }).roll()
-        }
-
-        this.saveResults = { ...this.saveResults, [targetId]: result }
-
-        return result
+    rollSave(targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
+        return rollTargetSave(this, targetId, saveType, clickEvent)
     }
 
     recordSaveResult(targetId: string, saveType: SavingThrowType, result: SkillCheckResult, armorBonus?: number): boolean {
-        const isAllowed = saveType === 'defend' ? this.saveTypes.includes('reflex') : this.saveTypes.includes(saveType)
-        if (!isAllowed) return false
-
-        const existing = this.saveResults[targetId]
-        if (existing) {
-            if (existing.outcome !== appLang.RollResult.failure || this.rerolledSaveTargetIds.includes(targetId)) return false
-            this.rerolledSaveTargetIds = [...this.rerolledSaveTargetIds, targetId]
-            this.defenseArmorBonuses = Object.fromEntries(
-                Object.entries(this.defenseArmorBonuses).filter(([id]) => id !== targetId)
-            )
-        }
-
-        if (saveType === 'defend') this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: armorBonus ?? 0 }
-        this.saveResults = { ...this.saveResults, [targetId]: result }
-        return true
+        return recordTargetSave(this, targetId, saveType, result, armorBonus)
     }
 
     setSaveOutcome(targetId: string, outcome: string) {
-        const skill = this.saveTypes.find(type => type !== 'defend') ?? 'reflex'
-        this.saveResults = { ...this.saveResults, [targetId]: buildManualSaveResult(skill, outcome) }
-        this.defenseArmorBonuses = Object.fromEntries(
-            Object.entries(this.defenseArmorBonuses).filter(([id]) => id !== targetId)
-        )
+        overrideTargetSave(this, targetId, outcome)
     }
 
-    async rerollSave(targetId: string): Promise<SkillCheckResult | undefined> {
-        const existing = this.saveResults[targetId]
-        if (!existing || existing.outcome !== appLang.RollResult.failure || this.rerolledSaveTargetIds.includes(targetId)) return
-
-        const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
-        if (!targetActor) return
-
-        const luckActor = getFollowerContext(targetActor)?.hero ?? targetActor
-        const hero = luckActor.system as HeroDataModel
-        const luck = hero.statuses?.counters?.luck ?? 0
-        if (luck <= 0) return
-
-        await luckActor.update(
-            { 'system.statuses.counters.luck': luck - 1 } as Record<string, number>,
-            { ['skipTrackerChatCard' as string]: true }
-        )
-
-        const favorHinder = existing.favorHinder as 'favor' | 'hinder' | 'none'
-
-        let result: SkillCheckResult
-        if (this.defenseArmorBonuses[targetId] !== undefined) {
-            const defense = await HeroAttack.rollDefense(hero, { favorHinder })
-            if (!defense) return
-            result = defense.result
-            this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: defense.armorBonus }
-        } else {
-            result = await new SkillCheck(hero, { type: 'save', skill: existing.skill, favorHinder }).roll()
-        }
-        this.saveResults = { ...this.saveResults, [targetId]: result }
-        this.rerolledSaveTargetIds = [...this.rerolledSaveTargetIds, targetId]
-
-        return result
+    rerollSave(targetId: string): Promise<SkillCheckResult | undefined> {
+        return rerollTargetSave(this, targetId)
     }
 
     toJson(): ComboSubAttackSnapshot {
@@ -239,15 +163,10 @@ export class AdversaryComboAttack extends Attack {
     async initiate() {
         this.id = foundry.utils.randomID()
         for (const sub of this.subAttacks) {
-            await sub.rollDamage(false, this.targetIds)
+            await sub.rollDamage(this.actor, this.targetIds)
         }
         await this.save(serializeAttack)
-        await sendVagabondChatCard(
-            this.actor,
-            "InteractiveAttackChatCard",
-            { actorId: this.actor.id!, attackId: this.id },
-            this.subAttacks.flatMap(sub => sub.damageRoll.result?.rolls ?? [])
-        )
+        await this.postChatCard(this.subAttacks.flatMap(sub => sub.damageRoll.result?.rolls ?? []))
     }
 
     async rollSave(subIndex: number, targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
@@ -255,7 +174,7 @@ export class AdversaryComboAttack extends Attack {
         if (!sub) return
 
         const result = await sub.rollSave(targetId, saveType, clickEvent)
-        if (result) await this.save(serializeAttack)
+        if (result) await this.saveOrAutoResolve(serializeAttack)
         return result
     }
 
@@ -264,15 +183,22 @@ export class AdversaryComboAttack extends Attack {
         if (!sub) return
 
         const result = await sub.rerollSave(targetId)
-        if (result) await this.save(serializeAttack)
+        if (result) await this.saveOrAutoResolve(serializeAttack)
         return result
+    }
+
+    // Every target has saved against every sub-attack and takes no damage from any of them.
+    protected override get isNegatedForAllTargets(): boolean {
+        return this.targetIds.length > 0 && this.subAttacks.every(sub =>
+            this.targetIds.every(id => !!sub.saveResults[id] && !sub.shouldApplyDamageToTarget(id))
+        )
     }
 
     async recordSaveResult(targetId: string, saveType: SavingThrowType, result: SkillCheckResult, armorBonus?: number): Promise<boolean> {
         if (this.isResolved || !this.targetIds.includes(targetId)) return false
         const recorded = this.subAttacks.map(sub => sub.recordSaveResult(targetId, saveType, result, armorBonus))
         if (!recorded.some(Boolean)) return false
-        await this.save(serializeAttack)
+        await this.saveOrAutoResolve(serializeAttack)
         return true
     }
 
@@ -281,7 +207,7 @@ export class AdversaryComboAttack extends Attack {
         if (!sub) return
 
         sub.setSaveOutcome(targetId, outcome)
-        await this.save(serializeAttack)
+        await this.saveOrAutoResolve(serializeAttack)
     }
 
     static build(actor: Actor, args: AdversaryComboAttackArgs, targetIds?: string[]): AdversaryComboAttack {
@@ -299,7 +225,7 @@ export class AdversaryComboAttack extends Attack {
         if (!sub.damageRoll.result) return
 
         for (const row of rows) {
-            const actor = canvas?.scene?.tokens?.get(row.targetId)?.actor
+            const actor = getTargetActor(row.targetId)
             const hp = this.getHP(actor?.system)
             await this.updateHP(actor?.system, hp - row.total)
         }
@@ -312,16 +238,17 @@ export class AdversaryComboAttack extends Attack {
 
         // Skip targets who passed the save (half damage only) or wouldn't have taken any damage (e.g. fully mitigated).
         const damagedIds = eligibleTargetIds.filter(id => !sub.isHalfDamageForTarget(id) && sub.calculateAdjustedDamage(id, args) >= 1)
-        await this.applyFxToTargets(sub.appliedEffects, damagedIds)
+        const allyIds = this.resolveTargetIds(args).filter(id => this.isAdversaryAlly(id))
+        await this.applyFxToTargets(sub.appliedEffects, [...new Set([...damagedIds, ...allyIds])])
     }
 
     override getDamageSummary(args: AttackResolutionArgs): TargetDamageSummary[] {
         return this.subAttacks.flatMap((sub, subIndex) => {
             if (!sub.damageRoll.result) return []
-            const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => sub.shouldApplyDamageToTarget(id))
+            const targetIds = this.resolveTargetIds(args).filter(id => sub.shouldApplyDamageToTarget(id))
             return targetIds.map(id => {
-                const breakdown = Attack.computeDamageBreakdown(sub.damageRoll, id, args, sub.defenseArmorBonuses[id] ?? 0, sub.isHalfDamageForTarget(id))
-                return Attack.buildSummaryRow(id, subIndex, breakdown, 0, args, sub.damageRoll.dmgType, sub.name)
+                const breakdown = computeDamageBreakdown(sub.damageRoll, id, args, sub.defenseArmorBonuses[id] ?? 0, sub.isHalfDamageForTarget(id))
+                return buildSummaryRow(id, subIndex, breakdown, 0, args, sub.damageRoll.dmgType, sub.name)
             })
         })
     }
@@ -332,7 +259,7 @@ export class AdversaryComboAttack extends Attack {
 
         for (const sub of this.subAttacks) {
             if (!sub.damageRoll.result) continue
-            const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
+            const targetIds = this.resolveTargetIds(args)
                 .filter(id => sub.shouldApplyDamageToTarget(id))
             await this.applyStatusEffectsForSub(sub, args, targetIds)
         }

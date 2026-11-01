@@ -12,7 +12,10 @@ export const RelicEffectList = ({ relicPowers, textColor }: { relicPowers: any[]
                     const isNiche = RelicPowerProcessor.isNiche(relic)
                     const chosenTypes = ((RelicPowerProcessor.hasBeingTypeChoice(relic) || isNiche) ? (relic.power?.beingTypes ?? []) : []).filter(Boolean) as string[]
                     const typeNames = RelicPowerProcessor.usesBeingSubtype(relic) ? appLang.BeingSubtypes : appLang.BeingTypes
-                    const name = chosenTypes.length > 0
+                    const resistType = RelicPowerProcessor.isResistance(relic) ? relic.power?.damageType : undefined
+                    const name = resistType
+                        ? `Resistance (${appLang.DamageTypes[resistType] ?? resistType})`
+                        : chosenTypes.length > 0
                         ? `${typedLabel} (${chosenTypes.map(type => isNiche ? type : (typeNames[type] ?? type)).join(", ")})`
                         : RelicPowerProcessor.getFormattedRelicName(relic)
                     return (

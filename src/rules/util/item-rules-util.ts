@@ -75,7 +75,7 @@ export const getItemRuleSources = (itemOrSystem: any): ItemRuleSource[] => {
         })
     })
 
-    return sources.filter(s => s.item?.system?.isEquipped !== false)
+    return sources.filter(s => s.item?.system?.isEquipped !== false || s.item?.system?.isBound === true)
 }
 
 export const getItemRules = (item: any): any[] => {

@@ -1,6 +1,7 @@
-import { Eye, Hand, HandFist, MessageSquareText, Split, Sword, Trash, Undo } from "lucide-react"
+import { Eraser, Eye, Hand, HandFist, Link, MessageSquareText, Split, Sword, Trash, Undo } from "lucide-react"
 
 import { ItemStackSplitApp } from "../apps/inventory/ItemStackSplitApp"
+import { RelicPowerProcessor } from "../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { HeroAttack } from "../combat/engine/HeroAttack"
 import type { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
 import type { HeroDataModel } from "../model/actor/HeroDataModel"
@@ -18,15 +19,13 @@ import { sendVagabondChatCard } from "../view/chat/ChatCardSerializer"
 import type { CtxMenuItem } from "../view/component/ContextMenu"
 import { sys_id } from "./foundryUtils"
 import { appLang } from "./lang"
+import { localizeString } from "./localeUtils"
 import { getFullItem, getId, getName } from "./modelUtil"
 
 /**
  * Use this function for programatically adding items to Actors. It mimics
  * the same kind of behaviour as dragging/dropping an item by setting some
  * important flags.
- * @param actor 
- * @param uuid 
- * @returns 
  */
 export async function addItems(actor: Actor & { system: any }, uuids: string[]) {
     const items: any[] = []
@@ -152,6 +151,10 @@ export const equippedItemContextMenu = (hero: any, item: ArmorDataModel | Weapon
         { icon: Hand, label: appLang.ButtonActions.unequip, action: () => hero.equip(item.parent) }
     )
 
+    if (game.user?.isActiveGM && item.isCursed()) {
+        menuItems.push(removeCursesContextOption(item))
+    }
+
     return menuItems
 }
 
@@ -195,6 +198,14 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
         menuItems.push(useItemContextOption(hero.parent, item.parent))
     }
 
+    if (item.isBoundRelic()) {
+        menuItems.push(bindItemContextOption(item))
+    }
+
+    if (game.user?.isActiveGM && item.isCursed()) {
+        menuItems.push(removeCursesContextOption(item))
+    }
+
     menuItems.push(
         viewItemSheetContextOption(item),
         sendItemToChatContextOption(hero, item)
@@ -204,7 +215,7 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
         menuItems.push(splitItemsContextOption(hero, item))
     }
 
-    const hideDelete = item.isEquipped && item.isBoundRelic() && item.isCursed()
+    const hideDelete = item.isBound && item.isCursed()
 
     if (!hideDelete) {
         menuItems.push(deleteItemContextOption(hero, item))
@@ -237,6 +248,33 @@ export const containerItemContextMenuItems = (
 
 const useItemContextOption = (hero: Actor & { system: HeroDataModel }, item: Item & { system: AlchemicalItemDataModel | SundryDataModel }) => {
     return { icon: Hand, label: appLang.HeroSheet.Inventory.ctxUse, action: () => useItem(hero, item) }
+}
+
+const removeCursesContextOption = (item: EquipmentDataModel<EquipmentSchema>) => {
+    return {
+        icon: Eraser,
+        label: appLang.HeroSheet.Inventory.ctxRemoveCurses,
+        action: async () => {
+            const curses = item.relicPowers.filter(rel => rel.category.value === 'cursed')
+            for (const curse of curses) {
+                await RelicPowerProcessor.toggleRelicEffect(item.parent as any, curse as any)
+            }
+            const message = localizeString(appLang.Notifications.cursesLifted, { itemName: item.parent.name })
+            const owner = item.parent.parent as any
+            const userIds = (game.users?.filter(user => !user.isGM && owner?.testUserPermission?.(user, "OWNER")) ?? []).map(user => user.id)
+            if (userIds.length > 0) {
+                game.socket?.emit(`system.${sys_id}`, { action: "notifyCursesLifted", data: { message, userIds } })
+            }
+        }
+    }
+}
+
+const bindItemContextOption = (item: EquipmentDataModel<EquipmentSchema>) => {
+    return {
+        icon: Link,
+        label: item.isBound ? appLang.HeroSheet.Inventory.ctxUnbind : appLang.HeroSheet.Inventory.ctxBind,
+        action: () => item.toggleBound()
+    }
 }
 
 const viewItemSheetContextOption = (item: EquipmentDataModel<EquipmentSchema>) => {
@@ -292,10 +330,6 @@ export const deleteItemStack = async (actor: any, itemIds: string[]) => {
 /**
  * Updates the given items' sort properties according to user preference.
  * Places items into containers.
- * @param actor 
- * @param dragItem 
- * @param targetItem 
- * @param siblings 
  */
 export const inventoryItemDragDropHandler = async (
     actor: ActorDataModel<BaseActorSchema> | null,
@@ -303,31 +337,36 @@ export const inventoryItemDragDropHandler = async (
     targetItem: EquipmentDataModel<EquipmentSchema>,
     siblings: EquipmentDataModel<EquipmentSchema>[]
 ) => {
-    if (actor === undefined) return
+    if (!actor || !dragItem || !targetItem) return
 
     if (targetItem.parent.type === 'container' && dragItem.parent.type !== 'container' && !dragItem.isEquipped) {
         addItemToContainer(targetItem as ContainerDataModel, dragItem.parent)
     }
     else {
-        const sortBefore = siblings.indexOf(targetItem) < siblings.indexOf(dragItem)
-        const sorted = foundry.utils.performIntegerSort(dragItem.parent, {
-            target: targetItem.parent,
-            sortBefore: sortBefore,
-            siblings: siblings.map(it => it.parent)
-        })
-
-        const sortingUpdate = sorted.map((it: any) => {
-            const update = it.update
-            update._id = it.target._id
-            return update
-        })
-
-        if (dragItem.bulk.isStackable && targetItem.bulk.isStackable && dragItem.parent.name === targetItem.parent.name) {
+        if (dragItem.bulk.isStackable && targetItem.bulk.isStackable && dragItem.parent.name === targetItem.parent.name && dragItem.parent.id !== targetItem.parent.id) {
             await targetItem.parent.update({ 'system.bulk.quantity': targetItem.bulk.quantity + dragItem.bulk.quantity })
             await deleteItemStack(actor, [dragItem.parent.id])
+            return
         }
-        else if (dragItem.parent.id !== targetItem.parent.id) {
-            await actor?.parent?.updateEmbeddedDocuments("Item", sortingUpdate)
+
+        if (dragItem.parent.id === targetItem.parent.id) return
+
+        const ordered = siblings.map(it => it.parent).filter(it => it.id !== dragItem.parent.id)
+        const targetIndex = ordered.findIndex(it => it.id === targetItem.parent.id)
+        if (targetIndex < 0) return
+
+        const dragIndex = siblings.findIndex(it => it.parent.id === dragItem.parent.id)
+        const targetOriginalIndex = siblings.findIndex(it => it.parent.id === targetItem.parent.id)
+        const movingDown = dragIndex >= 0 && dragIndex < targetOriginalIndex
+        ordered.splice(movingDown ? targetIndex + 1 : targetIndex, 0, dragItem.parent)
+
+        const sortingUpdate = ordered
+            .map((it, index) => ({ _id: it.id, sort: (index + 1) * 1000, current: it.sort }))
+            .filter(it => it.sort !== it.current)
+            .map(({ _id, sort }) => ({ _id, sort }))
+
+        if (sortingUpdate.length) {
+            await actor.parent?.updateEmbeddedDocuments("Item", sortingUpdate)
         }
     }
 }

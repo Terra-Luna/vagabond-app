@@ -92,7 +92,7 @@
           "appliedEffect": {
             "effect": "burning",
             "duration": "Cd4",
-            "damageType": "fire"
+            "damageType": "holy"
           },
           "beingTypes": []
         },
@@ -135,8 +135,8 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.2.160",
     "createdTime": 1790013191890,
-    "modifiedTime": 1793503707206,
-    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "modifiedTime": 1793508339548,
+    "lastModifiedBy": "pcHXNIbwXTDCVlqw",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null

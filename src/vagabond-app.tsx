@@ -165,6 +165,12 @@ Hooks.once("ready", async () => {
             if (typeof packet.data?.message === "string") ui.notifications?.info(packet.data.message)
             return
         }
+        if (packet?.action === "notifyCursesLifted") {
+            if (packet.data?.userIds?.includes(game.user?.id) && typeof packet.data.message === "string") {
+                showConfirmationDialog({ title: appLang.Notifications.cursesLiftedTitle, description: packet.data.message, confirmText: "OK", variant: "info" })
+            }
+            return
+        }
         if (!game.user?.isActiveGM) return
 
         const activeGM = game.users?.activeGM
@@ -233,7 +239,7 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
      * the existing matching item (by name) and increase its quantity.
      */
     if (actor && isInventoryItem(item)) {
-        item.updateSource({ 'system.isEquipped': false })
+        item.updateSource({ 'system.isEquipped': false, 'system.isBound': false })
         if (item.system.bulk.isStackable && !item.flags[sys_id]?.["item-stack-id"]) {
             const stack = actor.items.find((it: any) => it.name === item.name)
 
@@ -293,9 +299,9 @@ Hooks.on("createItem", async (item, _options, _userId) => {
          * Set some default sorting values to make drag/drop reordering smoother.
          */
         if (isInventoryItem(item)) {
-            const items = parent.items
-            const newSortVal = Math.max(...(items.map(function (i) { return i.sort }))) + 1000
-            item.update({ 'sort': newSortVal })
+            const others = parent.items.filter(i => i.id !== item.id)
+            const newSortVal = Math.max(0, ...others.map(i => i.sort)) + 1000
+            await item.update({ 'sort': newSortVal })
         }
 
         if (item.system instanceof StartingPackDataModel && parent.system instanceof HeroDataModel) {

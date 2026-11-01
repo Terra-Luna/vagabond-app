@@ -88,7 +88,7 @@ export class SkillCheck {
             heroMods = foundry.utils.deepClone(hero.modifiers)
 
             if (args.item) {
-                RelicPowerProcessor.applyRelicPowers(args.item.relicPowers as any, heroMods, { skillTrained: hero.skills[args.skill]?.trained ?? false })
+                RelicPowerProcessor.applyRelicPowers(RelicPowerProcessor.getEffectivePowers(args.item) as any, heroMods, { skillTrained: hero.skills[args.skill]?.trained ?? false })
             }
 
             skillMods = heroMods.skillCheck[args.skill]

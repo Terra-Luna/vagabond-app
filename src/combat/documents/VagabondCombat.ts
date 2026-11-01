@@ -183,6 +183,7 @@ export class VagabondCombatant<T extends Combatant.SubType = "base"> extends Com
             const isBurning = !!CountdownManager.getAll().find(countdown =>
                 countdown.result.actorUuid === actor.uuid &&
                 countdown.result.status === "burning" &&
+                countdown.result.duration > 0 &&
                 (countdown.result.tokenUuid ? countdown.result.tokenUuid === this.token?.uuid : true)
             )
             const currentBurning =

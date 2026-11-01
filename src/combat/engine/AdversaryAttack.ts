@@ -1,14 +1,15 @@
-import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { getFollowerContext } from "../../model/actor/util/NpcDataModelUtil"
 import { appLang } from "../../utils/lang"
-import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { AppliedFx, Attack, AttackResolutionArgs } from "./Attack"
-import { HeroAttack } from "./HeroAttack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
-import { buildManualSaveResult, SkillCheck, SkillCheckResult } from "./roll/SkillCheck"
+import { SkillCheck, SkillCheckResult } from "./roll/SkillCheck"
+import { applyAdversaryDamageMods } from "./util/adversary-damage-mods"
 import type { AttackSnapshot } from "./util/attack-serializer"
 import { serializeAttack } from "./util/attack-serializer"
+import {
+    isDamagedAfterSave, isHalvedBySave, overrideTargetSave, recordTargetSave, rerollTargetSave, rollTargetSave
+} from "./util/save-state"
 
 export type SavingThrowType = 'reflex' | 'endure' | 'will' | 'defend'
 
@@ -47,11 +48,10 @@ export class AdversaryAttack extends Attack {
         args: AdversaryAttackArgs,
         targetIds?: string[]
     ) {
-        super(args.attackName, actor, targetIds, new DamageRoll({
+        super(args.attackName, actor, targetIds, DamageRoll.forAdversary({
             atkName: args.attackName,
             dmgType: args.dmgType,
-            dice: args.dice,
-            weaknessDie: args.dice[0] ? { faces: args.dice[0].faces, count: 1 } : undefined
+            dice: args.dice
         }))
         this.saveTypes = args.saveTypes ?? []
         this.description = args.description ?? ''
@@ -77,77 +77,40 @@ export class AdversaryAttack extends Attack {
             await this.rollDamage(this.skillCheck?.result?.outcome === appLang.RollResult.crit)
         }
         await this.save(serializeAttack)
-        await sendVagabondChatCard(
-            this.actor,
-            "InteractiveAttackChatCard",
-            { actorId: this.actor.id!, attackId: this.id },
-            [...this.skillCheck?.result?.rolls ?? [], ...this.damageRoll?.result?.rolls ?? []]
-        )
+        await this.postChatCard([...this.skillCheck?.result?.rolls ?? [], ...this.damageRoll?.result?.rolls ?? []])
     }
 
     override async rollDamage(isCrit?: boolean) {
-        const dmgMods = (this.actor.system as any)?.modifiers?.damage?.out
-        if (dmgMods && this.damageRoll) {
-            this.damageRoll.flatDmgBonus += dmgMods.global.bonus.flat ?? 0
-            this.damageRoll.perDieDmgBonus += dmgMods.global.bonus.perDie ?? 0
-        }
-        if (this.damageRoll && this.damageRoll.dice.length > 0 && !this.damageRoll?.result) {
-            await this.damageRoll.roll(isCrit, this.hasWeakTarget)
-            if (this.damageRoll && this.damageRoll.result) {
-                this.damageRoll.result.total += this.damageRoll.flatDmgBonus + (this.damageRoll.perDieDmgBonus * this.damageRoll.dice.length)
-            }
+        const damageRoll = this.damageRoll
+        if (!damageRoll || damageRoll.result) return
+
+        const { alwaysWeak } = applyAdversaryDamageMods(this.actor, damageRoll, this.isSpellAttack)
+        if (await Attack.rollDamageOnce(damageRoll, isCrit, this.targetIds, alwaysWeak) && this.damageRoll?.result) {
+            this.damageRoll.result.total += this.damageRoll.flatDmgBonus
         }
     }
 
     async rollSave(targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
-        // Defend is offered whenever a Reflex save is allowed.
-        const isAllowed = saveType === 'defend' ? this.saveTypes.includes('reflex') : this.saveTypes.includes(saveType)
-        if (!isAllowed || this.saveResults[targetId]) return
-
-        const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
-        if (!targetActor) return
-
-        const follower = getFollowerContext(targetActor)
-        const hero = (follower?.hero ?? targetActor).system as HeroDataModel
-
-        let result: SkillCheckResult
-        if (follower) {
-            result = await new SkillCheck(hero, { type: 'save', skill: follower.skill, clickEvent: clickEvent as any }).roll()
-        }
-        else if (saveType === 'defend') {
-            const defense = await HeroAttack.rollDefense(hero, { clickEvent })
-            if (!defense) return
-            result = defense.result
-            this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: defense.armorBonus }
-        } else {
-            result = await new SkillCheck(hero, { type: 'save', skill: saveType, clickEvent: clickEvent as any }).roll()
-        }
-
-        this.saveResults = { ...this.saveResults, [targetId]: result }
-        await this.save(serializeAttack)
-
+        const result = await rollTargetSave(this, targetId, saveType, clickEvent)
+        if (result) await this.saveOrAutoResolve(serializeAttack)
         return result
+    }
+
+    /**
+     * Every target has saved and takes no damage, so there's nothing left to apply.
+     */
+    protected override get isNegatedForAllTargets(): boolean {
+        return this.targetIds.length > 0
+            && this.targetIds.every(id => !!this.saveResults[id] && !this.shouldApplyDamageToTarget(id))
     }
 
     /**
      * Injects a save rolled from the Hero sheet (or wherever) into the attack's chat card save results.
      */
     async recordSaveResult(targetId: string, saveType: SavingThrowType, result: SkillCheckResult, armorBonus?: number): Promise<boolean> {
-        const isAllowed = saveType === 'defend' ? this.saveTypes.includes('reflex') : this.saveTypes.includes(saveType)
-        if (this.isResolved || !this.targetIds.includes(targetId) || !isAllowed) return false
-
-        const existing = this.saveResults[targetId]
-        if (existing) {
-            if (existing.outcome !== appLang.RollResult.failure || this.rerolledSaveTargetIds.includes(targetId)) return false
-            this.rerolledSaveTargetIds = [...this.rerolledSaveTargetIds, targetId]
-            this.defenseArmorBonuses = Object.fromEntries(
-                Object.entries(this.defenseArmorBonuses).filter(([id]) => id !== targetId)
-            )
-        }
-
-        if (saveType === 'defend') this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: armorBonus ?? 0 }
-        this.saveResults = { ...this.saveResults, [targetId]: result }
-        await this.save(serializeAttack)
+        if (this.isResolved || !this.targetIds.includes(targetId)) return false
+        if (!recordTargetSave(this, targetId, saveType, result, armorBonus)) return false
+        await this.saveOrAutoResolve(serializeAttack)
         return true
     }
 
@@ -155,52 +118,13 @@ export class AdversaryAttack extends Attack {
      * GM override: sets (or replaces) a target's save outcome.
      */
     async setSaveOutcome(targetId: string, outcome: string): Promise<void> {
-        const skill = this.saveTypes.find(type => type !== 'defend') ?? 'reflex'
-        this.saveResults = { ...this.saveResults, [targetId]: buildManualSaveResult(skill, outcome) }
-        this.defenseArmorBonuses = Object.fromEntries(
-            Object.entries(this.defenseArmorBonuses).filter(([id]) => id !== targetId)
-        )
-        await this.save(serializeAttack)
+        overrideTargetSave(this, targetId, outcome)
+        await this.saveOrAutoResolve(serializeAttack)
     }
 
-    /**
-     * Spends a Luck to reroll a failed save with the same skill as
-     * the original attempt. Only one reroll per target is allowed via
-     * this method. GM's can override the save outcome directly if needed.
-     */
     async rerollSave(targetId: string): Promise<SkillCheckResult | undefined> {
-        const existing = this.saveResults[targetId]
-        if (!existing || existing.outcome !== appLang.RollResult.failure || this.rerolledSaveTargetIds.includes(targetId)) return
-
-        const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
-        if (!targetActor) return
-
-        const luckActor = getFollowerContext(targetActor)?.hero ?? targetActor
-        const hero = luckActor.system as HeroDataModel
-        const luck = hero.statuses?.counters?.luck ?? 0
-        if (luck <= 0) return
-
-        await luckActor.update(
-            { 'system.statuses.counters.luck': luck - 1 } as Record<string, number>,
-            { ['skipTrackerChatCard' as string]: true }
-        )
-
-        const favorHinder = existing.favorHinder as 'favor' | 'hinder' | 'none'
-
-        let result: SkillCheckResult
-        if (this.defenseArmorBonuses[targetId] !== undefined) {
-            const defense = await HeroAttack.rollDefense(hero, { favorHinder })
-            if (!defense) return
-            result = defense.result
-            this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: defense.armorBonus }
-        }
-        else {
-            result = await new SkillCheck(hero, { type: 'save', skill: existing.skill, favorHinder }).roll()
-        }
-        this.saveResults = { ...this.saveResults, [targetId]: result }
-        this.rerolledSaveTargetIds = [...this.rerolledSaveTargetIds, targetId]
-        await this.save(serializeAttack)
-
+        const result = await rerollTargetSave(this, targetId)
+        if (result) await this.saveOrAutoResolve(serializeAttack)
         return result
     }
 
@@ -212,26 +136,12 @@ export class AdversaryAttack extends Attack {
         return this.defenseArmorBonuses[targetId] ?? 0
     }
 
-    /**
-     * A target who succeeded (or crit) their saving throw takes no damage. A defense check never
-     * negates damage outright; it only adds armor.
-     */ 
     protected override shouldApplyDamageToTarget(targetId: string): boolean {
-        const result = this.saveResults[targetId]
-        if (this.defenseArmorBonuses[targetId] !== undefined) {
-            return true
-        }
-        else {
-            return !result
-                || result.outcome === appLang.RollResult.failure
-                || (result.outcome === appLang.RollResult.success && this.halfDamageOnSave)
-        }
+        return super.shouldApplyDamageToTarget(targetId) && isDamagedAfterSave(this, targetId)
     }
 
     protected override isHalfDamageForTarget(targetId: string): boolean {
-        return this.halfDamageOnSave
-            && this.defenseArmorBonuses[targetId] === undefined
-            && this.saveResults[targetId]?.outcome === appLang.RollResult.success
+        return isHalvedBySave(this, targetId)
     }
 
     // Effects only apply to targets who failed (or didn't make) a save and still took damage.

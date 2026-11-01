@@ -43,7 +43,7 @@
     "isRation": false,
     "isMaterials": false,
     "isAlchemyTools": false,
-    "isWearable": true
+    "isWearable": false
   },
   "effects": [],
   "folder": null,
@@ -56,10 +56,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.1",
+    "systemVersion": "0.2.160",
     "createdTime": 1790021081953,
-    "modifiedTime": 1791481006474,
-    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "modifiedTime": 1793516033983,
+    "lastModifiedBy": "pcHXNIbwXTDCVlqw",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

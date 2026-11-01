@@ -1,5 +1,5 @@
 {
-  "name": "Wolf in Sheep's CLothing",
+  "name": "Wolf in Sheep's Clothing",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
@@ -305,7 +305,7 @@
     ]
   },
   "prototypeToken": {
-    "name": "Wolf in Sheep's CLothing",
+    "name": "Wolf in Sheep's Clothing",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -409,7 +409,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.31",
     "createdTime": 1790192374312,
-    "modifiedTime": 1790192829513,
+    "modifiedTime": 1793520893701,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

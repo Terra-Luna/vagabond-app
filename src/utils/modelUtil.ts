@@ -30,6 +30,14 @@ export const getCanvasToken = (id): Token | undefined => {
     return canvas?.tokens?.get(id)
 }
 
+/**
+ * The actor behind a token on the active scene (works for unlinked tokens, unlike game.actors).
+ */
+export const getTargetActor = (tokenId: string | undefined | null): Actor | undefined => {
+    if (!tokenId) return undefined
+    return canvas?.scene?.tokens?.get(tokenId)?.actor ?? undefined
+}
+
 export const isPathOfType = (obj: any, path: string, expectedType: "string" | "number" | "boolean" | "object" | "array"): boolean => {
     const value = foundry.utils.getProperty(obj, path) ?? foundry.utils.getProperty(obj, path.split(".").slice(0, -1).join(".") ?? "")
     return expectedType === "array"

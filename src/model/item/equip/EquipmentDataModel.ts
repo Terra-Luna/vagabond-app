@@ -22,6 +22,7 @@ const baseEquipmentSchema = () => {
         }),
         isEquippable: new fields.BooleanField({ initial: false }),
         isEquipped: new fields.BooleanField({ initial: false }),
+        isBound: new fields.BooleanField({ initial: false }),
         isConsumable: new fields.BooleanField({ initial: false }),
         lightSourceData: new fields.SchemaField({
             isLightSource: new fields.BooleanField({ initial: false }),
@@ -51,7 +52,8 @@ const baseEquipmentSchema = () => {
                         duration: new fields.StringField({ ...optionalString }),
                         damageType: new fields.StringField({ ...optionalString })
                     }, { required: false, nullable: true, initial: null }),
-                    beingTypes: new fields.ArrayField(new fields.StringField({ ...optionalString }), { initial: [] })
+                    beingTypes: new fields.ArrayField(new fields.StringField({ ...optionalString }), { initial: [] }),
+                    damageType: new fields.StringField({ ...optionalString })
                 }),
                 goldValue: new fields.NumberField({ ...requiredInteger }),
                 bound: new fields.BooleanField({ initial: false }),
@@ -67,6 +69,7 @@ export type EquipmentSchema = ReturnType<typeof baseEquipmentSchema> & BaseItemS
 export abstract class EquipmentDataModel<T extends EquipmentSchema> extends ItemDataModel<T> {
     declare isEquippable: boolean
     declare isEquipped: boolean
+    declare isBound: boolean
     declare totalValue: Coins
 
     static override defineSchema() {
@@ -166,13 +169,7 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         }
     }
 
-    toggleEquipped = async (skipCurseMessage?: boolean, bypassCurseCheck?: boolean) => {
-        if (this.isEquipped && this.isCursed() && !bypassCurseCheck) {
-            if (!skipCurseMessage) {
-                ui.notifications?.info(localizeString(appLang.Notifications.boundItemCannotBeRemoved, { name: this.parent.name }))
-            }
-            return false
-        }
+    toggleEquipped = async () => {
         const updates = { 'system.isEquipped': !this.isEquipped }
         if (this.parent.type === 'weapon') {
             updates['system.grip.state'] = (this as any).grip.style === 'HH' ? 'HH' : 'H'
@@ -185,8 +182,41 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         return this.relicPowers.length > 0
     }
 
+    /** True if the item has at least one power that requires binding. */
     isBoundRelic = (): boolean => {
         return this.relicPowers.some(rel => rel.bound)
+    }
+
+    /** True if the hero is currently bound to this item. */
+    isBoundToHero = (): boolean => {
+        return this.isBound && this.isBoundRelic()
+    }
+
+    /** Relic powers apply when bound (bindable relics) or when equipped (all other relics). */
+    isRelicActive = (): boolean => {
+        return this.isRelic() && (this.isBoundRelic() ? this.isBound : this.isEquipped)
+    }
+
+    /** Relic powers that are visible and applied: bindable relics owned by a hero are inert until bound. */
+    effectiveRelicPowers = () => {
+        const isHeroOwned = this.parent?.parent?.type === 'hero'
+        return (isHeroOwned && this.isBoundRelic() && !this.isBound) ? [] : this.relicPowers
+    }
+
+    async toggleBound() {
+        if (this.isBound && this.isCursed()) {
+            ui.notifications?.info(localizeString(appLang.Notifications.boundItemCannotBeRemoved, { name: this.parent.name }))
+            return
+        }
+        const hero = this.parent.parent as any
+        if (!this.isBound && hero?.type === 'hero') {
+            const limit = hero.system.boundRelicLimit ?? 3
+            if (hero.system.boundRelics().length >= limit) {
+                ui.notifications?.warn(localizeString(appLang.Notifications.boundRelicLimitExceeded, { limit: limit.toString() }))
+                return
+            }
+        }
+        await this.parent.update({ 'system.isBound': !this.isBound })
     }
 
     isCursed = (): boolean => {

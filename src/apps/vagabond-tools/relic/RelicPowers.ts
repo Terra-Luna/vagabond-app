@@ -11,7 +11,8 @@ export interface RelicPower {
             value: number
         }[],
         appliedEffect?: { effect: string, duration: string, damageType?: string } | null,
-        beingTypes?: string[]
+        beingTypes?: string[],
+        damageType?: string
     },
     goldValue: number,
     bound: boolean,
@@ -375,7 +376,7 @@ export class RelicPowers {
                 value: 'vuln-1',
                 label: 'Vulnerability -1',
                 modifiers: [{
-                    selector: ['system.rating'], value: -1
+                    selector: ['system.armor.rating'], value: -1
                 }]
             },
             types: ['armor'],
@@ -390,7 +391,7 @@ export class RelicPowers {
                 value: 'vuln-2',
                 label: 'Vulnerability -2',
                 modifiers: [{
-                    selector: ['system.rating'], value: -2
+                    selector: ['system.armor.rating'], value: -2
                 }]
             },
             types: ['armor'],
@@ -405,7 +406,7 @@ export class RelicPowers {
                 value: 'vuln-3',
                 label: 'Vulnerability -3',
                 modifiers: [{
-                    selector: ['system.rating'], value: -3
+                    selector: ['system.armor.rating'], value: -3
                 }]
             },
             types: ['armor'],

@@ -8,13 +8,23 @@ export interface PolymorphFlag {
     casterId: string,
     duration: 'focus' | 'continual' | 'turn',
     statBlock: PolymorphStatBlock,
-    equipHistory?: (string | null)[]
+    equipHistory?: (string | null)[],
+    originalTokens?: Record<string, TokenSize>
+}
+
+export interface TokenSize {
+    width: number,
+    height: number,
+    depth?: number,
+    scaleX: number,
+    scaleY: number
 }
 
 interface PolymorphStatBlock {
     id: string,
     name: string,
     tokenImg: string,
+    token?: TokenSize,
     items: any[],
     system: NpcDataModel
 }
@@ -63,6 +73,7 @@ export class PolymorphUtil {
                     id: form.id,
                     name: form.name,
                     tokenImg: form.prototypeToken?.texture?.src || form.prototypeToken?.ring?.subject?.texture || form.img,
+                    token: PolymorphUtil.readTokenSize(form.prototypeToken),
                     items: form.items.filter((it: any) => it.type === "feature"),
                     system: form.system.toObject()
                 }
@@ -74,7 +85,7 @@ export class PolymorphUtil {
         }
 
         for (const target of targets) {
-            await target.system.setPolymorph(polymorphFlag)
+            await target.system.setPolymorph(polymorphFlag && PolymorphUtil.withOriginalTokens(polymorphFlag, target))
         }
 
         /**
@@ -83,6 +94,47 @@ export class PolymorphUtil {
         if (polymorphFlag && (caster?.type as string) !== "hero") {
             StatusEffectUtil.toggleStatusEffectOnce(caster, "focusing", true)
         }
+    }
+
+    static readTokenSize = (token: any): TokenSize => ({
+        width: token?.width ?? 1,
+        height: token?.height ?? 1,
+        depth: token?.depth,
+        scaleX: token?.texture?.scaleX ?? 1,
+        scaleY: token?.texture?.scaleY ?? 1
+    })
+
+    static tokenSizeUpdate = (size?: TokenSize): Record<string, number> => size ? {
+        width: size.width,
+        height: size.height,
+        ...(size.depth !== undefined ? { depth: size.depth } : {}),
+        'texture.scaleX': size.scaleX,
+        'texture.scaleY': size.scaleY
+    } : {}
+
+    /**
+     * Shifts the token so a size change grows/shrinks around its current center instead of its top-left corner.
+     */
+    static centeredPositionUpdate = (tokenDoc: any, size?: TokenSize): Record<string, number> => {
+        if (!size) return {}
+        const gridSize = tokenDoc.parent?.grid?.size ?? 100
+        return {
+            x: Math.round(tokenDoc.x + ((tokenDoc.width ?? 1) - size.width) * gridSize / 2),
+            y: Math.round(tokenDoc.y + ((tokenDoc.height ?? 1) - size.height) * gridSize / 2)
+        }
+    }
+
+    /**
+     * Each target gets its own copy of the flag with its tokens' original sizes. Sizes already stored by an
+     * earlier polymorph are kept so changing forms still reverts to the real original.
+     */
+    private static withOriginalTokens = (flag: PolymorphFlag, target: Actor): PolymorphFlag => {
+        const previous = (target.getFlag(sys_id, "polymorph") as PolymorphFlag | undefined)?.originalTokens ?? {}
+        const originalTokens: Record<string, TokenSize> = {}
+        for (const token of target.getActiveTokens(false, true) as any[]) {
+            originalTokens[token.id] = previous[token.id] ?? PolymorphUtil.readTokenSize(token)
+        }
+        return { ...flag, originalTokens }
     }
 
     /**

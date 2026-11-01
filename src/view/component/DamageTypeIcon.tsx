@@ -1,4 +1,4 @@
-import { Anvil, Brain, Cross, Droplets, Flame, FlaskRound, Hammer, HeartOff, Section, Shield, Skull, Snowflake, Sparkle, Sword, Swords, Target, Wand2, Zap } from "lucide-react"
+import { Anvil, Brain, Cross, Crosshair, Droplets, Flame, FlaskRound, Hammer, HeartOff, Section, Shield, Skull, Snowflake, Sparkle, Sword, Swords, Wand2, Zap } from "lucide-react"
 import { ReactElement } from "react"
 
 import { appLang } from "../../utils/lang"
@@ -70,7 +70,7 @@ export const DamageTypeIcon = ({ dmgType, size, title }: { dmgType: string, size
             break
         }
         case "pierce": {
-            element = <Target size={size} strokeWidth={2} className='text-text-primary' />
+            element = <Crosshair size={size} strokeWidth={2} className='text-text-primary' />
             break
         }
         case "poison": {

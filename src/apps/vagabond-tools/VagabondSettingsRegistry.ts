@@ -4,6 +4,7 @@ import { appLang } from "../../utils/lang"
 import { XpQuestionnaireConfigApp } from "../level-up/questionnaire/XpQuestionnaireConfigApp"
 import { RelicPowers } from "./relic/RelicPowers"
 import { CompendiumAccessor } from "./usecase/CompendiumAccessor"
+import { CountdownManager } from "./usecase/CountdownManager"
 
 /**
  * These settings show up in Foundry's system settings main menu.
@@ -21,7 +22,6 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerPlayerRelicForgeAccess()
         VagabondSettingsRegistry.registerShowTrainingSelectionToggle()
         VagabondSettingsRegistry.registerAllowLateLuckStudy()
-        VagabondSettingsRegistry.registerPolymorphEquipPrefs()
         VagabondSettingsRegistry.registerCombatAutoFlanking()
 
         VagabondSettingsRegistry.registerItemShopToggle()
@@ -210,7 +210,8 @@ export class VagabondSettingsRegistry {
             scope: "world",
             config: false,
             type: Array,
-            default: []
+            default: [],
+            onChange: () => { if (game.user?.isActiveGM) CountdownManager.syncBurningStatuses() }
         });
 
         (game.settings as any).register(sys_id, "countdownPermissionLevel" as any, {
@@ -269,25 +270,6 @@ export class VagabondSettingsRegistry {
             config: true,
             type: Boolean,
             default: false
-        })
-    }
-
-    private static registerPolymorphEquipPrefs() {
-        game.settings?.register(sys_id, "polymorphEquipPrefs" as any, {
-            name: appLang.Settings.polymorphEquipPrefs,
-            hint: appLang.Settings.polymorphEquipPrefsHint,
-            scope: "world",
-            config: true,
-            type: String,
-            default: 'unbound',
-            choices: {
-                "none": appLang.Settings.polymorphEquipPrefsNone,
-                "weapons": appLang.Settings.polymorphEquipPrefsWeapons,
-                "weaponsArmor": appLang.Settings.polymorphEquipPrefsWeaponsArmor,
-                "unbound": appLang.Settings.polymorphEquipPrefsUnbound,
-                "all": appLang.Settings.polymorphEquipPrefsUnequipAll
-            },
-            onChange: () => { VagabondSettingsRegistry.refreshActorSheets() }
         })
     }
 

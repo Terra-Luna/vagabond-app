@@ -45,6 +45,7 @@ export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataMode
                                 {RelicPowerProcessor.getRelicAppliedEffects([relic as RelicPower])
                                     .some(fx => fx.effect === 'burning') && <RelicDamageTypeSelect item={item} relic={relic as RelicPower} />}
                                 {RelicPowerProcessor.hasBeingTypeChoice(relic as RelicPower) && <RelicBeingTypeSelect item={item} relic={relic as RelicPower} />}
+                                {RelicPowerProcessor.isResistance(relic as RelicPower) && <RelicResistanceSelect item={item} relic={relic as RelicPower} />}
                                 {RelicPowerProcessor.isNiche(relic as RelicPower) && <RelicNicheInput item={item} relic={relic as RelicPower} />}
                             </div>
                         ))}
@@ -79,6 +80,18 @@ const RelicDamageTypeSelect = ({ item, relic }: { item: Item & { system: Equipme
     return (
         <Select value={current} onChange={e => RelicPowerProcessor.setRelicDamageType(item, relic, e.target.value)}>
             <Option value="">{`Weapon (${appLang.DamageTypes[(item.system as any).damage?.type] ?? '-'})`}</Option>
+            {options.map(it => <Option key={it} value={it}>{appLang.DamageTypes[it]}</Option>)}
+        </Select>
+    )
+}
+
+const RelicResistanceSelect = ({ item, relic }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower }) => {
+    const excluded = ["none", "mana", "fatigue"]
+    const options = Object.keys(appLang.DamageTypes).filter(it => !excluded.includes(it))
+
+    return (
+        <Select value={relic.power.damageType ?? ''} onChange={e => RelicPowerProcessor.setRelicResistanceType(item, relic, e.target.value)}>
+            <Option value="">Select Damage Type</Option>
             {options.map(it => <Option key={it} value={it}>{appLang.DamageTypes[it]}</Option>)}
         </Select>
     )

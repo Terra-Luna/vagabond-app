@@ -4,6 +4,7 @@ import type { VagabondCombatant } from "../../../combat/documents/VagabondCombat
 import { CountdownResult } from "../../../combat/engine/roll/CountdownResult"
 import { CountdownRoll } from "../../../combat/engine/roll/CountdownRoll"
 import { isImmuneToBurning } from "../../../combat/engine/util/burning-mitigation"
+import { StatusEffectUtil } from "../../../model/actor/util/StatusEffectUtil"
 import { sys_id } from "../../../utils/foundryUtils"
 import {
     canInteractWithOverlayObject, checkPermissionLevel, findOpenOverlaySlots, isPermissionLevelEveryone, isVisibleInCurrentScene, OverlayObjectPermissions, updateSetting
@@ -40,11 +41,41 @@ export class CountdownManager {
         const previous = CountdownManager.getAll()
         await updateSetting("countdowns", countdowns)
         await CountdownManager.clearExpiredStatuses(previous, countdowns)
+        CountdownManager.syncBurningStatuses()
+    }
+
+    static syncBurningStatuses() {
         const combatants = game.combat?.combatants.contents as VagabondCombatant[]
         if (combatants) {
             for (const combatant of combatants) {
                 combatant.updateBurningStatus()
             }
+        }
+        CountdownManager.removeStaleBurning()
+    }
+
+    /**
+     * Removes Burning from actors and tokens (in or out of combat) that no longer have an active burning countdown.
+     */
+    private static removeStaleBurning() {
+        const burning = CountdownManager.getAll()
+            .filter(cd => cd.result.status === "burning" && cd.result.duration > 0)
+            .map(cd => cd.result)
+
+        const targets = new Map<string, { actor: any, tokenUuid?: string }>()
+        for (const actor of (game.actors?.contents ?? []) as any[]) {
+            targets.set(actor.uuid, { actor })
+        }
+        for (const token of ((canvas as any)?.tokens?.placeables ?? []) as any[]) {
+            if (token.actor) targets.set(token.document.uuid, { actor: token.actor, tokenUuid: token.document.uuid })
+        }
+
+        for (const { actor, tokenUuid } of targets.values()) {
+            const hasBurningEffect = actor.effects?.some((e: any) => e.statuses?.has?.("burning") || e._id === "vBurning00000000")
+            if (!hasBurningEffect) continue
+            const stillBurning = burning.some(r =>
+                r.actorUuid === actor.uuid && (!r.tokenUuid || !tokenUuid || r.tokenUuid === tokenUuid))
+            if (!stillBurning) StatusEffectUtil.toggleStatusEffectOnce(actor, "burning", false)
         }
     }
 

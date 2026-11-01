@@ -36,11 +36,13 @@
           "modifiers": [
             {
               "selector": [
-                "system.rating"
+                "system.armor.rating"
               ],
               "value": 1
             }
-          ]
+          ],
+          "appliedEffect": null,
+          "beingTypes": []
         },
         "goldValue": 100,
         "description": "+1 bonus to Armor.",
@@ -48,7 +50,7 @@
       }
     ],
     "armorType": "medium",
-    "rating": 2,
+    "rating": 1,
     "mightReq": 4,
     "material": "mythral"
   },
@@ -63,10 +65,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.2.160",
     "createdTime": 1790013421933,
-    "modifiedTime": 1790023201616,
-    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "modifiedTime": 1793515747428,
+    "lastModifiedBy": "pcHXNIbwXTDCVlqw",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

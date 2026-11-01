@@ -44,11 +44,12 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                 <tbody className="font-eskapade">{
                     items.map((item: EquipmentDataModel<EquipmentSchema>, index: number) => {
                         const isEquipped = item.isEquipped
-                        const isBound = item.isBoundRelic()
+                        const isBindable = item.isBoundRelic()
+                        const isBound = item.isBound
                         const isCursed = item.isCursed()
-                        const tooltip = `${isBound && !isEquipped && !isCursed
-                            ? `This item must be Bound to be equipped.\nRequires a 10 minute Ritual.\nLimit: ${(actor as any).boundItemsLimit ?? 3} Bound items`
-                            : `${isBound && isEquipped ? "This item is Bound to you." : ""}`}`
+                        const tooltip = `${isBindable && !isBound && !isCursed
+                            ? `This item can be Bound to you.\nRequires a 10 minute Ritual.\nLimit: ${(actor as any)?.boundRelicLimit ?? 3} Bound items`
+                            : `${isBindable && isBound ? "This item is Bound to you." : ""}`}`
 
                         return (
                             <tr

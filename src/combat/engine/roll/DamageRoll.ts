@@ -120,6 +120,30 @@ export class DamageRoll {
         }
     }
 
+    /**
+     * Builds an Adversary damage roll: its weakness die matches the action's first die.
+     */
+    static forAdversary(args: Omit<DamageRollArgs, 'weaknessDie'>): DamageRoll {
+        return new DamageRoll({
+            ...args,
+            weaknessDie: args.dice[0] ? { faces: args.dice[0].faces, count: 1 } : undefined
+        })
+    }
+
+    /**
+     * Adds a late bonus (e.g. crit armor) to an already rolled result.
+     */
+    addResultBonus(amount: number) {
+        if (!this.result) return
+        this.result.bonus += amount
+        this.result.total += amount
+    }
+
+    clearBonuses() {
+        this.flatDmgBonus = 0
+        this.perDieDmgBonus = 0
+    }
+
     async roll(isCrit?: boolean, includeWeaknessDie: boolean = false): Promise<DamageRollResult> {
         const straightRolls = this.dice.filter(d => !d.explodesOn || d.explodesOn.length === 0).map(d => new DiceRoll(d))
         const explodingRolls = this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0).map(d => new DiceRoll(d))

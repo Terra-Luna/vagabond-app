@@ -294,7 +294,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             this.system instanceof ActiveEffectDataModel &&
             this.system.requiresEquip
         ) {
-            return !this.parent.system.isEquipped
+            return !(this.parent.system.isEquipped || this.parent.system.isBoundToHero())
         }
 
         return false

@@ -28,15 +28,15 @@ export class DiceRoll {
         const mod = `${this.modifier ? `+${this.modifier}`.replace("+-", "-") : ''}`
         const explode = `${(this.explodesOn?.length ?? 0) > 0 ? `!${this.explodeOnCritOnly ? '*' : ''}` : ''}`
 
-        if (isCrit) this.count += (this.extraDiceOnCrit ?? 0)
+        const count = this.count + (isCrit ? (this.extraDiceOnCrit ?? 0) : 0)
 
         let reroll = ""
         this.reroll?.forEach(rr => {
             reroll += `rr${rr}`
         })
 
-        if (this.count > 0) {
-            return `${this.count}d${this.faces}${reroll}${explode}${mod}`
+        if (count > 0) {
+            return `${count}d${this.faces}${reroll}${explode}${mod}`
         }
         else {
             return `${this.faces}${reroll}${explode}${mod}`
@@ -46,7 +46,7 @@ export class DiceRoll {
     static getItemDamageWithHeroMods = (hero: HeroDataModel, skill: string, item: AlchemicalItemDataModel | WeaponDataModel): DiceRollSchema => {
         const heroMods = foundry.utils.deepClone(hero.modifiers)
         if (item instanceof WeaponDataModel) {
-            RelicPowerProcessor.applyRelicPowers(item.relicPowers as any, heroMods, { skillTrained: hero.skills[skill]?.trained ?? false })
+            RelicPowerProcessor.applyRelicPowers(RelicPowerProcessor.getEffectivePowers(item) as any, heroMods, { skillTrained: hero.skills[skill]?.trained ?? false })
         }
         const mods = heroMods.damage.out
         const isTrained = hero.skills[skill]?.trained ?? false

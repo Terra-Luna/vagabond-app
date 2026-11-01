@@ -2,61 +2,22 @@ import { CountdownManager } from "../../apps/vagabond-tools/usecase/CountdownMan
 import { getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel"
 import { StatusEffectUtil } from "../../model/actor/util/StatusEffectUtil"
-import { physicalDamageTypes } from "../../model/common/sharedSchemas"
 import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
-import { getCanvasToken, getTargetIds } from "../../utils/modelUtil"
+import { getCanvasToken, getTargetActor, getTargetIds } from "../../utils/modelUtil"
+import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { DamageRoll } from "./roll/DamageRoll"
 import type { AttackSnapshot } from "./util/attack-serializer"
 import { isImmuneToBurning } from "./util/burning-mitigation"
+import {
+    AttackResolutionArgs, buildSummaryRow, calculateBonusDamage, computeDamageBreakdown, DamageBreakdown,
+    ExtraDamage, isImmuneToDamage, isImmuneToStatus, isWeakToDamage, TargetDamageSummary
+} from "./util/damage-mitigation"
+
+export type { AttackResolutionArgs, DamageBreakdown, ExtraDamage, TargetDamageSummary } from "./util/damage-mitigation"
+export { damageOverrideKey } from "./util/damage-mitigation"
 
 const FOCUS_DAMAGE_LIMIT = 5
-
-export interface AttackResolutionArgs {
-    isSpellAttack?: boolean
-    bypassArmor?: boolean
-    gmTargetsOnly?: boolean
-    // GM-entered damage totals, keyed by `${subIndex}:${targetId}` (see damageOverrideKey)
-    damageOverrides?: Record<string, number>
-}
-
-export const damageOverrideKey = (targetId: string, subIndex = 0) => `${subIndex}:${targetId}`
-
-export interface ExtraDamage {
-    damageRoll: DamageRoll
-    // Flat damage added to the roll's total (e.g. the caster's beingType bonuses)
-    bonus: number
-    label?: string
-}
-
-export interface DamageBreakdown {
-    damage: number
-    // Damage from imbued spells, already summed into the pre-mitigation total
-    imbueDamage: number
-    // Each imbue's post-resistance damage with its type, for display
-    imbueParts: { dmgType: string, amount: number, bonus: number, label?: string }[]
-    halved: boolean
-    // Effective armor after armor piercing (minimum 0)
-    armor: number
-    armorPiercing: number
-    otherMitigation: number
-    // Damage after mitigation, before bonus damage
-    mitigated: number
-}
-
-export interface TargetDamageSummary extends DamageBreakdown {
-    targetId: string
-    // Index of the combo sub-attack (0 for single attacks)
-    subIndex: number
-    label?: string
-    dmgType: string
-    bonus: number
-    // Damage that will be applied (the GM override if one was entered)
-    total: number
-    calculatedTotal: number
-    isOverridden: boolean
-    healing?: { flat: number, perDie: number, setValue: number }
-}
 
 export interface AppliedFx {
     effect: string
@@ -119,10 +80,35 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     async rollDamage(isCrit?: boolean) {
-        if (this.damageRoll && this.damageRoll.dice.length > 0 && !this.damageRoll?.result) {
-            await this.damageRoll.roll(isCrit, this.hasWeakTarget)
+        if (await Attack.rollDamageOnce(this.damageRoll, isCrit, this.targetIds)) {
             roll3dDice(this.damageRoll?.result?.rolls ?? [])
         }
+    }
+
+    /**
+     * Rolls the damage once (adding the weakness die if any target is weak). Returns whether a roll happened.
+     */
+    protected static async rollDamageOnce(damageRoll: DamageRoll | undefined, isCrit: boolean | undefined, targetIds: string[], alwaysWeak = false): Promise<boolean> {
+        if (!damageRoll || damageRoll.dice.length === 0 || damageRoll.result) return false
+        await damageRoll.roll(isCrit, alwaysWeak || Attack.hasWeakTarget(targetIds, damageRoll))
+        return true
+    }
+
+    protected static hasWeakTarget(targetIds: string[], damageRoll?: DamageRoll): boolean {
+        return targetIds.some(id => isWeakToDamage(id, damageRoll))
+    }
+
+    protected resolveTargetIds(args: AttackResolutionArgs): string[] {
+        return args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []
+    }
+
+    protected async postChatCard(rolls?: Roll[]) {
+        await sendVagabondChatCard(
+            this.actor,
+            "InteractiveAttackChatCard",
+            { actorId: this.actor.id!, attackId: this.id },
+            rolls
+        )
     }
 
     async applyDamageAndResolve(args: AttackResolutionArgs, serialize: (attack: Attack) => AttackSnapshot | undefined) {
@@ -145,9 +131,18 @@ export abstract class Attack<TActor extends Actor = Actor> {
         await this.save(serialize)
     }
 
-    static isImmuneToStatus(actor: Actor | null | undefined, status: string): boolean {
-        const immunities: string[] = (actor?.system as any)?.modifiers?.damage?.in?.statusImmunities ?? []
-        return immunities.includes(status)
+    protected get isNegatedForAllTargets(): boolean { return false }
+
+    /**
+     * Persists the attack, resolving it first if nothing is left to apply.
+     */
+    protected async saveOrAutoResolve(serialize: (attack: Attack) => AttackSnapshot | undefined) {
+        if (!this.isResolved && this.isNegatedForAllTargets) {
+            await this.resolve(serialize)
+        }
+        else {
+            await this.save(serialize)
+        }
     }
 
     protected processDamageRoll(args: AttackResolutionArgs): void | Promise<void> {
@@ -169,19 +164,19 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
     private applyHealing(args: AttackResolutionArgs) {
         for (const row of this.getHealingSummary(args)) {
-            const target = canvas?.scene?.tokens?.get(row.targetId)?.actor
+            const target = getTargetActor(row.targetId)
             if (!target) continue
             this.updateHP(target.system, this.getHP(target.system) + row.total)
         }
     }
 
     private getHealingSummary(args: AttackResolutionArgs): TargetDamageSummary[] {
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
+        const targetIds = this.resolveTargetIds(args)
         const rolled = this.damageRoll?.result?.total ?? 0
         const diceCount = this.damageRoll?.result?.rollSummaries?.length ?? 0
         const rows: TargetDamageSummary[] = []
         for (const id of targetIds) {
-            const target = canvas?.scene?.tokens?.get(id)?.actor
+            const target = getTargetActor(id)
             if (!target) continue
             const mods = (target.system as any)?.modifiers?.healing?.in?.modifier ?? {}
             const flat = Number(mods?.flat ?? 0)
@@ -195,7 +190,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
                 }, 0)
             const setValue = Number(mods?.perDieOverride ?? 0) * diceCount
             const calculated = Math.max(0, setValue > 0 ? setValue : rolled + flat + perDie)
-            const row = Attack.buildSummaryRow(
+            const row = buildSummaryRow(
                 id, 0,
                 { damage: rolled, imbueDamage: 0, imbueParts: [], halved: false, armor: 0, armorPiercing: 0, otherMitigation: 0, mitigated: calculated },
                 0, args, 'healing', undefined
@@ -206,8 +201,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     private applyMana(args: AttackResolutionArgs) {
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
-        this.getActors(targetIds).forEach(target => {
+        this.getActors(this.resolveTargetIds(args)).forEach(target => {
             this.updateMana(
                 target?.system,
                 this.getMana(target?.system) +
@@ -217,9 +211,9 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     private applyFatigueDamage(args: AttackResolutionArgs) {
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
+        const targetIds = this.resolveTargetIds(args).filter(id => this.shouldApplyDamageToTarget(id))
         targetIds.forEach(id => {
-            const actor = canvas?.scene?.tokens?.get(id)?.actor
+            const actor = getTargetActor(id)
             const damage = this.damageRoll?.result?.total
             if (!damage || !actor) return
             actor.update({
@@ -238,7 +232,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
         }
 
         for (const [targetId, adjDamage] of totals) {
-            const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor as any
+            const targetActor = getTargetActor(targetId) as any
             if (!targetActor) continue
 
             const weaknesses = targetActor?.system?.modifiers?.damage?.in?.weaknesses ?? []
@@ -265,30 +259,20 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     /**
-     * Extra damage from the attacker's being-type modifiers (e.g. bonus vs. undead / hellspawn / etc...).
+     * Extra damage from the attacker's being-type modifiers and hit-dice multiplier.
      */
-    protected calculateBonusDamage(targetActor: any, sourceActor: any = this.actor, damageRoll: DamageRoll | undefined = this.damageRoll): number {
-        const beingTypes = [
-            targetActor?.system?.beingType,
-            targetActor?.system?.beingSubtype,
-            targetActor?.system?.ancestry?.beingType,
-            targetActor?.system?.ancestry?.beingSubtype
-        ].filter(Boolean)
+    protected calculateBonusDamage(targetActor: any, sourceActor: any = this.getModifierSourceActor(), damageRoll: DamageRoll | undefined = this.damageRoll): number {
+        return calculateBonusDamage(targetActor, sourceActor, damageRoll)
+    }
 
-        let bonus = 0
-        const actorMods = (sourceActor?.system as any)?.modifiers ?? {}
-        if (actorMods) {
-            const beingTypeMods = beingTypes.map(type => actorMods.damage.out.global.beingType[type]).filter(Boolean)
-            if (beingTypeMods && beingTypeMods.length > 0) {
-                bonus += Math.max(...beingTypeMods.map(mod => mod.bonus.flat))
-                bonus += Math.max(...beingTypeMods.map(mod => mod.bonus.perDie)) * (damageRoll?.result?.rollSummaries.length ?? 0)
-            }
-        }
-        if (damageRoll?.hdMultiplier) {
-            const targetHD = targetActor?.system?.hitDice ?? targetActor?.system?.level?.current ?? 0
-            bonus += targetHD * damageRoll.hdMultiplier
-        }
-        return bonus
+    /**
+     * Follower attacks are rolled by the Hero but use only the follower NPC's own modifiers.
+     * Prefers the canvas token's actor, since unlinked tokens carry their own effects.
+     */
+    protected getModifierSourceActor(): any {
+        if (!this.portraitActorId) return this.actor
+        const tokenActor = canvas?.tokens?.placeables?.find(t => t.actor?.id === this.portraitActorId)?.actor
+        return tokenActor ?? game.actors?.get(this.portraitActorId) ?? this.actor
     }
 
     /**
@@ -300,31 +284,20 @@ export abstract class Attack<TActor extends Actor = Actor> {
         if (!this.damageRoll?.result || dmgType === 'mana' || dmgType === 'fatigue') return []
 
         const summaries: TargetDamageSummary[] = []
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
+        const targetIds = this.resolveTargetIds(args).filter(id => this.shouldApplyDamageToTarget(id))
+
         for (const id of targetIds) {
-            const targetActor = canvas?.scene?.tokens?.get(id)?.actor as any
+            const targetActor = getTargetActor(id)
             if (!targetActor) continue
             const breakdown = this.calculateDamageBreakdown(id, { ...args, isSpellAttack: this.isSpellAttack })
             const bonus = this.calculateBonusDamage(targetActor)
-            summaries.push(Attack.buildSummaryRow(id, 0, breakdown, bonus, args, this.damageRoll?.dmgType ?? '', undefined))
+            summaries.push(buildSummaryRow(id, 0, breakdown, bonus, args, this.damageRoll?.dmgType ?? '', undefined))
         }
         return summaries
     }
 
-    static buildSummaryRow(targetId: string, subIndex: number, breakdown: DamageBreakdown, bonus: number, args: AttackResolutionArgs, dmgType: string, label?: string): TargetDamageSummary {
-        const calculatedTotal = breakdown.mitigated + bonus
-        const override = args.damageOverrides?.[damageOverrideKey(targetId, subIndex)]
-        const isOverridden = override !== undefined
-        return {
-            targetId, subIndex, label, dmgType, ...breakdown, bonus,
-            calculatedTotal,
-            isOverridden,
-            total: isOverridden ? Math.max(0, override) : calculatedTotal
-        }
-    }
-
     protected calculateDamageBreakdown(targetId: string, args: AttackResolutionArgs): DamageBreakdown {
-        const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor as any
+        const targetActor = getTargetActor(targetId)
         const extras: ExtraDamage[] = this.imbues
             .filter(imbue => !imbue.targetIds || imbue.targetIds.includes(targetId))
             .map(imbue => ({
@@ -332,7 +305,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
                 label: imbue.spellName,
                 bonus: this.calculateBonusDamage(targetActor, game.actors?.get(imbue.actorId) ?? this.actor, imbue.damageRoll)
             }))
-        return Attack.computeDamageBreakdown(
+        return computeDamageBreakdown(
             this.damageRoll,
             targetId,
             args,
@@ -343,17 +316,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     protected shouldApplyDamageToTarget(targetId: string): boolean {
-        return !Attack.isImmuneToDamage(targetId, this.damageRoll, this.isSpellAttack)
-    }
-
-    static isImmuneToDamage(targetId: string, damageRoll?: DamageRoll, isCast?: boolean): boolean {
-        const actor = canvas?.scene?.tokens?.get(targetId)?.actor
-        const immunities = (actor?.system as any)?.modifiers?.damage?.in?.immunities ?? []
-
-        if (immunities.includes("magical") && isCast && !physicalDamageTypes().includes(damageRoll?.dmgType ?? "")) return true
-        if (immunities.includes("physical") && physicalDamageTypes().includes(damageRoll?.dmgType ?? "")) return true
-
-        return immunities.includes(damageRoll?.dmgType ?? '')
+        return !isImmuneToDamage(targetId, this.damageRoll, this.isSpellAttack)
     }
 
     /**
@@ -364,114 +327,24 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     /**
-     * A target is weak if it's weak to the damage type, or its being type matches the weapon's Bane power.
-     */
-    static isWeakToDamage(targetId: string, damageRoll?: DamageRoll): boolean {
-        const actor = canvas?.scene?.tokens?.get(targetId)?.actor
-        const weaknesses: string[] = (actor?.system as any)?.modifiers?.damage?.in?.weaknesses ?? []
-        if (!!damageRoll?.dmgType && weaknesses.includes(damageRoll.dmgType)) return true
-
-        const baneTypes = damageRoll?.baneTypes ?? []
-        return baneTypes.length > 0 && Attack.getBeingTypes(actor).some(type => baneTypes.includes(type))
-    }
-
-    /**
      * Whether any target is weak to this attack (i.e. the weakness die should be rolled).
      */
     protected get hasWeakTarget(): boolean {
-        return (this.targetIds ?? []).some(id => Attack.isWeakToDamage(id, this.damageRoll))
-    }
-
-    static getBeingTypes(actor: any): string[] {
-        return [
-            actor?.system?.beingType,
-            actor?.system?.beingSubtype,
-            actor?.system?.ancestry?.beingType,
-            actor?.system?.ancestry?.beingSubtype
-        ].filter(Boolean)
+        return Attack.hasWeakTarget(this.targetIds ?? [], this.damageRoll)
     }
 
     protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
         args.isSpellAttack = this.isSpellAttack
-        return Attack.computeAdjustedDamage(
+        return computeDamageBreakdown(
             this.damageRoll,
             targetId,
             args,
             this.getAdditionalArmorRating(targetId),
             this.isHalfDamageForTarget(targetId)
-        )
+        ).mitigated
     }
 
     protected isHalfDamageForTarget(_targetId: string): boolean { return false }
-
-    /**
-     * Shared damage mitigation (resistances, flat reduction,per-die reduction, armor) for any damage roll.
-     */
-    static computeAdjustedDamage(damageRoll: DamageRoll | undefined, targetId: string, args: AttackResolutionArgs, additionalArmorRating = 0, halfDamage = false): number {
-        return Attack.computeDamageBreakdown(damageRoll, targetId, args, additionalArmorRating, halfDamage).mitigated
-    }
-
-    static computeDamageBreakdown(damageRoll: DamageRoll | undefined, targetId: string, args: AttackResolutionArgs, additionalArmorRating = 0, halfDamage = false, extras: ExtraDamage[] = []): DamageBreakdown {
-        const actor = canvas?.scene?.tokens?.get(targetId)?.actor
-        const aSys = actor?.system as any
-
-        const dmgType = damageRoll?.dmgType ?? ''
-        const mods = aSys?.modifiers?.damage?.in ?? {}
-        const flatReduction = (mods?.flatReduction?.global ?? 0) + (args.isSpellAttack ? (mods?.flatReduction?.[dmgType] ?? 0) : (mods?.flatReduction?.attack ?? 0))
-        const perDieReductionFor = (type: string) => (mods?.perDieReduction?.global ?? 0) + (mods?.perDieReduction?.[type] ?? 0)
-        const perDieReduction = perDieReductionFor(dmgType)
-        const isResistant = mods?.resistances?.includes(dmgType)
-        const weaknessDice = Attack.isWeakToDamage(targetId, damageRoll) ? (damageRoll?.result?.weaknessRolls ?? []) : []
-        const weaknessDamage = weaknessDice.reduce((acc, it) => acc + it.result, 0)
-
-        // Each die's damage (including its per-die bonus) can be reduced to a minimum of zero.
-        const reduceDice = (dice: number[], reduction: number) =>
-            dice.reduce((acc, value) => acc + Math.min(Math.max(0, value), Math.max(0, reduction)), 0)
-
-        let perDieMit = reduceDice([
-            ...(damageRoll?.result?.rollSummaries ?? []).filter(it => !it.rerolled).map(it => it.result + (damageRoll?.perDieDmgBonus ?? 0)),
-            ...weaknessDice.map(it => it.result)
-        ], perDieReduction)
-
-        // Resistance and a passed save each halve the damage - non-stacking.
-        const totalDamage = (damageRoll?.result?.total ?? 0) + weaknessDamage
-        const damage = (isResistant || halfDamage)
-            ? Math.floor(totalDamage / 2)
-            : totalDamage
-
-        // Extra damage sources (e.g. imbued spells) are added in before any mitigation, each resisted by its own type.
-        let imbueDamage = 0
-        const imbueParts: { dmgType: string, amount: number, bonus: number, label?: string }[] = []
-        for (const extra of extras) {
-            const extraRoll = extra.damageRoll
-            if (!extraRoll.result || Attack.isImmuneToDamage(targetId, extraRoll, true)) continue
-
-            const extraWeakDice = Attack.isWeakToDamage(targetId, extraRoll) ? (extraRoll.result.weaknessRolls ?? []) : []
-            const extraTotal = extraRoll.result.total + extraWeakDice.reduce((acc, it) => acc + it.result, 0) + extra.bonus
-            const amount = mods?.resistances?.includes(extraRoll.dmgType) ? Math.floor(extraTotal / 2) : extraTotal
-            imbueDamage += amount
-            imbueParts.push({ dmgType: extraRoll.dmgType, amount, bonus: Math.min(extra.bonus, amount), label: extra.label })
-            perDieMit += reduceDice([
-                ...extraRoll.result.rollSummaries.filter(it => !it.rerolled).map(it => it.result + (extraRoll.perDieDmgBonus ?? 0)),
-                ...extraWeakDice.map(it => it.result)
-            ], perDieReductionFor(extraRoll.dmgType))
-        }
-
-        const armorRating = aSys?.armor?.rating ?? 0
-        const armorPiercing = damageRoll?.result?.armorPiercing ?? 0
-        const armor = args.bypassArmor ? 0 : Math.max(0, armorRating + additionalArmorRating - armorPiercing)
-        const otherMitigation = flatReduction + perDieMit
-        return {
-            damage,
-            imbueDamage,
-            imbueParts,
-            halved: !!(isResistant || halfDamage),
-            armor,
-            armorPiercing,
-            otherMitigation,
-            mitigated: Math.max(0, damage + imbueDamage - otherMitigation - armor)
-        }
-    }
 
     /**
      * Base function - overridden by AdversaryAttack. Not used for Hero attacks.
@@ -480,21 +353,26 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
     protected get isCriticalHit(): boolean { return false }
 
+    // Adversaries targeting other adversaries always apply their effects (e.g. Exalted, Blessed), regardless of damage or saves.
+    protected isAdversaryAlly(targetId: string): boolean {
+        return (this.actor as any)?.type === "adversary" && (getTargetActor(targetId) as any)?.type === "adversary"
+    }
+
     protected shouldApplyEffectsToTarget(targetId: string, _args: AttackResolutionArgs): boolean {
         return this.shouldApplyDamageToTarget(targetId)
     }
 
     protected async processStatusFx(args: AttackResolutionArgs) {
         if (this.appliedEffects.length > 0) {
-            const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyEffectsToTarget(id, args))
+            const targetIds = this.resolveTargetIds(args).filter(id => this.isAdversaryAlly(id) || this.shouldApplyEffectsToTarget(id, args))
             await this.applyFxToTargets(this.appliedEffects, targetIds)
         }
 
         for (const imbue of this.imbues) {
             if (imbue.appliedEffects.length === 0) continue
-            const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
+            const targetIds = this.resolveTargetIds(args)
                 .filter(id => !imbue.targetIds || imbue.targetIds.includes(id))
-                .filter(id => !Attack.isImmuneToDamage(id, imbue.damageRoll, true))
+                .filter(id => !isImmuneToDamage(id, imbue.damageRoll, true))
             await this.applyFxToTargets(imbue.appliedEffects, targetIds)
         }
     }
@@ -502,11 +380,11 @@ export abstract class Attack<TActor extends Actor = Actor> {
     protected async applyFxToTargets(effects: AppliedFx[], targetIds: string[]) {
         for (const id of targetIds) {
             const token = getCanvasToken(id)
-            const actor = token?.actor ?? canvas?.scene?.tokens?.get(id)?.actor
+            const actor = token?.actor ?? getTargetActor(id)
             if (!actor) continue
 
             for (const eff of effects) {
-                if (Attack.isImmuneToStatus(actor, eff.effect)) continue
+                if (isImmuneToStatus(actor, eff.effect)) continue
                 if (eff.effect === "burning" && isImmuneToBurning(actor, eff.damageType)) continue
 
                 const duration = (this.isCriticalHit && eff.critDuration) ? eff.critDuration : eff.duration
@@ -517,7 +395,6 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
     protected get prefixCountdownWithTargetName(): boolean { return false }
 
-    // Countdown durations (e.g. "Cd6") additionally spawn a Countdown die to track it.
     private async applyEffects(actor: Actor, token: Token | undefined, status: string, duration?: string, damageType?: string) {
         if (!duration || duration === "-") return
 
@@ -541,7 +418,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
 
     protected getActors(targetIds: string[]) {
-        return targetIds.map(id => canvas?.scene?.tokens?.get(id)?.actor)
+        return targetIds.map(id => getTargetActor(id))
     }
 
     protected getHP(target) {
