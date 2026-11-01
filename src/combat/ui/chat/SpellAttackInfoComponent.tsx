@@ -6,7 +6,6 @@ import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
 import { appLang } from "../../../utils/lang"
 import { DamageRollsComponent } from "../../../view/chat/component/DamageRollsComponent"
 import { CardSubHeader, CardSubHeaderValues } from "../../../view/component/SkillCard"
-import { SpellcastingSubtext } from "../../../view/sheets/actor/hero/tab/component/spellcasting/input/SpellcastingTypography"
 import { DamageRollResult } from "../../engine/roll/DamageRoll"
 
 export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined, img }: {
@@ -44,9 +43,11 @@ export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined,
                 </div>
             </div>
             }
-            {delivery.applyEffect && <div className="flex px-1">
-                <SpellcastingSubtext text={ReactHtmlParser(spell?.system?.description)} />
-            </div>}
+            {delivery.applyEffect &&
+                <div className="px-1 max-h-20 overflow-y-auto text-sm text-text-secondary font-eskapade font-normal">
+                    {ReactHtmlParser(spell?.system?.description)}
+                </div>
+            }
         </div>
     )
 }

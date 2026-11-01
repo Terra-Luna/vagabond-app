@@ -34,6 +34,7 @@ export interface ImbueEntry {
     actorId: string
     spellName: string
     spellUuid: string
+    applyEffect?: boolean
     damageRoll: DamageRoll
     targetIds?: string[]
     appliedEffects: AppliedFx[]

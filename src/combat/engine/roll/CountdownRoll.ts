@@ -1,7 +1,7 @@
 import { roll3dDice, sys_id } from "../../../utils/foundryUtils"
 import { sendVagabondChatCard } from "../../../view/chat/ChatCardSerializer"
 import { mitigateBurningDamage } from "../util/burning-mitigation"
-import { getDiceTerms } from "../util/dice-utils"
+import { getDiceTerms, playDiceSound } from "../util/dice-utils"
 import { CountdownResult } from "./CountdownResult"
 import { RollSummary } from "./RollSummary"
 
@@ -16,6 +16,7 @@ export class CountdownRoll {
     public async roll(silent = false) {
         const formula = `d${this.result.duration}`
         const roll = await new Roll(formula).evaluate()
+        playDiceSound()
         const nextDuration = this.adjustCountdownDuration(roll.total)
 
         this.result = {

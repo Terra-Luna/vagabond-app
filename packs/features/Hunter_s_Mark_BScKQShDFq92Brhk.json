@@ -2,7 +2,7 @@
   "name": "Hunter's Mark",
   "type": "feature",
   "_id": "BScKQShDFq92Brhk",
-  "img": "/icons/skills/targeting/crosshair-bars-yellow.webp",
+  "img": "/icons/skills/targeting/crosshair-mark-rough-pink.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">You can choose a Target when you attack it or by skipping your Move, declaring it as your Mark until you declare a new Mark. The following rules apply while you have a Mark:</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">Your attacks against it with Weapons that have the Keen or Vicious property also have the other property, and Crit if a Bonus causes the result to exceed your Crit range.</span></li><li value=\"2\" class=\"vb-rtf-li\"><span style=\"white-space:pre-wrap\">You roll two d20s on Checks to track it, and use the higher result.</span></li></ul><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.A3nrEX73yauzzZFA]{Hunter's Mark}</span></p>",
     "rules": [
@@ -30,11 +30,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
     "systemVersion": "0.2.107",
     "createdTime": 1789497644602,
-    "modifiedTime": 1793553913682,
+    "modifiedTime": 1793568788996,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -7,7 +7,7 @@ import { getTargetActor } from "../../../utils/modelUtil"
 export const HUNTERS_MARK_FLAG = "huntersmark"
 const LETHAL_PRECISION_FLAG = "lethalprecision"
 const APEX_PREDATOR_FLAG = "apexpredator"
-const MARK_ICON = "/icons/skills/targeting/crosshair-bars-yellow.webp"
+const MARK_ICON = "/icons/skills/targeting/crosshair-mark-rough-pink.webp"
 
 export interface HuntersMarkData {
     hunterId: string

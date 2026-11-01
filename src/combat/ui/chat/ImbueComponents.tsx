@@ -5,13 +5,14 @@ import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { appLang } from "../../../utils/lang"
 import { getTokenImg } from "../../../utils/modelUtil"
 import { DamageRollsComponent } from "../../../view/chat/component/DamageRollsComponent"
+import { EnrichedContent } from "../../../view/component/EnrichedContent"
 import { ClearHeader } from "../../../view/component/Header"
 import type { Attack } from "../../engine/Attack"
 import { HeroAttack } from "../../engine/HeroAttack"
 import { InteractiveChatCardButton } from "./InteractiveChatCardButton"
 
 const hasOffensiveSpell = (actor: any): boolean =>
-    !!actor?.system?.spells?.some(sp => sp.damageType !== 'none' && sp.damageType !== 'healing')
+    !!actor?.system?.spells?.some(sp => sp.damageType !== 'healing')
 
 /**
  * Heroes that can still imbue: they have an offensive spell, and haven't imbued this attack.
@@ -40,7 +41,11 @@ const getImbueActor = (attack: Attack): (Actor & { system: HeroDataModel }) | un
 export const ImbuedDamageSections = ({ attack }: { attack: Attack }) => (
     <>
         {attack.imbues.map((imbue, index) => {
-            if (!imbue.damageRoll.result) return null
+            const hasDamage = !!imbue.damageRoll.result
+            const description = imbue.applyEffect
+                ? (fromUuidSync(imbue.spellUuid as any) as any)?.system?.description
+                : undefined
+            if (!hasDamage && !description) return null
             const casterImg = getTokenImg(game.actors?.get(imbue.actorId))
             return (
                 <div key={`${imbue.actorId}-${imbue.spellUuid}-${index}`} className="mt-2">
@@ -50,7 +55,12 @@ export const ImbuedDamageSections = ({ attack }: { attack: Attack }) => (
                             {`Imbue: ${imbue.spellName}`}
                         </span>
                     } />
-                    <DamageRollsComponent attack={{ damageRoll: { result: imbue.damageRoll.result } }} />
+                    {hasDamage &&
+                        <DamageRollsComponent attack={{ damageRoll: { result: imbue.damageRoll.result } }} />
+                    }
+                    {description &&
+                        <EnrichedContent content={description} styleClasses="text-sm font-paradigm font-normal px-2 max-h-20 overflow-y-auto" />
+                    }
                 </div>
             )
         })}

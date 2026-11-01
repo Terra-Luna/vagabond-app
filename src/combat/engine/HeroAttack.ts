@@ -10,7 +10,6 @@ import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { getTargetIds } from "../../utils/modelUtil"
-import { applyMarkBenefitsToModifiers, isAttackingMark } from "./util/hunters-mark"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { AppliedFx, Attack } from "./Attack"
@@ -20,6 +19,7 @@ import { SkillCheck, type SkillCheckResult, type SkillCheckType } from "./roll/S
 import { deserializeAttack } from "./util/attack-deserializer"
 import { serializeAttack } from "./util/attack-serializer"
 import { getDiceTerms } from "./util/dice-utils"
+import { applyMarkBenefitsToModifiers, isAttackingMark } from "./util/hunters-mark"
 
 export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
@@ -239,7 +239,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
         const dmgType = delivery.spell.damageType
 
-        if (['healing', 'mana'].includes(dmgType) || delivery.damageDice < 1) {
+        if (['healing', 'mana'].includes(dmgType)) {
             ui.notifications?.warn(appLang.Notifications.imbueRequiresDamage)
             return false
         }
@@ -251,7 +251,11 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         }
 
         const spellAttack = HeroAttack.buildSpellAttack(actor, skill, delivery, clickEvent)
-        if (!spellAttack?.damageRoll) return false
+        if (!spellAttack) return false
+
+        if (!spellAttack.damageRoll) {
+            spellAttack.damageRoll = new DamageRoll({ atkName: delivery.spell.name, dmgType: 'none', dice: [] })
+        }
 
         spellAttack.targetIds = [...casterTargets]
         await spellAttack.rollDamage(false)
@@ -271,6 +275,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             actorId: actor.id!,
             spellName: delivery.spell.name,
             spellUuid: delivery.spell.uuid,
+            applyEffect: delivery.applyEffect,
             damageRoll: spellAttack.damageRoll,
             targetIds: casterTargets,
             appliedEffects: spellAttack.appliedEffects

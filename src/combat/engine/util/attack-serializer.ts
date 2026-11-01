@@ -34,7 +34,7 @@ export interface AttackSnapshot {
     spellDelivery: SpellDeliverySnapshot | undefined
     critChoice: "luck" | "damage" | "spellFx" | undefined
     isRerolled: boolean
-    imbues?: { actorId: string, spellName: string, spellUuid: string, damageRoll: any, targetIds?: string[], appliedEffects: AppliedFx[] }[]
+    imbues?: { actorId: string, spellName: string, spellUuid: string, applyEffect?: boolean, damageRoll: any, targetIds?: string[], appliedEffects: AppliedFx[] }[]
     isResolved: boolean
     saveTypes: SavingThrowType[] | undefined
     saveResults: Record<string, any> | undefined

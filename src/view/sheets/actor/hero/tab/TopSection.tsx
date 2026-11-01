@@ -6,6 +6,7 @@ import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderV
 import { SpellcastingApp } from "../../../../../apps/spellcasting/SpellcastingApp"
 import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
+import { playDiceSound } from "../../../../../combat/engine/util/dice-utils"
 import { recordSheetSaveOnActiveAttacks } from "../../../../../combat/engine/util/attack-save-sync"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
@@ -111,6 +112,7 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
     const updateLuck = useCallback(async (auxClick: boolean, e?: any) => {
         if (e?.shiftKey && !auxClick) {
             const roll = await new Roll('1d6').evaluate()
+            playDiceSound()
             sendVagabondChatCard(
                 hero,
                 "TrackerUpdateChatCard", {
@@ -146,6 +148,7 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
     const updateStudied = useCallback(async (auxClick: boolean, e?: any) => {
         if (e?.shiftKey && !auxClick) {
             const roll = await new Roll('1d6').evaluate()
+            playDiceSound()
             sendVagabondChatCard(
                 hero,
                 "TrackerUpdateChatCard",
