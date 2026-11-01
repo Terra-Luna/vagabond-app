@@ -341,6 +341,7 @@ const HeroSheetBody = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondAc
     </div>
 }
 
+// This value is based totally on vibes, adjust if the tabs don't feel right.
 const TAB_COLUMN_MIN_WIDTH = 288
 
 type HeroSheetTabs = {

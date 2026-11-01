@@ -133,23 +133,23 @@ const damageOutSchema = () => {
             weak: new fields.BooleanField({ initial: false })
         }),
         beingType: new fields.SchemaField({
-            "artificial": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "beast": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "beyonder": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "cryptid": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "divine": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "djinn": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "fae": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "fiend": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "hellspawn": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "humanlike": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "outer": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "plant": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "primordial": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "shape": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "slime": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "undead": new fields.SchemaField({ ...baseDamageOutSchema() }),
-            "wyrm": new fields.SchemaField({ ...baseDamageOutSchema() })
+            artificial: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            beast: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            beyonder: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            cryptid: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            divine: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            djinn: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            fae: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            fiend: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            hellspawn: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            humanlike: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            outer: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            plant: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            primordial: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            shape: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            slime: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            undead: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            wyrm: new fields.SchemaField({ ...baseDamageOutSchema() })
         })
     }
 }

@@ -1,7 +1,7 @@
 import { api } from "../../apps/api/VagabondAPI"
 import type { RollPreset } from "../../apps/attack-builder/model/RollPreset"
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
-import { getAttackRegistry, getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { getAllowLateLuckStudy, getAttackRegistry, getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
@@ -319,9 +319,19 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
                 await this.save(serializeAttack)
             }
             else {
+                this.autoResolveIfOuttaLuck()
                 await this.save(serializeAttack)
             }
         }
+    }
+
+    private autoResolveIfOuttaLuck() {
+        if (this.isResolved || this.isDefenseCheck) return
+        if (this.skillCheck?.result?.outcome !== appLang.RollResult.failure) return
+
+        const { luck, studied } = this.actor.system.statuses.counters
+        const canImprove = !this.isRerolled && (luck > 0 || (studied > 0 && getAllowLateLuckStudy()))
+        if (!canImprove) this.isResolved = true
     }
 
     /**
@@ -514,6 +524,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     }
 
     async sendChatCard() {
+        this.autoResolveIfOuttaLuck()
         await this.save(serializeAttack)
         await this.postChatCard()
     }

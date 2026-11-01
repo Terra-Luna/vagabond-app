@@ -2,6 +2,7 @@
 import React, { createElement, ReactNode, useEffect, useRef } from "react"
 
 import { ComponentRegistry } from "../component/ComponentRegistry"
+import { ChatMessageContext } from "./ChatMessageContext"
 import { subscribeToChatMessage } from "./ChatMessageStore"
 
 export const RehydratedChatCard = React.memo(({ blueprint, messageId }: { blueprint: any, messageId: string }) => {
@@ -29,7 +30,11 @@ export const RehydratedChatCard = React.memo(({ blueprint, messageId }: { bluepr
         ? { ...blueprint, props: { ...blueprint.props, messageId } }
         : blueprint
 
-    return <div key={`${blueprint?.id || 'card'}-${subRev}`}>{rehydrateElement(cardBlueprint, true)}</div>
+    return (
+        <ChatMessageContext.Provider value={messageId}>
+            <div key={`${blueprint?.id || 'card'}-${subRev}`}>{rehydrateElement(cardBlueprint, true)}</div>
+        </ChatMessageContext.Provider>
+    )
 }, (prevProps, nextProps) => {
     return prevProps.blueprint?.id === nextProps.blueprint?.id && prevProps.messageId === nextProps.messageId
 })

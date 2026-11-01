@@ -25,6 +25,7 @@ export const TrackerUpdateChatCard = ({ heroId, verb, resource, roll }: {
             ? hero.system.statuses.counters.studied
             : ''
         )
+    
     const subtitle: CardSubHeaderValues[] = []
     subtitle.push({ label: localizeString(appLang.Combat.remaining, { name: res.name }), value: remaining.toString() })
 

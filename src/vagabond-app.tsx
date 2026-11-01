@@ -10,7 +10,7 @@ import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
 import { showConfirmationDialog, showInputDialog } from "./apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { CompendiumAccessor } from "./apps/vagabond-tools/usecase/CompendiumAccessor"
 import { CountdownManager } from "./apps/vagabond-tools/usecase/CountdownManager"
-import { resolveAllAttacks } from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { getAttackRegistry, resolveAllAttacks, setAttackRegistry } from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondSettingsRegistry } from "./apps/vagabond-tools/VagabondSettingsRegistry"
 import { VagabondToolsApp } from "./apps/vagabond-tools/VagabondToolsApp"
 import { VagabondActiveEffect } from './combat/documents/VagabondActiveEffect'
@@ -591,11 +591,53 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
     }
 })
 
+const pendingAttackRemovals = new Map<string, Set<string>>()
+let attackRemovalTimer: number | undefined
+
+const flushAttackRemovals = async () => {
+    attackRemovalTimer = undefined
+    const removals = new Map(pendingAttackRemovals)
+    pendingAttackRemovals.clear()
+
+    const registry = getAttackRegistry()
+    if (game.messages?.size === 0) {
+        if (Object.keys(registry).length) await setAttackRegistry({})
+        return
+    }
+
+    let changed = false
+    const next = { ...registry }
+    removals.forEach((attackIds, actorId) => {
+        if (!next[actorId]) return
+        const remaining = next[actorId].filter(atk => !attackIds.has(atk.id))
+        if (remaining.length !== next[actorId].length) {
+            next[actorId] = remaining
+            changed = true
+        }
+    })
+    if (changed) await setAttackRegistry(next)
+}
+
 Hooks.on("deleteChatMessage", (message: any) => {
     if (vagabondChatRoots.has(message.id)) {
         vagabondChatRoots.get(message.id)?.forEach(r => { try { r.unmount() } catch (e) { /* no-op */ } })
         vagabondChatRoots.delete(message.id);
     }
+
+    if (!game.user?.isActiveGM) return
+
+    const blueprint = message.getFlag(sys_id, "blueprint")
+    if (blueprint?.type === "InteractiveAttackChatCard") {
+        const { actorId, attackId } = blueprint.props ?? {}
+        if (actorId && attackId) {
+            const ids = pendingAttackRemovals.get(actorId) ?? new Set<string>()
+            ids.add(attackId)
+            pendingAttackRemovals.set(actorId, ids)
+        }
+    }
+
+    window.clearTimeout(attackRemovalTimer)
+    attackRemovalTimer = window.setTimeout(flushAttackRemovals, 300)
 });
 
 Hooks.on("deleteCombat", (combat: Combat, options: any, userId: string) => {

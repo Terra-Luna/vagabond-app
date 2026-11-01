@@ -139,7 +139,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
 
         const luckUpdate = foundry.utils.getProperty(changes, "system.statuses.counters.luck") as number | undefined
-        if (luckUpdate) {
+        if (luckUpdate !== undefined) {
             const previousLuck = this.statuses.counters.luck ?? 0
             if (previousLuck !== luckUpdate) {
                 const verb = previousLuck < luckUpdate ? appLang.HeroSheet.gained : appLang.HeroSheet.spent;
@@ -148,7 +148,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
 
         const studiedUpdate = foundry.utils.getProperty(changes, "system.statuses.counters.studied") as number | undefined
-        if (studiedUpdate) {
+        if (studiedUpdate !== undefined) {
             const previousStudied = this.statuses.counters.studied ?? 0
             if (previousStudied !== studiedUpdate) {
                 const verb = previousStudied < studiedUpdate ? appLang.HeroSheet.gained : appLang.HeroSheet.spent;
