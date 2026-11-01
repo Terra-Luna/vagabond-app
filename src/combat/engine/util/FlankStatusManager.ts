@@ -87,7 +87,7 @@ export class FlankStatusManager {
     }
 
     static isFlanked(subject: Token): boolean {
-        if (!subject) return false
+        if (!subject || (subject.actor?.type as string) === "itemActor") return false
 
         const proximimalTokens = FlankStatusManager.getProximalTokens(subject)
         if (proximimalTokens.length === 0) return false
@@ -158,6 +158,7 @@ export class FlankStatusManager {
         const isDown = (token: Token) => {
             if (FlankStatusManager.deletedTokenIds.has(token.document.id ?? "")) return true
             const actor = token.actor as any
+            if (actor?.type === "itemActor") return true
             return actor?.system?.health?.value <= 0 || !!actor?.statuses?.has("dead")
         }
 
