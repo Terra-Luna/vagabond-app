@@ -8,7 +8,7 @@ export class NpcSheet extends VagabondActorSheet {
             width: 360,
             height: "auto",
             top: 24,
-            left: 320
+            left: 340
         },
         window: {
             resizable: true

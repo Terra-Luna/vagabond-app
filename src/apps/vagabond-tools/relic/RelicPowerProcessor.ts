@@ -59,6 +59,11 @@ export class RelicPowerProcessor {
             // Remove
             await item.update({ 'system.relicPowers': [...existingPowers.filter(p => p.id !== relic.id)] } as Record<string, any>)
             await this.updateItemProperties(item, relic, 'remove')
+
+            const remaining = existingPowers.filter(p => p.id !== relic.id)
+            if (item.system.isBound && !remaining.some(p => p.bound)) {
+                await item.update({ 'system.isBound': false } as Record<string, any>)
+            }
         }
         else {
             // Add
