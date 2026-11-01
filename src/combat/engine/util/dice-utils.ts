@@ -1,5 +1,9 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
+export function playDiceSound() {
+    foundry.audio.AudioHelper.play({ src: CONFIG.sounds.dice, volume: 0.8 }, true)
+}
+
 export function getDiceTerms(roll: Roll.Evaluated<Roll<EmptyObject>>): foundry.dice.terms.DiceTerm[] {
     return roll?.terms?.filter((term): term is foundry.dice.terms.DiceTerm => term instanceof foundry.dice.terms.DiceTerm)
 }

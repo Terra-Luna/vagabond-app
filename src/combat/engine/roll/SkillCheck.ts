@@ -7,7 +7,7 @@ import type { AlchemicalItemDataModel } from "../../../model/item/equip/Alchemic
 import type { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { roll3dDice } from "../../../utils/foundryUtils"
 import { appLang } from "../../../utils/lang"
-import { getDiceTerms, rollExplosions } from "../util/dice-utils"
+import { getDiceTerms, playDiceSound, rollExplosions } from "../util/dice-utils"
 import { DiceRoll } from "./DiceRoll"
 
 export type SkillCheckType = 'attack' | 'cast' | 'save' | 'check'
@@ -195,6 +195,7 @@ export class SkillCheck {
         }
 
         const roll = await new Roll(formula).evaluate()
+        playDiceSound()
 
         const bonusRolls: any[] = []
         if (this.bonusDice?.length) {

@@ -1,7 +1,7 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
 import { appLang } from "../../../utils/lang"
-import { getDiceTerms, rollExplosions } from "../util/dice-utils"
+import { getDiceTerms, playDiceSound, rollExplosions } from "../util/dice-utils"
 import { DiceRoll } from "./DiceRoll"
 import { RollSummary } from "./RollSummary"
 
@@ -150,6 +150,7 @@ export class DamageRoll {
     }
 
     async roll(isCrit?: boolean, includeWeaknessDie: boolean = false): Promise<DamageRollResult> {
+        playDiceSound()
         const straightRolls = this.dice.filter(d => !d.explodesOn || d.explodesOn.length === 0).map(d => new DiceRoll(d))
         const explodingRolls = this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0).map(d => new DiceRoll(d))
 
