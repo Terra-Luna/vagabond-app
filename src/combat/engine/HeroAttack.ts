@@ -446,16 +446,26 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             newResult.favorHinder = appLang.FavorHinder.none
             newResult.rolls = newResult.rolls.filter(r => getDiceTerms(r).flatMap(t => t.faces).includes(20))
 
-            if (newResult.total >= result.difficulty) {
-                newResult.outcome = appLang.RollResult.success
+            const wasFailure = result.outcome === appLang.RollResult.failure
+            const isCrit = (newResult.d20s ?? []).some(r => r >= newResult.critThreshold)
+            newResult.outcome = isCrit
+                ? appLang.RollResult.crit
+                : (newResult.total >= result.difficulty ? appLang.RollResult.success : appLang.RollResult.failure)
+            newResult.success = newResult.outcome !== appLang.RollResult.failure
+
+            this.clearFavorHinder()
+            this.skillCheck.result = newResult
+
+            if (newResult.success) {
+                this.isResolved = false
+                if (wasFailure && this.isEligibleForDmgRoll) {
+                    await this.rollDamage(isCrit)
+                }
             }
             else {
                 this.isResolved = true
             }
 
-            this.clearFavorHinder()
-            this.skillCheck.favorHinder = 'none'
-            this.skillCheck.result = newResult
             await this.save(serializeAttack)
 
             return result
@@ -785,7 +795,6 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
                 dice: [new DiceRoll({
                     count: delivery.damageDice + delivery.studyDamageDice + (weak ? 1 : 0),
                     faces: HeroAttack.SPELL_DIE_SIZE + dieSizeMod,
-                    modifier: flatBonus,
                     explodesOn: explosionsMod as number[]
                 })],
                 weaknessDie: isHealing ? undefined : { faces: HeroAttack.SPELL_DIE_SIZE + dieSizeMod, count: 1 },

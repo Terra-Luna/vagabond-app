@@ -39,7 +39,15 @@ export const npcActionSchema = () => {
             }),
             { initial: [] }
         ),
-        recharge: new fields.StringField({ ...optionalString })
+        recharge: new fields.StringField({ ...optionalString }),
+        // Active Effects (by UUID) copied onto Heroes that fail the save.
+        appliedActiveEffects: new fields.ArrayField(
+            new fields.SchemaField({
+                uuid: new fields.StringField({ ...requiredString }),
+                duration: new fields.StringField({ ...optionalString })
+            }),
+            { initial: [] }
+        )
     }
 }
 

@@ -5,15 +5,16 @@ import { StatusEffectUtil } from "../../model/actor/util/StatusEffectUtil"
 import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTargetActor, getTargetIds } from "../../utils/modelUtil"
-import { getLethalPrecisionBonus } from "./util/hunters-mark"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { DamageRoll } from "./roll/DamageRoll"
+import { applyActiveEffectCopy, isActiveEffectFx } from "./util/active-effect-fx"
 import type { AttackSnapshot } from "./util/attack-serializer"
 import { isImmuneToBurning } from "./util/burning-mitigation"
 import {
     AttackResolutionArgs, buildSummaryRow, calculateBonusDamage, computeDamageBreakdown, DamageBreakdown,
     ExtraDamage, isImmuneToDamage, isImmuneToStatus, isWeakToDamage, TargetDamageSummary
 } from "./util/damage-mitigation"
+import { getLethalPrecisionBonus } from "./util/hunters-mark"
 
 export type { AttackResolutionArgs, DamageBreakdown, ExtraDamage, TargetDamageSummary } from "./util/damage-mitigation"
 export { damageOverrideKey } from "./util/damage-mitigation"
@@ -191,7 +192,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
                     return acc + Math.max(0, value + perDieMod) - value
                 }, 0)
             const setValue = Number(mods?.perDieOverride ?? 0) * diceCount
-            const calculated = Math.max(0, setValue > 0 ? setValue : rolled + flat + perDie)
+            const calculated = Math.max(0, (setValue > 0 ? setValue : rolled + perDie) + flat)
             const row = buildSummaryRow(
                 id, 0,
                 { damage: rolled, imbueDamage: 0, imbueParts: [], halved: false, armor: 0, armorPiercing: 0, otherMitigation: 0, mitigated: calculated },
@@ -286,16 +287,28 @@ export abstract class Attack<TActor extends Actor = Actor> {
         if (!this.damageRoll?.result || dmgType === 'mana' || dmgType === 'fatigue') return []
 
         const summaries: TargetDamageSummary[] = []
-        const targetIds = this.resolveTargetIds(args).filter(id => this.shouldApplyDamageToTarget(id))
+        const targetIds = this.resolveTargetIds(args).filter(id => this.shouldApplyDamageToTarget(id) || this.hasApplicableImbue(id))
 
         for (const id of targetIds) {
             const targetActor = getTargetActor(id)
             if (!targetActor) continue
             const breakdown = this.calculateDamageBreakdown(id, { ...args, isSpellAttack: this.isSpellAttack })
-            const bonus = this.calculateBonusDamage(targetActor)
+            const bonus = this.shouldApplyDamageToTarget(id) ? this.calculateBonusDamage(targetActor) : 0
             summaries.push(buildSummaryRow(id, 0, breakdown, bonus, args, this.damageRoll?.dmgType ?? '', undefined))
         }
         return summaries
+    }
+
+    /**
+     * Whether an imbued spell would still damage the target, even when the attack's own damage is blocked
+     * (e.g. by a relic-level immunity that only applies to the weapon).
+     */
+    private hasApplicableImbue(targetId: string): boolean {
+        return this.imbues.some(imbue =>
+            (!imbue.targetIds || imbue.targetIds.includes(targetId)) &&
+            !!imbue.damageRoll?.result &&
+            !isImmuneToDamage(targetId, imbue.damageRoll, true)
+        )
     }
 
     protected calculateDamageBreakdown(targetId: string, args: AttackResolutionArgs): DamageBreakdown {
@@ -308,7 +321,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
                 bonus: this.calculateBonusDamage(targetActor, game.actors?.get(imbue.actorId) ?? this.actor, imbue.damageRoll)
             }))
         return computeDamageBreakdown(
-            this.damageRoll,
+            this.shouldApplyDamageToTarget(targetId) ? this.damageRoll : undefined,
             targetId,
             args,
             this.getAdditionalArmorRating(targetId),
@@ -386,12 +399,39 @@ export abstract class Attack<TActor extends Actor = Actor> {
             if (!actor) continue
 
             for (const eff of effects) {
+                const duration = (this.isCriticalHit && eff.critDuration) ? eff.critDuration : eff.duration
+
+                if (isActiveEffectFx(eff.effect)) {
+                    await this.applyActiveEffect(actor, token, eff.effect, duration)
+                    continue
+                }
+
                 if (isImmuneToStatus(actor, eff.effect)) continue
                 if (eff.effect === "burning" && isImmuneToBurning(actor, eff.damageType)) continue
 
-                const duration = (this.isCriticalHit && eff.critDuration) ? eff.critDuration : eff.duration
                 await this.applyEffects(actor, token, eff.effect, duration, eff.damageType)
             }
+        }
+    }
+
+    private async applyActiveEffect(actor: Actor, token: Token | undefined, id: string, duration?: string) {
+        if ((actor as any).type !== "hero") return
+        if (!duration || duration === "-") return
+
+        const name = await applyActiveEffectCopy(actor, id)
+        if (!name) return
+
+        const countdownFaces = duration.match(/^Cd(\d+)$/)?.[1]
+        if (countdownFaces) {
+            const label = this.prefixCountdownWithTargetName ? `${token?.name ?? actor.name}: ${name}` : name
+            await CountdownManager.add(
+                label,
+                Number(countdownFaces),
+                undefined, undefined,
+                actor.uuid,
+                token?.document?.uuid,
+                { id, name }
+            )
         }
     }
 

@@ -5,7 +5,7 @@ import { armorSchema } from "./type/Armor"
 import { healthSchema } from "./type/Health"
 import { modifierSchema } from "./type/Modifiers"
 import { statusFxSchema } from "./type/StatusFx"
-import { PolymorphUtil, type PolymorphFlag } from "./util/PolymorphUtil"
+import { type PolymorphFlag,PolymorphUtil } from "./util/PolymorphUtil"
 
 export const baseActorSchema = () => {
     return {
@@ -78,7 +78,7 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
 
         if (polyFlag && Object.keys(polyFlag).length > 0) {
             const originalSystem = this.parent.getFlag(sys_id, "originalSystem") as any
-                ?? { ...this, name: this.parent.name, img: this.parent.img }
+                ?? { ...this.toObject(), name: this.parent.name, img: this.parent.img }
 
             await this.parent.update({
                 "name": `${polyFlag.statBlock.name} (${originalSystem.name ?? this.parent.name})`,

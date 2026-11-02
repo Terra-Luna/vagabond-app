@@ -146,8 +146,13 @@ export class AdversaryAttack extends Attack {
         return isHalvedBySave(this, targetId)
     }
 
-    // Effects only apply to targets who failed (or didn't make) a save and still took damage.
+    // Effects only apply to targets who failed (or didn't make) a save. Damaging attacks also require the target to take damage.
     protected override shouldApplyEffectsToTarget(targetId: string, args: AttackResolutionArgs): boolean {
+        if (!this.showDamage || this.damageRoll?.dmgType === "none") {
+            return super.shouldApplyDamageToTarget(targetId)
+                && isDamagedAfterSave(this, targetId)
+                && !this.isHalfDamageForTarget(targetId)
+        }
         return this.shouldApplyDamageToTarget(targetId)
             && !this.isHalfDamageForTarget(targetId)
             && this.calculateAdjustedDamage(targetId, args) >= 1

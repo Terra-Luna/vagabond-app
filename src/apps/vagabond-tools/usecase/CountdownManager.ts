@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 
-import type { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
 import { VagabondActiveEffect } from "../../../combat/documents/VagabondActiveEffect"
+import type { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
 import { CountdownResult } from "../../../combat/engine/roll/CountdownResult"
 import { CountdownRoll } from "../../../combat/engine/roll/CountdownRoll"
+import { isActiveEffectFx, removeActiveEffectCopy } from "../../../combat/engine/util/active-effect-fx"
 import { isImmuneToBurning } from "../../../combat/engine/util/burning-mitigation"
 import { StatusEffectUtil } from "../../../model/actor/util/StatusEffectUtil"
 import { sys_id } from "../../../utils/foundryUtils"
@@ -26,7 +27,7 @@ export interface CountdownToAdd {
     y?: number
     actorId?: string
     tokenUuid?: string
-    status?: { id: string, damageType?: string }
+    status?: { id: string, damageType?: string, name?: string }
 }
 
 /**
@@ -99,6 +100,7 @@ export class CountdownManager {
             name: item.label,
             duration: item.duration,
             status: item.status?.id,
+            statusName: item.status?.name,
             damageType: item.status?.damageType
         })
 
@@ -164,7 +166,7 @@ export class CountdownManager {
         label: string,
         duration: number, x?: number, y?: number,
         actorId?: string, tokenUuid?: string,
-        status?: { id: string, damageType?: string }
+        status?: { id: string, damageType?: string, name?: string }
     ) {
         return CountdownManager.addAll([{ label, duration, x, y, actorId, tokenUuid, status }])
     }
@@ -198,6 +200,10 @@ export class CountdownManager {
             const token = cd.result.tokenUuid ? await fromUuid(cd.result.tokenUuid) as TokenDocument | null : null
             const actor = token?.actor ?? (cd.result.actorUuid ? await fromUuid(cd.result.actorUuid) as Actor | null : null)
             const status = cd.result.status as string
+            if (isActiveEffectFx(status)) {
+                if (actor) await removeActiveEffectCopy(actor, status)
+                continue
+            }
             const effectId = VagabondActiveEffect.statusEffects.find(it => it.id === status)?._id
             const isActive = actor?.statuses?.has(status) || (!!effectId && actor?.effects?.has(effectId))
             if (actor && isActive) {

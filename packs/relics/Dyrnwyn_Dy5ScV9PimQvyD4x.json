@@ -2,7 +2,7 @@
   "name": "Dyrnwyn",
   "type": "weapon",
   "_id": "Dy5ScV9PimQvyD4x",
-  "img": "/icons/weapons/swords/greatsword-guard-jewel-green.webp",
+  "img": "icons/weapons/swords/greatsword-crossguard-embossed-gold.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Longsword with a pure white blade and jewel-studded hilt.</span></p><p><br></p><ul class=\"vb-rtf-ul\"><li value=\"1\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Evil's Bane:</strong></b><span style=\"white-space:pre-wrap\"> Deals an extra damage die to Hellspawn and Undead.</span></li><li value=\"2\" class=\"vb-rtf-li\"><b><strong style=\"white-space:pre-wrap\">Smite I: </strong></b><span style=\"white-space:pre-wrap\">Targets that take damage from it are also Burning (Cd4) with holy flame that ignores Immune.</span></li></ul>",
     "rules": [],
@@ -63,21 +63,28 @@
         "description": "Fabled Bound relic of a miscellaneous nature."
       },
       {
-        "id": "utility-silvering",
+        "id": "bonus-weapon-2",
         "category": {
-          "value": "utility",
-          "label": "Utility"
+          "value": "bonus",
+          "label": "Bonus"
         },
         "power": {
-          "value": "silvering",
-          "label": "Silvering",
-          "modifiers": [],
+          "value": "weapon-2",
+          "label": "Weapon +2",
+          "modifiers": [
+            {
+              "selector": [
+                "system.damage.dice.modifier"
+              ],
+              "value": 2
+            }
+          ],
           "appliedEffect": null,
           "beingTypes": []
         },
-        "goldValue": 0,
+        "goldValue": 1250,
         "bound": false,
-        "description": "Attacks with it count as Silvered."
+        "description": "+2 bonus to Attack damage."
       },
       {
         "id": "utility-burning-1",
@@ -101,14 +108,14 @@
         "description": "Burning (Cd4) on a hit."
       },
       {
-        "id": "bane-general",
+        "id": "bane-specific",
         "category": {
           "value": "bane",
           "label": "Bane"
         },
         "power": {
-          "value": "general",
-          "label": "General",
+          "value": "specific",
+          "label": "Specific",
           "modifiers": [],
           "appliedEffect": null,
           "beingTypes": [
@@ -116,9 +123,26 @@
             "undead"
           ]
         },
-        "goldValue": 5000,
+        "goldValue": 2000,
         "bound": false,
-        "description": "Adds an extra damage die to an entire Being Type, such as Cryptids (not just giants)."
+        "description": "Adds an extra damage die to a Being subtype, such as giants (not all Cryptids)."
+      },
+      {
+        "id": "utility-silvering",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "silvering",
+          "label": "Silvering",
+          "appliedEffect": null,
+          "modifiers": [],
+          "beingTypes": []
+        },
+        "goldValue": 0,
+        "description": "Attacks with it count as Silvered.",
+        "bound": false
       }
     ]
   },
@@ -131,12 +155,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.160",
+    "systemVersion": "0.2.178",
     "createdTime": 1790013191890,
-    "modifiedTime": 1793508339548,
-    "lastModifiedBy": "pcHXNIbwXTDCVlqw",
+    "modifiedTime": 1793597421654,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null

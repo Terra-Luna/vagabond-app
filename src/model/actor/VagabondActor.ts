@@ -29,6 +29,17 @@ export class VagabondActor<SubType extends Actor.SubType = Actor.SubType> extend
         }
 
         const sys = this.system as any
+        const newHp = foundry.utils.getProperty(changes, "system.health.value")
+        if (sys?.modifiers?.healing?.in?.modifier?.hpLocked && typeof newHp === "number" && newHp > sys?.health?.value) {
+            foundry.utils.setProperty(changes, "system.health.value", sys.health.value)
+        }
+
+        const newFatigue = foundry.utils.getProperty(changes, "system.statuses.counters.fatigue")
+        const prevFatigue = sys?.statuses?.counters?.fatigue
+        if (sys?.modifiers?.healing?.in?.modifier?.fatigueLocked && typeof newFatigue === "number" && typeof prevFatigue === "number" && newFatigue < prevFatigue) {
+            foundry.utils.setProperty(changes, "system.statuses.counters.fatigue", prevFatigue)
+        }
+
         options.vagabondPrevValues = {
             hp: sys?.health?.value,
             fatigue: sys?.statuses?.counters?.fatigue,

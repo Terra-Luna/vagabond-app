@@ -265,6 +265,7 @@
     "numberAppearing": "2d6",
     "actions": [
       {
+        "id": "",
         "name": "Kiss",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, a Paralyzed Enemy | Will]: Dethbat's Curse (Continual, until removed)</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Dethbat's Curse [Curse]: Every hour while cursed and not in Sunlight, the victim rolls a d6, progressing the curse by 1 stage on a roll of 1:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">1. Their hair falls out.</span></p><p><span style=\"white-space: pre-wrap;\">2. Their ears transform into wings and their teeth become fangs.</span></p><p><span style=\"white-space: pre-wrap;\">3. They gain 1 Fatigue. If they die due to this, their head rips from their body and becomes a Dethbat.</span></p>",
         "type": "melee",
@@ -280,9 +281,18 @@
         },
         "saves": [
           "will"
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": [
+          {
+            "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.cMl4XnJnzowlZExj",
+            "duration": "continual"
+          }
         ]
       },
       {
+        "id": "",
         "name": "Shriek",
         "description": "<p><span style=\"white-space: pre-wrap;\">[All Near non-Dethbats that hear it | Will]: Frightened (Cd4, Paralyzed)</span></p>",
         "type": "melee",
@@ -299,6 +309,7 @@
         "saves": [
           "will"
         ],
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "frightened",
@@ -308,7 +319,8 @@
             "effect": "paralyzed",
             "duration": "Cd4"
           }
-        ]
+        ],
+        "appliedActiveEffects": []
       }
     ],
     "combo": {
@@ -428,11 +440,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.31",
+    "systemVersion": "0.2.178",
     "createdTime": 1790181847865,
-    "modifiedTime": 1790188359299,
+    "modifiedTime": 1793589541156,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

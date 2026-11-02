@@ -1,0 +1,54 @@
+{
+  "folder": "fPW6kjAQatj9ttx8",
+  "name": "Mummy Lord's Curse",
+  "_id": "Gr0OLueX9uJjFfF4",
+  "img": "/icons/commodities/treasure/doll-mummy.webp",
+  "type": "base",
+  "system": {
+    "changes": [
+      {
+        "key": "system.modifiers.healing.in.modifier.hpLocked",
+        "type": "override",
+        "value": true,
+        "phase": "initial",
+        "priority": 20
+      },
+      {
+        "key": "system.modifiers.healing.in.modifier.fatigueLocked",
+        "type": "override",
+        "value": true,
+        "phase": "initial",
+        "priority": 20
+      }
+    ],
+    "requiresEquip": true
+  },
+  "disabled": false,
+  "start": null,
+  "duration": {
+    "value": null,
+    "units": "seconds",
+    "expiry": null,
+    "expired": false
+  },
+  "description": "<p>Can't regain HP, and it loses 10 (3d6) HP every day</p>",
+  "origin": null,
+  "tint": "#ffffff",
+  "transfer": true,
+  "statuses": [],
+  "showIcon": 1,
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.369",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.2.178",
+    "createdTime": 1793591487086,
+    "modifiedTime": 1793591564773,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!effects!Gr0OLueX9uJjFfF4"
+}

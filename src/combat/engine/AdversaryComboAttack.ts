@@ -1,4 +1,3 @@
-import { getFollowerContext } from "../../model/actor/util/NpcDataModelUtil"
 import { canInitiateAttack, getTargetActor } from "../../utils/modelUtil"
 import type { SavingThrowType } from "./AdversaryAttack"
 import { AppliedFx, Attack } from "./Attack"
@@ -223,7 +222,11 @@ export class AdversaryComboAttack extends Attack {
     }
 
     private async processSubAttackDamage(sub: ComboSubAttack, subIndex: number, rows: TargetDamageSummary[], args: AttackResolutionArgs) {
-        if (!sub.damageRoll.result) return
+        if (!sub.damageRoll.result || sub.damageRoll.dmgType === "none") {
+            const failedIds = this.resolveTargetIds(args).filter(id => sub.shouldApplyDamageToTarget(id) && !sub.isHalfDamageForTarget(id))
+            await this.applyFxToTargets(sub.appliedEffects, failedIds)
+            return
+        }
 
         for (const row of rows) {
             const actor = getTargetActor(row.targetId)

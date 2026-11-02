@@ -1,5 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { isItemChoiceRule, findOrCreateElectiveTrainingsRule, getItemChoiceRules, getItemGrants, getItemRules, getSkillTrainingChoiceRules, getStatChoiceRules, normalizeRuleSelections, randomId, RuleSelection, saveItemRuleSelections } from "../../rules/util/item-rules-util"
+import { findOrCreateElectiveTrainingsRule, getItemChoiceRules, getItemGrants, getItemRules, getSkillTrainingChoiceRules, getStatChoiceRules, isItemChoiceRule, normalizeRuleSelections, randomId, RuleSelection, saveItemRuleSelections } from "../../rules/util/item-rules-util"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { getRuleSelectors } from "../../rules/util/selector-util"
 import { updateDocument } from "../../utils/documentUtils"

@@ -7,6 +7,7 @@ export interface CountdownResult {
     duration: number
     damageType?: string
     status?: string
+    statusName?: string
     rollSummary?: RollSummary
     rolls?: any[]
     message?: string | null

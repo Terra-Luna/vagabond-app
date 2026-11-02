@@ -47,6 +47,10 @@ export const DamageTypeIcon = ({ dmgType, size, title }: { dmgType: string, size
             element = <Cross size={size} strokeWidth={1} className='text-black fill-healing' />
             break
         }
+        case "holy": {
+            element = <Sparkle size={size} strokeWidth={1} className='text-black fill-fire' />
+            break
+        }
         case "magical": {
             element = <Wand2 size={size} className='text-magical' />
             break

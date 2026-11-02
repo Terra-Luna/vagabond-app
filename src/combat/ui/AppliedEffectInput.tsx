@@ -11,11 +11,11 @@ import { VagabondActiveEffect } from "../documents/VagabondActiveEffect";
 type AppliedEffect = { effect: string, duration?: string, critDuration?: string }
 
 type AppliedEffectInputProps =
-    | { item: Item & { system: AlchemicalItemDataModel | SpellDataModel }, effects?: undefined, onChange?: undefined, hideCritDuration?: boolean }
-    | { item?: undefined, effects: AppliedEffect[] | undefined, onChange: (effects: AppliedEffect[]) => unknown, hideCritDuration?: boolean }
+    | { item: Item & { system: AlchemicalItemDataModel | SpellDataModel }, effects?: undefined, onChange?: undefined, hideCritDuration?: boolean, label?: string }
+    | { item?: undefined, effects: AppliedEffect[] | undefined, onChange: (effects: AppliedEffect[]) => unknown, hideCritDuration?: boolean, label?: string }
 
 
-export const AppliedEffectInput = ({ item, effects, onChange, hideCritDuration }: AppliedEffectInputProps) => {
+export const AppliedEffectInput = ({ item, effects, onChange, hideCritDuration, label }: AppliedEffectInputProps) => {
 
     const { isEditMode } = useEditMode()
     const appliedEffects: AppliedEffect[] = (item ? (item.system?.appliedEffects ?? (item as any).appliedEffects) : effects) ?? []
@@ -51,7 +51,7 @@ export const AppliedEffectInput = ({ item, effects, onChange, hideCritDuration }
 
             {(appliedEffects.length > 0 || isEditMode) &&
                 <div className="flex gap-x-1">
-                    <ItemSheetPropLabel label={appLang.Effects.appliedEffects} />
+                    <ItemSheetPropLabel label={label ?? appLang.Effects.appliedEffects} />
                 </div>
             }
 

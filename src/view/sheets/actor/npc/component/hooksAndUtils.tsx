@@ -5,9 +5,10 @@ import { RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPower
 import { AdversaryAttack, SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
 import { AdversaryComboAttack, ComboSubAttackArgs } from "../../../../../combat/engine/AdversaryComboAttack"
 import { AppliedFx } from "../../../../../combat/engine/Attack"
-import { applyAdversaryDamageMods } from "../../../../../combat/engine/util/adversary-damage-mods"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
+import { collectAppliedFx } from "../../../../../combat/engine/util/active-effect-fx"
+import { applyAdversaryDamageMods } from "../../../../../combat/engine/util/adversary-damage-mods"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
@@ -177,7 +178,7 @@ export const onClickActionCombo = async (npc: AdversaryDataModel | NpcDataModel)
                 saveTypes: act.saves as SavingThrowType[],
                 halfDamageOnSave: act.halfDamageOnSave,
                 isSpellAttack: (act as any).type === 'cast',
-                appliedEffects: act.appliedEffects as AppliedFx[]
+                appliedEffects: collectAppliedFx(act as any)
             })
         }
     }

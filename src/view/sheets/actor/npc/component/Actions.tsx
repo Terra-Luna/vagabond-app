@@ -5,10 +5,10 @@ import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRoll
 import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
 import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 import { SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
-import { AppliedFx } from "../../../../../combat/engine/Attack"
 import { CountdownResult } from "../../../../../combat/engine/roll/CountdownResult"
 import { CountdownRoll } from "../../../../../combat/engine/roll/CountdownRoll"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
+import { collectAppliedFx } from "../../../../../combat/engine/util/active-effect-fx"
 import { AppliedEffectInput } from "../../../../../combat/ui/AppliedEffectInput"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
@@ -35,6 +35,7 @@ import { Tooltip } from "../../../../component/Tooltip"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
+import { AppliedActiveEffectsInput } from "./AppliedActiveEffectsInput"
 import { buildFollowerAttack, buildPolymorphAttack, onClickAction, onClickActionAsFollowerAttack, onClickActionAsWeaponAttack, onClickActionCombo, onClickComboAsHeroAttacks } from "./hooksAndUtils"
 
 const locale = appLang.NpcSheet
@@ -203,7 +204,7 @@ export const Actions = ({ npc, hero, setIsAddMenuOpen, isPolymorph }: {
                                     [actionId]: { name: `${npc.parent.name}: ${action.name}`, duration: rechargeFaces }
                                 }))
                             }
-                            onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], action.appliedEffects as AppliedFx[], action.halfDamageOnSave, action.type)
+                            onClickAction(npc, action.name, action.description, action.damage.type, roll, action.saves as SavingThrowType[], collectAppliedFx(action as any), action.halfDamageOnSave, action.type)
                         }
 
                         const polyAttack = isPolymorph && hero ? buildPolymorphAttack(hero, action) : undefined
@@ -354,6 +355,7 @@ export interface NpcAction {
     saves: string[],
     halfDamageOnSave: boolean,
     appliedEffects: { effect: string, duration: string | null }[]
+    appliedActiveEffects: { uuid: string, duration?: string }[]
     statuses: string[],
     recharge: string,
     comboCount: number
@@ -372,7 +374,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, edit
         saves: ['reflex'],
         halfDamageOnSave: false,
         appliedEffects: [],
-        statuses: [],
+        appliedActiveEffects: [],
         recharge: "",
         comboCount: 0
     })
@@ -585,9 +587,18 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, edit
                                 effects={newAction?.appliedEffects as any}
                                 onChange={(appliedEffects) => updateAction({ appliedEffects: appliedEffects as NpcAction["appliedEffects"] })}
                                 hideCritDuration={true}
+                                label={appLang.Effects.appliedStatuses}
                             />
                         </EditModeContextProvider>
                     </div>
+
+                    {/* ACTIVE EFFECTS */}
+                    <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                        <AppliedActiveEffectsInput
+                            effects={newAction?.appliedActiveEffects ?? []}
+                            onChange={(appliedActiveEffects) => updateAction({ appliedActiveEffects })}
+                        />
+                    </EditModeContextProvider>
 
                     {/* RECHARGE */}
                     <div className="flex items-end gap-x-1">

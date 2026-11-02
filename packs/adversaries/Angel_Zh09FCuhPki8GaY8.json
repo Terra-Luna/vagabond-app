@@ -263,6 +263,7 @@
     "numberAppearing": "1",
     "actions": [
       {
+        "id": "",
         "name": "Dominator",
         "description": "<p><span style=\"white-space: pre-wrap;\">[2 Actions as below ([[/r d6]] to determine)]</span></p>",
         "type": "melee",
@@ -276,11 +277,15 @@
           },
           "type": "none"
         },
-        "saves": []
+        "saves": [],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Flaming Sword",
-        "description": "<p><span style=\"white-space: pre-wrap;\">1. [Melee Attack]: 17 (4d6+3) and Burning (Cd6)</span><br><span style=\"white-space: pre-wrap;\">(+3 Silvered Greatsword w/ Loyalty)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">1. [Melee Attack]: 17 (4d6+3) and Burning (Cd6) (+3 Silvered Greatsword w/ Loyalty)</span></p>",
         "type": "melee",
         "range": "close",
         "damage": {
@@ -295,14 +300,17 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "burning",
             "duration": "Cd6"
           }
-        ]
+        ],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Burning Slash",
         "description": "<p><span style=\"white-space: pre-wrap;\">2. [Melee Attack, Near Cone | Half damage on a pass]: 13 (3d6+3) and Burning (Cd6)</span></p>",
         "type": "melee",
@@ -319,14 +327,17 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "burning",
             "duration": "Cd6"
           }
-        ]
+        ],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Banish",
         "description": "<p><span style=\"white-space: pre-wrap;\">3. [Remote | Will]: It is returned to its normal realm of existence, or ends another Being's possession of the Target.</span></p>",
         "type": "melee",
@@ -342,9 +353,13 @@
         },
         "saves": [
           "will"
-        ]
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Command",
         "description": "<p><span style=\"white-space: pre-wrap;\">4. [Cast, Far Aura]: 4 (d6+1) or obey the command issued by this Being.</span></p>",
         "type": "cast",
@@ -360,9 +375,13 @@
         },
         "saves": [
           "reflex"
-        ]
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Heal",
         "description": "<p><span style=\"white-space: pre-wrap;\">5. [Cast, Touch]: If it is a mortal Being, its HP is restored to maximum, and is cured of the Blinded, Paralyzed, or Sickened Status.</span></p>",
         "type": "cast",
@@ -376,9 +395,13 @@
           },
           "type": "none"
         },
-        "saves": []
+        "saves": [],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Radiance",
         "description": "<p><span style=\"white-space: pre-wrap;\">6. [Cast, Far Aura]: The area within the Aura is Sunlight, which moves with this Being.</span></p>",
         "type": "cast",
@@ -392,7 +415,10 @@
           },
           "type": "none"
         },
-        "saves": []
+        "saves": [],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       }
     ],
     "combo": {
@@ -645,11 +671,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.31",
+    "systemVersion": "0.2.178",
     "createdTime": 1790181823734,
-    "modifiedTime": 1790188359295,
+    "modifiedTime": 1793588382352,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

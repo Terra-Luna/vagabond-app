@@ -427,56 +427,7 @@
       "_key": "!actors.items!E1kVIhzqTRmgPy9N.e5DmKW2MHNfaeo6w"
     }
   ],
-  "effects": [
-    {
-      "name": "New Effect",
-      "img": "/icons/svg/invisible.svg",
-      "origin": "Compendium.vagabond-app.adversaries.Actor.E1kVIhzqTRmgPy9N",
-      "disabled": false,
-      "_id": "guIIGU7ejBvafPYc",
-      "type": "base",
-      "system": {
-        "changes": [],
-        "requiresEquip": true
-      },
-      "start": {
-        "time": 0,
-        "combat": "uXBudrttMTHalvwI",
-        "combatant": null,
-        "initiative": null,
-        "round": 2,
-        "turn": null
-      },
-      "duration": {
-        "value": null,
-        "units": "seconds",
-        "expiry": null,
-        "expired": false
-      },
-      "description": "",
-      "tint": "#ffffff",
-      "transfer": false,
-      "statuses": [
-        "invisible"
-      ],
-      "showIcon": 2,
-      "folder": null,
-      "sort": 0,
-      "flags": {},
-      "_stats": {
-        "coreVersion": "14.361",
-        "systemId": "vagabond-app",
-        "systemVersion": "0.1.31",
-        "createdTime": 1790197962938,
-        "modifiedTime": 1790197981338,
-        "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_key": "!actors.effects!E1kVIhzqTRmgPy9N.guIIGU7ejBvafPYc"
-    }
-  ],
+  "effects": [],
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",

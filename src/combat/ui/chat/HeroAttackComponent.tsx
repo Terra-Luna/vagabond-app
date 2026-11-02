@@ -163,7 +163,7 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                                             borderClassName="border-2 border-solid border-ic-luck/66"
                                             fn={() => handleLuckReroll()}
                                         />
-                                        {getAllowLateLuckStudy() &&
+                                        {getAllowLateLuckStudy() && !attack.skillCheck?.isFavored &&
                                             <InteractiveChatCardButton
                                                 icon={<Clover size={18} className="text-ic-luck h-full" />}
                                                 label={appLang.AttackBuilder.plusFavor} tooltip={appLang.AttackBuilder.spendLuckToAddFavor}
@@ -171,7 +171,7 @@ export const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                                                 fn={() => handleLateD6('luck', luck)}
                                             />}
                                     </>}
-                                    {studied > 0 && getAllowLateLuckStudy() &&
+                                    {studied > 0 && getAllowLateLuckStudy() && !attack.skillCheck?.isFavored &&
                                         <InteractiveChatCardButton
                                             icon={<BookMarked size={18} className="text-ic-studied h-full" />}
                                             label={appLang.AttackBuilder.plusFavor} tooltip={appLang.AttackBuilder.spendStudyToAddFavor}

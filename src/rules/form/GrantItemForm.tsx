@@ -1,33 +1,18 @@
-import { useState } from "react"
-
+import { DropZone } from "../../view/component/DropZone"
 import { FormProps } from "../shared/FormProps"
 import { ItemRuleInput } from "../shared/ItemRuleInput"
 
 export const GrantItemForm = ({ rule, onChange }: FormProps) => {
-    const [isDraggingOver, setIsDraggingOver] = useState(false)
-
-    const handleDragOver = (e: React.DragEvent) => {
-        e.preventDefault()
-        setIsDraggingOver(true)
-    }
-
-    const handleDragLeave = () => {
-        setIsDraggingOver(false)
-    }
-
     const handleDrop = async (e: React.DragEvent) => {
-        e.preventDefault()
-        setIsDraggingOver(false)
-
         const rawData = e.dataTransfer.getData("text/plain")
         if (!rawData) return
         const dropData = JSON.parse(rawData)
 
         if ((dropData.type === "Item" || dropData.type === "ActiveEffect") && dropData.uuid) {
-            const item = fromUuidSync(dropData.uuid) as any
+            const item = (await fromUuid(dropData.uuid)) as any
             const type = item instanceof ActiveEffect
                 ? "ActiveEffect"
-                : item?.type ?? null
+                : item?.type ?? (dropData.type === "ActiveEffect" ? "ActiveEffect" : null)
 
             onChange({
                 uuid: dropData.uuid,
@@ -54,13 +39,12 @@ export const GrantItemForm = ({ rule, onChange }: FormProps) => {
                     type={"number"}
                 />
             </div>
-            <div
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={(e) => handleDrop(e)}
-                className={`
-                    flex flex-col rounded-sm border p-1 flex items-center transition-all
-                    ${isDraggingOver ? "bg-context-menu-fill shadow-[0_0_8px_rgba(245,158,11,0.3)]" : "border-table-border/50"}`
+            <DropZone
+                unstyled
+                onDrop={handleDrop}
+                className={(hovered) => `
+                    flex flex-col rounded-sm border p-1 items-center transition-all
+                    ${hovered ? "bg-context-menu-fill shadow-[0_0_8px_rgba(245,158,11,0.3)]" : "border-table-border/50"}`
                 }
             >
                 <ItemRuleInput
@@ -74,7 +58,7 @@ export const GrantItemForm = ({ rule, onChange }: FormProps) => {
                         })
                     }}
                 />
-            </div>
+            </DropZone>
         </div>
     )
 }

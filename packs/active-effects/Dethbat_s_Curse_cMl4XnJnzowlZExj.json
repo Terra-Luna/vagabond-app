@@ -1,0 +1,39 @@
+{
+  "folder": "fPW6kjAQatj9ttx8",
+  "name": "Dethbat's Curse",
+  "_id": "cMl4XnJnzowlZExj",
+  "img": "/icons/commodities/biological/wing-lizard-pink.webp",
+  "type": "base",
+  "system": {
+    "changes": [],
+    "requiresEquip": true
+  },
+  "disabled": false,
+  "start": null,
+  "duration": {
+    "value": null,
+    "units": "seconds",
+    "expiry": null,
+    "expired": false
+  },
+  "description": "<p>Every hour while cursed and not in Sunlight, the victim rolls a d6, progressing the curse by 1 stage on a roll of 1:</p><p>1. Their hair falls out.</p><p>2. Their ears transform into wings and their teeth become fangs.</p><p>3. They gain 1 Fatigue. If they die due to this, their head rips from their body and becomes a Dethbat.</p>",
+  "origin": null,
+  "tint": "#ffffff",
+  "transfer": true,
+  "statuses": [],
+  "showIcon": 2,
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.369",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.2.178",
+    "createdTime": 1793589443042,
+    "modifiedTime": 1793589488662,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!effects!cMl4XnJnzowlZExj"
+}

@@ -617,7 +617,7 @@ export const StatusCountdowns = ({ combatant, actorUuid, tokenUuid, burningOnly,
         <div className={className}>
             <ContextMenu />
             {combatantCountdowns.map(cd => {
-                const statusName = appLang.StatusConditions[cd.result.status as string]?.name ?? cd.result.status
+                const statusName = cd.result.statusName ?? appLang.StatusConditions[cd.result.status as string]?.name ?? cd.result.status
                 const damageTypeName = cd.result.status === "burning" && cd.result.damageType
                     ? (appLang.DamageTypes[cd.result.damageType] ?? cd.result.damageType)
                     : undefined

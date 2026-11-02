@@ -282,7 +282,8 @@
           "reflex"
         ],
         "halfDamageOnSave": false,
-        "appliedEffects": []
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       },
       {
         "id": "",
@@ -308,12 +309,13 @@
             "effect": "restrained",
             "duration": "round"
           }
-        ]
+        ],
+        "appliedActiveEffects": []
       },
       {
         "id": "7OoNEBpSelt6rdCd",
         "name": "Otyugh Disease",
-        "description": "<p><span style=\"white-space: pre-wrap;\">@UUID[Compendium.vagabond-app.active-effects.ActiveEffect.Uz2hvvr7uYqgsuYb]{Otyugh Disease:} Beings that aren't Otyughs that are Sickened this way must pass an an [Endure] Save every day or lose 3 (d6) from their Max HP. This reduction to their Max HP lasts while they are Sickened by this disease.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">@UUID[Compendium.vagabond-app.active-effects.ActiveEffect.2KI3cyP71F3bYf1o]{Otyugh Disease:} Beings that aren't Otyughs that are Sickened this way must pass an an [Endure] Save every day or lose 3 ([[/r d6#Otyugh Disease Max HP Reduction]]) from their Max HP. This reduction to their Max HP lasts while they are Sickened by this disease.</span></p>",
         "type": "melee",
         "range": "close",
         "damage": {
@@ -332,6 +334,12 @@
         "appliedEffects": [
           {
             "effect": "sickened",
+            "duration": "continual"
+          }
+        ],
+        "appliedActiveEffects": [
+          {
+            "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.2KI3cyP71F3bYf1o",
             "duration": "continual"
           }
         ]
@@ -450,11 +458,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.160",
+    "systemVersion": "0.2.178",
     "createdTime": 1790188347022,
-    "modifiedTime": 1793503435988,
+    "modifiedTime": 1793588342697,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

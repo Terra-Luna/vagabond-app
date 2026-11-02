@@ -271,6 +271,7 @@
     "numberAppearing": "1",
     "actions": [
       {
+        "id": "",
         "name": "Gore Spray",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Attack, Far Cone]: 7 (2d6) and Sickened (Cd6)</span></p>",
         "type": "melee",
@@ -287,17 +288,20 @@
         "saves": [
           "reflex"
         ],
-        "recharge": "Cd4",
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "sickened",
             "duration": "Cd6"
           }
-        ]
+        ],
+        "recharge": "Cd4",
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">Claw [Melee Attack]: 4 (d6+1)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d6+1)</span></p>",
         "type": "melee",
         "range": "close",
         "damage": {
@@ -311,9 +315,13 @@
         },
         "saves": [
           "reflex"
-        ]
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8)</span></p>",
         "type": "melee",
@@ -329,7 +337,10 @@
         },
         "saves": [
           "reflex"
-        ]
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       }
     ],
     "combo": {
@@ -628,11 +639,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.2.178",
     "createdTime": 1790099960352,
-    "modifiedTime": 1790100339417,
+    "modifiedTime": 1793588867474,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

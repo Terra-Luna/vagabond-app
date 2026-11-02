@@ -55,7 +55,9 @@ export const modifierSchema = () => {
                 modifier: new fields.SchemaField({
                     flat: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
                     perDie: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
-                    perDieOverride: new fields.NumberField({ ...uncappedInteger, initial: 0 })
+                    perDieOverride: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+                    hpLocked: new fields.BooleanField({ initial: false }),
+                    fatigueLocked: new fields.BooleanField({ initial: false })
                 })
             }),
             out: new fields.SchemaField({

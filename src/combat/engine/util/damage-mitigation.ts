@@ -1,7 +1,7 @@
 import { physicalDamageTypes } from "../../../model/common/sharedSchemas"
 import { getTargetActor } from "../../../utils/modelUtil"
 import type { DamageRoll } from "../roll/DamageRoll"
-import { getLethalPrecisionBonus, isWeakToHunter } from "./hunters-mark"
+import { isWeakToHunter } from "./hunters-mark"
 
 export interface AttackResolutionArgs {
     isSpellAttack?: boolean
@@ -118,7 +118,9 @@ export const computeDamageBreakdown = (damageRoll: DamageRoll | undefined, targe
 
     const dmgType = damageRoll?.dmgType ?? ''
     const mods = aSys?.modifiers?.damage?.in ?? {}
-    const flatReduction = (mods?.flatReduction?.global ?? 0) + (args.isSpellAttack ? (mods?.flatReduction?.[dmgType] ?? 0) : (mods?.flatReduction?.attack ?? 0))
+    // Attack-type reduction (e.g. the Flanked bonus damage) only applies to the weapon's own damage, never to spells or imbues.
+    const attackReduction = !args.isSpellAttack && damageRoll ? (mods?.flatReduction?.attack ?? 0) : 0
+    const flatReduction = (mods?.flatReduction?.global ?? 0) + (args.isSpellAttack ? (mods?.flatReduction?.[dmgType] ?? 0) : attackReduction)
     const perDieReductionFor = (type: string) => (mods?.perDieReduction?.global ?? 0) + (mods?.perDieReduction?.[type] ?? 0)
     const perDieReduction = perDieReductionFor(dmgType)
     const isResistant = mods?.resistances?.includes(dmgType)

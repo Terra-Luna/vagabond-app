@@ -266,6 +266,7 @@
     "numberAppearing": "1",
     "actions": [
       {
+        "id": "",
         "name": "Temporal Lock",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Sight | Will]: Paralyzed (Cd4)</span></p>",
         "type": "cast",
@@ -282,16 +283,21 @@
         "saves": [
           "will"
         ],
-        "recharge": "Cd4",
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "paralyzed",
             "duration": "Cd4"
           }
-        ]
+        ],
+        "recharge": "Cd4",
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Claw",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -304,11 +310,15 @@
         "saves": [
           "reflex"
         ],
-        "type": "melee",
-        "range": "close"
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Bite",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 2,
@@ -321,8 +331,58 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
+      },
+      {
+        "id": "fyDYb4MOr1NnIQ66",
+        "name": "Maddening",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Will or Confused (Cd4)</span></p>",
         "type": "melee",
-        "range": "close"
+        "range": "close",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "will"
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [
+          {
+            "effect": "confused",
+            "duration": "Cd4"
+          }
+        ],
+        "appliedActiveEffects": []
+      },
+      {
+        "name": "Terror",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Will | on Sight] or Frightened Cd4. Check can be attempted again at the start of each turn.</span></p>",
+        "type": "melee",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "range": "close",
+        "saves": [
+          "will"
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": [],
+        "id": "HzKcZYnxNEEvX3Id"
       }
     ],
     "combo": {
@@ -543,11 +603,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.31",
+    "systemVersion": "0.2.178",
     "createdTime": 1790181834570,
-    "modifiedTime": 1790188359296,
+    "modifiedTime": 1793588599417,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

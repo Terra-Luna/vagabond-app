@@ -272,6 +272,7 @@
     "numberAppearing": "1",
     "actions": [
       {
+        "id": "",
         "name": "Glare",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Sight | Will]: Frightened (Cd4, Paralyzed)</span></p>",
         "type": "cast",
@@ -288,7 +289,7 @@
         "saves": [
           "will"
         ],
-        "recharge": "Cd4",
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "frightened",
@@ -298,9 +299,12 @@
             "effect": "paralyzed",
             "duration": "Cd4"
           }
-        ]
+        ],
+        "recharge": "Cd4",
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Cursed Touch",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) and pass an [Endure] Save or be Cursed (can't regain HP or remove Fatigue, and it loses 3 (d6) HP every day)</span></p>",
         "type": "melee",
@@ -316,10 +320,17 @@
         },
         "saves": [
           "reflex"
-        ]
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Mummy's Curse",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Mummy Lord's Curse as described above</span></p>",
+        "type": "cast",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 0,
@@ -332,11 +343,11 @@
         "saves": [
           "endure"
         ],
-        "type": "melee",
-        "range": "close",
-        "appliedEffects": [
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": [
           {
-            "effect": "hexed",
+            "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.Gr0OLueX9uJjFfF4",
             "duration": "continual"
           }
         ]
@@ -562,11 +573,11 @@
   "folder": "qMHTlKoPCfkn2dhA",
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.2.178",
     "createdTime": 1790097271989,
-    "modifiedTime": 1790098556301,
+    "modifiedTime": 1793591614023,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

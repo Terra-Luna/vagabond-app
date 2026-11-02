@@ -1,0 +1,23 @@
+{
+  "type": "ActiveEffect",
+  "folder": null,
+  "name": "Curses",
+  "color": null,
+  "sorting": "a",
+  "_id": "fPW6kjAQatj9ttx8",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.369",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.2.178",
+    "createdTime": 1793585731777,
+    "modifiedTime": 1793585731777,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!fPW6kjAQatj9ttx8"
+}

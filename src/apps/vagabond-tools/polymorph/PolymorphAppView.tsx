@@ -18,6 +18,7 @@ import { useTargetSync } from "../../../view/chat/component/TargetSyncUseCase"
 import { tableBorderRounded, wealthBorderRounded } from "../../../view/common/border-styles"
 import { buttonAnimation, UtilityButton } from "../../../view/component/Button"
 import { CollapsibleSection } from "../../../view/component/Collapsible"
+import { DropZone } from "../../../view/component/DropZone"
 import { ClearHeader } from "../../../view/component/Header"
 import { IconOnlyButton } from "../../../view/component/IconOnlyButton"
 import { Tooltip } from "../../../view/component/Tooltip"
@@ -42,7 +43,6 @@ export const PolymorphAppView = ({ caster, header }: {
         return [{ id: caster.id!, src: getTokenImg(token ?? caster), token }]
     }, [syncedTargets, caster])
 
-    const [isMorphDragOver, setIsMorphDragOver] = useState(false)
     const [isFavDragOverIdx, setIsFavDragOverIdx] = useState<number | false>(false)
     const [selfPolymorph, setSelfPolymorph] = useState<PolymorphFlag | undefined>(() => caster.system.polymorph)
     const [isFocused, setIsFocused] = useState(true)
@@ -106,7 +106,6 @@ export const PolymorphAppView = ({ caster, header }: {
     const handleMorphDrop = async (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault()
         event.stopPropagation()
-        setIsMorphDragOver(false)
 
         const statBlock = await (async () => {
             try {
@@ -256,20 +255,10 @@ export const PolymorphAppView = ({ caster, header }: {
                     {/* DROP ZONE */}
                     <div className="pb-0.5 border-b-2 border-solid border-skill-divider w-full">
                         {selfPolymorph && isTargetSelf()
-                            ? <div
-                                className="w-full"
-                                onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(true) }}
-                                onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(false) }}
-                                onDrop={handleMorphDrop}
-                            >
-                                <PolymorphCard polymorph={selfPolymorph} onCancel={cancelPolymorph} isHovered={isMorphDragOver} />
-                            </div>
-                            : <div
-                                className={`flex flex-col w-full items-center justify-center py-4 px-4 rounded text-text-header-primary/80 text-center whitespace-pre-line bg-sheet-header-fill ${isMorphDragOver ? `${wealthBorderRounded}` : "border border-dashed border-table-border"}`}
-                                onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(true) }}
-                                onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsMorphDragOver(false) }}
-                                onDrop={handleMorphDrop}
-                            >
+                            ? <DropZone unstyled className="w-full" onDrop={handleMorphDrop}>
+                                {(isHovered) => <PolymorphCard polymorph={selfPolymorph} onCancel={cancelPolymorph} isHovered={isHovered} />}
+                            </DropZone>
+                            : <DropZone onDrop={handleMorphDrop}>
                                 <span className="italic">
                                     {`${localizeString(appLang.Polymorph.dropZone, { noun: isTargetSelf() ? appLang.Polymorph.self : appLang.Combat.targets })}\n${caster.system instanceof HeroDataModel ? localizeString(appLang.Polymorph.hdLimit, { hd: String(castingLevel) }) : ""}`}
                                 </span>
@@ -285,7 +274,7 @@ export const PolymorphAppView = ({ caster, header }: {
                                         }
                                     </button>
                                 </div>
-                            </div>
+                            </DropZone>
                         }
                     </div>
                 </div>
@@ -384,8 +373,8 @@ const PolymorphFavoriteCard = ({ uuid, index, isHovered, onDragOver, onDragLeave
     uuid?: string,
     index?: number,
     isHovered: boolean,
-    onDragOver: (e: React.DragEvent<HTMLDivElement>) => void,
-    onDragLeave: (e: React.DragEvent<HTMLDivElement>) => void,
+    onDragOver: () => void,
+    onDragLeave: () => void,
     onDrop: (e: React.DragEvent<HTMLDivElement>) => void,
     onDelete?: () => void
 }) => {
@@ -409,19 +398,20 @@ const PolymorphFavoriteCard = ({ uuid, index, isHovered, onDragOver, onDragLeave
     const name = statBlock?.name ?? appLang.Polymorph.dropToFavorite
 
     return (
-        <div
+        <DropZone
+            unstyled
             draggable={!!uuid}
-            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); onDragOver(e) }}
-            onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); onDragLeave(e) }}
+            isHovered={isHovered}
+            onHoverChange={(hovered) => hovered ? onDragOver() : onDragLeave()}
+            onDrop={onDrop}
             onDragStart={(e) => {
                 e.stopPropagation()
                 if (uuid) e.dataTransfer.setData("text/plain", uuid)
                 if (index !== undefined) e.dataTransfer.setData(FAVORITE_DRAG_TYPE, String(index))
             }}
-            onDrop={onDrop}
-            className={`flex items-center gap-2 p-2 min-h-[56px]
+            className={(hovered) => `flex items-center gap-2 p-2 min-h-[56px]
                 ${uuid ? "cursor-grab justify-between" : "justify-center"}
-                ${isHovered ? `${wealthBorderRounded} bg-sheet-header-fill/66` : `${tableBorderRounded} bg-sheet-header-fill`}
+                ${hovered ? `${wealthBorderRounded} bg-sheet-header-fill/66` : `${tableBorderRounded} bg-sheet-header-fill`}
             `}
         >
             {statBlock
@@ -451,6 +441,6 @@ const PolymorphFavoriteCard = ({ uuid, index, isHovered, onDragOver, onDragLeave
                 </div>
             }
             {onDelete && <TrashButton onClick={onDelete} />}
-        </div>
+        </DropZone>
     )
 }

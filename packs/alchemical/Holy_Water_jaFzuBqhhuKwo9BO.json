@@ -31,7 +31,7 @@
         "modifier": 0,
         "explodesOn": []
       },
-      "type": "fire"
+      "type": "holy"
     },
     "appliedEffects": [
       {
@@ -50,11 +50,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.1",
+    "systemVersion": "0.2.178",
     "createdTime": 1786821066884,
-    "modifiedTime": 1789665579309,
+    "modifiedTime": 1793599513192,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

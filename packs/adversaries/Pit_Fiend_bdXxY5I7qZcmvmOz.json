@@ -267,6 +267,7 @@
     "numberAppearing": "1",
     "actions": [
       {
+        "id": "",
         "name": "Symbol of Pain",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Aura Far | Will] (1/Day): Cursed ([[/r Cd6#Symbol of Pain]] Rounds, -4 penalty to Attack Checks and a -2 to [Reflex] Saves)</span></p>",
         "type": "cast",
@@ -282,9 +283,18 @@
         },
         "saves": [
           "will"
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": [
+          {
+            "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.XAofqC8w4NF5A6Xt",
+            "duration": "Cd6"
+          }
         ]
       },
       {
+        "id": "",
         "name": "Fireball",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 20' Sphere | Reflex]: and Burning (Cd4)</span></p>",
         "type": "cast",
@@ -301,15 +311,18 @@
         "saves": [
           "reflex"
         ],
-        "recharge": "Cd4",
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "burning",
             "duration": "Cd4"
           }
-        ]
+        ],
+        "recharge": "Cd4",
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Bite",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and pass [Endure] with a -1 penalty or become Sickened (Cd6 damage)</span></p>",
         "type": "melee",
@@ -325,9 +338,13 @@
         },
         "saves": [
           "reflex"
-        ]
+        ],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Mace",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Burning (Cd6)</span></p>",
         "type": "melee",
@@ -344,14 +361,17 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "burning",
             "duration": "Cd6"
           }
-        ]
+        ],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Wall of Fire",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Line | Reflex] (3/Day, Focus): Burning (2d6)</span></p>",
         "type": "cast",
@@ -368,14 +388,17 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "burning",
             "duration": "Cd4"
           }
-        ]
+        ],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Hold",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Endure]: Paralyzed (Cd4)</span></p>",
         "type": "cast",
@@ -392,17 +415,20 @@
         "saves": [
           "reflex"
         ],
-        "recharge": "Cd4",
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "paralyzed",
             "duration": "Cd4"
           }
-        ]
+        ],
+        "recharge": "Cd4",
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Tail",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (2d4) and Restrained, taking</span></p><p><span style=\"white-space: pre-wrap;\">5 (2d4) at the start of this Being's Turns while</span></p><p><span style=\"white-space: pre-wrap;\">Restrained this way</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (2d4) and Restrained, taking 5 (2d4) at the start of this Being's Turns while Restrained this way</span></p>",
         "type": "melee",
         "range": "close",
         "damage": {
@@ -417,12 +443,14 @@
         "saves": [
           "reflex"
         ],
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "restrained",
             "duration": "continual"
           }
-        ]
+        ],
+        "appliedActiveEffects": []
       }
     ],
     "combo": {
@@ -642,11 +670,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.31",
+    "systemVersion": "0.2.178",
     "createdTime": 1790188349847,
-    "modifiedTime": 1790189970376,
+    "modifiedTime": 1793588092293,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

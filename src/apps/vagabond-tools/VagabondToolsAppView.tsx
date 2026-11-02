@@ -1,6 +1,8 @@
 import { useCallback, useState } from "react"
 
 import { appLang } from "../../utils/lang"
+import { TargetsDisplay } from "../../view/chat/component/TargetsDisplay"
+import { useTargetSync } from "../../view/chat/component/TargetSyncUseCase"
 import { UtilityButton } from "../../view/component/Button"
 import { Checkbox } from "../../view/component/Checkbox"
 import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
@@ -13,6 +15,7 @@ import { CountdownManager } from "./usecase/CountdownManager"
 import { addProgressClock, deleteAllProgressClocks, getItemShopToggle, getProgressClocks, setItemShopToggle } from "./usecase/VagabondSettingsHelper"
 
 export const VagabondToolsAppView = () => {
+    const targets = useTargetSync()
     const [shopToggle, setShopToggle] = useState<boolean>(getItemShopToggle())
     const [deleteConfirmation, setDeleteConfirmation] = useState({ isOpen: false, title: "", message: "", onAccept: () => { } })
 
@@ -82,6 +85,13 @@ export const VagabondToolsAppView = () => {
 
                     <div>
                         <p>{appLang.VagabondTools.specialEffects}</p>
+
+                        {targets.length > 0 &&
+                            <span className="text-text-primary">
+                                <TargetsDisplay targets={targets} />
+                            </span>
+                        }
+
                         <div className="flex gap-x-2 items-end">
                             <UtilityButton onClick={() => {
                                 const selected = canvas?.tokens?.controlled[0]?.actor as any ?? game.user?.targets?.first()?.actor as any

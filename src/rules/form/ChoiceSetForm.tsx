@@ -1,10 +1,11 @@
 import { Plus, Trash } from "lucide-react"
-import React, { useState } from "react"
+import React from "react"
 
 import { appLang } from "../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
 import { tableBorder } from "../../view/common/border-styles"
 import { Checkbox } from "../../view/component/Checkbox"
+import { DropZone } from "../../view/component/DropZone"
 import { IconOnlyButton } from "../../view/component/IconOnlyButton"
 import { ChoiceOption } from "../shared/ChoiceOption"
 import { FormProps } from "../shared/FormProps"
@@ -14,7 +15,6 @@ import { ItemRulesLabel } from "../shared/ItemRulesTypography"
 export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
     // Read the options list array, defaulting to an empty array if uninitialized
     const choices: ChoiceOption[] = rule.choices || []
-    const [activeDragIdx, setActiveDragIdx] = useState<number | null>(null)
 
     // Update specific keys inside an individual option index row using idx
     const handleUpdateOption = async (indexToUpdate: number, fields: Partial<ChoiceOption>) => {
@@ -44,19 +44,10 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
         })
     }
 
-    const handleDragOver = (e: React.DragEvent, index: number) => {
-        e.preventDefault()
-        if (rule.channel === "spell" || rule.channel === "perk" || rule.channel === "alchemical" || rule.channel === "item") {
-            setActiveDragIdx(index)
-        }
-    }
+    const isItemChannel = rule.channel === "spell" || rule.channel === "perk" || rule.channel === "alchemical" || rule.channel === "item"
 
     const handleDrop = async (e: React.DragEvent, index: number) => {
-        e.preventDefault()
-        setActiveDragIdx(null)
-
-        if (rule.channel !== "item" && rule.channel !== "perk" && rule.channel !== "spell" && rule.channel !== "alchemical") return
-
+        if (!isItemChannel) return
         const rawData = e.dataTransfer.getData("text/plain")
         if (!rawData) return
 
@@ -270,25 +261,24 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                         />
                                     </div>
 
-                                    <div
-                                        className={`w-1/2 p-1 transition-colors duration-100 
-                                            ${activeDragIdx === oIdx && (rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell")
+                                    <DropZone
+                                        unstyled
+                                        onDrop={(e) => handleDrop(e, oIdx)}
+                                        className={(hovered) => `w-1/2 p-1 transition-colors duration-100 
+                                            ${hovered && isItemChannel
                                                 ? "bg-context-menu-fill shadow-[0_0_8px_rgba(245,158,11,0.3)]"
                                                 : "border-table-border/50"
                                             }`
                                         }
-                                        onDragOver={(e) => handleDragOver(e, oIdx)}
-                                        onDragLeave={() => setActiveDragIdx(null)}
-                                        onDrop={(e) => handleDrop(e, oIdx)}
                                     >
                                         <ItemRuleInput
-                                            label={(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell") ? "Item UUID (Drag & Drop Spells/Perks)" : "Path"}
+                                            label={(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell") ? "Item UUID" : "Path"}
                                             value={choice.value}
                                             placeholder={(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell") ? "Drop item here to capture UUID..." : "stats.might"}
                                             onChange={(e) => handleUpdateOption(oIdx, { value: e.target.value })}
                                             type="text"
                                         />
-                                    </div>
+                                    </DropZone>
 
                                     {/* Delete Row Button Wrapper */}
                                     <button

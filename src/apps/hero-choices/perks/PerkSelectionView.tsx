@@ -10,6 +10,7 @@ import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../utils/lang"
 import { localizeString } from "../../../utils/localeUtils"
 import { wealthBorderRounded } from "../../../view/common/border-styles"
+import { DropZone } from "../../../view/component/DropZone"
 import { Header } from "../../../view/component/Header"
 import { SearchBar } from "../../../view/component/SearchBar"
 import { SkillCard } from "../../../view/component/SkillCard"
@@ -227,8 +228,7 @@ export const usePerkSelectionView = (
     ), [])
 
     const [extraRules, setExtraRules] = useState<any[]>(() => getExtraPerkRules(actor))
-    const [isExtraDragOver, setIsExtraDragOver] = useState(false)
-
+    
     const extraPerks = useMemo(() => extraRules.flatMap(rule => {
         const perk = selectablePerks.find(it => it.value === rule.uuid)
         return perk ? [{ rule, perk }] : []
@@ -249,6 +249,7 @@ export const usePerkSelectionView = (
 
     const [activeSlot, setActiveSlot] = useState<any>()
     const [isSlotFilterEnabled, setIsSlotFilterEnabled] = useState(true)
+    const [dragOverSlotKey, setDragOverSlotKey] = useState<string | null>(null)
 
     /**
      * Perk slot drag/drop target containers.
@@ -267,23 +268,32 @@ export const usePerkSelectionView = (
             }
         }, [])
 
+        const slotKey = `${slotType}-${slot.ruleId}-${slotIndex}`
+        const isDragOver = !locked && dragOverSlotKey === slotKey
+
         return (
             <div
-                key={`${slotType}-${slot.ruleId}-${slotIndex}`}
-                className={`bg-context-menu-fill/50 border border-table-border rounded-sm p-2 ${locked ? "" : "cursor-pointer"} ${slot.value ? "border-solid" : "border-dashed"}`}
+                key={slotKey}
+                className={`bg-context-menu-fill/50 p-2 ${locked ? "" : "cursor-pointer"} ${isDragOver ? wealthBorderRounded : `border border-table-border rounded-sm ${slot.value ? "border-solid" : "border-dashed"}`}`}
                 onClick={locked ? undefined : () => toggleFilter(slot)}
                 onDragOver={locked ? undefined : event => {
                     event.preventDefault()
                     event.stopPropagation()
                     event.dataTransfer.dropEffect = "copy"
+                    setDragOverSlotKey(slotKey)
                 }}
                 onDragEnter={locked ? undefined : event => {
                     event.preventDefault()
                     event.stopPropagation()
+                    setDragOverSlotKey(slotKey)
+                }}
+                onDragLeave={locked ? undefined : event => {
+                    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setDragOverSlotKey(null)
                 }}
                 onDrop={locked ? undefined : event => {
                     event.preventDefault()
                     event.stopPropagation()
+                    setDragOverSlotKey(null)
                     const perkId = event.dataTransfer.getData("application/x-vagabond-perk") || event.dataTransfer.getData("text/plain")
                     if (!perkId) return
                     if (!options.some(option => option.value === perkId)) {
@@ -315,7 +325,7 @@ export const usePerkSelectionView = (
                 }
             </div>
         )
-    }, [activeSlot, getPerkOption, getSlotLabel, getSlotOptions, notifyInvalidDrop, onSelectPerk, renderPerkCard])
+    }, [activeSlot, dragOverSlotKey, getPerkOption, getSlotLabel, getSlotOptions, notifyInvalidDrop, onSelectPerk, renderPerkCard])
 
     const grantedPerkIds = useMemo(() => new Set(
         [...ancestryPerkGrants, ...classPerkGrants].map(grant => grant.uuid)
@@ -425,29 +435,15 @@ export const usePerkSelectionView = (
 
                         {actor && <>
                             {/* EXTRA PERKS DROP-ZONE */}
-                            <div
-                                className={`flex flex-col w-full items-center justify-center py-4 px-4 rounded text-text-header-primary/80 text-center bg-sheet-header-fill font-paradigm font-normal italic ${isExtraDragOver ? wealthBorderRounded : "border border-dashed border-table-border"}`}
-                                onDragOver={event => {
-                                    event.preventDefault()
-                                    event.stopPropagation()
-                                    event.dataTransfer.dropEffect = "copy"
-                                    setIsExtraDragOver(true)
-                                }}
-                                onDragLeave={event => {
-                                    event.preventDefault()
-                                    event.stopPropagation()
-                                    setIsExtraDragOver(false)
-                                }}
+                            <DropZone
+                                className="font-paradigm font-normal italic"
                                 onDrop={event => {
-                                    event.preventDefault()
-                                    event.stopPropagation()
-                                    setIsExtraDragOver(false)
                                     const perkId = event.dataTransfer.getData("application/x-vagabond-perk") || event.dataTransfer.getData("text/plain")
                                     if (perkId) addExtraPerkFromDrop(perkId)
                                 }}
                             >
                                 {appLang.HeroChoices.extraPerksDropZone}
-                            </div>
+                            </DropZone>
 
                             {/* LIST OF EXTRA PERKS */}
                             <div className="flex flex-col gap-1 w-full mt-2">
