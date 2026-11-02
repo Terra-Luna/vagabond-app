@@ -1,5 +1,6 @@
 import { getFollowerContext } from "../../model/actor/util/NpcDataModelUtil"
 import { appLang } from "../../utils/lang"
+import { canInitiateAttack } from "../../utils/modelUtil"
 import { AppliedFx, Attack, AttackResolutionArgs } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
@@ -61,6 +62,7 @@ export class AdversaryAttack extends Attack {
     }
 
     async initiate(clickEvent?: any) {
+        if (!canInitiateAttack(this.actor)) return
         this.id = foundry.utils.randomID()
 
         // An NPC following a Hero attacks with that Hero's skill; failing the check means no damage.

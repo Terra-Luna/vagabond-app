@@ -320,10 +320,6 @@
         "name": "Blessed",
         "description": "For the duration, Targeted Objects count as Silvered, and Targeted Beings of your choice have a d4 bonus to Saves. Further, if the Target is freestanding water, it permanently becomes holy water."
       },
-      "marked": {
-        "name": "Marked",
-        "description": "A Hunter has marked this target."
-      },
       "hexed": {
         "name": "Hexed",
         "description": "A Witch has Hexed this target."
@@ -1538,6 +1534,9 @@
         "imbueAttackResolved": "The latest weapon attack has already been resolved and can't be imbued",
         "imbuingAttack": "{{name}} is imbuing the attack...",
         "imbueNoTargets": "Imbue targets must be a subset of the attack's targets",
+        "attackNotInScene": "{{name}} must have a token in the current scene to attack",
+        "imbueNotInScene": "{{name}} must be in the current scene to imbue",
+        "huntersMarkNotInScene": "{{name}} must be in the scene to apply Hunter's Mark",
         "imbueRequiresDamage": "Imbue requires an offensive spell",
         "d6AlreadyAppliedToSkillCheck": "D6 already applied to Skill Check",
         "perkNotEligibleForRestriction": "{{perk}} is not eligible for {{slot}}. This slot requires its configured class feature restriction.",

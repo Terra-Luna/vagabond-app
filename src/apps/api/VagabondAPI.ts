@@ -371,7 +371,10 @@ export const api: VagabondAPI = {
             }
 
             const hunter = findHunter()
-            if (!hunter?.id) return
+            if (!hunter?.id) {
+                ui.notifications?.warn("No Hunter in the current scene.")
+                return
+            }
 
             await requestMark({ sceneId: marked.document.parent.id, tokenId: marked.id, hunterId: hunter.id })
         }

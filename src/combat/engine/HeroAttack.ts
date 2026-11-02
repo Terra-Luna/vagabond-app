@@ -9,7 +9,7 @@ import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
-import { getTargetIds } from "../../utils/modelUtil"
+import { canInitiateAttack, getTargetIds, isActorInScene } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { AppliedFx, Attack } from "./Attack"
@@ -117,6 +117,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     }
 
     async initiate(clickEvent?: any, options?: { isDefenseCheck?: boolean, skipChatCard?: boolean }) {
+        if (!canInitiateAttack(this.actor)) return
         if (this.requiresTargets && !options?.isDefenseCheck && this.targetIds.length === 0) {
             ui.notifications?.error(appLang.Attack.noTargetsSelected)
             return
@@ -234,6 +235,11 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
         if (baseAttack.imbues.some(imbue => imbue.actorId === actor.id)) {
             ui.notifications?.warn(localizeString(appLang.Notifications.alreadyImbued, { name: actor.name ?? "" }))
+            return false
+        }
+
+        if (!isActorInScene(actor)) {
+            ui.notifications?.warn(localizeString(appLang.Notifications.imbueNotInScene, { name: actor.name ?? "" }))
             return false
         }
 
@@ -728,6 +734,8 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         clickEvent?: any
     ): HeroAttack | null {
         const hero = actor.system
+
+        if (!canInitiateAttack(actor)) return null
 
         if (getManaEnforcement() && (
             delivery.manaCost > hero.mana.value || delivery.manaCost > hero.mana.maxCast

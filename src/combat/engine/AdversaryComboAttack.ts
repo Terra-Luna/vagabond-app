@@ -1,5 +1,5 @@
 import { getFollowerContext } from "../../model/actor/util/NpcDataModelUtil"
-import { getTargetActor } from "../../utils/modelUtil"
+import { canInitiateAttack, getTargetActor } from "../../utils/modelUtil"
 import type { SavingThrowType } from "./AdversaryAttack"
 import { AppliedFx, Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
@@ -161,6 +161,7 @@ export class AdversaryComboAttack extends Attack {
     }
 
     async initiate() {
+        if (!canInitiateAttack(this.actor)) return
         this.id = foundry.utils.randomID()
         for (const sub of this.subAttacks) {
             await sub.rollDamage(this.actor, this.targetIds)

@@ -3,7 +3,7 @@ import { Wand2 } from "lucide-react"
 import { SpellcastingApp } from "../../../apps/spellcasting/SpellcastingApp"
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { appLang } from "../../../utils/lang"
-import { getTokenImg } from "../../../utils/modelUtil"
+import { getTokenImg, isActorInScene } from "../../../utils/modelUtil"
 import { DamageRollsComponent } from "../../../view/chat/component/DamageRollsComponent"
 import { EnrichedContent } from "../../../view/component/EnrichedContent"
 import { ClearHeader } from "../../../view/component/Header"
@@ -19,6 +19,7 @@ const hasOffensiveSpell = (actor: any): boolean =>
  */
 const canImbue = (actor: any, attack: Attack): boolean =>
     hasOffensiveSpell(actor)
+    && isActorInScene(actor)
     && !attack.imbues.some(imbue => imbue.actorId === actor.id)
 
 const getImbueActor = (attack: Attack): (Actor & { system: HeroDataModel }) | undefined => {

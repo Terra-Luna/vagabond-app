@@ -1,5 +1,7 @@
 import { sys_id } from "../../../utils/foundryUtils"
-import { getTargetActor } from "../../../utils/modelUtil"
+import { appLang } from "../../../utils/lang"
+import { localizeString } from "../../../utils/localeUtils"
+import { getTargetActor, isActorInScene } from "../../../utils/modelUtil"
 
 /**
  * These flags are defined by rules on the Hunter's class Features.
@@ -45,6 +47,10 @@ export const applyMark = async ({ sceneId, tokenId, hunterId }: MarkRequest) => 
     const scene = game.scenes?.get(sceneId)
     const targetToken = scene?.tokens.get(tokenId)
     if (!hunter || !targetToken?.actor || !checkHunterFlags(hunterId, HUNTERS_MARK_FLAG)) return
+    if (!isActorInScene(hunter, scene)) {
+        ui.notifications?.warn(localizeString(appLang.Notifications.huntersMarkNotInScene, { name: hunter.name ?? "" }))
+        return
+    }
 
     const alreadyMarked = getMarkEffects(targetToken.actor).some(fx => getMarkData(fx).hunterId === hunterId)
 
@@ -127,5 +133,6 @@ export const findHunter = (): Actor | undefined => {
     ]
     return candidates.find((actor): actor is Actor =>
         !!actor && (actor.type as string) === "hero" && actor.isOwner && !!actor.getFlag(sys_id, HUNTERS_MARK_FLAG as any)
+        && isActorInScene(actor)
     )
 }

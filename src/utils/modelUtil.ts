@@ -1,3 +1,6 @@
+import { appLang } from "./lang"
+import { localizeString } from "./localeUtils"
+
 export const getId = (obj: any): string => {
     return obj?.id ?? obj?.parent?.id ?? ''
 }
@@ -24,6 +27,21 @@ export const getTargets = (): Token[] => {
 }
 
 export const getTargetIds = (): string[] => getTargets().map(t => t.id)
+
+/**
+ * Whether the actor has a token on the scene (defaults to the active scene).
+ */
+export const isActorInScene = (actor: Actor | null | undefined, scene: Scene | null | undefined = canvas?.scene): boolean =>
+    !!actor && !!scene?.tokens?.some(token => token.actorId === actor.id)
+
+/**
+ * Attacks may only be initiated by actors with a token in the active scene. Warns when they can't.
+ */
+export const canInitiateAttack = (actor: Actor | null | undefined): boolean => {
+    if (isActorInScene(actor)) return true
+    ui.notifications?.warn(localizeString(appLang.Notifications.attackNotInScene, { name: actor?.name ?? "" }))
+    return false
+}
 
 export const getCanvasToken = (id): Token | undefined => {
     if (!id) return undefined
