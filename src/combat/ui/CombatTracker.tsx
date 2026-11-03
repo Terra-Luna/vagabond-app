@@ -5,6 +5,7 @@ import { useOverlayItemSync } from "../../apps/overlay/usecase/OverlayItemSyncUs
 import { CountdownManager, CountdownSchema } from "../../apps/vagabond-tools/usecase/CountdownManager"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { sys_id } from "../../utils/foundryUtils"
+import { isActiveEffectFx } from "../engine/util/active-effect-fx"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { getCanvasToken } from "../../utils/modelUtil"
@@ -617,7 +618,10 @@ export const StatusCountdowns = ({ combatant, actorUuid, tokenUuid, burningOnly,
         <div className={className}>
             <ContextMenu />
             {combatantCountdowns.map(cd => {
-                const statusName = cd.result.statusName ?? appLang.StatusConditions[cd.result.status as string]?.name ?? cd.result.status
+                const statusName = cd.result.statusName
+                    ?? appLang.StatusConditions[cd.result.status as string]?.name
+                    ?? (isActiveEffectFx(cd.result.status as string) ? (fromUuidSync(cd.result.status!.slice(3) as any) as any)?.name : undefined)
+                    ?? cd.result.status
                 const damageTypeName = cd.result.status === "burning" && cd.result.damageType
                     ? (appLang.DamageTypes[cd.result.damageType] ?? cd.result.damageType)
                     : undefined

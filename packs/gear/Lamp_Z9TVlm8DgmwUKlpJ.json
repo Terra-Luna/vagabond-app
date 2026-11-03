@@ -21,18 +21,25 @@
     "isEquippable": true,
     "isEquipped": false,
     "isConsumable": false,
-    "relicPowers": []
+    "relicPowers": [],
+    "lightSourceData": {
+      "isLightSource": true,
+      "color": "#d17a00",
+      "range": 10,
+      "requiresFuel": true,
+      "expendable": false
+    }
   },
   "effects": [],
   "folder": "l5D3vYPFgbH4SAOt",
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.180",
     "createdTime": 1787620824999,
-    "modifiedTime": 1787620825003,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1793686492204,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null

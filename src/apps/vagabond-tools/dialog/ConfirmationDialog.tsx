@@ -3,6 +3,7 @@ import { useState } from "react"
 import { appLang } from "../../../utils/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../../view/component/Button"
+import { Option, Select } from "../../../view/component/Dropdown"
 
 interface ConfirmModalProps {
     isOpen: boolean
@@ -12,6 +13,7 @@ interface ConfirmModalProps {
     showInput?: boolean
     inputPlaceholder?: string
     inputDefaultValue?: string
+    selectOptions?: { label: string, value: string }[]
     title?: string
     description?: string
     confirmText?: string
@@ -31,16 +33,18 @@ export const ConfirmationDialog = ({
     showInput = false,
     inputPlaceholder,
     inputDefaultValue = "",
+    selectOptions,
 }: ConfirmModalProps) => {
     const [isLoading, setIsLoading] = useState(false)
     const [inputValue, setInputValue] = useState(inputDefaultValue)
+    const [selectedValue, setSelectedValue] = useState(selectOptions?.[0]?.value ?? "")
 
     if (!isOpen) return null
 
     const handleConfirm = async () => {
         try {
             setIsLoading(true)
-            await onConfirm(showInput ? inputValue : undefined)
+            await onConfirm(selectOptions ? selectedValue : (showInput ? inputValue : undefined))
             onClose()
         } catch (error) {
             console.error("Action failed:", error)
@@ -82,6 +86,18 @@ export const ConfirmationDialog = ({
                             else if (e.key === "Escape") onClose()
                         }}
                     />
+                )}
+
+                {selectOptions && (
+                    <Select
+                        className={`mt-4 w-full px-2 py-1 text-base ${tableBorderRounded}`}
+                        value={selectedValue}
+                        disabled={isLoading}
+                        onChange={(e) => setSelectedValue(e.target.value)}
+                        onKeyDown={(e) => e.stopPropagation()}
+                    >
+                        {selectOptions.map(opt => <Option key={opt.value} value={opt.value}>{opt.label}</Option>)}
+                    </Select>
                 )}
 
                 {/* BUTTONS */}

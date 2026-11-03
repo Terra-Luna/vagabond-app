@@ -23,7 +23,7 @@
     "isEquipped": false,
     "isConsumable": true,
     "relicPowers": [],
-    "alchemyCategory": "unk",
+    "alchemyCategory": "potion",
     "damage": {
       "dice": {
         "count": 0,
@@ -43,12 +43,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.180",
     "createdTime": 1786822539155,
-    "modifiedTime": 1786822653615,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1793683908200,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

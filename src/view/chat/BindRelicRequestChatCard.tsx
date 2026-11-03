@@ -4,9 +4,9 @@ import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { getTokenImg } from "../../utils/modelUtil"
 import { DestructiveButton, PrimaryButton, UtilityButton } from "../component/Button"
+import { useChatMessageId } from "./ChatMessageContext"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
-import { useChatMessageId } from "./ChatMessageContext"
 
 const STATUS_FLAG = "bindRequestStatus"
 

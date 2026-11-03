@@ -250,7 +250,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
             const hp = this.getHP(targetActor?.system)
             const newHp = hp - adjDamage
 
-            const canDie = newHp < 1 && this.checkDeathRequirements(deathRequirements, weaknesses)
+            const canDie = newHp < 1 && this.checkDeathRequirements(deathRequirements, weaknesses, targetActor)
 
             this.updateHP(
                 targetActor?.system,
@@ -337,7 +337,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
     /**
      * Override as needed to implement custom death requirement checks for different attack types.
      */
-    protected checkDeathRequirements(deathRequirements: any, weaknesses: any[]): boolean {
+    protected checkDeathRequirements(deathRequirements: any, weaknesses: any[], targetActor?: any): boolean {
         return true
     }
 

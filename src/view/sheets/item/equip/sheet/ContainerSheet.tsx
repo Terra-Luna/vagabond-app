@@ -22,7 +22,7 @@ export const ContainerSheet = ({ item, hideButtons }: { item: Item & { system: C
     return (
         <EquipmentSheetSubtypeBody>
             <div className="mb-2">
-                <div className="flex gap-x-2 mb-2">
+                <div className="flex gap-x-2 mb-2 -mx-1.5">
                     {isEditMode && <ItemSheetProperty
                         label={appLang.ItemSheet.capacity}
                         value={<EditableTextField
@@ -42,12 +42,14 @@ export const ContainerSheet = ({ item, hideButtons }: { item: Item & { system: C
                 {contents.length === 0
                     ? <p className="text-text-tertiary italic">{appLang.ItemSheet.drag}</p>
                     : <div className="space-y-2 text-text-primary font-normal">
-                        <InventoryItemsTable
-                            actor={owner}
-                            items={contents}
-                            contextMenuItems={(targetItem) => containerItemContextMenuItems(owner, targetItem, item.system)}
-                            showEquipColumn={false}
-                        />
+                        <div className="-mx-1.5">
+                            <InventoryItemsTable
+                                actor={owner}
+                                items={contents}
+                                contextMenuItems={(targetItem) => containerItemContextMenuItems(owner, targetItem, item.system)}
+                                showEquipColumn={false}
+                            />
+                        </div>
 
                         {/* EXTRACT ALL BUTTON */}
                         {!hideButtons && <div className="w-full mb-12">

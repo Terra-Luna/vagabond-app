@@ -46,6 +46,7 @@ import { sys_id } from "./utils/foundryUtils"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { ItemPilesConfig } from "./utils/ItemPilesConfig"
 import { appLang, lang } from "./utils/lang"
+import { LightSourceUtil } from "./utils/LightSourceUtil"
 import { localizeString } from "./utils/localeUtils"
 import { getFullItem, getId } from "./utils/modelUtil"
 import { createStyleTag } from "./utils/styleUtils"
@@ -153,6 +154,7 @@ foundry.documents.collections.Items.registerSheet(sys_id, EquipmentSheet as any,
 });
 
 Hooks.once("ready", async () => {
+    LightSourceUtil.startTimer()
     installChatScrollGuard()
     registerAdversaryCompendiumFilters()
     registerAlchemicalItemCompendiumFilters()
@@ -208,6 +210,12 @@ Hooks.once("ready", async () => {
             const combatant = game.combats?.get(combatId)?.combatants.get(combatantId) as any
             if (!requester || !combatant || !combatant.testUserPermission(requester, "OWNER")) return
             await CountdownManager.rollPendingCountdowns(combatant)
+        }
+        else if (packet?.action === "deleteEmptyItemPile") {
+            const token = await fromUuid(packet.data?.tokenUuid) as any
+            if (!token || token.documentName !== "Token" || !token.getFlag?.("item-piles", "data")?.enabled) return
+            if ((token.actor?.items?.size ?? 0) > 0) return
+            await token.delete()
         }
         else if (packet?.action === "updateGameSetting") {
             const data = packet.data
@@ -374,6 +382,38 @@ Hooks.on("deleteItem", async (item, options, userId) => {
 
     if (['spell', 'perk', 'feature', 'startingpack'].includes((item as any).type)) {
         ItemsCache.removeItem(item.uuid)
+    }
+})
+
+const isPlainItemPile = (doc: any): boolean => {
+    const data = doc?.getFlag?.("item-piles", "data") ?? doc?.actor?.getFlag?.("item-piles", "data")
+    return !!data?.enabled && data.type === "pile"
+}
+
+/** Item pile tokens (items dragged onto the canvas) are clipped to a circle with a border, like a token. */
+Hooks.on("refreshToken" as any, (token: any) => {
+    const PIXI = (globalThis as any).PIXI
+    const mesh = token?.mesh
+    if (!PIXI || !mesh || !isPlainItemPile(token.document)) return
+
+    if (!token._vagabondPileClip || token._vagabondPileClip.destroyed) {
+        token._vagabondPileClip = new PIXI.Graphics()
+        token._vagabondPileBorder = new PIXI.Graphics()
+        token.addChild(token._vagabondPileClip, token._vagabondPileBorder)
+    }
+    const textureScale = Math.abs(token.document.texture?.scaleX ?? 1)
+    const radius = (Math.min(token.w, token.h) / 2) * textureScale
+    const cx = token.w / 2
+    const cy = token.h / 2
+    token._vagabondPileClip.clear().beginFill(0xffffff).drawCircle(cx, cy, radius).endFill()
+    token._vagabondPileBorder.clear().lineStyle(Math.max(2, radius * 0.06), 0x000000, 1).drawCircle(cx, cy, radius)
+    mesh.mask = token._vagabondPileClip
+
+    // Foundry fits the texture inside the token with gaps; scale it to cover the circle instead.
+    const tex = mesh.texture?.orig ?? mesh.texture
+    if (tex?.width && tex?.height) {
+        const scale = (radius * 2) / Math.min(tex.width, tex.height)
+        mesh.scale.set(Math.sign(mesh.scale.x || 1) * scale, Math.sign(mesh.scale.y || 1) * scale)
     }
 })
 

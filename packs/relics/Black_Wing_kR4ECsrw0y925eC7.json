@@ -88,7 +88,12 @@
       "ranged"
     ],
     "properties": [],
-    "material": "steel"
+    "material": "steel",
+    "lightSourceData": {
+      "isLightSource": false,
+      "isDark": false,
+      "color": "#2b2727"
+    }
   },
   "effects": [],
   "folder": null,
@@ -99,11 +104,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.35",
+    "systemVersion": "0.2.180",
     "createdTime": 1790011770433,
-    "modifiedTime": 1790216140169,
+    "modifiedTime": 1793683360257,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

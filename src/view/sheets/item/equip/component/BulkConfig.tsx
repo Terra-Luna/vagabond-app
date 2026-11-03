@@ -25,7 +25,7 @@ export const Bulk = ({ item }) => {
                 />
             } />
 
-            {isEditMode &&
+            {isEditMode && !item.system.lightSourceData?.isLightSource &&
                 <ItemSheetProperty label={appLang.ItemSheet.stackable} value={
                     <Checkbox
                         label={''}
@@ -35,7 +35,7 @@ export const Bulk = ({ item }) => {
                 } />
             }
 
-            {(isEditMode || item.system.bulk?.isStackable) &&
+            {(isEditMode || item.system.bulk?.isStackable) && !item.system.lightSourceData?.isLightSource &&
                 <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                     <ItemSheetProperty label={appLang.ItemSheet.qty} value={
                         <EditableTextField

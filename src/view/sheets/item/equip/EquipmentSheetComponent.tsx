@@ -14,6 +14,7 @@ import { Bulk } from "./component/BulkConfig"
 import { EquipmentSheetBanner } from "./component/EquipmentSheetBanner"
 import { CategorySelection } from "./component/ItemCategorySelectionComponent"
 import { ItemValue } from "./component/ItemValueComponent"
+import { LightSourceConfig } from "./component/LightSourceConfig"
 import { RelicConfig } from "./component/RelicConfig"
 import { AlchemicalSheet } from "./sheet/AlchemicalSheet"
 import { ArmorSheet } from "./sheet/ArmorSheet"
@@ -57,6 +58,7 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
         <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1 mb-2">
             <div className="flex flex-col gap-2">
                 <Bulk item={item} />
+                <LightSourceConfig item={item} />
             </div>
             <div className="space-y-2">
                 <ItemValue item={item} />

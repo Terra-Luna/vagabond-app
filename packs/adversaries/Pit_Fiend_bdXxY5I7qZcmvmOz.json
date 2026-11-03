@@ -413,7 +413,7 @@
           "type": "none"
         },
         "saves": [
-          "reflex"
+          "endure"
         ],
         "halfDamageOnSave": false,
         "appliedEffects": [
@@ -755,7 +755,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.2.180",
     "createdTime": 1790188349847,
-    "modifiedTime": 1793642608552,
+    "modifiedTime": 1793691522983,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

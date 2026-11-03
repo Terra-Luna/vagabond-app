@@ -1,6 +1,7 @@
 import { fields } from "../../model/common/sharedSchemas"
 import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
+import { LightSourceUtil } from "../../utils/LightSourceUtil"
 import { XpQuestionnaireConfigApp } from "../level-up/questionnaire/XpQuestionnaireConfigApp"
 import { RelicPowers } from "./relic/RelicPowers"
 import { CompendiumAccessor } from "./usecase/CompendiumAccessor"
@@ -23,6 +24,7 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerShowTrainingSelectionToggle()
         VagabondSettingsRegistry.registerAllowLateLuckStudy()
         VagabondSettingsRegistry.registerCombatAutoFlanking()
+        VagabondSettingsRegistry.registerRealtimeLightsources()
 
         VagabondSettingsRegistry.registerItemShopToggle()
         VagabondSettingsRegistry.registerAttackRegistry()
@@ -270,6 +272,18 @@ export class VagabondSettingsRegistry {
             config: true,
             type: Boolean,
             default: false
+        })
+    }
+
+    private static registerRealtimeLightsources() {
+        game.settings?.register(sys_id, "realtimeLightsources" as any, {
+            name: appLang.Settings.realtimeLightsources,
+            hint: appLang.Settings.realtimeLightsourcesHint,
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: true,
+            onChange: () => { LightSourceUtil.syncAllActors() }
         })
     }
 

@@ -34,7 +34,18 @@ export class HeroSheet extends VagabondActorSheet {
         }
 
         /**
-         * Await the creation of the item to ensure it is done being added to the actor before continuing.
+         * Items dragged out of an item pile must be transferred (not copied) so it gets removed from the pile.
+         * Item Piles performs the removal as a GM, since players can't edit the pile's actor.
+         */
+        const source = item?.parent
+        const pileData = source?.getFlag?.("item-piles", "data")
+        if (source && pileData?.enabled && pileData.type === "pile" && source.id !== this.actor.id && this.actor.isOwner) {
+            await (game as any).itempiles?.API?.transferItems(source, this.actor, [item.id])
+            return true
+        }
+
+        /**
+         * Await the creation of the item to ensure it's done being added to the actor before continuing.
          * This prevents issues with stale drag event data and odd behaviour such as dropping an inventory
          * item onto the sheet only for it not to appear.
          */

@@ -199,6 +199,14 @@ export const getCombatAutoFlanking = (): boolean => {
     return (game.settings as any)?.get(sys_id, "combatAutoFlanking")
 }
 
+export const getRealtimeLightsources = (): boolean => {
+    return (game.settings as any)?.get(sys_id, "realtimeLightsources") ?? true
+}
+
+export const setRealtimeLightsources = async (enabled: boolean) => {
+    await updateSetting("realtimeLightsources", enabled)
+}
+
 /**
  * Use this function to provide access for players with ganted permissions.
  * @param setting 

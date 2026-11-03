@@ -1,0 +1,47 @@
+{
+  "name": "In Sunlight",
+  "_id": "40CQqoU8bdlmKUu5",
+  "img": "/icons/magic/light/explosion-star-glow-orange.webp",
+  "type": "base",
+  "system": {
+    "changes": [
+      {
+        "key": "system.modifiers.misc.inSunlight",
+        "type": "override",
+        "value": true,
+        "phase": "initial",
+        "priority": 20
+      }
+    ],
+    "requiresEquip": true
+  },
+  "disabled": false,
+  "start": null,
+  "duration": {
+    "value": null,
+    "units": "seconds",
+    "expiry": null,
+    "expired": false
+  },
+  "description": "",
+  "origin": null,
+  "tint": "#ffffff",
+  "transfer": true,
+  "statuses": [],
+  "showIcon": 2,
+  "folder": null,
+  "sort": 400000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.369",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.2.180",
+    "createdTime": 1793668500846,
+    "modifiedTime": 1793687169231,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!effects!40CQqoU8bdlmKUu5"
+}

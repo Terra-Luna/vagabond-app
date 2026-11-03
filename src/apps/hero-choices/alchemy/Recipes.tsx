@@ -32,7 +32,7 @@ export const Recipes = ({ alchemySlots, alchemyItems, hideHeaderLabel, hideCompe
             {alchemySlots.filter(slot => slot.value.length > 0).map(slot => {
                 const item = alchemyItems.find(it => it.value === slot.value)
                 const subtitles: CardSubHeaderValues[] = [{ label: appLang.HeroSheet.Alchemy.category, value: appLang.AlchemyCategories[item.category].name }]
-                const itemActions = actions.map(ska => ({ ...ska, item: item }))
+                const itemActions = actions.filter(ska => !ska.hideForItem?.(item)).map(ska => ({ ...ska, item: item }))
 
                 subtitles.push({ label: appLang.ItemSheet.value, value: coinsAsString(item.coinValue) })
 

@@ -32,6 +32,11 @@
         "explodesOn": []
       },
       "type": "none"
+    },
+    "lightSourceData": {
+      "isLightSource": true,
+      "range": 5,
+      "color": "#c79c00"
     }
   },
   "effects": [],
@@ -43,12 +48,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.180",
     "createdTime": 1786820727326,
-    "modifiedTime": 1786825755523,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1793681657640,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -2,7 +2,7 @@
   "name": "Sentry Torch",
   "type": "alchemical",
   "_id": "c8479JtkCvin6Q5w",
-  "img": "/icons/magic/light/torch-fire-orange.webp",
+  "img": "/icons/sundries/lights/torch-black.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">While burning, effects that cause Invisibility are suspended while in its Light.</span></p>",
     "rules": [],
@@ -32,6 +32,11 @@
         "explodesOn": []
       },
       "type": "none"
+    },
+    "lightSourceData": {
+      "isLightSource": true,
+      "color": "#c86400",
+      "litImage": "/icons/magic/light/torch-fire-orange.webp"
     }
   },
   "effects": [],
@@ -43,12 +48,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.180",
     "createdTime": 1786825513619,
-    "modifiedTime": 1786825909371,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1793690545946,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

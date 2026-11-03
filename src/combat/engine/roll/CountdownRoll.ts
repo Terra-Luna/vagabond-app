@@ -26,6 +26,7 @@ export class CountdownRoll {
             tokenUuid: this.result.tokenUuid,
             damageType: this.result.damageType,
             status: this.result.status,
+            statusName: this.result.statusName,
             rollSummary: { ...RollSummary.buildRollSummaries(getDiceTerms(roll), [], null, [])[0] },
             rolls: [roll],
             message: nextDuration === 0

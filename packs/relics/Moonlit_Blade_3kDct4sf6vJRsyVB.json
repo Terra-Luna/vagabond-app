@@ -121,7 +121,13 @@
         "description": "+3 bonus to Attack damage.",
         "bound": false
       }
-    ]
+    ],
+    "lightSourceData": {
+      "isLightSource": true,
+      "isMoonlight": true,
+      "expendable": false,
+      "color": "#b3ecff"
+    }
   },
   "effects": [],
   "folder": null,
@@ -132,12 +138,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.160",
+    "systemVersion": "0.2.180",
     "createdTime": 1790015134849,
-    "modifiedTime": 1793515938547,
-    "lastModifiedBy": "pcHXNIbwXTDCVlqw",
+    "modifiedTime": 1793682759140,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null

@@ -2,7 +2,7 @@
   "name": "Trinket",
   "type": "sundry",
   "_id": "3LTmKJXo1CHgOsv0",
-  "img": "/icons/weapons/wands/wand-gem-green.webp",
+  "img": "/icons/weapons/staves/staff-simple-hooked.webp",
   "system": {
     "description": "",
     "rules": [],
@@ -28,12 +28,12 @@
   "folder": "04PPaIKbkYxCWTkx",
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1787620854843,
-    "modifiedTime": 1787620854843,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1793686602417,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null

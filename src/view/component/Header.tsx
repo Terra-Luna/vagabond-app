@@ -72,5 +72,5 @@ export const Divider = () => <div className={"grow h-[2px] bg-section-header-lin
 export const ItemDivider = () => <div className={"grow h-[1px] bg-table-border/50"} />
 
 export interface SkillCardAction {
-    label: string, tooltip: { title: string, content: string }, item?: any, action: (e, item) => Promise<void>
+    label: string, tooltip: { title: string, content: string }, item?: any, action: (e, item) => Promise<void>, hideForItem?: (item: any) => boolean
 }

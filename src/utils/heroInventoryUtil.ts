@@ -1,6 +1,7 @@
 import { Eraser, Eye, Hand, HandFist, Link, MessageSquareText, Split, Sword, Trash, Undo } from "lucide-react"
 
 import { ItemStackSplitApp } from "../apps/inventory/ItemStackSplitApp"
+import { showConfirmationDialog } from "../apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { RelicPowerProcessor } from "../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { HeroAttack } from "../combat/engine/HeroAttack"
 import type { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
@@ -19,8 +20,8 @@ import { sendVagabondChatCard } from "../view/chat/ChatCardSerializer"
 import type { CtxMenuItem } from "../view/component/ContextMenu"
 import { sys_id } from "./foundryUtils"
 import { appLang } from "./lang"
+import { LightSourceUtil } from "./LightSourceUtil"
 import { localizeString } from "./localeUtils"
-import { showConfirmationDialog } from "../apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { getFullItem, getId, getName } from "./modelUtil"
 
 /**
@@ -156,6 +157,9 @@ export const equippedItemContextMenu = (hero: any, item: ArmorDataModel | Weapon
         { icon: Hand, label: appLang.ButtonActions.unequip, action: () => hero.equip(item.parent) }
     )
 
+    const lightOption = LightSourceUtil.contextMenuOption(item)
+    if (lightOption) menuItems.unshift(lightOption)
+
     if (game.user?.isActiveGM && item.isCursed()) {
         menuItems.push(removeCursesContextOption(item))
     }
@@ -202,6 +206,9 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
     else if (item.isConsumable) {
         menuItems.push(useItemContextOption(hero.parent, item.parent))
     }
+
+    const lightOption = LightSourceUtil.contextMenuOption(item)
+    if (lightOption) menuItems.push(lightOption)
 
     if (item.isBoundRelic()) {
         menuItems.push(bindItemContextOption(item))

@@ -16,16 +16,20 @@
     "copperValue": 0,
     "bulk": {
       "slots": 1,
-      "isStackable": true,
+      "isStackable": false,
       "stackSize": 10,
       "quantity": 1,
       "totalSlots": 0
     },
-    "isEquippable": false,
+    "isEquippable": true,
     "isEquipped": false,
     "isConsumable": true,
     "relicPowers": [],
-    "isRation": false
+    "isRation": false,
+    "lightSourceData": {
+      "isLightSource": true,
+      "color": "#cc8b00"
+    }
   },
   "effects": [],
   "sort": 0,
@@ -35,11 +39,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.24",
+    "systemVersion": "0.2.180",
     "createdTime": 1788829080078,
-    "modifiedTime": 1788829119162,
+    "modifiedTime": 1793686414535,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

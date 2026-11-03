@@ -6,11 +6,14 @@ import { itemNameQty, openItemSheet } from "../../../model/actor/type/Inventory"
 import type { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
 import { inventoryItemDragDropHandler, useItem } from "../../../utils/heroInventoryUtil"
 import { appLang } from "../../../utils/lang"
+import { LightSourceUtil } from "../../../utils/LightSourceUtil"
 import { getId } from "../../../utils/modelUtil"
 import { tableBorder } from "../../common/border-styles"
 import { UtilityButton } from "../../component/Button"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
+import { LightToggleButton } from "../../component/LightToggleButton"
+import { Timer } from "../../component/Timer"
 import { Tooltip } from "../../component/Tooltip"
 import { ItemIconImg } from "./ItemIconImg"
 
@@ -31,11 +34,11 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
             <table className={`table-fixed w-full ${tableBorder}`}>
                 <thead className="bg-section-header-fill text-text-section-header text-sm">
                     <tr>
-                        <th className="text-left pl-2 w-5/9">{appLang.HeroSheet.Inventory.item}</th>
-                        <th className="text-center">{appLang.HeroSheet.Inventory.slots}</th>
+                        <th className="text-left pl-2">{appLang.HeroSheet.Inventory.item}</th>
+                        <th className="text-center w-14">{appLang.HeroSheet.Inventory.slots}</th>
                         {/* <th className="text-center">{appLang.HeroSheet.Inventory.value}</th> */}
                         {showEquipColumn &&
-                            <th className="text-center">
+                            <th className="text-right pr-2 w-16">
                                 {appLang.HeroSheet.Inventory.equip}
                             </th>
                         }
@@ -73,6 +76,13 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                     <div className="flex gap-x-0.5 items-center ml-0.5 py-1 min-w-0">
                                         <ItemIconImg item={item} />
                                         <p className="items-center truncate">{itemNameQty(item)}</p>
+                                        {LightSourceUtil.showsTimer((item as any).lightSourceData) &&
+                                            <Timer
+                                                className="text-xs ml-1 shrink-0"
+                                                running={(item as any).lightSourceData.litTS > 0}
+                                                getSeconds={(now) => LightSourceUtil.remainingSeconds((item as any).lightSourceData, now)}
+                                            />
+                                        }
                                     </div>
                                 </td>
                                 {/* BULK SLOTS */}
@@ -85,15 +95,18 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                 {showEquipColumn && (
                                     item.isEquippable
                                         ? <td className="items-center">
-                                            <EquipStateIcon
-                                                tooltip={tooltip}
-                                                type={item.parent.type}
-                                                isEquipped={item.isEquipped}
-                                                gripState={(item as any).grip?.state}
-                                                toggleEquipState={
-                                                    async () => await (actor as HeroDataModel).equip(item.parent)
-                                                }
-                                            />
+                                            <div className="flex items-center justify-end gap-x-2 pr-2">
+                                                                                <div className="relative top-1"><LightToggleButton item={item} size={18} /></div>
+                                                <EquipStateIcon
+                                                    tooltip={tooltip}
+                                                    type={item.parent.type}
+                                                    isEquipped={item.isEquipped}
+                                                    gripState={(item as any).grip?.state}
+                                                    toggleEquipState={
+                                                        async () => await (actor as HeroDataModel).equip(item.parent)
+                                                    }
+                                                />
+                                            </div>
                                         </td>
                                         : (item.isConsumable && !(actor as HeroDataModel).polymorph
                                             ? <td className="flex flex-col mt-1.5 items-center">
@@ -117,8 +130,8 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
 }
 
 const EquipStateIcon = ({ tooltip, type, isEquipped, gripState, toggleEquipState }: { tooltip: string, type: string, isEquipped: boolean, gripState: string, toggleEquipState: () => void }) => {
-    const equippedIconStyle = "w-full justify-center text-ic-equipped fill-ic-equipped/80"
-    const unEquipedIconStyle = "w-full justify-center text-ic-equipped"
+    const equippedIconStyle = "text-ic-equipped fill-ic-equipped/80"
+    const unEquipedIconStyle = "text-ic-equipped"
     return (
         <div title={`Toggle equip\n${tooltip}`} onClick={(e) => { e.stopPropagation(); toggleEquipState() }} onDoubleClick={(e) => { e.stopPropagation() }}>
             {type === 'armor'
@@ -132,8 +145,8 @@ const EquipStateIcon = ({ tooltip, type, isEquipped, gripState, toggleEquipState
             {type === 'weapon'
                 ? <div>
                     {isEquipped
-                        ? <div className="flex items-center justify-end -space-x-4 font-eskapade text-text-secondary">
-                            <p>{appLang.GripsAbbr[gripState]}</p>
+                        ? <div className="flex items-center justify-end font-eskapade text-text-secondary">
+                            <p className="mr-0.5">{appLang.GripsAbbr[gripState]}</p>
                             <HandFist size={18} className={equippedIconStyle} />
                         </div>
                         : <Hand size={18} className={unEquipedIconStyle} />

@@ -53,5 +53,6 @@ export class AlchemicalItemDataModel extends EquipmentDataModel<AlchemicalSchema
     override prepareBaseData() {
         super.prepareBaseData()
         this.bulk.isStackable = true
+        if (this.lightSourceData?.isLightSource) this.isEquippable = true
     }
 }

@@ -14,6 +14,7 @@ import { isEquippedSundry, isEquippedWeapon, WeaponDataModel } from "../../../..
 import { sys_id } from "../../../../../utils/foundryUtils"
 import { equipmentContextMenuItems, equippedItemContextMenu, inventoryItemDragDropHandler } from "../../../../../utils/heroInventoryUtil"
 import { appLang } from "../../../../../utils/lang"
+import { LightSourceUtil } from "../../../../../utils/LightSourceUtil"
 import { damageTypesWithPhysicalThresholds } from "../../../../../utils/localeUtils"
 import { getId } from "../../../../../utils/modelUtil"
 import { formatSpeeds } from "../../../../../utils/speedUtils"
@@ -21,6 +22,8 @@ import { buttonAnimation } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
+import { LightToggleButton } from "../../../../component/LightToggleButton"
+import { Timer } from "../../../../component/Timer"
 import { Tooltip } from "../../../../component/Tooltip"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
@@ -60,7 +63,7 @@ export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
     }, [hero.parent.id])
 
     const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
-    const equippedSundries = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => it instanceof SundryDataModel && isEquippedSundry(it) && !it.isWearable) as SundryDataModel[])
+    const equippedSundries = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => (it instanceof SundryDataModel && isEquippedSundry(it) && !it.isWearable) || isEquippedAlchemical(it)) as SundryDataModel[])
 
     const armor = getArmor(hero) as any as ArmorDataModel
     const wearables = hero.inventory.items.filter(it =>
@@ -86,6 +89,8 @@ export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
         </div>
     )
 }
+
+const isEquippedAlchemical = (item: any): boolean => item.parent?.type === 'alchemical' && item.isEquipped
 
 const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }: { hero: HeroDataModel, equippedWeapons: WeaponDataModel[], equippedSundries: SundryDataModel[], documentUpdateKey: number }) => {
     const gripStyle = "text-text-aux text-lg text-center font-eskapade"
@@ -221,6 +226,14 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
                                     <div className="flex justify-between items-center">
                                         <div className={`text-lg line-clamp-1`}>{item.displayName}</div>
                                         <div className="flex justify-end items-center">
+                                            {LightSourceUtil.showsTimer((item as any).lightSourceData) &&
+                                                <Timer
+                                                    className="mr-2 text-sm"
+                                                    running={(item as any).lightSourceData.litTS > 0}
+                                                    getSeconds={(now) => LightSourceUtil.remainingSeconds((item as any).lightSourceData, now)}
+                                                />
+                                            }
+                                            <LightToggleButton item={item} className="mr-2" />
                                             {/* WEAPON GRIP DISPLAY */}
                                             {item instanceof WeaponDataModel && (
                                                 <Tooltip
@@ -239,7 +252,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
                                             )}
 
                                             {/* SUNDRY BULK DISPLAY */}
-                                            {item instanceof SundryDataModel && (
+                                            {(item instanceof SundryDataModel || isEquippedAlchemical(item)) && (
                                                 <p className={gripStyle}>
                                                     {appLang.GripsAbbr[item.bulk.slots === 0 ? "" : (item.bulk.slots > 1 ? 'HH' : 'H')]}
                                                 </p>
@@ -318,6 +331,16 @@ const Armor = ({ hero, armor, wearables, boundRelics }: { hero: any, armor: Armo
                             <p className="text-base line-clamp-1">{item.displayName}</p>
                             <RelicEffectList relicPowers={item.effectiveRelicPowers()} textColor="text-text-header-tertiary -mt-1" />
                         </div>
+                        {LightSourceUtil.showsTimer(item.lightSourceData) &&
+                            <div className="flex items-center ml-auto mr-2 gap-x-2">
+                                <Timer
+                                    className="text-sm"
+                                    running={item.lightSourceData.litTS > 0}
+                                    getSeconds={(now) => LightSourceUtil.remainingSeconds(item.lightSourceData, now)}
+                                />
+                                <LightToggleButton item={item} />
+                            </div>
+                        }
                     </div>
                     <ItemDivider />
                 </div>

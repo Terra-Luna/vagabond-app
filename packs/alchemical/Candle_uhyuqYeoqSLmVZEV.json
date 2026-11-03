@@ -21,7 +21,7 @@
     },
     "isEquippable": false,
     "isEquipped": false,
-    "isConsumable": true,
+    "isConsumable": false,
     "relicPowers": [],
     "alchemyCategory": "torch",
     "damage": {
@@ -32,6 +32,11 @@
         "explodesOn": []
       },
       "type": "none"
+    },
+    "lightSourceData": {
+      "isLightSource": true,
+      "color": "#d6ba51",
+      "range": 5
     }
   },
   "effects": [],
@@ -43,12 +48,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.180",
     "createdTime": 1786820586373,
-    "modifiedTime": 1786825769356,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1793681467839,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

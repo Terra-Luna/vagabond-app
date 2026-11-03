@@ -2,7 +2,7 @@
   "name": "Beast Repellent Torch",
   "type": "alchemical",
   "_id": "CUdInWCii9oseBpq",
-  "img": "/icons/magic/light/torch-fire-orange.webp",
+  "img": "/icons/sundries/lights/torch-black.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">A torch that burns with an unnaturally crimson flame that unsettles Beasts. While burning, Beasts in the Light it sheds are Frightened until they take damage. Afterwards, it can't be Frightened this way for 1 Day.</span></p>",
     "rules": [],
@@ -21,7 +21,7 @@
     },
     "isEquippable": false,
     "isEquipped": false,
-    "isConsumable": true,
+    "isConsumable": false,
     "relicPowers": [],
     "alchemyCategory": "torch",
     "damage": {
@@ -32,6 +32,11 @@
         "explodesOn": []
       },
       "type": "none"
+    },
+    "lightSourceData": {
+      "isLightSource": true,
+      "color": "#bc3200",
+      "litImage": "/icons/magic/light/torch-fire-orange.webp"
     }
   },
   "effects": [],
@@ -43,12 +48,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.180",
     "createdTime": 1786825482525,
-    "modifiedTime": 1786825921940,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1793680717476,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

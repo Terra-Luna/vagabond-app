@@ -3,7 +3,7 @@
   "type": "sundry",
   "img": "/icons/sundries/lights/lantern-bullseye-signal-copper.webp",
   "system": {
-    "description": "",
+    "description": "<p><span style=\"white-space:pre-wrap\">Emits light out to 30'. Any oil will fuel it for a Shift.</span></p>",
     "rules": [],
     "category": "outdoors",
     "value": {
@@ -22,17 +22,25 @@
     "isEquipped": false,
     "isConsumable": false,
     "relicPowers": [],
-    "isWearable": true
+    "isWearable": true,
+    "lightSourceData": {
+      "isLightSource": true,
+      "duration": 21600,
+      "remaining": 21600,
+      "color": "#ffc850",
+      "expendable": false,
+      "requiresFuel": true
+    }
   },
   "effects": [],
   "folder": "l5D3vYPFgbH4SAOt",
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.129",
+    "systemVersion": "0.2.180",
     "createdTime": 1787620825000,
-    "modifiedTime": 1793111867135,
+    "modifiedTime": 1793677324799,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

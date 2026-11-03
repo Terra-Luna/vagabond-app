@@ -3,7 +3,7 @@
   "name": "Torch",
   "type": "sundry",
   "_id": "cjqZKWv4abzOiiqW",
-  "img": "/icons/sundries/lights/torch-brown-lit.webp",
+  "img": "/icons/sundries/lights/torch-black.webp",
   "system": {
     "description": "",
     "rules": [],
@@ -23,7 +23,13 @@
     "isEquippable": true,
     "isEquipped": false,
     "isConsumable": false,
-    "relicPowers": []
+    "relicPowers": [],
+    "lightSourceData": {
+      "isLightSource": true,
+      "color": "#c86400",
+      "range": 30,
+      "litImage": "/icons/sundries/lights/torch-brown-lit.webp"
+    }
   },
   "effects": [],
   "sort": 0,
@@ -33,12 +39,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.180",
     "createdTime": 1788112165326,
-    "modifiedTime": 1788112184685,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1793673510909,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

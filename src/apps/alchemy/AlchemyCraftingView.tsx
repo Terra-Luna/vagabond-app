@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
@@ -26,6 +26,18 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
         return getFullItem<AlchemicalItemDataModel>(
             fullAlchemyItems.find(cachedItem => cachedItem.uuid === item?.value) ?? item
         )
+    }, [fullAlchemyItems])
+
+    const [lightSourceIds, setLightSourceIds] = useState<Set<string>>(new Set())
+    useEffect(() => {
+        let cancelled = false
+        Promise.all(fullAlchemyItems.map(async it => {
+            const full = await getFullItem<AlchemicalItemDataModel>(it)
+            return (full as any)?.system?.lightSourceData?.isLightSource ? it.uuid : undefined
+        })).then(ids => {
+            if (!cancelled) setLightSourceIds(new Set(ids.filter(Boolean) as string[]))
+        })
+        return () => { cancelled = true }
     }, [fullAlchemyItems])
 
     const materials = useMemo(() => {
@@ -125,7 +137,8 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
                                     content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}`
                                 },
                                 item: undefined,
-                                action: (e, item) => craftAndUse(e, item)
+                                action: (e, item) => craftAndUse(e, item),
+                                hideForItem: (item) => lightSourceIds.has(item?.value)
                             }
                         ]}
                     />

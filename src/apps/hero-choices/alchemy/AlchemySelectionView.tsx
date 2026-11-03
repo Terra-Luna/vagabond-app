@@ -15,7 +15,7 @@ export const useAlchemySelectionView = (actor: Actor & { system: HeroDataModel }
     const clazz = actor.system.class
     const valueLimit = toCopper(multiplyCoins({ g: 0, s: 50, c: 0 }, level))
 
-    const [alchemyItems, setAlchemyItems] = useState<{ value: string, label: string, img: string, dmgType: string, category: string, description: string, coinValue: Coins }[]>([])
+    const [alchemyItems, setAlchemyItems] = useState<{ value: string, label: string, img: string, dmgType: string, category: string, description: string, coinValue: Coins, isLightSource?: boolean }[]>([])
     const [alchemySlots, setAlchemySlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
 
     useEffect(() => {
@@ -28,7 +28,8 @@ export const useAlchemySelectionView = (actor: Actor & { system: HeroDataModel }
                 dmgType: item.system.damage.type ?? "",
                 category: item.system.alchemyCategory,
                 description: item.system.description,
-                coinValue: item.system.value
+                coinValue: item.system.value,
+                isLightSource: !!item.system.lightSourceData?.isLightSource
             }))
         ])
     }, [])

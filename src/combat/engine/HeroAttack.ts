@@ -934,14 +934,14 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
      * Returning 'true' results in the attack meeting the target's death requirements: no requirements are
      * set, or at least one of the enabled requirements is met.
      */
-    override checkDeathRequirements(deathRequirements: any, weaknesses: any[]): boolean {
+    override checkDeathRequirements(deathRequirements: any, weaknesses: any[], targetActor?: any): boolean {
         if (!deathRequirements) return true
 
         const checks: boolean[] = []
         if (deathRequirements.relic) checks.push((this.damageRoll?.relicLevel ?? -1) > -1)
         if (deathRequirements.crit) checks.push(this.isCriticalHit)
         if (deathRequirements.weak) checks.push(!!this.damageRoll?.dmgType && weaknesses.includes(this.damageRoll.dmgType))
-        if (deathRequirements.sunlight) checks.push(false) //TODO: create actual sunlight check logic
+        if (deathRequirements.sunlight) checks.push(!!targetActor?.system?.modifiers?.misc?.inSunlight)
 
         return checks.length === 0 || checks.some(Boolean)
     }

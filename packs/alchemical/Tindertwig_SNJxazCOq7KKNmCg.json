@@ -21,17 +21,24 @@
     },
     "isEquippable": false,
     "isEquipped": false,
-    "isConsumable": true,
+    "isConsumable": false,
     "relicPowers": [],
     "alchemyCategory": "torch",
     "damage": {
       "dice": {
         "count": 0,
-        "faces": 4,
+        "faces": 1,
         "modifier": 0,
         "explodesOn": []
       },
       "type": "none"
+    },
+    "lightSourceData": {
+      "isLightSource": true,
+      "range": 10,
+      "color": "#c86400",
+      "expendable": false,
+      "litImage": "/icons/magic/fire/projectile-arrow-fire-orange.webp"
     }
   },
   "effects": [],
@@ -43,12 +50,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.180",
     "createdTime": 1786825564686,
-    "modifiedTime": 1786825607475,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1793680001039,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
