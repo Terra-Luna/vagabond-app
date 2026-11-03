@@ -10,7 +10,8 @@ export const isImmuneToBurning = (actor: Actor | null | undefined, damageType?: 
 
 /**
  * Damage dealt by a single burning countdown roll after resistance (half, rounded down),
- * flat reduction, and per-die reduction. According to Taron via a Discord message, flat
+ * flat reduction, and per-die reduction. Per-die reduction is based on the number of dice,
+ * not their individual results. According to Taron via a Discord message, flat
  * and per-die reductions should be applied to Burning damage.
  * Discussion: https://discord.com/channels/1347974074084888606/1541349723804409877/1566120397433217037
  */
@@ -22,5 +23,5 @@ export const mitigateBurningDamage = (actor: Actor, damageType: string | undefin
     const perDie = (mods.perDieReduction?.global ?? 0) + (mods.perDieReduction?.[damageType] ?? 0)
     const damage = mods.resistances?.includes(damageType) ? Math.floor(roll / 2) : roll
 
-    return Math.max(0, damage - Math.max(0, flat) - Math.min(damage, Math.max(0, perDie)))
+    return Math.max(0, damage - Math.max(0, flat) - Math.max(0, perDie))
 }

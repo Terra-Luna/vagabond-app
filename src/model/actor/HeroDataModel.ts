@@ -323,7 +323,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     activeRelics = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
         return this.parent.items.filter((it: any) =>
             inventoryItemTypes().includes(it.type) &&
-            it.system.isRelicActive()
+            it.system.hasActivePowers()
         )
     }
 

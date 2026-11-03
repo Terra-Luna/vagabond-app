@@ -8,6 +8,7 @@ import { getItemTooltipComponent } from "./ItemTooltipSheet"
 export const ItemIconImg = ({ item, size = 28 }) => {
     const isBoundToHero = item.isBound
     const isBindable = item.isBoundRelic?.()
+    const isRelic = item.isRelic?.()
     const TooltipSheet = getItemTooltipComponent()
 
     return (
@@ -20,7 +21,7 @@ export const ItemIconImg = ({ item, size = 28 }) => {
                     alt={getName(item)}
                     width={size}
                     height={size}
-                    className={`rounded-sm border border-solid border-section-header-fill/60`}
+                    className={`rounded-sm border border-solid ${isRelic ? 'border-wealth-denom-label' : 'border-section-header-fill/60'}`}
                 />
 
                 <span>

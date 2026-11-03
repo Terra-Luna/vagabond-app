@@ -13,6 +13,7 @@ export const applyAdversaryDamageMods = (actor: any, damageRoll: DamageRoll, isS
         damageRoll.flatDmgBonus += scope.bonus?.flat ?? 0
         damageRoll.perDieDmgBonus += scope.bonus?.perDie ?? 0
         damageRoll.hdMultiplier += scope.bonus?.hdMultiplier ?? 0
+        damageRoll.hdMultiplierOnCrit += scope.bonus?.hdMultiplierOnCrit ?? 0
         damageRoll.armorPiercing += scope.armorPiercing?.flat ?? 0
         damageRoll.armorPiercingPerDie += scope.armorPiercing?.perDie ?? 0
         damageRoll.armorPiercingPerExtraDie += scope.armorPiercing?.perExtraDie ?? 0

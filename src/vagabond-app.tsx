@@ -166,6 +166,10 @@ Hooks.once("ready", async () => {
             if (typeof packet.data?.message === "string") ui.notifications?.info(packet.data.message)
             return
         }
+        if (packet?.action === "notifyBindResult") {
+            if (packet.data?.userIds?.includes(game.user?.id) && typeof packet.data.message === "string") ui.notifications?.info(packet.data.message)
+            return
+        }
         if (packet?.action === "notifyCursesLifted") {
             if (packet.data?.userIds?.includes(game.user?.id) && typeof packet.data.message === "string") {
                 showConfirmationDialog({ title: appLang.Notifications.cursesLiftedTitle, description: packet.data.message, confirmText: "OK", variant: "info" })
@@ -371,6 +375,21 @@ Hooks.on("deleteItem", async (item, options, userId) => {
     if (['spell', 'perk', 'feature', 'startingpack'].includes((item as any).type)) {
         ItemsCache.removeItem(item.uuid)
     }
+})
+
+Hooks.on("refreshToken" as any, (token: any) => {
+    const nameplate = token?.nameplate
+    const items = token?.document?.actor?.items
+    if (!nameplate || !items) return
+    const isPile = !!token.document.getFlag?.("item-piles", "data")?.enabled
+    if (isPile && !game.user?.isActiveGM && items.size === 0) {
+        nameplate.visible = false
+        return
+    }
+    const locked = items.find((it: any) =>
+        it.system?.isLockedForUser?.() && it._source?.name === token.document.name
+    )
+    if (locked) nameplate.text = locked.system.displayName
 })
 
 Hooks.on("activateCompendiumDirectory" as any, (app: any) => {

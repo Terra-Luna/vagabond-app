@@ -63,12 +63,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.160",
+    "systemVersion": "0.2.180",
     "createdTime": 1790013732657,
-    "modifiedTime": 1793515763006,
-    "lastModifiedBy": "pcHXNIbwXTDCVlqw",
+    "modifiedTime": 1793648071427,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

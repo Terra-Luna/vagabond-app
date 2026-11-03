@@ -1,7 +1,6 @@
 import { useState } from "react"
 
 import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRollSchema"
-import { RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPowers"
 import { AdversaryAttack, SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
 import { AdversaryComboAttack, ComboSubAttackArgs } from "../../../../../combat/engine/AdversaryComboAttack"
 import { AppliedFx } from "../../../../../combat/engine/Attack"
@@ -52,12 +51,8 @@ export const onClickAction = async (
 
 export const buildPolymorphAttack = (actor: Actor & { system: HeroDataModel }, action: any): HeroAttack | undefined => {
     const polyMods = actor.system.modifiers.polymorph
-    const findRelic = (id: string) => [...RelicPowers.bonus, ...RelicPowers.utility].find(it => it.id === id)
-    const relicPower = polyMods.relicAttacks
-        ? (polyMods.attackBonus > 0
-            ? findRelic(`bonus-weapon-${Math.min(3, polyMods.attackBonus)}`)
-            : findRelic(`utility-other`)
-        )
+    const virtualRelic = polyMods.relicAttacks
+        ? { id: `physical_lt${Math.max(0, polyMods.damageBonus ?? 0)}`, category: { value: 'bonus', label: 'Bonus' }, power: { value: 'virtual', label: 'Relic' }, types: ['weapon'], goldValue: 0 }
         : undefined
 
     /**
@@ -70,7 +65,7 @@ export const buildPolymorphAttack = (actor: Actor & { system: HeroDataModel }, a
         system: {
             damage: action.damage,
             appliedEffects: action.appliedEffects ?? [],
-            relicPowers: relicPower ? [relicPower] : [],
+            relicPowers: virtualRelic ? [virtualRelic] : [],
             properties: [],
             skills: actor.system.modifiers.polymorph.useCastSkill
                 ? [actor.system.class.castingSkill]

@@ -19,13 +19,16 @@ export interface ExtraDamage {
 }
 
 export interface DamageBreakdown {
+    damageBeforeHalving: number
     damage: number
     imbueDamage: number
     imbueParts: { dmgType: string, amount: number, bonus: number, label?: string }[]
-    halved: boolean
+    resistanceDivisor: number
     armor: number
     armorPiercing: number
     otherMitigation: number
+    mitigatedBeforeSave: number
+    saveHalved: boolean
     mitigated: number
 }
 
@@ -91,15 +94,18 @@ export const calculateBonusDamage = (targetActor: any, sourceActor: any, damageR
         bonus += Math.max(...beingTypeMods.map(mod => mod.bonus.flat))
         bonus += Math.max(...beingTypeMods.map(mod => mod.bonus.perDie)) * (damageRoll?.result?.rollSummaries.length ?? 0)
     }
-    if (damageRoll?.hdMultiplier) {
+    if (damageRoll?.hdMultiplier || (damageRoll?.hdMultiplierOnCrit && damageRoll.result?.isCrit)) {
         const targetHD = targetActor?.system?.hitDice ?? targetActor?.system?.level?.current ?? 0
-        bonus += targetHD * damageRoll.hdMultiplier
+        bonus += targetHD * (damageRoll.hdMultiplier + (damageRoll.result?.isCrit ? damageRoll.hdMultiplierOnCrit : 0))
     }
     return bonus
 }
 
 export const buildSummaryRow = (targetId: string, subIndex: number, breakdown: DamageBreakdown, bonus: number, args: AttackResolutionArgs, dmgType: string, label?: string): TargetDamageSummary => {
-    const calculatedTotal = breakdown.mitigated + bonus
+    const totalBeforeSave = breakdown.mitigatedBeforeSave + bonus
+    const calculatedTotal = breakdown.saveHalved
+        ? Math.floor(Math.max(0, totalBeforeSave) / 2)
+        : totalBeforeSave
     const override = args.damageOverrides?.[damageOverrideKey(targetId, subIndex)]
     const isOverridden = override !== undefined
     return {
@@ -127,20 +133,15 @@ export const computeDamageBreakdown = (damageRoll: DamageRoll | undefined, targe
     const weaknessDice = isWeakToDamage(targetId, damageRoll) ? (damageRoll?.result?.weaknessRolls ?? []) : []
     const weaknessDamage = weaknessDice.reduce((acc, it) => acc + it.result, 0)
 
-    // Each die's damage (including its per-die bonus) can be reduced to a minimum of zero.
-    const reduceDice = (dice: number[], reduction: number) =>
-        dice.reduce((acc, value) => acc + Math.min(Math.max(0, value), Math.max(0, reduction)), 0)
+    let perDieMit = (
+        (damageRoll?.result?.rollSummaries ?? []).filter(it => !it.rerolled).length
+        + weaknessDice.length
+    ) * Math.max(0, perDieReduction)
 
-    let perDieMit = reduceDice([
-        ...(damageRoll?.result?.rollSummaries ?? []).filter(it => !it.rerolled).map(it => it.result + (damageRoll?.perDieDmgBonus ?? 0)),
-        ...weaknessDice.map(it => it.result)
-    ], perDieReduction)
-
-    // Resistance and a passed save each halve the damage - non-stacking.
+    // Resistance and a passed save each halve the damage.
     const totalDamage = (damageRoll?.result?.total ?? 0) + weaknessDamage
-    const damage = (isResistant || halfDamage)
-        ? Math.floor(totalDamage / 2)
-        : totalDamage
+    const resistanceDivisor = isResistant ? 2 : 1
+    const damage = Math.floor(totalDamage / resistanceDivisor)
 
     // Extra damage sources (e.g. imbued spells) are added in before any mitigation, each resisted by its own type.
     let imbueDamage = 0
@@ -154,24 +155,28 @@ export const computeDamageBreakdown = (damageRoll: DamageRoll | undefined, targe
         const amount = mods?.resistances?.includes(extraRoll.dmgType) ? Math.floor(extraTotal / 2) : extraTotal
         imbueDamage += amount
         imbueParts.push({ dmgType: extraRoll.dmgType, amount, bonus: Math.min(extra.bonus, amount), label: extra.label })
-        perDieMit += reduceDice([
-            ...extraRoll.result.rollSummaries.filter(it => !it.rerolled).map(it => it.result + (extraRoll.perDieDmgBonus ?? 0)),
-            ...extraWeakDice.map(it => it.result)
-        ], perDieReductionFor(extraRoll.dmgType))
+        perDieMit += (
+            extraRoll.result.rollSummaries.filter(it => !it.rerolled).length
+            + extraWeakDice.length
+        ) * Math.max(0, perDieReductionFor(extraRoll.dmgType))
     }
 
     const armorRating = aSys?.armor?.rating ?? 0
     const armorPiercing = damageRoll?.result?.armorPiercing ?? 0
     const armor = args.bypassArmor ? 0 : Math.max(0, armorRating + additionalArmorRating - armorPiercing)
     const otherMitigation = flatReduction + perDieMit
+    const mitigatedBeforeSave = Math.max(0, damage + imbueDamage - otherMitigation - armor)
     return {
+        damageBeforeHalving: totalDamage,
         damage,
         imbueDamage,
         imbueParts,
-        halved: !!(isResistant || halfDamage),
+        resistanceDivisor,
         armor,
         armorPiercing,
         otherMitigation,
-        mitigated: Math.max(0, damage + imbueDamage - otherMitigation - armor)
+        mitigatedBeforeSave,
+        saveHalved: halfDamage,
+        mitigated: halfDamage ? Math.floor(mitigatedBeforeSave / 2) : mitigatedBeforeSave
     }
 }

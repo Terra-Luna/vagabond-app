@@ -27,7 +27,7 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
 
     return (
         <EquipmentSheetSubtypeBody>
-            <div className="grid grid-cols-2 gap-x-8 gap-y-4 items-start">
+            <div className="grid grid-cols-[max-content_max-content] justify-between gap-y-2 items-start">
                 <WeaponSkills item={item} />
                 <Properties item={item} />
                 <Range item={item} />
@@ -36,7 +36,9 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
                 <DamageTypeSelector item={item} path={'system.damage.type'} />
                 <MaterialSelection item={item} />
                 {(isEditMode || item.system.imbueExempt) &&
-                    <ItemToggleOption label={appLang.ItemSheet.imbueExempt} item={item} path={'system.imbueExempt'} />
+                    <div className="pt-6">
+                        <ItemToggleOption label={appLang.ItemSheet.imbueExempt} item={item} path={'system.imbueExempt'} />
+                    </div>
                 }
             </div>
         </EquipmentSheetSubtypeBody>

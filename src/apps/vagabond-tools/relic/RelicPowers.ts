@@ -510,7 +510,7 @@ export class RelicPowers {
                 value: 'visceral',
                 label: 'Visceral',
                 modifiers: [{
-                    selector: ['damage.out.global.bonus.hdMultiplier'], value: 2
+                    selector: ['damage.out.global.bonus.hdMultiplierOnCrit'], value: 2
                 }]
             },
             types: ['weapon'],

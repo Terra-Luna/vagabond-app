@@ -1,8 +1,13 @@
 import { appLang } from "../../../utils/lang"
+import { sys_id } from "../../../utils/foundryUtils"
+import { sendVagabondChatCard } from "../../../view/chat/ChatCardSerializer"
 import { localizeString } from "../../../utils/localeUtils"
 import { addCoins, Coins, coinSchema, consolidateCoins, multiplyCoins, toCopper, zeroCoins } from "../../common/CoinValue"
 import { fields, optionalString, requiredInteger, requiredString, uncappedInteger } from "../../common/sharedSchemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
+
+export const BIND_REQUEST_FLAG = "bindRequestPending"
+export const WAS_BOUND_FLAG = "wasBound"
 
 /**
  * Anything a hero can have in their inventory.
@@ -138,6 +143,7 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         super.prepareDerivedData()
         this.bulk.totalSlots = getTotalSlots(this)
         this.copperValue = toCopper((this as any)?.value ?? { ...zeroCoins })
+        if (game.user && this.isLockedForUser()) this.parent.name = this.displayName
     }
 
     override async _preUpdate(changes, options, user) {
@@ -192,9 +198,26 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         return this.isBound && this.isBoundRelic()
     }
 
-    /** Relic powers apply when bound (bindable relics) or when equipped (all other relics). */
+    /** Relic powers apply only while bound (if bindable) and, for equippable items, while equipped. */
     isRelicActive = (): boolean => {
-        return this.isRelic() && (this.isBoundRelic() ? this.isBound : this.isEquipped)
+        if (!this.isRelic()) return false
+        if (this.isBoundRelic() && !this.isBound) return false
+        return this.isBoundRelic() && !this.isEquippable ? true : this.isEquipped
+    }
+
+    /** Relic powers that take effect: all while active, otherwise only curses (which always apply). */
+    activeRelicPowers = () => {
+        return this.isRelicActive() ? this.relicPowers : this.relicPowers.filter(rel => rel.category.value === 'cursed')
+    }
+
+    /** True if the item should contribute any powers to its hero (active, or carrying a curse). */
+    hasActivePowers = (): boolean => this.activeRelicPowers().length > 0
+
+    /** Relic powers that take effect on rolls: none while the item is inert on a hero, except curses. */
+    appliedRelicPowers = () => {
+        const isHeroOwned = this.parent?.parent?.type === 'hero'
+        if (isHeroOwned && this.isRelic()) return this.activeRelicPowers()
+        return this.relicPowers
     }
 
     /** Relic powers that are visible and applied: bindable relics owned by a hero are inert until bound. */
@@ -208,15 +231,58 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
             ui.notifications?.info(localizeString(appLang.Notifications.boundItemCannotBeRemoved, { name: this.parent.name }))
             return
         }
+        if (!this.isBound && !this.hasFreeRelicSlot()) return
+
+        // Players must ask the GM before binding.
         const hero = this.parent.parent as any
-        if (!this.isBound && hero?.type === 'hero') {
-            const limit = hero.system.boundRelicLimit ?? 3
-            if (hero.system.boundRelics().length >= limit) {
-                ui.notifications?.warn(localizeString(appLang.Notifications.boundRelicLimitExceeded, { limit: limit.toString() }))
-                return
-            }
+        if (!this.isBound && hero?.type === 'hero' && !game.user?.isActiveGM) {
+            await this.requestBinding(hero)
+            return
         }
-        await this.parent.update({ 'system.isBound': !this.isBound })
+        await this.parent.update({
+            'system.isBound': !this.isBound,
+            ...(!this.isBound ? { [`flags.${sys_id}.${WAS_BOUND_FLAG}`]: true } : {})
+        } as Record<string, any>)
+    }
+
+    hasFreeRelicSlot(): boolean {
+        const hero = this.parent.parent as any
+        if (hero?.type !== 'hero') return true
+        const limit = hero.system.boundRelicLimit ?? 3
+        if (hero.system.boundRelics().length >= limit) {
+            ui.notifications?.warn(localizeString(appLang.Notifications.boundRelicLimitExceeded, { limit: limit.toString() }))
+            return false
+        }
+        return true
+    }
+
+    get isBindRequestPending(): boolean {
+        return !!this.parent.getFlag(sys_id, BIND_REQUEST_FLAG)
+    }
+
+    private async requestBinding(hero: any) {
+        if (this.isBindRequestPending) {
+            ui.notifications?.info(localizeString(appLang.Notifications.bindRequestAlreadySent, { name: this.parent.name }))
+            return
+        }
+        await this.parent.setFlag(sys_id, BIND_REQUEST_FLAG, true)
+        const gmIds = (game.users?.filter(user => user.isGM) ?? []).map(user => user.id as string)
+        await sendVagabondChatCard(hero, "BindRelicRequestChatCard", { heroId: hero.id, itemUuid: this.parent.uuid }, [], gmIds)
+        ui.notifications?.info(localizeString(appLang.Notifications.bindRequestSent, { name: this.parent.name }))
+    }
+
+    /** Non-GM users can't see or edit a bindable relic until it has been bound at least once. */
+    isLockedForUser = (): boolean => {
+        return !game.user?.isActiveGM && this.isBoundRelic() && !this.isBound && !this.parent.getFlag(sys_id, WAS_BOUND_FLAG)
+    }
+
+    /** Item name shown to the current user; obfuscated while the relic is locked. */
+    get displayName(): string {
+        if (!this.isLockedForUser()) return this.parent.name
+        const inv = appLang.HeroSheet.Inventory
+        if (this.parent.type === 'weapon') return localizeString(inv.mysteriousWeapon, {})
+        if (this.parent.type === 'armor') return localizeString(inv.mysteriousArmor, {})
+        return localizeString(inv.mysteriousRelic, {})
     }
 
     isCursed = (): boolean => {

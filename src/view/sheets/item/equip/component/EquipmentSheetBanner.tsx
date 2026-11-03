@@ -10,8 +10,13 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
     const { editModeToggleBtn } = useEditMode(item)
 
     const isEquipment = typeof item.system.effectiveRelicPowers === "function"
+    const isLocked = isEquipment && item.system.isLockedForUser()
+    const isBindableUnbound = isEquipment && item.system.isBoundRelic() && !item.system.isBound
     const relicPowers = isEquipment
-        ? item.system.effectiveRelicPowers().filter(relic => relic.category.value !== 'cursed' || item.system.isBound)
+        ? (isBindableUnbound
+            ? item.system.relicPowers.filter(relic => !relic.id.startsWith('bonus-'))
+            : item.system.effectiveRelicPowers()
+        ).filter(relic => relic.category.value !== 'cursed' || item.system.isBound)
         : []
 
     return (<>
@@ -20,15 +25,15 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
             <div className="flex flex-col w-full">
                 <div className="flex gap-x-1 w-full items-center text-2xl text-text-section-header">
                 <EditableTextField
-                    boundValue={item.name}
+                    boundValue={isEquipment ? item.system.displayName : item.name}
                     updateProps={{ object: item, path: ['name'] }}
                     placeholder={"Item name..."}
                 />
                     <Divider />
-                    {editModeToggleBtn}
+                    {!isLocked && editModeToggleBtn}
                 </div>
 
-                {isEquipment && item.system.isBoundRelic() && !item.system.isBound
+                {isLocked
                     ? <p className="text-xs font-paradigm font-normal italic text-text-header-secondary">{appLang.HeroSheet.Inventory.relicRequiresBinding}</p>
                     : <RelicEffectList relicPowers={relicPowers} />
                 }

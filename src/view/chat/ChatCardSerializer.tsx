@@ -14,7 +14,8 @@ export const sendVagabondChatCard = async (
     actor: any,
     type: string,
     props: Record<string, any>,
-    rolls: any[] = []
+    rolls: any[] = [],
+    whisper?: string[]
 ) => {
     const blueprint: ElementBlueprint = { type, props }
     const chatRoot = `<div class="vagabond-react-chat-root"/>`
@@ -22,6 +23,7 @@ export const sendVagabondChatCard = async (
         speaker: { actor: getId(actor), alias: getName(actor) },
         content: chatRoot,
         rolls,
+        ...(whisper ? { whisper } : {}),
         flags: { [sys_id]: { blueprint } } as any
     })
 }

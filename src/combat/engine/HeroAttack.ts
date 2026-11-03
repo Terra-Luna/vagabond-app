@@ -611,6 +611,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             baneTypes: baneTypes.length > 0 ? baneTypes : undefined,
             attackerId: actor.id ?? undefined,
             hdMultiplier: (dmgMods.global?.bonus?.hdMultiplier ?? 0) + (dmgMods[weaponSkill]?.bonus?.hdMultiplier ?? 0),
+            hdMultiplierOnCrit: (dmgMods.global?.bonus?.hdMultiplierOnCrit ?? 0) + (dmgMods[weaponSkill]?.bonus?.hdMultiplierOnCrit ?? 0),
             relicLevel: relicLevel,
             perDieDmgBonus: (dmgMods.global?.bonus?.perDie ?? 0) + (dmgMods[weaponSkill]?.bonus?.perDie ?? 0),
             armorPiercing: dmgMods.global?.armorPiercing?.flat
@@ -684,7 +685,8 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
      */
     private static getRelicLevel(relicPowers: { id: string }[]): number {
         if (relicPowers.length === 0) return -1
-        return [3, 2, 1].find(tier => relicPowers.some(it => it.id === `bonus-weapon-${tier}`)) ?? 0
+        const tiers = relicPowers.map(it => Number(/^(?:bonus-weapon-|physical_lt)(\d+)$/.exec(it.id)?.[1] ?? 0))
+        return Math.max(0, ...tiers)
     }
 
     /**
@@ -773,7 +775,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
             const isHealing = delivery.spell.damageType === 'healing'
 
             const activeItems = actor.system.activeRelics() as any[]
-            RelicPowerProcessor.applyRelicPowers(activeItems.flatMap(it => it.system.relicPowers), mods)
+            RelicPowerProcessor.applyRelicPowers(activeItems.flatMap(it => it.system.activeRelicPowers()), mods)
 
             const dieSizeMod = isHealing
                 ? mods.healing.out.spell.dice.size.bonus ?? 0

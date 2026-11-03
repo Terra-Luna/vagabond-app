@@ -23,7 +23,7 @@ export const isInContainer = (item, containers) => {
 }
 
 export const itemNameQty = (item: EquipmentDataModel<EquipmentSchema>): string => {
-    let name = getName(item)
+    let name = item.displayName ?? getName(item)
     if (item instanceof ContainerDataModel) {
         name += ` (${(item.capacity) - item.emptySlots}/${item.capacity})`
     }

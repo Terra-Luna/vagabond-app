@@ -195,7 +195,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
             const calculated = Math.max(0, (setValue > 0 ? setValue : rolled + perDie) + flat)
             const row = buildSummaryRow(
                 id, 0,
-                { damage: rolled, imbueDamage: 0, imbueParts: [], halved: false, armor: 0, armorPiercing: 0, otherMitigation: 0, mitigated: calculated },
+                { damageBeforeHalving: rolled, damage: rolled, imbueDamage: 0, imbueParts: [], resistanceDivisor: 1, armor: 0, armorPiercing: 0, otherMitigation: 0, mitigatedBeforeSave: calculated, saveHalved: false, mitigated: calculated },
                 0, args, 'healing', undefined
             )
             rows.push({ ...row, healing: { flat, perDie, setValue } })

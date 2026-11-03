@@ -28,11 +28,11 @@ export class RelicPowerProcessor {
 
         activeRelics.forEach(item => {
             const resistances = actor.system.modifiers.damage.in.resistances as string[]
-            ;(item.system.relicPowers as RelicPower[]).forEach(relic => {
+            ;(item.system.activeRelicPowers() as RelicPower[]).forEach(relic => {
                 const type = relic.power.damageType
                 if (RelicPowerProcessor.isResistance(relic) && type && !resistances.includes(type)) resistances.push(type)
             })
-            const filteredRelics = (item.system.relicPowers as RelicPower[]).flatMap(it => ({
+            const filteredRelics = (item.system.activeRelicPowers() as RelicPower[]).flatMap(it => ({
                 ...it,
                 power: {
                     modifiers: it.power.modifiers.flatMap(mod => {
@@ -140,7 +140,7 @@ export class RelicPowerProcessor {
             .filter(it => !!it)
 
     static getEffectivePowers = (item: any): RelicPower[] =>
-        item?.effectiveRelicPowers?.() ?? item?.relicPowers ?? []
+        item?.appliedRelicPowers?.() ?? item?.relicPowers ?? []
 
     static isResistance = (relic: RelicPower): boolean => relic.id === 'resistance-resistance'
 

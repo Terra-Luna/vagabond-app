@@ -2,7 +2,10 @@ import { ActiveEffectsView } from "../../../../apps/active-effects/ActiveEffects
 import { getRelicForgeAccess } from "../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel"
 import { ItemRulesManager } from "../../../../rules/ItemRulesManager"
-import { Divider } from "../../../component/Header"
+import { appLang } from "../../../../utils/lang"
+import { PrimaryButton } from "../../../component/Button"
+import { EditModeContextProvider } from "../../../context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
 import { Description } from "../../shared/Description"
 import { setItemTooltipComponent } from "../../shared/ItemTooltipSheet"
@@ -24,6 +27,7 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
     hideBottomSection?: boolean
 }) => {
     const { isEditMode } = useEditMode()
+    const isLocked = typeof item.system.isLockedForUser === "function" && item.system.isLockedForUser()
 
     let sheet: React.ReactElement
 
@@ -58,31 +62,68 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
                 <ItemValue item={item} />
                 <CategorySelection item={item} />
             </div>
-            <div className="flex flex-col gap-1 w-full -mt-4">
-                <Divider />
-                <ActiveEffectsView initialDocument={item} />
-            </div>
         </div>
 
-    return (
+    const effectsContent = !hideBottomSection && !isLocked &&
+        <div className="flex flex-col gap-1 w-full mb-2 @4xl:mt-1">
+            <ActiveEffectsView initialDocument={item} />
+        </div>
+
+    const rulesContent = isEditMode
+        && !isLocked
+        && (game.user?.isActiveGM || getRelicForgeAccess())
+        && (item.type as string) !== 'alchemical'
+        && (item.type as string) !== 'startingpack'
+        && <div className="flex flex-col mb-4">
+            <RelicConfig item={item} />
+            <ItemRulesManager item={item} />
+        </div>
+
+    const hasSecondColumn = !!effectsContent || !!rulesContent
+
+    const isHeroOwned = (item.parent?.type as string) === "hero" && item.isOwner
+    const canBind = isHeroOwned && item.system.isBoundRelic?.() && !item.system.isBound
+
+    const sheetContent = (
         <BaseItemSheetComponent
             banner={<EquipmentSheetBanner item={item} />}
-            description={<>{(item.type as string) !== 'startingpack' && <Description item={item} showFullView={true} italic={false} />}</>}
+            description={isLocked
+                ? <div className="flex flex-col items-center gap-2 px-4 py-1 text-text-primary text-center italic font-paradigm font-normal">
+                    <p>{appLang.HeroSheet.Inventory.relicBindingLocked}</p>
+                    {canBind && <BindButton item={item} />}
+                </div>
+                : <>{(item.type as string) !== 'startingpack' && <Description item={item} showFullView={true} italic={false} />}</>}
             bodyClassName="text-text-primary bg-sheet-main-fill rounded-b-md px-4 w-full"
-            body={<>
-                {sheet}
-                {sharedContent}
-                {isEditMode
-                    && (game.user?.isActiveGM || getRelicForgeAccess())
-                    && (item.type as string) !== 'alchemical'
-                    && (item.type as string) !== 'startingpack'
-                    && <div className="flex flex-col mb-4">
-                        <RelicConfig item={item} />
-                        <ItemRulesManager item={item} />
+            body={<div className="@container w-full">
+                <div className={`grid grid-cols-1 gap-x-6 ${hasSecondColumn ? "@lg:grid-cols-2" : ""}`}>
+                    <div className="min-w-0">
+                        {sheet}
+                        {sharedContent}
                     </div>
-                }
-            </>}
+                    {hasSecondColumn &&
+                        <div className="min-w-0">
+                            {effectsContent}
+                            {rulesContent}
+                        </div>
+                    }
+                </div>
+                {!isLocked && canBind && <div className="flex justify-center mb-4"><BindButton item={item} /></div>}
+            </div>}
         />
+    )
+
+    return isLocked
+        ? <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>{sheetContent}</EditModeContextProvider>
+        : sheetContent
+}
+
+const BindButton = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
+    const strings = appLang.HeroSheet.Inventory
+    const isPending = item.system.isBindRequestPending
+    return (
+        <PrimaryButton disabled={isPending} onClick={() => item.system.toggleBound()}>
+            {isPending ? strings.bindRequestPending : strings.bindToRelic}
+        </PrimaryButton>
     )
 }
 

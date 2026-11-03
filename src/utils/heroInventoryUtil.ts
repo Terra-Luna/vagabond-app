@@ -20,6 +20,7 @@ import type { CtxMenuItem } from "../view/component/ContextMenu"
 import { sys_id } from "./foundryUtils"
 import { appLang } from "./lang"
 import { localizeString } from "./localeUtils"
+import { showConfirmationDialog } from "../apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { getFullItem, getId, getName } from "./modelUtil"
 
 /**
@@ -59,14 +60,18 @@ export async function addItems(actor: Actor & { system: any }, uuids: string[]) 
     }
 }
 
-export const stackStackables = async (hero: any) => {
+export const stackStackables = async (hero: any, recombineSplits = false) => {
     const stackables = hero.parent.items?.filter((it: any) => isInventoryItem(it) && it.system.bulk.isStackable) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
     if (stackables?.length > 0) {
         const stackGroups: { id: string, items: (Item & { system: EquipmentDataModel<EquipmentSchema> })[] }[] = []
+        const containers = hero.containers?.() ?? []
 
         for (const stack of stackables) {
-            const stackId = stack.flags[sys_id]?.["item-stack-id"] ?? stack.name
-            const existing = stackGroups[stackId]
+            const container = containers.find((c: any) => c.itemIds.includes(stack.id))
+            const stackId = recombineSplits
+                ? `${stack.type}|${stack.name}|${container?.parent?.id ?? ''}`
+                : stack.flags[sys_id]?.["item-stack-id"] ?? stack.name
+            const existing = stackGroups.find(g => g.id === stackId)
             if (existing) {
                 existing.items.push(stack)
             }
@@ -215,7 +220,7 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
         menuItems.push(splitItemsContextOption(hero, item))
     }
 
-    const hideDelete = item.isBound && item.isCursed()
+    const hideDelete = item.isBoundToHero()
 
     if (!hideDelete) {
         menuItems.push(deleteItemContextOption(hero, item))
@@ -239,9 +244,11 @@ export const containerItemContextMenuItems = (
     }
     menuItems.push(viewItemSheetContextOption(item))
     menuItems.push({ icon: Undo, label: appLang.HeroSheet.Inventory.ctxExtract, action: () => extractItemFromContainer(container, item.parent) })
-    menuItems.push(deleteItemContextOption(actor, item))
-    if (item.bulk.isStackable && item.bulk.quantity > 1) {
-        menuItems.push(deleteAllItemsContextOption(actor, item))
+    if (!item.isBoundToHero()) {
+        menuItems.push(deleteItemContextOption(actor, item))
+        if (item.bulk.isStackable && item.bulk.quantity > 1) {
+            menuItems.push(deleteAllItemsContextOption(actor, item))
+        }
     }
     return menuItems
 }
@@ -289,8 +296,27 @@ const splitItemsContextOption = (hero: any, item: EquipmentDataModel<EquipmentSc
     return { icon: Split, label: appLang.HeroSheet.Inventory.ctxSplit, action: () => new ItemStackSplitApp(hero.parent, item.parent).render({ force: true }) }
 }
 
+/** Items with non-curse relic powers are likely unique, so confirm before deleting them. */
+const confirmDeleteItem = async (item: EquipmentDataModel<EquipmentSchema>): Promise<boolean> => {
+    const isUnique = item.relicPowers?.some(rel => rel.category.value !== 'cursed')
+    if (!isUnique) return true
+    const strings = appLang.HeroSheet.Inventory
+    return showConfirmationDialog({
+        title: localizeString(strings.deleteUniqueTitle, { name: item.parent.name }),
+        description: strings.deleteUniqueMessage,
+        confirmText: strings.deleteUniqueConfirm,
+        cancelText: strings.deleteUniqueCancel,
+        variant: "destructive"
+    })
+}
+
 const deleteItemContextOption = (actor: ActorDataModel<BaseActorSchema> | null, item: EquipmentDataModel<EquipmentSchema>) => {
-    return { icon: Trash, label: appLang.HeroSheet.Inventory.ctxDelete, action: () => deleteItems(actor, [getId(item)]), isDestructive: true }
+    return {
+        icon: Trash,
+        label: appLang.HeroSheet.Inventory.ctxDelete,
+        action: async () => { if (await confirmDeleteItem(item)) deleteItems(actor, [getId(item)]) },
+        isDestructive: true
+    }
 }
 
 const deleteAllItemsContextOption = (actor: ActorDataModel<BaseActorSchema> | null, item: EquipmentDataModel<EquipmentSchema>) => {
@@ -298,6 +324,7 @@ const deleteAllItemsContextOption = (actor: ActorDataModel<BaseActorSchema> | nu
         icon: Trash,
         label: appLang.HeroSheet.Inventory.ctxDeleteAll,
         action: async () => {
+            if (!await confirmDeleteItem(item)) return
             await item.parent.update({ 'system.bulk.isStackable': false, 'system.bulk.quantity': 0 })
             deleteItems(actor, [getId(item)])
         },

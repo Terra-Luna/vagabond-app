@@ -28,11 +28,12 @@ export const useDragDrop = (items: EquipmentDataModel<EquipmentSchema>[], onDrop
         setDragIndex(index)
         setDragItem(items[index])
         setTargetItem(items[index])
+        const dragged = items[index]
+        const isBound = !!(dragged as any).isBoundToHero?.()
         const dragData = {
             type: "Item",
-            id: getId(items[index]),
-            uuid: getUuid(items[index]),
-            owner: items[index].parent.actor
+            id: getId(dragged),
+            ...(isBound ? {} : { uuid: getUuid(dragged), owner: dragged.parent.actor })
         }
         e.dataTransfer.setData("text/plain", JSON.stringify(dragData))
         e.dataTransfer.effectAllowed = "move"

@@ -1,4 +1,4 @@
-import { ShoppingBag } from "lucide-react"
+import { Layers, ShoppingBag } from "lucide-react"
 import { useState } from "react"
 
 import { ItemShopApp } from "../../../../../apps/shop/ItemShopApp"
@@ -7,7 +7,7 @@ import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { isInContainer,sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ContainerDataModel } from "../../../../../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
-import { equipmentContextMenuItems } from "../../../../../utils/heroInventoryUtil"
+import { equipmentContextMenuItems, stackStackables } from "../../../../../utils/heroInventoryUtil"
 import { appLang } from "../../../../../utils/lang"
 import { tableBorder, tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation, PrimaryButton } from "../../../../component/Button"
@@ -53,6 +53,10 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                         </PrimaryButton>
                     </div>
                 }
+                {/* STACK ITEMS BUTTON */}
+                <PrimaryButton onClick={() => stackStackables(hero, true)} icon={<Layers size={16} className="self-center" />}>
+                    {appLang.HeroSheet.Inventory.stackItems}
+                </PrimaryButton>
                 <Containers hero={hero} />
             </div>
 

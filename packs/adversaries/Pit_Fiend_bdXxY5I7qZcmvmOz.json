@@ -454,8 +454,89 @@
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "1x Bite, 1x Mace, 1x Tail",
+      "actions": [
+        {
+          "id": "",
+          "name": "Bite",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and pass [Endure] with a -1 penalty or become Sickened (Cd6 damage)</span></p>",
+          "type": "melee",
+          "range": "close",
+          "damage": {
+            "dice": {
+              "count": 3,
+              "faces": 6,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "halfDamageOnSave": false,
+          "appliedEffects": [],
+          "appliedActiveEffects": [],
+          "comboCount": 1
+        },
+        {
+          "id": "",
+          "name": "Mace",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Burning (Cd6)</span></p>",
+          "type": "melee",
+          "range": "close",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 6,
+              "modifier": 2,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "halfDamageOnSave": false,
+          "appliedEffects": [
+            {
+              "effect": "burning",
+              "duration": "Cd6"
+            }
+          ],
+          "appliedActiveEffects": [],
+          "comboCount": 1
+        },
+        {
+          "id": "",
+          "name": "Tail",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (2d4) and Restrained, taking 5 (2d4) at the start of this Being's Turns while Restrained this way</span></p>",
+          "type": "melee",
+          "range": "close",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "halfDamageOnSave": false,
+          "appliedEffects": [
+            {
+              "effect": "restrained",
+              "duration": "continual"
+            }
+          ],
+          "appliedActiveEffects": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
     "morale": 12,
     "speeds": [
@@ -672,9 +753,9 @@
   "_stats": {
     "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.178",
+    "systemVersion": "0.2.180",
     "createdTime": 1790188349847,
-    "modifiedTime": 1793588092293,
+    "modifiedTime": 1793642608552,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

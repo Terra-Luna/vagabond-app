@@ -219,7 +219,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
 
                                 <div className="flex flex-col w-full px-2">
                                     <div className="flex justify-between items-center">
-                                        <div className={`text-lg line-clamp-1`}>{item.parent.name}</div>
+                                        <div className={`text-lg line-clamp-1`}>{item.displayName}</div>
                                         <div className="flex justify-end items-center">
                                             {/* WEAPON GRIP DISPLAY */}
                                             {item instanceof WeaponDataModel && (
@@ -305,8 +305,25 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
 }
 
 const Armor = ({ hero, armor, wearables, boundRelics }: { hero: any, armor: ArmorDataModel, wearables: SundryDataModel[], boundRelics: any[] }) => {
-    const miscItems = [...wearables, ...boundRelics]
     const { onCtxMenu, ContextMenu } = useContextMenu()
+
+    const renderItemSection = (title: string, items: any[]) => (
+        <div className="flex flex-col gap-1 mt-1">
+            <Header title={title} />
+            {items.map((item, index) => (
+                <div key={index}>
+                    <div className="flex items-center gap-x-1" onContextMenu={(e) => onCtxMenu(e, equipmentContextMenuItems(hero, item))}>
+                        <ItemImage item={item} />
+                        <div className="flex flex-col gap-0.5 pl-2">
+                            <p className="text-base line-clamp-1">{item.displayName}</p>
+                            <RelicEffectList relicPowers={item.effectiveRelicPowers()} textColor="text-text-header-tertiary -mt-1" />
+                        </div>
+                    </div>
+                    <ItemDivider />
+                </div>
+            ))}
+        </div>
+    )
 
     return (
         <div className="w-full -mt-1">
@@ -320,7 +337,7 @@ const Armor = ({ hero, armor, wearables, boundRelics }: { hero: any, armor: Armo
                         <div className="flex flex-col w-full px-2">
                             {/* ARMOR NAME AND RATING */}
                             <div className="flex items-center justify-between">
-                                <div className="text-lg line-clamp-1">{armor.parent.name ?? '-'}</div>
+                                <div className="text-lg line-clamp-1">{armor.displayName ?? '-'}</div>
                                 <div className="flex justify-end items-center">
                                     <Shield className="mr-1" size={18} />
                                     <div className="line-clamp-1 text-lg text-right font-eskapade font-bold mr-1">{armor.rating ?? '-'}</div>
@@ -340,26 +357,11 @@ const Armor = ({ hero, armor, wearables, boundRelics }: { hero: any, armor: Armo
                 </div>
             }
 
+            {/* BOUND RELICS */}
+            {boundRelics.length > 0 && renderItemSection("BOUND RELICS", boundRelics)}
+
             {/* WEARABLE ITEMS */}
-            {miscItems.length > 0 && (
-                <div className="flex flex-col gap-1 mt-1">
-                    <Header title={"MISC"} />
-                    {miscItems.map((item, index) => (
-                        <div key={index}>
-                            <div className="flex items-center gap-x-1" onContextMenu={(e) => onCtxMenu(e, equipmentContextMenuItems(hero, item))}>
-                                <ItemImage item={item} />
-                                <div className="flex flex-col gap-0.5 pl-2">
-                                    {/* WEARABLE NAME */}
-                                    <p className="text-base line-clamp-1">{item.parent.name}</p>
-                                    {/* RELIC INFO */}
-                                    <RelicEffectList relicPowers={item.effectiveRelicPowers()} textColor="text-text-header-tertiary -mt-1" />
-                                </div>
-                            </div>
-                            <ItemDivider />
-                        </div>
-                    ))}
-                </div>
-            )}
+            {wearables.length > 0 && renderItemSection("MISC", wearables)}
 
             <ContextMenu />
         </div>

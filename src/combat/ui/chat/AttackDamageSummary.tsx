@@ -86,7 +86,8 @@ const SummaryRow = ({ row, isResolved, onOverrideChange }: { row: TargetDamageSu
             {/* DAMAGE LABEL AND VALUE */}
             <div ref={damageRef} className={`flex shrink-0 items-center gap-1 whitespace-nowrap ml-auto ${wrapped ? "-mt-2" : ""}`}>
                 {row.label && <p className="min-w-0 truncate" title={row.label}>{row.label}:</p>}
-                <p>{row.damage}</p>
+                {row.saveHalved && <p>(</p>}
+                <p>{row.resistanceDivisor > 1 ? `${row.damageBeforeHalving}/${row.resistanceDivisor}` : row.damage}</p>
                 {row.bonus !== 0 && <p title="Bonus damage">{row.bonus > 0 ? `+ ${row.bonus}` : `− ${Math.abs(row.bonus)}`}</p>}
                 {row.imbueParts.map((part, index) => {
                     const tip = `${part.label ?? part.dmgType}: ${part.bonus > 0 ? `${part.amount - part.bonus} + ${part.bonus}` : part.amount} damage`
@@ -123,6 +124,7 @@ const SummaryRow = ({ row, isResolved, onOverrideChange }: { row: TargetDamageSu
                     </div>
                 </div>}
 
+                {row.saveHalved && <p>) / 2</p>}
                 <p>=</p>
                 {isEditing
                     ? <FoundryHotkeyBlocker>
@@ -148,7 +150,6 @@ const SummaryRow = ({ row, isResolved, onOverrideChange }: { row: TargetDamageSu
                             : undefined}
                     >{row.total}</p>
                 }
-                {row.halved && <p title="Resistance or passed save">(Halved)</p>}
                 {row.isOverridden && game.user?.isActiveGM && !isResolved &&
                     <IconOnlyButton Icon={Undo2} size={14} title="Undo override" onClick={() => onOverrideChange(undefined)} />
                 }

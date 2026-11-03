@@ -18,6 +18,7 @@ export interface DamageRollArgs {
     weaknessDie?: WeaknessDie
     baneTypes?: string[]
     hdMultiplier?: number
+    hdMultiplierOnCrit?: number
     attackerId?: string
 }
 
@@ -34,6 +35,7 @@ export interface DamageRollResult {
     total: number
     armorPiercing: number
     rollSummaries: RollSummary[]
+    isCrit?: boolean
     weaknessRolls?: RollSummary[]
     rolls: Roll.Evaluated<Roll<EmptyObject>>[]
 }
@@ -51,6 +53,7 @@ export class DamageRoll {
     weaknessDie?: WeaknessDie
     baneTypes?: string[]
     hdMultiplier: number
+    hdMultiplierOnCrit: number
     attackerId?: string
     result: DamageRollResult | undefined
 
@@ -59,6 +62,7 @@ export class DamageRoll {
         this.weaknessDie = args.weaknessDie
         this.baneTypes = args.baneTypes
         this.hdMultiplier = args.hdMultiplier ?? 0
+        this.hdMultiplierOnCrit = args.hdMultiplierOnCrit ?? 0
         this.atkName = args.atkName
         this.dice = args.dice
         this.dmgType = args.dmgType ?? 'physical'
@@ -93,6 +97,7 @@ export class DamageRoll {
             weaknessDie: this.weaknessDie,
             baneTypes: this.baneTypes,
             hdMultiplier: this.hdMultiplier,
+            hdMultiplierOnCrit: this.hdMultiplierOnCrit,
             attackerId: this.attackerId,
             result: this.result
         }
@@ -114,6 +119,7 @@ export class DamageRoll {
                 weaknessDie: json.weaknessDie,
                 baneTypes: json.baneTypes,
                 hdMultiplier: json.hdMultiplier,
+                hdMultiplierOnCrit: json.hdMultiplierOnCrit,
                 attackerId: json.attackerId
             })
             roll.result = json.result
@@ -193,6 +199,7 @@ export class DamageRoll {
         const result = {
             atkName: this.atkName,
             dmgType: this.dmgType,
+            isCrit: !!isCrit,
             total: damageRoll.total + initialExplodableRoll.total + (combinedExplosions?.total ?? 0) + perDieBonus,
             bonus: totalBonus,
             armorPiercing: (this.armorPiercing ?? 0) + perDieArmorPiercing + perExtraDieArmorPiercing,
