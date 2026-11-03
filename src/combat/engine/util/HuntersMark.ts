@@ -18,6 +18,7 @@ export interface MarkRequest {
 }
 
 export class HuntersMark {
+
   static readonly HUNTERS_MARK_FLAG = "huntersmark"
   private static readonly LETHAL_PRECISION_FLAG = "lethalprecision"
   private static readonly APEX_PREDATOR_FLAG = "apexpredator"
@@ -239,4 +240,5 @@ export class HuntersMark {
         isActorInScene(actor),
     )
   }
+
 }

@@ -6,6 +6,7 @@ import { sys_id } from "../../util/foundry-util"
 export class VagabondCombat<
   SubType extends Combat.SubType = Combat.SubType,
 > extends Combat<SubType> {
+
   protected override async _preCreate(
     ...[data, options, user]: Parameters<Combat["_preCreate"]>
   ): Promise<boolean | void> {
@@ -154,6 +155,7 @@ export class VagabondCombat<
     await this.update(updateData, updateOptions as any)
     return this
   }
+
 }
 
 /**
@@ -170,6 +172,7 @@ interface Activations {
 export class VagabondCombatant<
   T extends Combatant.SubType = "base",
 > extends Combatant<T> {
+
   override prepareBaseData(): void {
     super.prepareBaseData()
   }
@@ -235,4 +238,5 @@ export class VagabondCombatant<
       system: { activations: { value: this.activations.max } },
     })
   }
+
 }

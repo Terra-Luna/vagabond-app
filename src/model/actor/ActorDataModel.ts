@@ -29,6 +29,7 @@ export type BaseActorSchema = ReturnType<typeof baseActorSchema>
 
 export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry
   .abstract.TypeDataModel<T, any> {
+
   static defineSchema() {
     return {
       ...baseActorSchema(),
@@ -241,4 +242,5 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry
   get polymorph(): PolymorphFlag | undefined {
     return this.parent.getFlag(sys_id, "polymorph")
   }
+
 }

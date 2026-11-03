@@ -41,6 +41,7 @@ export interface ComboSubAttackArgs {
  * One repetition of an action within an Adversary combo (e.g. one of "2x Claw").
  */
 export class ComboSubAttack {
+
   name: string
   damageRoll: DamageRoll
   isSpellAttack: boolean = false
@@ -201,6 +202,7 @@ export class ComboSubAttack {
       : []
     return sub
   }
+
 }
 
 export interface AdversaryComboAttackArgs {
@@ -209,6 +211,7 @@ export interface AdversaryComboAttackArgs {
 }
 
 export class AdversaryComboAttack extends Attack {
+
   override readonly attackType = "combo" as const
 
   protected override get prefixCountdownWithTargetName(): boolean {
@@ -421,4 +424,5 @@ export class AdversaryComboAttack extends Attack {
 
     await this.resolve(serialize)
   }
+
 }

@@ -18,6 +18,7 @@ import { VagabondSheetMixin } from "../VagabondSheetMixin"
 export abstract class VagabondItemSheet extends VagabondSheetMixin(
   sheets.ItemSheetV2,
 ) {
+
   getReactProps() {
     return { ...super.getReactProps(), item: this.item }
   }
@@ -93,4 +94,5 @@ export abstract class VagabondItemSheet extends VagabondSheetMixin(
      */
     return addItemToContainer(item.system, droppedItem)
   }
+
 }

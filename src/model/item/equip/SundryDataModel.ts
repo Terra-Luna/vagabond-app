@@ -17,10 +17,12 @@ const sundrySchema = () => {
 export type SundrySchema = ReturnType<typeof sundrySchema> & EquipmentSchema
 
 export class SundryDataModel extends EquipmentDataModel<SundrySchema> {
+
   static defineSchema() {
     return {
       ...super.defineSchema(),
       ...sundrySchema(),
     }
   }
+
 }

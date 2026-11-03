@@ -12,6 +12,7 @@ import {
 } from "./util/npc-data-model-util"
 
 export class NpcDataModel extends ActorDataModel<NpcSchema> {
+
   static defineSchema() {
     return {
       ...super.defineSchema(),
@@ -48,4 +49,5 @@ export class NpcDataModel extends ActorDataModel<NpcSchema> {
 
   toggleItemRule = (item: any, stateOverride?: boolean) =>
     toggleNpcItemRule(this, item, stateOverride)
+
 }

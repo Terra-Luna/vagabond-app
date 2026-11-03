@@ -3,6 +3,7 @@ import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { ActiveEffectsView } from "./ActiveEffectsView"
 
 export class ActiveEffectsApp extends VagabondApplication {
+
   document: Actor | Item
 
   constructor(document: Actor | Item) {
@@ -21,6 +22,7 @@ export class ActiveEffectsApp extends VagabondApplication {
       initialDocument: this.document,
     }
   }
+
 }
 
 // eslint-disable-next-line react-refresh/only-export-components

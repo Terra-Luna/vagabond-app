@@ -26,12 +26,14 @@ const ancestrySchema = () => {
 export type AncestrySchema = ReturnType<typeof ancestrySchema> & BaseItemSchema
 
 export class AncestryDataModel extends ItemDataModel<AncestrySchema> {
+
   static override defineSchema() {
     return {
       ...super.defineSchema(),
       ...ancestrySchema(),
     }
   }
+
 }
 
 export const ancestrySizeAndType = (

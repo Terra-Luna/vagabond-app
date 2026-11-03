@@ -21,6 +21,7 @@ type LightData = {
 }
 
 export class LightSourceUtil {
+
   private static readonly LIGHT_FLAG = "lightSourceItemId"
   private static readonly NO_LIGHT = { dim: 0, bright: 0 }
   private static tickerId?: ReturnType<typeof setInterval>
@@ -430,4 +431,5 @@ export class LightSourceUtil {
         item.parent.update({ "system.lightSourceData.isLit": true }),
     }
   }
+
 }

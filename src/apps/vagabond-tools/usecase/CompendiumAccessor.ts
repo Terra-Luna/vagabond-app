@@ -3,6 +3,7 @@ import { appLang } from "../../../util/lang"
 import { localizeString } from "../../../util/locale-util"
 
 export class CompendiumAccessor {
+
   static registerCompendiumAccess() {
     ;(game.settings as any).register(sys_id, "compendiumAccess" as any, {
       name: "Unlock Compendium",
@@ -57,4 +58,5 @@ export class CompendiumAccessor {
   ): Promise<boolean> => {
     return input === answer
   }
+
 }

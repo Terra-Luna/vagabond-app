@@ -6,6 +6,7 @@ import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { PolymorphAppView } from "./PolymorphAppView"
 
 export class PolymorphApp extends VagabondApplication {
+
   private caster: Actor & {
     system: HeroDataModel | AdversaryDataModel | NpcDataModel
   }
@@ -38,4 +39,5 @@ export class PolymorphApp extends VagabondApplication {
     await super._onRender(context, options)
     centerOnFirstRender(this, 200)
   }
+
 }

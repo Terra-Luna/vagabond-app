@@ -68,6 +68,7 @@ export interface ImbueEntry {
 }
 
 export abstract class Attack<TActor extends Actor = Actor> {
+
   abstract readonly attackType: "adversary" | "hero" | "combo"
 
   // Unique ID for interacting with the attack in chat card
@@ -333,7 +334,6 @@ export abstract class Attack<TActor extends Actor = Actor> {
           .focusing &&
         adjDamage >= FOCUS_DAMAGE_LIMIT
       ) {
-        // For Heroes, validateCurrentFocus removes the "focusing" effect once Focus is zero; toggling here too races with it.
         targetActor.update({ "system.statuses.counters.focus": 0 } as Record<
           string,
           number
@@ -725,4 +725,5 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
     await setAttackRegistry(attackRegistry)
   }
+
 }

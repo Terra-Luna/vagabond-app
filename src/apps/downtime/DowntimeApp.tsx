@@ -6,6 +6,7 @@ import { DowntimeView } from "./DowntimeView"
 const locale = appLang.Downtime
 
 export class DowntimeApp extends VagabondApplication {
+
   actor: Actor & { system: HeroDataModel }
 
   constructor(actor: Actor & { system: HeroDataModel }) {
@@ -29,4 +30,5 @@ export class DowntimeApp extends VagabondApplication {
   onCancel = () => {
     this.close()
   }
+
 }

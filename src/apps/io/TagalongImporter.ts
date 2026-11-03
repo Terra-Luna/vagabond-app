@@ -34,6 +34,7 @@ type RuleBearingItem = Item & {
 }
 
 export class TagalongImporter {
+
   static async importFromVgbndApp(hero: HeroDataModel) {
     const tagalongLink = await showInputDialog({
       title: "Import Character",
@@ -733,4 +734,5 @@ export class TagalongImporter {
       await saveItemRuleSelections(item, updates)
     return remaining
   }
+
 }

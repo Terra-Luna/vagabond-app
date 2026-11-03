@@ -6,6 +6,7 @@ import { CountdownResult } from "./CountdownResult"
 import { RollSummary } from "./RollSummary"
 
 export class CountdownRoll {
+
   result: CountdownResult
 
   constructor(countdown: CountdownResult) {
@@ -113,4 +114,5 @@ export class CountdownRoll {
           : this.result.duration - 2
     }
   }
+
 }

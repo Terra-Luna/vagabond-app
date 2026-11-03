@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, test } from "@jest/globals"
 import { rollExplosions } from "../../../../src/combat/engine/util/dice-util"
 
 class MockDiceTerm {
+
   faces: number
   results: { result: number; active: boolean }[]
 
@@ -10,12 +11,14 @@ class MockDiceTerm {
     this.faces = faces
     this.results = results.map((result) => ({ result, active: true }))
   }
+
 }
 
 let queuedRolls: { total: number; terms: MockDiceTerm[] }[] = []
 let formulas: string[] = []
 
 class MockRoll {
+
   constructor(formula: string) {
     formulas.push(formula)
   }
@@ -23,6 +26,7 @@ class MockRoll {
   async evaluate() {
     return queuedRolls.shift()
   }
+
 }
 
 describe("rollExplosions", () => {

@@ -5,6 +5,7 @@ import { RollPreset } from "./model/RollPreset"
 import { RollBuilderView } from "./RollBuilderView"
 
 export class RollBuilderApp extends VagabondApplication {
+
   actor: Actor
   preset?: RollPreset
 
@@ -37,4 +38,5 @@ export class RollBuilderApp extends VagabondApplication {
       setClosed: () => this.close(),
     }
   }
+
 }

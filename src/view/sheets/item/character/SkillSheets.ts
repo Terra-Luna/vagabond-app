@@ -4,6 +4,7 @@ import { PerkSheetComponent } from "./skills/PerkSheetComponent"
 import { SpellSheetComponent } from "./skills/SpellSheetComponent"
 
 export class FeatureSheet extends VagabondItemSheet {
+
   Component = FeatureSheetComponent
   static DEFAULT_OPTIONS = {
     position: {
@@ -17,9 +18,11 @@ export class FeatureSheet extends VagabondItemSheet {
     },
     dragDrop: [],
   }
+
 }
 
 export class PerkSheet extends VagabondItemSheet {
+
   Component = PerkSheetComponent
   static DEFAULT_OPTIONS = {
     position: {
@@ -33,9 +36,11 @@ export class PerkSheet extends VagabondItemSheet {
     },
     dragDrop: [],
   }
+
 }
 
 export class SpellSheet extends VagabondItemSheet {
+
   Component = SpellSheetComponent
   static DEFAULT_OPTIONS = {
     position: {
@@ -49,4 +54,5 @@ export class SpellSheet extends VagabondItemSheet {
     },
     dragDrop: [],
   }
+
 }

@@ -38,6 +38,7 @@ export type StartingPackSchema = ReturnType<typeof startingPackSchema> &
   BaseItemSchema
 
 export class StartingPackDataModel extends ItemDataModel<StartingPackSchema> {
+
   static defineSchema() {
     return {
       ...super.defineSchema(),
@@ -122,4 +123,5 @@ export class StartingPackDataModel extends ItemDataModel<StartingPackSchema> {
     // Remove the starting pack itself
     await this.parent.delete()
   }
+
 }

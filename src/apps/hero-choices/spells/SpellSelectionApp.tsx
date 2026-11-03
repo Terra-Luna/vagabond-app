@@ -6,6 +6,7 @@ import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { useSpellSelection } from "./SpellSelectionUseCase"
 
 export class SpellSelectionApp extends VagabondApplication {
+
   actor: Actor & { system: HeroDataModel }
   isLevelUp?: boolean
 
@@ -29,4 +30,5 @@ export class SpellSelectionApp extends VagabondApplication {
     this.actor = actor
     this.isLevelUp = isLevelUp
   }
+
 }

@@ -1,5 +1,8 @@
 {
   "semi": false,
-  "plugins": ["prettier-plugin-brace-style"],
+  "plugins": [
+    "prettier-plugin-brace-style",
+    "./prettier-plugin-class-spacing.js"
+  ],
   "braceStyle": "stroustrup"
 }

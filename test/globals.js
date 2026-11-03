@@ -20,6 +20,7 @@ global.foundry = {
   applications: {
     api: {
       ApplicationV2: class ApplicationV2 {
+
         static DEFAULT_OPTIONS = {
           window: {},
           position: {},
@@ -42,6 +43,7 @@ global.foundry = {
         _updatePosition(position) {
           return position
         }
+
       },
     },
     instances: new Map(),

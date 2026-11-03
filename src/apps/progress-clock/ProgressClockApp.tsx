@@ -3,6 +3,7 @@ import { VagabondCanvasOverlayApp } from "../overlay/CanvasOverlayApp"
 import { ProgressClockAppView } from "./ProgressClockAppView"
 
 export class ProgressClockApp extends VagabondCanvasOverlayApp {
+
   constructor() {
     super(
       {
@@ -14,4 +15,5 @@ export class ProgressClockApp extends VagabondCanvasOverlayApp {
       "clock-canvas-overlay-viewport-anchor",
     )
   }
+
 }

@@ -6,6 +6,7 @@ import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { useAlchemySelection } from "./AlchemySelectionUseCase"
 
 export class AlchemySelectionApp extends VagabondApplication {
+
   actor: Actor & { system: HeroDataModel }
   isLevelUp?: boolean
 
@@ -27,4 +28,5 @@ export class AlchemySelectionApp extends VagabondApplication {
     this.actor = actor
     this.isLevelUp = isLevelUp
   }
+
 }

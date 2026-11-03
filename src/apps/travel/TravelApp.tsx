@@ -4,6 +4,7 @@ import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { TravelView } from "./TravelView"
 
 export class TravelApp extends VagabondApplication {
+
   actor: Actor & { system: HeroDataModel }
 
   constructor(actor: Actor & { system: HeroDataModel }) {
@@ -21,4 +22,5 @@ export class TravelApp extends VagabondApplication {
       actor: this.actor,
     }
   }
+
 }

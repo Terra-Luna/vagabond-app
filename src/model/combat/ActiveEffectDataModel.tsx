@@ -13,6 +13,7 @@ const BaseActiveEffectModel =
   foundry.abstract.TypeDataModel
 
 export class ActiveEffectDataModel extends BaseActiveEffectModel<ActiveEffect> {
+
   declare requiresEquip: boolean
 
   static defineSchema() {
@@ -21,4 +22,5 @@ export class ActiveEffectDataModel extends BaseActiveEffectModel<ActiveEffect> {
       ...activeEffectSchema(),
     }
   }
+
 }

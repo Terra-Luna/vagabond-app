@@ -4,6 +4,7 @@ import { appLang } from "../../../util/lang"
 import { localizeString } from "../../../util/locale-util"
 
 export class HeroItemSync {
+
   static async syncAncestryAndClass(
     actor: Actor & { system: HeroDataModel },
     sendChat = true,
@@ -223,4 +224,5 @@ export class HeroItemSync {
       })
     }
   }
+
 }

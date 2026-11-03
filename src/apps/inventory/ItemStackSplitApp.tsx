@@ -9,6 +9,7 @@ import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { ItemStackSplitView } from "./ItemStackSplitView"
 
 export class ItemStackSplitApp extends VagabondApplication {
+
   actor: Actor & { system: HeroDataModel }
   item: Item & { system: EquipmentDataModel<EquipmentSchema> }
 
@@ -54,4 +55,5 @@ export class ItemStackSplitApp extends VagabondApplication {
     await this.actor.createEmbeddedDocuments("Item", [newStack])
     this.close()
   }
+
 }

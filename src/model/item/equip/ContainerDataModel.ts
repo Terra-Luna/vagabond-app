@@ -27,6 +27,7 @@ export type ContainerSchema = ReturnType<typeof containerSchema> &
 export type Container = ContainerDataModel & EquipmentDataModel<ContainerSchema>
 
 export class ContainerDataModel extends EquipmentDataModel<ContainerSchema> {
+
   static defineSchema() {
     return {
       ...super.defineSchema(),
@@ -51,6 +52,7 @@ export class ContainerDataModel extends EquipmentDataModel<ContainerSchema> {
     }, 0)
     this.emptySlots = this.capacity - bulk
   }
+
 }
 
 export const itemsInContainer = (container: ContainerDataModel) => {

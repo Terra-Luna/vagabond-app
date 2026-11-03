@@ -12,6 +12,7 @@ import { VagabondSheetMixin } from "../VagabondSheetMixin"
 export abstract class VagabondActorSheet extends VagabondSheetMixin(
   sheets.ActorSheetV2,
 ) {
+
   getReactProps() {
     return { ...super.getReactProps(), actor: this.actor }
   }
@@ -78,4 +79,5 @@ export abstract class VagabondActorSheet extends VagabondSheetMixin(
 
     return super._onDrop(event)
   }
+
 }

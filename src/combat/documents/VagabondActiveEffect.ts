@@ -9,6 +9,7 @@ import { EquipmentDataModel } from "../../model/item/equip/EquipmentDataModel"
 export class VagabondActiveEffect<
   SubType extends ActiveEffect.SubType = ActiveEffect.SubType,
 > extends ActiveEffect<SubType> {
+
   static statusEffects = [
     {
       _id: "vBerserk00000000",
@@ -550,4 +551,5 @@ export class VagabondActiveEffect<
 
     return false
   }
+
 }

@@ -4,6 +4,7 @@ import { HeroDataModel } from "../HeroDataModel"
 import { NpcDataModel } from "../NpcDataModel"
 
 export class StatusEffectUtil {
+
   static isDesignatedUser = () => {
     return (game.users?.activeGM ?? game.user)?.id === game.user?.id
   }
@@ -63,6 +64,7 @@ export class StatusEffectUtil {
       actorModel.statuses.counters.focus = (actorModel as any).maxFocus
     }
   }
+
 }
 
 /**

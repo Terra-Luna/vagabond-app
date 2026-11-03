@@ -8,6 +8,7 @@ import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { XpQuestionnaireConfigView } from "./XpQuestionnaireConfigView"
 
 export class XpQuestionnaireConfigApp extends VagabondApplication {
+
   constructor() {
     const appArgs: VagabondAppArgs = {
       window: {
@@ -50,4 +51,5 @@ export class XpQuestionnaireConfigApp extends VagabondApplication {
       ui.notifications?.error(appLang.XpQuestionnaire.saveFailed)
     }
   }
+
 }

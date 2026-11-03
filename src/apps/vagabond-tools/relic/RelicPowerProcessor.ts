@@ -13,6 +13,7 @@ const getModifierSelectors = (mod: any): string[] => {
 }
 
 export class RelicPowerProcessor {
+
   static getFormattedRelicName = (relic: RelicPower): string => {
     if (["ace", "bane", "protection"].includes(relic.category.value)) {
       return `${relic.category.label} - ${relic.power.label}`
@@ -326,4 +327,5 @@ export class RelicPowerProcessor {
     })
     return deduped
   }
+
 }

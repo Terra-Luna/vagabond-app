@@ -11,6 +11,7 @@ import { CountdownManager } from "./usecase/CountdownManager"
  * These settings show up in Foundry's system settings main menu.
  */
 export class VagabondSettingsRegistry {
+
   static register() {
     VagabondSettingsRegistry.registerXpQuestionnaire()
     VagabondSettingsRegistry.registerMaxLevel()
@@ -335,4 +336,5 @@ export class VagabondSettingsRegistry {
       }
     }
   }
+
 }

@@ -11,6 +11,7 @@ import { ItemsCache } from "./ItemsCache"
 import { getRuleSelectors, normalizeSelector } from "./selector-util"
 
 export class ActorBaseDataRulesApplicator {
+
   /**
    * Applies active rules from actor items and their referenced Feature Items.
    * @param actor
@@ -399,6 +400,7 @@ export class ActorBaseDataRulesApplicator {
       applyActiveEffectGrants(rule)
     }
   }
+
 }
 
 /**

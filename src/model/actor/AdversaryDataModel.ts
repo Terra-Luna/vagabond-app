@@ -13,6 +13,7 @@ import {
 export { setThreatLevel }
 
 export class AdversaryDataModel extends ActorDataModel<NpcSchema> {
+
   static defineSchema() {
     return {
       ...super.defineSchema(),
@@ -48,4 +49,5 @@ export class AdversaryDataModel extends ActorDataModel<NpcSchema> {
 
   toggleItemRule = (item: any, stateOverride?: boolean) =>
     toggleNpcItemRule(this, item, stateOverride)
+
 }

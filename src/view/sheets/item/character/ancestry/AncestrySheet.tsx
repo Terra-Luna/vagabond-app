@@ -2,6 +2,7 @@ import { VagabondItemSheet } from "../../VagabondItemSheet"
 import { AncestrySheetComponent } from "./AncestrySheetComponent"
 
 export class AncestrySheet extends VagabondItemSheet {
+
   static DEFAULT_OPTIONS = {
     position: {
       width: 800,
@@ -15,4 +16,5 @@ export class AncestrySheet extends VagabondItemSheet {
     dragDrop: [],
   }
   Component = AncestrySheetComponent
+
 }

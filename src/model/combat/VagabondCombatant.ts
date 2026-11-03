@@ -24,6 +24,7 @@ export class VagabondCombatantModel extends foundry.abstract.TypeDataModel<
   VagabondCombatantModelSchema,
   Combatant.Implementation
 > {
+
   hookId: number | undefined = undefined
 
   static defineSchema() {
@@ -52,4 +53,5 @@ export class VagabondCombatantModel extends foundry.abstract.TypeDataModel<
       }
     }
   }
+
 }

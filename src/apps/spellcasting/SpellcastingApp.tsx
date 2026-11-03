@@ -10,6 +10,7 @@ import { EditModeContextProvider } from "../../view/wrappers/EditModeContextProv
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 
 export class SpellcastingApp extends VagabondApplication {
+
   actor: (Actor & { system: HeroDataModel }) | undefined
 
   constructor(
@@ -79,4 +80,5 @@ export class SpellcastingApp extends VagabondApplication {
       this.close()
     }
   }
+
 }

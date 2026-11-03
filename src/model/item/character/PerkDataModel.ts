@@ -56,6 +56,7 @@ const prerequisiteSchema = () => {
 export type PerkSchema = ReturnType<typeof perkSchema> & BaseItemSchema
 
 export class PerkDataModel extends ItemDataModel<PerkSchema> {
+
   public _sourceId?: string
   public isRuleSelection?: boolean
 
@@ -89,6 +90,7 @@ export class PerkDataModel extends ItemDataModel<PerkSchema> {
       })
     return values
   }
+
 }
 
 export function addPerkPrerequisite(perk: Item & { system: PerkDataModel }) {

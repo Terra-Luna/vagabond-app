@@ -64,6 +64,7 @@ export const saveElectiveTraining = async (
 }
 
 export class LevelUpApp extends VagabondApplication {
+
   private actor: Actor & { system: HeroDataModel }
 
   constructor(actor: Actor & { system: HeroDataModel }) {
@@ -153,4 +154,5 @@ export class LevelUpApp extends VagabondApplication {
     }
     this.close()
   }
+
 }

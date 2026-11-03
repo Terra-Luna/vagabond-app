@@ -41,6 +41,7 @@ export interface DamageRollResult {
 }
 
 export class DamageRoll {
+
   atkName: string
   dmgType: string
   dice: DiceRoll[]
@@ -310,4 +311,5 @@ export class DamageRoll {
     ui.notifications?.warn(appLang.Notifications.invalidExplodingDice)
     return false
   }
+
 }

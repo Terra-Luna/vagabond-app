@@ -4,6 +4,7 @@ import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { usePerkSelection } from "./PerkSelectionUseCase"
 
 export class PerkSelectionApp extends VagabondApplication {
+
   actor: Actor & { system: HeroDataModel }
   isLevelUp?: boolean
 
@@ -28,4 +29,5 @@ export class PerkSelectionApp extends VagabondApplication {
     this.actor = actor
     this.isLevelUp = isLevelUp
   }
+
 }

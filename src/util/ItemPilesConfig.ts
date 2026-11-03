@@ -1,6 +1,7 @@
 import { sys_id } from "./foundry-util"
 
 export class ItemPilesConfig {
+
   static configure = () => {
     const api = (game as any).itempiles?.API
     if (!api) return
@@ -229,4 +230,5 @@ export class ItemPilesConfig {
       },
     )
   }
+
 }

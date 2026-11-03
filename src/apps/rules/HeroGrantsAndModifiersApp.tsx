@@ -4,6 +4,7 @@ import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { HeroGrantsAndModifiersView } from "./HeroGrantsAndModifiersView"
 
 export class HeroGrantsAndModifiersApp extends VagabondApplication {
+
   actor: Actor & { system: HeroDataModel }
 
   constructor(actor: Actor & { system: HeroDataModel }) {
@@ -23,4 +24,5 @@ export class HeroGrantsAndModifiersApp extends VagabondApplication {
       actor: this.actor,
     }
   }
+
 }

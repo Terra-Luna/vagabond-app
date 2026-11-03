@@ -3,6 +3,7 @@ import { EquipmentSheetComponent } from "./EquipmentSheetComponent"
 
 // @ts-expect-error -- intentionally excluding top and left from DEFAULT_OPTIONS
 export class EquipmentSheet extends VagabondItemSheet {
+
   Component = EquipmentSheetComponent
   static DEFAULT_OPTIONS = {
     position: {
@@ -19,4 +20,5 @@ export class EquipmentSheet extends VagabondItemSheet {
       },
     ],
   }
+
 }

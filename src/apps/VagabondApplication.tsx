@@ -24,6 +24,7 @@ export interface VagabondAppArgs {
 export abstract class VagabondApplication
   extends foundry.applications.api.ApplicationV2
 {
+
   Component: FC
   editModeOptions: EditModeOptions
   protected SYSTEM_ID = sys_id
@@ -233,4 +234,5 @@ export abstract class VagabondApplication
   protected _onDetach(sourceDocument, targetDocument) {
     sheetUtils.onDetach(this as any, sourceDocument, targetDocument)
   }
+
 }

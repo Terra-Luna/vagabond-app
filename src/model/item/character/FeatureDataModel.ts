@@ -14,6 +14,7 @@ const featureSchema = () => {
 export type FeatureSchema = ReturnType<typeof featureSchema> & BaseItemSchema
 
 export class FeatureDataModel extends ItemDataModel<FeatureSchema> {
+
   static override defineSchema() {
     return {
       ...super.defineSchema(),
@@ -92,4 +93,5 @@ export class FeatureDataModel extends ItemDataModel<FeatureSchema> {
       },
     )
   }
+
 }

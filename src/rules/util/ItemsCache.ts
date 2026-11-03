@@ -19,6 +19,7 @@ import {
 } from "../../util/model-util"
 
 export class ItemsCache {
+
   /**
    * A cache of compendium + world items by uuid and item data.
    */
@@ -228,4 +229,5 @@ export class ItemsCache {
       ?.filter((it) => (it.type as string) === "hero" && it.isOwner)
       ?.forEach((actor) => (actor as any)?.system?.forceUpdate?.())
   }
+
 }

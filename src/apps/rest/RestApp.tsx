@@ -9,6 +9,7 @@ import { LodgingTypes } from "./rest-util"
 import { RestView } from "./RestView"
 
 export class RestApp extends VagabondApplication {
+
   actor: Actor & { system: HeroDataModel }
 
   constructor(actor: Actor & { system: HeroDataModel }) {
@@ -61,4 +62,5 @@ export class RestApp extends VagabondApplication {
 
     await this.actor.system.breather()
   }
+
 }

@@ -69,6 +69,7 @@ export const buildManualSaveResult = (
 })
 
 export class SkillCheck {
+
   type: SkillCheckType
   skill: string
   difficulty: number
@@ -354,4 +355,5 @@ export class SkillCheck {
         ? "hinder"
         : undefined
   }
+
 }

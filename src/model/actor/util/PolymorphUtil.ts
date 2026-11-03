@@ -30,6 +30,7 @@ interface PolymorphStatBlock {
 }
 
 export class PolymorphUtil {
+
   /**
    * The main function to call first when trying to polymorph something.
    * Requires either a caster and a form or just a target to release from polymorph.
@@ -291,6 +292,7 @@ export class PolymorphUtil {
     )
     addUnique(heroModel.senses, form.senses)
   }
+
 }
 
 /**

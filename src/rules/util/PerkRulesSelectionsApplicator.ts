@@ -5,6 +5,7 @@ import { isItemChoiceRule, normalizeRuleSelections } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 
 export class PerkRulesSelectionsApplicator {
+
   /**
    * Reads all the Actor's virtual perk items and applies their rules' choice selections.
    * Feature Item rules are included by HeroDataModel.getActiveRules().
@@ -154,4 +155,5 @@ export class PerkRulesSelectionsApplicator {
     // Needed to set player-made perk selections.
     actor.prepareBaseData()
   }
+
 }

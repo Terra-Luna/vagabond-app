@@ -5,6 +5,7 @@ import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { AlchemyCraftingView } from "./AlchemyCraftingView"
 
 export class AlchemyCraftingApp extends VagabondApplication {
+
   actor: Actor & { system: HeroDataModel }
   isLevelUp?: boolean
   alchemyItems = ItemsCache.alchemical()
@@ -25,4 +26,5 @@ export class AlchemyCraftingApp extends VagabondApplication {
       actor: this.actor,
     }
   }
+
 }

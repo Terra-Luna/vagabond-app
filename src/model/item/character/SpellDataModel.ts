@@ -33,6 +33,7 @@ const spellSchema = () => {
 export type SpellSchema = ReturnType<typeof spellSchema> & BaseItemSchema
 
 export class SpellDataModel extends ItemDataModel<SpellSchema> {
+
   public _sourceId?: string
   public isRuleSelection?: boolean
 
@@ -42,6 +43,7 @@ export class SpellDataModel extends ItemDataModel<SpellSchema> {
       ...spellSchema(),
     }
   }
+
 }
 
 export const spellDamageBase = (

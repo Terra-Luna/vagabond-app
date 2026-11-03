@@ -2,6 +2,7 @@ import { VagabondActorSheet } from "../VagabondActorSheet"
 import { NpcSheetComponent } from "./component/NpcSheetComponent"
 
 export class NpcSheet extends VagabondActorSheet {
+
   Component = NpcSheetComponent
   static DEFAULT_OPTIONS = {
     position: {
@@ -20,4 +21,5 @@ export class NpcSheet extends VagabondActorSheet {
       },
     ],
   }
+
 }

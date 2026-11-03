@@ -92,6 +92,7 @@ export type HeroDataModelSchema = ReturnType<typeof heroSchema> &
   BaseActorSchema
 
 export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
+
   static defineSchema() {
     return {
       ...super.defineSchema(),
@@ -535,6 +536,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
       }
     }
   }
+
 }
 
 export function validateCurrentHP(hero: HeroDataModel) {

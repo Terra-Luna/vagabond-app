@@ -24,6 +24,7 @@ export interface RelicPower {
 }
 
 export class RelicPowers {
+
   static register() {
     game.settings?.register(sys_id, "relics" as any, {
       name: "Relics",
@@ -1282,4 +1283,5 @@ export class RelicPowers {
       description: "Fabled Bound relic of a miscellaneous nature.",
     },
   ]
+
 }

@@ -17,6 +17,7 @@ import { CombatContext } from "./hooks"
 export class VagabondCombatTracker
   extends foundry.applications.sidebar.tabs.CombatTracker
 {
+
   static DEFAULT_OPTIONS = {
     actions: {
       nextTurn: async () => {
@@ -81,6 +82,7 @@ export class VagabondCombatTracker
       ?.querySelectorAll('[data-action="rollNPC"]')
       .forEach((el) => el.remove())
   }
+
 }
 
 interface CombatTracker {

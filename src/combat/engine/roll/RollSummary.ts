@@ -1,6 +1,7 @@
 import type { DiceRoll } from "./DiceRoll"
 
 export class RollSummary {
+
   result: number
   faces: number
   rerolled: boolean
@@ -51,4 +52,5 @@ export class RollSummary {
       })
     return summary
   }
+
 }

@@ -16,6 +16,7 @@ import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { useTrainingSelection } from "./TrainingSelection"
 
 export class TrainingSelectionApp extends VagabondApplication {
+
   actor: Actor & { system: HeroDataModel }
 
   constructor(actor: Actor & { system: HeroDataModel }) {
@@ -171,4 +172,5 @@ export class TrainingSelectionApp extends VagabondApplication {
     } as VagabondAppArgs)
     this.actor = actor
   }
+
 }

@@ -9,6 +9,7 @@ import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { VagabondToolsAppView } from "./VagabondToolsAppView"
 
 export class VagabondToolsApp extends VagabondApplication {
+
   constructor() {
     super({
       window: { title: appLang.VagabondTools.title },
@@ -64,4 +65,5 @@ export class VagabondToolsApp extends VagabondApplication {
       </div>,
     )
   }
+
 }

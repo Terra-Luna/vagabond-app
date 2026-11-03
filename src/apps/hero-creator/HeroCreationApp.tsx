@@ -5,6 +5,7 @@ import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { HeroCreationNavHostView } from "./HeroCreationNavHostView"
 
 export class HeroCreationApp extends VagabondApplication {
+
   public actor: Actor & { system: HeroDataModel }
 
   constructor(actor: Actor & { system: HeroDataModel }) {
@@ -30,4 +31,5 @@ export class HeroCreationApp extends VagabondApplication {
       setClosed: () => this.close(),
     }
   }
+
 }

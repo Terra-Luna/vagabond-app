@@ -12,6 +12,7 @@ import {
 
 export const VagabondSheetMixin = (superclass) =>
   class extends superclass {
+
     _reactRoot: ReactDom.Root | null = null
     _scaduRoot: any
     _toolbarHeight: number = 0
@@ -136,4 +137,5 @@ export const VagabondSheetMixin = (superclass) =>
     protected _onDetach(sourceDocument, targetDocument) {
       onDetach(this as any, sourceDocument, targetDocument)
     }
+
   }

@@ -3,6 +3,7 @@ import { VagabondActorSheet } from "../VagabondActorSheet"
 import { HeroSheetComponent } from "./HeroSheetComponent"
 
 export class HeroSheet extends VagabondActorSheet {
+
   Component = HeroSheetComponent
   static DEFAULT_OPTIONS = {
     position: {
@@ -64,4 +65,5 @@ export class HeroSheet extends VagabondActorSheet {
 
     return super._onDrop(event)
   }
+
 }

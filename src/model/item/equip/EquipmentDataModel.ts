@@ -121,6 +121,7 @@ export type EquipmentSchema = ReturnType<typeof baseEquipmentSchema> &
 export abstract class EquipmentDataModel<
   T extends EquipmentSchema,
 > extends ItemDataModel<T> {
+
   declare isEquippable: boolean
   declare isEquipped: boolean
   declare isBound: boolean
@@ -485,6 +486,7 @@ export abstract class EquipmentDataModel<
   isCursed = (): boolean => {
     return this.relicPowers.some((rel) => rel.category.value === "cursed")
   }
+
 }
 
 export const getTotalSlots = (item: any): number => {

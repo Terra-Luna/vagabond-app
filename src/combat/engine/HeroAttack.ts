@@ -38,6 +38,7 @@ import { getDiceTerms } from "./util/dice-util"
 import { HuntersMark } from "./util/HuntersMark"
 
 export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
+
   static SPELL_DIE_SIZE = 6
   override readonly attackType = "hero" as const
 
@@ -1306,4 +1307,5 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
     return checks.length === 0 || checks.some(Boolean)
   }
+
 }

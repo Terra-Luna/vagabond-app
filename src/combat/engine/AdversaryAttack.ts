@@ -31,6 +31,7 @@ export interface AdversaryAttackArgs {
 }
 
 export class AdversaryAttack extends Attack {
+
   override readonly attackType = "adversary" as const
 
   protected override get prefixCountdownWithTargetName(): boolean {
@@ -229,4 +230,5 @@ export class AdversaryAttack extends Attack {
     await this.processStatusFx(args)
     await this.resolve(serialize)
   }
+
 }

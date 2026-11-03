@@ -9,6 +9,7 @@ import {
 import { TagalongItem } from "./TagalongApi"
 
 export class TagalongItemCreator {
+
   hero: HeroDataModel
   items: TagalongItem[]
   errors: string[]
@@ -371,6 +372,7 @@ export class TagalongItemCreator {
     pendingRequests.get(packet.requestId)?.(packet.error)
     pendingRequests.delete(packet.requestId)
   }
+
 }
 
 const pendingRequests = new Map<string, (error?: string) => void>()

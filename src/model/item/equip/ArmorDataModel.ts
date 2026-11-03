@@ -27,6 +27,7 @@ const armorSchema = () => {
 export type ArmorSchema = ReturnType<typeof armorSchema> & EquipmentSchema
 
 export class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
+
   static defineSchema() {
     return {
       ...super.defineSchema(),
@@ -44,4 +45,5 @@ export class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
     this.isEquippable = true
     this.bulk.isStackable = false
   }
+
 }

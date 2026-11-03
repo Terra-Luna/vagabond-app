@@ -14,6 +14,7 @@ const defaultArtworkByType = {
 export class VagabondItem<
   SubType extends Item.SubType = Item.SubType,
 > extends Item<SubType> {
+
   static override getDefaultArtwork(itemData: any): {
     img: string
     texture: { src: string }
@@ -23,4 +24,5 @@ export class VagabondItem<
       (super.getDefaultArtwork(itemData) as any).img
     return { img, texture: { src: img } }
   }
+
 }

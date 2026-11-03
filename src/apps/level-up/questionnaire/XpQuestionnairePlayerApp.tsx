@@ -6,6 +6,7 @@ import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { XpQuestionnairePlayerView } from "./XpQuestionnairePlayerView"
 
 export class XpQuestionnairePlayerApp extends VagabondApplication {
+
   private actor: Actor & { system: HeroDataModel }
 
   constructor(actor: Actor & { system: HeroDataModel }) {
@@ -47,4 +48,5 @@ export class XpQuestionnairePlayerApp extends VagabondApplication {
     }
     this.close()
   }
+
 }

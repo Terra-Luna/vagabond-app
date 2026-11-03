@@ -3,6 +3,7 @@ import { VagabondCanvasOverlayApp } from "../overlay/CanvasOverlayApp"
 import { CountdownAppView } from "./CountdownAppView"
 
 export class CountdownApp extends VagabondCanvasOverlayApp {
+
   constructor() {
     super(
       {
@@ -14,4 +15,5 @@ export class CountdownApp extends VagabondCanvasOverlayApp {
       "countdown-canvas-overlay-viewport-anchor",
     )
   }
+
 }

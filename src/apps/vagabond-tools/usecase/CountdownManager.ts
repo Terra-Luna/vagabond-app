@@ -43,6 +43,7 @@ export interface CountdownToAdd {
  * Countdown roll management helper class.
  */
 export class CountdownManager {
+
   static getAll(): CountdownSchema[] {
     return (game.settings as any)?.get(sys_id, "countdowns") || []
   }
@@ -419,4 +420,5 @@ export class CountdownManager {
       })
     }
   }
+
 }

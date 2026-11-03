@@ -54,6 +54,7 @@ export type AlchemicalSchema = ReturnType<typeof alchemySchema> &
   EquipmentSchema
 
 export class AlchemicalItemDataModel extends EquipmentDataModel<AlchemicalSchema> {
+
   static defineSchema() {
     return {
       ...super.defineSchema(),
@@ -74,4 +75,5 @@ export class AlchemicalItemDataModel extends EquipmentDataModel<AlchemicalSchema
     this.bulk.isStackable = true
     if (this.lightSourceData?.isLightSource) this.isEquippable = true
   }
+
 }

@@ -11,6 +11,7 @@ const defaultArtworkByType = {
 export class VagabondActor<
   SubType extends Actor.SubType = Actor.SubType,
 > extends Actor<SubType> {
+
   static override getDefaultArtwork(actorData: any): {
     img: string
     texture: { src: string }
@@ -205,4 +206,5 @@ export class VagabondActor<
       PolymorphUtil.releaseAllPolymorphsOnce(this)
     }
   }
+
 }

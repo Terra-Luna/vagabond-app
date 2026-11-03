@@ -46,6 +46,7 @@ export const createFilterableCompendium = (
 ) => {
   return class FilterableCompendium extends (foundry.applications.sidebar.apps
     .Compendium as any) {
+
     static readonly indexFields = config.indexFields
     private _filters: FilterState = config.emptyFilters()
 
@@ -150,6 +151,7 @@ export const createFilterableCompendium = (
         f.style.display = hasVisibleEntry ? "" : "none"
       })
     }
+
   }
 }
 

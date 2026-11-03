@@ -5,6 +5,7 @@ import { sys_id } from "../../../util/foundry-util"
 import { appLang } from "../../../util/lang"
 
 export class FlankStatusManager {
+
   private static readonly RELEVANT_CHANGES = [
     "x",
     "y",
@@ -313,4 +314,5 @@ export class FlankStatusManager {
         occupiedOffsets(token).some((o) => adjacent.has(key(o))),
     )
   }
+
 }

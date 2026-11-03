@@ -9,6 +9,7 @@ import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { useItemShopView } from "./ItemShopView"
 
 export class ItemShopApp extends VagabondApplication {
+
   actor: Actor & { system: HeroDataModel }
 
   constructor(actor: Actor & { system: HeroDataModel }) {
@@ -34,6 +35,7 @@ export class ItemShopApp extends VagabondApplication {
   private onCancel() {
     this.close()
   }
+
 }
 
 const ItemShopComponent = ({ actor, onClose }) => {

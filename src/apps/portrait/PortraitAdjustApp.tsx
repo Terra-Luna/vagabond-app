@@ -12,6 +12,7 @@ import { PortraitAdjustView } from "./PortraitAdjustView"
  * Allows for adjustment of portrait framing on Actor sheets. Position is saved as a flag on the Actor.
  */
 export class PortraitAdjustApp extends VagabondApplication {
+
   actor: Actor
 
   constructor(actor: Actor) {
@@ -48,4 +49,5 @@ export class PortraitAdjustApp extends VagabondApplication {
     await this.actor.setFlag(sys_id, portraitFrameFlag, frame)
     this.close()
   }
+
 }

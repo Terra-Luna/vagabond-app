@@ -6,6 +6,7 @@ import type { AlchemicalItemDataModel } from "../../../model/item/equip/Alchemic
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 
 export class DiceRoll {
+
   count: number
   faces: number
   modifier?: number
@@ -148,4 +149,5 @@ export class DiceRoll {
       reroll: reroll,
     }
   }
+
 }

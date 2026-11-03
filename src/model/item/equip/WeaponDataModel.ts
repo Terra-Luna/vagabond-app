@@ -74,6 +74,7 @@ const weaponSchema = () => {
 export type WeaponSchema = ReturnType<typeof weaponSchema> & EquipmentSchema
 
 export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
+
   static defineSchema() {
     return {
       ...super.defineSchema(),
@@ -95,6 +96,7 @@ export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
   isDefenseWeapon(): boolean {
     return this.properties.includes("defense")
   }
+
 }
 
 export const isEquippedWeapon = (item: any): boolean => {

@@ -14,6 +14,7 @@ jest.mock(
 )
 
 class MockDiceTerm {
+
   faces: number
   results: { result: number; active: boolean }[]
 
@@ -21,16 +22,19 @@ class MockDiceTerm {
     this.faces = faces
     this.results = [{ result, active: true }]
   }
+
 }
 
 let queuedRolls: { total: number; terms: MockDiceTerm[] }[] = []
 
 class MockRoll {
+
   constructor(_formula: string) {}
 
   async evaluate() {
     return queuedRolls.shift()
   }
+
 }
 
 const makeSkillCheck = (

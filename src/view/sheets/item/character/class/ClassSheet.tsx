@@ -4,6 +4,7 @@ import { VagabondItemSheet } from "../../VagabondItemSheet"
 import { ClassSheetComponent } from "./ClassSheetComponent"
 
 export class ClassSheet extends VagabondItemSheet {
+
   Component = ClassSheetComponent
   private featureDropEnabled = false
   static DEFAULT_OPTIONS = {
@@ -72,4 +73,5 @@ export class ClassSheet extends VagabondItemSheet {
 
     return result
   }
+
 }

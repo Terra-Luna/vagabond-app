@@ -1,4 +1,5 @@
 export class VagabondAppError<T extends string> extends Error {
+
   name: T
   message: string
   cause: any
@@ -17,4 +18,5 @@ export class VagabondAppError<T extends string> extends Error {
     this.message = message
     this.cause = cause
   }
+
 }

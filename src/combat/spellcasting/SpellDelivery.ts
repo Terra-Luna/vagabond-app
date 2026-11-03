@@ -41,6 +41,7 @@ export interface DeliveryMods {
  * Use the available update functions for each delivery type to have manaCost automatically updated.
  */
 export abstract class SpellDelivery {
+
   abstract name: string
   abstract description: string
   abstract targetLabel: string
@@ -163,9 +164,11 @@ export abstract class SpellDelivery {
       upcastableEffectDieRoll: spell.system.upcastableEffectDieRoll,
     }
   }
+
 }
 
 export abstract class AreaOfEffectDelivery extends SpellDelivery {
+
   override baseManaCost = 2
   baseSize = 0
   size = 0
@@ -213,22 +216,28 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
 
     super.applyEffectManaCost()
   }
+
 }
 export class Aura extends AreaOfEffectDelivery {
+
   override name = appLang.SpellDeliveries.aura.name
   override description = appLang.SpellDeliveries.aura.description
   override targetLabel = appLang.SpellDeliveries.aura.targetLabel
   override baseSize: number = 10
   override baseManaCost: number = 2
+
 }
 export class Cone extends AreaOfEffectDelivery {
+
   override name = appLang.SpellDeliveries.cone.name
   override description = appLang.SpellDeliveries.cone.description
   override targetLabel = appLang.SpellDeliveries.cone.targetLabel
   override baseSize: number = 15
   override baseManaCost: number = 2
+
 }
 export class Line extends AreaOfEffectDelivery {
+
   override name = appLang.SpellDeliveries.line.name
   override description = appLang.SpellDeliveries.line.description
   override targetLabel = appLang.SpellDeliveries.line.targetLabel
@@ -281,16 +290,20 @@ export class Line extends AreaOfEffectDelivery {
 
     super.applyEffectManaCost()
   }
+
 }
 export class Sphere extends AreaOfEffectDelivery {
+
   override name = appLang.SpellDeliveries.sphere.name
   override description = appLang.SpellDeliveries.sphere.description
   override targetLabel = appLang.SpellDeliveries.sphere.targetLabel
   override baseManaCost: number = 2
   baseSize: number = 5
+
 }
 
 export abstract class PerTargetDelivery extends SpellDelivery {
+
   override baseManaCost = 0
   extraTargetMultiplier = 1
   targetLimit = 0
@@ -339,37 +352,48 @@ export abstract class PerTargetDelivery extends SpellDelivery {
 
     super.applyEffectManaCost()
   }
+
 }
 export class Cube extends PerTargetDelivery {
+
   override name = appLang.SpellDeliveries.cube.name
   override description = appLang.SpellDeliveries.cube.description
   override targetLabel = appLang.SpellDeliveries.cube.targetLabel
   override baseManaCost: number = 1
+
 }
 export class Imbue extends PerTargetDelivery {
+
   override name = appLang.SpellDeliveries.imbue.name
   override description = appLang.SpellDeliveries.imbue.description
   override targetLabel = appLang.SpellDeliveries.imbue.targetLabel
   override baseManaCost = 1
+
 }
 export class Glyph extends PerTargetDelivery {
+
   override name = appLang.SpellDeliveries.glyph.name
   override description = appLang.SpellDeliveries.glyph.description
   override targetLabel = appLang.SpellDeliveries.glyph.targetLabel
   override baseManaCost: number = 2
   override targetLimit: number = 1
+
 }
 export class Remote extends PerTargetDelivery {
+
   override name = appLang.SpellDeliveries.remote.name
   override description = appLang.SpellDeliveries.remote.description
   override targetLabel = appLang.SpellDeliveries.remote.targetLabel
   override targetLimit: number = 0
+
 }
 export class Touch extends PerTargetDelivery {
+
   override name = appLang.SpellDeliveries.touch.name
   override description = appLang.SpellDeliveries.touch.description
   override targetLabel = appLang.SpellDeliveries.touch.targetLabel
   override targetLimit: number = 1
+
 }
 
 export const getNewDeliveryOptions = (

@@ -9,6 +9,7 @@ export const CONVERTIBLE_ACTOR_TYPES: ConvertibleActorType[] = [
 ]
 
 export class ActorTypeConverter {
+
   /**
    * Converts an Actor to another data model type in place (the Actor keeps its id, tokens and embedded Items).
    * System data is carried over wherever the target model has a field of the same name. Foundry discards fields
@@ -112,4 +113,5 @@ export class ActorTypeConverter {
       if (level && level > 0) system.hitDice = level
     }
   }
+
 }

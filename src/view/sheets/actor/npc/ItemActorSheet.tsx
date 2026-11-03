@@ -3,6 +3,7 @@ import { ItemActorSheetComponent } from "./component/ItemActorSheetComponent"
 
 // @ts-expect-error excluded positionals
 export class ItemActorSheet extends VagabondActorSheet {
+
   Component = ItemActorSheetComponent
   static DEFAULT_OPTIONS = {
     position: {
@@ -19,4 +20,5 @@ export class ItemActorSheet extends VagabondActorSheet {
       },
     ],
   }
+
 }

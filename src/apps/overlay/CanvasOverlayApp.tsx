@@ -7,6 +7,7 @@ import { createStyleTag } from "../../util/style-util"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 
 export abstract class VagabondCanvasOverlayApp extends VagabondApplication {
+
   private anchor: string
   private overlayReactRoot: Root | null = null
 
@@ -134,4 +135,5 @@ export abstract class VagabondCanvasOverlayApp extends VagabondApplication {
       options,
     )
   }
+
 }
