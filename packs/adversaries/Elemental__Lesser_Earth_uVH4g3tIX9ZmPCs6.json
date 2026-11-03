@@ -11,9 +11,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "seismicsense"
-    ],
+    "senses": ["seismicsense"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,18 +205,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "poison",
-            "shock"
-          ],
-          "weaknesses": [
-            "blunt"
-          ],
-          "statusImmunities": [
-            "fatigued",
-            "sickened",
-            "suffocating"
-          ]
+          "immunities": ["poison", "shock"],
+          "weaknesses": ["blunt"],
+          "statusImmunities": ["fatigued", "sickened", "suffocating"]
         },
         "out": {
           "melee": {},
@@ -282,9 +271,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

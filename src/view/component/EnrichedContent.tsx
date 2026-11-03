@@ -1,150 +1,185 @@
-import React, { useEffect, useRef, useState } from 'react'
-import ReactHtmlParser from 'react-html-parser'
+import React, { useEffect, useRef, useState } from "react"
+import ReactHtmlParser from "react-html-parser"
 
-import { CountdownManager } from '../../apps/vagabond-tools/usecase/CountdownManager'
-import { SkillCheck, SkillCheckResult } from '../../combat/engine/roll/SkillCheck'
-import { HeroDataModel } from '../../model/actor/HeroDataModel'
-import { sys_id } from '../../utils/foundryUtils'
-import { getId } from '../../utils/modelUtil'
-import { sendVagabondChatCard } from '../chat/ChatCardSerializer'
+import { CountdownManager } from "../../apps/vagabond-tools/usecase/CountdownManager"
+import {
+  SkillCheck,
+  SkillCheckResult,
+} from "../../combat/engine/roll/SkillCheck"
+import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { sys_id } from "../../util/foundry-util"
+import { getId } from "../../util/model-util"
+import { sendVagabondChatCard } from "../chat/ChatCardSerializer"
 
 const countdownFormulaPattern = /^cd(\d+)$/i
 
-export const EnrichedContent = ({ content, styleClasses = '', actor, setRollResult, onCountdown }: {
-    content: any, styleClasses?: string, actor?: Actor | null, setRollResult?: (result: SkillCheckResult | Roll) => void,
-    onCountdown?: (faces: number) => void
+export const EnrichedContent = ({
+  content,
+  styleClasses = "",
+  actor,
+  setRollResult,
+  onCountdown,
+}: {
+  content: any
+  styleClasses?: string
+  actor?: Actor | null
+  setRollResult?: (result: SkillCheckResult | Roll) => void
+  onCountdown?: (faces: number) => void
 }) => {
-    const ref = useRef(null)
-    const [enrichedText, setEnrichedText] = useState('')
+  const ref = useRef(null)
+  const [enrichedText, setEnrichedText] = useState("")
 
-    useEffect(() => {
-        const enrich = async () => {
-            const rc = await foundry.applications.ux.TextEditor.enrichHTML(content)
-            setEnrichedText(rc)
+  useEffect(() => {
+    const enrich = async () => {
+      const rc = await foundry.applications.ux.TextEditor.enrichHTML(content)
+      setEnrichedText(rc)
+    }
+    enrich()
+  }, [content])
+
+  const onClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault()
+
+    /**
+     * Inline Roll example: [[/r 2d6#Flavor Text]]{roll 2d6}
+     */
+    const inlineRoll = (e.target as HTMLElement).closest(
+      "a.inline-roll",
+    ) as HTMLAnchorElement | null
+    if (inlineRoll) {
+      const { formula, roll, flavor } = inlineRoll.dataset
+      const speaker = ChatMessage.getSpeaker(actor ? { actor } : undefined)
+
+      const countdownMatch = formula?.match(countdownFormulaPattern)
+      if (countdownMatch) {
+        if (onCountdown) {
+          onCountdown(Number(countdownMatch[1]))
+          return
         }
-        enrich()
-    }, [content])
+        if (!CountdownManager.checkPermission()) return
+        const speakerName = speaker.alias ?? ""
+        const label = flavor ? `${speakerName}: ${flavor}` : speakerName
+        const actorId: string | undefined = actor?.id ?? undefined
+        const tokenUuid: string | undefined =
+          (actor?.isToken ? actor.token?.uuid : undefined) ?? undefined
+        await CountdownManager.add(
+          label,
+          Number(countdownMatch[1]),
+          undefined,
+          undefined,
+          actorId,
+          tokenUuid,
+        )
+        return
+      }
 
-    const onClick = async (e: React.MouseEvent<HTMLDivElement>) => {
-        e.preventDefault()
-
-        /**
-         * Inline Roll example: [[/r 2d6#Flavor Text]]{roll 2d6}
-         */
-        const inlineRoll = (e.target as HTMLElement).closest('a.inline-roll') as HTMLAnchorElement | null
-        if (inlineRoll) {
-            const { formula, roll, flavor } = inlineRoll.dataset
-            const speaker = ChatMessage.getSpeaker(actor ? { actor } : undefined)
-
-            const countdownMatch = formula?.match(countdownFormulaPattern)
-            if (countdownMatch) {
-                if (onCountdown) {
-                    onCountdown(Number(countdownMatch[1]))
-                    return
-                }
-                if (!CountdownManager.checkPermission()) return
-                const speakerName = speaker.alias ?? ''
-                const label = flavor ? `${speakerName}: ${flavor}` : speakerName
-                const actorId: string | undefined = actor?.id ?? undefined
-                const tokenUuid: string | undefined = (actor?.isToken ? actor.token?.uuid : undefined) ?? undefined
-                await CountdownManager.add(label, Number(countdownMatch[1]), undefined, undefined, actorId, tokenUuid)
-                return
-            }
-
-            // check if the flavor text is actually a skillCheck, we can do that automatically
-            if (actor && flavor?.startsWith("skillCheck.")) {
-                const skill = flavor.split(".").pop()
-                const skillCheck = await new SkillCheck(actor.system as HeroDataModel, { type: 'check', skill: skill! }).roll()
-                setRollResult?.(skillCheck)
-                sendVagabondChatCard(actor, "SkillCheckChatCard", { actorId: getId(actor), result: skillCheck })
-                return
-            }
-
-            try {
-                let rollInstance
-
-                if (roll) {
-                    rollInstance = Roll.fromData(JSON.parse(decodeURIComponent(roll)))
-                }
-                else if (formula) {
-                    let modifier = 0
-
-                    if (formula?.includes('@') && actor) {
-                        const path = formula.split('@').pop()
-                        modifier = foundry.utils.getProperty(actor, `system.${path}`) as any
-                    }
-
-                    let f = formula.split('@')[0]
-
-                    if (modifier > 0) {
-                        f += `${modifier}`
-                    }
-
-                    if (f.endsWith('+') || f.endsWith('-')) {
-                        f = f.slice(0, -1)
-                    }
-
-                    rollInstance = new Roll(f)
-                }
-
-                if (rollInstance) {
-                    await rollInstance.evaluate()
-                    await rollInstance.toMessage({
-                        flavor: flavor || "Roll Result",
-                        speaker: speaker
-                    })
-                    setRollResult?.(rollInstance)
-                }
-            }
-            catch (err) {
-                console.error("Failed to parse or execute inline dice roll:", err)
-            }
-            return
-        }
-
-        const contentLink = (e.target as HTMLElement).closest('a.content-link') as HTMLAnchorElement | null
-        if (!contentLink) return
-
-        //E.g., @UUID[Compendium.vagabond-app.perks.Item.0KPyLXzTcPTQ3wFg]{Quick Draw Perk}
-        foundry.applications.ux.TextEditor.getContentLink(contentLink.dataset as any).then((link) => {
-            if (link) {
-                const uuid = link.match(/\[([^\]]+)\]/)
-                if (!uuid || uuid.length === 0) return
-
-                fromUuid(uuid[1]).then((document) => {
-                    if (document && 'sheet' in document && document.sheet) {
-                        (document.sheet as any).render(true)
-                    }
-                    else {
-                        console.warn(`${sys_id} | Could not render sheet. Document with UUID "${uuid}" is invalid.`)
-                    }
-                })
-            }
+      // check if the flavor text is actually a skillCheck, we can do that automatically
+      if (actor && flavor?.startsWith("skillCheck.")) {
+        const skill = flavor.split(".").pop()
+        const skillCheck = await new SkillCheck(actor.system as HeroDataModel, {
+          type: "check",
+          skill: skill!,
+        }).roll()
+        setRollResult?.(skillCheck)
+        sendVagabondChatCard(actor, "SkillCheckChatCard", {
+          actorId: getId(actor),
+          result: skillCheck,
         })
-    }
+        return
+      }
 
-    const parserConfig = {
-        transform: (node: any) => {
-            if (node.type === 'tag' && node.attribs) {
-                if (node.attribs.inert === "" || node.attribs.inert === "inert") {
-                    node.attribs.inert = true
-                } else if (node.attribs.inert === "false") {
-                    delete node.attribs.inert
-                }
-            }
-            return undefined
+      try {
+        let rollInstance
+
+        if (roll) {
+          rollInstance = Roll.fromData(JSON.parse(decodeURIComponent(roll)))
         }
+        else if (formula) {
+          let modifier = 0
+
+          if (formula?.includes("@") && actor) {
+            const path = formula.split("@").pop()
+            modifier = foundry.utils.getProperty(actor, `system.${path}`) as any
+          }
+
+          let f = formula.split("@")[0]
+
+          if (modifier > 0) {
+            f += `${modifier}`
+          }
+
+          if (f.endsWith("+") || f.endsWith("-")) {
+            f = f.slice(0, -1)
+          }
+
+          rollInstance = new Roll(f)
+        }
+
+        if (rollInstance) {
+          await rollInstance.evaluate()
+          await rollInstance.toMessage({
+            flavor: flavor || "Roll Result",
+            speaker: speaker,
+          })
+          setRollResult?.(rollInstance)
+        }
+      }
+      catch (err) {
+        console.error("Failed to parse or execute inline dice roll:", err)
+      }
+      return
     }
 
-    return (
-        <div
-            ref={ref}
-            className={`vb-rtf ${styleClasses} ${linkStyles}`}
-            onClick={onClick}
-        >
-            {ReactHtmlParser(enrichedText, parserConfig)}
-        </div>
-    )
+    const contentLink = (e.target as HTMLElement).closest(
+      "a.content-link",
+    ) as HTMLAnchorElement | null
+    if (!contentLink) return
+
+    //E.g., @UUID[Compendium.vagabond-app.perks.Item.0KPyLXzTcPTQ3wFg]{Quick Draw Perk}
+    foundry.applications.ux.TextEditor.getContentLink(
+      contentLink.dataset as any,
+    ).then((link) => {
+      if (link) {
+        const uuid = link.match(/\[([^\]]+)\]/)
+        if (!uuid || uuid.length === 0) return
+
+        fromUuid(uuid[1]).then((document) => {
+          if (document && "sheet" in document && document.sheet) {
+            ;(document.sheet as any).render(true)
+          }
+          else {
+            console.warn(
+              `${sys_id} | Could not render sheet. Document with UUID "${uuid}" is invalid.`,
+            )
+          }
+        })
+      }
+    })
+  }
+
+  const parserConfig = {
+    transform: (node: any) => {
+      if (node.type === "tag" && node.attribs) {
+        if (node.attribs.inert === "" || node.attribs.inert === "inert") {
+          node.attribs.inert = true
+        }
+        else if (node.attribs.inert === "false") {
+          delete node.attribs.inert
+        }
+      }
+      return undefined
+    },
+  }
+
+  return (
+    <div
+      ref={ref}
+      className={`vb-rtf ${styleClasses} ${linkStyles}`}
+      onClick={onClick}
+    >
+      {ReactHtmlParser(enrichedText, parserConfig)}
+    </div>
+  )
 }
 
 /**
@@ -192,4 +227,4 @@ const docLinkSytles = `
     [&_a[data-type='RollTable']]:text-orange-800
     hover:[&_a[data-type='RollTable']]:underline
 `
-const linkStyles = [inlineRollStyle, docLinkSytles].join(' ')
+const linkStyles = [inlineRollStyle, docLinkSytles].join(" ")

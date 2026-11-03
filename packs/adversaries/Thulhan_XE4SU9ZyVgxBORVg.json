@@ -10,10 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "darksight",
-      "telepath"
-    ],
+    "senses": ["darksight", "telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -289,9 +286,7 @@
           },
           "type": "psychic"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "recharge": "Cd4",
         "appliedEffects": [
           {
@@ -314,9 +309,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

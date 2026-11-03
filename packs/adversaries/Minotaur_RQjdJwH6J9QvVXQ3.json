@@ -10,9 +10,7 @@
     "armor": {
       "rating": 2
     },
-    "senses": [
-      "allsight"
-    ],
+    "senses": ["allsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -272,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Greataxe",
@@ -290,9 +286,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

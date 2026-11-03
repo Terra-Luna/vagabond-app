@@ -14,9 +14,7 @@
         "spell": "Ward",
         "skills": [
           {
-            "skillNames": [
-              "arcana"
-            ],
+            "skillNames": ["arcana"],
             "andOr": null
           }
         ]

@@ -26,19 +26,12 @@
         "label": "Training",
         "level": "1",
         "value": true,
-        "selector": [
-          "skills.mysticism.trained",
-          "skills.influence.trained"
-        ]
+        "selector": ["skills.mysticism.trained", "skills.influence.trained"]
       }
     ],
     "complexity": 3,
-    "keyStats": [
-      "awareness"
-    ],
-    "startingPacks": [
-      "Compendium.vagabond-app.gear.Item.jYntBY6j2VVmBe7T"
-    ],
+    "keyStats": ["awareness"],
+    "startingPacks": ["Compendium.vagabond-app.gear.Item.jYntBY6j2VVmBe7T"],
     "castingSkill": "",
     "maxCastFormula": "",
     "featureIds": [

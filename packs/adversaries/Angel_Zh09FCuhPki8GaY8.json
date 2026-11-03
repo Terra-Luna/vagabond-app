@@ -10,10 +10,7 @@
     "armor": {
       "rating": 6
     },
-    "senses": [
-      "allsight",
-      "telepath"
-    ],
+    "senses": ["allsight", "telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,10 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "physical_lt2",
-            "poison"
-          ],
+          "immunities": ["physical_lt2", "poison"],
           "weaknesses": [],
           "statusImmunities": []
         },
@@ -297,9 +291,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -324,9 +316,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -351,9 +341,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": []
@@ -373,9 +361,7 @@
           },
           "type": "psychic"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": []

@@ -1,43 +1,54 @@
 import type { DiceRoll } from "./DiceRoll"
 
 export class RollSummary {
+  result: number
+  faces: number
+  rerolled: boolean
+  exploded: boolean
 
-    result: number
-    faces: number
-    rerolled: boolean
-    exploded: boolean
+  constructor(
+    result: number,
+    faces: number,
+    rerolled: boolean,
+    exploded: boolean,
+  ) {
+    this.result = result
+    this.faces = faces
+    this.rerolled = rerolled
+    this.exploded = exploded
+  }
 
-    constructor(result: number, faces: number, rerolled: boolean, exploded: boolean) {
-        this.result = result
-        this.faces = faces
-        this.rerolled = rerolled
-        this.exploded = exploded
-    }
-
-    static buildRollSummaries(
-        damageRollTerms: foundry.dice.terms.DiceTerm[],
-        initialExplodableTerms: foundry.dice.terms.DiceTerm[],
-        explosionTerms: foundry.dice.terms.DiceTerm[] | null,
-        dice: DiceRoll[],
-        isCrit?: boolean
-    ) {
-        const summary: RollSummary[] = []
-        damageRollTerms.concat(initialExplodableTerms ?? []).concat(explosionTerms ?? []).forEach(term => {
-            term.results.forEach(res => {
-                summary.push({
-                    result: res.result,
-                    faces: term.faces as number,
-                    rerolled: !!res.rerolled,
-                    exploded: dice
-                        .filter(() => initialExplodableTerms.includes(term) || explosionTerms?.includes(term))
-                        .some(d => d.explodeOnCritOnly
-                            ? isCrit && d.explodesOn?.includes(res.result)
-                            : d.explodesOn?.includes(res.result)
-                        )
-                })
-            })
+  static buildRollSummaries(
+    damageRollTerms: foundry.dice.terms.DiceTerm[],
+    initialExplodableTerms: foundry.dice.terms.DiceTerm[],
+    explosionTerms: foundry.dice.terms.DiceTerm[] | null,
+    dice: DiceRoll[],
+    isCrit?: boolean,
+  ) {
+    const summary: RollSummary[] = []
+    damageRollTerms
+      .concat(initialExplodableTerms ?? [])
+      .concat(explosionTerms ?? [])
+      .forEach((term) => {
+        term.results.forEach((res) => {
+          summary.push({
+            result: res.result,
+            faces: term.faces as number,
+            rerolled: !!res.rerolled,
+            exploded: dice
+              .filter(
+                () =>
+                  initialExplodableTerms.includes(term) ||
+                  explosionTerms?.includes(term),
+              )
+              .some((d) =>
+                d.explodeOnCritOnly
+                  ? isCrit && d.explodesOn?.includes(res.result)
+                  : d.explodesOn?.includes(res.result),
+              ),
+          })
         })
-        return summary
-    }
-
+      })
+    return summary
+  }
 }

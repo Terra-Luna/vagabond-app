@@ -1,4 +1,4 @@
-import { appLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../util/lang"
 import { tableBorderRounded } from "../../../../common/border-styles"
 import { UtilityButton } from "../../../../component/Button"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
@@ -9,52 +9,74 @@ import { ActionMenuHeader } from "./Actions"
 const locale = appLang.NpcSheet
 
 export const Abilities = ({ actor, disabled = false }) => {
-    const { isEditMode } = useEditMode()
-    const features = actor.items.filter(it => it.type === 'feature').sort((a, b) => a.name.localeCompare(b.name))
-    return (
-        <div className="m-2 space-y-1">
-            {(features.length > 0 || isEditMode) &&
-                <div className="flex items-center justify-between">
-                    <ActionMenuHeader label={locale.abilities} />
-                    {isEditMode && !disabled &&
-                        <UtilityButton onClick={() => createFeature(actor)}>
-                            {appLang.ButtonActions.add}
-                        </UtilityButton>
-                    }
-                </div>
-            }
-
-            {features.length === 0 && isEditMode &&
-                <p className="text-xs font-paradigm font-normal italic">{appLang.AdversarySheet.abilitiesDropHint}</p>
-            }
-
-            {/* ABILITY (FEATURE) CARDS */}
-            {features.map((feature, index) => (
-                <FeatureCard key={index} actor={actor} feature={feature} disabled={disabled} />
-            ))}
+  const { isEditMode } = useEditMode()
+  const features = actor.items
+    .filter((it) => it.type === "feature")
+    .sort((a, b) => a.name.localeCompare(b.name))
+  return (
+    <div className="m-2 space-y-1">
+      {(features.length > 0 || isEditMode) && (
+        <div className="flex items-center justify-between">
+          <ActionMenuHeader label={locale.abilities} />
+          {isEditMode && !disabled && (
+            <UtilityButton onClick={() => createFeature(actor)}>
+              {appLang.ButtonActions.add}
+            </UtilityButton>
+          )}
         </div>
-    )
+      )}
+
+      {features.length === 0 && isEditMode && (
+        <p className="text-xs font-paradigm font-normal italic">
+          {appLang.AdversarySheet.abilitiesDropHint}
+        </p>
+      )}
+
+      {/* ABILITY (FEATURE) CARDS */}
+      {features.map((feature, index) => (
+        <FeatureCard
+          key={index}
+          actor={actor}
+          feature={feature}
+          disabled={disabled}
+        />
+      ))}
+    </div>
+  )
 }
 
 const createFeature = async (actor) => {
-    const [feature] = await actor.createEmbeddedDocuments("Item", [{ name: appLang.NpcSheet.newFeature, type: "feature" }])
-    feature?.sheet?.render(true)
+  const [feature] = await actor.createEmbeddedDocuments("Item", [
+    { name: appLang.NpcSheet.newFeature, type: "feature" },
+  ])
+  feature?.sheet?.render(true)
 }
 
 const FeatureCard = ({ actor, feature, disabled = false }) => {
-    const { isEditMode } = useEditMode()
+  const { isEditMode } = useEditMode()
 
-    const deleteAbility = async (id) => {
-        await actor.deleteEmbeddedDocuments("Item", [id])
-    }
+  const deleteAbility = async (id) => {
+    await actor.deleteEmbeddedDocuments("Item", [id])
+  }
 
-    return (
-        <div className={`flex justify-between items-center gap-2 ${tableBorderRounded} p-2`}>
-            <div className="flex flex-col gap-1">
-                <p className={`font-paradigm font-bold ${!disabled ? "hover-glow" : ""}`} onClick={() => !disabled ? feature.sheet.render(true) : null}>{feature.name}</p>
-                <EnrichedContent content={feature.system.description} styleClasses="text-xs font-paradigm font-normal" actor={feature.parent} />
-            </div>
-            {isEditMode && <TrashButton onClick={() => deleteAbility(feature.id)} />}
-        </div>
-    )
+  return (
+    <div
+      className={`flex justify-between items-center gap-2 ${tableBorderRounded} p-2`}
+    >
+      <div className="flex flex-col gap-1">
+        <p
+          className={`font-paradigm font-bold ${!disabled ? "hover-glow" : ""}`}
+          onClick={() => (!disabled ? feature.sheet.render(true) : null)}
+        >
+          {feature.name}
+        </p>
+        <EnrichedContent
+          content={feature.system.description}
+          styleClasses="text-xs font-paradigm font-normal"
+          actor={feature.parent}
+        />
+      </div>
+      {isEditMode && <TrashButton onClick={() => deleteAbility(feature.id)} />}
+    </div>
+  )
 }

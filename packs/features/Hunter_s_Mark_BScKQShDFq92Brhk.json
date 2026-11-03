@@ -12,9 +12,7 @@
         "label": "Flag",
         "level": 1,
         "value": true,
-        "selector": [
-          "flags.huntersmark"
-        ]
+        "selector": ["flags.huntersmark"]
       }
     ],
     "level": 1,

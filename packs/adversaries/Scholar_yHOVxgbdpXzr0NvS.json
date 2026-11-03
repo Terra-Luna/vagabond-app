@@ -286,9 +286,7 @@
           },
           "type": "pierce"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Dagger",
@@ -301,9 +299,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       }

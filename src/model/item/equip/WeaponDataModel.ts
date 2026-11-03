@@ -1,76 +1,106 @@
-import { appLang } from "../../../utils/lang"
-import { damageTypeOptions, fields, rangeOptions, requiredInteger, requiredString } from "../../common/sharedSchemas"
+import { appLang } from "../../../util/lang"
+import {
+  damageTypeOptions,
+  fields,
+  rangeOptions,
+  requiredInteger,
+  requiredString,
+} from "../../common/shared-schemas"
 import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
 const weaponSchema = () => {
-    return {
-        range: new fields.StringField({ ...rangeOptions(), required: false }),
-        damage: new fields.SchemaField({
-            dice: new fields.SchemaField({
-                count: new fields.NumberField({ ...requiredInteger, initial: 1, min: 1 }),
-                faces: new fields.NumberField({ ...requiredInteger, initial: 4, min: 1, max: 20 }),
-                modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-                explodesOn: new fields.ArrayField(
-                    new fields.NumberField({ integer: true, initial: 0, required: false }),
-                    { initial: [] }
-                )
-            }),
-            type: new fields.StringField({ ...damageTypeOptions() })
+  return {
+    range: new fields.StringField({ ...rangeOptions(), required: false }),
+    damage: new fields.SchemaField({
+      dice: new fields.SchemaField({
+        count: new fields.NumberField({
+          ...requiredInteger,
+          initial: 1,
+          min: 1,
         }),
-        grip: new fields.SchemaField({
-            style: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.Grips), initial: 'H' }),
-            state: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.Grips), initial: 'H' })
+        faces: new fields.NumberField({
+          ...requiredInteger,
+          initial: 4,
+          min: 1,
+          max: 20,
         }),
-        skills: new fields.ArrayField(
-            new fields.StringField({
-                ...requiredString, choices: [...Object.keys(appLang.WeaponSkills)]
-            }),
-            { initial: [] }
+        modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        explodesOn: new fields.ArrayField(
+          new fields.NumberField({
+            integer: true,
+            initial: 0,
+            required: false,
+          }),
+          { initial: [] },
         ),
-        properties: new fields.ArrayField(
-            new fields.StringField({
-                ...requiredString, choices: Object.keys(appLang.WeaponProps)
-            }),
-            { initial: [] }
-        ),
-        material: new fields.StringField({
-            ...requiredString, initial: 'steel', choices: Object.keys(appLang.Metals)
-        }),
-        imbueExempt: new fields.BooleanField({ initial: false })
-    }
+      }),
+      type: new fields.StringField({ ...damageTypeOptions() }),
+    }),
+    grip: new fields.SchemaField({
+      style: new fields.StringField({
+        ...requiredString,
+        choices: Object.keys(appLang.Grips),
+        initial: "H",
+      }),
+      state: new fields.StringField({
+        ...requiredString,
+        choices: Object.keys(appLang.Grips),
+        initial: "H",
+      }),
+    }),
+    skills: new fields.ArrayField(
+      new fields.StringField({
+        ...requiredString,
+        choices: [...Object.keys(appLang.WeaponSkills)],
+      }),
+      { initial: [] },
+    ),
+    properties: new fields.ArrayField(
+      new fields.StringField({
+        ...requiredString,
+        choices: Object.keys(appLang.WeaponProps),
+      }),
+      { initial: [] },
+    ),
+    material: new fields.StringField({
+      ...requiredString,
+      initial: "steel",
+      choices: Object.keys(appLang.Metals),
+    }),
+    imbueExempt: new fields.BooleanField({ initial: false }),
+  }
 }
 
 export type WeaponSchema = ReturnType<typeof weaponSchema> & EquipmentSchema
 
 export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
-    static defineSchema() {
-        return {
-            ...super.defineSchema(),
-            ...weaponSchema()
-        }
+  static defineSchema() {
+    return {
+      ...super.defineSchema(),
+      ...weaponSchema(),
     }
+  }
 
-    override async _preCreate(data: any, options: any, user: any) {
-        await super._preCreate(data, options, user)
-        this.parent.updateSource({ 'system.category': 'weapons' })
-    }
+  override async _preCreate(data: any, options: any, user: any) {
+    await super._preCreate(data, options, user)
+    this.parent.updateSource({ "system.category": "weapons" })
+  }
 
-    override prepareBaseData() {
-        super.prepareBaseData()
-        this.isEquippable = true
-        this.isConsumable = false
-    }
+  override prepareBaseData() {
+    super.prepareBaseData()
+    this.isEquippable = true
+    this.isConsumable = false
+  }
 
-    isDefenseWeapon(): boolean {
-        return this.properties.includes('defense')
-    }
-
+  isDefenseWeapon(): boolean {
+    return this.properties.includes("defense")
+  }
 }
 
 export const isEquippedWeapon = (item: any): boolean => {
-    return item.parent.type === 'weapon' && item.isEquipped
+  return item.parent.type === "weapon" && item.isEquipped
 }
 
 export const isEquippedSundry = (item: any): boolean => {
-    return item.parent.type === 'sundry' && item.isEquipped
+  return item.parent.type === "sundry" && item.isEquipped
 }

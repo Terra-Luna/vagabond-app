@@ -10,9 +10,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,18 +204,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "poison"
-          ],
-          "weaknesses": [
-            "acid"
-          ],
-          "statusImmunities": [
-            "charmed",
-            "fatigued",
-            "sickened",
-            "suffocating"
-          ]
+          "immunities": ["poison"],
+          "weaknesses": ["acid"],
+          "statusImmunities": ["charmed", "fatigued", "sickened", "suffocating"]
         },
         "out": {
           "melee": {},
@@ -281,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Sickness",
@@ -299,9 +286,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "sickened",

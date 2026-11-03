@@ -10,10 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "darksight",
-      "telepath"
-    ],
+    "senses": ["darksight", "telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,15 +204,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "cold",
-            "fire",
-            "physical"
-          ],
+          "immunities": ["cold", "fire", "physical"],
           "weaknesses": [],
-          "statusImmunities": [
-            "sickened"
-          ]
+          "statusImmunities": ["sickened"]
         },
         "out": {
           "melee": {},
@@ -280,9 +271,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -307,9 +296,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": []
@@ -328,9 +315,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": []
@@ -350,9 +335,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -376,9 +359,7 @@
           "type": "none"
         },
         "range": "close",
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": [],
@@ -399,9 +380,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2,
           "type": "melee",
           "range": "close"
@@ -417,9 +396,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1,
           "type": "melee",
           "range": "close"

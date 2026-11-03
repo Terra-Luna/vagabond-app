@@ -1,4 +1,20 @@
-import { ChevronRight, Eye, EyeOff, Heart, LucideBookMarked, LucideClover, LucideHeartOff, Plus, Shield, SquarePen, Star, ToggleLeft, ToggleRight, Trash, Wand2 } from "lucide-react"
+import {
+  ChevronRight,
+  Eye,
+  EyeOff,
+  Heart,
+  LucideBookMarked,
+  LucideClover,
+  LucideHeartOff,
+  Plus,
+  Shield,
+  SquarePen,
+  Star,
+  ToggleLeft,
+  ToggleRight,
+  Trash,
+  Wand2,
+} from "lucide-react"
 import { ReactNode, useCallback } from "react"
 
 import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
@@ -7,565 +23,885 @@ import { SpellcastingApp } from "../../../../../apps/spellcasting/SpellcastingAp
 import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
 import { recordSheetSaveOnActiveAttacks } from "../../../../../combat/engine/util/attack-save-sync"
-import { playDiceSound } from "../../../../../combat/engine/util/dice-utils"
+import { playDiceSound } from "../../../../../combat/engine/util/dice-util"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { updateDocument } from "../../../../../utils/documentUtils"
-import { sys_id } from "../../../../../utils/foundryUtils"
-import { appLang } from "../../../../../utils/lang"
-import { localizeString } from "../../../../../utils/localeUtils"
-import { getId } from "../../../../../utils/modelUtil"
+import { updateDocument } from "../../../../../util/foundry-util"
+import { sys_id } from "../../../../../util/foundry-util"
+import { appLang } from "../../../../../util/lang"
+import { localizeString } from "../../../../../util/locale-util"
+import { getId } from "../../../../../util/model-util"
 import { sendVagabondChatCard } from "../../../../chat/ChatCardSerializer"
-import { tableBorder, tableBorderRounded } from "../../../../common/border-styles"
+import {
+  tableBorder,
+  tableBorderRounded,
+} from "../../../../common/border-styles"
 import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../component/DynamicGrid"
-import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
+import {
+  EditableTextField,
+  NumericCounterInput,
+} from "../../../../component/EditableTextField"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { IconOnlyButton } from "../../../../component/IconOnlyButton"
 import { Tooltip } from "../../../../component/Tooltip"
 import { useStatsDrawerStatus } from "./statdrawer/StatsDrawerContext"
 
 interface Health {
-    value: number | null
-    max: number | null
+  value: number | null
+  max: number | null
 }
 
 interface Armor {
-    rating: number | null
+  rating: number | null
 }
 
-export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, armor: Armor, hero: HeroDataModel }) => {
-    const hp = hero.health.value
-    const updateHp = useCallback((auxClick: boolean) => {
-        updateDocument(hero.parent, { health: { value: (hp ?? 0) + (auxClick ? 1 : -1) } })
-    }, [hp])
+export const HPArmorFatigueHUD = ({
+  health,
+  armor,
+  hero,
+}: {
+  health: Health
+  armor: Armor
+  hero: HeroDataModel
+}) => {
+  const hp = hero.health.value
+  const updateHp = useCallback(
+    (auxClick: boolean) => {
+      updateDocument(hero.parent, {
+        health: { value: (hp ?? 0) + (auxClick ? 1 : -1) },
+      })
+    },
+    [hp],
+  )
 
-    return (
-        <div className="flex justify-evenly items-center gap-x-1 grow min-w-0" style={{ ['--hud' as string]: '68px' }}>
-            {/* HP CURRENT / MAX */}
-            <div className="flex flex-col items-center">
-                <span className="text-xs leading-none text-text-primary whitespace-nowrap" style={{ marginBottom: 'calc(var(--hud) * -0.08)' }}>{appLang.HeroSheet.hp}</span>
-                <div className="relative" style={{ width: 'var(--hud)', height: 'var(--hud)' }}>
-                    <Heart className="w-full h-full text-text-primary fill-sheet-header-fill/10" strokeWidth={0.5} />
-                    <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
-                        <span className={`text-text-hp-current hover-glow`} style={{ fontSize: 'calc(var(--hud) * 0.45)', lineHeight: 1 }}>
-                            <EditableTextField
-                                boundValue={health.value?.toString() ?? ""}
-                                updateProps={{ object: hero.parent, path: ['health', 'value'] }}
-                                placeholder="0"
-                                hideBorderOnEditMode={true}
-                            />
-                        </span>
-                    </div>
-                    <Tooltip title={"Adjust HP"} content={appLang.HeroSheet.counter_tooltip}>
-                        <div className="absolute -right-2.5 bottom-1.5 flex items-center justify-center border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold"
-                            style={{ minWidth: 'calc(var(--hud) * 0.35)' }}
-                            onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}
-                        >
-                            <span className={`text-text-hp-max px-1 hover-glow`} style={{ fontSize: 'calc(var(--hud) * 0.25)', lineHeight: 1.3 }}>{health.max}</span>
-                        </div>
-                    </Tooltip>
-                </div>
+  return (
+    <div
+      className="flex justify-evenly items-center gap-x-1 grow min-w-0"
+      style={{ ["--hud" as string]: "68px" }}
+    >
+      {/* HP CURRENT / MAX */}
+      <div className="flex flex-col items-center">
+        <span
+          className="text-xs leading-none text-text-primary whitespace-nowrap"
+          style={{ marginBottom: "calc(var(--hud) * -0.08)" }}
+        >
+          {appLang.HeroSheet.hp}
+        </span>
+        <div
+          className="relative"
+          style={{ width: "var(--hud)", height: "var(--hud)" }}
+        >
+          <Heart
+            className="w-full h-full text-text-primary fill-sheet-header-fill/10"
+            strokeWidth={0.5}
+          />
+          <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
+            <span
+              className={`text-text-hp-current hover-glow`}
+              style={{ fontSize: "calc(var(--hud) * 0.45)", lineHeight: 1 }}
+            >
+              <EditableTextField
+                boundValue={health.value?.toString() ?? ""}
+                updateProps={{ object: hero.parent, path: ["health", "value"] }}
+                placeholder="0"
+                hideBorderOnEditMode={true}
+              />
+            </span>
+          </div>
+          <Tooltip
+            title={"Adjust HP"}
+            content={appLang.HeroSheet.counter_tooltip}
+          >
+            <div
+              className="absolute -right-2.5 bottom-1.5 flex items-center justify-center border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold"
+              style={{ minWidth: "calc(var(--hud) * 0.35)" }}
+              onClick={() => updateHp(false)}
+              onAuxClick={() => updateHp(true)}
+            >
+              <span
+                className={`text-text-hp-max px-1 hover-glow`}
+                style={{ fontSize: "calc(var(--hud) * 0.25)", lineHeight: 1.3 }}
+              >
+                {health.max}
+              </span>
             </div>
-            {/* ARMOR RATING */}
-            <div className="flex flex-col items-center">
-                <span className="text-xs leading-none text-text-primary whitespace-nowrap" style={{ marginBottom: 'calc(var(--hud) * -0.08)' }}>{appLang.HeroSheet.armor}</span>
-                <div className="relative flex items-center justify-center" style={{ width: 'var(--hud)', height: 'var(--hud)' }}>
-                    <Shield style={{ width: '75%', height: '75%' }} className="text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <span className={`text-text-armor font-eskapade font-bold`} style={{ fontSize: 'calc(var(--hud) * 0.375)', lineHeight: 1 }}>
-                            {armor.rating}
-                        </span>
-                    </div>
-                </div>
-            </div>
-            {/* FATIGUE TRACKER */}
-            <Tooltip title={"Fatigue"} content={appLang.HeroSheet.counter_tooltip}>
-                <Fatigue hero={hero} />
-            </Tooltip>
+          </Tooltip>
         </div>
-    )
+      </div>
+      {/* ARMOR RATING */}
+      <div className="flex flex-col items-center">
+        <span
+          className="text-xs leading-none text-text-primary whitespace-nowrap"
+          style={{ marginBottom: "calc(var(--hud) * -0.08)" }}
+        >
+          {appLang.HeroSheet.armor}
+        </span>
+        <div
+          className="relative flex items-center justify-center"
+          style={{ width: "var(--hud)", height: "var(--hud)" }}
+        >
+          <Shield
+            style={{ width: "75%", height: "75%" }}
+            className="text-ic-armor-border fill-ic-armor-fill"
+            strokeWidth={1}
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span
+              className={`text-text-armor font-eskapade font-bold`}
+              style={{ fontSize: "calc(var(--hud) * 0.375)", lineHeight: 1 }}
+            >
+              {armor.rating}
+            </span>
+          </div>
+        </div>
+      </div>
+      {/* FATIGUE TRACKER */}
+      <Tooltip title={"Fatigue"} content={appLang.HeroSheet.counter_tooltip}>
+        <Fatigue hero={hero} />
+      </Tooltip>
+    </div>
+  )
 }
 
 export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
-    const fatigue = hero.statuses.counters.fatigue
-    const updateFatigue = useCallback((auxClick: boolean) => {
-        updateDocument(hero.parent, { statuses: { counters: { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) } } })
-    }, [fatigue])
-    return (
-        <div className={`flex items-center flex-col text-text-primary font-paradigm hover-glow`}
-            onClick={() => updateFatigue(false)}
-            onAuxClick={() => updateFatigue(true)}
-        >
-            <span className="text-xs leading-none whitespace-nowrap" style={{ marginBottom: 'calc(var(--hud, 80px) * -0.08)' }}>{appLang.HeroSheet.fatigue}</span>
-            <div className={trackerLayout + " justify-center font-eskapade font-bold text-text-fatigue-current"} style={{ height: 'var(--hud, 80px)', fontSize: 'calc(var(--hud, 80px) * 0.45)', lineHeight: 1 }}>
-                <LucideHeartOff style={{ width: 'calc(var(--hud, 80px) * 0.35)', height: 'calc(var(--hud, 80px) * 0.35)' }} />
-                <span className="min-w-[1ch]">{fatigue}</span>
-            </div>
-        </div>
-    )
+  const fatigue = hero.statuses.counters.fatigue
+  const updateFatigue = useCallback(
+    (auxClick: boolean) => {
+      updateDocument(hero.parent, {
+        statuses: {
+          counters: { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) },
+        },
+      })
+    },
+    [fatigue],
+  )
+  return (
+    <div
+      className={`flex items-center flex-col text-text-primary font-paradigm hover-glow`}
+      onClick={() => updateFatigue(false)}
+      onAuxClick={() => updateFatigue(true)}
+    >
+      <span
+        className="text-xs leading-none whitespace-nowrap"
+        style={{ marginBottom: "calc(var(--hud, 80px) * -0.08)" }}
+      >
+        {appLang.HeroSheet.fatigue}
+      </span>
+      <div
+        className={
+          trackerLayout +
+          " justify-center font-eskapade font-bold text-text-fatigue-current"
+        }
+        style={{
+          height: "var(--hud, 80px)",
+          fontSize: "calc(var(--hud, 80px) * 0.45)",
+          lineHeight: 1,
+        }}
+      >
+        <LucideHeartOff
+          style={{
+            width: "calc(var(--hud, 80px) * 0.35)",
+            height: "calc(var(--hud, 80px) * 0.35)",
+          }}
+        />
+        <span className="min-w-[1ch]">{fatigue}</span>
+      </div>
+    </div>
+  )
 }
 
 export const Luck = ({ hero }: { hero: HeroDataModel }) => {
-    const luck = hero.statuses.counters.luck
-    const updateLuck = useCallback(async (auxClick: boolean, e?: any) => {
-        if (e?.shiftKey && !auxClick) {
-            const roll = await new Roll('1d6').evaluate()
-            playDiceSound()
-            sendVagabondChatCard(
-                hero,
-                "TrackerUpdateChatCard", {
-                    heroId: hero.parent.id,
-                    resource: "luck",
-                    verb: appLang.HeroSheet.spent,
-                    roll: roll.total
-                },
-                [roll]
-            )
-            hero.parent.update(
-                { 'system.statuses.counters.luck': luck - 1 } as Record<string, number>,
-                { ['skipTrackerChatCard' as string]: true }
-            )
-        }
-        else {
-            hero.parent.update({ 'system.statuses.counters.luck': luck + (auxClick ? 1 : -1) } as Record<string, number>)
-        }
-    }, [luck])
-    return (
-        <Tracker name={appLang.HeroSheet.luck} title={`${appLang.HeroSheet.luck_tooltip}<br>${appLang.HeroSheet.counter_tooltip}<br>${appLang.HeroSheet.counter_tooltip_roll}
-        `} onClick={updateLuck}>
-            <div className={`${trackerLayout} text-text-luck-current`}>
-                <LucideClover size={20} strokeWidth={1} />
-                {luck}
-            </div>
-        </Tracker>
-    )
+  const luck = hero.statuses.counters.luck
+  const updateLuck = useCallback(
+    async (auxClick: boolean, e?: any) => {
+      if (e?.shiftKey && !auxClick) {
+        const roll = await new Roll("1d6").evaluate()
+        playDiceSound()
+        sendVagabondChatCard(
+          hero,
+          "TrackerUpdateChatCard",
+          {
+            heroId: hero.parent.id,
+            resource: "luck",
+            verb: appLang.HeroSheet.spent,
+            roll: roll.total,
+          },
+          [roll],
+        )
+        hero.parent.update(
+          { "system.statuses.counters.luck": luck - 1 } as Record<
+            string,
+            number
+          >,
+          { ["skipTrackerChatCard" as string]: true },
+        )
+      }
+      else {
+        hero.parent.update({
+          "system.statuses.counters.luck": luck + (auxClick ? 1 : -1),
+        } as Record<string, number>)
+      }
+    },
+    [luck],
+  )
+  return (
+    <Tracker
+      name={appLang.HeroSheet.luck}
+      title={`${appLang.HeroSheet.luck_tooltip}<br>${appLang.HeroSheet.counter_tooltip}<br>${appLang.HeroSheet.counter_tooltip_roll}
+        `}
+      onClick={updateLuck}
+    >
+      <div className={`${trackerLayout} text-text-luck-current`}>
+        <LucideClover size={20} strokeWidth={1} />
+        {luck}
+      </div>
+    </Tracker>
+  )
 }
 
 export const Studied = ({ hero }: { hero: HeroDataModel }) => {
-    const studied = hero.statuses.counters.studied
-    const updateStudied = useCallback(async (auxClick: boolean, e?: any) => {
-        if (e?.shiftKey && !auxClick) {
-            const roll = await new Roll('1d6').evaluate()
-            playDiceSound()
-            sendVagabondChatCard(
-                hero,
-                "TrackerUpdateChatCard",
-                {
-                    heroId: hero.parent.id,
-                    resource: "studied",
-                    verb: appLang.HeroSheet.spent,
-                    roll: roll.total
-                },
-                [roll]
-            )
-            await hero.parent.update(
-                { 'system.statuses.counters.studied': studied - 1 } as Record<string, number>,
-                { ['skipTrackerChatCard' as string]: true }
-            )
-        }
-        else {
-            await hero.parent.update({ 'system.statuses.counters.studied': studied + (auxClick ? 1 : -1) } as Record<string, number>)
-        }
-    }, [studied])
-    return (
-        <Tracker name={appLang.HeroSheet.studied} title={`${appLang.HeroSheet.studied_tooltip}<br>${appLang.HeroSheet.counter_tooltip}<br>${appLang.HeroSheet.counter_tooltip_roll}`} onClick={updateStudied}>
-            <div className={`${trackerLayout} text-text-studied-current`}>
-                <LucideBookMarked size={20} strokeWidth={1} />
-                {studied}
-            </div>
-        </Tracker>
-    )
+  const studied = hero.statuses.counters.studied
+  const updateStudied = useCallback(
+    async (auxClick: boolean, e?: any) => {
+      if (e?.shiftKey && !auxClick) {
+        const roll = await new Roll("1d6").evaluate()
+        playDiceSound()
+        sendVagabondChatCard(
+          hero,
+          "TrackerUpdateChatCard",
+          {
+            heroId: hero.parent.id,
+            resource: "studied",
+            verb: appLang.HeroSheet.spent,
+            roll: roll.total,
+          },
+          [roll],
+        )
+        await hero.parent.update(
+          { "system.statuses.counters.studied": studied - 1 } as Record<
+            string,
+            number
+          >,
+          { ["skipTrackerChatCard" as string]: true },
+        )
+      }
+      else {
+        await hero.parent.update({
+          "system.statuses.counters.studied": studied + (auxClick ? 1 : -1),
+        } as Record<string, number>)
+      }
+    },
+    [studied],
+  )
+  return (
+    <Tracker
+      name={appLang.HeroSheet.studied}
+      title={`${appLang.HeroSheet.studied_tooltip}<br>${appLang.HeroSheet.counter_tooltip}<br>${appLang.HeroSheet.counter_tooltip_roll}`}
+      onClick={updateStudied}
+    >
+      <div className={`${trackerLayout} text-text-studied-current`}>
+        <LucideBookMarked size={20} strokeWidth={1} />
+        {studied}
+      </div>
+    </Tracker>
+  )
 }
 
 export const Focus = ({ hero }: { hero: HeroDataModel }) => {
-    const focus = hero.statuses.counters.focus
-    const updateFocus = useCallback(async (auxClick: boolean) => {
-        await hero.parent.update({
-            'system.statuses.counters.focus': focus + (auxClick ? 1 : -1)
-        } as Record<string, number>)
-    }, [focus])
-    return (
-        <Tracker name={appLang.HeroSheet.focus} title={`${appLang.HeroSheet.focus_tooltip}<br>${appLang.HeroSheet.counter_tooltip}`} onClick={updateFocus}>
-            <div className={`${trackerLayout} text-text-secondary`}>
-                <Eye size={20} strokeWidth={1} />
-                {focus}
-            </div>
-        </Tracker>
-    )
+  const focus = hero.statuses.counters.focus
+  const updateFocus = useCallback(
+    async (auxClick: boolean) => {
+      await hero.parent.update({
+        "system.statuses.counters.focus": focus + (auxClick ? 1 : -1),
+      } as Record<string, number>)
+    },
+    [focus],
+  )
+  return (
+    <Tracker
+      name={appLang.HeroSheet.focus}
+      title={`${appLang.HeroSheet.focus_tooltip}<br>${appLang.HeroSheet.counter_tooltip}`}
+      onClick={updateFocus}
+    >
+      <div className={`${trackerLayout} text-text-secondary`}>
+        <Eye size={20} strokeWidth={1} />
+        {focus}
+      </div>
+    </Tracker>
+  )
 }
 
-const Tracker = ({ name, title, children, onClick }: { name: string, title: string, children: ReactNode, onClick: (auxClick: boolean, e?: any) => void }) => (
-    <Tooltip title={name} content={title}>
-        <div className="flex flex-col items-center text-xs text-text-primary font-paradigm hover-glow" onClick={(e) => onClick(false, e)} onAuxClick={() => onClick(true)}>
-            {name.toUpperCase()}
-            <span className="font-eskapade font-bold text-3xl -mt-1 mb-1">{children}</span>
-        </div>
-    </Tooltip>
+const Tracker = ({
+  name,
+  title,
+  children,
+  onClick,
+}: {
+  name: string
+  title: string
+  children: ReactNode
+  onClick: (auxClick: boolean, e?: any) => void
+}) => (
+  <Tooltip title={name} content={title}>
+    <div
+      className="flex flex-col items-center text-xs text-text-primary font-paradigm hover-glow"
+      onClick={(e) => onClick(false, e)}
+      onAuxClick={() => onClick(true)}
+    >
+      {name.toUpperCase()}
+      <span className="font-eskapade font-bold text-3xl -mt-1 mb-1">
+        {children}
+      </span>
+    </div>
+  </Tooltip>
 )
 
 const trackerLayout = `flex gap-1 items-center`
 
 export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
-    const { crawl, travel, turn } = hero.speed
-    if (crawl == null || travel == null || turn == null) return
+  const { crawl, travel, turn } = hero.speed
+  if (crawl == null || travel == null || turn == null) return
 
-    const localizeSpeed = (type: (keyof typeof appLang.Speeds), speed: number) => localizeString(appLang.Speeds[type], { speed: speed.toString() })
+  const localizeSpeed = (type: keyof typeof appLang.Speeds, speed: number) =>
+    localizeString(appLang.Speeds[type], { speed: speed.toString() })
 
-    return (
-        <div className="min-w-1/2">
-            <Header title={appLang.HeroSheet.speeds} />
-            <div className="flex items-center justify-around">
-                <Speed name={appLang.Speeds.turn} value={localizeSpeed('turnSpeed', turn)} />
-                <Speed name={appLang.Speeds.crawl} value={localizeSpeed('crawlSpeed', crawl)} />
-                <Speed name={appLang.Speeds.travel} value={localizeSpeed('travelSpeed', travel)} />
-            </div>
-        </div>
-    )
+  return (
+    <div className="min-w-1/2">
+      <Header title={appLang.HeroSheet.speeds} />
+      <div className="flex items-center justify-around">
+        <Speed
+          name={appLang.Speeds.turn}
+          value={localizeSpeed("turnSpeed", turn)}
+        />
+        <Speed
+          name={appLang.Speeds.crawl}
+          value={localizeSpeed("crawlSpeed", crawl)}
+        />
+        <Speed
+          name={appLang.Speeds.travel}
+          value={localizeSpeed("travelSpeed", travel)}
+        />
+      </div>
+    </div>
+  )
 }
 
-const Speed = ({ name, value }: { name: string, value: string }) => (
-    <div className={"flex flex-col items-center font-normal"}>
-        <div className={"font-eskapade text-xl text-text-primary"}>
-            {value}
-        </div>
-        <div className="text-sm text-text-aux -mt-1">{name}</div>
-    </div>
+const Speed = ({ name, value }: { name: string; value: string }) => (
+  <div className={"flex flex-col items-center font-normal"}>
+    <div className={"font-eskapade text-xl text-text-primary"}>{value}</div>
+    <div className="text-sm text-text-aux -mt-1">{name}</div>
+  </div>
 )
 
 export const Saves = ({ hero }: { hero: HeroDataModel }) => {
-    const mods = foundry.utils.deepClone(hero.modifiers)
-    const { reflex, endure, will } = mods.skillCheck
+  const mods = foundry.utils.deepClone(hero.modifiers)
+  const { reflex, endure, will } = mods.skillCheck
 
-    return (
-        <div className="w-full flex flex-col gap-y-0.5">
-            <Header title={appLang.HeroSheet.saves} />
-            <Save hero={hero} save={{
-                key: 'reflex',
-                ...appLang.Saves.reflex,
-                value: hero.saves.reflex,
-                mod: reflex.modifier ?? 0,
-                d20s: reflex.extraDice ?? 0,
-                bonusDice: reflex.d4 ? [4] : (reflex.d6 ? [6] : (reflex.d8 ? [8] : undefined))
-            }} />
-            <Save hero={hero} save={{
-                key: 'endure', ...appLang.Saves.endure,
-                value: hero.saves.endure,
-                mod: endure.modifier ?? 0,
-                d20s: endure.extraDice ?? 0,
-                bonusDice: endure.d4 ? [4] : (endure.d6 ? [6] : (will.d8 ? [8] : undefined))
-            }} />
-            <Save hero={hero} save={{
-                key: 'will',
-                ...appLang.Saves.will,
-                value: hero.saves.will,
-                mod: will.modifier ?? 0,
-                d20s: will.extraDice ?? 0,
-                bonusDice: will.d4 ? [4] : (will.d6 ? [6] : (will.d8 ? [8] : undefined))
-            }} />
-        </div>
-    )
+  return (
+    <div className="w-full flex flex-col gap-y-0.5">
+      <Header title={appLang.HeroSheet.saves} />
+      <Save
+        hero={hero}
+        save={{
+          key: "reflex",
+          ...appLang.Saves.reflex,
+          value: hero.saves.reflex,
+          mod: reflex.modifier ?? 0,
+          d20s: reflex.extraDice ?? 0,
+          bonusDice: reflex.d4
+            ? [4]
+            : reflex.d6
+              ? [6]
+              : reflex.d8
+                ? [8]
+                : undefined,
+        }}
+      />
+      <Save
+        hero={hero}
+        save={{
+          key: "endure",
+          ...appLang.Saves.endure,
+          value: hero.saves.endure,
+          mod: endure.modifier ?? 0,
+          d20s: endure.extraDice ?? 0,
+          bonusDice: endure.d4
+            ? [4]
+            : endure.d6
+              ? [6]
+              : will.d8
+                ? [8]
+                : undefined,
+        }}
+      />
+      <Save
+        hero={hero}
+        save={{
+          key: "will",
+          ...appLang.Saves.will,
+          value: hero.saves.will,
+          mod: will.modifier ?? 0,
+          d20s: will.extraDice ?? 0,
+          bonusDice: will.d4 ? [4] : will.d6 ? [6] : will.d8 ? [8] : undefined,
+        }}
+      />
+    </div>
+  )
 }
 
-const Save = ({ hero, save }: {
-    hero: HeroDataModel,
-    save: {
-        key: string,
-        name: string,
-        formula: string,
-        description: string,
-        value: number,
-        mod: number,
-        d20s: number,
-        bonusDice?: number[]
-    }
+const Save = ({
+  hero,
+  save,
+}: {
+  hero: HeroDataModel
+  save: {
+    key: string
+    name: string
+    formula: string
+    description: string
+    value: number
+    mod: number
+    d20s: number
+    bonusDice?: number[]
+  }
 }) => {
-    return (
-        <Tooltip
-            interactive={true}
-            maxWidth="max-w-[24rem]"
-            content={
-                <RollBuilderView
-                    actor={hero.parent}
-                    skillCheckLabel="Save Check"
-                    lockSkill={true}
-                    showDamageRolls={false}
-                    saveOnRoll={false}
-                    preset={{
-                        skill: save.key,
-                        d20Count: (save.d20s ?? 0) + 1,
-                        skillCheckMod: save.mod ?? 0,
-                        favorHinder: 'none',
-                        bonusSkillCheckDice: save.bonusDice,
-                        critThreshold: 20
-                    } as RollPreset}
-                />
-            }
-        >
-            <div className={`flex items-center font-eskapade hover-glow ${tableBorder}/50`} onClick={
-                async (e: React.MouseEvent<HTMLDivElement>) => {
-                    const skillCheck = await new SkillCheck(hero, { type: 'save', skill: save.key, clickEvent: e }).roll()
-                    const recorded = await recordSheetSaveOnActiveAttacks(hero.parent, skillCheck)
-                    if (!recorded) sendVagabondChatCard(hero, "SkillCheckChatCard", { actorId: getId(hero), result: skillCheck })
-                }
-            }>
-                <div className="mx-1 w-full line-clamp-1">
-                    <div className="flex justify-between items-center">
-                        {/* SAVING THROW (REFLEX / ENDURE / WILL) */}
-                        <span className="text-lg font-bold">{save.name}</span>
-                        {/* SAVING THROW MODIFIER */}
-                        <span className="text-sm text-text-tertiary font-normal">
-                            {`(${1 + save.d20s}d20${save.bonusDice?.map(d => `+d${d}`)?.join('') ?? ''}${save.mod !== 0 ? `${save.mod > 0 ? '+' : ''}${save.mod}` : ''})`}
-                        </span>
-                    </div>
-                    {/* SAVE DESCRIPTION */}
-                    <span className="text-xs text-text-secondary font-paradigm italic line-clamp-1 -mt-2">
-                        {save.description}
-                    </span>
-                </div>
-                {/* SAVING THROW DIFFICULTY */}
-                <div className="flex w-1/4 py-0.5 items-center justify-center text-2xl text-text-section-header font-bold bg-section-header-fill">
-                    {save.value}
-                </div>
-            </div>
-        </Tooltip>
-    )
+  return (
+    <Tooltip
+      interactive={true}
+      maxWidth="max-w-[24rem]"
+      content={
+        <RollBuilderView
+          actor={hero.parent}
+          skillCheckLabel="Save Check"
+          lockSkill={true}
+          showDamageRolls={false}
+          saveOnRoll={false}
+          preset={
+            {
+              skill: save.key,
+              d20Count: (save.d20s ?? 0) + 1,
+              skillCheckMod: save.mod ?? 0,
+              favorHinder: "none",
+              bonusSkillCheckDice: save.bonusDice,
+              critThreshold: 20,
+            } as RollPreset
+          }
+        />
+      }
+    >
+      <div
+        className={`flex items-center font-eskapade hover-glow ${tableBorder}/50`}
+        onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
+          const skillCheck = await new SkillCheck(hero, {
+            type: "save",
+            skill: save.key,
+            clickEvent: e,
+          }).roll()
+          const recorded = await recordSheetSaveOnActiveAttacks(
+            hero.parent,
+            skillCheck,
+          )
+          if (!recorded)
+            sendVagabondChatCard(hero, "SkillCheckChatCard", {
+              actorId: getId(hero),
+              result: skillCheck,
+            })
+        }}
+      >
+        <div className="mx-1 w-full line-clamp-1">
+          <div className="flex justify-between items-center">
+            {/* SAVING THROW (REFLEX / ENDURE / WILL) */}
+            <span className="text-lg font-bold">{save.name}</span>
+            {/* SAVING THROW MODIFIER */}
+            <span className="text-sm text-text-tertiary font-normal">
+              {`(${1 + save.d20s}d20${save.bonusDice?.map((d) => `+d${d}`)?.join("") ?? ""}${save.mod !== 0 ? `${save.mod > 0 ? "+" : ""}${save.mod}` : ""})`}
+            </span>
+          </div>
+          {/* SAVE DESCRIPTION */}
+          <span className="text-xs text-text-secondary font-paradigm italic line-clamp-1 -mt-2">
+            {save.description}
+          </span>
+        </div>
+        {/* SAVING THROW DIFFICULTY */}
+        <div className="flex w-1/4 py-0.5 items-center justify-center text-2xl text-text-section-header font-bold bg-section-header-fill">
+          {save.value}
+        </div>
+      </div>
+    </Tooltip>
+  )
 }
 
 export const Skills = ({ hero }: { hero: HeroDataModel }) => {
-    const skills = Object.keys(appLang.Skills).sort((a, b) => appLang.Skills[a].name.localeCompare(appLang.Skills[b].name))
-    const castingSkill = hero.class?.castingSkill
-    return (
-        <div>
-            <CollapsibleSection settingsKey={`hero-sheet-collapsed-${(hero as any)._id}`} title={appLang.HeroSheet.skills} content={
-                <div className="grid grid-cols-2 gap-x-2">
-                    {skills.map(sk => (
-                        <Skill
-                            key={sk}
-                            hero={hero}
-                            skillKey={sk}
-                            name={appLang.Skills[sk].name}
-                            value={hero.skills[sk].value}
-                            trained={hero.skills[sk].trained}
-                            isCastSkill={sk === castingSkill}
-                        />
-                    ))}
-                </div>
-            } />
-        </div>
-    )
+  const skills = Object.keys(appLang.Skills).sort((a, b) =>
+    appLang.Skills[a].name.localeCompare(appLang.Skills[b].name),
+  )
+  const castingSkill = hero.class?.castingSkill
+  return (
+    <div>
+      <CollapsibleSection
+        settingsKey={`hero-sheet-collapsed-${(hero as any)._id}`}
+        title={appLang.HeroSheet.skills}
+        content={
+          <div className="grid grid-cols-2 gap-x-2">
+            {skills.map((sk) => (
+              <Skill
+                key={sk}
+                hero={hero}
+                skillKey={sk}
+                name={appLang.Skills[sk].name}
+                value={hero.skills[sk].value}
+                trained={hero.skills[sk].trained}
+                isCastSkill={sk === castingSkill}
+              />
+            ))}
+          </div>
+        }
+      />
+    </div>
+  )
 }
 
-export const Skill = ({ hero, trained, skillKey, name, value, isCastSkill }: {
-    hero: HeroDataModel, trained: boolean, skillKey: string, name: string, value: number, isCastSkill?: boolean
+export const Skill = ({
+  hero,
+  trained,
+  skillKey,
+  name,
+  value,
+  isCastSkill,
+}: {
+  hero: HeroDataModel
+  trained: boolean
+  skillKey: string
+  name: string
+  value: number
+  isCastSkill?: boolean
 }) => {
-    return (
-        <Tooltip
-            interactive={true}
-            maxWidth="max-w-[24rem]"
-            content={
-                <RollBuilderView
-                    actor={hero.parent}
-                    lockSkill={true}
-                    showDamageRolls={false}
-                    saveOnRoll={false}
-                    preset={{ skill: skillKey, d20Count: 1, critThreshold: 20, skillCheckMod: 0 } as RollPreset}
-                />
-            }
+  return (
+    <Tooltip
+      interactive={true}
+      maxWidth="max-w-[24rem]"
+      content={
+        <RollBuilderView
+          actor={hero.parent}
+          lockSkill={true}
+          showDamageRolls={false}
+          saveOnRoll={false}
+          preset={
+            {
+              skill: skillKey,
+              d20Count: 1,
+              critThreshold: 20,
+              skillCheckMod: 0,
+            } as RollPreset
+          }
+        />
+      }
+    >
+      <div className="flex items-center ml-1 -my-0.5 min-w-0">
+        <Star
+          className={
+            trained
+              ? "text-ic-skill-trained fill-ic-skill-trained shrink-0"
+              : "text-ic-skill-untrained shrink-0"
+          }
+          size={18}
+        />
+        <div
+          className={`flex justify-between ml-2 mt-1 w-full min-w-0 text-base font-eskapade font-bold align-middle hover-glow`}
+          onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
+            const skillCheck = await new SkillCheck(hero, {
+              type: "check",
+              skill: skillKey,
+              clickEvent: e,
+            }).roll()
+            sendVagabondChatCard(hero, "SkillCheckChatCard", {
+              actorId: getId(hero),
+              result: skillCheck,
+            })
+          }}
         >
-            <div className="flex items-center ml-1 -my-0.5 min-w-0">
-                <Star className={(trained ? 'text-ic-skill-trained fill-ic-skill-trained shrink-0' : 'text-ic-skill-untrained shrink-0')} size={18} />
-                <div className={`flex justify-between ml-2 mt-1 w-full min-w-0 text-base font-eskapade font-bold align-middle hover-glow`} onClick={
-                    async (e: React.MouseEvent<HTMLDivElement>) => {
-                        const skillCheck = await new SkillCheck(hero, { type: 'check', skill: skillKey, clickEvent: e }).roll()
-                        sendVagabondChatCard(hero, "SkillCheckChatCard", { actorId: getId(hero), result: skillCheck })
-                    }
-                }>
-                    <div className="flex gap-x-2 items-center min-w-0">
-                        <span className="truncate">{name}</span>
-                        {isCastSkill && <IconOnlyButton
-                            Icon={Wand2} size={18}
-                            colorClassName="text-ic-skill-trained"
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                new SpellcastingApp(hero.parent, false, true).render({ force: true })
-                            }}
-                        />}
-                    </div>
-                    <div className={"text-xl mr-2 ml-1 shrink-0"}>
-                        {value}
-                    </div>
-                </div>
-            </div>
-            <ItemDivider />
-        </Tooltip>
-    )
+          <div className="flex gap-x-2 items-center min-w-0">
+            <span className="truncate">{name}</span>
+            {isCastSkill && (
+              <IconOnlyButton
+                Icon={Wand2}
+                size={18}
+                colorClassName="text-ic-skill-trained"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  new SpellcastingApp(hero.parent, false, true).render({
+                    force: true,
+                  })
+                }}
+              />
+            )}
+          </div>
+          <div className={"text-xl mr-2 ml-1 shrink-0"}>{value}</div>
+        </div>
+      </div>
+      <ItemDivider />
+    </Tooltip>
+  )
 }
 
 export const StatsDrawer = ({ hero }: { hero: HeroDataModel }) => {
-    const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
-    const { isStatsDrawerOpen, toggleStatsDrawer } = useStatsDrawerStatus()
+  const stats = [
+    "might",
+    "dexterity",
+    "awareness",
+    "reason",
+    "presence",
+    "luck",
+  ]
+  const { isStatsDrawerOpen, toggleStatsDrawer } = useStatsDrawerStatus()
 
-    return (
-        <>{
-            isStatsDrawerOpen &&
-            <div className="absolute pt-1 pb-1 mt-1 -ml-11.5 space-y-4 bg-sheet-main-fill/75 rounded-bl-lg rounded-tl-lg border-2 border-solid border-section-header-fill border-r-transparent">
-                {stats.map(stat => (
-                    <Stat key={stat} actor={hero.parent} stat={stat} />
-                ))}
-                    <div className={`w-full ml-1.5 -mt-1 mb-1 cursor-pointer`} onClick={toggleStatsDrawer}>
-                        <ChevronRight size={28} className="text-text-header-tertiary" />
-                </div>
-            </div>
-        }</>
-    )
-}
-
-const Stat = ({ actor, stat }: { actor: Actor & { system: any }, stat: string }) => {
-    const name = appLang.Stat[stat].abbr
-    const value = actor.system.stats[stat]
-    return (
-        <div className="text-text-special font-bold text-center">
-            {name}
-            <div className="flex items-center justify-center text-text-stat-block font-eskapade text-4xl">
-                {/* GM's can edit stats directly - modifiers from rules will not be affected. */}
-                {game.user?.isActiveGM
-                    ? <span className="bg-stat-block-fill min-w-[42px] pb-1">
-                        <EditableTextField
-                            boundValue={actor.system.stats[stat]}
-                            placeholder={"2"}
-                            hideBorderOnEditMode={true}
-                            onSave={async (value) => {
-                                await actor.update({ [`system.stats.${stat}`]: value })
-                                return true
-                            }}
-                        />
-                    </span>
-                    : <span className="bg-stat-block-fill min-w-[42px] pb-1">
-                        {value}
-                    </span>
-                }
-            </div>
+  return (
+    <>
+      {isStatsDrawerOpen && (
+        <div className="absolute pt-1 pb-1 mt-1 -ml-11.5 space-y-4 bg-sheet-main-fill/75 rounded-bl-lg rounded-tl-lg border-2 border-solid border-section-header-fill border-r-transparent">
+          {stats.map((stat) => (
+            <Stat key={stat} actor={hero.parent} stat={stat} />
+          ))}
+          <div
+            className={`w-full ml-1.5 -mt-1 mb-1 cursor-pointer`}
+            onClick={toggleStatsDrawer}
+          >
+            <ChevronRight size={28} className="text-text-header-tertiary" />
+          </div>
         </div>
-    )
+      )}
+    </>
+  )
 }
 
-export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
-    const { ContextMenu, onCtxMenu } = useContextMenu()
-    const settingKey = `hero-sheet-trackers-hide-${actor.id}` as any
-    VagabondSettingsRegistry.registerClientSetting(settingKey, true)
-    let isShown: boolean
-    try {
-        const raw = game.settings?.get(sys_id, settingKey)
-        isShown = raw !== undefined && raw !== null ? Boolean(raw) : true
-    } catch {
-        isShown = true
-    }
+const Stat = ({
+  actor,
+  stat,
+}: {
+  actor: Actor & { system: any }
+  stat: string
+}) => {
+  const name = appLang.Stat[stat].abbr
+  const value = actor.system.stats[stat]
+  return (
+    <div className="text-text-special font-bold text-center">
+      {name}
+      <div className="flex items-center justify-center text-text-stat-block font-eskapade text-4xl">
+        {/* GM's can edit stats directly - modifiers from rules will not be affected. */}
+        {game.user?.isActiveGM ? (
+          <span className="bg-stat-block-fill min-w-[42px] pb-1">
+            <EditableTextField
+              boundValue={actor.system.stats[stat]}
+              placeholder={"2"}
+              hideBorderOnEditMode={true}
+              onSave={async (value) => {
+                await actor.update({ [`system.stats.${stat}`]: value })
+                return true
+              }}
+            />
+          </span>
+        ) : (
+          <span className="bg-stat-block-fill min-w-[42px] pb-1">{value}</span>
+        )}
+      </div>
+    </div>
+  )
+}
 
-    const addTracker = useCallback(async () => {
-        const trackers = actor.system.trackers
-        await actor.update({
-            'system.trackers': [...trackers, {
-                name: 'Tracker', value: 0, sort: ([...trackers].reverse()[0]?.sort ?? 0) + 1000
-            }]
-        } as Record<string, any>)
-    }, [actor.system.trackers])
+export const CustomTrackers = ({
+  actor,
+}: {
+  actor: Actor & { system: HeroDataModel }
+}) => {
+  const { ContextMenu, onCtxMenu } = useContextMenu()
+  const settingKey = `hero-sheet-trackers-hide-${actor.id}` as any
+  VagabondSettingsRegistry.registerClientSetting(settingKey, true)
+  let isShown: boolean
+  try {
+    const raw = game.settings?.get(sys_id, settingKey)
+    isShown = raw !== undefined && raw !== null ? Boolean(raw) : true
+  }
+  catch {
+    isShown = true
+  }
 
-    if (!isShown) return
-    else return (
-        <Tooltip content={appLang.HeroSheet.context_tooltip}>
-            <div onContextMenu={(e) => onCtxMenu(e, [
-                { icon: Plus, label: appLang.General.addNew, action: async () => await addTracker() },
-                { icon: EyeOff, label: appLang.ButtonActions.hide, action: async () => await VagabondSettingsRegistry.toggleClientSetting(settingKey, actor.id) }
-            ])}>
-                <CollapsibleSection title={appLang.HeroSheet.trackers} settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
-                    <DynamicGrid widthIncrement={1}>
-                        {actor.system.trackers.sort((a, b) => a.sort - b.sort).map((tracker, index) => (
-                            <CustomTracker key={index} actor={actor} tracker={tracker} index={index} />
-                        ))}
-                        <GhostTracker actor={actor} />
-                    </DynamicGrid>
-                } />
-                <ContextMenu />
-            </div>
-        </Tooltip>
+  const addTracker = useCallback(async () => {
+    const trackers = actor.system.trackers
+    await actor.update({
+      "system.trackers": [
+        ...trackers,
+        {
+          name: "Tracker",
+          value: 0,
+          sort: ([...trackers].reverse()[0]?.sort ?? 0) + 1000,
+        },
+      ],
+    } as Record<string, any>)
+  }, [actor.system.trackers])
+
+  if (!isShown) return
+  else
+    return (
+      <Tooltip content={appLang.HeroSheet.context_tooltip}>
+        <div
+          onContextMenu={(e) =>
+            onCtxMenu(e, [
+              {
+                icon: Plus,
+                label: appLang.General.addNew,
+                action: async () => await addTracker(),
+              },
+              {
+                icon: EyeOff,
+                label: appLang.ButtonActions.hide,
+                action: async () =>
+                  await VagabondSettingsRegistry.toggleClientSetting(
+                    settingKey,
+                    actor.id,
+                  ),
+              },
+            ])
+          }
+        >
+          <CollapsibleSection
+            title={appLang.HeroSheet.trackers}
+            settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`}
+            content={
+              <DynamicGrid widthIncrement={1}>
+                {actor.system.trackers
+                  .sort((a, b) => a.sort - b.sort)
+                  .map((tracker, index) => (
+                    <CustomTracker
+                      key={index}
+                      actor={actor}
+                      tracker={tracker}
+                      index={index}
+                    />
+                  ))}
+                <GhostTracker actor={actor} />
+              </DynamicGrid>
+            }
+          />
+          <ContextMenu />
+        </div>
+      </Tooltip>
     )
 }
 
 const CustomTracker = ({ actor, tracker, index }) => {
-    const { ContextMenu, onCtxMenu } = useContextMenu()
+  const { ContextMenu, onCtxMenu } = useContextMenu()
 
-    const updateTracker = useCallback(async (field: 'name' | 'value' | 'type', newValue: string | number | null) => {
-        const trackers = foundry.utils.deepClone(actor.system.trackers)
-        trackers[index] = {
-            ...trackers[index],
-            [field]: newValue
+  const updateTracker = useCallback(
+    async (
+      field: "name" | "value" | "type",
+      newValue: string | number | null,
+    ) => {
+      const trackers = foundry.utils.deepClone(actor.system.trackers)
+      trackers[index] = {
+        ...trackers[index],
+        [field]: newValue,
+      }
+      await actor.update({ "system.trackers": trackers })
+      return true
+    },
+    [actor, index],
+  )
+
+  const deleteTracker = useCallback(async () => {
+    const trackers = foundry.utils
+      .deepClone(actor.system.trackers)
+      .filter((_, idx) => idx !== index)
+    await actor.update({ "system.trackers": trackers })
+  }, [actor, index])
+
+  return (
+    <Tooltip content={appLang.HeroSheet.context_tooltip}>
+      <div
+        onContextMenu={(e) =>
+          onCtxMenu(e, [
+            {
+              icon: SquarePen,
+              label: `${tracker.type === "numeric" ? "Change to toggle" : "Change to counter"}`,
+              action: () =>
+                updateTracker(
+                  "type",
+                  `${tracker.type === "numeric" ? "boolean" : "numeric"}`,
+                ),
+            },
+            {
+              icon: Trash,
+              label: appLang.ButtonActions.delete,
+              action: () => deleteTracker(),
+              isDestructive: true,
+            },
+          ])
         }
-        await actor.update({ "system.trackers": trackers })
-        return true
-    }, [actor, index])
+        className={`flex justify-between text-sm line-clamp-1 px-1 py-0.5 ${tableBorderRounded}`}
+      >
+        <EditableTextField
+          boundValue={tracker.name}
+          placeholder={"Tracker"}
+          hideBorderOnEditMode={true}
+          className="line-clamp-1"
+          onSave={(val) => updateTracker("name", val)}
+        />
 
-    const deleteTracker = useCallback(async () => {
-        const trackers = foundry.utils.deepClone(actor.system.trackers).filter((_, idx) => idx !== index)
-        await actor.update({ "system.trackers": trackers })
-    }, [actor, index])
+        <div className="ml-auto">
+          {tracker.type === "numeric" && (
+            <NumericCounterInput
+              value={tracker.value}
+              hideBorder={true}
+              onChange={(val) => updateTracker("value", val)}
+            />
+          )}
 
-    return (
-        <Tooltip content={appLang.HeroSheet.context_tooltip}>
-            <div onContextMenu={(e) => onCtxMenu(e, [
-                { icon: SquarePen, label: `${tracker.type === 'numeric' ? 'Change to toggle' : 'Change to counter'}`, action: () => updateTracker('type', `${tracker.type === 'numeric' ? 'boolean' : 'numeric'}`) },
-                { icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteTracker(), isDestructive: true }
-            ])}
-                className={`flex justify-between text-sm line-clamp-1 px-1 py-0.5 ${tableBorderRounded}`}
+          {tracker.type === "boolean" && (
+            <button
+              className="flex"
+              onClick={() => updateTracker("value", tracker.value > 0 ? 0 : 1)}
             >
-                <EditableTextField
-                    boundValue={tracker.name}
-                    placeholder={"Tracker"}
-                    hideBorderOnEditMode={true}
-                    className="line-clamp-1"
-                    onSave={(val) => updateTracker('name', val)}
-                />
+              {tracker.value === 0 ? (
+                <ToggleLeft className="text-text-tertiary hover-glow" />
+              ) : (
+                <ToggleRight className="text-text-primary hover-glow" />
+              )}
+            </button>
+          )}
+        </div>
 
-                <div className="ml-auto">
-                    {tracker.type === 'numeric' &&
-                        <NumericCounterInput
-                            value={tracker.value}
-                            hideBorder={true}
-                            onChange={(val) => updateTracker('value', val)}
-                        />
-                    }
-
-                    {tracker.type === 'boolean' &&
-                        <button className="flex" onClick={() => updateTracker('value', tracker.value > 0 ? 0 : 1)}>
-                            {tracker.value === 0
-                                ? <ToggleLeft className="text-text-tertiary hover-glow" />
-                                : <ToggleRight className="text-text-primary hover-glow" />
-                            }
-                        </button>
-                    }
-                </div>
-
-                <ContextMenu />
-            </div>
-        </Tooltip>
-    )
+        <ContextMenu />
+      </div>
+    </Tooltip>
+  )
 }
 
-const GhostTracker = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
-    const addTracker = useCallback(async () => {
-        const trackers = actor.system.trackers
-        await actor.update({
-            'system.trackers': [...trackers, {
-                name: 'Tracker', value: 0, sort: ([...trackers].reverse()[0]?.sort ?? 0) + 1000
-            }]
-        } as Record<string, any>)
-    }, [actor.system.trackers])
+const GhostTracker = ({
+  actor,
+}: {
+  actor: Actor & { system: HeroDataModel }
+}) => {
+  const addTracker = useCallback(async () => {
+    const trackers = actor.system.trackers
+    await actor.update({
+      "system.trackers": [
+        ...trackers,
+        {
+          name: "Tracker",
+          value: 0,
+          sort: ([...trackers].reverse()[0]?.sort ?? 0) + 1000,
+        },
+      ],
+    } as Record<string, any>)
+  }, [actor.system.trackers])
 
-    return (
-        <button onClick={() => addTracker()}
-            className={`flex items-center border border-dashed border-table-border rounded-sm px-2 hover-glow ${buttonAnimation}`}>
-            <p className="text-sm italic">+Add</p>
-        </button>
-    )
+  return (
+    <button
+      onClick={() => addTracker()}
+      className={`flex items-center border border-dashed border-table-border rounded-sm px-2 hover-glow ${buttonAnimation}`}
+    >
+      <p className="text-sm italic">+Add</p>
+    </button>
+  )
 }

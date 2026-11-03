@@ -14,10 +14,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "medicine",
-              "survival"
-            ],
+            "skillNames": ["medicine", "survival"],
             "andOr": "or"
           }
         ]

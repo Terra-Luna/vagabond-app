@@ -268,9 +268,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       }

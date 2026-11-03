@@ -24,9 +24,7 @@
         "label": "Brawl: Die Size Min.",
         "level": 6,
         "value": "6",
-        "selector": [
-          "modifiers.damage.out.brawl.dice.size.min"
-        ],
+        "selector": ["modifiers.damage.out.brawl.dice.size.min"],
         "scale": 0,
         "toggleableEffect": true
       },
@@ -36,9 +34,7 @@
         "label": "Brawl: Die Size Min.",
         "level": 10,
         "value": "8",
-        "selector": [
-          "modifiers.damage.out.brawl.dice.size.min"
-        ],
+        "selector": ["modifiers.damage.out.brawl.dice.size.min"],
         "toggleableEffect": true
       },
       {
@@ -47,9 +43,7 @@
         "label": "Flag",
         "level": 6,
         "value": true,
-        "selector": [
-          "flags.titleholder"
-        ]
+        "selector": ["flags.titleholder"]
       }
     ],
     "level": 6,

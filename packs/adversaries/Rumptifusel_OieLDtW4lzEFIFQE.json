@@ -10,9 +10,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,9 +205,7 @@
           "perDieReduction": 0,
           "resistances": [],
           "immunities": [],
-          "weaknesses": [
-            "poison"
-          ],
+          "weaknesses": ["poison"],
           "statusImmunities": []
         },
         "out": {
@@ -274,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Cloak",
@@ -292,9 +286,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "restrained",

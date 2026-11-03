@@ -4,12 +4,12 @@ import { SpellcastingMenuContextProvider } from "./component/spellcasting/Spellc
 import { SpellsList } from "./component/spellcasting/SpellsList"
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
-    return (
-        <SpellcastingMenuContextProvider actor={hero.parent}>
-            <div className="w-full mb-4">
-                <ManaHUD hero={hero} />
-                <SpellsList hero={hero} />
-            </div>
-        </SpellcastingMenuContextProvider>
-    )
+  return (
+    <SpellcastingMenuContextProvider actor={hero.parent}>
+      <div className="w-full mb-4">
+        <ManaHUD hero={hero} />
+        <SpellsList hero={hero} />
+      </div>
+    </SpellcastingMenuContextProvider>
+  )
 }

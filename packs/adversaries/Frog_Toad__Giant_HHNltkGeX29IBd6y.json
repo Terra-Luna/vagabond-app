@@ -270,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Tongue",
@@ -288,9 +286,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "restrained",

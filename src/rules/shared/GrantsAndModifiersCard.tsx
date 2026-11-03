@@ -1,89 +1,103 @@
-import { appLang } from "../../utils/lang"
+import { appLang } from "../../util/lang"
 import { tableBorder } from "../../view/common/border-styles"
 import { normalizeRuleSelections } from "../util/item-rules-util"
 import { ItemsCache } from "../util/ItemsCache"
 import { getRuleSelectors } from "../util/selector-util"
 
 export const EffectCardContainer = ({ children }) => {
-    return (
-        <div className={`p-2 border-t-0 rounded-b-md ${tableBorder}`}>
-            <div className="space-y-1 max-h-120 overflow-y-auto">
-                {children}
-            </div>
-        </div>
-    )
+  return (
+    <div className={`p-2 border-t-0 rounded-b-md ${tableBorder}`}>
+      <div className="space-y-1 max-h-120 overflow-y-auto">{children}</div>
+    </div>
+  )
 }
 
 export const GrantsAndModifiersCard = ({ rule, isActive = true }) => {
+  const items = ItemsCache.items
 
-    const items = ItemsCache.items
-
-    const cleanSelectionName = (path?: string) => {
-        if (!path) return ""
-        if (path.includes("skills.")) {
-            const skillKey = path.replace(".trained", "").split(".").pop() ?? ""
-            return appLang.Skills[skillKey]?.name ?? skillKey
-        }
-        else if (path.includes("stats.")) {
-            const statKey = path.split(".").pop() ?? ""
-            return appLang.Stat[statKey]?.name ?? statKey
-        }
-        else if (path.includes("resistances.")) {
-            const resistanceKey = path.split(".").pop() ?? ""
-            return appLang.DamageTypes[resistanceKey] ?? resistanceKey.toUpperCase()
-        }
-        else {
-            return items.get(path)?.name ?? path
-        }
+  const cleanSelectionName = (path?: string) => {
+    if (!path) return ""
+    if (path.includes("skills.")) {
+      const skillKey = path.replace(".trained", "").split(".").pop() ?? ""
+      return appLang.Skills[skillKey]?.name ?? skillKey
     }
+    else if (path.includes("stats.")) {
+      const statKey = path.split(".").pop() ?? ""
+      return appLang.Stat[statKey]?.name ?? statKey
+    }
+    else if (path.includes("resistances.")) {
+      const resistanceKey = path.split(".").pop() ?? ""
+      return appLang.DamageTypes[resistanceKey] ?? resistanceKey.toUpperCase()
+    }
+    else {
+      return items.get(path)?.name ?? path
+    }
+  }
 
-    const selectionValues = normalizeRuleSelections(rule.selections).map(selection => selection.value)
+  const selectionValues = normalizeRuleSelections(rule.selections).map(
+    (selection) => selection.value,
+  )
 
-    const grantedTrainings = rule.key === "ToggleRule" && rule.value
-        ? getRuleSelectors(rule).filter(s => s.startsWith("skills.") && s.endsWith(".trained"))
-        : []
+  const grantedTrainings =
+    rule.key === "ToggleRule" && rule.value
+      ? getRuleSelectors(rule).filter(
+          (s) => s.startsWith("skills.") && s.endsWith(".trained"),
+        )
+      : []
 
-    const displaySelections = [...selectionValues, ...grantedTrainings]
-        .filter(Boolean)
-        .map(cleanSelectionName)
-        .filter(Boolean)
+  const displaySelections = [...selectionValues, ...grantedTrainings]
+    .filter(Boolean)
+    .map(cleanSelectionName)
+    .filter(Boolean)
 
-    return (
-        <div key={rule.id} className={`
+  return (
+    <div
+      key={rule.id}
+      className={`
             flex items-center justify-between text-sm p-2 
             bg-sheet-main-fill ${tableBorder}/50 rounded-sm
-            ${isActive ? '' : 'opacity-50 select-none'}
-        `}>
-            <div className="flex items-center gap-2.5">
-                <img src={rule.sourceImg} className={`${tableBorder}/50 rounded-sm h-8 object-cover shrink-0`} alt="" />
-                <div>
-                    <div>
-                        <span className="text-text-primary font-bold">
-                            {`${rule.label || "Unnamed Feature"}`}
-                        </span>
-                        {displaySelections.length > 0 &&
-                            <span className="text-text-secondary font-normal italic">
-                                {` (${displaySelections.join(", ")})`}
-                            </span>
-                        }
-                    </div>
-                    <div className="text-xs text-text-primary">
-                        Source Item: <span className="text-text-header-tertiary">{rule.sourceName}</span>
-                    </div>
-                </div>
-            </div>
-            <div className="text-right text-text-primary">
-                {(rule.key === "GrantItem" || (rule.key === "ChoiceSet" && rule.channel === "spell" || rule.channel === "perk")) &&
-                    <span className={`px-1.5 py-0.5 bg-sheet-main-fill text-text-header-tertiary text-xs uppercase tracking-wider ${tableBorder}/50 rounded-sm`}>
-                        Item Grant
-                    </span>
-                }
-                {rule.key === "FlatModifier" &&
-                    <span className="text-base text-text-primary font-eskapade font-bold">
-                        {String(rule.value).toUpperCase()}
-                    </span>
-                }
-            </div>
+            ${isActive ? "" : "opacity-50 select-none"}
+        `}
+    >
+      <div className="flex items-center gap-2.5">
+        <img
+          src={rule.sourceImg}
+          className={`${tableBorder}/50 rounded-sm h-8 object-cover shrink-0`}
+          alt=""
+        />
+        <div>
+          <div>
+            <span className="text-text-primary font-bold">
+              {`${rule.label || "Unnamed Feature"}`}
+            </span>
+            {displaySelections.length > 0 && (
+              <span className="text-text-secondary font-normal italic">
+                {` (${displaySelections.join(", ")})`}
+              </span>
+            )}
+          </div>
+          <div className="text-xs text-text-primary">
+            Source Item:{" "}
+            <span className="text-text-header-tertiary">{rule.sourceName}</span>
+          </div>
         </div>
-    )
+      </div>
+      <div className="text-right text-text-primary">
+        {(rule.key === "GrantItem" ||
+          (rule.key === "ChoiceSet" && rule.channel === "spell") ||
+          rule.channel === "perk") && (
+          <span
+            className={`px-1.5 py-0.5 bg-sheet-main-fill text-text-header-tertiary text-xs uppercase tracking-wider ${tableBorder}/50 rounded-sm`}
+          >
+            Item Grant
+          </span>
+        )}
+        {rule.key === "FlatModifier" && (
+          <span className="text-base text-text-primary font-eskapade font-bold">
+            {String(rule.value).toUpperCase()}
+          </span>
+        )}
+      </div>
+    </div>
+  )
 }

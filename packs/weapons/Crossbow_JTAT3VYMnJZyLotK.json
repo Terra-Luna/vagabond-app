@@ -43,9 +43,7 @@
     },
     "properties": [],
     "material": "steel",
-    "skills": [
-      "ranged"
-    ]
+    "skills": ["ranged"]
   },
   "effects": [],
   "folder": null,

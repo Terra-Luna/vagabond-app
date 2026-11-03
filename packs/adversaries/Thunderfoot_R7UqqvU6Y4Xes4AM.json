@@ -270,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 22 (5d8) and shoved Prone 30' away</span></p>",
@@ -288,9 +286,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

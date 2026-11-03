@@ -1,5 +1,5 @@
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { getFollowerContext } from "../../../model/actor/util/NpcDataModelUtil"
+import { getFollowerContext } from "../../../model/actor/util/npc-data-model-util"
 import { AdversaryAttack } from "../AdversaryAttack"
 import { AdversaryComboAttack, ComboSubAttack } from "../AdversaryComboAttack"
 import type { ImbueEntry } from "../Attack"
@@ -9,118 +9,148 @@ import { SkillCheck } from "../roll/SkillCheck"
 import type { AttackSnapshot } from "./attack-serializer"
 
 export function deserializeAttack(
-    snapshot: AttackSnapshot,
-    createHeroAttack: (title: string, actor: Actor & { system: HeroDataModel }, targetIds: string[]) => HeroAttack
+  snapshot: AttackSnapshot,
+  createHeroAttack: (
+    title: string,
+    actor: Actor & { system: HeroDataModel },
+    targetIds: string[],
+  ) => HeroAttack,
 ): AdversaryAttack | AdversaryComboAttack | HeroAttack | undefined {
-    if (snapshot.type === 'adversary') return deserializeAdversaryAttack(snapshot)
-    else if (snapshot.type === 'combo') return deserializeComboAttack(snapshot)
-    else if (snapshot.type === 'hero') return deserializeHeroAttack(snapshot, createHeroAttack)
+  if (snapshot.type === "adversary") return deserializeAdversaryAttack(snapshot)
+  else if (snapshot.type === "combo") return deserializeComboAttack(snapshot)
+  else if (snapshot.type === "hero")
+    return deserializeHeroAttack(snapshot, createHeroAttack)
 }
 
 function deserializeHeroAttack(
-    snapshot: AttackSnapshot,
-    createHeroAttack: (title: string, actor: Actor & { system: HeroDataModel }, targetIds: string[]) => HeroAttack
+  snapshot: AttackSnapshot,
+  createHeroAttack: (
+    title: string,
+    actor: Actor & { system: HeroDataModel },
+    targetIds: string[],
+  ) => HeroAttack,
 ): HeroAttack | undefined {
-    const actor = game.actors?.get(snapshot.actorId) as (Actor & { system: HeroDataModel }) | undefined
-    if (!actor) return
+  const actor = game.actors?.get(snapshot.actorId) as
+    | (Actor & { system: HeroDataModel })
+    | undefined
+  if (!actor) return
 
-    const atk = createHeroAttack(snapshot.title, actor, [...snapshot.targetIds])
+  const atk = createHeroAttack(snapshot.title, actor, [...snapshot.targetIds])
 
-    atk.id = snapshot.id
-    atk.userId = snapshot.userId
-    atk.createdAt = snapshot.createdAt ?? 0
-    atk.portraitActorId = snapshot.portraitActorId
-    atk.itemId = snapshot.itemId
-    atk.spellDelivery = snapshot.spellDelivery
-    atk.critChoice = snapshot.critChoice
-    atk.isRerolled = snapshot.isRerolled
-    atk.isResolved = snapshot.isResolved
-    atk.appliedEffects = snapshot.appliedEffects ?? []
+  atk.id = snapshot.id
+  atk.userId = snapshot.userId
+  atk.createdAt = snapshot.createdAt ?? 0
+  atk.portraitActorId = snapshot.portraitActorId
+  atk.itemId = snapshot.itemId
+  atk.spellDelivery = snapshot.spellDelivery
+  atk.critChoice = snapshot.critChoice
+  atk.isRerolled = snapshot.isRerolled
+  atk.isResolved = snapshot.isResolved
+  atk.appliedEffects = snapshot.appliedEffects ?? []
 
-    atk.skillCheck = SkillCheck.fromJson(
-        actor,
-        snapshot.skillCheck
-            ? foundry.utils.deepClone(snapshot.skillCheck)
-            : undefined
-    )
+  atk.skillCheck = SkillCheck.fromJson(
+    actor,
+    snapshot.skillCheck
+      ? foundry.utils.deepClone(snapshot.skillCheck)
+      : undefined,
+  )
 
-    atk.isDefenseCheck = !!snapshot.isDefenseCheck
+  atk.isDefenseCheck = !!snapshot.isDefenseCheck
 
-    atk.damageRoll = DamageRoll.fromJson(
-        snapshot.damageRoll
-            ? foundry.utils.deepClone(snapshot.damageRoll)
-            : undefined
-    )
+  atk.damageRoll = DamageRoll.fromJson(
+    snapshot.damageRoll
+      ? foundry.utils.deepClone(snapshot.damageRoll)
+      : undefined,
+  )
 
-    atk.imbues = deserializeImbues(snapshot)
+  atk.imbues = deserializeImbues(snapshot)
 
-    return atk
+  return atk
 }
 
 function deserializeImbues(snapshot: AttackSnapshot): ImbueEntry[] {
-    return (snapshot.imbues ?? []).flatMap(imbue => {
-        const damageRoll = DamageRoll.fromJson(foundry.utils.deepClone(imbue.damageRoll))
-        return damageRoll ? [{ ...foundry.utils.deepClone(imbue), damageRoll }] : []
-    })
-}
-
-function deserializeAdversaryAttack(snapshot: AttackSnapshot): AdversaryAttack | undefined {
-    const actor = game.actors?.get(snapshot.actorId)
-    if (!actor) return
-
+  return (snapshot.imbues ?? []).flatMap((imbue) => {
     const damageRoll = DamageRoll.fromJson(
-        snapshot.damageRoll
-            ? foundry.utils.deepClone(snapshot.damageRoll)
-            : undefined
+      foundry.utils.deepClone(imbue.damageRoll),
     )
-
-    const atk = new AdversaryAttack(actor, {
-        attackName: snapshot.title,
-        dmgType: damageRoll?.dmgType ?? 'physical',
-        dice: damageRoll?.dice ?? [],
-        saveTypes: snapshot.saveTypes,
-        description: snapshot.description,
-        halfDamageOnSave: snapshot.halfDamageOnSave,
-        isSpellAttack: snapshot.isSpellAttack,
-        appliedEffects: snapshot.appliedEffects
-    }, [...snapshot.targetIds])
-
-    atk.id = snapshot.id
-    atk.userId = snapshot.userId
-    atk.createdAt = snapshot.createdAt ?? 0
-    atk.isResolved = snapshot.isResolved
-    atk.damageRoll = damageRoll
-    const follower = snapshot.skillCheck ? getFollowerContext(actor) : undefined
-    atk.skillCheck = follower
-        ? SkillCheck.fromJson(follower.hero, foundry.utils.deepClone(snapshot.skillCheck))
-        : undefined
-    atk.imbues = deserializeImbues(snapshot)
-    atk.appliedEffects = snapshot.appliedEffects ?? []
-    atk.saveResults = snapshot.saveResults
-        ? foundry.utils.deepClone(snapshot.saveResults)
-        : {}
-    atk.defenseArmorBonuses = snapshot.defenseArmorBonuses
-        ? foundry.utils.deepClone(snapshot.defenseArmorBonuses)
-        : {}
-    atk.rerolledSaveTargetIds = snapshot.rerolledSaveTargetIds
-        ? [...snapshot.rerolledSaveTargetIds]
-        : []
-
-    return atk
+    return damageRoll ? [{ ...foundry.utils.deepClone(imbue), damageRoll }] : []
+  })
 }
 
-function deserializeComboAttack(snapshot: AttackSnapshot): AdversaryComboAttack | undefined {
-    const actor = game.actors?.get(snapshot.actorId)
-    if (!actor) return
+function deserializeAdversaryAttack(
+  snapshot: AttackSnapshot,
+): AdversaryAttack | undefined {
+  const actor = game.actors?.get(snapshot.actorId)
+  if (!actor) return
 
-    const atk = new AdversaryComboAttack(actor, { comboName: snapshot.title, subAttacks: [] }, [...snapshot.targetIds])
+  const damageRoll = DamageRoll.fromJson(
+    snapshot.damageRoll
+      ? foundry.utils.deepClone(snapshot.damageRoll)
+      : undefined,
+  )
 
-    atk.id = snapshot.id
-    atk.userId = snapshot.userId
-    atk.createdAt = snapshot.createdAt ?? 0
-    atk.isResolved = snapshot.isResolved
-    atk.appliedEffects = snapshot.appliedEffects ?? []
-    atk.subAttacks = (snapshot.subAttacks ?? []).map(sub => ComboSubAttack.fromJson(sub))
+  const atk = new AdversaryAttack(
+    actor,
+    {
+      attackName: snapshot.title,
+      dmgType: damageRoll?.dmgType ?? "physical",
+      dice: damageRoll?.dice ?? [],
+      saveTypes: snapshot.saveTypes,
+      description: snapshot.description,
+      halfDamageOnSave: snapshot.halfDamageOnSave,
+      isSpellAttack: snapshot.isSpellAttack,
+      appliedEffects: snapshot.appliedEffects,
+    },
+    [...snapshot.targetIds],
+  )
 
-    return atk
+  atk.id = snapshot.id
+  atk.userId = snapshot.userId
+  atk.createdAt = snapshot.createdAt ?? 0
+  atk.isResolved = snapshot.isResolved
+  atk.damageRoll = damageRoll
+  const follower = snapshot.skillCheck ? getFollowerContext(actor) : undefined
+  atk.skillCheck = follower
+    ? SkillCheck.fromJson(
+        follower.hero,
+        foundry.utils.deepClone(snapshot.skillCheck),
+      )
+    : undefined
+  atk.imbues = deserializeImbues(snapshot)
+  atk.appliedEffects = snapshot.appliedEffects ?? []
+  atk.saveResults = snapshot.saveResults
+    ? foundry.utils.deepClone(snapshot.saveResults)
+    : {}
+  atk.defenseArmorBonuses = snapshot.defenseArmorBonuses
+    ? foundry.utils.deepClone(snapshot.defenseArmorBonuses)
+    : {}
+  atk.rerolledSaveTargetIds = snapshot.rerolledSaveTargetIds
+    ? [...snapshot.rerolledSaveTargetIds]
+    : []
+
+  return atk
+}
+
+function deserializeComboAttack(
+  snapshot: AttackSnapshot,
+): AdversaryComboAttack | undefined {
+  const actor = game.actors?.get(snapshot.actorId)
+  if (!actor) return
+
+  const atk = new AdversaryComboAttack(
+    actor,
+    { comboName: snapshot.title, subAttacks: [] },
+    [...snapshot.targetIds],
+  )
+
+  atk.id = snapshot.id
+  atk.userId = snapshot.userId
+  atk.createdAt = snapshot.createdAt ?? 0
+  atk.isResolved = snapshot.isResolved
+  atk.appliedEffects = snapshot.appliedEffects ?? []
+  atk.subAttacks = (snapshot.subAttacks ?? []).map((sub) =>
+    ComboSubAttack.fromJson(sub),
+  )
+
+  return atk
 }

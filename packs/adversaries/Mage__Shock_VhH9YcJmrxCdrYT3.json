@@ -270,9 +270,7 @@
           },
           "type": "shock"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "dazed",
@@ -294,9 +292,7 @@
           },
           "type": "shock"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "dazed",

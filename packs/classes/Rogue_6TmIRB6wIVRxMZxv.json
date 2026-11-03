@@ -34,11 +34,7 @@
       }
     ],
     "complexity": 2,
-    "keyStats": [
-      "dexterity",
-      "awareness",
-      "luck"
-    ],
+    "keyStats": ["dexterity", "awareness", "luck"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.YD5v9D76fPIczKKy",
       "Compendium.vagabond-app.gear.Item.WvZ6sSUhcAEieYT2",

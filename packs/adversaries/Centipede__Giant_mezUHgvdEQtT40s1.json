@@ -261,9 +261,7 @@
         "type": "melee",
         "range": "close",
         "name": "Bite",
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "damage": {
           "type": "physical",
           "dice": {

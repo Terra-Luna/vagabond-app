@@ -286,9 +286,7 @@
             "explodesOn": []
           }
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "restrained",

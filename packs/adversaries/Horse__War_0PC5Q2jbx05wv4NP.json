@@ -270,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {
@@ -292,9 +290,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2
         }
       ],

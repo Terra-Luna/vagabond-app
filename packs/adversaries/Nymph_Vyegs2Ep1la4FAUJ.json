@@ -271,9 +271,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ]
+        "saves": ["will"]
       }
     ],
     "combo": {

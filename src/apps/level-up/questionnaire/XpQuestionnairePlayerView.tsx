@@ -1,60 +1,78 @@
 import { Check, Save } from "lucide-react"
-import { useCallback, useMemo,useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 
-import { appLang } from "../../../utils/lang"
+import { appLang } from "../../../util/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
-import { DestructiveButton, PrimaryButton } from "../../../view/component/Button"
+import {
+  DestructiveButton,
+  PrimaryButton,
+} from "../../../view/component/Button"
 import { XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 
-export const XpQuestionnairePlayerView = ({ questions, onSave }: {
-    questions: XpQuestion[], onSave: (xp: number) => void
+export const XpQuestionnairePlayerView = ({
+  questions,
+  onSave,
+}: {
+  questions: XpQuestion[]
+  onSave: (xp: number) => void
 }) => {
+  const [selections, setSelections] = useState<string[]>([])
 
-    const [selections, setSelections] = useState<string[]>([])
-    
-    const xp = useMemo(() => {
-        return selections.reduce((sum, qId) => { return sum + (questions.find(it => it.id === qId)?.xp ?? 0)}, 0)
-    }, [questions, selections])
+  const xp = useMemo(() => {
+    return selections.reduce((sum, qId) => {
+      return sum + (questions.find((it) => it.id === qId)?.xp ?? 0)
+    }, 0)
+  }, [questions, selections])
 
-    const handleSelection = useCallback((question: XpQuestion) => {
-        if (selections.includes(question.id)) {
-            setSelections(current => current.filter(s => s !== question.id))
-        }
-        else {
-            setSelections(current => [...current, question.id])
-        }
-    }, [selections, questions])
+  const handleSelection = useCallback(
+    (question: XpQuestion) => {
+      if (selections.includes(question.id)) {
+        setSelections((current) => current.filter((s) => s !== question.id))
+      }
+      else {
+        setSelections((current) => [...current, question.id])
+      }
+    },
+    [selections, questions],
+  )
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        onSave(xp)
-    }
-    
-    return (
-        <form onSubmit={handleSubmit} className="flex flex-col grow h-full gap-2 p-2 bg-sheet-main-fill text-lg text-text-primary font-eskapade rounded-lg">
-            {/* Questionnaire List Container */}
-            <div className="flex flex-col gap-2">
-                {questions.map((q) => (
-                    <div key={q.id} onClick={() => handleSelection(q)} className={`
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    onSave(xp)
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col grow h-full gap-2 p-2 bg-sheet-main-fill text-lg text-text-primary font-eskapade rounded-lg"
+    >
+      {/* Questionnaire List Container */}
+      <div className="flex flex-col gap-2">
+        {questions.map((q) => (
+          <div
+            key={q.id}
+            onClick={() => handleSelection(q)}
+            className={`
                         ${tableBorderRounded} p-2 hover-glow cursor-pointer
-                        ${selections.includes(q.id) ? 'bg-context-menu-fill' : ''}
-                    `}>
-                        <div className="flex justify-between">
-                            {selections.includes(q.id) && <Check size={24} />}
-                            <div>{q.text}</div>
-                            <div>{q.xp} XP</div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                        ${selections.includes(q.id) ? "bg-context-menu-fill" : ""}
+                    `}
+          >
             <div className="flex justify-between">
-                <DestructiveButton onClick={() => onSave(0)}>
-                    {appLang.ButtonActions.cancel}
-                </DestructiveButton>
-                <PrimaryButton type="submit" icon={<Save size={16} />}>
-                    {appLang.ButtonActions.save}
-                </PrimaryButton>
+              {selections.includes(q.id) && <Check size={24} />}
+              <div>{q.text}</div>
+              <div>{q.xp} XP</div>
             </div>
-        </form>
-    )
+          </div>
+        ))}
+      </div>
+      <div className="flex justify-between">
+        <DestructiveButton onClick={() => onSave(0)}>
+          {appLang.ButtonActions.cancel}
+        </DestructiveButton>
+        <PrimaryButton type="submit" icon={<Save size={16} />}>
+          {appLang.ButtonActions.save}
+        </PrimaryButton>
+      </div>
+    </form>
+  )
 }

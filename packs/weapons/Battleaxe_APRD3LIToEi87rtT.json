@@ -41,13 +41,9 @@
       "style": "V",
       "state": "H"
     },
-    "properties": [
-      "cleave"
-    ],
+    "properties": ["cleave"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ]
+    "skills": ["melee"]
   },
   "effects": [],
   "folder": null,

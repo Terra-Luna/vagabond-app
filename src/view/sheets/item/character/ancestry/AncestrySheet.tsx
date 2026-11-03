@@ -1,18 +1,18 @@
-import { VagabondItemSheet } from "../../VagabondItemSheet";
-import { AncestrySheetComponent } from "./AncestrySheetComponent";
+import { VagabondItemSheet } from "../../VagabondItemSheet"
+import { AncestrySheetComponent } from "./AncestrySheetComponent"
 
 export class AncestrySheet extends VagabondItemSheet {
-    static DEFAULT_OPTIONS = {
-        position: {
-            width: 800,
-            height: "auto",
-            top: 100,
-            left: 100
-        },
-        window: {
-            resizable: true
-        },
-        dragDrop: []
-    }
-    Component = AncestrySheetComponent
+  static DEFAULT_OPTIONS = {
+    position: {
+      width: 800,
+      height: "auto",
+      top: 100,
+      left: 100,
+    },
+    window: {
+      resizable: true,
+    },
+    dragDrop: [],
+  }
+  Component = AncestrySheetComponent
 }

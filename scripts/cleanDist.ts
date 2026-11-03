@@ -1,2 +1,2 @@
-import fs from 'node:fs'
+import fs from "node:fs"
 fs.rmSync("./dist", { recursive: true, force: true })

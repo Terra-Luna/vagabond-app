@@ -5,16 +5,26 @@ import { tableBorderRounded } from "../../../view/common/border-styles"
 import { ItemPortraitComponent } from "../../../view/sheets/item/shared/ItemPortraitComponent"
 
 export const MaterialsCounter = ({ text }: { text: string | number }) => {
+  const materialsItem = useMemo(() => {
+    return ItemsCache.sundries().find((it) => it.system.isMaterials)
+  }, [])
 
-    const materialsItem = useMemo(() => {
-        return ItemsCache.sundries().find(it => it.system.isMaterials)
-    }, [])
-
-    return (
-        <div className={`flex w-fit pr-2 items-end gap-x-1 ${tableBorderRounded} bg-context-menu-fill`}>
-            {materialsItem && <ItemPortraitComponent item={materialsItem} size={28} className="flex" disableCtxMenu={true} />}
-            <p className="font-paradigm">x</p>
-            <p className="text-text-primary text-center font-eskapade font-bold">{text}</p>
-        </div>
-    )
+  return (
+    <div
+      className={`flex w-fit pr-2 items-end gap-x-1 ${tableBorderRounded} bg-context-menu-fill`}
+    >
+      {materialsItem && (
+        <ItemPortraitComponent
+          item={materialsItem}
+          size={28}
+          className="flex"
+          disableCtxMenu={true}
+        />
+      )}
+      <p className="font-paradigm">x</p>
+      <p className="text-text-primary text-center font-eskapade font-bold">
+        {text}
+      </p>
+    </div>
+  )
 }

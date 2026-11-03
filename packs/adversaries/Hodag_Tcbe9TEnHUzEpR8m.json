@@ -204,13 +204,8 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "fire",
-            "poison"
-          ],
-          "weaknesses": [
-            "acid"
-          ],
+          "immunities": ["fire", "poison"],
+          "weaknesses": ["acid"],
           "statusImmunities": []
         },
         "out": {
@@ -275,10 +270,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "reflex",
-          "endure"
-        ]
+        "saves": ["reflex", "endure"]
       },
       {
         "name": "Spike",
@@ -294,9 +286,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Bite",
@@ -309,9 +299,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       }

@@ -1,11 +1,19 @@
 import { Plus } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
-import { addPerkPrerequisite, deletePerkPrerequisite,PerkDataModel } from "../../../../../model/item/character/PerkDataModel"
+import {
+  addPerkPrerequisite,
+  deletePerkPrerequisite,
+  PerkDataModel,
+} from "../../../../../model/item/character/PerkDataModel"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
-import { appLang } from "../../../../../utils/lang"
-import { createDropdownEntries, createDropdownEntriesForItems,createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
-import { andOrToSymbol } from "../../../../../utils/stringUtil"
+import { appLang } from "../../../../../util/lang"
+import {
+  createDropdownEntries,
+  createDropdownEntriesForItems,
+  createDropdownEntriesFromObj,
+} from "../../../../../util/locale-util"
+import { andOrToSymbol } from "../../../../../util/string-util"
 import { UtilityButton } from "../../../../component/Button"
 import { Checkbox } from "../../../../component/Checkbox"
 import { DropDown } from "../../../../component/Dropdown"
@@ -15,222 +23,311 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 
-export const PerkSheetComponent = ({ item }: { item: Item & { system: PerkDataModel } }) => {
-    const { isEditMode } = useEditMode()
+export const PerkSheetComponent = ({
+  item,
+}: {
+  item: Item & { system: PerkDataModel }
+}) => {
+  const { isEditMode } = useEditMode()
 
-    return (<>
-        <BaseSkillSheetComponent item={item} content={
-            <div className="w-full">
-                <div className="flex gap-x-2 items-center">
-                    {isEditMode &&
-                        <div className="flex-col gap-2">
-                            <Checkbox
-                                label={"Can take multiple times"}
-                                onCheckedChanged={() => { item.update({ 'system.canTakeMultiple': !item.system.canTakeMultiple } as Record<string, boolean>) }}
-                                checked={item.system.canTakeMultiple}
-                            />
+  return (
+    <>
+      <BaseSkillSheetComponent
+        item={item}
+        content={
+          <div className="w-full">
+            <div className="flex gap-x-2 items-center">
+              {isEditMode && (
+                <div className="flex-col gap-2">
+                  <Checkbox
+                    label={"Can take multiple times"}
+                    onCheckedChanged={() => {
+                      item.update({
+                        "system.canTakeMultiple": !item.system.canTakeMultiple,
+                      } as Record<string, boolean>)
+                    }}
+                    checked={item.system.canTakeMultiple}
+                  />
 
-                            <ItemSheetPropLabel label={appLang.ItemSheet.prerequisites} className={"font-bold"} />
-                        </div>
-                    }
+                  <ItemSheetPropLabel
+                    label={appLang.ItemSheet.prerequisites}
+                    className={"font-bold"}
+                  />
                 </div>
-                
-                {isEditMode && <>
-                    <div className="space-y-0.5">
-                        {item.system.prerequisites.map((_, index) => (
-                            <Prerequisite key={index} perk={item} prereqIndex={index} />
-                        ))}
-                        <div className="ml-6 mt-1">
-                            <UtilityButton title={appLang.General.addNewPrerequisite} onClick={() => addPerkPrerequisite(item)}>
-                                {appLang.ButtonActions.add}
-                            </UtilityButton>
-                        </div>
-                    </div>
-                </>}
-
-                <div className="my-4">
-                    <ItemRulesManager item={item} />
-                </div>
-
+              )}
             </div>
-        } />
-    </>)
+
+            {isEditMode && (
+              <>
+                <div className="space-y-0.5">
+                  {item.system.prerequisites.map((_, index) => (
+                    <Prerequisite key={index} perk={item} prereqIndex={index} />
+                  ))}
+                  <div className="ml-6 mt-1">
+                    <UtilityButton
+                      title={appLang.General.addNewPrerequisite}
+                      onClick={() => addPerkPrerequisite(item)}
+                    >
+                      {appLang.ButtonActions.add}
+                    </UtilityButton>
+                  </div>
+                </div>
+              </>
+            )}
+
+            <div className="my-4">
+              <ItemRulesManager item={item} />
+            </div>
+          </div>
+        }
+      />
+    </>
+  )
 }
 
-const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataModel }, prereqIndex: number }) => {
-    const { isEditMode } = useEditMode()
-    const prereq = perk.system.prerequisites[prereqIndex]
-    const [spellDropdownItems, setSpellDropdownItems] = useState<{ value: string, label: string }[]>([])
+const Prerequisite = ({
+  perk,
+  prereqIndex,
+}: {
+  perk: Item & { system: PerkDataModel }
+  prereqIndex: number
+}) => {
+  const { isEditMode } = useEditMode()
+  const prereq = perk.system.prerequisites[prereqIndex]
+  const [spellDropdownItems, setSpellDropdownItems] = useState<
+    { value: string; label: string }[]
+  >([])
 
-    useEffect(() => {
-        createDropdownEntriesForItems('spell', true).then((spells) => {
-            setSpellDropdownItems(spells)
-        })
-    }, [])
+  useEffect(() => {
+    createDropdownEntriesForItems("spell", true).then((spells) => {
+      setSpellDropdownItems(spells)
+    })
+  }, [])
 
-    const onUpdateType = useCallback((type) => {
-        perk.update({
-            'system.prerequisites': perk.system.prerequisites.map((prereq, i) => {
-                if (i === prereqIndex) return { ...prereq, type: type }
-                else return { ...prereq }
-            })
-        } as Record<string, any[]>)
-    }, [perk.system.prerequisites])
+  const onUpdateType = useCallback(
+    (type) => {
+      perk.update({
+        "system.prerequisites": perk.system.prerequisites.map((prereq, i) => {
+          if (i === prereqIndex) return { ...prereq, type: type }
+          else return { ...prereq }
+        }),
+      } as Record<string, any[]>)
+    },
+    [perk.system.prerequisites],
+  )
 
-    const onUpdateStat = useCallback((stat) => {
-        perk.update({
-            'system.prerequisites': perk.system.prerequisites.map((prereq, i) => {
-                if (i === prereqIndex) return { ...prereq, stat: stat }
-                else return { ...prereq }
-            })
-        } as Record<string, any[]>)
-    }, [perk.system.prerequisites])
+  const onUpdateStat = useCallback(
+    (stat) => {
+      perk.update({
+        "system.prerequisites": perk.system.prerequisites.map((prereq, i) => {
+          if (i === prereqIndex) return { ...prereq, stat: stat }
+          else return { ...prereq }
+        }),
+      } as Record<string, any[]>)
+    },
+    [perk.system.prerequisites],
+  )
 
-    const onUpdateValue = useCallback((val) => {
-        perk.update({
-            'system.prerequisites': perk.system.prerequisites.map((prereq, i) => {
-                if (i === prereqIndex) return { ...prereq, value: val }
-                else return { ...prereq }
-            })
-        } as Record<string, any[]>)
-    }, [perk.system.prerequisites])
+  const onUpdateValue = useCallback(
+    (val) => {
+      perk.update({
+        "system.prerequisites": perk.system.prerequisites.map((prereq, i) => {
+          if (i === prereqIndex) return { ...prereq, value: val }
+          else return { ...prereq }
+        }),
+      } as Record<string, any[]>)
+    },
+    [perk.system.prerequisites],
+  )
 
-    const onUpdateSpell = useCallback((spell) => {
-        perk.update({
-            'system.prerequisites': perk.system.prerequisites.map((prereq, i) => {
-                if (i === prereqIndex) return { ...prereq, spell: spell }
-                else return { ...prereq }
-            })
-        } as Record<string, any>)
-    }, [perk.system.prerequisites])
+  const onUpdateSpell = useCallback(
+    (spell) => {
+      perk.update({
+        "system.prerequisites": perk.system.prerequisites.map((prereq, i) => {
+          if (i === prereqIndex) return { ...prereq, spell: spell }
+          else return { ...prereq }
+        }),
+      } as Record<string, any>)
+    },
+    [perk.system.prerequisites],
+  )
 
-    const onUpdateTrainedSkill = useCallback((skillGroupIndex, skillIndex, newSkill) => {
-        const currentSkillGroup = prereq.skills[skillGroupIndex]
-        const updatedSkillNames = currentSkillGroup.skillNames.map((sk, skIndex) => {
-            if (skIndex === skillIndex) return newSkill
-            else return sk
-        }) as string[]
-        const updatedSkillGroup = { skillNames: updatedSkillNames, andOr: currentSkillGroup.andOr }
-        const updatedSkills = prereq.skills.map((skgrp, i) => {
-            if (i === skillGroupIndex) return { ...updatedSkillGroup }
-            else return { ...skgrp }
-        })
-        const updatedPrereqs = perk.system.prerequisites.map((prereq, i) => {
-            if (i === prereqIndex) return { ...prereq, skills: updatedSkills }
-            else return { ...prereq }
-        })
-        perk.update({ 'system.prerequisites': updatedPrereqs } as Record<string, any[]>)
-    }, [perk.system.prerequisites])
+  const onUpdateTrainedSkill = useCallback(
+    (skillGroupIndex, skillIndex, newSkill) => {
+      const currentSkillGroup = prereq.skills[skillGroupIndex]
+      const updatedSkillNames = currentSkillGroup.skillNames.map(
+        (sk, skIndex) => {
+          if (skIndex === skillIndex) return newSkill
+          else return sk
+        },
+      ) as string[]
+      const updatedSkillGroup = {
+        skillNames: updatedSkillNames,
+        andOr: currentSkillGroup.andOr,
+      }
+      const updatedSkills = prereq.skills.map((skgrp, i) => {
+        if (i === skillGroupIndex) return { ...updatedSkillGroup }
+        else return { ...skgrp }
+      })
+      const updatedPrereqs = perk.system.prerequisites.map((prereq, i) => {
+        if (i === prereqIndex) return { ...prereq, skills: updatedSkills }
+        else return { ...prereq }
+      })
+      perk.update({ "system.prerequisites": updatedPrereqs } as Record<
+        string,
+        any[]
+      >)
+    },
+    [perk.system.prerequisites],
+  )
 
-    const onUpdateAndOr = useCallback((skillGroupIndex, andOr) => {
-        const currentSkillGroup = prereq.skills[skillGroupIndex]
-        const updatedSkillGroup = { skillNames: currentSkillGroup.skillNames, andOr: andOr }
-        const updatedSkills = prereq.skills.map((skgrp, i) => {
-            if (i === skillGroupIndex) return { ...updatedSkillGroup }
-            else return { ...skgrp }
-        })
-        const updatedPrereqs = perk.system.prerequisites.map((prereq, i) => {
-            if (i === prereqIndex) return { ...prereq, skills: updatedSkills }
-            else return { ...prereq }
-        })
-        perk.update({ 'system.prerequisites': updatedPrereqs } as Record<string, any[]>)
-    }, [perk.system.prerequisites])
+  const onUpdateAndOr = useCallback(
+    (skillGroupIndex, andOr) => {
+      const currentSkillGroup = prereq.skills[skillGroupIndex]
+      const updatedSkillGroup = {
+        skillNames: currentSkillGroup.skillNames,
+        andOr: andOr,
+      }
+      const updatedSkills = prereq.skills.map((skgrp, i) => {
+        if (i === skillGroupIndex) return { ...updatedSkillGroup }
+        else return { ...skgrp }
+      })
+      const updatedPrereqs = perk.system.prerequisites.map((prereq, i) => {
+        if (i === prereqIndex) return { ...prereq, skills: updatedSkills }
+        else return { ...prereq }
+      })
+      perk.update({ "system.prerequisites": updatedPrereqs } as Record<
+        string,
+        any[]
+      >)
+    },
+    [perk.system.prerequisites],
+  )
 
-    const onAddTrainedSkill = useCallback((skillGroupIndex) => {
-        const currentSkillGroup = prereq.skills[skillGroupIndex]
-        currentSkillGroup.skillNames.push(Object.keys(appLang.Skills)[0])
-        perk.render()
-    }, [perk.system.prerequisites])
+  const onAddTrainedSkill = useCallback(
+    (skillGroupIndex) => {
+      const currentSkillGroup = prereq.skills[skillGroupIndex]
+      currentSkillGroup.skillNames.push(Object.keys(appLang.Skills)[0])
+      perk.render()
+    },
+    [perk.system.prerequisites],
+  )
 
-    return (
-        <div className="flex flex-wrap gap-1 items-end">
-            {isEditMode &&
-                <TrashButton onClick={() => deletePerkPrerequisite(perk, prereqIndex)} className="mb-1" />
-            }
-            {(isEditMode || prereq.type !== 'stat') &&
-                <div className="flex items-end">
-                    <DropDown
-                        value={prereq.type}
-                        options={createDropdownEntries(appLang.PrerequisiteTypes)}
-                        updateMechanism={{ onChange: onUpdateType }}
-                        parent={perk}
-                    />
-                    <p className="text-lg text-text-secondary font-eskapade font-bold mb-0.5">:</p>
-                </div>
-            }
-            {prereq.type === 'stat' &&
-                <div className="flex flex-wrap items-end gap-1">
-                    <DropDown
-                        value={prereq.stat}
-                        options={createDropdownEntriesFromObj(appLang.Stat)}
-                        updateMechanism={{ onChange: onUpdateStat }}
-                        parent={perk}
-                    />
-                    <DropDown
-                        value={prereq.value?.toString() ?? ''}
-                        options={[
-                            { label: "3+", value: "3" },
-                            { label: "4+", value: "4" },
-                            { label: "5+", value: "5" },
-                            { label: "6+", value: "6" },
-                            { label: "7", value: "7" }
-                        ]}
-                        updateMechanism={{ onChange: onUpdateValue }}
-                        parent={perk}
-                    />
-                </div>
-            }
-            {prereq.type === 'spell' &&
-                <DropDown
-                    value={prereq.spell}
-                    options={spellDropdownItems}
-                    updateMechanism={{ onChange: onUpdateSpell }}
-                    parent={perk}
-            />
-            }
-            {prereq.type === 'trained' &&
-                <>
-                    {
-                        prereq.skills.map((skillsGroup, skillGroupIndex) => (
-                            <div key={skillGroupIndex} className="flex flex-wrap gap-1 items-end">
-                                {
-                                    skillsGroup.skillNames.map((skill, skillIndex) => (
-                                        <div key={skillGroupIndex + skillIndex + skill} className="flex gap-x-1 items-end">
-                                            <DropDown
-                                                value={skill}
-                                                options={createDropdownEntriesFromObj(appLang.Skills)}
-                                                updateMechanism={{ onChange: (skill) => onUpdateTrainedSkill(skillGroupIndex, skillIndex, skill) }}
-                                                parent={perk}
-                                            />
-                                            {isEditMode && skillsGroup.skillNames.length > 1 && skillIndex < skillsGroup.skillNames.length - 1 ?
-                                                <SingleSelect
-                                                    options={[
-                                                        { value: 'and', label: appLang.PerkSheet.prereqAnd },
-                                                        { value: 'or', label: appLang.PerkSheet.prereqOr }
-                                                    ]}
-                                                    value={skillsGroup.andOr}
-                                                    setValue={(selection) => onUpdateAndOr(skillGroupIndex, selection)}
-                                                    canUnselect={true}
-                                                /> :
-                                                <div>
-                                                    {skillsGroup.skillNames.length > 1 && skillIndex < skillsGroup.skillNames.length - 1 &&
-                                                        <p className="text-text-secondary mb-1">{andOrToSymbol(skillsGroup.andOr)}</p>
-                                                    }
-                                                </div>
-                                            }
-                                            {isEditMode && skillIndex === skillsGroup.skillNames.length - 1 &&
-                                                <Plus size={20} strokeWidth={3} className="text-text-tertiary cursor-pointer mb-1"
-                                                    onClick={() => onAddTrainedSkill(skillGroupIndex)}
-                                                />
-                                            }
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                        ))
-                }
-            </>
-            }
+  return (
+    <div className="flex flex-wrap gap-1 items-end">
+      {isEditMode && (
+        <TrashButton
+          onClick={() => deletePerkPrerequisite(perk, prereqIndex)}
+          className="mb-1"
+        />
+      )}
+      {(isEditMode || prereq.type !== "stat") && (
+        <div className="flex items-end">
+          <DropDown
+            value={prereq.type}
+            options={createDropdownEntries(appLang.PrerequisiteTypes)}
+            updateMechanism={{ onChange: onUpdateType }}
+            parent={perk}
+          />
+          <p className="text-lg text-text-secondary font-eskapade font-bold mb-0.5">
+            :
+          </p>
         </div>
-    )
+      )}
+      {prereq.type === "stat" && (
+        <div className="flex flex-wrap items-end gap-1">
+          <DropDown
+            value={prereq.stat}
+            options={createDropdownEntriesFromObj(appLang.Stat)}
+            updateMechanism={{ onChange: onUpdateStat }}
+            parent={perk}
+          />
+          <DropDown
+            value={prereq.value?.toString() ?? ""}
+            options={[
+              { label: "3+", value: "3" },
+              { label: "4+", value: "4" },
+              { label: "5+", value: "5" },
+              { label: "6+", value: "6" },
+              { label: "7", value: "7" },
+            ]}
+            updateMechanism={{ onChange: onUpdateValue }}
+            parent={perk}
+          />
+        </div>
+      )}
+      {prereq.type === "spell" && (
+        <DropDown
+          value={prereq.spell}
+          options={spellDropdownItems}
+          updateMechanism={{ onChange: onUpdateSpell }}
+          parent={perk}
+        />
+      )}
+      {prereq.type === "trained" && (
+        <>
+          {prereq.skills.map((skillsGroup, skillGroupIndex) => (
+            <div
+              key={skillGroupIndex}
+              className="flex flex-wrap gap-1 items-end"
+            >
+              {skillsGroup.skillNames.map((skill, skillIndex) => (
+                <div
+                  key={skillGroupIndex + skillIndex + skill}
+                  className="flex gap-x-1 items-end"
+                >
+                  <DropDown
+                    value={skill}
+                    options={createDropdownEntriesFromObj(appLang.Skills)}
+                    updateMechanism={{
+                      onChange: (skill) =>
+                        onUpdateTrainedSkill(
+                          skillGroupIndex,
+                          skillIndex,
+                          skill,
+                        ),
+                    }}
+                    parent={perk}
+                  />
+                  {isEditMode &&
+                  skillsGroup.skillNames.length > 1 &&
+                  skillIndex < skillsGroup.skillNames.length - 1 ? (
+                    <SingleSelect
+                      options={[
+                        { value: "and", label: appLang.PerkSheet.prereqAnd },
+                        { value: "or", label: appLang.PerkSheet.prereqOr },
+                      ]}
+                      value={skillsGroup.andOr}
+                      setValue={(selection) =>
+                        onUpdateAndOr(skillGroupIndex, selection)
+                      }
+                      canUnselect={true}
+                    />
+                  ) : (
+                    <div>
+                      {skillsGroup.skillNames.length > 1 &&
+                        skillIndex < skillsGroup.skillNames.length - 1 && (
+                          <p className="text-text-secondary mb-1">
+                            {andOrToSymbol(skillsGroup.andOr)}
+                          </p>
+                        )}
+                    </div>
+                  )}
+                  {isEditMode &&
+                    skillIndex === skillsGroup.skillNames.length - 1 && (
+                      <Plus
+                        size={20}
+                        strokeWidth={3}
+                        className="text-text-tertiary cursor-pointer mb-1"
+                        onClick={() => onAddTrainedSkill(skillGroupIndex)}
+                      />
+                    )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </>
+      )}
+    </div>
+  )
 }

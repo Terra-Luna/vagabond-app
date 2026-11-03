@@ -12,9 +12,7 @@
     "armor": {
       "rating": 4
     },
-    "senses": [
-      "allsight"
-    ],
+    "senses": ["allsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -208,12 +206,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "cold",
-            "physical_lt0",
-            "poison",
-            "shock"
-          ],
+          "immunities": ["cold", "physical_lt0", "poison", "shock"],
           "weaknesses": [],
           "statusImmunities": [
             "charmed",
@@ -288,9 +281,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "appliedEffects": [
           {
             "effect": "frightened",
@@ -312,9 +303,7 @@
           },
           "type": "cold"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

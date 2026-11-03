@@ -204,14 +204,8 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "acid",
-            "cold",
-            "poison"
-          ],
-          "weaknesses": [
-            "fire"
-          ],
+          "immunities": ["acid", "cold", "poison"],
+          "weaknesses": ["fire"],
           "statusImmunities": []
         },
         "out": {
@@ -276,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Sickened",
@@ -294,9 +286,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "paralyzed",

@@ -10,9 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -272,9 +270,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "recharge": "Cd4",
         "appliedEffects": [
           {
@@ -297,9 +293,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Stone",
@@ -315,9 +309,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "paralyzed",

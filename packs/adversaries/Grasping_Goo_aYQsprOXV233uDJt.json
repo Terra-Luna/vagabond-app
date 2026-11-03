@@ -11,9 +11,7 @@
     "armor": {
       "rating": 0
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,17 +205,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "acid"
-          ],
-          "weaknesses": [
-            "fire"
-          ],
-          "statusImmunities": [
-            "blinded",
-            "fatigued",
-            "prone"
-          ]
+          "immunities": ["acid"],
+          "weaknesses": ["fire"],
+          "statusImmunities": ["blinded", "fatigued", "prone"]
         },
         "out": {
           "melee": {},
@@ -281,9 +271,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {

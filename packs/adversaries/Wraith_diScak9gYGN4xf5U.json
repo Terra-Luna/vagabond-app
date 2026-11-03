@@ -10,9 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,9 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "physical"
-          ],
+          "immunities": ["physical"],
           "weaknesses": [],
           "statusImmunities": [
             "charmed",
@@ -283,9 +279,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

@@ -10,9 +10,7 @@
     "armor": {
       "rating": 0
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,9 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "poison"
-          ],
+          "immunities": ["poison"],
           "weaknesses": [],
           "statusImmunities": [
             "berserk",
@@ -282,9 +278,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Sicken",
@@ -300,9 +294,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "sickened",

@@ -20,9 +20,7 @@
         "label": "Ability: Tap",
         "level": 1,
         "value": true,
-        "selector": [
-          "flags.tap"
-        ]
+        "selector": ["flags.tap"]
       }
     ],
     "level": 1,

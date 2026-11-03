@@ -10,9 +10,7 @@
     "armor": {
       "rating": 0
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -269,9 +267,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 1</span></p>",
         "type": "melee",
         "range": "close"

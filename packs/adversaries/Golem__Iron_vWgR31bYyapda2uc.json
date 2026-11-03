@@ -12,9 +12,7 @@
     "armor": {
       "rating": 5
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -205,15 +203,8 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "physical_lt0",
-            "fire",
-            "cold",
-            "poison"
-          ],
-          "weaknesses": [
-            "adamant"
-          ],
+          "immunities": ["physical_lt0", "fire", "cold", "poison"],
+          "weaknesses": ["adamant"],
           "statusImmunities": [
             "charmed",
             "fatigued",
@@ -282,9 +273,7 @@
           },
           "type": "fatigue"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "recharge": "Cd8"
       },
       {
@@ -301,9 +290,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

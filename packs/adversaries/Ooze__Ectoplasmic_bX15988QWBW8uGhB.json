@@ -11,9 +11,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,12 +205,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "acid",
-            "cold",
-            "physical_lt0",
-            "poison"
-          ],
+          "immunities": ["acid", "cold", "physical_lt0", "poison"],
           "weaknesses": [],
           "statusImmunities": [
             "blinded",
@@ -284,9 +277,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Fatigued",
@@ -302,9 +293,7 @@
           },
           "type": "fatigue"
         },
-        "saves": [
-          "endure"
-        ]
+        "saves": ["endure"]
       }
     ],
     "combo": {

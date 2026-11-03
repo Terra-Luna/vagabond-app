@@ -1,88 +1,134 @@
-import { Minus, Plus } from 'lucide-react'
+import { Minus, Plus } from "lucide-react"
 
-import { SkillCheckResult } from '../../combat/engine/roll/SkillCheck'
-import { appLang } from '../../utils/lang'
-import { getTokenImg } from "../../utils/modelUtil"
+import { SkillCheckResult } from "../../combat/engine/roll/SkillCheck"
+import { appLang } from "../../util/lang"
+import { getTokenImg } from "../../util/model-util"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
-import { DiceRollComponent } from './component/DiceRollComponent'
+import { DiceRollComponent } from "./component/DiceRollComponent"
 
-export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, result: SkillCheckResult }) => {
-    const actor = game.actors?.get(actorId)
+export const SkillCheckChatCard = ({
+  actorId,
+  result,
+}: {
+  actorId: string
+  result: SkillCheckResult
+}) => {
+  const actor = game.actors?.get(actorId)
 
-    return (
-        <BaseChatCardHost
-            banner={<ChatCardBanner
-                tokenId={actor?.getActiveTokens()[0]?.id}
-                portrait={getTokenImg(actor)}
-                title={`${appLang.Skills[result.skill]?.name ?? appLang.Saves[result.skill]?.name} Check`}
-                subtitle={[
-                    { label: appLang.Combat.difficulty, value: result.difficulty?.toString() },
-                    { label: appLang.Combat.result, value: result.outcome }
-                ]}
-            />}
-            contents={<>
-                <SkillCheckDiceComponent
-                    d20s={result.d20s}
-                    d6s={result.d6s}
-                    modifier={result.modifier}
-                    favHinder={result.favorHinder}
-                    bonusDice={result.bonusDice}
-                />
-            </>}
+  return (
+    <BaseChatCardHost
+      banner={
+        <ChatCardBanner
+          tokenId={actor?.getActiveTokens()[0]?.id}
+          portrait={getTokenImg(actor)}
+          title={`${appLang.Skills[result.skill]?.name ?? appLang.Saves[result.skill]?.name} Check`}
+          subtitle={[
+            {
+              label: appLang.Combat.difficulty,
+              value: result.difficulty?.toString(),
+            },
+            { label: appLang.Combat.result, value: result.outcome },
+          ]}
         />
-    )
+      }
+      contents={
+        <>
+          <SkillCheckDiceComponent
+            d20s={result.d20s}
+            d6s={result.d6s}
+            modifier={result.modifier}
+            favHinder={result.favorHinder}
+            bonusDice={result.bonusDice}
+          />
+        </>
+      }
+    />
+  )
 }
 
-export const SkillCheckDiceComponent = ({ d20s, d6s, modifier, favHinder, bonusDice }: { d20s?: number[], d6s?: number[], modifier?: number, favHinder?: string, bonusDice?: { faces: number, result: number }[] }) => {
-    const favorHinderDice: number[] = d6s ?? []
-    d20s = d20s ?? []
-    modifier = modifier ?? 0
+export const SkillCheckDiceComponent = ({
+  d20s,
+  d6s,
+  modifier,
+  favHinder,
+  bonusDice,
+}: {
+  d20s?: number[]
+  d6s?: number[]
+  modifier?: number
+  favHinder?: string
+  bonusDice?: { faces: number; result: number }[]
+}) => {
+  const favorHinderDice: number[] = d6s ?? []
+  d20s = d20s ?? []
+  modifier = modifier ?? 0
 
-    return (
-        <div className="flex flex-wrap px-1 gap-x-1 mt-2 justify-center items-center">
-            {/* D20 DICE ARRAY */}
-            {d20s.map((d20: number, index: number) => (
-                <DiceRollComponent key={index} faces={20} result={d20} discarded={index < d20s.length - 1} textSize="text-5xl" />
-            ))}
-            {/* FAVOR/HINDER DICE */}
-            {favHinder && favHinder !== 'none' &&
-                <div className="flex">
-                    <div className="h-full content-center">{
-                        favHinder === 'favor'
-                            ? <Plus size={24} strokeWidth={2} className="mt-2" />
-                            : <Minus size={24} strokeWidth={2} className="mt-2" />
-                    }</div>
-                    {favorHinderDice.map((res, index) => (
-                        <div key={index} className="h-full content-center">
-                            <DiceRollComponent
-                                faces={6} result={res} textSize="text-4xl"
-                                exploded={favorHinderDice.length > 1 && index < favorHinderDice.length - 1 && res === 6}
-                            />
-                        </div>
-                    ))}
-                </div>
-            }
-
-            {/* BONUS DICE */}
-            {bonusDice?.map((bonusDie, index) => (
-                <div className="flex items-center" key={index}>
-                    <Plus size={24} strokeWidth={2} className="-mt-1" />
-                    <DiceRollComponent key={index} faces={bonusDie.faces} result={bonusDie.result} textSize="text-4xl" />
-                </div>
-            ))}
-
-            {/* MODIFIER */}
-            {modifier !== 0 &&
-                <div className="flex items-center -mt-3">
-                    <div className="h-full content-center">{
-                        modifier > 0
-                            ? <Plus size={22} strokeWidth={2} className="mt-2" />
-                            : <Minus size={22} strokeWidth={2} className="mt-2" />
-                    }</div>
-                    <p className="text-3xl">{Math.abs(modifier)}</p>
-                </div>
-            }
+  return (
+    <div className="flex flex-wrap px-1 gap-x-1 mt-2 justify-center items-center">
+      {/* D20 DICE ARRAY */}
+      {d20s.map((d20: number, index: number) => (
+        <DiceRollComponent
+          key={index}
+          faces={20}
+          result={d20}
+          discarded={index < d20s.length - 1}
+          textSize="text-5xl"
+        />
+      ))}
+      {/* FAVOR/HINDER DICE */}
+      {favHinder && favHinder !== "none" && (
+        <div className="flex">
+          <div className="h-full content-center">
+            {favHinder === "favor" ? (
+              <Plus size={24} strokeWidth={2} className="mt-2" />
+            ) : (
+              <Minus size={24} strokeWidth={2} className="mt-2" />
+            )}
+          </div>
+          {favorHinderDice.map((res, index) => (
+            <div key={index} className="h-full content-center">
+              <DiceRollComponent
+                faces={6}
+                result={res}
+                textSize="text-4xl"
+                exploded={
+                  favorHinderDice.length > 1 &&
+                  index < favorHinderDice.length - 1 &&
+                  res === 6
+                }
+              />
+            </div>
+          ))}
         </div>
-    )
+      )}
+
+      {/* BONUS DICE */}
+      {bonusDice?.map((bonusDie, index) => (
+        <div className="flex items-center" key={index}>
+          <Plus size={24} strokeWidth={2} className="-mt-1" />
+          <DiceRollComponent
+            key={index}
+            faces={bonusDie.faces}
+            result={bonusDie.result}
+            textSize="text-4xl"
+          />
+        </div>
+      ))}
+
+      {/* MODIFIER */}
+      {modifier !== 0 && (
+        <div className="flex items-center -mt-3">
+          <div className="h-full content-center">
+            {modifier > 0 ? (
+              <Plus size={22} strokeWidth={2} className="mt-2" />
+            ) : (
+              <Minus size={22} strokeWidth={2} className="mt-2" />
+            )}
+          </div>
+          <p className="text-3xl">{Math.abs(modifier)}</p>
+        </div>
+      )}
+    </div>
+  )
 }

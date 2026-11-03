@@ -1,58 +1,77 @@
-import { appLang } from "../../../utils/lang"
-import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
+import { appLang } from "../../../util/lang"
+import {
+  damageTypeOptions,
+  fields,
+  optionalString,
+  requiredInteger,
+  requiredString,
+} from "../../common/shared-schemas"
 import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
 const alchemySchema = () => {
-    return {
-        alchemyCategory: new fields.StringField({
-            ...optionalString,
-            initial: 'unk',
-            choices: Object.keys(appLang.AlchemyCategories)
+  return {
+    alchemyCategory: new fields.StringField({
+      ...optionalString,
+      initial: "unk",
+      choices: Object.keys(appLang.AlchemyCategories),
+    }),
+    damage: new fields.SchemaField({
+      dice: new fields.SchemaField({
+        count: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        faces: new fields.NumberField({
+          ...requiredInteger,
+          initial: 4,
+          min: 1,
+          max: 20,
         }),
-        damage: new fields.SchemaField({
-            dice: new fields.SchemaField({
-                count: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-                faces: new fields.NumberField({ ...requiredInteger, initial: 4, min: 1, max: 20 }),
-                modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-                explodesOn: new fields.ArrayField(
-                    new fields.NumberField({ integer: true, initial: 0, required: false }),
-                    { initial: [] }
-                )
-            }),
-            type: new fields.StringField({ ...damageTypeOptions() })
+        modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        explodesOn: new fields.ArrayField(
+          new fields.NumberField({
+            integer: true,
+            initial: 0,
+            required: false,
+          }),
+          { initial: [] },
+        ),
+      }),
+      type: new fields.StringField({ ...damageTypeOptions() }),
+    }),
+    appliedEffects: new fields.ArrayField(
+      new fields.SchemaField({
+        effect: new fields.StringField({
+          ...requiredString,
+          choices: Object.keys(appLang.StatusConditions),
         }),
-        appliedEffects: new fields.ArrayField(
-            new fields.SchemaField({
-                effect: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.StatusConditions) }),
-                duration: new fields.StringField({ ...optionalString }),
-                critDuration: new fields.StringField({ ...optionalString })
-            }),
-            { initial: [] }
-        )
-    }
+        duration: new fields.StringField({ ...optionalString }),
+        critDuration: new fields.StringField({ ...optionalString }),
+      }),
+      { initial: [] },
+    ),
+  }
 }
 
-export type AlchemicalSchema = ReturnType<typeof alchemySchema> & EquipmentSchema
+export type AlchemicalSchema = ReturnType<typeof alchemySchema> &
+  EquipmentSchema
 
 export class AlchemicalItemDataModel extends EquipmentDataModel<AlchemicalSchema> {
-    static defineSchema() {
-        return {
-            ...super.defineSchema(),
-            ...alchemySchema()
-        }
+  static defineSchema() {
+    return {
+      ...super.defineSchema(),
+      ...alchemySchema(),
     }
+  }
 
-    override async _preCreate(data: any, options: any, user: any) {
-        await super._preCreate(data, options, user)
-        this.parent.updateSource({
-            'system.category': 'alchemy',
-            'system.isConsumable': true
-        })
-    }
+  override async _preCreate(data: any, options: any, user: any) {
+    await super._preCreate(data, options, user)
+    this.parent.updateSource({
+      "system.category": "alchemy",
+      "system.isConsumable": true,
+    })
+  }
 
-    override prepareBaseData() {
-        super.prepareBaseData()
-        this.bulk.isStackable = true
-        if (this.lightSourceData?.isLightSource) this.isEquippable = true
-    }
+  override prepareBaseData() {
+    super.prepareBaseData()
+    this.bulk.isStackable = true
+    if (this.lightSourceData?.isLightSource) this.isEquippable = true
+  }
 }

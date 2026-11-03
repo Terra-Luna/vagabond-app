@@ -16,26 +16,26 @@ The `foundry` script assumes the Windows default installation path:
 
 1. Install the dependencies:
 
-	```sh
-	corepack enable
-	pnpm install
-	```
+   ```sh
+   corepack enable
+   pnpm install
+   ```
 
 2. Build the system and run the test suite:
 
-	```sh
-	pnpm build
-	pnpm test
-	```
+   ```sh
+   pnpm build
+   pnpm test
+   ```
 
 3. Link or copy the generated `dist` directory into your Foundry data directory:
 
-	```text
-	<Foundry data>/systems/vagabond-app/
-	```
+   ```text
+   <Foundry data>/systems/vagabond-app/
+   ```
 
-	The directory must contain the built system files and `system.json` and `./lang/en.json`. A
-	symlink is recommended for local development so each build is immediately available to Foundry.
+   The directory must contain the built system files and `system.json` and `./lang/en.json`. A
+   symlink is recommended for local development so each build is immediately available to Foundry.
 
 ## Local Development
 
@@ -60,17 +60,17 @@ trigger a browser refresh.
 
 ## Commands
 
-| Command | Purpose |
-| --- | --- |
-| `pnpm build` | Build the system into `dist` |
-| `pnpm test` | Build and run Jest tests |
-| `pnpm lint` | Run ESLint and check circular dependencies |
-| `pnpm lint:fix` | Apply ESLint fixes to `src` |
-| `pnpm circ-deps` | Check the dependency graph for cycles |
-| `pnpm pack:build` | Pack compendium data and build the system |
-| `pnpm pack:packs` | Generate packed compendium files in `dist` |
-| `pnpm unpack:packs` | Expand packed compendium files into `packs` |
-| `pnpm clean-dist` | Remove generated files that should not be deployed |
+| Command             | Purpose                                            |
+| ------------------- | -------------------------------------------------- |
+| `pnpm build`        | Build the system into `dist`                       |
+| `pnpm test`         | Build and run Jest tests                           |
+| `pnpm lint`         | Run ESLint and check circular dependencies         |
+| `pnpm lint:fix`     | Apply ESLint fixes to `src`                        |
+| `pnpm circ-deps`    | Check the dependency graph for cycles              |
+| `pnpm pack:build`   | Pack compendium data and build the system          |
+| `pnpm pack:packs`   | Generate packed compendium files in `dist`         |
+| `pnpm unpack:packs` | Expand packed compendium files into `packs`        |
+| `pnpm clean-dist`   | Remove generated files that should not be deployed |
 
 ## Repository Layout
 

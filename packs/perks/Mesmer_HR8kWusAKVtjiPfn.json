@@ -14,9 +14,7 @@
         "spell": "Charm",
         "skills": [
           {
-            "skillNames": [
-              "arcana"
-            ],
+            "skillNames": ["arcana"],
             "andOr": null
           }
         ]

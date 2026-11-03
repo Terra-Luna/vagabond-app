@@ -14,9 +14,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "arcana"
-            ],
+            "skillNames": ["arcana"],
             "andOr": null
           }
         ]
@@ -28,10 +26,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "melee",
-              "ranged"
-            ],
+            "skillNames": ["melee", "ranged"],
             "andOr": "or"
           }
         ]

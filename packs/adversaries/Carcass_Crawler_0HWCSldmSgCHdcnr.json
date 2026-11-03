@@ -10,9 +10,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -288,9 +286,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Paralyze",
@@ -306,9 +302,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "paralyzed",

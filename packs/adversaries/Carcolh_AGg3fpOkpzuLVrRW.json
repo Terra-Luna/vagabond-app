@@ -11,9 +11,7 @@
     "armor": {
       "rating": 4
     },
-    "senses": [
-      "seismicsense"
-    ],
+    "senses": ["seismicsense"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -273,9 +271,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "burning",
@@ -297,9 +293,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "restrained",
@@ -325,9 +319,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1,
           "appliedEffects": [
             {
@@ -350,9 +342,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1,
           "appliedEffects": [
             {

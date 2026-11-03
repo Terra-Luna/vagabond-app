@@ -204,10 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "fire",
-            "poison"
-          ],
+          "immunities": ["fire", "poison"],
           "weaknesses": [],
           "statusImmunities": []
         },
@@ -270,9 +267,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       }
@@ -291,9 +286,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 5,
           "type": "melee",
           "range": "close"

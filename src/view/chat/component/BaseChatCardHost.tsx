@@ -1,4 +1,4 @@
-import { tableBorder } from "../../common/border-styles";
+import { tableBorder } from "../../common/border-styles"
 
 const chatCardBodyStyle = `
     ${tableBorder}
@@ -11,12 +11,10 @@ const chatCardBodyStyle = `
 `
 
 export const BaseChatCardHost = ({ banner, contents }) => {
-    return (
-        <div className={chatCardBodyStyle}>
-            {banner}
-            <div className="p-1">
-                {contents}
-            </div>
-        </div>
-    )
+  return (
+    <div className={chatCardBodyStyle}>
+      {banner}
+      <div className="p-1">{contents}</div>
+    </div>
+  )
 }

@@ -40,13 +40,9 @@
       "style": "H",
       "state": "H"
     },
-    "properties": [
-      "grapple"
-    ],
+    "properties": ["grapple"],
     "material": "steel",
-    "skills": [
-      "brawl"
-    ]
+    "skills": ["brawl"]
   },
   "effects": [],
   "folder": null,

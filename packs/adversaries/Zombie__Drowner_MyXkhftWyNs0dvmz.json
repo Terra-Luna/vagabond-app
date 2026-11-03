@@ -10,9 +10,7 @@
     "armor": {
       "rating": 0
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,12 +204,8 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "poison"
-          ],
-          "weaknesses": [
-            "shock"
-          ],
+          "immunities": ["poison"],
+          "weaknesses": ["shock"],
           "statusImmunities": [
             "berserk",
             "charmed",
@@ -284,9 +278,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Grasp",
@@ -302,9 +294,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "restrained",

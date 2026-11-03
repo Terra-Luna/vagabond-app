@@ -11,9 +11,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,15 +205,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "fire",
-            "poison"
-          ],
+          "immunities": ["fire", "poison"],
           "weaknesses": [],
-          "statusImmunities": [
-            "fatigued",
-            "sickened"
-          ]
+          "statusImmunities": ["fatigued", "sickened"]
         },
         "out": {
           "melee": {},
@@ -279,9 +271,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "restrained",

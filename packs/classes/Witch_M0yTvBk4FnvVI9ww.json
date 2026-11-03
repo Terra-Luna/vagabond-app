@@ -26,16 +26,11 @@
         "label": "Training",
         "level": "1",
         "value": true,
-        "selector": [
-          "skills.mysticism.trained",
-          "skills.craft.trained"
-        ]
+        "selector": ["skills.mysticism.trained", "skills.craft.trained"]
       }
     ],
     "complexity": 3,
-    "keyStats": [
-      "awareness"
-    ],
+    "keyStats": ["awareness"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.2AvL41sfAOamV2oe",
       "Compendium.vagabond-app.gear.Item.5y2TEMR983wkMy3s"

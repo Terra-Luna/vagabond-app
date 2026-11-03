@@ -12,9 +12,7 @@
     "armor": {
       "rating": 0
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -205,14 +203,8 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "physical",
-            "poison"
-          ],
-          "weaknesses": [
-            "blunt",
-            "silvered"
-          ],
+          "immunities": ["physical", "poison"],
+          "weaknesses": ["blunt", "silvered"],
           "statusImmunities": [
             "charmed",
             "fatigued",
@@ -281,9 +273,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {
@@ -303,9 +293,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 4
         }
       ]

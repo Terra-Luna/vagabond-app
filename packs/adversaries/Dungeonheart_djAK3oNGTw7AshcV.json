@@ -146,9 +146,7 @@
       "damage": {
         "in": {
           "immunities": [],
-          "weaknesses": [
-            "pierce"
-          ],
+          "weaknesses": ["pierce"],
           "statusImmunities": [
             "berserk",
             "charmed",

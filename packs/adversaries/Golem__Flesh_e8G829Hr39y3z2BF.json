@@ -12,9 +12,7 @@
     "armor": {
       "rating": 0
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -205,21 +203,9 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "physical_lt0",
-            "cold",
-            "shock",
-            "poison"
-          ],
-          "weaknesses": [
-            "fire"
-          ],
-          "statusImmunities": [
-            "charmed",
-            "fatigued",
-            "paralyzed",
-            "sickened"
-          ]
+          "immunities": ["physical_lt0", "cold", "shock", "poison"],
+          "weaknesses": ["fire"],
+          "statusImmunities": ["charmed", "fatigued", "paralyzed", "sickened"]
         },
         "out": {
           "melee": {},
@@ -281,9 +267,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

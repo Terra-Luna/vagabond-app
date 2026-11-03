@@ -1,48 +1,68 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 
-import { appLang } from "../../utils/lang"
+import { appLang } from "../../util/lang"
 import { MultiSelect, SelectOption } from "../../view/component/MultiSelect"
-import { getSelectorOptions, isValidSelector, normalizeSelector, SelectorKind } from "../util/selector-util"
+import {
+  getSelectorOptions,
+  isValidSelector,
+  normalizeSelector,
+  SelectorKind,
+} from "../util/selector-util"
 import { ItemRulesLabel } from "./ItemRulesTypography"
 
 interface SelectorInputProps {
-    label: string
-    value: string[]
-    kind: SelectorKind
-    onChange: (selector: string[]) => void
+  label: string
+  value: string[]
+  kind: SelectorKind
+  onChange: (selector: string[]) => void
 }
 
-export const SelectorInput = ({ label, value, kind, onChange }: SelectorInputProps) => {
-    const options = useMemo(() => getSelectorOptions(kind), [kind])
-    const [local, setLocal] = useState<string[]>(value ?? [])
-    const lastEmitted = useRef<string[] | null>(null)
+export const SelectorInput = ({
+  label,
+  value,
+  kind,
+  onChange,
+}: SelectorInputProps) => {
+  const options = useMemo(() => getSelectorOptions(kind), [kind])
+  const [local, setLocal] = useState<string[]>(value ?? [])
+  const lastEmitted = useRef<string[] | null>(null)
 
-    useEffect(() => {
-        const incoming = value ?? []
-        if (lastEmitted.current !== null) {
-            if (JSON.stringify(incoming) !== JSON.stringify(lastEmitted.current)) return
-            lastEmitted.current = null
-        }
-        setLocal(incoming)
-    }, [value])
+  useEffect(() => {
+    const incoming = value ?? []
+    if (lastEmitted.current !== null) {
+      if (JSON.stringify(incoming) !== JSON.stringify(lastEmitted.current))
+        return
+      lastEmitted.current = null
+    }
+    setLocal(incoming)
+  }, [value])
 
-    const selected = useMemo<SelectOption[]>(() => local.map(path => ({ label: path, value: path })), [local])
+  const selected = useMemo<SelectOption[]>(
+    () => local.map((path) => ({ label: path, value: path })),
+    [local],
+  )
 
-    return (
-        <div className="flex flex-col gap-2">
-            <ItemRulesLabel text={label} />
-            <MultiSelect
-                options={options}
-                value={selected}
-                placeholder={appLang.RulesEditor.pathEntryPlaceholder}
-                isValidNewOption={input => isValidSelector(input, kind)}
-                handleOnChange={values => {
-                    const next = Array.from(new Set(values.map(v => normalizeSelector(v.value)).filter(s => isValidSelector(s, kind))))
-                    lastEmitted.current = next
-                    setLocal(next)
-                    onChange(next)
-                }}
-            />
-        </div>
-    )
+  return (
+    <div className="flex flex-col gap-2">
+      <ItemRulesLabel text={label} />
+      <MultiSelect
+        options={options}
+        value={selected}
+        placeholder={appLang.RulesEditor.pathEntryPlaceholder}
+        isValidNewOption={(input) => isValidSelector(input, kind)}
+        handleOnChange={(values) => {
+          const next = Array.from(
+            new Set(
+              values
+                .map((v) => normalizeSelector(v.value))
+                .filter((s) => isValidSelector(s, kind)),
+            ),
+          )
+          lastEmitted.current = next
+          setLocal(next)
+          onChange(next)
+        }}
+      />
+    </div>
+  )
 }

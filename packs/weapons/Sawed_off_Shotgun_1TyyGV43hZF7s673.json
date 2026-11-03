@@ -41,13 +41,9 @@
       "style": "H",
       "state": "H"
     },
-    "properties": [
-      "vicious"
-    ],
+    "properties": ["vicious"],
     "material": "steel",
-    "skills": [
-      "ranged"
-    ]
+    "skills": ["ranged"]
   },
   "effects": [],
   "folder": null,

@@ -80,7 +80,7 @@
 
 .light {
   --color-sheet-header-fill: #181818;
-  --color-text-header-primary: #E7E5E4;
+  --color-text-header-primary: #e7e5e4;
   --color-text-header-secondary: #d2b450;
   --color-text-header-tertiary: #212e41;
   --color-sheet-main-fill: #fbfbfb;
@@ -91,7 +91,7 @@
   --color-scroll-bar-track: #f0f0f0;
   --color-section-header-fill: #181818;
   --color-section-header-line: #212e41;
-  --color-text-section-header: #E7E5E4;
+  --color-text-section-header: #e7e5e4;
   --color-text-primary: #181818;
   --color-text-secondary: #44403b;
   --color-text-tertiary: #6f5e53;
@@ -129,7 +129,7 @@
   --color-ic-equipped: #3d5541;
   --color-text-encumbrance: #181818;
   --color-btn-primary-fill: #181818;
-  --color-btn-primary-text: #E7E5E4;
+  --color-btn-primary-text: #e7e5e4;
   --color-btn-secondary-text: #3d2622;
   --color-destructive-action: #f72b35;
   --color-context-menu-fill: #c5c5c5;
@@ -138,14 +138,14 @@
   --color-dice: #212e41;
   --color-dice-text: #ffffff;
   --color-magical: #155dfc;
-  --color-fire: #DE671E;
-  --color-cold: #00D0FF;
-  --color-shock: #FFFF56;
-  --color-acid: #80E31C;
+  --color-fire: #de671e;
+  --color-cold: #00d0ff;
+  --color-shock: #ffff56;
+  --color-acid: #80e31c;
   --color-poison: #3b680d;
   --color-necrotic: #009800;
-  --color-psychic: #E938DD;
-  --color-healing: #00FF00;
+  --color-psychic: #e938dd;
+  --color-healing: #00ff00;
   --color-physical: #181818;
   --color-black: #000000;
   --color-success: #289652;
@@ -154,7 +154,7 @@
 
 .dark {
   --color-sheet-header-fill: #020617;
-  --color-text-header-primary: #E7E5E4;
+  --color-text-header-primary: #e7e5e4;
   --color-text-header-secondary: #d2b450;
   --color-text-header-tertiary: #d2b450;
   --color-sheet-main-fill: #292524;
@@ -165,11 +165,11 @@
   --color-scroll-bar-track: #221f21;
   --color-section-header-fill: #020617;
   --color-section-header-line: #212e41;
-  --color-text-section-header: #E7E5E4;
-  --color-text-primary: #D6D3D1;
+  --color-text-section-header: #e7e5e4;
+  --color-text-primary: #d6d3d1;
   --color-text-secondary: #d1c8c0;
   --color-text-tertiary: #918780;
-  --color-text-special: #E7E5E4;
+  --color-text-special: #e7e5e4;
   --color-text-aux: #c1bebd;
   --color-text-dmg: #ee5e61;
   --color-text-glow: #d2b450;
@@ -203,22 +203,22 @@
   --color-text-encumbrance: #d2b450;
   --color-btn-primary-fill: #d2b450;
   --color-btn-primary-text: #020617;
-  --color-btn-secondary-text: #E7E5E4;
+  --color-btn-secondary-text: #e7e5e4;
   --color-destructive-action: #f72b35;
   --color-context-menu-fill: #020617;
   --color-context-menu-hover: #212e41;
-  --color-context-menu-text: #E7E5E4;
+  --color-context-menu-text: #e7e5e4;
   --color-dice: #d2b450;
   --color-dice-text: #212e41;
   --color-magical: #155dfc;
-  --color-fire: #DE671E;
-  --color-cold: #00D0FF;
-  --color-shock: #FFFF56;
-  --color-acid: #80E31C;
+  --color-fire: #de671e;
+  --color-cold: #00d0ff;
+  --color-shock: #ffff56;
+  --color-acid: #80e31c;
   --color-poison: #3b680d;
   --color-necrotic: #009800;
-  --color-psychic: #E938DD;
-  --color-healing: #00FF00;
+  --color-psychic: #e938dd;
+  --color-healing: #00ff00;
   --color-physical: #e7e8f0;
   --color-white: #ffffff;
   --color-black: #000000;
@@ -233,7 +233,7 @@
 
   .hover-glow {
     /* Transition filter instead of text-shadow */
-    transition: filter 0.2s ease; 
+    transition: filter 0.2s ease;
   }
 
   .hover-glow:hover {
@@ -329,39 +329,94 @@
 }
 
 .canvas-overlay-window {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    overflow: hidden !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    pointer-events: none !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
 }
 .canvas-overlay-viewport {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 /* RichTextField editor (lists, tables, toolbar). Based on https://lexical.dev/docs/getting-started/react */
-.vb-rtf ul, .vb-rtf ol { margin: 0; padding-left: 1.5rem; }
-.vb-rtf ul { list-style: disc outside; }
-.vb-rtf ol { list-style: decimal outside; }
-.vb-rtf ul ul, .vb-rtf ol ol, .vb-rtf ul ol, .vb-rtf ol ul { margin-left: 0.5rem; }
-.vb-rtf ul ul { list-style-type: circle; }
-.vb-rtf li { padding-left: 0.25rem; }
-.vb-rtf li.vb-rtf-nested { list-style-type: none; }
-.vb-rtf table { border-collapse: collapse; margin: 0.25rem 0; width: 100%; table-layout: fixed; }
-.vb-rtf th, .vb-rtf td { border: 1px solid color-mix(in srgb, currentColor 55%, transparent); padding: 0.125rem 0.375rem; vertical-align: top; min-width: 2rem; height: 1.75rem; }
-.vb-rtf th { font-weight: normal; text-align: left; }
+.vb-rtf ul,
+.vb-rtf ol {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+.vb-rtf ul {
+  list-style: disc outside;
+}
+.vb-rtf ol {
+  list-style: decimal outside;
+}
+.vb-rtf ul ul,
+.vb-rtf ol ol,
+.vb-rtf ul ol,
+.vb-rtf ol ul {
+  margin-left: 0.5rem;
+}
+.vb-rtf ul ul {
+  list-style-type: circle;
+}
+.vb-rtf li {
+  padding-left: 0.25rem;
+}
+.vb-rtf li.vb-rtf-nested {
+  list-style-type: none;
+}
+.vb-rtf table {
+  border-collapse: collapse;
+  margin: 0.25rem 0;
+  width: 100%;
+  table-layout: fixed;
+}
+.vb-rtf th,
+.vb-rtf td {
+  border: 1px solid color-mix(in srgb, currentColor 55%, transparent);
+  padding: 0.125rem 0.375rem;
+  vertical-align: top;
+  min-width: 2rem;
+  height: 1.75rem;
+}
+.vb-rtf th {
+  font-weight: normal;
+  text-align: left;
+}
 /* Lexical exports header cells with an inline background color, so this needs !important */
-.vb-rtf th, .vb-rtf td { background: transparent !important; color: inherit; text-shadow: none; }
-.vb-rtf-toolbar button { display: flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; padding: 0; border: none; border-radius: 4px; background: transparent; color: inherit; opacity: 0.7; cursor: pointer; }
-.vb-rtf-toolbar button:hover { opacity: 1; background: color-mix(in srgb, currentColor 15%, transparent); }
+.vb-rtf th,
+.vb-rtf td {
+  background: transparent !important;
+  color: inherit;
+  text-shadow: none;
+}
+.vb-rtf-toolbar button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.vb-rtf-toolbar button:hover {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 15%, transparent);
+}

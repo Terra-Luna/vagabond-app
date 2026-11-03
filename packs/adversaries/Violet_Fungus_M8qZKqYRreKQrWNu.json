@@ -11,10 +11,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "blindsight",
-      "telepath"
-    ],
+    "senses": ["blindsight", "telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -209,12 +206,8 @@
           "perDieReduction": 0,
           "resistances": [],
           "immunities": [],
-          "weaknesses": [
-            "fire"
-          ],
-          "statusImmunities": [
-            "sickened"
-          ]
+          "weaknesses": ["fire"],
+          "statusImmunities": ["sickened"]
         },
         "out": {
           "melee": {},
@@ -278,9 +271,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Sickened",
@@ -296,9 +287,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "sickened",

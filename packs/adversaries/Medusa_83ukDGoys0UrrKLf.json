@@ -205,9 +205,7 @@
           "perDieReduction": 0,
           "resistances": [],
           "immunities": [],
-          "weaknesses": [
-            "fire"
-          ],
+          "weaknesses": ["fire"],
           "statusImmunities": []
         },
         "out": {
@@ -272,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "recharge": "Cd4"
       },
       {
@@ -291,9 +287,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "sickened",
@@ -312,9 +306,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       }

@@ -3,148 +3,186 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
-import { deleteItems, getAlchemyMaterials, useItem } from "../../utils/heroInventoryUtil"
-import { appLang } from "../../utils/lang"
-import { addItemToActor, getFullItem } from "../../utils/modelUtil"
+import {
+  deleteItems,
+  getAlchemyMaterials,
+  useItem,
+} from "../../util/inventory-util"
+import { appLang } from "../../util/lang"
+import { addItemToActor, getFullItem } from "../../util/model-util"
 import { useAlchemySelection } from "../hero-choices/alchemy/AlchemySelectionUseCase"
 import { Recipes } from "../hero-choices/alchemy/Recipes"
 import { AlchemyToolsPill } from "./component/AlchemyToolsPill"
 import { MaterialsCounter } from "./component/MaterialsCounter"
 
-export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
+export const AlchemyCraftingView = ({
+  actor,
+}: {
+  actor: Actor & { system: HeroDataModel }
+}) => {
+  const [revision, setRevision] = useState(0)
+  const { alchemySlots, alchemyItems } = useAlchemySelection(
+    actor,
+    false,
+    true,
+    true,
+  )
+  const fullAlchemyItems = useMemo(() => {
+    return ItemsCache.alchemical()
+  }, [])
+  const tools = useMemo(() => {
+    return actor.items.find(
+      (it: any) =>
+        it.type === "sundry" &&
+        it.system.isAlchemyTools &&
+        it.system.isEquipped,
+    ) as Item & { system: AlchemicalItemDataModel }
+  }, [])
 
-    const [revision, setRevision] = useState(0)
-    const { alchemySlots, alchemyItems } = useAlchemySelection(actor, false, true, true)
-    const fullAlchemyItems = useMemo(() => { return ItemsCache.alchemical() }, [])
-    const tools = useMemo(() => {
-        return actor.items.find((it: any) =>
-            it.type === 'sundry' && it.system.isAlchemyTools && it.system.isEquipped
-        ) as Item & { system: AlchemicalItemDataModel }
-    }, [])
+  const getAlchemyItem = useCallback(
+    (item) => {
+      return getFullItem<AlchemicalItemDataModel>(
+        fullAlchemyItems.find(
+          (cachedItem) => cachedItem.uuid === item?.value,
+        ) ?? item,
+      )
+    },
+    [fullAlchemyItems],
+  )
 
-    const getAlchemyItem = useCallback((item) => {
-        return getFullItem<AlchemicalItemDataModel>(
-            fullAlchemyItems.find(cachedItem => cachedItem.uuid === item?.value) ?? item
-        )
-    }, [fullAlchemyItems])
-
-    const [lightSourceIds, setLightSourceIds] = useState<Set<string>>(new Set())
-    useEffect(() => {
-        let cancelled = false
-        Promise.all(fullAlchemyItems.map(async it => {
-            const full = await getFullItem<AlchemicalItemDataModel>(it)
-            return (full as any)?.system?.lightSourceData?.isLightSource ? it.uuid : undefined
-        })).then(ids => {
-            if (!cancelled) setLightSourceIds(new Set(ids.filter(Boolean) as string[]))
-        })
-        return () => { cancelled = true }
-    }, [fullAlchemyItems])
-
-    const materials = useMemo(() => {
-        return getAlchemyMaterials(actor).sort((a, b) => a.system.bulk.quantity - b.system.bulk.quantity)
-    }, [revision])
-
-    const materialsCount = useMemo(() => {
-        return materials.reduce((sum, it) => sum + it.system.bulk.quantity, 0)
-    }, [materials, revision])
-
-    const consumeMaterials = async (): Promise<boolean> => {
-        if (!materials[0]) {
-            ui.notifications?.warn(appLang.Notifications.materialsNotFound)
-            return false
-        }
-        if (materials[0].system.bulk.quantity > 1) {
-            await materials[0].update({ "system.bulk.quantity": materials[0].system.bulk.quantity - 1 } as Record<string, number>)
-        }
-        else {
-            await deleteItems(actor, [materials[0].id!])
-        }
-        return true
+  const [lightSourceIds, setLightSourceIds] = useState<Set<string>>(new Set())
+  useEffect(() => {
+    let cancelled = false
+    Promise.all(
+      fullAlchemyItems.map(async (it) => {
+        const full = await getFullItem<AlchemicalItemDataModel>(it)
+        return (full as any)?.system?.lightSourceData?.isLightSource
+          ? it.uuid
+          : undefined
+      }),
+    ).then((ids) => {
+      if (!cancelled)
+        setLightSourceIds(new Set(ids.filter(Boolean) as string[]))
+    })
+    return () => {
+      cancelled = true
     }
+  }, [fullAlchemyItems])
 
-    const validateToolsEquipped = (): boolean => {
-        if (!tools) {
-            ui.notifications?.warn(appLang.Notifications.alchemyToolsNotFound)
-            return false
-        }
-        return true
-    }
-
-    /**
-     * Spends Materials and generates item. See below for actions.
-     */
-    const craftItem = async (item, action: (fullItem: any) => Promise<void>) => {
-        const fullItem = await getAlchemyItem(item)
-        if (fullItem) {
-            if (await consumeMaterials()) {
-                await action(fullItem)
-            }
-        }
-        else {
-            ui.notifications?.error(appLang.Notifications.craftFailed)
-        }
-        setRevision(current => current + 1)
-    }
-
-    /**
-     * Spend Material and add item to Actor's inventory.
-     */
-    const addToInventory = useCallback(async (e, item) => {
-        if (!validateToolsEquipped()) return
-        craftItem(item, async (fullItem) => {
-            await addItemToActor(actor, fullItem)
-        })
-    }, [actor, materials, getAlchemyItem])
-
-    /**
-     * Spend Material and use item directly without adding it to inventory.
-     */
-    const craftAndUse = useCallback(async (e, item) => {
-        if (!validateToolsEquipped()) return
-        craftItem(item, async (fullItem) => {
-            await useItem(actor, fullItem, true, e)
-        })
-    }, [actor, materials, getAlchemyItem])
-
-    return (
-        <div className="@container">
-            <div className="flex w-full justify-between">
-                {tools && <AlchemyToolsPill item={tools} />}
-                {materials && <MaterialsCounter text={materialsCount} />}
-            </div>
-
-            <div className="flex flex-col h-full overflow-hidden">
-                <div className="flex-1 overflow-y-auto">
-                    <Recipes
-                        alchemySlots={alchemySlots}
-                        alchemyItems={alchemyItems}
-                        hideHeaderLabel={true}
-                        hideCompendiumLink={true}
-                        actions={[
-                            {
-                                label: appLang.HeroSheet.Alchemy.craft,
-                                tooltip: {
-                                    title: appLang.AlchemyCrafting.craftTooltipTitle,
-                                    content: appLang.HeroSheet.Alchemy.craft_tooltip
-                                },
-                                item: undefined,
-                                action: addToInventory
-                            },
-                            {
-                                label: appLang.HeroSheet.Alchemy.use,
-                                tooltip: {
-                                    title: appLang.AlchemyCrafting.useTooltipTitle,
-                                    content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}`
-                                },
-                                item: undefined,
-                                action: (e, item) => craftAndUse(e, item),
-                                hideForItem: (item) => lightSourceIds.has(item?.value)
-                            }
-                        ]}
-                    />
-                </div>
-            </div>
-
-        </div>
+  const materials = useMemo(() => {
+    return getAlchemyMaterials(actor).sort(
+      (a, b) => a.system.bulk.quantity - b.system.bulk.quantity,
     )
+  }, [revision])
+
+  const materialsCount = useMemo(() => {
+    return materials.reduce((sum, it) => sum + it.system.bulk.quantity, 0)
+  }, [materials, revision])
+
+  const consumeMaterials = async (): Promise<boolean> => {
+    if (!materials[0]) {
+      ui.notifications?.warn(appLang.Notifications.materialsNotFound)
+      return false
+    }
+    if (materials[0].system.bulk.quantity > 1) {
+      await materials[0].update({
+        "system.bulk.quantity": materials[0].system.bulk.quantity - 1,
+      } as Record<string, number>)
+    }
+    else {
+      await deleteItems(actor, [materials[0].id!])
+    }
+    return true
+  }
+
+  const validateToolsEquipped = (): boolean => {
+    if (!tools) {
+      ui.notifications?.warn(appLang.Notifications.alchemyToolsNotFound)
+      return false
+    }
+    return true
+  }
+
+  /**
+   * Spends Materials and generates item. See below for actions.
+   */
+  const craftItem = async (item, action: (fullItem: any) => Promise<void>) => {
+    const fullItem = await getAlchemyItem(item)
+    if (fullItem) {
+      if (await consumeMaterials()) {
+        await action(fullItem)
+      }
+    }
+    else {
+      ui.notifications?.error(appLang.Notifications.craftFailed)
+    }
+    setRevision((current) => current + 1)
+  }
+
+  /**
+   * Spend Material and add item to Actor's inventory.
+   */
+  const addToInventory = useCallback(
+    async (e, item) => {
+      if (!validateToolsEquipped()) return
+      craftItem(item, async (fullItem) => {
+        await addItemToActor(actor, fullItem)
+      })
+    },
+    [actor, materials, getAlchemyItem],
+  )
+
+  /**
+   * Spend Material and use item directly without adding it to inventory.
+   */
+  const craftAndUse = useCallback(
+    async (e, item) => {
+      if (!validateToolsEquipped()) return
+      craftItem(item, async (fullItem) => {
+        await useItem(actor, fullItem, true, e)
+      })
+    },
+    [actor, materials, getAlchemyItem],
+  )
+
+  return (
+    <div className="@container">
+      <div className="flex w-full justify-between">
+        {tools && <AlchemyToolsPill item={tools} />}
+        {materials && <MaterialsCounter text={materialsCount} />}
+      </div>
+
+      <div className="flex flex-col h-full overflow-hidden">
+        <div className="flex-1 overflow-y-auto">
+          <Recipes
+            alchemySlots={alchemySlots}
+            alchemyItems={alchemyItems}
+            hideHeaderLabel={true}
+            hideCompendiumLink={true}
+            actions={[
+              {
+                label: appLang.HeroSheet.Alchemy.craft,
+                tooltip: {
+                  title: appLang.AlchemyCrafting.craftTooltipTitle,
+                  content: appLang.HeroSheet.Alchemy.craft_tooltip,
+                },
+                item: undefined,
+                action: addToInventory,
+              },
+              {
+                label: appLang.HeroSheet.Alchemy.use,
+                tooltip: {
+                  title: appLang.AlchemyCrafting.useTooltipTitle,
+                  content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}`,
+                },
+                item: undefined,
+                action: (e, item) => craftAndUse(e, item),
+                hideForItem: (item) => lightSourceIds.has(item?.value),
+              },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  )
 }

@@ -11,9 +11,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "echolocation"
-    ],
+    "senses": ["echolocation"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -208,10 +206,7 @@
           "perDieReduction": 0,
           "resistances": [],
           "immunities": [],
-          "weaknesses": [
-            "fire",
-            "poison"
-          ],
+          "weaknesses": ["fire", "poison"],
           "statusImmunities": []
         },
         "out": {
@@ -276,9 +271,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "sickened",

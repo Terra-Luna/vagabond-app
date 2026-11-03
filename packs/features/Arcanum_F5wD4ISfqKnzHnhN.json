@@ -48,9 +48,7 @@
         "label": "Mana",
         "level": 1,
         "value": "2",
-        "selector": [
-          "mana.max"
-        ],
+        "selector": ["mana.max"],
         "valueMultiplier": "level.current"
       },
       {
@@ -59,9 +57,7 @@
         "label": "Caster Type",
         "level": 1,
         "value": "half",
-        "selector": [
-          "class.maxCastFormula"
-        ],
+        "selector": ["class.maxCastFormula"],
         "valueMultiplier": ""
       },
       {
@@ -70,9 +66,7 @@
         "label": "Casting Skill",
         "level": 1,
         "value": "arcana",
-        "selector": [
-          "class.castingSkill"
-        ]
+        "selector": ["class.castingSkill"]
       }
     ],
     "level": 1,

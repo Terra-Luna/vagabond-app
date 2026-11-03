@@ -270,9 +270,7 @@
           },
           "type": "cold"
         },
-        "saves": [
-          "endure"
-        ]
+        "saves": ["endure"]
       },
       {
         "name": "Ice Knife",
@@ -288,9 +286,7 @@
           },
           "type": "cold"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

@@ -206,9 +206,7 @@
           "perDieReduction": 0,
           "resistances": [],
           "immunities": [],
-          "weaknesses": [
-            "shock"
-          ],
+          "weaknesses": ["shock"],
           "statusImmunities": []
         },
         "out": {
@@ -273,9 +271,7 @@
           },
           "type": "necrotic"
         },
-        "saves": [
-          "will"
-        ]
+        "saves": ["will"]
       },
       {
         "name": "Claw",
@@ -288,9 +284,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       }

@@ -1,20 +1,30 @@
-import { getDeliveryDropdownOptions, SpellDelivery } from "../../../../../../../../combat/spellcasting/SpellDelivery"
-import { appLang } from "../../../../../../../../utils/lang"
+import {
+  getDeliveryDropdownOptions,
+  SpellDelivery,
+} from "../../../../../../../../combat/spellcasting/SpellDelivery"
+import { appLang } from "../../../../../../../../util/lang"
 import { DropDown } from "../../../../../../../component/Dropdown"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
-
-export const DeliverySelector = ({ deliveries, currentDelivery, onSelect }: {
-    deliveries: SpellDelivery[], currentDelivery: SpellDelivery | undefined, onSelect: (index: number) => void
+export const DeliverySelector = ({
+  deliveries,
+  currentDelivery,
+  onSelect,
+}: {
+  deliveries: SpellDelivery[]
+  currentDelivery: SpellDelivery | undefined
+  onSelect: (index: number) => void
 }) => {
-    return (
-        <div>
-            <SpellcastingLabel text={appLang.HeroSheet.Magic.labelDelivery} />
-            <DropDown
-                value={deliveries.findIndex(d => d.name === currentDelivery?.name).toString()}
-                options={getDeliveryDropdownOptions(deliveries)}
-                updateMechanism={{ onChange: onSelect }}
-            />
-        </div>
-    )
+  return (
+    <div>
+      <SpellcastingLabel text={appLang.HeroSheet.Magic.labelDelivery} />
+      <DropDown
+        value={deliveries
+          .findIndex((d) => d.name === currentDelivery?.name)
+          .toString()}
+        options={getDeliveryDropdownOptions(deliveries)}
+        updateMechanism={{ onChange: onSelect }}
+      />
+    </div>
+  )
 }

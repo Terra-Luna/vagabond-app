@@ -40,13 +40,9 @@
       "style": "V",
       "state": "H"
     },
-    "properties": [
-      "keen"
-    ],
+    "properties": ["keen"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ]
+    "skills": ["melee"]
   },
   "effects": [],
   "folder": null,

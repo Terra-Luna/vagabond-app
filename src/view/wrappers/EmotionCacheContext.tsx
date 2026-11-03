@@ -1,0 +1,21 @@
+import createCache from "@emotion/cache"
+import { CacheProvider } from "@emotion/react"
+import { ReactNode, useMemo } from "react"
+
+export const EmotionCacheContext = ({
+  scaduRoot,
+  children,
+}: {
+  scaduRoot: any
+  children: ReactNode
+}) => {
+  const emotionCache = useMemo(() => {
+    return createCache({
+      key: "shadow-react-select",
+      container: scaduRoot,
+      prepend: true,
+    })
+  }, [scaduRoot])
+
+  return <CacheProvider value={emotionCache}>{children}</CacheProvider>
+}

@@ -12,10 +12,7 @@
     "armor": {
       "rating": 8
     },
-    "senses": [
-      "allsight",
-      "darksight"
-    ],
+    "senses": ["allsight", "darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -209,15 +206,8 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "cold",
-            "fire",
-            "poison",
-            "shock"
-          ],
-          "weaknesses": [
-            "silvered"
-          ],
+          "immunities": ["cold", "fire", "poison", "shock"],
+          "weaknesses": ["silvered"],
           "statusImmunities": [
             "charmed",
             "confused",

@@ -11,9 +11,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,11 +205,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "magical",
-            "pierce",
-            "slash"
-          ],
+          "immunities": ["magical", "pierce", "slash"],
           "weaknesses": [],
           "statusImmunities": [
             "blinded",
@@ -280,9 +274,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       }

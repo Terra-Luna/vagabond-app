@@ -1,8 +1,8 @@
 import { Plus, Trash } from "lucide-react"
 import React from "react"
 
-import { appLang } from "../../utils/lang"
-import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
+import { appLang } from "../../util/lang"
+import { createDropdownEntriesFromObj } from "../../util/locale-util"
 import { tableBorder } from "../../view/common/border-styles"
 import { Checkbox } from "../../view/component/Checkbox"
 import { DropZone } from "../../view/component/DropZone"
@@ -13,298 +13,381 @@ import { ItemRuleInput, ItemRuleSelector } from "../shared/ItemRuleInput"
 import { ItemRulesLabel } from "../shared/ItemRulesTypography"
 
 export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
-    // Read the options list array, defaulting to an empty array if uninitialized
-    const choices: ChoiceOption[] = rule.choices || []
+  // Read the options list array, defaulting to an empty array if uninitialized
+  const choices: ChoiceOption[] = rule.choices || []
 
-    // Update specific keys inside an individual option index row using idx
-    const handleUpdateOption = async (indexToUpdate: number, fields: Partial<ChoiceOption>) => {
-        const updatedChoices = choices.map((choice, idx) => {
-            if (idx !== indexToUpdate) return choice
-            return { ...choice, ...fields }
-        })
-        onChange({
-            ...rule,
-            choices: updatedChoices
-        })
+  // Update specific keys inside an individual option index row using idx
+  const handleUpdateOption = async (
+    indexToUpdate: number,
+    fields: Partial<ChoiceOption>,
+  ) => {
+    const updatedChoices = choices.map((choice, idx) => {
+      if (idx !== indexToUpdate) return choice
+      return { ...choice, ...fields }
+    })
+    onChange({
+      ...rule,
+      choices: updatedChoices,
+    })
+  }
+
+  // Add a blank template selection choice row slot to the array
+  const handleAddOption = () => {
+    onChange({
+      ...rule,
+      choices: [
+        ...choices,
+        { value: "", label: appLang.RulesEditor.newOption },
+      ],
+    })
+  }
+
+  // Remove a specific target selection choice row from the array using oIdx
+  const handleRemoveOption = (indexToRemove: number) => {
+    onChange({
+      ...rule,
+      choices: choices.filter((_, idx) => idx !== indexToRemove),
+    })
+  }
+
+  const isItemChannel =
+    rule.channel === "spell" ||
+    rule.channel === "perk" ||
+    rule.channel === "alchemical" ||
+    rule.channel === "item"
+
+  const handleDrop = async (e: React.DragEvent, index: number) => {
+    if (!isItemChannel) return
+    const rawData = e.dataTransfer.getData("text/plain")
+    if (!rawData) return
+
+    const dropData = JSON.parse(rawData)
+    if (dropData.type === "Item" && dropData.uuid) {
+      const droppedItem = await fromUuid(dropData.uuid)
+      const itemType = (droppedItem as any)?.type
+      const channel =
+        itemType === "spell" || itemType === "perk" || itemType === "alchemical"
+          ? itemType
+          : rule.channel
+      onChange({
+        ...rule,
+        channel,
+        pack: channel === "item" ? rule.pack : channel,
+        choices: choices.map((choice, idx) =>
+          idx !== index
+            ? choice
+            : {
+                ...choice,
+                value: dropData.uuid,
+                label: (droppedItem ? droppedItem.name : choice.label) ?? "",
+              },
+        ),
+      })
     }
+  }
 
-    // Add a blank template selection choice row slot to the array
-    const handleAddOption = () => {
-        onChange({
-            ...rule,
-            choices: [...choices, { value: "", label: appLang.RulesEditor.newOption }]
-        })
-    }
+  return (
+    <div
+      className={`flex flex-col gap-3 text-text-primary bg-sheet-main-fill p-2 ${tableBorder}`}
+    >
+      {/* CHOICE CONFIGURATION SETTINGS */}
+      <div className="grid grid-cols-2 gap-2 items-start">
+        <ItemRuleInput
+          label={appLang.RulesEditor.name}
+          value={rule.label || ""}
+          placeholder={appLang.RulesEditor.trainingChoicesExample}
+          onChange={(e) => onChange({ label: e.target.value })}
+          type="text"
+        />
+        <ItemRuleInput
+          label={appLang.RulesEditor.levelRequirement}
+          value={rule.level || 0}
+          placeholder="0"
+          onChange={(e) => onChange({ level: e.target.value })}
+          type="number"
+        />
+        <ItemRuleInput
+          label={appLang.RulesEditor.levelsHereafter}
+          value={rule.scale || 0}
+          placeholder="0"
+          onChange={(e) => onChange({ scale: e.target.value })}
+          type="number"
+        />
+        <ItemRuleInput
+          label={appLang.RulesEditor.numberOfChoices}
+          value={rule.maxChoices ?? 1}
+          onChange={(e) =>
+            onChange({ maxChoices: Math.max(1, Number(e.target.value)) })
+          }
+          type="number"
+        />
 
-    // Remove a specific target selection choice row from the array using oIdx
-    const handleRemoveOption = (indexToRemove: number) => {
-        onChange({
-            ...rule,
-            choices: choices.filter((_, idx) => idx !== indexToRemove)
-        })
-    }
+        {/* CHANNEL SELECT */}
+        <ItemRuleSelector
+          label={appLang.RulesEditor.channel}
+          value={rule.channel ?? ""}
+          options={
+            <>
+              <option value="path">
+                {appLang.RulesEditor.statAttributeModifier}
+              </option>
+              <option value="item">
+                {appLang.RulesEditor.spellsPerksAlchemy}
+              </option>
+            </>
+          }
+          onChange={(e) => {
+            const val = e.target.value
+            if (val === "path") {
+              onChange({
+                channel: val,
+                sourceMode: "static",
+                pack: "",
+                choices: [],
+                filters: [],
+              })
+            }
+            else {
+              onChange({
+                channel: val,
+                pack: "perk",
+                choices: [],
+                filters: [],
+              })
+            }
+          }}
+        />
 
-    const isItemChannel = rule.channel === "spell" || rule.channel === "perk" || rule.channel === "alchemical" || rule.channel === "item"
+        {/* SELECT CHOICE SET TYPE: DYNAMIC / STATIC */}
+        {(rule.channel === "item" ||
+          rule.channel === "perk" ||
+          rule.channel === "spell" ||
+          rule.channel === "alchemical") && (
+          <ItemRuleSelector
+            label={appLang.RulesEditor.choicesSource}
+            value={rule.sourceMode}
+            options={
+              <>
+                <option value="static">
+                  {appLang.RulesEditor.staticManualList}
+                </option>
+                <option value="dynamic">
+                  {appLang.RulesEditor.dynamicItemPack}
+                </option>
+              </>
+            }
+            onChange={(e) => {
+              onChange({ sourceMode: e.target.value, filters: [] })
+            }}
+          />
+        )}
 
-    const handleDrop = async (e: React.DragEvent, index: number) => {
-        if (!isItemChannel) return
-        const rawData = e.dataTransfer.getData("text/plain")
-        if (!rawData) return
+        {/* Conditionally show input field if rule.pack contains a valid string */}
+        {rule.sourceMode === "dynamic" && (
+          <ItemRuleSelector
+            label={appLang.RulesEditor.itemPackType}
+            value={rule.pack}
+            options={
+              <>
+                <option value="perk">{appLang.RulesEditor.perks}</option>
+                <option value="spell">{appLang.RulesEditor.spells}</option>
+                <option value="alchemical">
+                  {appLang.RulesEditor.alchemy}
+                </option>
+              </>
+            }
+            onChange={(e) => {
+              onChange({ pack: e.target.value, filters: [] })
+            }}
+          />
+        )}
 
-        const dropData = JSON.parse(rawData)
-        if (dropData.type === "Item" && dropData.uuid) {
-            const droppedItem = await fromUuid(dropData.uuid)
-            const itemType = (droppedItem as any)?.type
-            const channel = itemType === "spell" || itemType === "perk" || itemType === "alchemical" ? itemType : rule.channel
-            onChange({
-                ...rule,
-                channel,
-                pack: channel === "item" ? rule.pack : channel,
-                choices: choices.map((choice, idx) => idx !== index ? choice : {
-                    ...choice,
-                    value: dropData.uuid,
-                    label: (droppedItem ? droppedItem.name : choice.label) ?? ''
-                })
-            })
-        }
-    }
-
-    return (
-        <div className={`flex flex-col gap-3 text-text-primary bg-sheet-main-fill p-2 ${tableBorder}`}>
-
-            {/* CHOICE CONFIGURATION SETTINGS */}
-            <div className="grid grid-cols-2 gap-2 items-start">
-                <ItemRuleInput
-                    label={appLang.RulesEditor.name}
-                    value={rule.label || ""}
-                    placeholder={appLang.RulesEditor.trainingChoicesExample}
-                    onChange={(e) => onChange({ label: e.target.value })}
-                    type="text"
-                />
-                <ItemRuleInput
-                    label={appLang.RulesEditor.levelRequirement}
-                    value={rule.level || 0}
-                    placeholder="0"
-                    onChange={(e) => onChange({ level: e.target.value })}
-                    type="number"
-                />
-                <ItemRuleInput
-                    label={appLang.RulesEditor.levelsHereafter}
-                    value={rule.scale || 0}
-                    placeholder="0"
-                    onChange={(e) => onChange({ scale: e.target.value })}
-                    type="number"
-                />
-                <ItemRuleInput
-                    label={appLang.RulesEditor.numberOfChoices}
-                    value={rule.maxChoices ?? 1}
-                    onChange={(e) => onChange({ maxChoices: Math.max(1, Number(e.target.value)) })}
-                    type="number"
-                />
-
-                {/* CHANNEL SELECT */}
-                <ItemRuleSelector
-                    label={appLang.RulesEditor.channel}
-                    value={rule.channel ?? ''}
-                    options={<>
-                        <option value="path">{appLang.RulesEditor.statAttributeModifier}</option>
-                        <option value="item">{appLang.RulesEditor.spellsPerksAlchemy}</option>
-                    </>}
-                    onChange={(e) => {
-                        const val = e.target.value
-                        if (val === "path") {
-                            onChange({ channel: val, sourceMode: "static", pack: '', choices: [], filters: [] })
-                        }
-                        else {
-                            onChange({ channel: val, pack: 'perk', choices: [], filters: [] })
-                        }
-                    }}
-                />
-
-                {/* SELECT CHOICE SET TYPE: DYNAMIC / STATIC */}
-                {(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell" || rule.channel === "alchemical") &&
-                    <ItemRuleSelector
-                        label={appLang.RulesEditor.choicesSource}
-                        value={rule.sourceMode}
-                        options={<>
-                            <option value="static">{appLang.RulesEditor.staticManualList}</option>
-                            <option value="dynamic">{appLang.RulesEditor.dynamicItemPack}</option>
-                        </>}
-                        onChange={(e) => {
-                            onChange({ sourceMode: e.target.value, filters: [] })
-                        }}
-                />}
-
-                {/* Conditionally show input field if rule.pack contains a valid string */}
-                {rule.sourceMode === "dynamic" && <ItemRuleSelector
-                        label={appLang.RulesEditor.itemPackType}
-                        value={rule.pack}
-                        options={<>
-                            <option value="perk">{appLang.RulesEditor.perks}</option>
-                            <option value="spell">{appLang.RulesEditor.spells}</option>
-                            <option value="alchemical">{appLang.RulesEditor.alchemy}</option>
-                        </>}
-                    onChange={(e) => {
-                        onChange({ pack: e.target.value, filters: [] })
-                    }}
-                />}
-
-                {/* Perk Prerequisites Filter & Exception Options */}
-                {rule.sourceMode === "dynamic" && rule.pack === "perk" &&
-                    <div>
-                        <div className="flex gap-x-1 items-center">
-                            <ItemRulesLabel text={appLang.RulesEditor.prerequisiteFilters} />
-                            <IconOnlyButton
-                                Icon={Plus}
-                                colorClassName="text-text-header-tertiary"
-                                onClick={() => {
-                                    const currentFilters = rule.filters ? [...rule.filters] : []
-                                    const updatedFilters = [...currentFilters, { type: 'training', value: 'melee' }]
-                                    onChange({ ...rule, filters: updatedFilters })
-                                }}
-                            />
-                        </div>
-                        {
-                            rule.filters?.map((filter, index) => (
-                                <div key={`${index}-${filter.type}`} className="flex gap-x-1 items-center">
-                                    <Trash
-                                        size={16}
-                                        className="text-destructive-action cursor-pointer"
-                                        onClick={() => {
-                                            const updatedFilters = rule.filters.filter((_, i) => i !== index)
-                                            onChange({ ...rule, filters: updatedFilters })
-                                        }}
-                                    />
-                                    <ItemRuleSelector
-                                        label={appLang.RulesEditor.filterType}
-                                        value={filter.type}
-                                        options={<>
-                                            <option value="training">{appLang.RulesEditor.training}</option>
-                                        </>}
-                                        onChange={(e) => {
-                                            const updatedFilters = [...rule.filters]
-                                            updatedFilters[index] = {
-                                                ...updatedFilters[index],
-                                                type: e.target.value
-                                            }
-                                            onChange({ ...rule, filters: updatedFilters })
-                                        }}
-                                    />
-                                    <ItemRuleSelector
-                                        label={appLang.RulesEditor.skill}
-                                        value={filter.value}
-                                        options={createDropdownEntriesFromObj(appLang.Skills).map(it => (
-                                            <option value={it.value}>{it.label}</option>
-                                        ))}
-                                        onChange={(e) => {
-                                            const updatedFilters = [...rule.filters]
-                                            updatedFilters[index] = {
-                                                ...updatedFilters[index],
-                                                value: e.target.value
-                                            }
-                                            onChange({ ...rule, filters: updatedFilters })
-                                        }}
-                                    />
-                                </div>
-                            ))
-                        }
-
-                        <div className="flex flex-col gap-1">
-                            <ItemRulesLabel text={"Exceptions"} />
-                            <Checkbox
-                                label={appLang.RulesEditor.stats}
-                                checked={rule.ignoreStats || false}
-                                onCheckedChanged={(checked) => {
-                                    onChange({ ...rule, ignoreStats: checked })
-                                }}
-                            />
-                            <Checkbox
-                                label={appLang.RulesEditor.trainings}
-                                checked={rule.ignoreTrainings || false}
-                                onCheckedChanged={(checked) => {
-                                    onChange({ ...rule, ignoreTrainings: checked })
-                                }}
-                            />
-                        </div>
-                    </div>
-                }
-
+        {/* Perk Prerequisites Filter & Exception Options */}
+        {rule.sourceMode === "dynamic" && rule.pack === "perk" && (
+          <div>
+            <div className="flex gap-x-1 items-center">
+              <ItemRulesLabel text={appLang.RulesEditor.prerequisiteFilters} />
+              <IconOnlyButton
+                Icon={Plus}
+                colorClassName="text-text-header-tertiary"
+                onClick={() => {
+                  const currentFilters = rule.filters ? [...rule.filters] : []
+                  const updatedFilters = [
+                    ...currentFilters,
+                    { type: "training", value: "melee" },
+                  ]
+                  onChange({ ...rule, filters: updatedFilters })
+                }}
+              />
             </div>
+            {rule.filters?.map((filter, index) => (
+              <div
+                key={`${index}-${filter.type}`}
+                className="flex gap-x-1 items-center"
+              >
+                <Trash
+                  size={16}
+                  className="text-destructive-action cursor-pointer"
+                  onClick={() => {
+                    const updatedFilters = rule.filters.filter(
+                      (_, i) => i !== index,
+                    )
+                    onChange({ ...rule, filters: updatedFilters })
+                  }}
+                />
+                <ItemRuleSelector
+                  label={appLang.RulesEditor.filterType}
+                  value={filter.type}
+                  options={
+                    <>
+                      <option value="training">
+                        {appLang.RulesEditor.training}
+                      </option>
+                    </>
+                  }
+                  onChange={(e) => {
+                    const updatedFilters = [...rule.filters]
+                    updatedFilters[index] = {
+                      ...updatedFilters[index],
+                      type: e.target.value,
+                    }
+                    onChange({ ...rule, filters: updatedFilters })
+                  }}
+                />
+                <ItemRuleSelector
+                  label={appLang.RulesEditor.skill}
+                  value={filter.value}
+                  options={createDropdownEntriesFromObj(appLang.Skills).map(
+                    (it) => (
+                      <option value={it.value}>{it.label}</option>
+                    ),
+                  )}
+                  onChange={(e) => {
+                    const updatedFilters = [...rule.filters]
+                    updatedFilters[index] = {
+                      ...updatedFilters[index],
+                      value: e.target.value,
+                    }
+                    onChange({ ...rule, filters: updatedFilters })
+                  }}
+                />
+              </div>
+            ))}
 
-            {/* Sub Options Mapping List (Only renders if source mode is manual/static) */}
-            {rule.sourceMode === "static" && (
-                <div className="border-t border-solid border-table-border/40 pt-2 mt-1">
-                    <div className="flex justify-between items-center mb-2">
-                        <ItemRulesLabel text={'CHOICES'} />
-                        <button
-                            type="button"
-                            onClick={handleAddOption}
-                            className={`flex items-center gap-1 bg-sheet-main-fill text-text-primary px-2 py-0.5 hover:bg-table-border/10 transition-colors ${tableBorder}`}
-                        >
-                            <Plus size={14} /> Add Option
-                        </button>
-                    </div>
+            <div className="flex flex-col gap-1">
+              <ItemRulesLabel text={"Exceptions"} />
+              <Checkbox
+                label={appLang.RulesEditor.stats}
+                checked={rule.ignoreStats || false}
+                onCheckedChanged={(checked) => {
+                  onChange({ ...rule, ignoreStats: checked })
+                }}
+              />
+              <Checkbox
+                label={appLang.RulesEditor.trainings}
+                checked={rule.ignoreTrainings || false}
+                onCheckedChanged={(checked) => {
+                  onChange({ ...rule, ignoreTrainings: checked })
+                }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
 
-                    <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
-                        {choices.length === 0 ? (
-                            <p className="text-text-primary/50 text-xs italic p-1">{appLang.RulesEditor.clickAddOptionToStart}</p>
-                        ) : (
-                            choices.map((choice, oIdx) => (
-                                <div key={oIdx} className="flex gap-2 items-end group/row">
-                                    <div className="w-1/2">
-                                        <ItemRuleInput
-                                            label={appLang.RulesEditor.name}
-                                            value={choice.label}
-                                            placeholder={appLang.RulesEditor.statExample}
-                                            onChange={(e) => handleUpdateOption(oIdx, { label: e.target.value })}
-                                            type="text"
-                                        />
-                                    </div>
+      {/* Sub Options Mapping List (Only renders if source mode is manual/static) */}
+      {rule.sourceMode === "static" && (
+        <div className="border-t border-solid border-table-border/40 pt-2 mt-1">
+          <div className="flex justify-between items-center mb-2">
+            <ItemRulesLabel text={"CHOICES"} />
+            <button
+              type="button"
+              onClick={handleAddOption}
+              className={`flex items-center gap-1 bg-sheet-main-fill text-text-primary px-2 py-0.5 hover:bg-table-border/10 transition-colors ${tableBorder}`}
+            >
+              <Plus size={14} /> Add Option
+            </button>
+          </div>
 
-                                    <DropZone
-                                        unstyled
-                                        onDrop={(e) => handleDrop(e, oIdx)}
-                                        className={(hovered) => `w-1/2 p-1 transition-colors duration-100 
-                                            ${hovered && isItemChannel
+          <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+            {choices.length === 0 ? (
+              <p className="text-text-primary/50 text-xs italic p-1">
+                {appLang.RulesEditor.clickAddOptionToStart}
+              </p>
+            ) : (
+              choices.map((choice, oIdx) => (
+                <div key={oIdx} className="flex gap-2 items-end group/row">
+                  <div className="w-1/2">
+                    <ItemRuleInput
+                      label={appLang.RulesEditor.name}
+                      value={choice.label}
+                      placeholder={appLang.RulesEditor.statExample}
+                      onChange={(e) =>
+                        handleUpdateOption(oIdx, { label: e.target.value })
+                      }
+                      type="text"
+                    />
+                  </div>
+
+                  <DropZone
+                    unstyled
+                    onDrop={(e) => handleDrop(e, oIdx)}
+                    className={(
+                      hovered,
+                    ) => `w-1/2 p-1 transition-colors duration-100 
+                                            ${
+                                              hovered && isItemChannel
                                                 ? "bg-context-menu-fill shadow-[0_0_8px_rgba(245,158,11,0.3)]"
                                                 : "border-table-border/50"
-                                            }`
-                                        }
-                                    >
-                                        <ItemRuleInput
-                                            label={(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell") ? "Item UUID" : "Path"}
-                                            value={choice.value}
-                                            placeholder={(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell") ? "Drop item here to capture UUID..." : "stats.might"}
-                                            onChange={(e) => handleUpdateOption(oIdx, { value: e.target.value })}
-                                            type="text"
-                                        />
-                                    </DropZone>
+                                            }`}
+                  >
+                    <ItemRuleInput
+                      label={
+                        rule.channel === "item" ||
+                        rule.channel === "perk" ||
+                        rule.channel === "spell"
+                          ? "Item UUID"
+                          : "Path"
+                      }
+                      value={choice.value}
+                      placeholder={
+                        rule.channel === "item" ||
+                        rule.channel === "perk" ||
+                        rule.channel === "spell"
+                          ? "Drop item here to capture UUID..."
+                          : "stats.might"
+                      }
+                      onChange={(e) =>
+                        handleUpdateOption(oIdx, { value: e.target.value })
+                      }
+                      type="text"
+                    />
+                  </DropZone>
 
-                                    {/* Delete Row Button Wrapper */}
-                                    <button
-                                        type="button"
-                                        onClick={() => handleRemoveOption(oIdx)}
-                                        className="p-1 mb-1 border border-solid border-transparent hover:border-table-border hover:bg-sheet-main-fill text-text-primary/60 hover:text-destructive-action transition-all shrink-0"
-                                        title={appLang.RulesEditor.deleteOption}
-                                    >
-                                        <Trash size={16} />
-                                    </button>
-                                </div>
-                            ))
-                        )}
-                    </div>
+                  {/* Delete Row Button Wrapper */}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveOption(oIdx)}
+                    className="p-1 mb-1 border border-solid border-transparent hover:border-table-border hover:bg-sheet-main-fill text-text-primary/60 hover:text-destructive-action transition-all shrink-0"
+                    title={appLang.RulesEditor.deleteOption}
+                  >
+                    <Trash size={16} />
+                  </button>
                 </div>
+              ))
             )}
-
-            <Checkbox
-                label={appLang.RulesEditor.skipAtHeroCreation}
-                color="text-text-primary"
-                checked={rule.skipAtHeroCreation || false}
-                onCheckedChanged={(checked) => {
-                    onChange({ ...rule, skipAtHeroCreation: checked })
-                }}
-            />
-
+          </div>
         </div>
-    )
+      )}
+
+      <Checkbox
+        label={appLang.RulesEditor.skipAtHeroCreation}
+        color="text-text-primary"
+        checked={rule.skipAtHeroCreation || false}
+        onCheckedChanged={(checked) => {
+          onChange({ ...rule, skipAtHeroCreation: checked })
+        }}
+      />
+    </div>
+  )
 }

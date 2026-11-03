@@ -11,9 +11,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,10 +205,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "cold",
-            "fire"
-          ],
+          "immunities": ["cold", "fire"],
           "weaknesses": [],
           "statusImmunities": []
         },
@@ -276,9 +271,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {
@@ -298,9 +291,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2
         }
       ],

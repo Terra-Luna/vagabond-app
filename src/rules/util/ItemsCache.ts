@@ -1,4 +1,4 @@
-import { statsSchema } from "../../model/actor/type/Stats"
+import { statsSchema } from "../../model/actor/schema/stats"
 import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import type { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import type { FeatureDataModel } from "../../model/item/character/FeatureDataModel"
@@ -6,167 +6,226 @@ import type { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { isEligibleForPerk } from "../../model/item/character/PerkDataModel"
 import type { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import type { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
-import type { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
+import type {
+  EquipmentDataModel,
+  EquipmentSchema,
+} from "../../model/item/equip/EquipmentDataModel"
 import type { SundryDataModel } from "../../model/item/equip/SundryDataModel"
 import type { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
-import { CombinedItemsMultiType, getFullItem, inventoryItemTypes } from "../../utils/modelUtil"
+import {
+  CombinedItemsMultiType,
+  getFullItem,
+  inventoryItemTypes,
+} from "../../util/model-util"
 
 export class ItemsCache {
+  /**
+   * A cache of compendium + world items by uuid and item data.
+   */
+  static items = new Map<string, any>()
+
+  /**
+   * Initialize the cache by fetching all items at once. Keep performance quick
+   * by pre-fetching the full Items in // batches for rules-bearing Items. This
+   * will keep Heroes prep derived data from being bogged own on app load.
+   */
+  static async initialize() {
+    this.items.clear()
+
+    const allItems = await CombinedItemsMultiType([
+      "ancestry",
+      "class",
+      "spell",
+      "perk",
+      "feature",
+      "alchemical",
+      "weapon",
+      "armor",
+      "sundry",
+      "container",
+      "startingpack",
+    ])
+
+    for (const item of allItems) {
+      if (item?.uuid) {
+        this.items.set(item.uuid, item)
+      }
+    }
+
+    const ruleItemEntries = allItems.filter(
+      (item) =>
+        !(item instanceof Item) &&
+        (item.type === "spell" ||
+          item.type === "perk" ||
+          item.type === "feature" ||
+          item.type === "startingpack"),
+    )
+
     /**
-     * A cache of compendium + world items by uuid and item data.
+     * Runs in batches to massively speed up the process on system start-up.
+     * Without this, local/dev works fine but live environments totally bomb out.
+     * Alter with caution - do a live server test.
      */
-    static items = new Map<string, any>()
-
-    /**
-     * Initialize the cache by fetching all items at once. Keep performance quick
-     * by pre-fetching the full Items in // batches for rules-bearing Items. This
-     * will keep Heroes prep derived data from being bogged own on app load.
-     */
-    static async initialize() {
-        this.items.clear()
-
-        const allItems = await CombinedItemsMultiType(
-            ['ancestry', 'class', 'spell', 'perk', 'feature', 'alchemical', 'weapon', 'armor', 'sundry', 'container', 'startingpack']
-        )
-
-        for (const item of allItems) {
-            if (item?.uuid) {
-                this.items.set(item.uuid, item)
-            }
+    const BATCH_SIZE = 25
+    for (let i = 0; i < ruleItemEntries.length; i += BATCH_SIZE) {
+      const batch = ruleItemEntries.slice(i, i + BATCH_SIZE)
+      const resolved = await Promise.all(
+        batch.map((entry) => getFullItem(entry)),
+      )
+      for (const doc of resolved) {
+        if (doc?.uuid) {
+          this.items.set(doc.uuid, doc)
         }
-
-        const ruleItemEntries = allItems.filter(
-            item => !(item instanceof Item) && (
-                item.type === 'spell' ||
-                item.type === 'perk' ||
-                item.type === 'feature' ||
-                item.type === 'startingpack'
-            )
-        )
-
-        /**
-         * Runs in batches to massively speed up the process on system start-up.
-         * Without this, local/dev works fine but live environments totally bomb out.
-         * Alter with caution - do a live server test.
-         */
-        const BATCH_SIZE = 25
-        for (let i = 0; i < ruleItemEntries.length; i += BATCH_SIZE) {
-            const batch = ruleItemEntries.slice(i, i + BATCH_SIZE)
-            const resolved = await Promise.all(batch.map(entry => getFullItem(entry)))
-            for (const doc of resolved) {
-                if (doc?.uuid) {
-                    this.items.set(doc.uuid, doc)
-                }
-            }
-        }
-
-        Hooks.callAll("onItemsCacheInitialized" as any, ItemsCache)
+      }
     }
 
-    static allItems = () => {
-        return Array.from(this.items.values())
-            .filter(it => it != null)
-            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as Item[]
-    }
+    Hooks.callAll("onItemsCacheInitialized" as any, ItemsCache)
+  }
 
-    static weapons = () => {
-        return Array.from(this.items.values())
-            .filter(item => item != null && item.type === 'weapon')
-            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: WeaponDataModel })[]
-    }
+  static allItems = () => {
+    return Array.from(this.items.values())
+      .filter((it) => it != null)
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as Item[]
+  }
 
-    static spells = (): (Item & { system: SpellDataModel })[] => {
-        return Array.from(this.items.values())
-            .filter(item => item != null && item.type === 'spell')
-            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: SpellDataModel })[]
-    }
+  static weapons = () => {
+    return Array.from(this.items.values())
+      .filter((item) => item != null && item.type === "weapon")
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & {
+      system: WeaponDataModel
+    })[]
+  }
 
-    static perks = () => {
-        return Array.from(this.items.values())
-            .filter(item => item != null && item.type === 'perk')
-            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: PerkDataModel })[]
-    }
+  static spells = (): (Item & { system: SpellDataModel })[] => {
+    return Array.from(this.items.values())
+      .filter((item) => item != null && item.type === "spell")
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & {
+      system: SpellDataModel
+    })[]
+  }
 
-    static features = () => {
-        return Array.from(this.items.values())
-            .filter(item => item != null && item.type === 'feature')
-            .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '')) as (Item & { system: FeatureDataModel })[]
-    }
+  static perks = () => {
+    return Array.from(this.items.values())
+      .filter((item) => item != null && item.type === "perk")
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & {
+      system: PerkDataModel
+    })[]
+  }
 
-    static ancestries = () => {
-        return Array.from(this.items.values())
-            .filter(item => item != null && item.type === 'ancestry')
-            .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '')) as (Item & { system: AncestryDataModel })[]
-    }
+  static features = () => {
+    return Array.from(this.items.values())
+      .filter((item) => item != null && item.type === "feature")
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & {
+      system: FeatureDataModel
+    })[]
+  }
 
-    static classes = () => {
-        return Array.from(this.items.values())
-            .filter(item => item != null && item.type === 'class')
-            .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '')) as (Item & { system: ClassDataModel })[]
-    }
+  static ancestries = () => {
+    return Array.from(this.items.values())
+      .filter((item) => item != null && item.type === "ancestry")
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & {
+      system: AncestryDataModel
+    })[]
+  }
 
-    static eligiblePerks = (
-        stats: ReturnType<typeof statsSchema>,
-        trainings: string[],
-        spells: string[],
-        options?: { ignoreStats?: boolean, ignoreTrainings?: boolean }
-    ) => {
-        const perks = this.perks()
-        return perks.filter(perk => isEligibleForPerk(stats, trainings, spells, perk.system, options))
-    }
+  static classes = () => {
+    return Array.from(this.items.values())
+      .filter((item) => item != null && item.type === "class")
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & {
+      system: ClassDataModel
+    })[]
+  }
 
-    static alchemical = () => {
-        return Array.from(this.items.values())
-            .filter(item => item != null && (item.visible !== false) && item.type === 'alchemical')
-            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: AlchemicalItemDataModel })[]
-    }
+  static eligiblePerks = (
+    stats: ReturnType<typeof statsSchema>,
+    trainings: string[],
+    spells: string[],
+    options?: { ignoreStats?: boolean; ignoreTrainings?: boolean },
+  ) => {
+    const perks = this.perks()
+    return perks.filter((perk) =>
+      isEligibleForPerk(stats, trainings, spells, perk.system, options),
+    )
+  }
 
-    static equipment = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
-        const invTypes = inventoryItemTypes()
-        return Array.from(this.items.values())
-            .filter(item => item != null && (item.visible !== false) && invTypes.includes(item.type))
-            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""))
-            .sort((a, b) => (a.system?.category ?? "").localeCompare(b.system?.category ?? "")) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
-    }
+  static alchemical = () => {
+    return Array.from(this.items.values())
+      .filter(
+        (item) =>
+          item != null && item.visible !== false && item.type === "alchemical",
+      )
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & {
+      system: AlchemicalItemDataModel
+    })[]
+  }
 
-    static sundries = (): (Item & { system: SundryDataModel })[] => {
-        return Array.from(this.items.values())
-            .filter(item => item != null && (item.visible !== false) && item.type === "sundry")
-            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""))
-            .sort((a, b) => (a.system?.category ?? "").localeCompare(b.system?.category ?? "")) as (Item & { system: SundryDataModel })[]
-    }
+  static equipment = (): (Item & {
+    system: EquipmentDataModel<EquipmentSchema>
+  })[] => {
+    const invTypes = inventoryItemTypes()
+    return Array.from(this.items.values())
+      .filter(
+        (item) =>
+          item != null &&
+          item.visible !== false &&
+          invTypes.includes(item.type),
+      )
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""))
+      .sort((a, b) =>
+        (a.system?.category ?? "").localeCompare(b.system?.category ?? ""),
+      ) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
+  }
 
-    static packs = (): (Item & { system: any })[] => {
-        return Array.from(this.items.values())
-            .filter(item => item != null && (item.visible !== false) && item.type === 'startingpack')
-            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: any })[]
-    }
+  static sundries = (): (Item & { system: SundryDataModel })[] => {
+    return Array.from(this.items.values())
+      .filter(
+        (item) =>
+          item != null && item.visible !== false && item.type === "sundry",
+      )
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""))
+      .sort((a, b) =>
+        (a.system?.category ?? "").localeCompare(b.system?.category ?? ""),
+      ) as (Item & { system: SundryDataModel })[]
+  }
 
-    static async updateItem(item: any) {
-        if (!item) return
-        const validTypes = ['spell', 'perk', 'feature', 'startingpack']
-        if (validTypes.includes(item.type)) {
-            const fullItem = await getFullItem(item)
-            if (fullItem) {
-                this.items.set(fullItem.uuid, fullItem)
-                this.refreshAllActors()
-            }
-        } else if (item.uuid) {
-            this.items.set(item.uuid, item)
-        }
-    }
+  static packs = (): (Item & { system: any })[] => {
+    return Array.from(this.items.values())
+      .filter(
+        (item) =>
+          item != null &&
+          item.visible !== false &&
+          item.type === "startingpack",
+      )
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & {
+      system: any
+    })[]
+  }
 
-    static removeItem(uuid: string) {
-        if (this.items.has(uuid)) {
-            this.items.delete(uuid)
-            this.refreshAllActors()
-        }
+  static async updateItem(item: any) {
+    if (!item) return
+    const validTypes = ["spell", "perk", "feature", "startingpack"]
+    if (validTypes.includes(item.type)) {
+      const fullItem = await getFullItem(item)
+      if (fullItem) {
+        this.items.set(fullItem.uuid, fullItem)
+        this.refreshAllActors()
+      }
     }
-
-    static refreshAllActors() {
-        game.actors
-            ?.filter(it => (it.type as string) === 'hero' && it.isOwner)
-            ?.forEach(actor => (actor as any)?.system?.forceUpdate?.())
+    else if (item.uuid) {
+      this.items.set(item.uuid, item)
     }
+  }
 
+  static removeItem(uuid: string) {
+    if (this.items.has(uuid)) {
+      this.items.delete(uuid)
+      this.refreshAllActors()
+    }
+  }
+
+  static refreshAllActors() {
+    game.actors
+      ?.filter((it) => (it.type as string) === "hero" && it.isOwner)
+      ?.forEach((actor) => (actor as any)?.system?.forceUpdate?.())
+  }
 }

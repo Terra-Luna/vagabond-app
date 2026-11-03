@@ -10,9 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "allsight"
-    ],
+    "senses": ["allsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,11 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "acid",
-            "fire",
-            "poison"
-          ],
+          "immunities": ["acid", "fire", "poison"],
           "weaknesses": [],
           "statusImmunities": []
         },
@@ -273,9 +267,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       },
@@ -290,9 +282,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       },
@@ -310,9 +300,7 @@
           },
           "type": "acid"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "recharge": "Cd4",
         "appliedEffects": [
           {
@@ -340,9 +328,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2,
           "type": "melee",
           "range": "close"
@@ -358,9 +344,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1,
           "type": "melee",
           "range": "close"

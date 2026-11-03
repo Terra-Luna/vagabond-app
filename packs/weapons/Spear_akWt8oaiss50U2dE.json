@@ -40,13 +40,9 @@
       "style": "V",
       "state": "H"
     },
-    "properties": [
-      "thrown"
-    ],
+    "properties": ["thrown"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ]
+    "skills": ["melee"]
   },
   "effects": [],
   "folder": null,

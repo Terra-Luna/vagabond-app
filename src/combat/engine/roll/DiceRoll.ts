@@ -1,118 +1,151 @@
 import type { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
 import { RelicPowerProcessor } from "../../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { getArmor } from "../../../model/actor/util/HeroEquipmentUtil"
+import { getArmor } from "../../../model/actor/util/hero-equipment-util"
 import type { AlchemicalItemDataModel } from "../../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 
 export class DiceRoll {
-    count: number
-    faces: number
-    modifier?: number
-    explodesOn?: number[]
-    explodeOnCritOnly?: boolean
-    extraDiceOnCrit?: number
-    reroll?: number[]
+  count: number
+  faces: number
+  modifier?: number
+  explodesOn?: number[]
+  explodeOnCritOnly?: boolean
+  extraDiceOnCrit?: number
+  reroll?: number[]
 
-    constructor(args: DiceRollSchema) {
-        this.count = args.count
-        this.faces = args.faces
-        this.modifier = args.modifier
-        this.explodesOn = args.explodesOn
-        this.explodeOnCritOnly = args.explodeOnCritOnly
-        this.extraDiceOnCrit = args.extraDiceOnCrit
-        this.reroll = args.reroll
+  constructor(args: DiceRollSchema) {
+    this.count = args.count
+    this.faces = args.faces
+    this.modifier = args.modifier
+    this.explodesOn = args.explodesOn
+    this.explodeOnCritOnly = args.explodeOnCritOnly
+    this.extraDiceOnCrit = args.extraDiceOnCrit
+    this.reroll = args.reroll
+  }
+
+  toRollFormula(isCrit?: boolean): string {
+    const mod = `${this.modifier ? `+${this.modifier}`.replace("+-", "-") : ""}`
+    const explode = `${(this.explodesOn?.length ?? 0) > 0 ? `!${this.explodeOnCritOnly ? "*" : ""}` : ""}`
+
+    const count = this.count + (isCrit ? (this.extraDiceOnCrit ?? 0) : 0)
+
+    let reroll = ""
+    this.reroll?.forEach((rr) => {
+      reroll += `rr${rr}`
+    })
+
+    if (count > 0) {
+      return `${count}d${this.faces}${reroll}${explode}${mod}`
+    }
+    else {
+      return `${this.faces}${reroll}${explode}${mod}`
+    }
+  }
+
+  static getItemDamageWithHeroMods = (
+    hero: HeroDataModel,
+    skill: string,
+    item: AlchemicalItemDataModel | WeaponDataModel,
+  ): DiceRollSchema => {
+    const heroMods = foundry.utils.deepClone(hero.modifiers)
+    if (item instanceof WeaponDataModel) {
+      RelicPowerProcessor.applyRelicPowers(
+        RelicPowerProcessor.getEffectivePowers(item) as any,
+        heroMods,
+        { skillTrained: hero.skills[skill]?.trained ?? false },
+      )
+    }
+    const mods = heroMods.damage.out
+    const isTrained = hero.skills[skill]?.trained ?? false
+    const isWeak =
+      mods.global.conditional.weak || mods[skill]?.conditional?.weak
+    const isVicious =
+      isTrained &&
+      item instanceof WeaponDataModel &&
+      item.properties.includes("vicious")
+    const isDefense =
+      isTrained &&
+      item instanceof WeaponDataModel &&
+      item.properties.includes("defense")
+    const isThrown =
+      isTrained &&
+      item instanceof WeaponDataModel &&
+      item.properties.includes("thrown")
+    const isOneHandVersBonus =
+      isTrained &&
+      (mods[skill]?.dice?.size?.oneHandVersatile ||
+        (isDefense && mods.defense.dice.size.oneHandVersatile))
+
+    const versatileBonus =
+      item instanceof WeaponDataModel
+        ? item.grip.style === "V" &&
+          (item.grip.state === "HH" ||
+            (item.grip.state === "H" && isOneHandVersBonus))
+          ? 2
+          : 0
+        : 0
+
+    let flatBonus = item.damage.dice.modifier ?? 0
+    flatBonus += mods.global?.bonus?.flat ?? 0
+    flatBonus += mods[skill]?.bonus?.flat ?? 0
+
+    if (getArmor(hero)) {
+      const armoredMods =
+        mods[isDefense ? "defense" : skill]?.conditional?.armored
+      flatBonus += armoredMods?.bonus?.flat ?? 0
     }
 
-    toRollFormula(isCrit?: boolean): string {
-        const mod = `${this.modifier ? `+${this.modifier}`.replace("+-", "-") : ''}`
-        const explode = `${(this.explodesOn?.length ?? 0) > 0 ? `!${this.explodeOnCritOnly ? '*' : ''}` : ''}`
+    let dieSize =
+      Math.max(mods[skill]?.dice?.size?.min ?? 0, item.damage.dice.faces) +
+      versatileBonus +
+      (mods[skill]?.dice?.size?.bonus ?? 0) +
+      (isDefense ? mods.defense.dice.size.bonus : 0) +
+      (isThrown ? mods.thrown.dice.size.bonus : 0)
 
-        const count = this.count + (isCrit ? (this.extraDiceOnCrit ?? 0) : 0)
-
-        let reroll = ""
-        this.reroll?.forEach(rr => {
-            reroll += `rr${rr}`
-        })
-
-        if (count > 0) {
-            return `${count}d${this.faces}${reroll}${explode}${mod}`
-        }
-        else {
-            return `${this.faces}${reroll}${explode}${mod}`
-        }
+    if (dieSize > 12) {
+      const diff = dieSize - 12
+      dieSize = 12
+      flatBonus += diff / 2
     }
 
-    static getItemDamageWithHeroMods = (hero: HeroDataModel, skill: string, item: AlchemicalItemDataModel | WeaponDataModel): DiceRollSchema => {
-        const heroMods = foundry.utils.deepClone(hero.modifiers)
-        if (item instanceof WeaponDataModel) {
-            RelicPowerProcessor.applyRelicPowers(RelicPowerProcessor.getEffectivePowers(item) as any, heroMods, { skillTrained: hero.skills[skill]?.trained ?? false })
-        }
-        const mods = heroMods.damage.out
-        const isTrained = hero.skills[skill]?.trained ?? false
-        const isWeak = mods.global.conditional.weak || mods[skill]?.conditional?.weak
-        const isVicious = isTrained && item instanceof WeaponDataModel && item.properties.includes('vicious')
-        const isDefense = isTrained && item instanceof WeaponDataModel && item.properties.includes('defense')
-        const isThrown = isTrained && item instanceof WeaponDataModel && item.properties.includes('thrown')
-        const isOneHandVersBonus = isTrained && (mods[skill]?.dice?.size?.oneHandVersatile || isDefense && mods.defense.dice.size.oneHandVersatile)
+    const explodesOnCrit =
+      mods.global.dice.crit.explodes || mods[skill]?.dice?.crit?.explodes
+    const maxExplode =
+      mods.global.dice.exploding.max || mods[skill]?.dice?.exploding?.max
+    const subMaxExplode =
+      mods.global.dice.exploding.subMax || mods[skill]?.dice?.exploding?.subMax
+    const explodesOn = [
+      ...new Set([
+        ...(item.damage.dice.explodesOn ?? []),
+        ...(mods[skill]?.dice?.exploding?.values ?? []),
+        ...(mods[skill]?.dice?.exploding?.max ? [dieSize] : []),
+        ...(explodesOnCrit || maxExplode ? [dieSize] : []),
+      ]),
+    ]
 
-        const versatileBonus = item instanceof WeaponDataModel
-            ? ((item.grip.style === 'V' && (item.grip.state === 'HH' || (item.grip.state === 'H' && isOneHandVersBonus))) ? 2 : 0)
-            : 0
-
-        let flatBonus = item.damage.dice.modifier ?? 0
-        flatBonus += mods.global?.bonus?.flat ?? 0
-        flatBonus += mods[skill]?.bonus?.flat ?? 0
-
-        if (getArmor(hero)) {
-            const armoredMods = mods[isDefense ? 'defense' : skill]?.conditional?.armored
-            flatBonus += armoredMods?.bonus?.flat ?? 0
-        }
-
-        let dieSize = Math.max(mods[skill]?.dice?.size?.min ?? 0, item.damage.dice.faces)
-            + versatileBonus
-            + (mods[skill]?.dice?.size?.bonus ?? 0)
-            + (isDefense ? mods.defense.dice.size.bonus : 0)
-            + (isThrown ? mods.thrown.dice.size.bonus : 0)
-
-        if (dieSize > 12) {
-            const diff = dieSize - 12
-            dieSize = 12
-            flatBonus += diff / 2
-        }
-
-        const explodesOnCrit = mods.global.dice.crit.explodes || mods[skill]?.dice?.crit?.explodes
-        const maxExplode = mods.global.dice.exploding.max || mods[skill]?.dice?.exploding?.max
-        const subMaxExplode = mods.global.dice.exploding.subMax || mods[skill]?.dice?.exploding?.subMax
-        const explodesOn = [...new Set([
-            ...(item.damage.dice.explodesOn ?? []),
-            ...(mods[skill]?.dice?.exploding?.values ?? []),
-            ...(mods[skill]?.dice?.exploding?.max ? [dieSize] : []),
-            ...(explodesOnCrit || maxExplode ? [dieSize] : []),
-        ])]
-
-        if (subMaxExplode) {
-            explodesOn.push(dieSize - 1)
-        }
-
-        const extraDiceOnCrit =
-            (isVicious ? 1 : 0)
-            + (mods.global?.dice?.crit?.extraDice ?? 0)
-            + (mods[skill]?.dice?.crit?.extraDice ?? 0)
-
-        const reroll = item instanceof WeaponDataModel
-            ? mods[skill]?.dice.reroll?.[item.grip.state] ?? []
-            : []
-
-        return {
-            count: item.damage.dice.count + (isWeak ? 1 : 0),
-            faces: dieSize,
-            modifier: flatBonus,
-            explodesOn: explodesOn?.sort((a, b) => a - b) ?? [],
-            explodeOnCritOnly: explodesOnCrit ?? false,
-            extraDiceOnCrit: extraDiceOnCrit ?? 0,
-            reroll: reroll
-        }
+    if (subMaxExplode) {
+      explodesOn.push(dieSize - 1)
     }
 
+    const extraDiceOnCrit =
+      (isVicious ? 1 : 0) +
+      (mods.global?.dice?.crit?.extraDice ?? 0) +
+      (mods[skill]?.dice?.crit?.extraDice ?? 0)
+
+    const reroll =
+      item instanceof WeaponDataModel
+        ? (mods[skill]?.dice.reroll?.[item.grip.state] ?? [])
+        : []
+
+    return {
+      count: item.damage.dice.count + (isWeak ? 1 : 0),
+      faces: dieSize,
+      modifier: flatBonus,
+      explodesOn: explodesOn?.sort((a, b) => a - b) ?? [],
+      explodeOnCritOnly: explodesOnCrit ?? false,
+      extraDiceOnCrit: extraDiceOnCrit ?? 0,
+      reroll: reroll,
+    }
+  }
 }

@@ -10,9 +10,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,10 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "physical_lt0",
-            "poison"
-          ],
+          "immunities": ["physical_lt0", "poison"],
           "weaknesses": [],
           "statusImmunities": [
             "charmed",
@@ -285,9 +280,7 @@
           },
           "type": "necrotic"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Life Drain Effect",
@@ -303,9 +296,7 @@
           },
           "type": "fatigue"
         },
-        "saves": [
-          "endure"
-        ]
+        "saves": ["endure"]
       }
     ],
     "combo": {

@@ -13,9 +13,7 @@
         "label": "Damage Die Bonus",
         "level": 10,
         "value": true,
-        "selector": [
-          "modifiers.damage.out.global.conditional.weak"
-        ],
+        "selector": ["modifiers.damage.out.global.conditional.weak"],
         "toggleableEffect": true
       },
       {
@@ -24,9 +22,7 @@
         "label": "Flag",
         "level": 10,
         "value": true,
-        "selector": [
-          "flags.miserybusiness"
-        ]
+        "selector": ["flags.miserybusiness"]
       }
     ],
     "level": 10,

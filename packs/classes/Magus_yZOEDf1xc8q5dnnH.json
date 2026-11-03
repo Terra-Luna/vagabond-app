@@ -26,16 +26,11 @@
         "label": "Training",
         "level": "1",
         "value": true,
-        "selector": [
-          "skills.melee.trained",
-          "skills.arcana.trained"
-        ]
+        "selector": ["skills.melee.trained", "skills.arcana.trained"]
       }
     ],
     "complexity": 4,
-    "keyStats": [
-      "reason"
-    ],
+    "keyStats": ["reason"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.3svveHnNn60fHHiX",
       "Compendium.vagabond-app.gear.Item.ImIcBC3E6UZcHsK4",

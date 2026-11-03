@@ -36,13 +36,9 @@
       "style": "V",
       "state": "H"
     },
-    "properties": [
-      "keen"
-    ],
+    "properties": ["keen"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ],
+    "skills": ["melee"],
     "copperValue": 4000,
     "relicPowers": [
       {
@@ -73,9 +69,7 @@
           "label": "Weapon +2",
           "modifiers": [
             {
-              "selector": [
-                "system.damage.dice.modifier"
-              ],
+              "selector": ["system.damage.dice.modifier"],
               "value": 2
             }
           ],
@@ -118,10 +112,7 @@
           "label": "Specific",
           "modifiers": [],
           "appliedEffect": null,
-          "beingTypes": [
-            "hellspawn",
-            "undead"
-          ]
+          "beingTypes": ["hellspawn", "undead"]
         },
         "goldValue": 2000,
         "bound": false,

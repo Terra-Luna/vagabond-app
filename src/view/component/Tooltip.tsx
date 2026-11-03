@@ -1,11 +1,19 @@
-import { ControlledMenu } from '@szhsin/react-menu'
-import { createContext, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react'
-import ReactHtmlParser from 'react-html-parser'
+import { ControlledMenu } from "@szhsin/react-menu"
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
+import ReactHtmlParser from "react-html-parser"
 
-import { createStyleTag } from '../../utils/styleUtils'
-import { tableBorderRounded } from '../common/border-styles'
-import { EditModeContextProvider } from '../context/EditModeContext/EditModeContext'
-import { EditModeOptions } from '../context/EditModeContext/EditModeOptions'
+import { createStyleTag } from "../../util/style-util"
+import { tableBorderRounded } from "../common/border-styles"
+import { EditModeOptions } from "../context/EditModeContext/EditModeOptions"
+import { EditModeContextProvider } from "../wrappers/EditModeContextProvider"
 
 const TOOLTIP_CURSOR_GAP = 8
 const TOOLTIP_ESTIMATED_WIDTH = 240
@@ -14,12 +22,12 @@ export const tooltipContainerStyle = "pointer-events-none z-99"
 export const tooltipContentStyle = ""
 
 export interface TooltipProps {
-    title?: string | ReactNode
-    content?: ReactNode
-    children: ReactNode
-    interactive?: boolean
-    disabled?: boolean
-    maxWidth?: string
+  title?: string | ReactNode
+  content?: ReactNode
+  children: ReactNode
+  interactive?: boolean
+  disabled?: boolean
+  maxWidth?: string
 }
 
 /**
@@ -27,9 +35,9 @@ export interface TooltipProps {
  * is allowed to open to prevent them from stacking.
  */
 interface TooltipNestState {
-    depth: number
-    activeDepth: { current: number }
-    closers: Map<number, () => void>
+  depth: number
+  activeDepth: { current: number }
+  closers: Map<number, () => void>
 }
 const TooltipNestContext = createContext<TooltipNestState | null>(null)
 
@@ -39,239 +47,272 @@ const TooltipNestContext = createContext<TooltipNestState | null>(null)
  * @param param0
  * @returns
  */
-export const Tooltip = ({ title, content, children, interactive, disabled, maxWidth }: TooltipProps) => {
+export const Tooltip = ({
+  title,
+  content,
+  children,
+  interactive,
+  disabled,
+  maxWidth,
+}: TooltipProps) => {
+  const anchorRef = useRef<HTMLSpanElement>(null)
+  const cursorXY = useRef({ x: 0, y: 0 })
+  const [isOpen, setIsOpen] = useState(false)
+  const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 })
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null)
+  const openTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const closeTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
 
-    const anchorRef = useRef<HTMLSpanElement>(null)
-    const cursorXY = useRef({ x: 0, y: 0 })
-    const [isOpen, setIsOpen] = useState(false)
-    const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 })
-    const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null)
-    const openTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
-    const closeTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const parentNest = useContext(TooltipNestContext)
+  const nestRef = useRef<TooltipNestState>(undefined)
 
-    const parentNest = useContext(TooltipNestContext)
-    const nestRef = useRef<TooltipNestState>(undefined)
-
-    if (!nestRef.current) {
-        nestRef.current = parentNest
-            ? { depth: parentNest.depth + 1, activeDepth: parentNest.activeDepth, closers: parentNest.closers }
-            : { depth: 1, activeDepth: { current: 0 }, closers: new Map() }
-    }
-
-    const nest = nestRef.current
-
-    const closeTooltip = useCallback(() => {
-        clearTimeout(openTimeout.current)
-        clearTimeout(closeTimeout.current)
-        nest.closers.forEach((close, depth) => {
-            if (depth > nest.depth) close()
-        })
-        if (nest.activeDepth.current === nest.depth) nest.activeDepth.current = nest.depth - 1
-        setIsOpen(false)
-    }, [nest])
-
-    useEffect(() => {
-        nest.closers.set(nest.depth, closeTooltip)
-        return () => {
-            nest.closers.delete(nest.depth)
-            clearTimeout(openTimeout.current)
-            clearTimeout(closeTimeout.current)
-            if (nest.activeDepth.current >= nest.depth) nest.activeDepth.current = nest.depth - 1
+  if (!nestRef.current) {
+    nestRef.current = parentNest
+      ? {
+          depth: parentNest.depth + 1,
+          activeDepth: parentNest.activeDepth,
+          closers: parentNest.closers,
         }
-    }, [nest, closeTooltip])
+      : { depth: 1, activeDepth: { current: 0 }, closers: new Map() }
+  }
 
-    const claimHover = () => {
-        if (nest.depth > nest.activeDepth.current) {
-            nest.closers.forEach((close, depth) => { if (depth < nest.depth) close() })
-        }
-        nest.activeDepth.current = Math.max(nest.activeDepth.current, nest.depth)
+  const nest = nestRef.current
+
+  const closeTooltip = useCallback(() => {
+    clearTimeout(openTimeout.current)
+    clearTimeout(closeTimeout.current)
+    nest.closers.forEach((close, depth) => {
+      if (depth > nest.depth) close()
+    })
+    if (nest.activeDepth.current === nest.depth)
+      nest.activeDepth.current = nest.depth - 1
+    setIsOpen(false)
+  }, [nest])
+
+  useEffect(() => {
+    nest.closers.set(nest.depth, closeTooltip)
+    return () => {
+      nest.closers.delete(nest.depth)
+      clearTimeout(openTimeout.current)
+      clearTimeout(closeTimeout.current)
+      if (nest.activeDepth.current >= nest.depth)
+        nest.activeDepth.current = nest.depth - 1
     }
+  }, [nest, closeTooltip])
 
-    const releaseHover = () => {
-        if (nest.activeDepth.current === nest.depth) nest.activeDepth.current = nest.depth - 1
+  const claimHover = () => {
+    if (nest.depth > nest.activeDepth.current) {
+      nest.closers.forEach((close, depth) => {
+        if (depth < nest.depth) close()
+      })
     }
+    nest.activeDepth.current = Math.max(nest.activeDepth.current, nest.depth)
+  }
 
-    const syncPortalTheme = (container: HTMLElement) => {
-        const theme = anchorRef.current?.closest('.light, .dark')
-        container.classList.remove('light', 'dark')
-        if (theme) container.classList.add(theme.classList.contains('dark') ? 'dark' : 'light')
-    }
+  const releaseHover = () => {
+    if (nest.activeDepth.current === nest.depth)
+      nest.activeDepth.current = nest.depth - 1
+  }
 
-    const portalContainerRef = useRef<HTMLElement | null>(null)
+  const syncPortalTheme = (container: HTMLElement) => {
+    const theme = anchorRef.current?.closest(".light, .dark")
+    container.classList.remove("light", "dark")
+    if (theme)
+      container.classList.add(
+        theme.classList.contains("dark") ? "dark" : "light",
+      )
+  }
 
-    const ensurePortal = () => {
-        const anchor = anchorRef.current
-        const ownerDoc = anchor?.ownerDocument
-        if (!anchor || !ownerDoc?.body) return
-        if (portalContainerRef.current?.ownerDocument === ownerDoc && portalContainerRef.current.isConnected) return
+  const portalContainerRef = useRef<HTMLElement | null>(null)
 
-        portalContainerRef.current?.remove()
-        let portalHost = ownerDoc.body.querySelector<HTMLDivElement>(':scope > .tooltip-portal-root')
-
-        if (!portalHost) {
-            portalHost = ownerDoc.createElement('div')
-            portalHost.className = 'tooltip-portal-root'
-            ownerDoc.body.appendChild(portalHost)
-        }
-
-        const scaduRoot = portalHost.shadowRoot ?? portalHost.attachShadow({ mode: 'open' })
-        const container = ownerDoc.createElement('div')
-        container.className = 'tooltip-portal-container'
-        syncPortalTheme(container)
-        scaduRoot.appendChild(container)
-
-        if (!scaduRoot.querySelector('style[data-tooltip-styles]')) {
-            const styleTag = createStyleTag()
-            styleTag.dataset.tooltipStyles = 'true'
-            scaduRoot.prepend(styleTag)
-        }
-
-        Object.assign(portalHost.style, {
-            position: 'fixed',
-            inset: '0',
-            zIndex: '9999',
-            pointerEvents: 'none'
-        })
-
-        portalContainerRef.current = container
-        setPortalTarget(container)
-    }
-
-    useEffect(() => {
-        ensurePortal()
-        return () => portalContainerRef.current?.remove()
-    }, [])
-
-    useEffect(() => () => {
-        clearTimeout(openTimeout.current)
-        clearTimeout(closeTimeout.current)
-    }, [])
-
-    const trackPointer = (e: { clientX?: number, clientY?: number }) => {
-        if (disabled || !content) return
-        ensurePortal()
-        if (portalTarget) syncPortalTheme(portalTarget)
-        claimHover()
-        if (typeof e.clientX === 'number' && typeof e.clientY === 'number') {
-            cursorXY.current = { x: e.clientX, y: e.clientY }
-        }
-        else if (anchorRef.current) {
-            const rect = anchorRef.current.getBoundingClientRect()
-            cursorXY.current = { x: rect.left, y: rect.top }
-        }
-    }
-
-    const show = (e: { clientX?: number, clientY?: number } = {}) => {
-        if (disabled || !content) return
-        trackPointer(e)
-        clearTimeout(openTimeout.current)
-        clearTimeout(closeTimeout.current)
-        openTimeout.current = setTimeout(() => {
-            if (nest.activeDepth.current !== nest.depth) return
-            setAnchorPoint({ x: cursorXY.current.x, y: cursorXY.current.y - TOOLTIP_CURSOR_GAP })
-            setIsOpen(true)
-        }, TOOLTIP_DELAY)
-    }
-
-    const hide = () => {
-        releaseHover()
-        clearTimeout(openTimeout.current)
-        closeTimeout.current = setTimeout(closeTooltip, 50)
-    }
-
-    const cancelHide = () => clearTimeout(closeTimeout.current)
-
-    const resetTimer = (e: { clientX?: number, clientY?: number }) => {
-        if (isOpen) closeTooltip()
-        else show(e)
-    }
-
-    return (
-        <>
-            <span
-                ref={anchorRef}
-                onMouseEnter={show}
-                onMouseMove={trackPointer}
-                onMouseLeave={hide}
-                onFocus={() => show()}
-                onBlur={hide}
-                onClickCapture={resetTimer}
-                onAuxClickCapture={resetTimer}
-            >
-                <TooltipNestContext.Provider value={nest}>
-                    {children}
-                </TooltipNestContext.Provider>
-            </span>
-            {portalTarget &&
-                <ControlledMenu
-                    state={isOpen ? 'open' : 'closed'}
-                    anchorPoint={anchorPoint}
-                    direction={anchorPoint.x < TOOLTIP_ESTIMATED_WIDTH ? "right" : "left"}
-                    align={"end"}
-                    captureFocus={false}
-                    unmountOnClose
-                    portal={{ target: portalTarget }}
-                    menuClassName={tooltipContainerStyle}
-                    onClose={closeTooltip}
-                    onClick={(e) => {
-                        if (interactive) {
-                            e.stopPropagation()
-                            e.preventDefault()
-                            return
-                        }
-                        else {
-                            hide()
-                            setIsOpen(false)
-                        }
-                    }}
-                >
-                    <div
-                        className={`
-                            bg-context-menu-fill ${tableBorderRounded} border-2 px-2 py-0.5 
-                            ${typeof content === 'string'
-                                ? 'max-w-[min(24rem,calc(100vw-2rem))] whitespace-normal break-words'
-                                : ''
-                            } 
-                            ${interactive
-                                ? 'pointer-events-auto'
-                                : ''
-                            }
-                        `}
-                        onMouseEnter={interactive ? cancelHide : undefined}
-                        onMouseLeave={interactive ? hide : undefined}
-                    >
-                        {/* TITLE (OPTIONAL) */}
-                        {title &&
-                            <div className="text-base text-text-header-tertiary font-eskapade font-bold">
-                                {title}
-                            </div>
-                        }
-                        {/* CONTENT (REQUIRED) */}
-                        {renderContent(content, maxWidth)}
-                    </div>
-                </ControlledMenu>
-            }
-        </>
+  const ensurePortal = () => {
+    const anchor = anchorRef.current
+    const ownerDoc = anchor?.ownerDocument
+    if (!anchor || !ownerDoc?.body) return
+    if (
+      portalContainerRef.current?.ownerDocument === ownerDoc &&
+      portalContainerRef.current.isConnected
     )
+      return
+
+    portalContainerRef.current?.remove()
+    let portalHost = ownerDoc.body.querySelector<HTMLDivElement>(
+      ":scope > .tooltip-portal-root",
+    )
+
+    if (!portalHost) {
+      portalHost = ownerDoc.createElement("div")
+      portalHost.className = "tooltip-portal-root"
+      ownerDoc.body.appendChild(portalHost)
+    }
+
+    const scaduRoot =
+      portalHost.shadowRoot ?? portalHost.attachShadow({ mode: "open" })
+    const container = ownerDoc.createElement("div")
+    container.className = "tooltip-portal-container"
+    syncPortalTheme(container)
+    scaduRoot.appendChild(container)
+
+    if (!scaduRoot.querySelector("style[data-tooltip-styles]")) {
+      const styleTag = createStyleTag()
+      styleTag.dataset.tooltipStyles = "true"
+      scaduRoot.prepend(styleTag)
+    }
+
+    Object.assign(portalHost.style, {
+      position: "fixed",
+      inset: "0",
+      zIndex: "9999",
+      pointerEvents: "none",
+    })
+
+    portalContainerRef.current = container
+    setPortalTarget(container)
+  }
+
+  useEffect(() => {
+    ensurePortal()
+    return () => portalContainerRef.current?.remove()
+  }, [])
+
+  useEffect(
+    () => () => {
+      clearTimeout(openTimeout.current)
+      clearTimeout(closeTimeout.current)
+    },
+    [],
+  )
+
+  const trackPointer = (e: { clientX?: number; clientY?: number }) => {
+    if (disabled || !content) return
+    ensurePortal()
+    if (portalTarget) syncPortalTheme(portalTarget)
+    claimHover()
+    if (typeof e.clientX === "number" && typeof e.clientY === "number") {
+      cursorXY.current = { x: e.clientX, y: e.clientY }
+    }
+    else if (anchorRef.current) {
+      const rect = anchorRef.current.getBoundingClientRect()
+      cursorXY.current = { x: rect.left, y: rect.top }
+    }
+  }
+
+  const show = (e: { clientX?: number; clientY?: number } = {}) => {
+    if (disabled || !content) return
+    trackPointer(e)
+    clearTimeout(openTimeout.current)
+    clearTimeout(closeTimeout.current)
+    openTimeout.current = setTimeout(() => {
+      if (nest.activeDepth.current !== nest.depth) return
+      setAnchorPoint({
+        x: cursorXY.current.x,
+        y: cursorXY.current.y - TOOLTIP_CURSOR_GAP,
+      })
+      setIsOpen(true)
+    }, TOOLTIP_DELAY)
+  }
+
+  const hide = () => {
+    releaseHover()
+    clearTimeout(openTimeout.current)
+    closeTimeout.current = setTimeout(closeTooltip, 50)
+  }
+
+  const cancelHide = () => clearTimeout(closeTimeout.current)
+
+  const resetTimer = (e: { clientX?: number; clientY?: number }) => {
+    if (isOpen) closeTooltip()
+    else show(e)
+  }
+
+  return (
+    <>
+      <span
+        ref={anchorRef}
+        onMouseEnter={show}
+        onMouseMove={trackPointer}
+        onMouseLeave={hide}
+        onFocus={() => show()}
+        onBlur={hide}
+        onClickCapture={resetTimer}
+        onAuxClickCapture={resetTimer}
+      >
+        <TooltipNestContext.Provider value={nest}>
+          {children}
+        </TooltipNestContext.Provider>
+      </span>
+      {portalTarget && (
+        <ControlledMenu
+          state={isOpen ? "open" : "closed"}
+          anchorPoint={anchorPoint}
+          direction={anchorPoint.x < TOOLTIP_ESTIMATED_WIDTH ? "right" : "left"}
+          align={"end"}
+          captureFocus={false}
+          unmountOnClose
+          portal={{ target: portalTarget }}
+          menuClassName={tooltipContainerStyle}
+          onClose={closeTooltip}
+          onClick={(e) => {
+            if (interactive) {
+              e.stopPropagation()
+              e.preventDefault()
+              return
+            }
+            else {
+              hide()
+              setIsOpen(false)
+            }
+          }}
+        >
+          <div
+            className={`
+                            bg-context-menu-fill ${tableBorderRounded} border-2 px-2 py-0.5 
+                            ${
+                              typeof content === "string"
+                                ? "max-w-[min(24rem,calc(100vw-2rem))] whitespace-normal break-words"
+                                : ""
+                            } 
+                            ${interactive ? "pointer-events-auto" : ""}
+                        `}
+            onMouseEnter={interactive ? cancelHide : undefined}
+            onMouseLeave={interactive ? hide : undefined}
+          >
+            {/* TITLE (OPTIONAL) */}
+            {title && (
+              <div className="text-base text-text-header-tertiary font-eskapade font-bold">
+                {title}
+              </div>
+            )}
+            {/* CONTENT (REQUIRED) */}
+            {renderContent(content, maxWidth)}
+          </div>
+        </ControlledMenu>
+      )}
+    </>
+  )
 }
 
 /**
  * Added this because plain strings with \n won't automatically create line breaks in JSX.
- * @param content 
- * @returns 
+ * @param content
+ * @returns
  */
 const renderContent = (content?: ReactNode, maxWidth?: string) => {
-    if (!content) return null
-    if (typeof content !== 'string') {
-        return <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-            <div className={`pt-1 pb-1 ${maxWidth ?? 'max-w-[20rem]'}`}>
-                {content}
-            </div>
-        </EditModeContextProvider>
-    }
-    else {
-        return <span className="text-sm text-context-menu-text font-paradigm font-normal whitespace-normal break-words">
-            {ReactHtmlParser(content.replace(/\n/g, `<br />`))}
-        </span>
-    }
+  if (!content) return null
+  if (typeof content !== "string") {
+    return (
+      <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+        <div className={`pt-1 pb-1 ${maxWidth ?? "max-w-[20rem]"}`}>
+          {content}
+        </div>
+      </EditModeContextProvider>
+    )
+  }
+  else {
+    return (
+      <span className="text-sm text-context-menu-text font-paradigm font-normal whitespace-normal break-words">
+        {ReactHtmlParser(content.replace(/\n/g, `<br />`))}
+      </span>
+    )
+  }
 }

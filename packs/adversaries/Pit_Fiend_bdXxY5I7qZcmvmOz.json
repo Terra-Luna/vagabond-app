@@ -10,11 +10,7 @@
     "armor": {
       "rating": 5
     },
-    "senses": [
-      "allsight",
-      "darksight",
-      "telepath"
-    ],
+    "senses": ["allsight", "darksight", "telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -208,15 +204,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "fire",
-            "physical_lt2",
-            "poison"
-          ],
+          "immunities": ["fire", "physical_lt2", "poison"],
           "weaknesses": [],
-          "statusImmunities": [
-            "sickened"
-          ]
+          "statusImmunities": ["sickened"]
         },
         "out": {
           "melee": {},
@@ -281,9 +271,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": [
@@ -308,9 +296,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -336,9 +322,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": []
@@ -358,9 +342,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -385,9 +367,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -412,9 +392,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -440,9 +418,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -471,9 +447,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "halfDamageOnSave": false,
           "appliedEffects": [],
           "appliedActiveEffects": [],
@@ -494,9 +468,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "halfDamageOnSave": false,
           "appliedEffects": [
             {
@@ -522,9 +494,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "halfDamageOnSave": false,
           "appliedEffects": [
             {

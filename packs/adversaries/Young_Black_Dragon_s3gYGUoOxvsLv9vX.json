@@ -10,9 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,17 +204,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "acid",
-            "physical_lt0"
-          ],
+          "immunities": ["acid", "physical_lt0"],
           "weaknesses": [],
-          "statusImmunities": [
-            "berserk",
-            "charmed",
-            "confused",
-            "frightened"
-          ]
+          "statusImmunities": ["berserk", "charmed", "confused", "frightened"]
         },
         "out": {
           "melee": {},
@@ -280,10 +270,7 @@
           },
           "type": "acid"
         },
-        "saves": [
-          "reflex",
-          "endure"
-        ],
+        "saves": ["reflex", "endure"],
         "recharge": "Cd6",
         "appliedEffects": [
           {
@@ -304,9 +291,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       },
@@ -321,9 +306,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       },
@@ -341,9 +324,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "prone",
@@ -366,9 +347,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2,
           "type": "melee",
           "range": "close"
@@ -384,9 +363,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1,
           "type": "melee",
           "range": "close"

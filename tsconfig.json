@@ -1,43 +1,27 @@
 {
-    "compilerOptions": {
-        "module": "ESNext",
-        "target": "ES2020",
-        "rootDir": "src/",
-        "jsx": "react-jsx",
-        "lib": [
-            "DOM",
-            "ES2020"
-        ],
-        "types": [
-            "vite/client",
-            "@league-of-foundry-developers/foundry-vtt-types"
-        ],
-        "esModuleInterop": true,
-        "moduleResolution": "bundler",
-        "forceConsistentCasingInFileNames": true,
-        "sourceMap": false,
-        "allowUmdGlobalAccess": true,
-        "noImplicitAny": false,
-        "removeComments": false,
-        "resolveJsonModule": true,
-        "alwaysStrict": true,
-        "strictNullChecks": true,
-        "skipLibCheck": true,
-        "paths": {
-            "@client/*": [
-                "./foundry/client/*"
-            ],
-            "@common/*": [
-                "./foundry/common/*"
-            ]
-        }
-    },
-    "include": [
-        "src",
-        "declarations.d.ts"
-    ],
-    "exclude": [
-        "node_modules",
-        "**/node_modules/*"
-    ]
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2020",
+    "rootDir": "src/",
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ES2020"],
+    "types": ["vite/client", "@league-of-foundry-developers/foundry-vtt-types"],
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": false,
+    "allowUmdGlobalAccess": true,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "resolveJsonModule": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@client/*": ["./foundry/client/*"],
+      "@common/*": ["./foundry/common/*"]
+    }
+  },
+  "include": ["src", "declarations.d.ts"],
+  "exclude": ["node_modules", "**/node_modules/*"]
 }

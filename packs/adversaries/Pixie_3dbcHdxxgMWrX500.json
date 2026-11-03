@@ -11,9 +11,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "telepath"
-    ],
+    "senses": ["telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -270,9 +268,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       },

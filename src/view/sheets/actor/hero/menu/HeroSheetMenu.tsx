@@ -4,114 +4,220 @@ import { useCallback, useState } from "react"
 import { ActiveEffectsView } from "../../../../../apps/active-effects/ActiveEffectsView"
 import { DowntimeApp } from "../../../../../apps/downtime/DowntimeApp"
 import { HeroCreationApp } from "../../../../../apps/hero-creator/HeroCreationApp"
+import { TagalongImporter } from "../../../../../apps/io/TagalongImporter"
 import { RestApp } from "../../../../../apps/rest/RestApp"
 import { HeroGrantsAndModifiersApp } from "../../../../../apps/rules/HeroGrantsAndModifiersApp"
 import { TravelApp } from "../../../../../apps/travel/TravelApp"
 import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { sys_id } from "../../../../../utils/foundryUtils"
-import { appLang } from "../../../../../utils/lang"
+import { sys_id } from "../../../../../util/foundry-util"
+import { appLang } from "../../../../../util/lang"
 import { tableBorderRounded } from "../../../../common/border-styles"
 import { ItemDivider } from "../../../../component/Header"
 import { Tooltip } from "../../../../component/Tooltip"
 import { VagabondActorSheet } from "../../VagabondActorSheet"
 import { AppMenuToggleSwitch } from "./item/AppMenuToggleSwitch"
 import { MenuListItem } from "./item/MenuListItem"
-import { importFromVgbndApp } from "./util/vgbnd-import"
 
-export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VagabondActorSheet, className: string }) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [isDarkMode, setIsDarkMode] = useState(
-        sheet.classList.contains('theme-dark') || (
-            !sheet.classList.contains('theme-light') && document.body.classList.contains('theme-dark')
-        )
-    )
+export const HeroSheetMenu = ({
+  hero,
+  sheet,
+  className,
+}: {
+  hero: HeroDataModel
+  sheet: VagabondActorSheet
+  className: string
+}) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(
+    sheet.classList.contains("theme-dark") ||
+      (!sheet.classList.contains("theme-light") &&
+        document.body.classList.contains("theme-dark")),
+  )
 
-    const toggleMenu = useCallback(() => {
-        setIsOpen(!isOpen)
-    }, [isOpen])
+  const toggleMenu = useCallback(() => {
+    setIsOpen(!isOpen)
+  }, [isOpen])
 
-    const toggleTheme = useCallback((e: React.MouseEvent) => {
-        e.stopPropagation()
-        setIsDarkMode(!isDarkMode)
-        const curUiConfig = (game.settings as any).get("core", "uiConfig")
-        const curColorScheme = curUiConfig.colorScheme
-        const curTheme = curColorScheme.applications;
-        (game.settings as any).set("core", "uiConfig", {
-            ...curUiConfig,
-            colorScheme: {
-                ...curColorScheme,
-                applications: curTheme === "dark" ? "light" : "dark"
-            }
-        })
-        sheet._renderHTML() // Ensures a smooth visual transition
-        VagabondSettingsRegistry.refreshActorSheets() // Propagates the theme change to all owned actors' sheets
-    }, [sheet, isDarkMode])
+  const toggleTheme = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+      setIsDarkMode(!isDarkMode)
+      const curUiConfig = (game.settings as any).get("core", "uiConfig")
+      const curColorScheme = curUiConfig.colorScheme
+      const curTheme = curColorScheme.applications
+      ;(game.settings as any).set("core", "uiConfig", {
+        ...curUiConfig,
+        colorScheme: {
+          ...curColorScheme,
+          applications: curTheme === "dark" ? "light" : "dark",
+        },
+      })
+      sheet._renderHTML() // Ensures a smooth visual transition
+      VagabondSettingsRegistry.refreshActorSheets() // Propagates the theme change to all owned actors' sheets
+    },
+    [sheet, isDarkMode],
+  )
 
-    return (<>
-        <div className={`relative ${className}`} onBlur={(e) => {
-            if (e.relatedTarget instanceof Node && e.currentTarget.contains(e.relatedTarget)) return
-            setIsOpen(false)
-        }}>
-            {/* MENU BUTTON */}
-            <button onClick={toggleMenu} className="flex items-center justify-center pt-2 pr-1 cursor-pointer">
-                <div className="relative w-6 h-6 text-text-header-primary">
-                    <Menu className={`absolute inset-0 w-6 h-6 transition-all duration-300 transform ${isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`} />
-                    <X className={`absolute inset-0 w-6 h-6 transition-all duration-300 transform ${isOpen ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'}`} />
-                </div>
-            </button>
+  return (
+    <>
+      <div
+        className={`relative ${className}`}
+        onBlur={(e) => {
+          if (
+            e.relatedTarget instanceof Node &&
+            e.currentTarget.contains(e.relatedTarget)
+          )
+            return
+          setIsOpen(false)
+        }}
+      >
+        {/* MENU BUTTON */}
+        <button
+          onClick={toggleMenu}
+          className="flex items-center justify-center pt-2 pr-1 cursor-pointer"
+        >
+          <div className="relative w-6 h-6 text-text-header-primary">
+            <Menu
+              className={`absolute inset-0 w-6 h-6 transition-all duration-300 transform ${isOpen ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"}`}
+            />
+            <X
+              className={`absolute inset-0 w-6 h-6 transition-all duration-300 transform ${isOpen ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"}`}
+            />
+          </div>
+        </button>
 
-            {/* MENU CONTAINER */}
-            <div tabIndex={-1} className={`
+        {/* MENU CONTAINER */}
+        <div
+          tabIndex={-1}
+          className={`
                 absolute top-9 right-0 z-1000 p-4 w-54 max-h-120 overflow-y-auto outline-none
                 bg-context-menu-fill border-2 border-solid border-table-border rounded-sm shadow-lg
                 transition-all duration-200 transform origin-top-right
-                ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'}
-            `}>
-                {/* DARK/LIGHT THEME SELECTOR */}
-                <div className={`flex gap-x-2 items-center justify-between mb-4 px-2 py-1 bg-sheet-header-fill cursor-pointer ${tableBorderRounded}`} onClick={toggleTheme}>
-                    <p className="text-sm text-text-header-primary">{appLang.HeroSheet.Menu.theme}</p>
-                    <div className="flex gap-x-2 px-2 py-1 border border-solid border-text-header-tertiary rounded-sm">
-                        <Sun size={18} className={`${isDarkMode ? 'text-text-header-primary hover-glow' : 'text-text-header-secondary'}`} />
-                        <Moon size={18} className={`${isDarkMode ? 'text-text-header-secondary' : 'text-text-header-primary hover-glow'}`} />
-                    </div>
-                </div>
-                <ul className="space-y-2 text-sm text-text-primary font-eskapade font-bold">
-                    {!hero.tagalongId && hero.level.current === 0 &&
-                        <span className="flex w-full mb-2 [&>span]:block [&>span]:w-full">
-                            <Tooltip title={appLang.HeroSheet.Menu.importFromVgbndApp} content={appLang.HeroSheet.Menu.importFromVgbndAppTooltip}>
-                                <MenuListItem
-                                    text={<div className="flex gap-x-1">{appLang.HeroSheet.Menu.import}<p className="text-sm font-paradigm font-normal italic">(www.vgbnd.app)</p></div>}
-                                    onClick={() => importFromVgbndApp(hero)}
-                                />
-                            </Tooltip>
-                        </span>
-                    }
-                    {!hero.ancestry &&
-                        <MenuListItem text={appLang.HeroSheet.Menu.create} onClick={() => new HeroCreationApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
-                    }
-                    {game.user?.isActiveGM && hero.level.xpToLevel === -1 && !hero.parent.getFlag(sys_id, "destiny") &&
-                        <MenuListItem text={appLang.HeroSheet.Menu.grantLvl} onClick={() => hero.parent.setFlag(sys_id, "destiny", true)} toggleMenu={toggleMenu} />
-                    }
-                    {game.user?.isActiveGM && hero.parent.getFlag(sys_id, "destiny") &&
-                        <MenuListItem text={appLang.HeroSheet.Menu.revokeLvl} onClick={() => hero.parent.setFlag(sys_id, "destiny", false)} toggleMenu={toggleMenu} />
-                    }
-
-                    <AppMenuToggleSwitch label="STATS" hero={hero} toggleKey="hero-sheet-stats-hide" />
-                    <AppMenuToggleSwitch label="TRACKERS" hero={hero} toggleKey="hero-sheet-trackers-hide" />
-                    <AppMenuToggleSwitch label={`MINI CARDS`} hero={hero} toggleKey="hero-sheet-mini-cards" />
-                    <MenuListItem text={'REST'} onClick={() => { new RestApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'TRAVEL'} onClick={() => { new TravelApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'DOWNTIME'} onClick={() => { new DowntimeApp(hero.parent).render({ force: true }) }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'GRANTS & MODIFIERS'} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
-
-                    <ItemDivider />
-
-                    <div className="-mx-2">
-                        <ActiveEffectsView initialDocument={hero.parent} />
-                    </div>
-                </ul>
+                ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"}
+            `}
+        >
+          {/* DARK/LIGHT THEME SELECTOR */}
+          <div
+            className={`flex gap-x-2 items-center justify-between mb-4 px-2 py-1 bg-sheet-header-fill cursor-pointer ${tableBorderRounded}`}
+            onClick={toggleTheme}
+          >
+            <p className="text-sm text-text-header-primary">
+              {appLang.HeroSheet.Menu.theme}
+            </p>
+            <div className="flex gap-x-2 px-2 py-1 border border-solid border-text-header-tertiary rounded-sm">
+              <Sun
+                size={18}
+                className={`${isDarkMode ? "text-text-header-primary hover-glow" : "text-text-header-secondary"}`}
+              />
+              <Moon
+                size={18}
+                className={`${isDarkMode ? "text-text-header-secondary" : "text-text-header-primary hover-glow"}`}
+              />
             </div>
+          </div>
+          <ul className="space-y-2 text-sm text-text-primary font-eskapade font-bold">
+            {!hero.tagalongId && hero.level.current === 0 && (
+              <span className="flex w-full mb-2 [&>span]:block [&>span]:w-full">
+                <Tooltip
+                  title={appLang.HeroSheet.Menu.importFromVgbndApp}
+                  content={appLang.HeroSheet.Menu.importFromVgbndAppTooltip}
+                >
+                  <MenuListItem
+                    text={
+                      <div className="flex gap-x-1">
+                        {appLang.HeroSheet.Menu.import}
+                        <p className="text-sm font-paradigm font-normal italic">
+                          (www.vgbnd.app)
+                        </p>
+                      </div>
+                    }
+                    onClick={() => TagalongImporter.importFromVgbndApp(hero)}
+                  />
+                </Tooltip>
+              </span>
+            )}
+            {!hero.ancestry && (
+              <MenuListItem
+                text={appLang.HeroSheet.Menu.create}
+                onClick={() =>
+                  new HeroCreationApp(hero.parent).render({ force: true })
+                }
+                toggleMenu={toggleMenu}
+              />
+            )}
+            {game.user?.isActiveGM &&
+              hero.level.xpToLevel === -1 &&
+              !hero.parent.getFlag(sys_id, "destiny") && (
+                <MenuListItem
+                  text={appLang.HeroSheet.Menu.grantLvl}
+                  onClick={() => hero.parent.setFlag(sys_id, "destiny", true)}
+                  toggleMenu={toggleMenu}
+                />
+              )}
+            {game.user?.isActiveGM &&
+              hero.parent.getFlag(sys_id, "destiny") && (
+                <MenuListItem
+                  text={appLang.HeroSheet.Menu.revokeLvl}
+                  onClick={() => hero.parent.setFlag(sys_id, "destiny", false)}
+                  toggleMenu={toggleMenu}
+                />
+              )}
+
+            <AppMenuToggleSwitch
+              label="STATS"
+              hero={hero}
+              toggleKey="hero-sheet-stats-hide"
+            />
+            <AppMenuToggleSwitch
+              label="TRACKERS"
+              hero={hero}
+              toggleKey="hero-sheet-trackers-hide"
+            />
+            <AppMenuToggleSwitch
+              label={`MINI CARDS`}
+              hero={hero}
+              toggleKey="hero-sheet-mini-cards"
+            />
+            <MenuListItem
+              text={"REST"}
+              onClick={() => {
+                new RestApp(hero.parent).render({ force: true })
+              }}
+              toggleMenu={toggleMenu}
+            />
+            <MenuListItem
+              text={"TRAVEL"}
+              onClick={() => {
+                new TravelApp(hero.parent).render({ force: true })
+              }}
+              toggleMenu={toggleMenu}
+            />
+            <MenuListItem
+              text={"DOWNTIME"}
+              onClick={() => {
+                new DowntimeApp(hero.parent).render({ force: true })
+              }}
+              toggleMenu={toggleMenu}
+            />
+            <MenuListItem
+              text={"GRANTS & MODIFIERS"}
+              onClick={() =>
+                new HeroGrantsAndModifiersApp(hero.parent).render({
+                  force: true,
+                })
+              }
+              toggleMenu={toggleMenu}
+            />
+
+            <ItemDivider />
+
+            <div className="-mx-2">
+              <ActiveEffectsView initialDocument={hero.parent} />
+            </div>
+          </ul>
         </div>
-    </>)
+      </div>
+    </>
+  )
 }

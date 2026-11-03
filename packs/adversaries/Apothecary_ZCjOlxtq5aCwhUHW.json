@@ -302,9 +302,7 @@
           },
           "type": "pierce"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

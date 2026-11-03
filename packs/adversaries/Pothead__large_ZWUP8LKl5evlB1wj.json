@@ -203,16 +203,9 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "fire",
-            "poison"
-          ],
+          "immunities": ["fire", "poison"],
           "weaknesses": [],
-          "statusImmunities": [
-            "fatigued",
-            "sickened",
-            "suffocating"
-          ]
+          "statusImmunities": ["fatigued", "sickened", "suffocating"]
         },
         "out": {
           "melee": {},
@@ -276,9 +269,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

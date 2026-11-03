@@ -40,14 +40,9 @@
       "style": "H",
       "state": "H"
     },
-    "properties": [
-      "thrown",
-      "vicious"
-    ],
+    "properties": ["thrown", "vicious"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ]
+    "skills": ["melee"]
   },
   "effects": [],
   "folder": null,

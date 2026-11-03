@@ -270,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "description": "<p><span style=\"white-space: pre-wrap;\">[Grapple]: 9 (2d8) and Restrained</span></p>",
@@ -288,9 +286,7 @@
             "explodesOn": []
           }
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "restrained",
@@ -316,9 +312,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1
         },
         {
@@ -335,9 +329,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1,
           "appliedEffects": [
             {

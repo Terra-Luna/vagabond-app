@@ -2,172 +2,247 @@ import { MessageSquareText } from "lucide-react"
 
 import { PerkSelectionApp } from "../../../../../apps/hero-choices/perks/PerkSelectionApp"
 import { TrainingSelectionApp } from "../../../../../apps/hero-choices/training/TrainingSelectionApp"
-import { getMiniCardsPref, getShowTrainingSelectionToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import {
+  getMiniCardsPref,
+  getShowTrainingSelectionToggle,
+} from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { PerkDataModel, perkSpellRerequisitesAsString, perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
+import {
+  PerkDataModel,
+  perkSpellRerequisitesAsString,
+  perkStatPrerequisitesAsString,
+  perkTrainingPrerequisitesAsString,
+} from "../../../../../model/item/character/PerkDataModel"
 import { ItemsCache } from "../../../../../rules/util/ItemsCache"
-import { groupBy } from "../../../../../utils/collectionUtil"
-import { appLang } from "../../../../../utils/lang"
-import { getId, getName } from "../../../../../utils/modelUtil"
+import { groupBy } from "../../../../../util/collection-util"
+import { appLang } from "../../../../../util/lang"
+import { getId, getName } from "../../../../../util/model-util"
 import { sendVagabondChatCard } from "../../../../chat/ChatCardSerializer"
 import { UtilityButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../component/DynamicGrid"
 import { ClearHeader } from "../../../../component/Header"
-import { CardSubHeaderValues, ItemRuleToggleSwitch, SkillCard, SkillCardTitle } from "../../../../component/SkillCard"
+import {
+  CardSubHeaderValues,
+  ItemRuleToggleSwitch,
+  SkillCard,
+  SkillCardTitle,
+} from "../../../../component/SkillCard"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
-    const { onCtxMenu, ContextMenu } = useContextMenu()
-    const beingSize = appLang.Sizes[hero.ancestry?.beingSize ?? '']
-    const beingType = appLang.BeingTypes[hero.ancestry?.beingType ?? '']
-    const useMiniCards = getMiniCardsPref(hero.parent.id)
+  const { onCtxMenu, ContextMenu } = useContextMenu()
+  const beingSize = appLang.Sizes[hero.ancestry?.beingSize ?? ""]
+  const beingType = appLang.BeingTypes[hero.ancestry?.beingType ?? ""]
+  const useMiniCards = getMiniCardsPref(hero.parent.id)
 
-    const groupedFeatures = groupBy('name', (hero.class?.featureIds ?? [])
-        .map(featureId => ItemsCache.items.get(featureId))
-        .filter(feature => feature?.type === 'feature')
-        .sort((a, b) => a.system.level - b.system.level)
-        .filter(feature => feature.system.level <= hero.level.current!)
-        .map(feature => ({ feature, level: feature.system.level }))
-        .map(({ feature, level }) => ({
-            id: getId(feature),
-            level,
-            name: feature.name,
-            subheader: feature.system.subheader((hero.class as any)?.parent?.name ?? ""),
-            description: feature.system.dynamicDescription(hero.level.current!),
-            rules: [...feature.system.rules],
-            img: feature.img
-        }))
+  const groupedFeatures = groupBy(
+    "name",
+    (hero.class?.featureIds ?? [])
+      .map((featureId) => ItemsCache.items.get(featureId))
+      .filter((feature) => feature?.type === "feature")
+      .sort((a, b) => a.system.level - b.system.level)
+      .filter((feature) => feature.system.level <= hero.level.current!)
+      .map((feature) => ({ feature, level: feature.system.level }))
+      .map(({ feature, level }) => ({
+        id: getId(feature),
+        level,
+        name: feature.name,
+        subheader: feature.system.subheader(
+          (hero.class as any)?.parent?.name ?? "",
+        ),
+        description: feature.system.dynamicDescription(hero.level.current!),
+        rules: [...feature.system.rules],
+        img: feature.img,
+      })),
+  )
+
+  let classFeatures: any[] = []
+
+  if (groupedFeatures) {
+    classFeatures = Object.keys(groupedFeatures)?.map(
+      (f) => groupedFeatures[f]?.[0],
     )
+  }
 
-    let classFeatures: any[] = []
+  const showTrainingSelection =
+    game.user?.isActiveGM ||
+    (hero.level.current! > 0 && getShowTrainingSelectionToggle())
 
-    if (groupedFeatures) {
-        classFeatures = Object.keys(groupedFeatures)?.map(f => groupedFeatures[f]?.[0])
-    }
+  const getPerkSubheader = (perk: any) => {
+    if (typeof perk.subheader === "function") return perk.subheader()
+    const values: CardSubHeaderValues[] = []
+    const model = perk as PerkDataModel
+    if (!model.prerequisites?.length)
+      return [
+        {
+          label: appLang.PerkSheet.prereqLabel,
+          value: appLang.FavorHinder.none,
+        },
+      ]
+    const spellReqs = perkSpellRerequisitesAsString(model)
+    const statReqs = perkStatPrerequisitesAsString(model)
+    const trainedReqs = perkTrainingPrerequisitesAsString(model)
+    if (spellReqs)
+      values.push({ label: appLang.PrerequisiteTypes.spell, value: spellReqs })
+    if (statReqs)
+      values.push({ label: appLang.PrerequisiteTypes.stat, value: statReqs })
+    if (trainedReqs)
+      values.push({
+        label: appLang.PrerequisiteTypes.trained,
+        value: trainedReqs,
+      })
+    return values
+  }
 
-    const showTrainingSelection = game.user?.isActiveGM || (hero.level.current! > 0 && getShowTrainingSelectionToggle())
-
-    const getPerkSubheader = (perk: any) => {
-        if (typeof perk.subheader === "function") return perk.subheader()
-        const values: CardSubHeaderValues[] = []
-        const model = perk as PerkDataModel
-        if (!model.prerequisites?.length) return [{ label: appLang.PerkSheet.prereqLabel, value: appLang.FavorHinder.none }]
-        const spellReqs = perkSpellRerequisitesAsString(model)
-        const statReqs = perkStatPrerequisitesAsString(model)
-        const trainedReqs = perkTrainingPrerequisitesAsString(model)
-        if (spellReqs) values.push({ label: appLang.PrerequisiteTypes.spell, value: spellReqs })
-        if (statReqs) values.push({ label: appLang.PrerequisiteTypes.stat, value: statReqs })
-        if (trainedReqs) values.push({ label: appLang.PrerequisiteTypes.trained, value: trainedReqs })
-        return values
-    }
-
-    return (
-        <div className="@container py-1">
-            <span className="font-eskapade font-bold">
-
-                {/* CLASS FEATURES */}
-                {hero.class && <div className="mb-2">
-                    <div className="font-paradigm font-normal mb-2"><ClearHeader title={appLang.HeroSheet.class} /></div>
-                    <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
-                        {classFeatures.map((f, index) => (
-                            <div key={index} onContextMenu={(e) => onCtxMenu(e, [
-                                {
-                                    icon: MessageSquareText,
-                                    label: appLang.HeroSheet.Inventory.ctxChat,
-                                    action: () => sendVagabondChatCard(
-                                        hero,
-                                        "AbilityChatCard",
-                                        { actorId: getId(hero), img: f.img ?? '', title: f.name, description: f.description }
-                                    )
-                                }
-                            ])}>
-                                <SkillCard
-                                    actor={hero.parent}
-                                    img={f.img}
-                                    title={
-                                        <SkillCardTitle text={f.name}>
-                                            {f.rules?.some((rule: any) => rule.toggleableEffect) && <ItemRuleToggleSwitch actor={hero} item={f} />}
-                                        </SkillCardTitle>
-                                    }
-                                    subtitles={f.subheader}
-                                    description={f.description}
-                                    mini={useMiniCards}
-                                />
-
-                            </div>
-                        ))}
-                    </DynamicGrid>
-                </div>}
-
-                {/* PERKS */}
-                {hero.perks && hero.perks.length > 0 && <>
-                    <div className="font-paradigm font-normal mb-2"><ClearHeader title={appLang.HeroSheet.perks} /></div>
-                    <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
-                        {hero.perks.sort((a, b) => {
-                                const repeatableOrder = Number(Boolean(a.canTakeMultiple)) - Number(Boolean(b.canTakeMultiple))
-                                return repeatableOrder || a.parent.name.localeCompare(b.parent.name)
-                        }).map((p: any, index: number) => (
-                            <div key={index} onContextMenu={(e) => onCtxMenu(e, [
-                                {
-                                    icon: MessageSquareText, label: appLang.HeroSheet.Inventory.ctxChat, action: () => sendVagabondChatCard(hero,
-                                        "AbilityChatCard",
-                                        {
-                                            actorId: getId(hero),
-                                            img: p.parent.img,
-                                            title: p.parent.name,
-                                            subtitle: getPerkSubheader(p),
-                                            description: p.description
-                                        }
-                                    )
-                                }
-                            ])}>
-                                <SkillCard
-                                    actor={hero.parent}
-                                    img={p.parent.img}
-                                    title={
-                                        <SkillCardTitle text={p.parent.name}>
-                                            {p.rules?.some((rule: any) => rule.toggleableEffect) &&
-                                                <ItemRuleToggleSwitch actor={hero} item={p} />
-                                            }
-                                        </SkillCardTitle>
-                                    }
-                                    subtitles={getPerkSubheader(p)}
-                                    description={p.description}
-                                    mini={useMiniCards}
-                                />
-                            </div>
-                        ))}
-                    </DynamicGrid>
-                </>}
-
-                {/* ANDCESTRY TRAITS */}
-                {hero.ancestry &&
-                    <div className="mt-2">
-                        <div className="font-paradigm font-normal mb-2"><ClearHeader title={appLang.HeroSheet.ancestry} /></div>
-                        <SkillCard
-                            title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
-                            subtitles={[{ label: appLang.HeroCreation.beingSize, value: beingSize }, { label: appLang.HeroCreation.beingType, value: beingType }]}
-                            description={hero.ancestry?.description}
-                        />
-                    </div>
-                }
-            </span>
-
-            {/* PERK AND TRAINING SELECTION BUTTONS */}
-            {hero.class && <>
-                <div className={`flex gap-x-1 mt-1 w-full mb-4`}>
-                    <UtilityButton onClick={() => new PerkSelectionApp(hero.parent).render({ force: true })}>
-                        Perk Selections
-                    </UtilityButton>
-                    {showTrainingSelection &&
-                        <UtilityButton onClick={() => new TrainingSelectionApp(hero.parent).render({ force: true })}>
-                            Training Selections
-                        </UtilityButton>
+  return (
+    <div className="@container py-1">
+      <span className="font-eskapade font-bold">
+        {/* CLASS FEATURES */}
+        {hero.class && (
+          <div className="mb-2">
+            <div className="font-paradigm font-normal mb-2">
+              <ClearHeader title={appLang.HeroSheet.class} />
+            </div>
+            <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
+              {classFeatures.map((f, index) => (
+                <div
+                  key={index}
+                  onContextMenu={(e) =>
+                    onCtxMenu(e, [
+                      {
+                        icon: MessageSquareText,
+                        label: appLang.HeroSheet.Inventory.ctxChat,
+                        action: () =>
+                          sendVagabondChatCard(hero, "AbilityChatCard", {
+                            actorId: getId(hero),
+                            img: f.img ?? "",
+                            title: f.name,
+                            description: f.description,
+                          }),
+                      },
+                    ])
+                  }
+                >
+                  <SkillCard
+                    actor={hero.parent}
+                    img={f.img}
+                    title={
+                      <SkillCardTitle text={f.name}>
+                        {f.rules?.some(
+                          (rule: any) => rule.toggleableEffect,
+                        ) && <ItemRuleToggleSwitch actor={hero} item={f} />}
+                      </SkillCardTitle>
                     }
+                    subtitles={f.subheader}
+                    description={f.description}
+                    mini={useMiniCards}
+                  />
                 </div>
-            </>}
+              ))}
+            </DynamicGrid>
+          </div>
+        )}
 
-            <ContextMenu />
-        </div>
-    )
+        {/* PERKS */}
+        {hero.perks && hero.perks.length > 0 && (
+          <>
+            <div className="font-paradigm font-normal mb-2">
+              <ClearHeader title={appLang.HeroSheet.perks} />
+            </div>
+            <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
+              {hero.perks
+                .sort((a, b) => {
+                  const repeatableOrder =
+                    Number(Boolean(a.canTakeMultiple)) -
+                    Number(Boolean(b.canTakeMultiple))
+                  return (
+                    repeatableOrder ||
+                    a.parent.name.localeCompare(b.parent.name)
+                  )
+                })
+                .map((p: any, index: number) => (
+                  <div
+                    key={index}
+                    onContextMenu={(e) =>
+                      onCtxMenu(e, [
+                        {
+                          icon: MessageSquareText,
+                          label: appLang.HeroSheet.Inventory.ctxChat,
+                          action: () =>
+                            sendVagabondChatCard(hero, "AbilityChatCard", {
+                              actorId: getId(hero),
+                              img: p.parent.img,
+                              title: p.parent.name,
+                              subtitle: getPerkSubheader(p),
+                              description: p.description,
+                            }),
+                        },
+                      ])
+                    }
+                  >
+                    <SkillCard
+                      actor={hero.parent}
+                      img={p.parent.img}
+                      title={
+                        <SkillCardTitle text={p.parent.name}>
+                          {p.rules?.some(
+                            (rule: any) => rule.toggleableEffect,
+                          ) && <ItemRuleToggleSwitch actor={hero} item={p} />}
+                        </SkillCardTitle>
+                      }
+                      subtitles={getPerkSubheader(p)}
+                      description={p.description}
+                      mini={useMiniCards}
+                    />
+                  </div>
+                ))}
+            </DynamicGrid>
+          </>
+        )}
+
+        {/* ANDCESTRY TRAITS */}
+        {hero.ancestry && (
+          <div className="mt-2">
+            <div className="font-paradigm font-normal mb-2">
+              <ClearHeader title={appLang.HeroSheet.ancestry} />
+            </div>
+            <SkillCard
+              title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ""}`}
+              subtitles={[
+                { label: appLang.HeroCreation.beingSize, value: beingSize },
+                { label: appLang.HeroCreation.beingType, value: beingType },
+              ]}
+              description={hero.ancestry?.description}
+            />
+          </div>
+        )}
+      </span>
+
+      {/* PERK AND TRAINING SELECTION BUTTONS */}
+      {hero.class && (
+        <>
+          <div className={`flex gap-x-1 mt-1 w-full mb-4`}>
+            <UtilityButton
+              onClick={() =>
+                new PerkSelectionApp(hero.parent).render({ force: true })
+              }
+            >
+              Perk Selections
+            </UtilityButton>
+            {showTrainingSelection && (
+              <UtilityButton
+                onClick={() =>
+                  new TrainingSelectionApp(hero.parent).render({ force: true })
+                }
+              >
+                Training Selections
+              </UtilityButton>
+            )}
+          </div>
+        </>
+      )}
+
+      <ContextMenu />
+    </div>
+  )
 }

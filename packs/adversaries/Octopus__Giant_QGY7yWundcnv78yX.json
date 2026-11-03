@@ -10,9 +10,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -272,18 +270,14 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Tentacle",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]: 2 (d4) and Restrained</span></p><p><span style=\"white-space: pre-wrap;\">if Medium or smaller</span></p>",
         "type": "melee",
         "range": "near",
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "damage": {
           "type": "physical",
           "dice": {
@@ -312,9 +306,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1
         }
       ],

@@ -12,9 +12,7 @@
         "label": "Polymorph: Cast Skill Atk",
         "level": 0,
         "value": true,
-        "selector": [
-          "modifiers.polymorph.useCastSkill"
-        ],
+        "selector": ["modifiers.polymorph.useCastSkill"],
         "toggleableEffect": false
       }
     ],
@@ -26,9 +24,7 @@
         "spell": "Polymorph",
         "skills": [
           {
-            "skillNames": [
-              "arcana"
-            ],
+            "skillNames": ["arcana"],
             "andOr": null
           }
         ]

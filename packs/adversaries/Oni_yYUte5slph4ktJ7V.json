@@ -10,9 +10,7 @@
     "armor": {
       "rating": 2
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -272,9 +270,7 @@
           },
           "type": "cold"
         },
-        "saves": [
-          "endure"
-        ]
+        "saves": ["endure"]
       },
       {
         "name": "Charm Person",
@@ -290,9 +286,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "appliedEffects": [
           {
             "effect": "charmed",
@@ -330,9 +324,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "unconscious",
@@ -354,9 +346,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ]
+        "saves": ["endure"]
       },
       {
         "name": "Invisibility",
@@ -372,9 +362,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "appliedEffects": [
           {
             "effect": "invisible",
@@ -393,9 +381,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       }
@@ -414,9 +400,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2,
           "type": "melee",
           "range": "close"

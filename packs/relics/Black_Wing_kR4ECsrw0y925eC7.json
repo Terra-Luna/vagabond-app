@@ -84,9 +84,7 @@
       "style": "H",
       "state": "H"
     },
-    "skills": [
-      "ranged"
-    ],
+    "skills": ["ranged"],
     "properties": [],
     "material": "steel",
     "lightSourceData": {

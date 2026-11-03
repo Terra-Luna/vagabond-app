@@ -1,482 +1,762 @@
 import { LockKeyhole } from "lucide-react"
-import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 
-import { statsSchema } from "../../../model/actor/type/Stats"
+import { statsSchema } from "../../../model/actor/schema/stats"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { addExtraPerk, getExtraPerkRules, removeExtraPerkRule } from "../../../rules/util/extra-grants-util"
-import { getItemChoiceRules, getItemGrants, getItemRules, ItemRule } from "../../../rules/util/item-rules-util"
+import {
+  addExtraPerk,
+  getExtraPerkRules,
+  removeExtraPerkRule,
+} from "../../../rules/util/extra-grants-util"
+import {
+  getItemChoiceRules,
+  getItemGrants,
+  getItemRules,
+  ItemRule,
+} from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { appLang } from "../../../utils/lang"
-import { localizeString } from "../../../utils/localeUtils"
+import { appLang } from "../../../util/lang"
+import { localizeString } from "../../../util/locale-util"
 import { wealthBorderRounded } from "../../../view/common/border-styles"
 import { DropZone } from "../../../view/component/DropZone"
 import { Header } from "../../../view/component/Header"
 import { SearchBar } from "../../../view/component/SearchBar"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { TrashButton } from "../../../view/component/TrashButton"
-import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
+import { EditModeContextProvider } from "../../../view/wrappers/EditModeContextProvider"
 import { BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
 import { TopNavButtons } from "../../hero-creator/component/TopNavButtons"
 
 export const usePerkSelectionView = (
-    ancestry: Item & { system: AncestryDataModel } | undefined,
-    clazz: Item & { system: ClassDataModel } | undefined,
-    stats: ReturnType<typeof statsSchema>,
-    trainings: string[],
-    spells: string[],
-    navButtons: ReactNode[],
-    level: number,
-    lockAncestrySlots: boolean = false,
-    actor?: Actor
+  ancestry: (Item & { system: AncestryDataModel }) | undefined,
+  clazz: (Item & { system: ClassDataModel }) | undefined,
+  stats: ReturnType<typeof statsSchema>,
+  trainings: string[],
+  spells: string[],
+  navButtons: ReactNode[],
+  level: number,
+  lockAncestrySlots: boolean = false,
+  actor?: Actor,
 ) => {
+  const allPerks = useMemo(() => {
+    return [...ItemsCache.perks()]
+  }, [])
 
-    const allPerks = useMemo(() => {
-        return [...ItemsCache.perks()]
-    }, [])
+  /**
+   * A list of every perk in the game that is eligible for selection by the hero, based on their current stats, trainings, and spells.
+   */
+  const selectablePerks = useMemo(() => {
+    const perks = [...allPerks.map((perk) => toDisplayablePerk(perk))]
+    return perks
+  }, [allPerks])
 
-    /**
-     * A list of every perk in the game that is eligible for selection by the hero, based on their current stats, trainings, and spells.
-     */
-    const selectablePerks = useMemo(() => {
-        const perks = [...allPerks.map(perk => toDisplayablePerk(perk))]
-        return perks
-    }, [allPerks])
+  /**
+   * A list of every perk in the game.
+   */
+  const perksList = useMemo(() => {
+    return [
+      {
+        value: "",
+        label: strings.emptySlot,
+        img: "",
+        prereqs: [],
+        cardSubheader: [],
+        description: "",
+        multi: false,
+      },
+      ...selectablePerks,
+    ]
+  }, [selectablePerks])
 
-    /**
-     * A list of every perk in the game.
-     */
-    const perksList = useMemo(() => {
-        return [
-            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '', multi: false },
-            ...selectablePerks
-        ]
-    }, [selectablePerks])
+  /**
+   * Constructs a seperate list of perks the hero is eligible so far
+   * base on stat, spell, and training selections.
+   */
+  const eligiblePerksList = useMemo(() => {
+    return [
+      {
+        value: "",
+        label: strings.emptySlot,
+        img: "",
+        prereqs: [],
+        cardSubheader: [],
+        description: "",
+      },
+      ...ItemsCache.eligiblePerks(stats, trainings, spells)
+        .filter((it) => selectablePerks.some((sp) => sp.value === it.uuid))
+        .map((perk) => toDisplayablePerk(perk)),
+    ]
+  }, [stats, trainings, spells, selectablePerks])
 
-    /**
-     * Constructs a seperate list of perks the hero is eligible so far
-     * base on stat, spell, and training selections.
-     */
-    const eligiblePerksList = useMemo(() => {
-        return [
-            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
-            ...ItemsCache.eligiblePerks(stats, trainings, spells)
-                .filter(it => selectablePerks.some(sp => sp.value === it.uuid))
-                .map(perk => toDisplayablePerk(perk))
-        ]
-    }, [stats, trainings, spells, selectablePerks])
+  /**
+   * All perk choice rules for the chosen ancestry and class.
+   */
+  const perkChoiceRules = useMemo(() => {
+    const ancestryRules =
+      ancestry?.system?.rules?.filter((r) => (r as any).level <= level) ?? []
+    const classRules = clazz
+      ? getItemRules(clazz)
+          .filter((r) => (r as any).level <= level)
+          .sort((a, b) => (a as any).level - (b as any).level)
+          .sort((a, b) => (a as any).label.localeCompare((b as any).label))
+      : []
+    return getItemChoiceRules(level, [...ancestryRules, ...classRules]).filter(
+      (it) => it.pack === "perk",
+    )
+  }, [ancestry, clazz, level])
 
-    /**
-     * All perk choice rules for the chosen ancestry and class.
-     */
-    const perkChoiceRules = useMemo(() => {
-        const ancestryRules = ancestry?.system?.rules?.filter(r => (r as any).level <= level) ?? []
-        const classRules = clazz
-            ? getItemRules(clazz)
-                .filter(r => (r as any).level <= level)
-                .sort((a, b) => (a as any).level - (b as any).level)
-                .sort((a, b) => (a as any).label.localeCompare((b as any).label))
-            : []
-        return getItemChoiceRules(level, [...ancestryRules, ...classRules]).filter(it => it.pack === "perk")
-    }, [ancestry, clazz, level])
-
-    /**
-     * Monitor the selected class and ancestry rules and construct a list of filtered perk choices
-     * based on their perk choice filter rules and prerequisite exception rules (ignoreStats, ignoreTrainings).
-     */
-    const perkSlotOptionsByRuleId = useMemo(() => {
-        return Object.fromEntries(perkChoiceRules.map(rule => [
-            rule.id,
-            [
-                { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
-                ...ItemsCache.eligiblePerks(stats, trainings, spells, {
-                    ignoreStats: rule.ignoreStats,
-                    ignoreTrainings: rule.ignoreTrainings
-                })
-                    .filter(it => selectablePerks.some(sp => sp.value === it.uuid))
-                    .filter(perk => rule.choices.some(choice => choice.value === perk.uuid))
-                    .map(perk => toDisplayablePerk(perk))
-            ]
-        ]))
-    }, [perkChoiceRules, stats, trainings, spells, selectablePerks])
-
-    // Perks automatically granted by chosen Ancestry & Class.
-    const [ancestryPerkGrants, setAncestryPerkGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
-    const [classPerkGrants, setClassPerkGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
-
-    // Player's chosen perks for each slot type.
-    const [ancestryPerkSlots, setAncestryPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string, selectionId: string }[]>([])
-    const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string, selectionId: string, level: number }[]>([])
-
-    // Dependency items for useEffect to load initial perk selections only once per ancestry/class/level combination.
-    const ancestryId = ancestry?.id
-    const classId = clazz?.id
-
-    useEffect(() => {
-        getItemGrants('perk', [ancestry]).then(grants => {
-            setAncestryPerkGrants(grants)  
-        })
-
-        setAncestryPerkSlots(loadInitialSlots(
-            getItemChoiceRules(level, ancestry?.system?.rules?.filter(r => (r as any).level <= level) ?? [])
-                .filter(it => it.pack === "perk")
-        ))
-
-        getItemGrants('perk', [clazz]).then(grants => {
-            setClassPerkGrants(grants)
-        })
-
-        setClassPerkSlots(loadInitialSlots(
-            getItemChoiceRules(level, getItemRules(clazz).filter(r => (r as any).level <= level))
-                .filter(it => it.pack === "perk")
-        ))
-    }, [ancestryId, classId])
-
-    /**
-     * Prepares the perk data for display in the perk selection list.
-     * @param rules 
-     * @returns 
-     */
-    const loadInitialSlots = (rules) => {
-        const perkRules = rules.filter(r => r.pack === 'perk')
-        const slots = perkRules.flatMap(rule => {
-            const count = Number(rule.maxChoices) || 0
-            const currentName = rule.label
-            const currentId = rule.id
-            return Array.from({ length: count }, () => ({
-                value: '',
-                label: strings.emptySlot,
-                ruleName: currentName,
-                ruleId: currentId,
-                selectionId: foundry.utils.randomID(),
-                level: rule.level
-            }))
-        })
-        return slots
-    }
-
-    const onSelectPerk = useCallback((selectedSlot: any, perk: string, perkId: string, setter: any) => {
-        setter(prevSlots =>
-            prevSlots.map(slot =>
-                slot === selectedSlot ? { ...slot, label: perk, value: perkId } : slot
+  /**
+   * Monitor the selected class and ancestry rules and construct a list of filtered perk choices
+   * based on their perk choice filter rules and prerequisite exception rules (ignoreStats, ignoreTrainings).
+   */
+  const perkSlotOptionsByRuleId = useMemo(() => {
+    return Object.fromEntries(
+      perkChoiceRules.map((rule) => [
+        rule.id,
+        [
+          {
+            value: "",
+            label: strings.emptySlot,
+            img: "",
+            prereqs: [],
+            cardSubheader: [],
+            description: "",
+          },
+          ...ItemsCache.eligiblePerks(stats, trainings, spells, {
+            ignoreStats: rule.ignoreStats,
+            ignoreTrainings: rule.ignoreTrainings,
+          })
+            .filter((it) => selectablePerks.some((sp) => sp.value === it.uuid))
+            .filter((perk) =>
+              rule.choices.some((choice) => choice.value === perk.uuid),
             )
+            .map((perk) => toDisplayablePerk(perk)),
+        ],
+      ]),
+    )
+  }, [perkChoiceRules, stats, trainings, spells, selectablePerks])
+
+  // Perks automatically granted by chosen Ancestry & Class.
+  const [ancestryPerkGrants, setAncestryPerkGrants] = useState<
+    (ItemRule & { item: string; uuid: string; source: string })[]
+  >([])
+  const [classPerkGrants, setClassPerkGrants] = useState<
+    (ItemRule & { item: string; uuid: string; source: string })[]
+  >([])
+
+  // Player's chosen perks for each slot type.
+  const [ancestryPerkSlots, setAncestryPerkSlots] = useState<
+    {
+      value: string
+      label: string
+      ruleName: string
+      ruleId: string
+      selectionId: string
+    }[]
+  >([])
+  const [classPerkSlots, setClassPerkSlots] = useState<
+    {
+      value: string
+      label: string
+      ruleName: string
+      ruleId: string
+      selectionId: string
+      level: number
+    }[]
+  >([])
+
+  // Dependency items for useEffect to load initial perk selections only once per ancestry/class/level combination.
+  const ancestryId = ancestry?.id
+  const classId = clazz?.id
+
+  useEffect(() => {
+    getItemGrants("perk", [ancestry]).then((grants) => {
+      setAncestryPerkGrants(grants)
+    })
+
+    setAncestryPerkSlots(
+      loadInitialSlots(
+        getItemChoiceRules(
+          level,
+          ancestry?.system?.rules?.filter((r) => (r as any).level <= level) ??
+            [],
+        ).filter((it) => it.pack === "perk"),
+      ),
+    )
+
+    getItemGrants("perk", [clazz]).then((grants) => {
+      setClassPerkGrants(grants)
+    })
+
+    setClassPerkSlots(
+      loadInitialSlots(
+        getItemChoiceRules(
+          level,
+          getItemRules(clazz).filter((r) => (r as any).level <= level),
+        ).filter((it) => it.pack === "perk"),
+      ),
+    )
+  }, [ancestryId, classId])
+
+  /**
+   * Prepares the perk data for display in the perk selection list.
+   * @param rules
+   * @returns
+   */
+  const loadInitialSlots = (rules) => {
+    const perkRules = rules.filter((r) => r.pack === "perk")
+    const slots = perkRules.flatMap((rule) => {
+      const count = Number(rule.maxChoices) || 0
+      const currentName = rule.label
+      const currentId = rule.id
+      return Array.from({ length: count }, () => ({
+        value: "",
+        label: strings.emptySlot,
+        ruleName: currentName,
+        ruleId: currentId,
+        selectionId: foundry.utils.randomID(),
+        level: rule.level,
+      }))
+    })
+    return slots
+  }
+
+  const onSelectPerk = useCallback(
+    (selectedSlot: any, perk: string, perkId: string, setter: any) => {
+      setter((prevSlots) =>
+        prevSlots.map((slot) =>
+          slot === selectedSlot
+            ? { ...slot, label: perk, value: perkId }
+            : slot,
+        ),
+      )
+    },
+    [],
+  )
+
+  const isAllSelected = useMemo(() => {
+    return ![...ancestryPerkSlots, ...classPerkSlots].some(
+      (slot) => slot.value.length === 0,
+    )
+  }, [ancestryPerkSlots, classPerkSlots])
+
+  const stackablePerkIds = useMemo(
+    () =>
+      new Set(
+        allPerks
+          .filter((perk) => perk.system.canTakeMultiple)
+          .map((perk) => perk.uuid),
+      ),
+    [allPerks],
+  )
+
+  const selectedPerkIds = useMemo(
+    () =>
+      new Set(
+        [...ancestryPerkSlots, ...classPerkSlots]
+          .map((slot) => slot.value)
+          .filter(Boolean),
+      ),
+    [ancestryPerkSlots, classPerkSlots],
+  )
+
+  const getPerkOption = useCallback(
+    (perkId: string) => {
+      return selectablePerks.find((perk) => perk.value === perkId)
+    },
+    [selectablePerks],
+  )
+
+  const getSlotOptions = useCallback(
+    (slot: { ruleId: string; value?: string }) => {
+      const restrictedOptions = perkSlotOptionsByRuleId[slot.ruleId]
+      if (restrictedOptions) return restrictedOptions
+      return eligiblePerksList
+    },
+    [perkSlotOptionsByRuleId, eligiblePerksList],
+  )
+
+  const getSlotLabel = useCallback(
+    (slot: { ruleName: string }) => slot.ruleName || strings.perksHeader,
+    [],
+  )
+
+  const notifyInvalidDrop = useCallback(
+    (slot: { ruleId: string; ruleName: string }, perkId: string) => {
+      const rule = perkChoiceRules.find((r) => r.id === slot.ruleId)
+      const perkName =
+        ItemsCache.perks().find((p) => p.uuid === perkId)?.name ??
+        "Unknown Perk"
+      if (rule && !rule.choices.some((choice) => choice.value === perkId)) {
+        ui.notifications?.warn(
+          localizeString(appLang.Notifications.perkNotEligibleForRestriction, {
+            perk: perkName,
+            slot: slot.ruleName,
+          }),
         )
-    }, [])
+        return
+      }
+      const options = getSlotOptions(slot)
+      if (!options.some((option) => option.value === perkId)) {
+        ui.notifications?.warn(
+          localizeString(
+            appLang.Notifications.heroDoesNotMeetPerkPrerequisites,
+            { perk: perkName },
+          ),
+        )
+      }
+    },
+    [perkChoiceRules, getSlotOptions],
+  )
 
-    const isAllSelected = useMemo(() => {
-        return ![...ancestryPerkSlots, ...classPerkSlots].some(slot => slot.value.length === 0)
-    }, [ancestryPerkSlots, classPerkSlots])
-
-    const stackablePerkIds = useMemo(() => new Set(
-        allPerks.filter(perk => perk.system.canTakeMultiple).map(perk => perk.uuid)
-    ), [allPerks])
-
-    const selectedPerkIds = useMemo(() => new Set(
-        [...ancestryPerkSlots, ...classPerkSlots].map(slot => slot.value).filter(Boolean)
-    ), [ancestryPerkSlots, classPerkSlots])
-
-    const getPerkOption = useCallback((perkId: string) => {
-        return selectablePerks.find(perk => perk.value === perkId)
-    }, [selectablePerks])
-
-    const getSlotOptions = useCallback((slot: { ruleId: string, value?: string }) => {
-        const restrictedOptions = perkSlotOptionsByRuleId[slot.ruleId]
-        if (restrictedOptions) return restrictedOptions
-        return eligiblePerksList
-    }, [perkSlotOptionsByRuleId, eligiblePerksList])
-
-    const getSlotLabel = useCallback((slot: { ruleName: string }) => slot.ruleName || strings.perksHeader, [])
-
-    const notifyInvalidDrop = useCallback((slot: { ruleId: string, ruleName: string }, perkId: string) => {
-        const rule = perkChoiceRules.find(r => r.id === slot.ruleId)
-        const perkName = ItemsCache.perks().find(p => p.uuid === perkId)?.name ?? 'Unknown Perk'
-        if (rule && !rule.choices.some(choice => choice.value === perkId)) {
-            ui.notifications?.warn(localizeString(appLang.Notifications.perkNotEligibleForRestriction, { perk: perkName, slot: slot.ruleName }))
-            return
-        }
-        const options = getSlotOptions(slot)
-        if (!options.some(option => option.value === perkId)) {
-            ui.notifications?.warn(localizeString(appLang.Notifications.heroDoesNotMeetPerkPrerequisites, { perk: perkName }))
-        }
-    }, [perkChoiceRules, getSlotOptions])
-
-    const renderPerkCard = useCallback((perk: any, draggable = false) => (
-        <div
-            key={perk.value}
-            draggable={draggable}
-            onDragStart={draggable ? event => {
+  const renderPerkCard = useCallback(
+    (perk: any, draggable = false) => (
+      <div
+        key={perk.value}
+        draggable={draggable}
+        onDragStart={
+          draggable
+            ? (event) => {
                 event.stopPropagation()
                 event.dataTransfer.effectAllowed = "copy"
-                event.dataTransfer.setData("application/x-vagabond-perk", perk.value)
+                event.dataTransfer.setData(
+                  "application/x-vagabond-perk",
+                  perk.value,
+                )
                 event.dataTransfer.setData("text/plain", perk.value)
-            } : undefined}
-            onDragEnd={draggable ? event => {
+              }
+            : undefined
+        }
+        onDragEnd={
+          draggable
+            ? (event) => {
                 event.stopPropagation()
                 event.dataTransfer.clearData()
-            } : undefined}
-            className={draggable ? "cursor-grab active:cursor-grabbing" : ""}
-        >
-            <SkillCard
-                img={perk.img}
-                title={perk.label}
-                subtitles={perk.cardSubheader}
-                description={perk.description}
-                startCollapsed={true}
-            />
-        </div>
-    ), [])
+              }
+            : undefined
+        }
+        className={draggable ? "cursor-grab active:cursor-grabbing" : ""}
+      >
+        <SkillCard
+          img={perk.img}
+          title={perk.label}
+          subtitles={perk.cardSubheader}
+          description={perk.description}
+          startCollapsed={true}
+        />
+      </div>
+    ),
+    [],
+  )
 
-    const [extraRules, setExtraRules] = useState<any[]>(() => getExtraPerkRules(actor))
-    
-    const extraPerks = useMemo(() => extraRules.flatMap(rule => {
-        const perk = selectablePerks.find(it => it.value === rule.uuid)
+  const [extraRules, setExtraRules] = useState<any[]>(() =>
+    getExtraPerkRules(actor),
+  )
+
+  const extraPerks = useMemo(
+    () =>
+      extraRules.flatMap((rule) => {
+        const perk = selectablePerks.find((it) => it.value === rule.uuid)
         return perk ? [{ rule, perk }] : []
-    }), [extraRules, selectablePerks])
+      }),
+    [extraRules, selectablePerks],
+  )
 
-    const addExtraPerkFromDrop = useCallback(async (perkId: string) => {
-        const perk = allPerks.find(it => it.uuid === perkId)
-        if (!actor || !perk) return
-        await addExtraPerk(actor, { uuid: perk.uuid, name: perk.name ?? "" })
-        setExtraRules(getExtraPerkRules(actor))
-    }, [actor, allPerks])
+  const addExtraPerkFromDrop = useCallback(
+    async (perkId: string) => {
+      const perk = allPerks.find((it) => it.uuid === perkId)
+      if (!actor || !perk) return
+      await addExtraPerk(actor, { uuid: perk.uuid, name: perk.name ?? "" })
+      setExtraRules(getExtraPerkRules(actor))
+    },
+    [actor, allPerks],
+  )
 
-    const removeExtraPerk = useCallback(async (ruleId: string) => {
-        if (!actor) return
-        await removeExtraPerkRule(actor, ruleId)
-        setExtraRules(getExtraPerkRules(actor))
-    }, [actor])
+  const removeExtraPerk = useCallback(
+    async (ruleId: string) => {
+      if (!actor) return
+      await removeExtraPerkRule(actor, ruleId)
+      setExtraRules(getExtraPerkRules(actor))
+    },
+    [actor],
+  )
 
-    const [activeSlot, setActiveSlot] = useState<any>()
-    const [isSlotFilterEnabled, setIsSlotFilterEnabled] = useState(true)
-    const [dragOverSlotKey, setDragOverSlotKey] = useState<string | null>(null)
+  const [activeSlot, setActiveSlot] = useState<any>()
+  const [isSlotFilterEnabled, setIsSlotFilterEnabled] = useState(true)
+  const [dragOverSlotKey, setDragOverSlotKey] = useState<string | null>(null)
 
-    /**
-     * Perk slot drag/drop target containers.
-     */
-    const renderSlot = useCallback((slot: any, slotIndex: number, setter: any, slotType: string, bonusChoices: Record<string, ReactNode>, locked = false) => {
-        const selectedPerk = getPerkOption(slot.value)
-        const options = getSlotOptions(slot)
+  /**
+   * Perk slot drag/drop target containers.
+   */
+  const renderSlot = useCallback(
+    (
+      slot: any,
+      slotIndex: number,
+      setter: any,
+      slotType: string,
+      bonusChoices: Record<string, ReactNode>,
+      locked = false,
+    ) => {
+      const selectedPerk = getPerkOption(slot.value)
+      const options = getSlotOptions(slot)
 
-        const toggleFilter = useCallback((slot) => {
-            if (activeSlot === slot) {
-                setIsSlotFilterEnabled(enabled => !enabled)
-            }
-            else {
-                setActiveSlot(slot)
-                setIsSlotFilterEnabled(true)
-            }
-        }, [])
+      const toggleFilter = useCallback((slot) => {
+        if (activeSlot === slot) {
+          setIsSlotFilterEnabled((enabled) => !enabled)
+        }
+        else {
+          setActiveSlot(slot)
+          setIsSlotFilterEnabled(true)
+        }
+      }, [])
 
-        const slotKey = `${slotType}-${slot.ruleId}-${slotIndex}`
-        const isDragOver = !locked && dragOverSlotKey === slotKey
+      const slotKey = `${slotType}-${slot.ruleId}-${slotIndex}`
+      const isDragOver = !locked && dragOverSlotKey === slotKey
 
-        return (
-            <div
-                key={slotKey}
-                className={`bg-context-menu-fill/50 p-2 ${locked ? "" : "cursor-pointer"} ${isDragOver ? wealthBorderRounded : `border border-table-border rounded-sm ${slot.value ? "border-solid" : "border-dashed"}`}`}
-                onClick={locked ? undefined : () => toggleFilter(slot)}
-                onDragOver={locked ? undefined : event => {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    event.dataTransfer.dropEffect = "copy"
-                    setDragOverSlotKey(slotKey)
-                }}
-                onDragEnter={locked ? undefined : event => {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    setDragOverSlotKey(slotKey)
-                }}
-                onDragLeave={locked ? undefined : event => {
-                    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setDragOverSlotKey(null)
-                }}
-                onDrop={locked ? undefined : event => {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    setDragOverSlotKey(null)
-                    const perkId = event.dataTransfer.getData("application/x-vagabond-perk") || event.dataTransfer.getData("text/plain")
-                    if (!perkId) return
-                    if (!options.some(option => option.value === perkId)) {
-                        notifyInvalidDrop(slot, perkId)
-                        return
-                    }
-                    onSelectPerk(slot, getPerkOption(perkId)?.label ?? perkId, perkId, setter)
-                    setActiveSlot(undefined)
-                }}
-            >
-                {/* PERK SLOT LABEL */}
-                <div className="flex items-center justify-between gap-x-2 mb-2">
-                    <p className="font-eskapade font-bold text-text-primary">{getSlotLabel(slot)}</p>
-                    {!slot.value && <span className="text-sm text-text-secondary">{appLang.HeroChoices.emptyPerkSlot}</span>}
-                    {locked && <LockKeyhole size={14} className="text-text-tertiary" />}
-                </div>
-                {selectedPerk
-                    ? (
-                        <div className="cursor-default" onClick={(e) => e.stopPropagation()}>
-                            {renderPerkCard(selectedPerk)}
-                            <EditModeContextProvider initialEditMode={locked || !slot.value ? EditModeOptions.FALSE : EditModeOptions.TRUE}>
-                                {bonusChoices[slot.selectionId]}
-                            </EditModeContextProvider>
-                        </div>
-                    )
-                    : <div className="min-h-12 p-2 border border-dashed border-table-border flex items-center justify-center text-text-tertiary italic">
-                        {locked ? "Granted by Ancestry" : "Drop perk here (click to toggle filter)"}
-                    </div>
+      return (
+        <div
+          key={slotKey}
+          className={`bg-context-menu-fill/50 p-2 ${locked ? "" : "cursor-pointer"} ${isDragOver ? wealthBorderRounded : `border border-table-border rounded-sm ${slot.value ? "border-solid" : "border-dashed"}`}`}
+          onClick={locked ? undefined : () => toggleFilter(slot)}
+          onDragOver={
+            locked
+              ? undefined
+              : (event) => {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  event.dataTransfer.dropEffect = "copy"
+                  setDragOverSlotKey(slotKey)
                 }
+          }
+          onDragEnter={
+            locked
+              ? undefined
+              : (event) => {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  setDragOverSlotKey(slotKey)
+                }
+          }
+          onDragLeave={
+            locked
+              ? undefined
+              : (event) => {
+                  if (
+                    !event.currentTarget.contains(
+                      event.relatedTarget as Node | null,
+                    )
+                  )
+                    setDragOverSlotKey(null)
+                }
+          }
+          onDrop={
+            locked
+              ? undefined
+              : (event) => {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  setDragOverSlotKey(null)
+                  const perkId =
+                    event.dataTransfer.getData("application/x-vagabond-perk") ||
+                    event.dataTransfer.getData("text/plain")
+                  if (!perkId) return
+                  if (!options.some((option) => option.value === perkId)) {
+                    notifyInvalidDrop(slot, perkId)
+                    return
+                  }
+                  onSelectPerk(
+                    slot,
+                    getPerkOption(perkId)?.label ?? perkId,
+                    perkId,
+                    setter,
+                  )
+                  setActiveSlot(undefined)
+                }
+          }
+        >
+          {/* PERK SLOT LABEL */}
+          <div className="flex items-center justify-between gap-x-2 mb-2">
+            <p className="font-eskapade font-bold text-text-primary">
+              {getSlotLabel(slot)}
+            </p>
+            {!slot.value && (
+              <span className="text-sm text-text-secondary">
+                {appLang.HeroChoices.emptyPerkSlot}
+              </span>
+            )}
+            {locked && <LockKeyhole size={14} className="text-text-tertiary" />}
+          </div>
+          {selectedPerk ? (
+            <div
+              className="cursor-default"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {renderPerkCard(selectedPerk)}
+              <EditModeContextProvider
+                initialEditMode={
+                  locked || !slot.value
+                    ? EditModeOptions.FALSE
+                    : EditModeOptions.TRUE
+                }
+              >
+                {bonusChoices[slot.selectionId]}
+              </EditModeContextProvider>
             </div>
-        )
-    }, [activeSlot, dragOverSlotKey, getPerkOption, getSlotLabel, getSlotOptions, notifyInvalidDrop, onSelectPerk, renderPerkCard])
-
-    const grantedPerkIds = useMemo(() => new Set(
-        [...ancestryPerkGrants, ...classPerkGrants].map(grant => grant.uuid)
-    ), [ancestryPerkGrants, classPerkGrants])
-
-    const availablePerks = useMemo(() => {
-        const targetOptions = isSlotFilterEnabled
-            ? (activeSlot ? getSlotOptions(activeSlot) : eligiblePerksList)
-            : perksList
-        return targetOptions
-            .filter(perk => perk.value)
-            .filter(perk => !grantedPerkIds.has(perk.value))
-            .filter(perk => stackablePerkIds.has(perk.value) || !selectedPerkIds.has(perk.value))
-    }, [activeSlot, getSlotOptions, eligiblePerksList, grantedPerkIds, isSlotFilterEnabled, perksList, selectedPerkIds, stackablePerkIds])
-
-    // PerkSelection is re-created on every render, which remounts the lists; remember their scroll positions.
-    const scrollPositions = useRef({ left: 0, right: 0 })
-    const scrollRef = (side: 'left' | 'right') => (el: HTMLDivElement | null) => {
-        if (el) el.scrollTop = scrollPositions.current[side]
-    }
-    const onScrollList = (side: 'left' | 'right') => (e: React.UIEvent<HTMLDivElement>) => {
-        scrollPositions.current[side] = e.currentTarget.scrollTop
-    }
-
-    // Kept in a ref because PerkSelection remounts whenever this hook re-renders.
-    const perkSearchRef = useRef('')
-
-    const PerkSelection = ({ bonusChoices = {} }: { bonusChoices?: Record<string, ReactNode> } = {}) => {
-        const [perkSearch, setPerkSearch] = useState(() => perkSearchRef.current)
-        const searchedPerks = perkSearch.trim().length > 0
-            ? availablePerks.filter(perk => perk.label.toUpperCase().includes(perkSearch.trim().toUpperCase()))
-            : availablePerks
-
-        return <div className="bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden space-y-2">
-            {/* FIXED HEADER AND NAVIGATION BUTTONS */}
-            <div className="flex flex-col gap-4 flex-shrink-0">
-                <Header title={strings.perksHeader} />
-                <TopNavButtons navButtons={navButtons} canProceed={isAllSelected} />
+          ) : (
+            <div className="min-h-12 p-2 border border-dashed border-table-border flex items-center justify-center text-text-tertiary italic">
+              {locked
+                ? "Granted by Ancestry"
+                : "Drop perk here (click to toggle filter)"}
             </div>
-
-            {/* SCROLLABLE CONTENT CONTAINER */}
-            <div className="flex-1 flex flex-col min-h-0 w-full justify-center mx-auto">
-
-                {/* INDEPENDENTLY SCROLLING PANELS */}
-                <div className="grid grid-cols-2 gap-2 items-start flex-1 min-h-0 mt-2">
-                    {/* LEFT-SIDE PANEL: AVAILABLE PERKS LIST */}
-                    <div className="flex flex-col h-full min-h-0 space-y-1">
-                        <div className="flex-shrink-0">
-                            <BonusChoiceTitle text={activeSlot && isSlotFilterEnabled
-                                ? `Eligible Perks: ${getSlotLabel(activeSlot)}`
-                                : "All Available Perks"
-                            } />
-                            <div className="flex flex-col text-sm text-text-secondary">
-                                <span>
-                                    Filter: <span className="font-bold">{isSlotFilterEnabled ? "ON" : "OFF"}</span>
-                                </span>
-                                <p>{appLang.HeroChoices.clickSlotToToggle}</p>
-                            </div>
-                        </div>
-                        {/* SEARCH BY NAME */}
-                        <SearchBar
-                            value={perkSearch}
-                            placeholder={appLang.ItemShop.searchItems}
-                            clearLabel={appLang.ItemShop.clearSearch}
-                            onChange={(value) => {
-                                perkSearchRef.current = value
-                                setPerkSearch(value)
-                            }}
-                        />
-                        {/* SCROLLABLE PERK OPTIONS */}
-                        <div ref={scrollRef('left')} onScroll={onScrollList('left')} className="flex-1 overflow-y-auto min-h-0 space-y-1">
-                            {searchedPerks.map(perk => renderPerkCard(perk, true))}
-                        </div>
-                    </div>
-
-                    {/* RIGHT-SIDE PANEL: PERK SLOTS */}
-                    <div ref={scrollRef('right')} onScroll={onScrollList('right')} className="flex flex-col h-full min-h-0 overflow-y-auto">
-                        <div className="space-y-1 pb-4">
-                            {/* GRANTED PERKS */}
-                            <div className="mb-4">
-                                {[...ancestryPerkGrants, ...classPerkGrants].length > 0 &&
-                                    <div className="space-y-1 flex-shrink-0">
-                                        <BonusChoiceTitle text={strings.grantedPerks} />
-                                        {[...ancestryPerkGrants, ...classPerkGrants].map((grant, index) => (
-                                            renderSlot(
-                                                {
-                                                    value: grant.uuid,
-                                                    label: grant.item,
-                                                    ruleName: grant.source,
-                                                    ruleId: grant.id
-                                                },
-                                                index, () => { },
-                                                "granted",
-                                                bonusChoices,
-                                                true
-                                            )
-                                        ))}
-                                    </div>
-                                }
-                            </div>
-                            {/* PERK SLOTS - DRAG-DROPPABLE */}
-                            <BonusChoiceTitle text="Perk Slots" />
-                            {/* Blank ancestry slots stay unlocked so a new ancestral perk can be chosen after a GM swaps Ancestry. */}
-                            {ancestryPerkSlots.map((slot, index) => renderSlot(slot, index, setAncestryPerkSlots, "ancestry", bonusChoices, lockAncestrySlots && Boolean(slot.value)))}
-                            {classPerkSlots.map((slot, index) => renderSlot(slot, index, setClassPerkSlots, "class", bonusChoices))}
-                        </div>
-
-                        {actor && <>
-                            {/* EXTRA PERKS DROP-ZONE */}
-                            <DropZone
-                                className="font-paradigm font-normal italic"
-                                onDrop={event => {
-                                    const perkId = event.dataTransfer.getData("application/x-vagabond-perk") || event.dataTransfer.getData("text/plain")
-                                    if (perkId) addExtraPerkFromDrop(perkId)
-                                }}
-                            >
-                                {appLang.HeroChoices.extraPerksDropZone}
-                            </DropZone>
-
-                            {/* LIST OF EXTRA PERKS */}
-                            <div className="flex flex-col gap-1 w-full mt-2">
-                                {extraPerks.map(({ rule, perk }) => (
-                                    <div key={rule.id} className="flex items-start gap-1">
-                                        <div className="flex-1 min-w-0">{renderPerkCard(perk)}</div>
-                                        <TrashButton onClick={() => removeExtraPerk(rule.id)} className="mt-2" />
-                                    </div>
-                                ))}
-                            </div>
-                        </>}
-                    </div>
-                </div>
-            </div>
+          )}
         </div>
+      )
+    },
+    [
+      activeSlot,
+      dragOverSlotKey,
+      getPerkOption,
+      getSlotLabel,
+      getSlotOptions,
+      notifyInvalidDrop,
+      onSelectPerk,
+      renderPerkCard,
+    ],
+  )
+
+  const grantedPerkIds = useMemo(
+    () =>
+      new Set(
+        [...ancestryPerkGrants, ...classPerkGrants].map((grant) => grant.uuid),
+      ),
+    [ancestryPerkGrants, classPerkGrants],
+  )
+
+  const availablePerks = useMemo(() => {
+    const targetOptions = isSlotFilterEnabled
+      ? activeSlot
+        ? getSlotOptions(activeSlot)
+        : eligiblePerksList
+      : perksList
+    return targetOptions
+      .filter((perk) => perk.value)
+      .filter((perk) => !grantedPerkIds.has(perk.value))
+      .filter(
+        (perk) =>
+          stackablePerkIds.has(perk.value) || !selectedPerkIds.has(perk.value),
+      )
+  }, [
+    activeSlot,
+    getSlotOptions,
+    eligiblePerksList,
+    grantedPerkIds,
+    isSlotFilterEnabled,
+    perksList,
+    selectedPerkIds,
+    stackablePerkIds,
+  ])
+
+  // PerkSelection is re-created on every render, which remounts the lists; remember their scroll positions.
+  const scrollPositions = useRef({ left: 0, right: 0 })
+  const scrollRef = (side: "left" | "right") => (el: HTMLDivElement | null) => {
+    if (el) el.scrollTop = scrollPositions.current[side]
+  }
+  const onScrollList =
+    (side: "left" | "right") => (e: React.UIEvent<HTMLDivElement>) => {
+      scrollPositions.current[side] = e.currentTarget.scrollTop
     }
 
-    return {
-        PerkSelection, ancestryPerkSlots, classPerkSlots, allPerks, perksList,
-        setAncestryPerkSlots, setClassPerkSlots, loadInitialSlots
-    }
+  // Kept in a ref because PerkSelection remounts whenever this hook re-renders.
+  const perkSearchRef = useRef("")
+
+  const PerkSelection = ({
+    bonusChoices = {},
+  }: { bonusChoices?: Record<string, ReactNode> } = {}) => {
+    const [perkSearch, setPerkSearch] = useState(() => perkSearchRef.current)
+    const searchedPerks =
+      perkSearch.trim().length > 0
+        ? availablePerks.filter((perk) =>
+            perk.label.toUpperCase().includes(perkSearch.trim().toUpperCase()),
+          )
+        : availablePerks
+
+    return (
+      <div className="bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden space-y-2">
+        {/* FIXED HEADER AND NAVIGATION BUTTONS */}
+        <div className="flex flex-col gap-4 flex-shrink-0">
+          <Header title={strings.perksHeader} />
+          <TopNavButtons navButtons={navButtons} canProceed={isAllSelected} />
+        </div>
+
+        {/* SCROLLABLE CONTENT CONTAINER */}
+        <div className="flex-1 flex flex-col min-h-0 w-full justify-center mx-auto">
+          {/* INDEPENDENTLY SCROLLING PANELS */}
+          <div className="grid grid-cols-2 gap-2 items-start flex-1 min-h-0 mt-2">
+            {/* LEFT-SIDE PANEL: AVAILABLE PERKS LIST */}
+            <div className="flex flex-col h-full min-h-0 space-y-1">
+              <div className="flex-shrink-0">
+                <BonusChoiceTitle
+                  text={
+                    activeSlot && isSlotFilterEnabled
+                      ? `Eligible Perks: ${getSlotLabel(activeSlot)}`
+                      : "All Available Perks"
+                  }
+                />
+                <div className="flex flex-col text-sm text-text-secondary">
+                  <span>
+                    Filter:{" "}
+                    <span className="font-bold">
+                      {isSlotFilterEnabled ? "ON" : "OFF"}
+                    </span>
+                  </span>
+                  <p>{appLang.HeroChoices.clickSlotToToggle}</p>
+                </div>
+              </div>
+              {/* SEARCH BY NAME */}
+              <SearchBar
+                value={perkSearch}
+                placeholder={appLang.ItemShop.searchItems}
+                clearLabel={appLang.ItemShop.clearSearch}
+                onChange={(value) => {
+                  perkSearchRef.current = value
+                  setPerkSearch(value)
+                }}
+              />
+              {/* SCROLLABLE PERK OPTIONS */}
+              <div
+                ref={scrollRef("left")}
+                onScroll={onScrollList("left")}
+                className="flex-1 overflow-y-auto min-h-0 space-y-1"
+              >
+                {searchedPerks.map((perk) => renderPerkCard(perk, true))}
+              </div>
+            </div>
+
+            {/* RIGHT-SIDE PANEL: PERK SLOTS */}
+            <div
+              ref={scrollRef("right")}
+              onScroll={onScrollList("right")}
+              className="flex flex-col h-full min-h-0 overflow-y-auto"
+            >
+              <div className="space-y-1 pb-4">
+                {/* GRANTED PERKS */}
+                <div className="mb-4">
+                  {[...ancestryPerkGrants, ...classPerkGrants].length > 0 && (
+                    <div className="space-y-1 flex-shrink-0">
+                      <BonusChoiceTitle text={strings.grantedPerks} />
+                      {[...ancestryPerkGrants, ...classPerkGrants].map(
+                        (grant, index) =>
+                          renderSlot(
+                            {
+                              value: grant.uuid,
+                              label: grant.item,
+                              ruleName: grant.source,
+                              ruleId: grant.id,
+                            },
+                            index,
+                            () => {},
+                            "granted",
+                            bonusChoices,
+                            true,
+                          ),
+                      )}
+                    </div>
+                  )}
+                </div>
+                {/* PERK SLOTS - DRAG-DROPPABLE */}
+                <BonusChoiceTitle text="Perk Slots" />
+                {/* Blank ancestry slots stay unlocked so a new ancestral perk can be chosen after a GM swaps Ancestry. */}
+                {ancestryPerkSlots.map((slot, index) =>
+                  renderSlot(
+                    slot,
+                    index,
+                    setAncestryPerkSlots,
+                    "ancestry",
+                    bonusChoices,
+                    lockAncestrySlots && Boolean(slot.value),
+                  ),
+                )}
+                {classPerkSlots.map((slot, index) =>
+                  renderSlot(
+                    slot,
+                    index,
+                    setClassPerkSlots,
+                    "class",
+                    bonusChoices,
+                  ),
+                )}
+              </div>
+
+              {actor && (
+                <>
+                  {/* EXTRA PERKS DROP-ZONE */}
+                  <DropZone
+                    className="font-paradigm font-normal italic"
+                    onDrop={(event) => {
+                      const perkId =
+                        event.dataTransfer.getData(
+                          "application/x-vagabond-perk",
+                        ) || event.dataTransfer.getData("text/plain")
+                      if (perkId) addExtraPerkFromDrop(perkId)
+                    }}
+                  >
+                    {appLang.HeroChoices.extraPerksDropZone}
+                  </DropZone>
+
+                  {/* LIST OF EXTRA PERKS */}
+                  <div className="flex flex-col gap-1 w-full mt-2">
+                    {extraPerks.map(({ rule, perk }) => (
+                      <div key={rule.id} className="flex items-start gap-1">
+                        <div className="flex-1 min-w-0">
+                          {renderPerkCard(perk)}
+                        </div>
+                        <TrashButton
+                          onClick={() => removeExtraPerk(rule.id)}
+                          className="mt-2"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return {
+    PerkSelection,
+    ancestryPerkSlots,
+    classPerkSlots,
+    allPerks,
+    perksList,
+    setAncestryPerkSlots,
+    setClassPerkSlots,
+    loadInitialSlots,
+  }
 }
 
 const strings = appLang.HeroCreation
 
 const toDisplayablePerk = (perk) => {
-    return {
-        value: perk.uuid,
-        label: perk.name,
-        img: perk.img ?? '',
-        prereqs: (perk.system as any)?.prerequisites,
-        multi: perk.system.canTakeMultiple,
-        cardSubheader: perk.system.subheader(),
-        description: perk.system.description
-    }
+  return {
+    value: perk.uuid,
+    label: perk.name,
+    img: perk.img ?? "",
+    prereqs: (perk.system as any)?.prerequisites,
+    multi: perk.system.canTakeMultiple,
+    cardSubheader: perk.system.subheader(),
+    description: perk.system.description,
+  }
 }

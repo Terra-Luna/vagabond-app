@@ -1,85 +1,91 @@
 /* eslint-disable react-refresh/only-export-components */
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { Coins } from "../../model/common/CoinValue"
+import { Coins } from "../../model/common/coin-value-schema"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import { stackStackables } from "../../utils/heroInventoryUtil"
-import { appLang } from "../../utils/lang"
-import { getFullItem } from "../../utils/modelUtil"
+import { stackStackables } from "../../util/inventory-util"
+import { appLang } from "../../util/lang"
+import { getFullItem } from "../../util/model-util"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { useItemShopView } from "./ItemShopView"
 
 export class ItemShopApp extends VagabondApplication {
+  actor: Actor & { system: HeroDataModel }
 
-    actor: Actor & { system: HeroDataModel }
-    
-    constructor(actor: Actor & { system: HeroDataModel }) {
-        super({
-            window: { title: `${appLang.ItemShop.title}: ${actor.name}` },
-            position: { height: 900, width: 460 },
-            actorId: actor.id ?? undefined,
-            enforceSingleInstancePerActor: true,
-            Component: ItemShopComponent
-        } as VagabondAppArgs)
-        
-        this.actor = actor
-    }
+  constructor(actor: Actor & { system: HeroDataModel }) {
+    super({
+      window: { title: `${appLang.ItemShop.title}: ${actor.name}` },
+      position: { height: 900, width: 460 },
+      actorId: actor.id ?? undefined,
+      enforceSingleInstancePerActor: true,
+      Component: ItemShopComponent,
+    } as VagabondAppArgs)
 
-    override getReactProps() {
-        return {
-            ...super.getReactProps(),
-            actor: this.actor,
-            onClose: () => this.onCancel()
-        }
-    }
+    this.actor = actor
+  }
 
-    private onCancel() {
-        this.close()
+  override getReactProps() {
+    return {
+      ...super.getReactProps(),
+      actor: this.actor,
+      onClose: () => this.onCancel(),
     }
+  }
+
+  private onCancel() {
+    this.close()
+  }
 }
 
 const ItemShopComponent = ({ actor, onClose }) => {
-    const { ItemShopView, wallet, cart } = useItemShopView(
-        actor.system.inventory.coins,
-        actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
-    )
+  const { ItemShopView, wallet, cart } = useItemShopView(
+    actor.system.inventory.coins,
+    actor.items.find((it) => (it.type as string) === "class") as Item & {
+      system: ClassDataModel
+    },
+  )
 
-    const onCheckout = async () => {
-        await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
+  const onCheckout = async () => {
+    await actor.update({ "system.inventory.coins": wallet } as Record<
+      string,
+      Coins
+    >)
 
-        const processedItems: any[] = []
+    const processedItems: any[] = []
 
-        for (const item of cart) {
-            const isStackable = item.system?.bulk?.isStackable ?? false
+    for (const item of cart) {
+      const isStackable = item.system?.bulk?.isStackable ?? false
 
-            if (isStackable) {
-                if (!processedItems.map(it => it.name).includes(item.name)) {
-                    let itemToAdd: any
-                    if (typeof (item as any).toObject === "function") {
-                        itemToAdd = (item as any).toObject()
-                    }
-                    else {
-                        const fullDoc = await getFullItem(item)
-                        itemToAdd = fullDoc?.toObject() ?? foundry.utils.deepClone(item)
-                    }
-                    itemToAdd.system.bulk.quantity = cart.filter(it => it.name === item.name)?.reduce((sum, it) => sum + (it.system?.bulk?.quantity ?? 1), 0)
-                    processedItems.push(itemToAdd)
-                }
-            }
-            else {
-                if (typeof (item as any).toObject === "function") {
-                    processedItems.push((item as any).toObject())
-                }
-                else {
-                    const fullDoc = await getFullItem(item)
-                    processedItems.push(fullDoc ? fullDoc.toObject() : item)
-                }
-            }
+      if (isStackable) {
+        if (!processedItems.map((it) => it.name).includes(item.name)) {
+          let itemToAdd: any
+          if (typeof (item as any).toObject === "function") {
+            itemToAdd = (item as any).toObject()
+          }
+          else {
+            const fullDoc = await getFullItem(item)
+            itemToAdd = fullDoc?.toObject() ?? foundry.utils.deepClone(item)
+          }
+          itemToAdd.system.bulk.quantity = cart
+            .filter((it) => it.name === item.name)
+            ?.reduce((sum, it) => sum + (it.system?.bulk?.quantity ?? 1), 0)
+          processedItems.push(itemToAdd)
         }
-
-        await actor.createEmbeddedDocuments("Item", processedItems)
-        await stackStackables(actor.system)
-        onClose()
+      }
+      else {
+        if (typeof (item as any).toObject === "function") {
+          processedItems.push((item as any).toObject())
+        }
+        else {
+          const fullDoc = await getFullItem(item)
+          processedItems.push(fullDoc ? fullDoc.toObject() : item)
+        }
+      }
     }
 
-    return <ItemShopView onCheckout={onCheckout} onCancel={onClose} useCheckout />
+    await actor.createEmbeddedDocuments("Item", processedItems)
+    await stackStackables(actor.system)
+    onClose()
+  }
+
+  return <ItemShopView onCheckout={onCheckout} onCancel={onClose} useCheckout />
 }

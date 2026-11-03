@@ -40,15 +40,9 @@
       "style": "H",
       "state": "H"
     },
-    "properties": [
-      "grapple",
-      "long"
-    ],
+    "properties": ["grapple", "long"],
     "material": "steel",
-    "skills": [
-      "finesse",
-      "melee"
-    ]
+    "skills": ["finesse", "melee"]
   },
   "effects": [],
   "folder": null,

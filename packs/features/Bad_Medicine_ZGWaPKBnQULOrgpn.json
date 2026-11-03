@@ -12,9 +12,7 @@
         "label": "Extra Crit Dice",
         "level": 2,
         "value": "1",
-        "selector": [
-          "modifiers.damage.out.ranged.dice.crit.extraDice"
-        ],
+        "selector": ["modifiers.damage.out.ranged.dice.crit.extraDice"],
         "scale": 4
       }
     ],

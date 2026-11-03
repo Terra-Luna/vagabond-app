@@ -270,9 +270,7 @@
           },
           "type": "shock"
         },
-        "saves": [
-          "endure"
-        ]
+        "saves": ["endure"]
       },
       {
         "name": "Bite",
@@ -288,9 +286,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

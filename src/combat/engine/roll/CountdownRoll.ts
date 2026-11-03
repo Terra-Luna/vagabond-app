@@ -1,107 +1,116 @@
-import { roll3dDice, sys_id } from "../../../utils/foundryUtils"
+import { roll3dDice, sys_id } from "../../../util/foundry-util"
 import { sendVagabondChatCard } from "../../../view/chat/ChatCardSerializer"
 import { mitigateBurningDamage } from "../util/burning-mitigation"
-import { getDiceTerms, playDiceSound } from "../util/dice-utils"
+import { getDiceTerms, playDiceSound } from "../util/dice-util"
 import { CountdownResult } from "./CountdownResult"
 import { RollSummary } from "./RollSummary"
 
 export class CountdownRoll {
+  result: CountdownResult
 
-    result: CountdownResult
+  constructor(countdown: CountdownResult) {
+    this.result = countdown
+  }
 
-    constructor(countdown: CountdownResult) {
-        this.result = countdown
+  public async roll(silent = false) {
+    const formula = `d${this.result.duration}`
+    const roll = await new Roll(formula).evaluate()
+    playDiceSound()
+    const nextDuration = this.adjustCountdownDuration(roll.total)
+
+    this.result = {
+      name: this.result.name,
+      duration: nextDuration,
+      actorUuid: this.result.actorUuid,
+      tokenUuid: this.result.tokenUuid,
+      damageType: this.result.damageType,
+      status: this.result.status,
+      statusName: this.result.statusName,
+      rollSummary: {
+        ...RollSummary.buildRollSummaries(getDiceTerms(roll), [], null, [])[0],
+      },
+      rolls: [roll],
+      message:
+        nextDuration === 0
+          ? "Countdown has expired"
+          : roll.total === 1
+            ? `Countdown has reduced to: Cd${nextDuration}...`
+            : `Countdown continues...`,
     }
 
-    public async roll(silent = false) {
-        const formula = `d${this.result.duration}`
-        const roll = await new Roll(formula).evaluate()
-        playDiceSound()
-        const nextDuration = this.adjustCountdownDuration(roll.total)
-
-        this.result = {
-            name: this.result.name,
-            duration: nextDuration,
-            actorUuid: this.result.actorUuid,
-            tokenUuid: this.result.tokenUuid,
-            damageType: this.result.damageType,
-            status: this.result.status,
-            statusName: this.result.statusName,
-            rollSummary: { ...RollSummary.buildRollSummaries(getDiceTerms(roll), [], null, [])[0] },
-            rolls: [roll],
-            message: nextDuration === 0
-                ? 'Countdown has expired'
-                : (
-                    roll.total === 1
-                        ? `Countdown has reduced to: Cd${nextDuration}...`
-                        : `Countdown continues...`
-                )
-        }
-
-        if (silent) {
-            roll3dDice([roll])
-        }
-        else if (this.result.status !== "burning") {
-            sendVagabondChatCard(
-                null,
-                "CountdownRollChatCard",
-                { result: this.result },
-                [roll]
-            )
-        }
-
-        return this.result
+    if (silent) {
+      roll3dDice([roll])
+    }
+    else if (this.result.status !== "burning") {
+      sendVagabondChatCard(
+        null,
+        "CountdownRollChatCard",
+        { result: this.result },
+        [roll],
+      )
     }
 
-    public async applyBurningDamage() {
-        if (this.result.status !== "burning") return
+    return this.result
+  }
 
-        const token = this.result.tokenUuid
-            ? await fromUuid(this.result.tokenUuid) as TokenDocument | null
-            : null
-        const actor = token?.actor ?? (this.result.actorUuid
-            ? await fromUuid(this.result.actorUuid) as Actor | null
-            : null)
-        if (!actor) {
-            console.warn(`${sys_id} | Actor not found: "${this.result.name}"`)
-            return
-        }
+  public async applyBurningDamage() {
+    if (this.result.status !== "burning") return
 
-        const damage = mitigateBurningDamage(actor, this.result.damageType, this.result.rollSummary?.result ?? 0)
-        const health = (actor.system as any)?.health?.value ?? 0
-
-        if (this.result.damageType === "mana") {
-            if (!(actor.system as any)?.mana) return
-            const adjMana = damage + (actor.system as any).mana.value
-            await actor.update({ "system.mana.value": adjMana } as Record<string, number>)
-        }
-        else {
-            const adjHp = this.result.damageType === "healing"
-                ? health + damage
-                : health - damage
-
-            await actor.update({ "system.health.value": adjHp } as Record<string, number>)
-        }
+    const token = this.result.tokenUuid
+      ? ((await fromUuid(this.result.tokenUuid)) as TokenDocument | null)
+      : null
+    const actor =
+      token?.actor ??
+      (this.result.actorUuid
+        ? ((await fromUuid(this.result.actorUuid)) as Actor | null)
+        : null)
+    if (!actor) {
+      console.warn(`${sys_id} | Actor not found: "${this.result.name}"`)
+      return
     }
 
-    /**
-     * Expected forumla formatting: 1D6CD.
-     * @param result
-     * @param formula 
-     * @returns 
-     */
-    private adjustCountdownDuration(result: number) {
-        if (result > 1) {
-            return this.result.duration
-        }
-        else {
-            return this.result.duration === 4
-                ? 0
-                : (this.result.duration === 20
-                    ? 12
-                    : this.result.duration - 2
-                )
-        }
-    }
+    const damage = mitigateBurningDamage(
+      actor,
+      this.result.damageType,
+      this.result.rollSummary?.result ?? 0,
+    )
+    const health = (actor.system as any)?.health?.value ?? 0
 
+    if (this.result.damageType === "mana") {
+      if (!(actor.system as any)?.mana) return
+      const adjMana = damage + (actor.system as any).mana.value
+      await actor.update({ "system.mana.value": adjMana } as Record<
+        string,
+        number
+      >)
+    }
+    else {
+      const adjHp =
+        this.result.damageType === "healing" ? health + damage : health - damage
+
+      await actor.update({ "system.health.value": adjHp } as Record<
+        string,
+        number
+      >)
+    }
+  }
+
+  /**
+   * Expected forumla formatting: 1D6CD.
+   * @param result
+   * @param formula
+   * @returns
+   */
+  private adjustCountdownDuration(result: number) {
+    if (result > 1) {
+      return this.result.duration
+    }
+    else {
+      return this.result.duration === 4
+        ? 0
+        : this.result.duration === 20
+          ? 12
+          : this.result.duration - 2
+    }
+  }
 }

@@ -12,9 +12,7 @@
     "armor": {
       "rating": 2
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -205,17 +203,9 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "poison"
-          ],
-          "weaknesses": [
-            "blunt"
-          ],
-          "statusImmunities": [
-            "fatigued",
-            "sickened",
-            "suffocating"
-          ]
+          "immunities": ["poison"],
+          "weaknesses": ["blunt"],
+          "statusImmunities": ["fatigued", "sickened", "suffocating"]
         },
         "out": {
           "melee": {},
@@ -279,9 +269,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "appliedEffects": [
           {
             "effect": "dazed",
@@ -303,9 +291,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

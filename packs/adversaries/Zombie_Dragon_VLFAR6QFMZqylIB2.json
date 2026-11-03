@@ -10,9 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,11 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "cold",
-            "physical_lt0",
-            "poison"
-          ],
+          "immunities": ["cold", "physical_lt0", "poison"],
           "weaknesses": [],
           "statusImmunities": [
             "berserk",
@@ -285,9 +279,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -313,9 +305,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": []
@@ -335,9 +325,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": []
@@ -360,9 +348,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "recharge": "Cd4",
           "comboCount": 1,
           "appliedEffects": [
@@ -386,9 +372,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2
         },
         {
@@ -405,9 +389,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1
         }
       ],

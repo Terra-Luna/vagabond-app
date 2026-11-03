@@ -203,9 +203,7 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "poison"
-          ],
+          "immunities": ["poison"],
           "weaknesses": [],
           "statusImmunities": [
             "blinded",
@@ -276,9 +274,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

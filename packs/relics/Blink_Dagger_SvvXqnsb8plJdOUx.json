@@ -36,15 +36,9 @@
       "style": "H",
       "state": "H"
     },
-    "properties": [
-      "keen",
-      "thrown"
-    ],
+    "properties": ["keen", "thrown"],
     "material": "steel",
-    "skills": [
-      "finesse",
-      "melee"
-    ],
+    "skills": ["finesse", "melee"],
     "copperValue": 1000,
     "relicPowers": [
       {

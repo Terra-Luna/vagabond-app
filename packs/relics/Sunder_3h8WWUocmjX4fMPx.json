@@ -36,13 +36,9 @@
       "style": "V",
       "state": "H"
     },
-    "properties": [
-      "vicious"
-    ],
+    "properties": ["vicious"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ],
+    "skills": ["melee"],
     "copperValue": 8000,
     "relicPowers": [
       {
@@ -71,9 +67,7 @@
           "label": "Weapon +3",
           "modifiers": [
             {
-              "selector": [
-                "system.damage.dice.modifier"
-              ],
+              "selector": ["system.damage.dice.modifier"],
               "value": 3
             }
           ]

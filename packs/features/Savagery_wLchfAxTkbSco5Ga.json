@@ -12,9 +12,7 @@
         "label": "Polymorph Level Bonus",
         "level": 2,
         "value": "1",
-        "selector": [
-          "modifiers.polymorph.castingLevelBonus"
-        ],
+        "selector": ["modifiers.polymorph.castingLevelBonus"],
         "scale": 4
       },
       {
@@ -23,9 +21,7 @@
         "label": "Polymorph Damage Bonus",
         "level": 2,
         "value": "1",
-        "selector": [
-          "modifiers.polymorph.damageBonus"
-        ],
+        "selector": ["modifiers.polymorph.damageBonus"],
         "scale": 4
       }
     ],

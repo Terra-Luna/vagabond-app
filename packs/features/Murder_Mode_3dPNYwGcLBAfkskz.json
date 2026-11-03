@@ -39,9 +39,7 @@
         "label": "Flag",
         "level": 4,
         "value": true,
-        "selector": [
-          "flags.murdermode"
-        ]
+        "selector": ["flags.murdermode"]
       },
       {
         "id": "FvYKtCcWL8wxuPAO",
@@ -51,9 +49,7 @@
         "scale": 0,
         "value": "charmed, confused, frightened",
         "valueMultiplier": "",
-        "selector": [
-          "modifiers.damage.in.statusImmunities"
-        ]
+        "selector": ["modifiers.damage.in.statusImmunities"]
       }
     ],
     "level": 4,

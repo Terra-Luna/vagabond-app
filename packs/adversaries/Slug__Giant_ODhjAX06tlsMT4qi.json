@@ -204,9 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "blunt"
-          ],
+          "immunities": ["blunt"],
           "weaknesses": [],
           "statusImmunities": []
         },
@@ -272,9 +270,7 @@
           },
           "type": "acid"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -298,9 +294,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": []
       }

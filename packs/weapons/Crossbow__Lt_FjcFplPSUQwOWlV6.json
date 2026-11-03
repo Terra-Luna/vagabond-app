@@ -40,13 +40,9 @@
       "style": "H",
       "state": "H"
     },
-    "properties": [
-      "ranged"
-    ],
+    "properties": ["ranged"],
     "material": "steel",
-    "skills": [
-      "ranged"
-    ]
+    "skills": ["ranged"]
   },
   "effects": [],
   "folder": null,

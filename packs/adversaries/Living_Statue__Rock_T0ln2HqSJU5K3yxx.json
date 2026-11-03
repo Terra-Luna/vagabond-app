@@ -203,14 +203,8 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "fire",
-            "poison"
-          ],
-          "weaknesses": [
-            "blunt",
-            "cold"
-          ],
+          "immunities": ["fire", "poison"],
+          "weaknesses": ["blunt", "cold"],
           "statusImmunities": [
             "blinded",
             "fatigued",
@@ -280,9 +274,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {
@@ -302,9 +294,7 @@
             },
             "type": "fire"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2
         }
       ]

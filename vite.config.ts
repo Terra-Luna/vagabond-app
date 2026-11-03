@@ -1,7 +1,7 @@
-import tailwindcss from '@tailwindcss/vite'
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
-import svgr from 'vite-plugin-svgr'
+import tailwindcss from "@tailwindcss/vite"
+import react from "@vitejs/plugin-react"
+import { defineConfig } from "vite"
+import svgr from "vite-plugin-svgr"
 
 export default defineConfig(({ mode }) => {
   return {
@@ -18,12 +18,12 @@ export default defineConfig(({ mode }) => {
           target: "ws://localhost:30000",
           ws: true,
           changeOrigin: true,
-          secure: false
+          secure: false,
         },
       },
       watch: {
-        ignored: []
-      }
+        ignored: [],
+      },
     },
     publicDir: "public",
     build: {
@@ -36,14 +36,14 @@ export default defineConfig(({ mode }) => {
         name: "vagabond-app",
         entry: "src/vagabond-app.tsx",
         formats: ["es"],
-        fileName: "vagabond-app"
+        fileName: "vagabond-app",
       },
       rollupOptions: {
         treeshake: false,
         output: {
-          exports: "named"
-        }
-      }
+          exports: "named",
+        },
+      },
     },
     plugins: [
       react(),
@@ -51,11 +51,11 @@ export default defineConfig(({ mode }) => {
       svgr({
         svgrOptions: {
           replaceAttrValues: {
-            '#000': 'currentColor',
-            '#000000': 'currentColor'
+            "#000": "currentColor",
+            "#000000": "currentColor",
           },
         },
-      })
+      }),
     ],
   }
 })

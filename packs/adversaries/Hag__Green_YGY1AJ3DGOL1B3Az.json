@@ -11,10 +11,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "allsight",
-      "darksight"
-    ],
+    "senses": ["allsight", "darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -274,9 +271,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Shapeshift",

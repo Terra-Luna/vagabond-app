@@ -35,12 +35,8 @@
       }
     ],
     "complexity": 2,
-    "keyStats": [
-      "presence"
-    ],
-    "startingPacks": [
-      "Compendium.vagabond-app.gear.Item.3vDJJSHn1yUcfRT0"
-    ],
+    "keyStats": ["presence"],
+    "startingPacks": ["Compendium.vagabond-app.gear.Item.3vDJJSHn1yUcfRT0"],
     "castingSkill": "",
     "maxCastFormula": "",
     "featureIds": [

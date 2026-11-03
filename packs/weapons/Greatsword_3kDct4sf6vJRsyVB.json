@@ -40,14 +40,9 @@
       "style": "HH",
       "state": "H"
     },
-    "properties": [
-      "cleave",
-      "keen"
-    ],
+    "properties": ["cleave", "keen"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ]
+    "skills": ["melee"]
   },
   "effects": [],
   "folder": null,

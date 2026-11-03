@@ -145,17 +145,9 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "poison"
-          ],
-          "weaknesses": [
-            "blunt"
-          ],
-          "statusImmunities": [
-            "paralyzed",
-            "sickened",
-            "suffocating"
-          ]
+          "immunities": ["poison"],
+          "weaknesses": ["blunt"],
+          "statusImmunities": ["paralyzed", "sickened", "suffocating"]
         },
         "out": {
           "spell": 0
@@ -201,9 +193,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Crush",

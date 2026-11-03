@@ -12,9 +12,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -205,9 +203,7 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "poison"
-          ],
+          "immunities": ["poison"],
           "weaknesses": [],
           "statusImmunities": [
             "charmed",
@@ -277,9 +273,7 @@
           },
           "type": "slash"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

@@ -26,16 +26,11 @@
         "label": "Training",
         "level": "1",
         "value": true,
-        "selector": [
-          "skills.brawl.trained",
-          "skills.influence.trained"
-        ]
+        "selector": ["skills.brawl.trained", "skills.influence.trained"]
       }
     ],
     "complexity": 2,
-    "keyStats": [
-      "might"
-    ],
+    "keyStats": ["might"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.AHRBDaSRg8yRq6am",
       "Compendium.vagabond-app.gear.Item.UxTrEtIZcGkbRZoZ"

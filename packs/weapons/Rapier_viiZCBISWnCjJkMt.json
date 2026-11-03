@@ -41,15 +41,9 @@
       "style": "H",
       "state": "H"
     },
-    "properties": [
-      "keen",
-      "vicious"
-    ],
+    "properties": ["keen", "vicious"],
     "material": "steel",
-    "skills": [
-      "finesse",
-      "melee"
-    ]
+    "skills": ["finesse", "melee"]
   },
   "effects": [],
   "folder": null,

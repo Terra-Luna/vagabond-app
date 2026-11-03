@@ -1,37 +1,51 @@
-import { fields } from "../common/sharedSchemas"
+import { fields } from "../common/shared-schemas"
 import { ActorDataModel } from "./ActorDataModel"
-import { inventorySchema } from "./type/Inventory"
-import { NpcSchema, npcSchema } from "./type/NpcSchema"
-import { getNpcActiveRules, getNpcRuleToggleState, onNpcPreCreate, onUpdateNpc, prepareNpcBaseData, toggleNpcItemRule } from "./util/NpcDataModelUtil"
+import { inventorySchema } from "./schema/inventory"
+import { NpcSchema, npcSchema } from "./schema/npc"
+import {
+  getNpcActiveRules,
+  getNpcRuleToggleState,
+  onNpcPreCreate,
+  onUpdateNpc,
+  prepareNpcBaseData,
+  toggleNpcItemRule,
+} from "./util/npc-data-model-util"
 
 export class NpcDataModel extends ActorDataModel<NpcSchema> {
-    static defineSchema() {
-        return {
-            ...super.defineSchema(),
-            ...npcSchema(),
-            inventory: new fields.SchemaField({ ...inventorySchema() })
-        }
+  static defineSchema() {
+    return {
+      ...super.defineSchema(),
+      ...npcSchema(),
+      inventory: new fields.SchemaField({ ...inventorySchema() }),
     }
+  }
 
-    override async _preCreate(data: any, options: any, user: any) {
-        const allowed = await super._preCreate(data, options, user)
-        onNpcPreCreate(this, options, data, allowed, true, CONST.TOKEN_DISPOSITIONS.NEUTRAL)
-    }
+  override async _preCreate(data: any, options: any, user: any) {
+    const allowed = await super._preCreate(data, options, user)
+    onNpcPreCreate(
+      this,
+      options,
+      data,
+      allowed,
+      true,
+      CONST.TOKEN_DISPOSITIONS.NEUTRAL,
+    )
+  }
 
-    override async _onUpdate(changed, options, userId) {
-        super._onUpdate(changed, options, userId)
-        onUpdateNpc(this, changed, options)
-    }
+  override async _onUpdate(changed, options, userId) {
+    super._onUpdate(changed, options, userId)
+    onUpdateNpc(this, changed, options)
+  }
 
-    override prepareBaseData() {
-        super.prepareBaseData()
-        prepareNpcBaseData(this)
-    }
+  override prepareBaseData() {
+    super.prepareBaseData()
+    prepareNpcBaseData(this)
+  }
 
-    getActiveRules = () => getNpcActiveRules(this)
+  getActiveRules = () => getNpcActiveRules(this)
 
-    getRuleToggleState = (itemId: string) => getNpcRuleToggleState(this, itemId)
+  getRuleToggleState = (itemId: string) => getNpcRuleToggleState(this, itemId)
 
-    toggleItemRule = (item: any, stateOverride?: boolean) => toggleNpcItemRule(this, item, stateOverride)
-
+  toggleItemRule = (item: any, stateOverride?: boolean) =>
+    toggleNpcItemRule(this, item, stateOverride)
 }

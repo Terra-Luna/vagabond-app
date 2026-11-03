@@ -10,9 +10,7 @@
     "armor": {
       "rating": 4
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -287,9 +285,7 @@
           },
           "type": "cold"
         },
-        "saves": [
-          "endure"
-        ]
+        "saves": ["endure"]
       },
       {
         "name": "Posession",
@@ -305,9 +301,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "recharge": "Cd6"
       }
     ],

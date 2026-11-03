@@ -26,16 +26,11 @@
         "label": "Training",
         "level": "1",
         "value": true,
-        "selector": [
-          "skills.finesse.trained",
-          "skills.performance.trained"
-        ]
+        "selector": ["skills.finesse.trained", "skills.performance.trained"]
       }
     ],
     "complexity": 2,
-    "keyStats": [
-      "dexterity"
-    ],
+    "keyStats": ["dexterity"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.riYRYZ03gPSdRCNI",
       "Compendium.vagabond-app.gear.Item.3vDJJSHn1yUcfRT0"

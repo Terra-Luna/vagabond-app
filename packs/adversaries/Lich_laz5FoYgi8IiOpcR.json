@@ -10,9 +10,7 @@
     "armor": {
       "rating": 0
     },
-    "senses": [
-      "allsight"
-    ],
+    "senses": ["allsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,10 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "physical_lt0",
-            "poison"
-          ],
+          "immunities": ["physical_lt0", "poison"],
           "weaknesses": [],
           "statusImmunities": [
             "berserk",
@@ -301,9 +296,7 @@
           },
           "type": "necrotic"
         },
-        "saves": [
-          "endure"
-        ]
+        "saves": ["endure"]
       },
       {
         "name": "Disintegrate",
@@ -319,9 +312,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "recharge": "Cd4"
       },
       {
@@ -354,9 +345,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "paralyzed",
@@ -378,9 +367,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "appliedEffects": [
           {
             "effect": "frightened",
@@ -402,9 +389,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "endure"
-        ]
+        "saves": ["endure"]
       }
     ],
     "combo": {

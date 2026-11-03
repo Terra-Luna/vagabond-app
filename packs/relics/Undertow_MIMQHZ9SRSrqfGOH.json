@@ -35,13 +35,9 @@
       "style": "V",
       "state": "H"
     },
-    "properties": [
-      "thrown"
-    ],
+    "properties": ["thrown"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ],
+    "skills": ["melee"],
     "copperValue": 2000,
     "relicPowers": [
       {
@@ -72,9 +68,7 @@
           "label": "Weapon +3",
           "modifiers": [
             {
-              "selector": [
-                "system.damage.dice.modifier"
-              ],
+              "selector": ["system.damage.dice.modifier"],
               "value": 3
             }
           ],
@@ -130,9 +124,7 @@
           "label": "Visceral",
           "modifiers": [
             {
-              "selector": [
-                "damage.out.global.bonus.hdMultiplierOnCrit"
-              ],
+              "selector": ["damage.out.global.bonus.hdMultiplierOnCrit"],
               "value": 2
             }
           ],

@@ -4,15 +4,17 @@ import { NumericCounterInput } from "../../../../view/component/EditableTextFiel
 import { Label } from "../../component/Labels"
 
 export const useSkillCheckModifierInput = () => {
-    const [skillCheckMod, setSkillCheckMod] = useState<number>(0)
-    const SkillCheckModifierInput = <div>
-        <Label text={"+/-"} className="-mb-1" />
-        <span className="">
-            <NumericCounterInput
-                value={skillCheckMod}
-                onChange={(val) => setSkillCheckMod(val)}
-            />
-        </span>
+  const [skillCheckMod, setSkillCheckMod] = useState<number>(0)
+  const SkillCheckModifierInput = (
+    <div>
+      <Label text={"+/-"} className="-mb-1" />
+      <span className="">
+        <NumericCounterInput
+          value={skillCheckMod}
+          onChange={(val) => setSkillCheckMod(val)}
+        />
+      </span>
     </div>
-    return { SkillCheckModifierInput, skillCheckMod, setSkillCheckMod }
+  )
+  return { SkillCheckModifierInput, skillCheckMod, setSkillCheckMod }
 }

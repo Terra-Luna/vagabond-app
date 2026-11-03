@@ -267,9 +267,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       },
@@ -282,16 +280,12 @@
           "dice": {
             "count": 2,
             "faces": 4,
-            "explodesOn": [
-              4
-            ],
+            "explodesOn": [4],
             "modifier": 0
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

@@ -319,6 +319,12 @@ importers:
       jiti:
         specifier: ^2.7.0
         version: 2.7.0
+      prettier:
+        specifier: 3.8.4
+        version: 3.8.4
+      prettier-plugin-brace-style:
+        specifier: 0.10.4
+        version: 0.10.4(prettier@3.8.4)
       ts-jest:
         specifier: 29.4.9
         version: 29.4.9(@babel/core@7.29.7)(@jest/transform@30.4.1)(@jest/types@30.4.1)(babel-jest@30.4.1(@babel/core@7.29.7))(jest-util@30.4.1)(jest@30.4.1(@types/node@26.0.0)(babel-plugin-macros@3.1.0))(typescript@6.0.3)
@@ -3569,6 +3575,22 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
+  prettier-plugin-brace-style@0.10.4:
+    resolution: {integrity: sha512-AHyhqa0XDN+crvkPAzPwjF/i2vYLc1cQ6fsimhozDyiyfenMTXdgsIupDGTMfk+KbEw6OoVHUn0uOs89cSLrHQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@prettier/plugin-oxc': '*'
+      prettier: ^3
+      prettier-plugin-astro: '*'
+      prettier-plugin-svelte: '*'
+    peerDependenciesMeta:
+      '@prettier/plugin-oxc':
+        optional: true
+      prettier-plugin-astro:
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
+
   prettier@3.8.4:
     resolution: {integrity: sha512-N2MylSdi48+5N/6S5j+maeHbUSIzzZ5uOcX5Hm4QpV8Dkb1HFjfAKTKX6yNPJQD9AhcT3ifHNB66tWTTJDi11Q==}
     engines: {node: '>=14'}
@@ -4272,6 +4294,9 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  zod@4.6.7:
+    resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
 
 snapshots:
 
@@ -8062,6 +8087,11 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
+  prettier-plugin-brace-style@0.10.4(prettier@3.8.4):
+    dependencies:
+      prettier: 3.8.4
+      zod: 4.6.7
+
   prettier@3.8.4: {}
 
   pretty-format@30.4.1:
@@ -8922,3 +8952,5 @@ snapshots:
       lib0: 0.2.117
 
   yocto-queue@0.1.0: {}
+
+  zod@4.6.7: {}

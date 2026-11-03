@@ -34,9 +34,7 @@
       }
     ],
     "complexity": 3,
-    "keyStats": [
-      "reason"
-    ],
+    "keyStats": ["reason"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.rGKOD30vhnEC8c6k",
       "Compendium.vagabond-app.gear.Item.5y2TEMR983wkMy3s"

@@ -26,19 +26,12 @@
         "label": "Training",
         "level": "1",
         "value": true,
-        "selector": [
-          "skills.brawl.trained",
-          "skills.melee.trained"
-        ]
+        "selector": ["skills.brawl.trained", "skills.melee.trained"]
       }
     ],
     "complexity": 3,
-    "keyStats": [
-      "might"
-    ],
-    "startingPacks": [
-      "Compendium.vagabond-app.gear.Item.89DHDbGM3hZwfo1Y"
-    ],
+    "keyStats": ["might"],
+    "startingPacks": ["Compendium.vagabond-app.gear.Item.89DHDbGM3hZwfo1Y"],
     "castingSkill": "",
     "maxCastFormula": "",
     "featureIds": [

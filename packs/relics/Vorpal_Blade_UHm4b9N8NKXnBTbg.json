@@ -35,15 +35,9 @@
       "style": "H",
       "state": "H"
     },
-    "properties": [
-      "keen",
-      "thrown"
-    ],
+    "properties": ["keen", "thrown"],
     "material": "steel",
-    "skills": [
-      "finesse",
-      "melee"
-    ],
+    "skills": ["finesse", "melee"],
     "copperValue": 1000,
     "relicPowers": [
       {
@@ -72,9 +66,7 @@
           "label": "Weapon +3",
           "modifiers": [
             {
-              "selector": [
-                "system.damage.dice.modifier"
-              ],
+              "selector": ["system.damage.dice.modifier"],
               "value": 3
             }
           ]

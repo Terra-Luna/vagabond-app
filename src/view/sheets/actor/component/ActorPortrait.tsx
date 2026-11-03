@@ -1,99 +1,143 @@
 import { ArrowLeftRight, X } from "lucide-react"
 
 import { StatusCountdowns } from "../../../../combat/ui/CombatTracker"
-import { ActorDataModel, BaseActorSchema } from "../../../../model/actor/ActorDataModel"
+import {
+  ActorDataModel,
+  BaseActorSchema,
+} from "../../../../model/actor/ActorDataModel"
 import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
-import { ActorTypeConverter, CONVERTIBLE_ACTOR_TYPES } from "../../../../model/actor/util/ActorTypeConverter"
+import {
+  ActorTypeConverter,
+  CONVERTIBLE_ACTOR_TYPES,
+} from "../../../../model/actor/util/ActorTypeConverter"
 import type { PolymorphFlag } from "../../../../model/actor/util/PolymorphUtil"
-import { sys_id } from "../../../../utils/foundryUtils"
-import { appLang, appTypes } from "../../../../utils/lang"
+import { sys_id } from "../../../../util/foundry-util"
+import { appLang, appTypes } from "../../../../util/lang"
 import { tableBorder } from "../../../common/border-styles"
-import { type CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
+import {
+  type CtxMenuItem,
+  useContextMenu,
+} from "../../../component/ContextMenu"
 import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { Tooltip } from "../../../component/Tooltip"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
 import { NpcSheetComponent } from "../npc/component/NpcSheetComponent"
-import { ACTOR_PORTRAIT_HEIGHT, ACTOR_PORTRAIT_WIDTH, defaultPortraitFrame, PortraitFrameData, portraitFrameFlag, portraitFrameImageStyle, useImageAspect } from "./PortraitFrame"
-import { usePolymorphActor } from "./usePolymorphActor"
+import { usePolymorphActor } from "./PolymorphActorUseCase"
+import {
+  ACTOR_PORTRAIT_HEIGHT,
+  ACTOR_PORTRAIT_WIDTH,
+  defaultPortraitFrame,
+  PortraitFrameData,
+  portraitFrameFlag,
+  portraitFrameImageStyle,
+  useImageAspect,
+} from "./PortraitFrame"
 
 /**
  * The size of this portrait is goverened by the PortraitAdjustApp and some flags saved on the Actor.
  */
-export const ActorPortrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
-    const { onCtxMenu, ContextMenu } = useContextMenu()
+export const ActorPortrait = ({
+  actor,
+}: {
+  actor: ActorDataModel<BaseActorSchema>
+}) => {
+  const { onCtxMenu, ContextMenu } = useContextMenu()
 
-    const { aspect, onLoad } = useImageAspect()
-    const frame = (actor.parent.getFlag(sys_id, portraitFrameFlag) as PortraitFrameData | undefined) ?? defaultPortraitFrame
+  const { aspect, onLoad } = useImageAspect()
+  const frame =
+    (actor.parent.getFlag(sys_id, portraitFrameFlag) as
+      | PortraitFrameData
+      | undefined) ?? defaultPortraitFrame
 
-    const polymorph = actor.parent.getFlag(sys_id, "polymorph") as PolymorphFlag | undefined
-    const polymorphActor = usePolymorphActor(polymorph)
+  const polymorph = actor.parent.getFlag(sys_id, "polymorph") as
+    | PolymorphFlag
+    | undefined
+  const polymorphActor = usePolymorphActor(polymorph)
 
-    const polymorphImg = polymorph && (
-        <div className="">
-            <img
-                src={polymorph.statBlock.tokenImg}
-                alt="Polymorph"
-                className={`absolute bottom-0 right-0 bg-sheet-header-fill border-t border-l border-solid border-skill-divider rounded-tl-lg`}
-                style={{ width: ACTOR_PORTRAIT_WIDTH / 1.33, height: ACTOR_PORTRAIT_WIDTH / 1.33 }}
-            />
-        </div>
+  const polymorphImg = polymorph && (
+    <div className="">
+      <img
+        src={polymorph.statBlock.tokenImg}
+        alt="Polymorph"
+        className={`absolute bottom-0 right-0 bg-sheet-header-fill border-t border-l border-solid border-skill-divider rounded-tl-lg`}
+        style={{
+          width: ACTOR_PORTRAIT_WIDTH / 1.33,
+          height: ACTOR_PORTRAIT_WIDTH / 1.33,
+        }}
+      />
+    </div>
+  )
+
+  const polymorphCancelButton = polymorph &&
+    (game.user?.isActiveGM || polymorph.casterId === actor.parent.id) && (
+      <IconOnlyButton
+        Icon={X}
+        size={20}
+        title={appLang.ButtonActions.cancelPolymorph}
+        className="absolute top-1/2 right-1 z-999 mt-2 -mr-0.5"
+        colorClassName="text-text-tertiary hover:text-destructive-action"
+        onClick={async () => await actor.setPolymorph(undefined)}
+      />
     )
 
-    const polymorphCancelButton = polymorph && (game.user?.isActiveGM || polymorph.casterId === actor.parent.id) && (
-        <IconOnlyButton
-            Icon={X}
-            size={20}
-            title={appLang.ButtonActions.cancelPolymorph}
-            className="absolute top-1/2 right-1 z-999 mt-2 -mr-0.5"
-            colorClassName="text-text-tertiary hover:text-destructive-action"
-            onClick={async () => await actor.setPolymorph(undefined)}
+  const convertCtxMenuItems: CtxMenuItem[] = game.user?.isActiveGM
+    ? [
+        {
+          icon: ArrowLeftRight,
+          label: "Convert to",
+          subMenuItems: CONVERTIBLE_ACTOR_TYPES.filter(
+            (type) => type !== actor.parent.type,
+          ).map((type) => ({
+            label: appTypes.Actor[type],
+            action: () => ActorTypeConverter.convert(actor.parent, type),
+          })),
+        },
+      ]
+    : []
+
+  const { imageEditCtxMenuItems } = useImageEdit(
+    actor.parent,
+    convertCtxMenuItems,
+  )
+
+  return (
+    <div onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
+      <div
+        className="relative overflow-hidden shrink-0 bg-sheet-header-fill/50 border-r border-l border-b border-solid border-sheet-header-fill"
+        style={{ width: ACTOR_PORTRAIT_WIDTH, height: ACTOR_PORTRAIT_HEIGHT }}
+      >
+        <img
+          src={actor.parent.img}
+          alt={actor.parent.name}
+          onLoad={onLoad}
+          style={portraitFrameImageStyle(frame, aspect)}
         />
-    )
+        {polymorphCancelButton}
 
-    const convertCtxMenuItems: CtxMenuItem[] = game.user?.isActiveGM
-        ? [{
-            icon: ArrowLeftRight,
-            label: "Convert to",
-            subMenuItems: CONVERTIBLE_ACTOR_TYPES
-                .filter(type => type !== actor.parent.type)
-                .map(type => ({ label: appTypes.Actor[type], action: () => ActorTypeConverter.convert(actor.parent, type) }))
-        }]
-        : []
+        {/* STATUS COUNTDOWNS */}
+        <StatusCountdowns
+          actorUuid={actor.parent.uuid}
+          tokenUuid={actor.parent.token?.uuid}
+          alwaysClickable
+          className={`absolute bottom-0 left-0 z-10 flex flex-row flex-wrap-reverse justify-center gap-0.5 p-0.5 max-w-full -mb-1 bg-context-menu-fill/80 empty:hidden ${tableBorder}`}
+        />
 
-    const { imageEditCtxMenuItems } = useImageEdit(actor.parent, convertCtxMenuItems)
-
-    return (
-        <div onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
-            <div className="relative overflow-hidden shrink-0 bg-sheet-header-fill/50 border-r border-l border-b border-solid border-sheet-header-fill"
-                style={{ width: ACTOR_PORTRAIT_WIDTH, height: ACTOR_PORTRAIT_HEIGHT }}
-            >
-                <img
-                    src={actor.parent.img} alt={actor.parent.name}
-                    onLoad={onLoad}
-                    style={portraitFrameImageStyle(frame, aspect)}
-                />
-                {polymorphCancelButton}
-
-                {/* STATUS COUNTDOWNS */}
-                <StatusCountdowns
-                    actorUuid={actor.parent.uuid}
-                    tokenUuid={actor.parent.token?.uuid}
-                    alwaysClickable
-                    className={`absolute bottom-0 left-0 z-10 flex flex-row flex-wrap-reverse justify-center gap-0.5 p-0.5 max-w-full -mb-1 bg-context-menu-fill/80 empty:hidden ${tableBorder}`}
-                />
-
-                {/* POLYMORPH IMAGE INLAY */}
-                {polymorphActor && actor instanceof HeroDataModel
-                    ? <Tooltip content={
-                        <div className="flex w-[300px] max-h-[80vh] bg-sheet-main-fill">
-                            <NpcSheetComponent actor={polymorphActor} hidePortrait={true} />
-                        </div>
-                    }>{polymorphImg}</Tooltip>
-                    : polymorphImg
-                }
-
-            </div>
-            <ContextMenu />
-        </div>
-    )
+        {/* POLYMORPH IMAGE INLAY */}
+        {polymorphActor && actor instanceof HeroDataModel ? (
+          <Tooltip
+            content={
+              <div className="flex w-[300px] max-h-[80vh] bg-sheet-main-fill">
+                <NpcSheetComponent actor={polymorphActor} hidePortrait={true} />
+              </div>
+            }
+          >
+            {polymorphImg}
+          </Tooltip>
+        ) : (
+          polymorphImg
+        )}
+      </div>
+      <ContextMenu />
+    </div>
+  )
 }

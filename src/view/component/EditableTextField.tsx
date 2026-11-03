@@ -1,159 +1,226 @@
-import { Minus,Plus } from "lucide-react"
-import { useCallback, useEffect,useRef, useState } from "react"
+import { Minus, Plus } from "lucide-react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 import { VagabondAppError } from "../../model/common/VagabondAppError"
-import { updateDocumentAtPath } from "../../utils/documentUtils"
-import { appLang } from "../../utils/lang"
+import { updateDocumentAtPath } from "../../util/foundry-util"
+import { appLang } from "../../util/lang"
 import { tableBorder } from "../common/border-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 import { Tooltip } from "./Tooltip"
 
 const editModeBorder = `${tableBorder} rounded-xs px-1`
 
-export const EditableTextField = (
-    { boundValue, onSave, updateProps, placeholder = appLang.General.enterText, hideBorderOnEditMode = false, className = '' }: {
-        boundValue: string | null,
-        onSave?: (value: string | null) => Promise<boolean>,
-        updateProps?: { object: any, path: string[] },
-        placeholder?: string,
-        hideBorderOnEditMode?: boolean,
-        className?: string
-    }) => {
-    const { isEditMode: enabled } = useEditMode()
+export const EditableTextField = ({
+  boundValue,
+  onSave,
+  updateProps,
+  placeholder = appLang.General.enterText,
+  hideBorderOnEditMode = false,
+  className = "",
+}: {
+  boundValue: string | null
+  onSave?: (value: string | null) => Promise<boolean>
+  updateProps?: { object: any; path: string[] }
+  placeholder?: string
+  hideBorderOnEditMode?: boolean
+  className?: string
+}) => {
+  const { isEditMode: enabled } = useEditMode()
 
-    if (onSave && updateProps) {
-        throw new VagabondAppError({ name: "ARG_ERROR", message: "Only one of onSave or updateProps should be passed" })
+  if (onSave && updateProps) {
+    throw new VagabondAppError({
+      name: "ARG_ERROR",
+      message: "Only one of onSave or updateProps should be passed",
+    })
+  }
+  else if (!onSave && !updateProps) {
+    throw new VagabondAppError({
+      name: "ARG_ERROR",
+      message: "One of onSave or updateProps is required",
+    })
+  }
+
+  const [isInEditMode, setIsInEditMode] = useState(false)
+  const [editModeValue, setEditModeValue] = useState(boundValue)
+  const inputRef = useRef<HTMLInputElement | null>(null)
+  const shouldSelectInputRef = useRef(false)
+
+  useEffect(() => {
+    if (shouldSelectInputRef.current && isInEditMode) {
+      inputRef.current?.select()
+      shouldSelectInputRef.current = false
     }
-    else if (!onSave && !updateProps) {
-        throw new VagabondAppError({ name: "ARG_ERROR", message: "One of onSave or updateProps is required" })
-    }
+  }, [isInEditMode])
 
-    const [isInEditMode, setIsInEditMode] = useState(false)
-    const [editModeValue, setEditModeValue] = useState(boundValue)
-    const inputRef = useRef<HTMLInputElement | null>(null)
-    const shouldSelectInputRef = useRef(false)
+  const enterEditMode = useCallback(() => {
+    setIsInEditMode(true)
+    shouldSelectInputRef.current = true
+    setEditModeValue(boundValue)
+  }, [boundValue])
 
-    useEffect(() => {
-        if (shouldSelectInputRef.current && isInEditMode) {
-            inputRef.current?.select()
-            shouldSelectInputRef.current = false
-        }
-    }, [isInEditMode])
-
-    const enterEditMode = useCallback(() => {
-        setIsInEditMode(true)
-        shouldSelectInputRef.current = true
-        setEditModeValue(boundValue)
-    }, [boundValue])
-
-    const save = useCallback(async () => {
-        let ret
-        if (onSave) {
-            ret = await onSave(editModeValue)
-        }
-        else {
-            ret = await updateDocumentAtPath(updateProps!.object, updateProps!.path, editModeValue);
-        }
-
-        setIsInEditMode(false)
-        return ret
-    }, [editModeValue, onSave, updateProps])
-
-    if (isInEditMode || boundValue === '' || boundValue == null) {
-        const inputStyle = (editModeValue === '' || editModeValue == null)
-            ? `field-sizing-content ${tableBorder} rounded-xs px-1 ${className}`
-            : `w-auto field-sizing-content ${className}`
-        return <div className="overflow-hidden">
-            <form onSubmit={(e) => {
-                e.stopPropagation()
-                e.preventDefault()
-                save()
-            }}>
-                <input ref={inputRef} className={inputStyle} type="text"
-                    value={editModeValue ?? ''}
-                    placeholder={placeholder}
-                    onChange={e => setEditModeValue(e.target.value)}
-                    onBlur={save}
-                />
-            </form>
-        </div>
+  const save = useCallback(async () => {
+    let ret
+    if (onSave) {
+      ret = await onSave(editModeValue)
     }
     else {
-        const divStyle = `overflow-hidden whitespace-normal line-clamp-1 ${className}`
-        return (<>
-            {
-                enabled
-                    ? <Tooltip content={"Double-click to edit"}>
-                        <button onDoubleClick={enterEditMode}>
-                            <div className={`hover-glow ${hideBorderOnEditMode ? "" : editModeBorder} {divStyle}`}>
-                                {boundValue}
-                            </div>
-                        </button>
-                    </Tooltip>
-                    : <div className={divStyle}>{boundValue}</div>
-            }
-        </>)
+      ret = await updateDocumentAtPath(
+        updateProps!.object,
+        updateProps!.path,
+        editModeValue,
+      )
     }
+
+    setIsInEditMode(false)
+    return ret
+  }, [editModeValue, onSave, updateProps])
+
+  if (isInEditMode || boundValue === "" || boundValue == null) {
+    const inputStyle =
+      editModeValue === "" || editModeValue == null
+        ? `field-sizing-content ${tableBorder} rounded-xs px-1 ${className}`
+        : `w-auto field-sizing-content ${className}`
+    return (
+      <div className="overflow-hidden">
+        <form
+          onSubmit={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+            save()
+          }}
+        >
+          <input
+            ref={inputRef}
+            className={inputStyle}
+            type="text"
+            value={editModeValue ?? ""}
+            placeholder={placeholder}
+            onChange={(e) => setEditModeValue(e.target.value)}
+            onBlur={save}
+          />
+        </form>
+      </div>
+    )
+  }
+  else {
+    const divStyle = `overflow-hidden whitespace-normal line-clamp-1 ${className}`
+    return (
+      <>
+        {enabled ? (
+          <Tooltip content={"Double-click to edit"}>
+            <button onDoubleClick={enterEditMode}>
+              <div
+                className={`hover-glow ${hideBorderOnEditMode ? "" : editModeBorder} {divStyle}`}
+              >
+                {boundValue}
+              </div>
+            </button>
+          </Tooltip>
+        ) : (
+          <div className={divStyle}>{boundValue}</div>
+        )}
+      </>
+    )
+  }
 }
 
 export const EditableNameField = ({ actor }: { actor: Actor }) => {
-    const updateName = useCallback(async (newName: string | null) => {
-        return !!await actor.update({
-            'name': newName,
-            'prototypeToken.name': newName
-        } as Record<string, string>)
-    }, [actor])
+  const updateName = useCallback(
+    async (newName: string | null) => {
+      return !!(await actor.update({
+        name: newName,
+        "prototypeToken.name": newName,
+      } as Record<string, string>))
+    },
+    [actor],
+  )
 
-    return <EditableTextField boundValue={(actor as any).name} onSave={updateName} hideBorderOnEditMode={true} />
+  return (
+    <EditableTextField
+      boundValue={(actor as any).name}
+      onSave={updateName}
+      hideBorderOnEditMode={true}
+    />
+  )
 }
 
-export const NumericCounterInput = ({ value, valueAppend = '', onChange, incrementBy = 1, hideBorder, width }: {
-    value: number, valueAppend?: string, onChange: (input) => void, incrementBy?: number, hideBorder?: boolean, width?: string
+export const NumericCounterInput = ({
+  value,
+  valueAppend = "",
+  onChange,
+  incrementBy = 1,
+  hideBorder,
+  width,
+}: {
+  value: number
+  valueAppend?: string
+  onChange: (input) => void
+  incrementBy?: number
+  hideBorder?: boolean
+  width?: string
 }) => {
-    const { isEditMode } = useEditMode()
-    const inputRef = useRef<HTMLInputElement>(null)
+  const { isEditMode } = useEditMode()
+  const inputRef = useRef<HTMLInputElement>(null)
 
-    useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.value = value?.toString() ?? ''
-        }
-    }, [value])
-
-    const handleSave = () => {
-        if (inputRef.current) {
-            onChange(Number(inputRef.current.value) || 0)
-        }
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = value?.toString() ?? ""
     }
+  }, [value])
 
-    return (<>
-        {isEditMode ?
-            <div className={`flex items-center justify-center ${hideBorder ? '' : `${tableBorder}/50 rounded-xs`}`}>
-                <form onSubmit={(e) => {
-                    e.stopPropagation()
-                    e.preventDefault()
-                    handleSave()
-                }}>
-                    <input
-                        ref={inputRef}
-                        type="number"
-                        defaultValue={`${value?.toString() ?? ''}`}
-                        onBlur={handleSave}
-                        onKeyDown={(e) => { if (e.key === 'Enter') handleSave() }}
-                        className={`
-                            min-w-4 ${width ?? 'max-w-[3ch]'} text-end mr-1
+  const handleSave = () => {
+    if (inputRef.current) {
+      onChange(Number(inputRef.current.value) || 0)
+    }
+  }
+
+  return (
+    <>
+      {isEditMode ? (
+        <div
+          className={`flex items-center justify-center ${hideBorder ? "" : `${tableBorder}/50 rounded-xs`}`}
+        >
+          <form
+            onSubmit={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              handleSave()
+            }}
+          >
+            <input
+              ref={inputRef}
+              type="number"
+              defaultValue={`${value?.toString() ?? ""}`}
+              onBlur={handleSave}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSave()
+              }}
+              className={`
+                            min-w-4 ${width ?? "max-w-[3ch]"} text-end mr-1
                             outline-none focus:outline-none focus:ring-0
                             [appearance:textfield]
                             [&::-webkit-outer-spin-button]:appearance-none
                             [&::-webkit-inner-spin-button]:appearance-none
                         `}
-                    />
-                </form>
-                <p>{valueAppend}</p>
-                <div className="flex flex-col -mb-0.5">
-                    <Plus size={14} className="cursor-pointer hover-glow" onClick={() => onChange(value + incrementBy)} />
-                    <Minus size={14} className="cursor-pointer hover-glow -mt-1" onClick={() => onChange(value - incrementBy)} />
-                </div>
-            </div> : <div className="text-lg text-text-primary font-eskapade">{value}</div>
-        }
-    </>)
+            />
+          </form>
+          <p>{valueAppend}</p>
+          <div className="flex flex-col -mb-0.5">
+            <Plus
+              size={14}
+              className="cursor-pointer hover-glow"
+              onClick={() => onChange(value + incrementBy)}
+            />
+            <Minus
+              size={14}
+              className="cursor-pointer hover-glow -mt-1"
+              onClick={() => onChange(value - incrementBy)}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="text-lg text-text-primary font-eskapade">{value}</div>
+      )}
+    </>
+  )
 }

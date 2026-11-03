@@ -26,17 +26,11 @@
         "label": "Training",
         "level": "1",
         "value": true,
-        "selector": [
-          "skills.arcana.trained",
-          "skills.influence.trained"
-        ]
+        "selector": ["skills.arcana.trained", "skills.influence.trained"]
       }
     ],
     "complexity": 3,
-    "keyStats": [
-      "might",
-      "presence"
-    ],
+    "keyStats": ["might", "presence"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.5y2TEMR983wkMy3s",
       "Compendium.vagabond-app.gear.Item.E71U6Aoc2sOmDE5V"

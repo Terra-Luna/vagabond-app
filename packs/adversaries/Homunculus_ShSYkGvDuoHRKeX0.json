@@ -12,10 +12,7 @@
     "armor": {
       "rating": 0
     },
-    "senses": [
-      "darksight",
-      "echolocation"
-    ],
+    "senses": ["darksight", "echolocation"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,14 +203,9 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "poison"
-          ],
+          "immunities": ["poison"],
           "weaknesses": [],
-          "statusImmunities": [
-            "charmed",
-            "sickened"
-          ]
+          "statusImmunities": ["charmed", "sickened"]
         },
         "out": {
           "melee": {},
@@ -275,9 +267,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Spit Acid",
@@ -293,9 +283,7 @@
           },
           "type": "acid"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "burning",

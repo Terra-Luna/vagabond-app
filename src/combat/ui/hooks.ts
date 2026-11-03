@@ -1,99 +1,135 @@
 import { createContext, useCallback, useContext, useMemo } from "react"
 
-import { canRollForActor } from "../../model/actor/util/NpcDataModelUtil"
+import { canRollForActor } from "../../model/actor/util/npc-data-model-util"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
-import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
+import { getCanvasToken, getTokenImg } from "../../util/model-util"
 import { AdversaryAttack, SavingThrowType } from "../engine/AdversaryAttack"
 import { AdversaryComboAttack } from "../engine/AdversaryComboAttack"
 import { serializeAttack } from "../engine/util/attack-serializer"
 
-export interface TargetDisplayItem { id: string, src: string, token: Token | undefined }
+export interface TargetDisplayItem {
+  id: string
+  src: string
+  token: Token | undefined
+}
 
 interface CombatContextProps {
-    activeCombatantId?: string | null;
-    activeGroup?: CombatGroup | null;
-    combatTracker?: CombatTracker
+  activeCombatantId?: string | null
+  activeGroup?: CombatGroup | null
+  combatTracker?: CombatTracker
 }
-export const CombatContext = createContext<CombatContextProps>({ activeCombatantId: null, activeGroup: null, combatTracker: {} as CombatTracker })
+export const CombatContext = createContext<CombatContextProps>({
+  activeCombatantId: null,
+  activeGroup: null,
+  combatTracker: {} as CombatTracker,
+})
 
 export const useIsCurrentCombatant = (combatant) => {
-    const { activeCombatantId } = useContext(CombatContext)
-    return activeCombatantId === combatant.id || activeCombatantId === combatant._id
+  const { activeCombatantId } = useContext(CombatContext)
+  return (
+    activeCombatantId === combatant.id || activeCombatantId === combatant._id
+  )
 }
 
 export const useCombatContext = () => useContext(CombatContext)
 
-export const useAdversaryAttackTargets = (attack: AdversaryAttack | AdversaryComboAttack) => {
-    const targets = useMemo<TargetDisplayItem[]>(() => {
-        return (attack?.targetIds ?? [])
-            .map(id => {
-                const canvasToken = getCanvasToken(id)
-                return { id, src: getTokenImg(canvasToken), token: canvasToken }
-            })
-            .filter(it => it.src != null && it.src.length > 0)
-    }, [attack?.targetIds])
+export const useAdversaryAttackTargets = (
+  attack: AdversaryAttack | AdversaryComboAttack,
+) => {
+  const targets = useMemo<TargetDisplayItem[]>(() => {
+    return (attack?.targetIds ?? [])
+      .map((id) => {
+        const canvasToken = getCanvasToken(id)
+        return { id, src: getTokenImg(canvasToken), token: canvasToken }
+      })
+      .filter((it) => it.src != null && it.src.length > 0)
+  }, [attack?.targetIds])
 
-    const ownedTargets = useMemo(() => {
-        return targets.filter(target => canRollForActor(target.token?.actor))
-    }, [targets])
+  const ownedTargets = useMemo(() => {
+    return targets.filter((target) => canRollForActor(target.token?.actor))
+  }, [targets])
 
-    return { targets, ownedTargets }
+  return { targets, ownedTargets }
 }
 
 export const useAdversaryAttackSaveHandlers = (
-    attack: AdversaryAttack | AdversaryComboAttack,
-    setRevision: (update: (previous: number) => number) => void,
-    subIndex?: number
+  attack: AdversaryAttack | AdversaryComboAttack,
+  setRevision: (update: (previous: number) => number) => void,
+  subIndex?: number,
 ) => {
-    const handleSave = useCallback(async (targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent) => {
-        if (attack instanceof AdversaryComboAttack) {
-            if (subIndex === undefined) return
-            await attack.rollSave(subIndex, targetId, saveType, clickEvent)
-        }
-        else {
-            await attack.rollSave(targetId, saveType, clickEvent)
-        }
-        setRevision(previous => previous + 1)
-    }, [attack, setRevision, subIndex])
+  const handleSave = useCallback(
+    async (
+      targetId: string,
+      saveType: SavingThrowType,
+      clickEvent?: React.MouseEvent,
+    ) => {
+      if (attack instanceof AdversaryComboAttack) {
+        if (subIndex === undefined) return
+        await attack.rollSave(subIndex, targetId, saveType, clickEvent)
+      }
+      else {
+        await attack.rollSave(targetId, saveType, clickEvent)
+      }
+      setRevision((previous) => previous + 1)
+    },
+    [attack, setRevision, subIndex],
+  )
 
-    const handleRerollSave = useCallback(async (targetId: string) => {
-        if (attack instanceof AdversaryComboAttack) {
-            if (subIndex === undefined) return
-            await attack.rerollSave(subIndex, targetId)
-        }
-        else {
-            await attack.rerollSave(targetId)
-        }
-        setRevision(previous => previous + 1)
-    }, [attack, setRevision, subIndex])
+  const handleRerollSave = useCallback(
+    async (targetId: string) => {
+      if (attack instanceof AdversaryComboAttack) {
+        if (subIndex === undefined) return
+        await attack.rerollSave(subIndex, targetId)
+      }
+      else {
+        await attack.rerollSave(targetId)
+      }
+      setRevision((previous) => previous + 1)
+    },
+    [attack, setRevision, subIndex],
+  )
 
-    const handleSetSaveOutcome = useCallback(async (targetId: string, outcome: string) => {
-        if (attack instanceof AdversaryComboAttack) {
-            if (subIndex === undefined) return
-            await attack.setSaveOutcome(subIndex, targetId, outcome)
-        }
-        else {
-            await attack.setSaveOutcome(targetId, outcome)
-        }
-        setRevision(previous => previous + 1)
-    }, [attack, setRevision, subIndex])
+  const handleSetSaveOutcome = useCallback(
+    async (targetId: string, outcome: string) => {
+      if (attack instanceof AdversaryComboAttack) {
+        if (subIndex === undefined) return
+        await attack.setSaveOutcome(subIndex, targetId, outcome)
+      }
+      else {
+        await attack.setSaveOutcome(targetId, outcome)
+      }
+      setRevision((previous) => previous + 1)
+    },
+    [attack, setRevision, subIndex],
+  )
 
-    const handleRemoveTarget = useCallback(async (targetId: string) => {
-        await attack.removeTarget(targetId, serializeAttack)
-        setRevision(previous => previous + 1)
-    }, [attack, setRevision])
+  const handleRemoveTarget = useCallback(
+    async (targetId: string) => {
+      await attack.removeTarget(targetId, serializeAttack)
+      setRevision((previous) => previous + 1)
+    },
+    [attack, setRevision],
+  )
 
-    return { handleSave, handleRerollSave, handleSetSaveOutcome, handleRemoveTarget }
+  return {
+    handleSave,
+    handleRerollSave,
+    handleSetSaveOutcome,
+    handleRemoveTarget,
+  }
 }
 
 export const useAdversaryAttack = (
-    attack: AdversaryAttack | AdversaryComboAttack,
-    setRevision: (update: (previous: number) => number) => void,
-    subIndex?: number
+  attack: AdversaryAttack | AdversaryComboAttack,
+  setRevision: (update: (previous: number) => number) => void,
+  subIndex?: number,
 ) => {
-    const targets = useAdversaryAttackTargets(attack)
-    const saveHandlers = useAdversaryAttackSaveHandlers(attack, setRevision, subIndex)
+  const targets = useAdversaryAttackTargets(attack)
+  const saveHandlers = useAdversaryAttackSaveHandlers(
+    attack,
+    setRevision,
+    subIndex,
+  )
 
-    return { ...targets, ...saveHandlers }
+  return { ...targets, ...saveHandlers }
 }
-

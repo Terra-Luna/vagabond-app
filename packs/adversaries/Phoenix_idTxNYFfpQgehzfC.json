@@ -10,9 +10,7 @@
     "armor": {
       "rating": 5
     },
-    "senses": [
-      "allsight"
-    ],
+    "senses": ["allsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,10 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "fire",
-            "physical_lt0"
-          ],
+          "immunities": ["fire", "physical_lt0"],
           "weaknesses": [],
           "statusImmunities": [
             "charmed",
@@ -295,9 +290,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       },
@@ -312,9 +305,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       },
@@ -332,9 +323,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {
@@ -351,9 +340,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2,
           "type": "melee",
           "range": "close"
@@ -369,9 +356,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1,
           "type": "melee",
           "range": "close"

@@ -3,186 +3,248 @@ import { useEffect, useMemo, useState } from "react"
 import { getAttackRegistry } from "../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { appLang } from "../../../utils/lang"
-import { getCanvasToken, getTokenImg } from "../../../utils/modelUtil"
+import { appLang } from "../../../util/lang"
+import { getCanvasToken, getTokenImg } from "../../../util/model-util"
 import { BaseChatCardHost } from "../../../view/chat/component/BaseChatCardHost"
 import { ChatCardBanner } from "../../../view/chat/component/ChatCardBanner"
 import { Checkbox } from "../../../view/component/Checkbox"
 import { Header } from "../../../view/component/Header"
-import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
+import { EditModeContextProvider } from "../../../view/wrappers/EditModeContextProvider"
 import { AdversaryAttack } from "../../engine/AdversaryAttack"
 import { AdversaryComboAttack } from "../../engine/AdversaryComboAttack"
 import { HeroAttack } from "../../engine/HeroAttack"
 import { deserializeAttack } from "../../engine/util/attack-deserializer"
 import { serializeAttack } from "../../engine/util/attack-serializer"
-import { AdversaryAttackComponent, AdversaryComboAttackComponent } from "./AdversaryAttackComponent"
+import {
+  AdversaryAttackComponent,
+  AdversaryComboAttackComponent,
+} from "./AdversaryAttackComponent"
 import { AttackDamageSummary } from "./AttackDamageSummary"
 import { subscribeToAttack } from "./AttackRegistryStore"
 import { HeroAttackComponent } from "./HeroAttackComponent"
 import { InteractiveChatCardButton } from "./InteractiveChatCardButton"
 
-export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
+export const InteractiveAttackChatCard = ({
+  actorId,
+  attackId,
+}: {
+  actorId: string
+  attackId: string
+}) => {
+  const [revision, setRevision] = useState(0)
+  const [targetsToggle, setTargetsToggle] = useState<boolean>(false)
+  const [armorBypassToggle, setArmorBypassToggle] = useState<boolean>(false)
+  const [damageOverrides, setDamageOverrides] = useState<
+    Record<string, number>
+  >({})
+  const resolutionArgs = {
+    bypassArmor: armorBypassToggle,
+    gmTargetsOnly: targetsToggle,
+    damageOverrides,
+  }
 
-    const [revision, setRevision] = useState(0)
-    const [targetsToggle, setTargetsToggle] = useState<boolean>(false)
-    const [armorBypassToggle, setArmorBypassToggle] = useState<boolean>(false)
-    const [damageOverrides, setDamageOverrides] = useState<Record<string, number>>({})
-    const resolutionArgs = { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle, damageOverrides }
+  const handleOverrideChange = (key: string, value: number | undefined) => {
+    setDamageOverrides((previous) => {
+      const rest = { ...previous }
+      delete rest[key]
+      return value === undefined ? rest : { ...rest, [key]: value }
+    })
+  }
 
-    const handleOverrideChange = (key: string, value: number | undefined) => {
-        setDamageOverrides(previous => {
-            const rest = { ...previous }
-            delete rest[key]
-            return value === undefined ? rest : { ...rest, [key]: value }
-        })
-    }
+  const actor = useMemo(() => {
+    return getCanvasToken(actorId)?.actor ?? game.actors?.get(actorId)
+  }, [actorId, revision])
 
-    const actor = useMemo(() => {
-        return getCanvasToken(actorId)?.actor ?? game.actors?.get(actorId)
-    }, [actorId, revision])
+  const snapshot = useMemo(() => {
+    const attacks = getAttackRegistry()[actorId] ?? []
+    const match = attacks.find((atk) => atk.id === attackId)
+    return match ? foundry.utils.deepClone(match) : null
+  }, [actor, attackId, revision])
 
-    const snapshot = useMemo(() => {
-        const attacks = getAttackRegistry()[actorId] ?? []
-        const match = attacks.find(atk => atk.id === attackId)
-        return match ? foundry.utils.deepClone(match) : null
-    }, [actor, attackId, revision])
+  const attack = useMemo(() => {
+    return snapshot
+      ? deserializeAttack(
+          snapshot,
+          (title, actor, targetIds) => new HeroAttack(title, actor, targetIds),
+        )
+      : null
+  }, [snapshot])
 
-    const attack = useMemo(() => {
-        return snapshot
-            ? deserializeAttack(snapshot, (title, actor, targetIds) => new HeroAttack(title, actor, targetIds))
-            : null
-    }, [snapshot])
+  const portraitActor = attack?.portraitActorId
+    ? game.actors?.get(attack.portraitActorId)
+    : undefined
 
-    const portraitActor = attack?.portraitActorId ? game.actors?.get(attack.portraitActorId) : undefined
+  const isResolved = attack?.isResolved ?? false
 
-    const isResolved = attack?.isResolved ?? false
-
-    /**
-     * Subscribes to the shared attack registry store. A single updateSetting
-     * hook serves all cards and only notifies cards whose own attack changed.
-     * Prevents huge lag spikes when there are many attack cards in the chat.
-     */
-    useEffect(() => {
-        if (isResolved) return
-        return subscribeToAttack(actorId, attackId, () => setRevision(prev => prev + 1))
-    }, [actorId, attackId, isResolved])
-
-    const source = useMemo<Item | undefined>(() => {
-        if (attack instanceof HeroAttack && attack.itemId) {
-            const items = actor?.items as Item[] | undefined
-            const item =
-                items?.find(it => it.id === attack.itemId) ??
-                items?.find(it => it.id === attack.itemId.split(".").pop()) ??
-                ItemsCache.allItems().find(it => it.uuid === attack.itemId)
-
-            return item
-        }
-    }, [attack])
-
-    return (
-        <div className={`${attack?.isResolved ? 'opacity-90 grayscale-[85%]' : ''}`}>
-            {actor && attack && <BaseChatCardHost
-                banner={
-                    <ChatCardBanner
-                        tokenId={(portraitActor ?? actor)?.getActiveTokens()[0]?.id}
-                        portrait={getTokenImg(portraitActor ?? actor)}
-                        title={attack.title}
-                    />}
-                contents={
-                    <div>
-                        {/* ATTACK CONTENT BY CHARACTER TYPE */}
-                        {attack instanceof HeroAttack &&
-                            <HeroAttackComponent
-                                actor={actor as Actor & { system: HeroDataModel }}
-                                attack={attack}
-                                source={source}
-                                setRevision={setRevision}
-                            />
-                        }
-
-                        {/* ADVERSARY ATTACK CHAT CARD */}
-                        {attack instanceof AdversaryAttack &&
-                            <AdversaryAttackComponent attack={attack} setRevision={setRevision} />
-                        }
-
-                        {/* ADVERSARY COMBO ATTACK CHAT CARD */}
-                        {attack instanceof AdversaryComboAttack &&
-                            <AdversaryComboAttackComponent attack={attack} setRevision={setRevision} />
-                        }
-
-                        {/* DAMAGE SUMMARY (PREVIEW OF "APPLY") */}
-                        {attack.showDamage && !(attack as any).isDefenseCheck &&
-                            <AttackDamageSummary attack={attack} args={resolutionArgs} onOverrideChange={handleOverrideChange} />
-                        }
-
-                        {/* GM TOOLS */}
-                        {(game.user?.isActiveGM && !attack.isResolved && !(attack as any).showCritChoices && !(attack as any).isDefenseCheck) &&
-                            <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                                <div className="mt-0.5 text-base font-normal">
-
-                                    <Header title={"GM Tools"} />
-                                    
-                                    <div className="flex flex-col items-end justify-between px-1">
-
-                                        {/* GM TOOL BUTTONS */}
-                                        <div className="flex gap-1 w-full mt-1 [&>span]:flex-1 [&>span>button]:w-full">
-                                            {(attack.showDamage || attack.appliedEffects.length > 0) &&
-                                                <InteractiveChatCardButton
-                                                    label={appLang.ButtonActions.apply}
-                                                    tooltip={appLang.Combat.applyDamageTooltip}
-                                                    borderClassName={"border-2 border-solid border-wealth-denom-label"}
-                                                    fn={async () => {
-                                                        await attack.applyDamageAndResolve(resolutionArgs, serializeAttack)
-                                                        setRevision(prev => prev + 1)
-                                                    }}
-                                                />
-                                            }
-
-                                            {((attack instanceof AdversaryAttack && attack.appliedEffects.length > 0) ||
-                                                (attack instanceof AdversaryComboAttack && attack.subAttacks.some(sub => sub.appliedEffects.length > 0))) &&
-                                                <InteractiveChatCardButton
-                                                    label={appLang.Combat.applyStatuses}
-                                                    tooltip={appLang.Combat.applyStatusesTooltip}
-                                                    borderClassName={"border-2 border-solid border-table-border"}
-                                                    fn={async () => {
-                                                        await attack.applyStatusesAndResolve({ gmTargetsOnly: targetsToggle }, serializeAttack)
-                                                        setRevision(prev => prev + 1)
-                                                    }}
-                                                />
-                                            }
-
-                                            <InteractiveChatCardButton
-                                                label={appLang.ButtonActions.resolve}
-                                                tooltip={appLang.Combat.resolveWithoutUpdatesTooltip}
-                                                borderClassName={"border-2 border-solid border-table-border/75"}
-                                                fn={async () => {
-                                                    await attack.resolve(serializeAttack)
-                                                    setRevision(prev => prev + 1)
-                                                }}
-                                            />
-                                        </div>
-
-                                        {/* CHECK BOXES FOR OPTIONAL GM OVERRIDES */}
-                                        <div className="flex flex-col w-full items-start">
-                                            <Checkbox
-                                                label={"GM Target Override"}
-                                                checked={targetsToggle}
-                                                onCheckedChanged={(e) => { setTargetsToggle(e) }}
-                                            />
-                                            <Checkbox
-                                                label={"Ignore Armor"}
-                                                checked={armorBypassToggle}
-                                                onCheckedChanged={(e) => { setArmorBypassToggle(e) }}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </EditModeContextProvider>
-                        }
-                    </div>
-                }
-            />}
-        </div>
+  /**
+   * Subscribes to the shared attack registry store. A single updateSetting
+   * hook serves all cards and only notifies cards whose own attack changed.
+   * Prevents huge lag spikes when there are many attack cards in the chat.
+   */
+  useEffect(() => {
+    if (isResolved) return
+    return subscribeToAttack(actorId, attackId, () =>
+      setRevision((prev) => prev + 1),
     )
+  }, [actorId, attackId, isResolved])
+
+  const source = useMemo<Item | undefined>(() => {
+    if (attack instanceof HeroAttack && attack.itemId) {
+      const items = actor?.items as Item[] | undefined
+      const item =
+        items?.find((it) => it.id === attack.itemId) ??
+        items?.find((it) => it.id === attack.itemId.split(".").pop()) ??
+        ItemsCache.allItems().find((it) => it.uuid === attack.itemId)
+
+      return item
+    }
+  }, [attack])
+
+  return (
+    <div
+      className={`${attack?.isResolved ? "opacity-90 grayscale-[85%]" : ""}`}
+    >
+      {actor && attack && (
+        <BaseChatCardHost
+          banner={
+            <ChatCardBanner
+              tokenId={(portraitActor ?? actor)?.getActiveTokens()[0]?.id}
+              portrait={getTokenImg(portraitActor ?? actor)}
+              title={attack.title}
+            />
+          }
+          contents={
+            <div>
+              {/* ATTACK CONTENT BY CHARACTER TYPE */}
+              {attack instanceof HeroAttack && (
+                <HeroAttackComponent
+                  actor={actor as Actor & { system: HeroDataModel }}
+                  attack={attack}
+                  source={source}
+                  setRevision={setRevision}
+                />
+              )}
+
+              {/* ADVERSARY ATTACK CHAT CARD */}
+              {attack instanceof AdversaryAttack && (
+                <AdversaryAttackComponent
+                  attack={attack}
+                  setRevision={setRevision}
+                />
+              )}
+
+              {/* ADVERSARY COMBO ATTACK CHAT CARD */}
+              {attack instanceof AdversaryComboAttack && (
+                <AdversaryComboAttackComponent
+                  attack={attack}
+                  setRevision={setRevision}
+                />
+              )}
+
+              {/* DAMAGE SUMMARY (PREVIEW OF "APPLY") */}
+              {attack.showDamage && !(attack as any).isDefenseCheck && (
+                <AttackDamageSummary
+                  attack={attack}
+                  args={resolutionArgs}
+                  onOverrideChange={handleOverrideChange}
+                />
+              )}
+
+              {/* GM TOOLS */}
+              {game.user?.isActiveGM &&
+                !attack.isResolved &&
+                !(attack as any).showCritChoices &&
+                !(attack as any).isDefenseCheck && (
+                  <EditModeContextProvider
+                    initialEditMode={EditModeOptions.TRUE}
+                  >
+                    <div className="mt-0.5 text-base font-normal">
+                      <Header title={"GM Tools"} />
+
+                      <div className="flex flex-col items-end justify-between px-1">
+                        {/* GM TOOL BUTTONS */}
+                        <div className="flex gap-1 w-full mt-1 [&>span]:flex-1 [&>span>button]:w-full">
+                          {(attack.showDamage ||
+                            attack.appliedEffects.length > 0) && (
+                            <InteractiveChatCardButton
+                              label={appLang.ButtonActions.apply}
+                              tooltip={appLang.Combat.applyDamageTooltip}
+                              borderClassName={
+                                "border-2 border-solid border-wealth-denom-label"
+                              }
+                              fn={async () => {
+                                await attack.applyDamageAndResolve(
+                                  resolutionArgs,
+                                  serializeAttack,
+                                )
+                                setRevision((prev) => prev + 1)
+                              }}
+                            />
+                          )}
+
+                          {((attack instanceof AdversaryAttack &&
+                            attack.appliedEffects.length > 0) ||
+                            (attack instanceof AdversaryComboAttack &&
+                              attack.subAttacks.some(
+                                (sub) => sub.appliedEffects.length > 0,
+                              ))) && (
+                            <InteractiveChatCardButton
+                              label={appLang.Combat.applyStatuses}
+                              tooltip={appLang.Combat.applyStatusesTooltip}
+                              borderClassName={
+                                "border-2 border-solid border-table-border"
+                              }
+                              fn={async () => {
+                                await attack.applyStatusesAndResolve(
+                                  { gmTargetsOnly: targetsToggle },
+                                  serializeAttack,
+                                )
+                                setRevision((prev) => prev + 1)
+                              }}
+                            />
+                          )}
+
+                          <InteractiveChatCardButton
+                            label={appLang.ButtonActions.resolve}
+                            tooltip={
+                              appLang.Combat.resolveWithoutUpdatesTooltip
+                            }
+                            borderClassName={
+                              "border-2 border-solid border-table-border/75"
+                            }
+                            fn={async () => {
+                              await attack.resolve(serializeAttack)
+                              setRevision((prev) => prev + 1)
+                            }}
+                          />
+                        </div>
+
+                        {/* CHECK BOXES FOR OPTIONAL GM OVERRIDES */}
+                        <div className="flex flex-col w-full items-start">
+                          <Checkbox
+                            label={"GM Target Override"}
+                            checked={targetsToggle}
+                            onCheckedChanged={(e) => {
+                              setTargetsToggle(e)
+                            }}
+                          />
+                          <Checkbox
+                            label={"Ignore Armor"}
+                            checked={armorBypassToggle}
+                            onCheckedChanged={(e) => {
+                              setArmorBypassToggle(e)
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </EditModeContextProvider>
+                )}
+            </div>
+          }
+        />
+      )}
+    </div>
+  )
 }

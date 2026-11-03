@@ -1,35 +1,42 @@
 import { ReactNode } from "react"
 
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { appLang } from "../../../utils/lang"
+import { appLang } from "../../../util/lang"
 import { Header } from "../../../view/component/Header"
-import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
+import { EditModeContextProvider } from "../../../view/wrappers/EditModeContextProvider"
 import { useItemShopView } from "../../shop/ItemShopView"
 import { getStartingGold } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 import { TopNavButtons } from "../component/TopNavButtons"
 
 export const useEquipmentSelection = (
-    clazz: (Item & { system: ClassDataModel }) | undefined,
-    navButtons: ReactNode[]
+  clazz: (Item & { system: ClassDataModel }) | undefined,
+  navButtons: ReactNode[],
 ) => {
-    const { ItemShopView, wallet, cart, selectedPack } = useItemShopView(getStartingGold(), clazz)
+  const { ItemShopView, wallet, cart, selectedPack } = useItemShopView(
+    getStartingGold(),
+    clazz,
+  )
 
-    const strings = appLang.HeroCreation
+  const strings = appLang.HeroCreation
 
-    const EquipmentSelection = (
-        <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-            <div className="flex flex-col h-full min-h-0 overflow-hidden">
-                <div className="flex-shrink-0 space-y-4">
-                    <Header title={strings.equipHeader} />
-                    <TopNavButtons navButtons={navButtons} subtitle={strings.equipSubheader} canProceed={true} />
-                </div>
-                <div className="flex-1 overflow-y-auto">
-                    <ItemShopView includeStartingPacks={true} />
-                </div>
-            </div>
-        </EditModeContextProvider >
-    )
+  const EquipmentSelection = (
+    <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+      <div className="flex flex-col h-full min-h-0 overflow-hidden">
+        <div className="flex-shrink-0 space-y-4">
+          <Header title={strings.equipHeader} />
+          <TopNavButtons
+            navButtons={navButtons}
+            subtitle={strings.equipSubheader}
+            canProceed={true}
+          />
+        </div>
+        <div className="flex-1 overflow-y-auto">
+          <ItemShopView includeStartingPacks={true} />
+        </div>
+      </div>
+    </EditModeContextProvider>
+  )
 
-    return { EquipmentSelection, wallet, cart, selectedPack }
+  return { EquipmentSelection, wallet, cart, selectedPack }
 }

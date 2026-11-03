@@ -35,9 +35,7 @@
           "label": "Armor +1",
           "modifiers": [
             {
-              "selector": [
-                "system.armor.rating"
-              ],
+              "selector": ["system.armor.rating"],
               "value": 1
             }
           ],

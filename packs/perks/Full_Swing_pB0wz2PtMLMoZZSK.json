@@ -12,9 +12,7 @@
         "label": "Full Swing",
         "level": 0,
         "value": 1,
-        "selector": [
-          "modifiers.damage.out.brawl.dice.exploding.values"
-        ]
+        "selector": ["modifiers.damage.out.brawl.dice.exploding.values"]
       }
     ],
     "prerequisites": [
@@ -25,9 +23,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "arcana"
-            ],
+            "skillNames": ["arcana"],
             "andOr": null
           }
         ]
@@ -39,9 +35,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "brawl"
-            ],
+            "skillNames": ["brawl"],
             "andOr": null
           }
         ]

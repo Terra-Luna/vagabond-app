@@ -10,9 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "telepath"
-    ],
+    "senses": ["telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,14 +204,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "poison"
-          ],
+          "immunities": ["poison"],
           "weaknesses": [],
-          "statusImmunities": [
-            "sickened",
-            "suffocating"
-          ]
+          "statusImmunities": ["sickened", "suffocating"]
         },
         "out": {
           "melee": {},
@@ -278,9 +271,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": []
@@ -300,9 +291,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -327,9 +316,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {

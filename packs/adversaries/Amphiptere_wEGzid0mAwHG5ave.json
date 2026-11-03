@@ -10,9 +10,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,9 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "fire"
-          ],
+          "immunities": ["fire"],
           "weaknesses": [],
           "statusImmunities": []
         },
@@ -274,9 +270,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "recharge": "Cd4",
         "appliedEffects": [
           {
@@ -296,9 +290,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       }

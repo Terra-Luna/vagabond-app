@@ -11,9 +11,7 @@
     "armor": {
       "rating": 2
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,16 +205,8 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "acid",
-            "blunt",
-            "cold",
-            "shock",
-            "slash"
-          ],
-          "weaknesses": [
-            "fire"
-          ],
+          "immunities": ["acid", "blunt", "cold", "shock", "slash"],
+          "weaknesses": ["fire"],
           "statusImmunities": [
             "blinded",
             "charmed",
@@ -287,9 +277,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "restrained",

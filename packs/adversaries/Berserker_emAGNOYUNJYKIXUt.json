@@ -267,9 +267,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       },
@@ -283,15 +281,11 @@
             "count": 2,
             "faces": 12,
             "modifier": 0,
-            "explodesOn": [
-              12
-            ]
+            "explodesOn": [12]
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Rage",

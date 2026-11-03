@@ -7,46 +7,62 @@ import D10 from "../../../icons/dice/d10.svg?react"
 import D12 from "../../../icons/dice/d12.svg?react"
 import D20 from "../../../icons/dice/d20.svg?react"
 
-export const DieIcon = ({ faces, exploded, discarded, rerolled }: { faces: number, exploded: boolean, discarded?: boolean, rerolled?: boolean }) => {
-    const wh = `w-[1em] h-[1em]`
-    const color = `var(--color-dice)`
+export const DieIcon = ({
+  faces,
+  exploded,
+  discarded,
+  rerolled,
+}: {
+  faces: number
+  exploded: boolean
+  discarded?: boolean
+  rerolled?: boolean
+}) => {
+  const wh = `w-[1em] h-[1em]`
+  const color = `var(--color-dice)`
 
-    const getDieSizeIcon = () => {
-        if (faces === 20) return <D20 className={wh} fill={color} />
-        else if (faces === 12) return <D12 className={wh} fill={color} />
-        else if (faces === 10 || faces === 5 || faces === 100) return <D10 className={wh} fill={color} />
-        else if (faces === 8) return <D8 className={wh} fill={color} />
-        else if (faces === 4 || faces === 2) return <D4 className={wh} fill={color} />
-        else return <D6 className={wh} fill={color} />
-    }
+  const getDieSizeIcon = () => {
+    if (faces === 20) return <D20 className={wh} fill={color} />
+    else if (faces === 12) return <D12 className={wh} fill={color} />
+    else if (faces === 10 || faces === 5 || faces === 100)
+      return <D10 className={wh} fill={color} />
+    else if (faces === 8) return <D8 className={wh} fill={color} />
+    else if (faces === 4 || faces === 2)
+      return <D4 className={wh} fill={color} />
+    else return <D6 className={wh} fill={color} />
+  }
 
-    return (
-        <div className="relative">
-            {/* Explosion Background Layer */}
-            {exploded && (
-                <div className={`
+  return (
+    <div className="relative">
+      {/* Explosion Background Layer */}
+      {exploded && (
+        <div
+          className={`
                     absolute inset-0
                     bg-destructive-action
                     [clip-path:polygon(49%_43%,65%_0%,61%_51%,100%_24%,63%_70%,42%_70%,0%_40%,34%_45%,17%_0%)]
-                `} />
-            )}
+                `}
+        />
+      )}
 
-            {discarded && (
-                <div className={`absolute inset-0`}>
-                    <X strokeWidth={3} className={`${wh} text-destructive-action`} fill={color} />
-                </div>
-            )}
-
-            {rerolled && (
-                <div className={`absolute inset-0`}>
-                    <RefreshCcw className={`${wh} text-ic-luck`} fill={color} />
-                </div>
-            )}
-
-
-
-            {/* Foreground Icon */}
-            {getDieSizeIcon()}
+      {discarded && (
+        <div className={`absolute inset-0`}>
+          <X
+            strokeWidth={3}
+            className={`${wh} text-destructive-action`}
+            fill={color}
+          />
         </div>
-    )
+      )}
+
+      {rerolled && (
+        <div className={`absolute inset-0`}>
+          <RefreshCcw className={`${wh} text-ic-luck`} fill={color} />
+        </div>
+      )}
+
+      {/* Foreground Icon */}
+      {getDieSizeIcon()}
+    </div>
+  )
 }

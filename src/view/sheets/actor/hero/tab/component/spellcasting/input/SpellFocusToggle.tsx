@@ -1,12 +1,16 @@
-import { appLang } from "../../../../../../../../utils/lang"
+import { appLang } from "../../../../../../../../util/lang"
 import { Checkbox } from "../../../../../../../component/Checkbox"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const SpellFocusToggle = ({ isFocused, onToggleSpellFocus }) => {
-    return (
-        <div className="flex gap-x-0.5 items-center">
-            <Checkbox label={''} onCheckedChanged={onToggleSpellFocus} checked={isFocused} />
-            <SpellcastingLabel text={appLang.HeroSheet.Magic.labelFocus} />
-        </div>
-    )
+  return (
+    <div className="flex gap-x-0.5 items-center">
+      <Checkbox
+        label={""}
+        onCheckedChanged={onToggleSpellFocus}
+        checked={isFocused}
+      />
+      <SpellcastingLabel text={appLang.HeroSheet.Magic.labelFocus} />
+    </div>
+  )
 }

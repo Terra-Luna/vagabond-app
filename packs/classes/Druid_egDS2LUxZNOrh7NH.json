@@ -26,19 +26,12 @@
         "label": "Training",
         "level": "1",
         "value": true,
-        "selector": [
-          "skills.mysticism.trained",
-          "skills.survival.trained"
-        ]
+        "selector": ["skills.mysticism.trained", "skills.survival.trained"]
       }
     ],
     "complexity": 3,
-    "keyStats": [
-      "awareness"
-    ],
-    "startingPacks": [
-      "Compendium.vagabond-app.gear.Item.j05Zi3ASkGB2J19f"
-    ],
+    "keyStats": ["awareness"],
+    "startingPacks": ["Compendium.vagabond-app.gear.Item.j05Zi3ASkGB2J19f"],
     "castingSkill": "",
     "manaMultiplier": 2,
     "maxCastFormula": "",

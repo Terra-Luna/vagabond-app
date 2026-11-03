@@ -12,9 +12,7 @@
         "label": "Solo Flanking",
         "level": 0,
         "value": true,
-        "selector": [
-          "modifiers.combat.constant.flanking.solo"
-        ]
+        "selector": ["modifiers.combat.constant.flanking.solo"]
       }
     ],
     "prerequisites": [
@@ -25,11 +23,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "brawl",
-              "finesse",
-              "melee"
-            ],
+            "skillNames": ["brawl", "finesse", "melee"],
             "andOr": "or"
           }
         ]

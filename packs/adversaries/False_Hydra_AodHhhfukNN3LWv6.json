@@ -10,9 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -208,10 +206,7 @@
           "resistances": [],
           "immunities": [],
           "weaknesses": [],
-          "statusImmunities": [
-            "charmed",
-            "confused"
-          ]
+          "statusImmunities": ["charmed", "confused"]
         },
         "out": {
           "melee": {},
@@ -275,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Song of Discord",
@@ -293,9 +286,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ]
+        "saves": ["will"]
       }
     ],
     "combo": {

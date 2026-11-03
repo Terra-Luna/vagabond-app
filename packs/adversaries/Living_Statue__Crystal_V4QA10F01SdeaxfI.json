@@ -203,12 +203,8 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "poison"
-          ],
-          "weaknesses": [
-            "blunt"
-          ],
+          "immunities": ["poison"],
+          "weaknesses": ["blunt"],
           "statusImmunities": [
             "blinded",
             "fatigued",
@@ -278,9 +274,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

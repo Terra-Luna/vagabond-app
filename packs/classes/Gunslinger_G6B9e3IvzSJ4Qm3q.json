@@ -26,16 +26,11 @@
         "label": "Training",
         "level": "1",
         "value": true,
-        "selector": [
-          "skills.ranged.trained",
-          "skills.detect.trained"
-        ]
+        "selector": ["skills.ranged.trained", "skills.detect.trained"]
       }
     ],
     "complexity": 3,
-    "keyStats": [
-      "awareness"
-    ],
+    "keyStats": ["awareness"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.0x9l4F6QTA2c3q1x",
       "Compendium.vagabond-app.gear.Item.ZWUDKbFvClb1RUJu"

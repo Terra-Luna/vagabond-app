@@ -38,10 +38,7 @@
     },
     "properties": [],
     "material": "steel",
-    "skills": [
-      "finesse",
-      "melee"
-    ]
+    "skills": ["finesse", "melee"]
   },
   "effects": [],
   "folder": null,

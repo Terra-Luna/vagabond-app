@@ -7,28 +7,38 @@ import { registerAlchemicalItemCompendiumFilters } from "./apps/compendium/Alche
 import { CountdownApp } from "./apps/countdown/CountdownApp"
 import { TagalongItemCreator } from "./apps/io/TagalongItemCreator"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
-import { showConfirmationDialog, showInputDialog } from "./apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
+import {
+  showConfirmationDialog,
+  showInputDialog,
+} from "./apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { CompendiumAccessor } from "./apps/vagabond-tools/usecase/CompendiumAccessor"
 import { CountdownManager } from "./apps/vagabond-tools/usecase/CountdownManager"
-import { getAttackRegistry, resolveAllAttacks, setAttackRegistry } from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import {
+  getAttackRegistry,
+  resolveAllAttacks,
+  setAttackRegistry,
+} from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondSettingsRegistry } from "./apps/vagabond-tools/VagabondSettingsRegistry"
 import { VagabondToolsApp } from "./apps/vagabond-tools/VagabondToolsApp"
-import { VagabondActiveEffect } from './combat/documents/VagabondActiveEffect'
-import { VagabondCombat, VagabondCombatant } from './combat/documents/VagabondCombat'
+import { VagabondActiveEffect } from "./combat/documents/VagabondActiveEffect"
+import {
+  VagabondCombat,
+  VagabondCombatant,
+} from "./combat/documents/VagabondCombat"
 import { Attack } from "./combat/engine/Attack"
 import { FlankStatusManager } from "./combat/engine/util/FlankStatusManager"
-import { handleMarkRequest } from "./combat/engine/util/hunters-mark"
+import { HuntersMark } from "./combat/engine/util/HuntersMark"
 import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
 import { AdversaryDataModel } from "./model/actor/AdversaryDataModel"
 import { HeroDataModel } from "./model/actor/HeroDataModel"
 import { ItemActorDataModel } from "./model/actor/ItemActorDataModel"
 import { NpcDataModel } from "./model/actor/NpcDataModel"
-import { isInventoryItem } from "./model/actor/type/Inventory"
-import { enforceSingletonPlaceholder } from "./model/actor/util/NpcDataModelUtil"
+import { isInventoryItem } from "./model/actor/schema/inventory"
+import { enforceSingletonPlaceholder } from "./model/actor/util/npc-data-model-util"
 import { PolymorphUtil } from "./model/actor/util/PolymorphUtil"
 import { VagabondActor } from "./model/actor/VagabondActor"
+import { ActiveEffectDataModel } from "./model/combat/ActiveEffectDataModel"
 import { VagabondCombatantModel } from "./model/combat/VagabondCombatant"
-import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
 import { AncestryDataModel } from "./model/item/character/AncestryDataModel"
 import { ClassDataModel } from "./model/item/character/ClassDataModel"
 import { FeatureDataModel } from "./model/item/character/FeatureDataModel"
@@ -42,498 +52,642 @@ import { SundryDataModel } from "./model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "./model/item/equip/WeaponDataModel"
 import { VagabondItem } from "./model/item/VagabondItem"
 import { ItemsCache } from "./rules/util/ItemsCache"
-import { sys_id } from "./utils/foundryUtils"
-import { stackStackables } from "./utils/heroInventoryUtil"
-import { ItemPilesConfig } from "./utils/ItemPilesConfig"
-import { appLang, lang } from "./utils/lang"
-import { LightSourceUtil } from "./utils/LightSourceUtil"
-import { localizeString } from "./utils/localeUtils"
-import { getFullItem, getId } from "./utils/modelUtil"
-import { createStyleTag } from "./utils/styleUtils"
-import { installChatScrollGuard, RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
+import { sys_id } from "./util/foundry-util"
+import { stackStackables } from "./util/inventory-util"
+import { ItemPilesConfig } from "./util/ItemPilesConfig"
+import { appLang, lang } from "./util/lang"
+import { LightSourceUtil } from "./util/LightSourceUtil"
+import { localizeString } from "./util/locale-util"
+import { getFullItem, getId } from "./util/model-util"
+import { createStyleTag } from "./util/style-util"
+import {
+  installChatScrollGuard,
+  RehydratedChatCard,
+} from "./view/chat/ChatCardRehydrator"
 import { serializeRawChatMessage } from "./view/chat/ChatCardSerializer"
 import { HeroSheet } from "./view/sheets/actor/hero/HeroSheet"
 import { ItemActorSheet } from "./view/sheets/actor/npc/ItemActorSheet"
 import { NpcSheet } from "./view/sheets/actor/npc/NpcSheet"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
-import { FeatureSheet, PerkSheet, SpellSheet } from './view/sheets/item/character/SkillSheets'
-import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
+import {
+  FeatureSheet,
+  PerkSheet,
+  SpellSheet,
+} from "./view/sheets/item/character/SkillSheets"
+import { EquipmentSheet } from "./view/sheets/item/equip/EquipmentSheet"
 
 // Add our fonts
 const fontFaces = [
-    new FontFace(
-        'Eskapade',
-        `url("systems/${sys_id}/assets/fonts/eskapade-black.ttf")`,
-        { weight: 'bold', style: 'normal', }
-    ),
-    new FontFace(
-        'Eskapade',
-        `url("systems/${sys_id}/assets/fonts/eskapade-regular.ttf")`,
-        { weight: 'normal', style: 'normal', }
-    ),
-    new FontFace(
-        'Paradigm',
-        `url("systems/${sys_id}/assets/fonts/paradigm-regular.otf")`,
-        { weight: 'normal', style: 'normal', }
-    ),
-    new FontFace(
-        'Paradigm',
-        `url("systems/${sys_id}/assets/fonts/paradigm-bold.otf")`,
-        { weight: 'bold', style: 'normal', }
-    ),
-];
+  new FontFace(
+    "Eskapade",
+    `url("systems/${sys_id}/assets/fonts/eskapade-black.ttf")`,
+    { weight: "bold", style: "normal" },
+  ),
+  new FontFace(
+    "Eskapade",
+    `url("systems/${sys_id}/assets/fonts/eskapade-regular.ttf")`,
+    { weight: "normal", style: "normal" },
+  ),
+  new FontFace(
+    "Paradigm",
+    `url("systems/${sys_id}/assets/fonts/paradigm-regular.otf")`,
+    { weight: "normal", style: "normal" },
+  ),
+  new FontFace(
+    "Paradigm",
+    `url("systems/${sys_id}/assets/fonts/paradigm-bold.otf")`,
+    { weight: "bold", style: "normal" },
+  ),
+]
 
-(await Promise.all(fontFaces.map(face => face.load()))).forEach(
-    font => document.fonts.add(font)
+;(await Promise.all(fontFaces.map((face) => face.load()))).forEach((font) =>
+  document.fonts.add(font),
 )
 
 let clocksOverlay: ProgressClockApp | null = null
 let countdownOverlay: CountdownApp | null = null
 
 Hooks.once("init", () => {
-    FlankStatusManager.register()
-    Object.assign(
-        // Actors
-        CONFIG.Actor.documentClass = VagabondActor,
-        CONFIG.Item.documentClass = VagabondItem,
-        CONFIG.Actor.dataModels.adversary = AdversaryDataModel,
-        CONFIG.Actor.dataModels.hero = HeroDataModel,
-        CONFIG.Actor.dataModels.npc = NpcDataModel,
-        CONFIG.Actor.dataModels.itemActor = ItemActorDataModel,
-        // Items
-        CONFIG.Item.dataModels.alchemical = AlchemicalItemDataModel,
-        CONFIG.Item.dataModels.ancestry = AncestryDataModel,
-        CONFIG.Item.dataModels.armor = ArmorDataModel,
-        CONFIG.Item.dataModels.container = ContainerDataModel,
-        CONFIG.Item.dataModels.class = ClassDataModel,
-        CONFIG.Item.dataModels.feature = FeatureDataModel,
-        CONFIG.Item.dataModels.perk = PerkDataModel,
-        CONFIG.Item.dataModels.spell = SpellDataModel,
-        CONFIG.Item.dataModels.startingpack = StartingPackDataModel,
-        CONFIG.Item.dataModels.sundry = SundryDataModel,
-        CONFIG.Item.dataModels.weapon = WeaponDataModel,
-        // Combat
-        CONFIG.Combat.documentClass = VagabondCombat,
-        CONFIG.Combat.initiative = { formula: "3d8 + @stats.dexterity + @stats.awareness", decimals: 2 },
-        CONFIG.Combatant.documentClass = VagabondCombatant,
-        CONFIG.Combatant.dataModels.base = VagabondCombatantModel,
-        CONFIG.ActiveEffect.documentClass = VagabondActiveEffect,
-        CONFIG.statusEffects = VagabondActiveEffect.statusEffects as any,
-        CONFIG.ActiveEffect.dataModels = { base: ActiveEffectDataModel as any },
-        CONFIG.ui.combat = VagabondCombatTracker
-    )
+  FlankStatusManager.register()
+  Object.assign(
+    // Actors
+    (CONFIG.Actor.documentClass = VagabondActor),
+    (CONFIG.Item.documentClass = VagabondItem),
+    (CONFIG.Actor.dataModels.adversary = AdversaryDataModel),
+    (CONFIG.Actor.dataModels.hero = HeroDataModel),
+    (CONFIG.Actor.dataModels.npc = NpcDataModel),
+    (CONFIG.Actor.dataModels.itemActor = ItemActorDataModel),
+    // Items
+    (CONFIG.Item.dataModels.alchemical = AlchemicalItemDataModel),
+    (CONFIG.Item.dataModels.ancestry = AncestryDataModel),
+    (CONFIG.Item.dataModels.armor = ArmorDataModel),
+    (CONFIG.Item.dataModels.container = ContainerDataModel),
+    (CONFIG.Item.dataModels.class = ClassDataModel),
+    (CONFIG.Item.dataModels.feature = FeatureDataModel),
+    (CONFIG.Item.dataModels.perk = PerkDataModel),
+    (CONFIG.Item.dataModels.spell = SpellDataModel),
+    (CONFIG.Item.dataModels.startingpack = StartingPackDataModel),
+    (CONFIG.Item.dataModels.sundry = SundryDataModel),
+    (CONFIG.Item.dataModels.weapon = WeaponDataModel),
+    // Combat
+    (CONFIG.Combat.documentClass = VagabondCombat),
+    (CONFIG.Combat.initiative = {
+      formula: "3d8 + @stats.dexterity + @stats.awareness",
+      decimals: 2,
+    }),
+    (CONFIG.Combatant.documentClass = VagabondCombatant),
+    (CONFIG.Combatant.dataModels.base = VagabondCombatantModel),
+    (CONFIG.ActiveEffect.documentClass = VagabondActiveEffect),
+    (CONFIG.statusEffects = VagabondActiveEffect.statusEffects as any),
+    (CONFIG.ActiveEffect.dataModels = { base: ActiveEffectDataModel as any }),
+    (CONFIG.ui.combat = VagabondCombatTracker),
+  )
 
-    foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = `systems/${sys_id}/react-placeholder.hbs`;
+  foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = `systems/${sys_id}/react-placeholder.hbs`
 
-    /**
-     * Allows players to drag Actors from the sidebar onto their sheet without the Create Token permission.
-     */
-    (foundry.applications.sidebar.tabs.ActorDirectory.prototype as any)._canDragStart = () => true
+  /**
+   * Allows players to drag Actors from the sidebar onto their sheet without the Create Token permission.
+   */
+  ;(
+    foundry.applications.sidebar.tabs.ActorDirectory.prototype as any
+  )._canDragStart = () => true
 
-    VagabondSettingsRegistry.register()
+  VagabondSettingsRegistry.register()
 
-    /**
-     * Register the Vagabond API on the game system object!
-     */
-    const system = game.system as typeof game.system & { api: typeof api }
-    system.api = api
+  /**
+   * Register the Vagabond API on the game system object!
+   */
+  const system = game.system as typeof game.system & { api: typeof api }
+  system.api = api
 })
 
-foundry.documents.collections.Actors.registerSheet(sys_id, HeroSheet as any, { types: ['hero'], makeDefault: true });
-foundry.documents.collections.Actors.registerSheet(sys_id, NpcSheet as any, { types: ['npc'], makeDefault: true });
-foundry.documents.collections.Actors.registerSheet(sys_id, NpcSheet as any, { types: ['adversary'], makeDefault: true });
-foundry.documents.collections.Actors.registerSheet(sys_id, ItemActorSheet as any, { types: ['itemActor'], makeDefault: true });
-foundry.documents.collections.Items.registerSheet(sys_id, ClassSheet as any, { types: ['class'], makeDefault: true });
-foundry.documents.collections.Items.registerSheet(sys_id, FeatureSheet as any, { types: ['feature'], makeDefault: true });
-foundry.documents.collections.Items.registerSheet(sys_id, PerkSheet as any, { types: ['perk'], makeDefault: true });
-foundry.documents.collections.Items.registerSheet(sys_id, SpellSheet as any, { types: ['spell'], makeDefault: true });
-foundry.documents.collections.Items.registerSheet(sys_id, AncestrySheet as any, { types: ['ancestry'], makeDefault: true });
-foundry.documents.collections.Items.registerSheet(sys_id, EquipmentSheet as any, {
-    types: ['alchemical', 'armor', 'container', 'startingpack', 'sundry', 'weapon'], makeDefault: true
-});
+foundry.documents.collections.Actors.registerSheet(sys_id, HeroSheet as any, {
+  types: ["hero"],
+  makeDefault: true,
+})
+foundry.documents.collections.Actors.registerSheet(sys_id, NpcSheet as any, {
+  types: ["npc"],
+  makeDefault: true,
+})
+foundry.documents.collections.Actors.registerSheet(sys_id, NpcSheet as any, {
+  types: ["adversary"],
+  makeDefault: true,
+})
+foundry.documents.collections.Actors.registerSheet(
+  sys_id,
+  ItemActorSheet as any,
+  { types: ["itemActor"], makeDefault: true },
+)
+foundry.documents.collections.Items.registerSheet(sys_id, ClassSheet as any, {
+  types: ["class"],
+  makeDefault: true,
+})
+foundry.documents.collections.Items.registerSheet(sys_id, FeatureSheet as any, {
+  types: ["feature"],
+  makeDefault: true,
+})
+foundry.documents.collections.Items.registerSheet(sys_id, PerkSheet as any, {
+  types: ["perk"],
+  makeDefault: true,
+})
+foundry.documents.collections.Items.registerSheet(sys_id, SpellSheet as any, {
+  types: ["spell"],
+  makeDefault: true,
+})
+foundry.documents.collections.Items.registerSheet(
+  sys_id,
+  AncestrySheet as any,
+  { types: ["ancestry"], makeDefault: true },
+)
+foundry.documents.collections.Items.registerSheet(
+  sys_id,
+  EquipmentSheet as any,
+  {
+    types: [
+      "alchemical",
+      "armor",
+      "container",
+      "startingpack",
+      "sundry",
+      "weapon",
+    ],
+    makeDefault: true,
+  },
+)
 
 Hooks.once("ready", async () => {
-    LightSourceUtil.startTimer()
-    installChatScrollGuard()
-    registerAdversaryCompendiumFilters()
-    registerAlchemicalItemCompendiumFilters()
+  LightSourceUtil.startTimer()
+  installChatScrollGuard()
+  registerAdversaryCompendiumFilters()
+  registerAlchemicalItemCompendiumFilters()
 
-    game.socket?.on(`system.${sys_id}`, async (packet: any) => {
-        if (packet?.action === "createTagalongItemsResult") {
-            TagalongItemCreator.handleItemCreationResult(packet)
-            return
-        }
-        if (packet?.action === "notifyInfo") {
-            if (typeof packet.data?.message === "string") ui.notifications?.info(packet.data.message)
-            return
-        }
-        if (packet?.action === "notifyBindResult") {
-            if (packet.data?.userIds?.includes(game.user?.id) && typeof packet.data.message === "string") ui.notifications?.info(packet.data.message)
-            return
-        }
-        if (packet?.action === "notifyCursesLifted") {
-            if (packet.data?.userIds?.includes(game.user?.id) && typeof packet.data.message === "string") {
-                showConfirmationDialog({ title: appLang.Notifications.cursesLiftedTitle, description: packet.data.message, confirmText: "OK", variant: "info" })
-            }
-            return
-        }
-        if (!game.user?.isActiveGM) return
+  game.socket?.on(`system.${sys_id}`, async (packet: any) => {
+    if (packet?.action === "createTagalongItemsResult") {
+      TagalongItemCreator.handleItemCreationResult(packet)
+      return
+    }
+    if (packet?.action === "notifyInfo") {
+      if (typeof packet.data?.message === "string")
+        ui.notifications?.info(packet.data.message)
+      return
+    }
+    if (packet?.action === "notifyBindResult") {
+      if (
+        packet.data?.userIds?.includes(game.user?.id) &&
+        typeof packet.data.message === "string"
+      )
+        ui.notifications?.info(packet.data.message)
+      return
+    }
+    if (packet?.action === "notifyCursesLifted") {
+      if (
+        packet.data?.userIds?.includes(game.user?.id) &&
+        typeof packet.data.message === "string"
+      ) {
+        showConfirmationDialog({
+          title: appLang.Notifications.cursesLiftedTitle,
+          description: packet.data.message,
+          confirmText: "OK",
+          variant: "info",
+        })
+      }
+      return
+    }
+    if (!game.user?.isActiveGM) return
 
-        const activeGM = game.users?.activeGM
-        if (activeGM && activeGM.id !== game.user.id) return
+    const activeGM = game.users?.activeGM
+    if (activeGM && activeGM.id !== game.user.id) return
 
-        // Process snapshot and update database
-        if (packet?.action === "saveAttackSnapshot") {
-            const attackData = packet.data
-            if (!attackData || !attackData.actorId) return
-            Attack.handleIncomingAttackSnapshot(attackData)
-        }
-        else if (packet?.action === "polymorph") {
-            const { casterUuid, targetUuids, formUuid, duration } = packet.data ?? {}
-            const [caster, targets, form] = await Promise.all([
-                fromUuid(casterUuid),
-                Promise.all((targetUuids ?? []).map((uuid: string) => fromUuid(uuid))),
-                formUuid ? fromUuid(formUuid) : undefined
-            ])
-            await PolymorphUtil.polymorph({ caster: caster as any, targets: targets as any, form: form as any, duration })
-        }
-        else if (packet?.action === "huntersMark") {
-            await handleMarkRequest(packet)
-        }
-        else if (packet?.action === "createTagalongItems") {
-            await TagalongItemCreator.handleIncomingItemCreation(packet)
-        }
-        else if (packet?.action === "rollCombatantCountdowns") {
-            const { combatId, combatantId } = packet.data ?? {}
-            const requester = game.users?.get(packet.user)
-            const combatant = game.combats?.get(combatId)?.combatants.get(combatantId) as any
-            if (!requester || !combatant || !combatant.testUserPermission(requester, "OWNER")) return
-            await CountdownManager.rollPendingCountdowns(combatant)
-        }
-        else if (packet?.action === "deleteEmptyItemPile") {
-            const token = await fromUuid(packet.data?.tokenUuid) as any
-            if (!token || token.documentName !== "Token" || !token.getFlag?.("item-piles", "data")?.enabled) return
-            if ((token.actor?.items?.size ?? 0) > 0) return
-            await token.delete()
-        }
-        else if (packet?.action === "updateGameSetting") {
-            const data = packet.data
-            if (!data || !packet.user) return
-            VagabondSettingsRegistry.handleIncomingSettingsChange(data)
-        }
+    // Process snapshot and update database
+    if (packet?.action === "saveAttackSnapshot") {
+      const attackData = packet.data
+      if (!attackData || !attackData.actorId) return
+      Attack.handleIncomingAttackSnapshot(attackData)
+    }
+    else if (packet?.action === "polymorph") {
+      const { casterUuid, targetUuids, formUuid, duration } = packet.data ?? {}
+      const [caster, targets, form] = await Promise.all([
+        fromUuid(casterUuid),
+        Promise.all((targetUuids ?? []).map((uuid: string) => fromUuid(uuid))),
+        formUuid ? fromUuid(formUuid) : undefined,
+      ])
+      await PolymorphUtil.polymorph({
+        caster: caster as any,
+        targets: targets as any,
+        form: form as any,
+        duration,
+      })
+    }
+    else if (packet?.action === "huntersMark") {
+      await HuntersMark.handleMarkRequest(packet)
+    }
+    else if (packet?.action === "createTagalongItems") {
+      await TagalongItemCreator.handleIncomingItemCreation(packet)
+    }
+    else if (packet?.action === "rollCombatantCountdowns") {
+      const { combatId, combatantId } = packet.data ?? {}
+      const requester = game.users?.get(packet.user)
+      const combatant = game.combats
+        ?.get(combatId)
+        ?.combatants.get(combatantId) as any
+      if (
+        !requester ||
+        !combatant ||
+        !combatant.testUserPermission(requester, "OWNER")
+      )
+        return
+      await CountdownManager.rollPendingCountdowns(combatant)
+    }
+    else if (packet?.action === "deleteEmptyItemPile") {
+      const token = (await fromUuid(packet.data?.tokenUuid)) as any
+      if (
+        !token ||
+        token.documentName !== "Token" ||
+        !token.getFlag?.("item-piles", "data")?.enabled
+      )
+        return
+      if ((token.actor?.items?.size ?? 0) > 0) return
+      await token.delete()
+    }
+    else if (packet?.action === "updateGameSetting") {
+      const data = packet.data
+      if (!data || !packet.user) return
+      VagabondSettingsRegistry.handleIncomingSettingsChange(data)
+    }
+  })
+
+  await ItemsCache.initialize()
+  game.actors
+    ?.filter((it) => it.system instanceof HeroDataModel)
+    ?.forEach((actor) => {
+      if (actor.isOwner) {
+        ;(actor.system as HeroDataModel).forceUpdate()
+      }
+      else if (actor.visible) {
+        actor.sheet?.render(false)
+      }
     })
 
-    await ItemsCache.initialize()
-    game.actors?.filter(it => it.system instanceof HeroDataModel)?.forEach(actor => {
-        if (actor.isOwner) {
-            (actor.system as HeroDataModel).forceUpdate()
-        }
-        else if (actor.visible) {
-            actor.sheet?.render(false)
-        }
-    })
+  /**
+   * Overlay rendering (Countdowns & Progress Clocks)
+   */
+  if (!clocksOverlay) {
+    clocksOverlay = new ProgressClockApp()
+  }
+  if (!countdownOverlay) {
+    countdownOverlay = new CountdownApp()
+  }
+  clocksOverlay.render({ force: true })
+  countdownOverlay.render({ force: true })
 
-    /**
-     * Overlay rendering (Countdowns & Progress Clocks)
-     */
-    if (!clocksOverlay) { clocksOverlay = new ProgressClockApp() }
-    if (!countdownOverlay) { countdownOverlay = new CountdownApp() }
-    clocksOverlay.render({ force: true })
-    countdownOverlay.render({ force: true })
-
-    VagabondToolsApp.renderCanvasButton()
+  VagabondToolsApp.renderCanvasButton()
 })
 
 Hooks.on("preCreateItem", (item: any, _options, _userId) => {
-    if (!item.parent || item.parent.documentName !== "Actor") return true
+  if (!item.parent || item.parent.documentName !== "Actor") return true
 
-    const actor = item.parent
+  const actor = item.parent
 
-    /**
-     * If an item's stackable, don't add another one. Instead, find
-     * the existing matching item (by name) and increase its quantity.
-     */
-    if (actor && isInventoryItem(item)) {
-        item.updateSource({ 'system.isEquipped': false, 'system.isBound': false })
-        if (item.system.bulk.isStackable && !item.flags[sys_id]?.["item-stack-id"]) {
-            const stack = actor.items.find((it: any) => it.name === item.name)
+  /**
+   * If an item's stackable, don't add another one. Instead, find
+   * the existing matching item (by name) and increase its quantity.
+   */
+  if (actor && isInventoryItem(item)) {
+    item.updateSource({ "system.isEquipped": false, "system.isBound": false })
+    if (
+      item.system.bulk.isStackable &&
+      !item.flags[sys_id]?.["item-stack-id"]
+    ) {
+      const stack = actor.items.find((it: any) => it.name === item.name)
 
-            if (stack) {
-                stack.update({ 'system.bulk.quantity': stack.system.bulk.quantity + item.system.bulk.quantity }).then(() =>
-                    stackStackables(item.parent.system)
-                )
-                return false
-            }
-        }
+      if (stack) {
+        stack
+          .update({
+            "system.bulk.quantity":
+              stack.system.bulk.quantity + item.system.bulk.quantity,
+          })
+          .then(() => stackStackables(item.parent.system))
+        return false
+      }
     }
+  }
 
-    /**
-     * GMs can replace ancestries and classes, player users cannot.
-     * Doing so will prompt the GM to confirm the replacement, since
-     * it will reset the Hero's selected trainings, spells, & perks.
-     */
-    const uniqueItemTypes = ['ancestry', 'class']
-    if (uniqueItemTypes.includes(item.type)) {
-        const preExistingUniqueItem = actor.items.find(i => i.type === item.type)
-        if (preExistingUniqueItem) {
-            if (game.user?.isActiveGM) {
-                showConfirmationDialog({
-                    title: localizeString(appLang.Confirmation.replaceItemTitle, {
-                        itemType: item.type === 'ancestry' ? lang.TYPES.Item.ancestry : lang.TYPES.Item.class
-                    }),
-                    description: localizeString(appLang.Confirmation.replaceUniqueItemDescription, {
-                        actorName: actor.name,
-                        itemType: item.type === 'ancestry' ? lang.TYPES.Item.ancestry : lang.TYPES.Item.class,
-                        existingName: preExistingUniqueItem.name,
-                        newName: item.name
-                    }),
-                    confirmText: appLang.ButtonActions.replace,
-                    variant: "primary"
-                }).then((confirmed) => {
-                    if (!confirmed) return
-                    preExistingUniqueItem.update({ name: item.name, img: item.img, system: item.system })
-                    actor.system.forceUpdate?.()
-                })
-            }
-            return false
-        }
-        return true
+  /**
+   * GMs can replace ancestries and classes, player users cannot.
+   * Doing so will prompt the GM to confirm the replacement, since
+   * it will reset the Hero's selected trainings, spells, & perks.
+   */
+  const uniqueItemTypes = ["ancestry", "class"]
+  if (uniqueItemTypes.includes(item.type)) {
+    const preExistingUniqueItem = actor.items.find((i) => i.type === item.type)
+    if (preExistingUniqueItem) {
+      if (game.user?.isActiveGM) {
+        showConfirmationDialog({
+          title: localizeString(appLang.Confirmation.replaceItemTitle, {
+            itemType:
+              item.type === "ancestry"
+                ? lang.TYPES.Item.ancestry
+                : lang.TYPES.Item.class,
+          }),
+          description: localizeString(
+            appLang.Confirmation.replaceUniqueItemDescription,
+            {
+              actorName: actor.name,
+              itemType:
+                item.type === "ancestry"
+                  ? lang.TYPES.Item.ancestry
+                  : lang.TYPES.Item.class,
+              existingName: preExistingUniqueItem.name,
+              newName: item.name,
+            },
+          ),
+          confirmText: appLang.ButtonActions.replace,
+          variant: "primary",
+        }).then((confirmed) => {
+          if (!confirmed) return
+          preExistingUniqueItem.update({
+            name: item.name,
+            img: item.img,
+            system: item.system,
+          })
+          actor.system.forceUpdate?.()
+        })
+      }
+      return false
     }
+    return true
+  }
 })
 
 Hooks.on("createItem", async (item, _options, _userId) => {
-    if (game.user?.id !== _userId) return
+  if (game.user?.id !== _userId) return
 
-    const parent = item.parent
-    const parentIsActor = parent && parent.documentName === "Actor"
+  const parent = item.parent
+  const parentIsActor = parent && parent.documentName === "Actor"
 
-    if (parentIsActor) {
-        if (parent.flags["item-piles"]?.["data"]?.enabled) return
+  if (parentIsActor) {
+    if (parent.flags["item-piles"]?.["data"]?.enabled) return
 
-        /**
-         * Set some default sorting values to make drag/drop reordering smoother.
-         */
-        if (isInventoryItem(item)) {
-            const others = parent.items.filter(i => i.id !== item.id)
-            const newSortVal = Math.max(0, ...others.map(i => i.sort)) + 1000
-            await item.update({ 'sort': newSortVal })
-        }
-
-        if (item.system instanceof StartingPackDataModel && parent.system instanceof HeroDataModel) {
-            await item.system.unpack(parent as Actor & { system: HeroDataModel })
-        }
+    /**
+     * Set some default sorting values to make drag/drop reordering smoother.
+     */
+    if (isInventoryItem(item)) {
+      const others = parent.items.filter((i) => i.id !== item.id)
+      const newSortVal = Math.max(0, ...others.map((i) => i.sort)) + 1000
+      await item.update({ sort: newSortVal })
     }
 
-    if (['spell', 'perk', 'feature', 'startingpack'].includes((item as any).type)) {
-        await ItemsCache.updateItem(item)
+    if (
+      item.system instanceof StartingPackDataModel &&
+      parent.system instanceof HeroDataModel
+    ) {
+      await item.system.unpack(parent as Actor & { system: HeroDataModel })
     }
+  }
+
+  if (
+    ["spell", "perk", "feature", "startingpack"].includes((item as any).type)
+  ) {
+    await ItemsCache.updateItem(item)
+  }
 })
 
 Hooks.on("updateItem", async (item, changed, options, userId) => {
-    if ("name" in changed) {
-        console.info("Reinitializing ItemsCache")
-        await ItemsCache.initialize()
-    }
+  if ("name" in changed) {
+    console.info("Reinitializing ItemsCache")
+    await ItemsCache.initialize()
+  }
 
-    if (['spell', 'perk', 'feature', 'startingpack'].includes((item as any).type)) {
-        await ItemsCache.updateItem(item)
-    }
+  if (
+    ["spell", "perk", "feature", "startingpack"].includes((item as any).type)
+  ) {
+    await ItemsCache.updateItem(item)
+  }
 
-    /**
-     * This will cause container sheets to refresh themselves when their
-     * underlying items (ref'd by item-ID) are updated.
-     */
-    const actor = item.actor
-    if (actor) {
-        const containers = actor.items?.filter(it => it.system instanceof ContainerDataModel)
-        const container = containers.find(c => (c.system as any).itemIds.includes(getId(item)))
-        if (container) {
-            for (const app of foundry.applications.instances.values()) {
-                const docApp = app as any
-                if (docApp.document && getId(container) === docApp.document.id) {
-                    docApp.render()
-                }
-            }
+  /**
+   * This will cause container sheets to refresh themselves when their
+   * underlying items (ref'd by item-ID) are updated.
+   */
+  const actor = item.actor
+  if (actor) {
+    const containers = actor.items?.filter(
+      (it) => it.system instanceof ContainerDataModel,
+    )
+    const container = containers.find((c) =>
+      (c.system as any).itemIds.includes(getId(item)),
+    )
+    if (container) {
+      for (const app of foundry.applications.instances.values()) {
+        const docApp = app as any
+        if (docApp.document && getId(container) === docApp.document.id) {
+          docApp.render()
         }
-
+      }
     }
+  }
 })
 
 Hooks.on("preDeleteItem", (item: any, _options, _userId) => {
-    const deleteStack = (_options as any).deleteVagabondStack ?? true
+  const deleteStack = (_options as any).deleteVagabondStack ?? true
 
-    if (item.system.bulk?.isStackable && !deleteStack && item.parent) {
-        const count = item.system.bulk.quantity
-        if (count > 1) {
-            item.update({ 'system.bulk.quantity': count - 1 })
-            return false
-        }
+  if (item.system.bulk?.isStackable && !deleteStack && item.parent) {
+    const count = item.system.bulk.quantity
+    if (count > 1) {
+      item.update({ "system.bulk.quantity": count - 1 })
+      return false
     }
-    return true
+  }
+  return true
 })
 
 Hooks.on("deleteItem", async (item, options, userId) => {
-    if (game.user?.id !== userId || !item.parent) return
-
-    // If an item was deleted off a hero, trigger an update in case
+  if (game.user?.id !== userId || !item.parent)
+    return // If an item was deleted off a hero, trigger an update in case
     // something (like their class/ancestry) just adds it back.
-    (item.parent.system as HeroDataModel)?.forceUpdate?.()
+  ;(item.parent.system as HeroDataModel)?.forceUpdate?.()
 
-    if (['spell', 'perk', 'feature', 'startingpack'].includes((item as any).type)) {
-        ItemsCache.removeItem(item.uuid)
-    }
+  if (
+    ["spell", "perk", "feature", "startingpack"].includes((item as any).type)
+  ) {
+    ItemsCache.removeItem(item.uuid)
+  }
 })
 
 const isPlainItemPile = (doc: any): boolean => {
-    const data = doc?.getFlag?.("item-piles", "data") ?? doc?.actor?.getFlag?.("item-piles", "data")
-    return !!data?.enabled && data.type === "pile"
+  const data =
+    doc?.getFlag?.("item-piles", "data") ??
+    doc?.actor?.getFlag?.("item-piles", "data")
+  return !!data?.enabled && data.type === "pile"
 }
 
 /** Item pile tokens (items dragged onto the canvas) are clipped to a circle with a border, like a token. */
 Hooks.on("refreshToken" as any, (token: any) => {
-    const PIXI = (globalThis as any).PIXI
-    const mesh = token?.mesh
-    if (!PIXI || !mesh || !isPlainItemPile(token.document)) return
+  const PIXI = (globalThis as any).PIXI
+  const mesh = token?.mesh
+  if (!PIXI || !mesh || !isPlainItemPile(token.document)) return
 
-    if (!token._vagabondPileClip || token._vagabondPileClip.destroyed) {
-        token._vagabondPileClip = new PIXI.Graphics()
-        token._vagabondPileBorder = new PIXI.Graphics()
-        token.addChild(token._vagabondPileClip, token._vagabondPileBorder)
-    }
-    const textureScale = Math.abs(token.document.texture?.scaleX ?? 1)
-    const radius = (Math.min(token.w, token.h) / 2) * textureScale
-    const cx = token.w / 2
-    const cy = token.h / 2
-    token._vagabondPileClip.clear().beginFill(0xffffff).drawCircle(cx, cy, radius).endFill()
-    token._vagabondPileBorder.clear().lineStyle(Math.max(2, radius * 0.06), 0x000000, 1).drawCircle(cx, cy, radius)
-    mesh.mask = token._vagabondPileClip
+  if (!token._vagabondPileClip || token._vagabondPileClip.destroyed) {
+    token._vagabondPileClip = new PIXI.Graphics()
+    token._vagabondPileBorder = new PIXI.Graphics()
+    token.addChild(token._vagabondPileClip, token._vagabondPileBorder)
+  }
+  const textureScale = Math.abs(token.document.texture?.scaleX ?? 1)
+  const radius = (Math.min(token.w, token.h) / 2) * textureScale
+  const cx = token.w / 2
+  const cy = token.h / 2
+  token._vagabondPileClip
+    .clear()
+    .beginFill(0xffffff)
+    .drawCircle(cx, cy, radius)
+    .endFill()
+  token._vagabondPileBorder
+    .clear()
+    .lineStyle(Math.max(2, radius * 0.06), 0x000000, 1)
+    .drawCircle(cx, cy, radius)
+  mesh.mask = token._vagabondPileClip
 
-    // Foundry fits the texture inside the token with gaps; scale it to cover the circle instead.
-    const tex = mesh.texture?.orig ?? mesh.texture
-    if (tex?.width && tex?.height) {
-        const scale = (radius * 2) / Math.min(tex.width, tex.height)
-        mesh.scale.set(Math.sign(mesh.scale.x || 1) * scale, Math.sign(mesh.scale.y || 1) * scale)
-    }
+  // Foundry fits the texture inside the token with gaps; scale it to cover the circle instead.
+  const tex = mesh.texture?.orig ?? mesh.texture
+  if (tex?.width && tex?.height) {
+    const scale = (radius * 2) / Math.min(tex.width, tex.height)
+    mesh.scale.set(
+      Math.sign(mesh.scale.x || 1) * scale,
+      Math.sign(mesh.scale.y || 1) * scale,
+    )
+  }
 })
 
 Hooks.on("refreshToken" as any, (token: any) => {
-    const nameplate = token?.nameplate
-    const items = token?.document?.actor?.items
-    if (!nameplate || !items) return
-    const isPile = !!token.document.getFlag?.("item-piles", "data")?.enabled
-    if (isPile && !game.user?.isActiveGM && items.size === 0) {
-        nameplate.visible = false
-        return
-    }
-    const locked = items.find((it: any) =>
-        it.system?.isLockedForUser?.() && it._source?.name === token.document.name
-    )
-    if (locked) nameplate.text = locked.system.displayName
+  const nameplate = token?.nameplate
+  const items = token?.document?.actor?.items
+  if (!nameplate || !items) return
+  const isPile = !!token.document.getFlag?.("item-piles", "data")?.enabled
+  if (isPile && !game.user?.isActiveGM && items.size === 0) {
+    nameplate.visible = false
+    return
+  }
+  const locked = items.find(
+    (it: any) =>
+      it.system?.isLockedForUser?.() &&
+      it._source?.name === token.document.name,
+  )
+  if (locked) nameplate.text = locked.system.displayName
 })
 
 Hooks.on("activateCompendiumDirectory" as any, (app: any) => {
+  /**
+   * Our compendium content is hidden til the user inputs an answer to prove possession of the book.
+   */
+  if (CompendiumAccessor.isLocked()) {
     /**
-     * Our compendium content is hidden til the user inputs an answer to prove possession of the book.
+     * Foundry's Compendium directory search bar will circumvent our lock if we allow it to
+     * display our entries in search results. Further, it would cause it to re-render without
+     * checking our lock status.
      */
-    if (CompendiumAccessor.isLocked()) {
-        /**
-         * Foundry's Compendium directory search bar will circumvent our lock if we allow it to
-         * display our entries in search results. Further, it would cause it to re-render without
-         * checking our lock status.
-         */
-        const styleId = "vagabond-app-locked-compendium-style"
-        if (!document.getElementById(styleId)) {
-            const style = document.createElement("style")
-            style.id = styleId
-            style.textContent = `[data-pack^="vagabond-app."], [data-uuid^="Compendium.vagabond-app."], [data-entry-uuid^="Compendium.vagabond-app."] { display: none !important; }`
-            document.head.appendChild(style)
-        }
-
-        const rootElement: HTMLElement | null = app.element instanceof HTMLElement
-            ? app.element
-            : app.element?.[0] ?? null
-
-        rootElement
-            ?.querySelectorAll<HTMLElement>('li[data-pack^="vagabond-app."]')
-            .forEach(li => {
-                li.style.display = "none"
-            })
-
-        const div = document.createElement("div")
-        div.style.paddingInline = "0.5rem"
-        div.style.paddingTop = "0.5rem"
-        div.style.paddingBottom = "0.5rem"
-
-        const label = document.createElement("h4")
-        label.textContent = appLang.General.compendiumAccessHeader
-
-        const button = document.createElement("button")
-        button.style.width = "100%"
-        button.textContent = appLang.General.compendiumAccessButton
-        button.addEventListener("click", async () => {
-            const { question, answer } = CompendiumAccessor.getQuestion()
-            const input = await showInputDialog({
-                title: appLang.General.compendiumAccessHeader,
-                description: question,
-                inputPlaceholder: 'E.g., 4681012',
-            })
-            if (input == null) return
-            if (await CompendiumAccessor.checkAnswer(input ?? "", answer)) {
-                await CompendiumAccessor.unlock()
-                location.reload()
-            }
-            else {
-                ui.notifications?.error(appLang.General.compendiumAccessDenied)
-            }
-        })
-
-        div.appendChild(label)
-        div.appendChild(button)
-        rootElement?.prepend(div)
+    const styleId = "vagabond-app-locked-compendium-style"
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement("style")
+      style.id = styleId
+      style.textContent = `[data-pack^="vagabond-app."], [data-uuid^="Compendium.vagabond-app."], [data-entry-uuid^="Compendium.vagabond-app."] { display: none !important; }`
+      document.head.appendChild(style)
     }
-});
 
-Hooks.on("updateCompendium", async (pack: any, documents: any[], options: any, userId: string) => {
-    if (pack.metadata.type === "Item") {
-        let cacheChanged = false
-        const action = options.action || (options.parent ? "update" : "create")
+    const rootElement: HTMLElement | null =
+      app.element instanceof HTMLElement
+        ? app.element
+        : (app.element?.[0] ?? null)
 
-        for (const doc of documents) {
-            const uuid = `Compendium.${pack.collection}.Item.${doc._id}`
-            /**
-             * Item was newly added or modified...
-             */
-            if (action === "create" || action === "update") {
-                const item = await fromUuid(uuid)
-                if (item && ['spell', 'perk', 'feature', 'startingpack'].includes((item as any).type)) {
-                    const fullItem = await getFullItem(item as any)
-                    if (fullItem) {
-                        ItemsCache.items.set(uuid, fullItem)
-                        cacheChanged = true
-                    }
-                }
-            }
-            /**
-             * Item was deleted from compendium...
-             */
-            else if (action === "delete") {
-                if (ItemsCache.items.has(uuid)) {
-                    ItemsCache.items.delete(uuid)
-                    cacheChanged = true
-                }
-            }
-        }
-        /**
-         * If the cache changed, this will update all Hero actors.
-         */
-        if (cacheChanged) {
-            ItemsCache.refreshAllActors()
-        }
-    }
+    rootElement
+      ?.querySelectorAll<HTMLElement>('li[data-pack^="vagabond-app."]')
+      .forEach((li) => {
+        li.style.display = "none"
+      })
+
+    const div = document.createElement("div")
+    div.style.paddingInline = "0.5rem"
+    div.style.paddingTop = "0.5rem"
+    div.style.paddingBottom = "0.5rem"
+
+    const label = document.createElement("h4")
+    label.textContent = appLang.General.compendiumAccessHeader
+
+    const button = document.createElement("button")
+    button.style.width = "100%"
+    button.textContent = appLang.General.compendiumAccessButton
+    button.addEventListener("click", async () => {
+      const { question, answer } = CompendiumAccessor.getQuestion()
+      const input = await showInputDialog({
+        title: appLang.General.compendiumAccessHeader,
+        description: question,
+        inputPlaceholder: "E.g., 4681012",
+      })
+      if (input == null) return
+      if (await CompendiumAccessor.checkAnswer(input ?? "", answer)) {
+        await CompendiumAccessor.unlock()
+        location.reload()
+      }
+      else {
+        ui.notifications?.error(appLang.General.compendiumAccessDenied)
+      }
+    })
+
+    div.appendChild(label)
+    div.appendChild(button)
+    rootElement?.prepend(div)
+  }
 })
 
-Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any) => {
+Hooks.on(
+  "updateCompendium",
+  async (pack: any, documents: any[], options: any, userId: string) => {
+    if (pack.metadata.type === "Item") {
+      let cacheChanged = false
+      const action = options.action || (options.parent ? "update" : "create")
+
+      for (const doc of documents) {
+        const uuid = `Compendium.${pack.collection}.Item.${doc._id}`
+        /**
+         * Item was newly added or modified...
+         */
+        if (action === "create" || action === "update") {
+          const item = await fromUuid(uuid)
+          if (
+            item &&
+            ["spell", "perk", "feature", "startingpack"].includes(
+              (item as any).type,
+            )
+          ) {
+            const fullItem = await getFullItem(item as any)
+            if (fullItem) {
+              ItemsCache.items.set(uuid, fullItem)
+              cacheChanged = true
+            }
+          }
+        }
+        else if (action === "delete") {
+          /**
+           * Item was deleted from compendium...
+           */
+          if (ItemsCache.items.has(uuid)) {
+            ItemsCache.items.delete(uuid)
+            cacheChanged = true
+          }
+        }
+      }
+      /**
+       * If the cache changed, this will update all Hero actors.
+       */
+      if (cacheChanged) {
+        ItemsCache.refreshAllActors()
+      }
+    }
+  },
+)
+
+Hooks.on(
+  "renderActiveEffectConfig",
+  (app: any, html: HTMLElement, context: any) => {
     const effect = app.document
     const rawName = effect?.name || ""
 
@@ -542,18 +696,20 @@ Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any)
      * custom active effect implementations such as "Burning".
      */
     if (game.i18n?.has(rawName)) {
-        const localizedString = game.i18n.localize(rawName)
-        if (app.window?.title) {
-            app.window.title.textContent = `Active Effect: ${localizedString}`;
-        }
+      const localizedString = game.i18n.localize(rawName)
+      if (app.window?.title) {
+        app.window.title.textContent = `Active Effect: ${localizedString}`
+      }
 
-        const rootElement = html instanceof HTMLElement ? html : (html as any)[0]
-        if (rootElement) {
-            const nameInput = rootElement.querySelector('input[name="name"]') as HTMLInputElement | null
-            if (nameInput && nameInput.value === rawName) {
-                nameInput.value = localizedString
-            }
+      const rootElement = html instanceof HTMLElement ? html : (html as any)[0]
+      if (rootElement) {
+        const nameInput = rootElement.querySelector(
+          'input[name="name"]',
+        ) as HTMLInputElement | null
+        if (nameInput && nameInput.value === rawName) {
+          nameInput.value = localizedString
         }
+      }
     }
 
     /**
@@ -561,155 +717,183 @@ Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any)
      * effect versus an always-on effect.
      */
     if (effect && effect.parent instanceof Item) {
-        const rootElement = html instanceof HTMLElement ? html : (html as any)[0]
-        const detailsTab = rootElement.querySelector('.tab[data-tab="details"]')
-        if (!detailsTab) return
+      const rootElement = html instanceof HTMLElement ? html : (html as any)[0]
+      const detailsTab = rootElement.querySelector('.tab[data-tab="details"]')
+      if (!detailsTab) return
 
-        const requiresEquip = effect?.system?.requiresEquip ?? true
+      const requiresEquip = effect?.system?.requiresEquip ?? true
 
-        const formGroup = document.createElement("div")
-        formGroup.classList.add("form-group")
-        formGroup.innerHTML = `
+      const formGroup = document.createElement("div")
+      formGroup.classList.add("form-group")
+      formGroup.innerHTML = `
             <label>${appLang.ItemSheet.onEquip}</label>
             <div class="form-fields">
                 <input type="checkbox" name="system.requiresEquip" ${requiresEquip ? "checked" : ""}/>
             </div>
             <p class="notes">${appLang.ItemSheet.onEquipHint}</p>
-        `;
+        `
 
-        detailsTab.appendChild(formGroup)
+      detailsTab.appendChild(formGroup)
 
-        if (typeof app.setPosition === "function") {
-            app.setPosition({ height: "auto" })
-        }
+      if (typeof app.setPosition === "function") {
+        app.setPosition({ height: "auto" })
+      }
     }
-})
+  },
+)
 
 const vagabondChatRoots = new Map<string, Set<any>>()
 const vagabondElementRoots = new WeakMap<HTMLElement, any>()
 
 Hooks.on("preCreateChatMessage", (message: any) => {
-    serializeRawChatMessage(message)
+  serializeRawChatMessage(message)
 })
 
-Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html: HTMLElement) => {
+Hooks.on(
+  "renderChatMessageHTML",
+  (message: foundry.documents.ChatMessage, html: HTMLElement) => {
     const renderVagabondChatMessages = () => {
-        const rootElement = html.querySelector('.vagabond-react-chat-root') as HTMLElement
-        if (!rootElement) return
+      const rootElement = html.querySelector(
+        ".vagabond-react-chat-root",
+      ) as HTMLElement
+      if (!rootElement) return
 
-        html.style.background = 'transparent'
-        html.style.border = 'none'
-        html.style.boxShadow = 'none'
-        html.style.padding = '0'
-        const coreHeader = html.querySelector('.message-header') as HTMLElement
-        if (coreHeader) coreHeader.style.display = 'none'
+      html.style.background = "transparent"
+      html.style.border = "none"
+      html.style.boxShadow = "none"
+      html.style.padding = "0"
+      const coreHeader = html.querySelector(".message-header") as HTMLElement
+      if (coreHeader) coreHeader.style.display = "none"
 
-        const blueprint = message.getFlag(sys_id, "blueprint")
-        if (!blueprint) return
+      const blueprint = message.getFlag(sys_id, "blueprint")
+      if (!blueprint) return
 
-        let scaduRoot = rootElement.shadowRoot
-        let root = vagabondElementRoots.get(rootElement)
+      let scaduRoot = rootElement.shadowRoot
+      let root = vagabondElementRoots.get(rootElement)
 
-        if (!scaduRoot || !root) {
-            scaduRoot = rootElement.shadowRoot ?? rootElement.attachShadow({ mode: 'open' })
-            scaduRoot.replaceChildren()
+      if (!scaduRoot || !root) {
+        scaduRoot =
+          rootElement.shadowRoot ?? rootElement.attachShadow({ mode: "open" })
+        scaduRoot.replaceChildren()
 
-            scaduRoot.appendChild(createStyleTag())
+        scaduRoot.appendChild(createStyleTag())
 
-            const reactContainer = document.createElement('div')
-            scaduRoot.appendChild(reactContainer)
+        const reactContainer = document.createElement("div")
+        scaduRoot.appendChild(reactContainer)
 
-            root = createRoot(reactContainer)
-            vagabondElementRoots.set(rootElement, root)
-            const roots = vagabondChatRoots.get(message?.id ?? '') ?? new Set()
-            roots.add(root)
-            vagabondChatRoots.set(message?.id ?? '', roots)
-        }
+        root = createRoot(reactContainer)
+        vagabondElementRoots.set(rootElement, root)
+        const roots = vagabondChatRoots.get(message?.id ?? "") ?? new Set()
+        roots.add(root)
+        vagabondChatRoots.set(message?.id ?? "", roots)
+      }
 
-        const appThemeClass = (game.settings as any).get("core", "uiConfig")?.colorScheme?.applications ?? 'theme-dark'
+      const appThemeClass =
+        (game.settings as any).get("core", "uiConfig")?.colorScheme
+          ?.applications ?? "theme-dark"
 
-        root.render(
-            <div className={`${appThemeClass}`}>
-                <RehydratedChatCard blueprint={blueprint} messageId={message?.id ?? ''} />
-            </div>
-        )
+      root.render(
+        <div className={`${appThemeClass}`}>
+          <RehydratedChatCard
+            blueprint={blueprint}
+            messageId={message?.id ?? ""}
+          />
+        </div>,
+      )
     }
 
     const checkStateAndRender = () => {
-        if (ItemsCache.items.size > 0) {
-            renderVagabondChatMessages()
-        } else {
-            Hooks.once("onItemsCacheInitialized" as any, () => {
-                renderVagabondChatMessages()
-            })
-        }
+      if (ItemsCache.items.size > 0) {
+        renderVagabondChatMessages()
+      }
+      else {
+        Hooks.once("onItemsCacheInitialized" as any, () => {
+          renderVagabondChatMessages()
+        })
+      }
     }
 
     if (canvas?.ready || !game.scenes?.active) {
-        checkStateAndRender()
-    } else {
-        Hooks.once("canvasReady", () => {
-            checkStateAndRender()
-        })
+      checkStateAndRender()
     }
-})
+    else {
+      Hooks.once("canvasReady", () => {
+        checkStateAndRender()
+      })
+    }
+  },
+)
 
 const pendingAttackRemovals = new Map<string, Set<string>>()
 let attackRemovalTimer: number | undefined
 
 const flushAttackRemovals = async () => {
-    attackRemovalTimer = undefined
-    const removals = new Map(pendingAttackRemovals)
-    pendingAttackRemovals.clear()
+  attackRemovalTimer = undefined
+  const removals = new Map(pendingAttackRemovals)
+  pendingAttackRemovals.clear()
 
-    const registry = getAttackRegistry()
-    if (game.messages?.size === 0) {
-        if (Object.keys(registry).length) await setAttackRegistry({})
-        return
+  const registry = getAttackRegistry()
+  if (game.messages?.size === 0) {
+    if (Object.keys(registry).length) await setAttackRegistry({})
+    return
+  }
+
+  let changed = false
+  const next = { ...registry }
+  removals.forEach((attackIds, actorId) => {
+    if (!next[actorId]) return
+    const remaining = next[actorId].filter((atk) => !attackIds.has(atk.id))
+    if (remaining.length !== next[actorId].length) {
+      next[actorId] = remaining
+      changed = true
     }
-
-    let changed = false
-    const next = { ...registry }
-    removals.forEach((attackIds, actorId) => {
-        if (!next[actorId]) return
-        const remaining = next[actorId].filter(atk => !attackIds.has(atk.id))
-        if (remaining.length !== next[actorId].length) {
-            next[actorId] = remaining
-            changed = true
-        }
-    })
-    if (changed) await setAttackRegistry(next)
+  })
+  if (changed) await setAttackRegistry(next)
 }
 
 Hooks.on("deleteChatMessage", (message: any) => {
-    if (vagabondChatRoots.has(message.id)) {
-        vagabondChatRoots.get(message.id)?.forEach(r => { try { r.unmount() } catch (e) { /* no-op */ } })
-        vagabondChatRoots.delete(message.id);
+  if (vagabondChatRoots.has(message.id)) {
+    vagabondChatRoots.get(message.id)?.forEach((r) => {
+      try {
+        r.unmount()
+      }
+      catch (e) {
+        /* no-op */
+      }
+    })
+    vagabondChatRoots.delete(message.id)
+  }
+
+  if (!game.user?.isActiveGM) return
+
+  const blueprint = message.getFlag(sys_id, "blueprint")
+  if (blueprint?.type === "InteractiveAttackChatCard") {
+    const { actorId, attackId } = blueprint.props ?? {}
+    if (actorId && attackId) {
+      const ids = pendingAttackRemovals.get(actorId) ?? new Set<string>()
+      ids.add(attackId)
+      pendingAttackRemovals.set(actorId, ids)
     }
+  }
 
-    if (!game.user?.isActiveGM) return
-
-    const blueprint = message.getFlag(sys_id, "blueprint")
-    if (blueprint?.type === "InteractiveAttackChatCard") {
-        const { actorId, attackId } = blueprint.props ?? {}
-        if (actorId && attackId) {
-            const ids = pendingAttackRemovals.get(actorId) ?? new Set<string>()
-            ids.add(attackId)
-            pendingAttackRemovals.set(actorId, ids)
-        }
-    }
-
-    window.clearTimeout(attackRemovalTimer)
-    attackRemovalTimer = window.setTimeout(flushAttackRemovals, 300)
-});
+  window.clearTimeout(attackRemovalTimer)
+  attackRemovalTimer = window.setTimeout(flushAttackRemovals, 300)
+})
 
 Hooks.on("deleteCombat", (combat: Combat, options: any, userId: string) => {
-    resolveAllAttacks()
-});
+  resolveAllAttacks()
+})
 
-Hooks.on("dropCanvasData", (canvas: Canvas, data: Record<string, any>): boolean | void => {
+Hooks.on(
+  "dropCanvasData",
+  (canvas: Canvas, data: Record<string, any>): boolean | void => {
     if (data.type === "Actor" && !game.user?.can("TOKEN_CREATE")) return false
-    if (data.type !== "Actor" || !data.uuid || !data.uuid.startsWith("Compendium.")) return true
+    if (
+      data.type !== "Actor" ||
+      !data.uuid ||
+      !data.uuid.startsWith("Compendium.")
+    )
+      return true
 
     /**
      * The following will prevent duplicate Adversary Actors from being
@@ -727,73 +911,112 @@ Hooks.on("dropCanvasData", (canvas: Canvas, data: Record<string, any>): boolean 
 
     enforceSingletonPlaceholder(data, canvas)
     return false
-});
+  },
+)
 
 Hooks.on("hotbarDrop", (_bar: any, data: any, slot: number): boolean | void => {
-    // Dragging a system compendium macro (from the compendium or a UUID link) onto the hotbar.
-    if (data.type === "Macro" && typeof data.uuid === "string" && data.uuid.startsWith(`Compendium.${sys_id}.macros.`)) {
-        fromUuid(data.uuid).then(async (source: any) => {
-            if (!source) return
-            const existing = game.macros?.find(m => m.getFlag(sys_id, "hotbarOnly") && m.getFlag(sys_id, "sourceUuid") === data.uuid && m.isOwner) as any
-            const macro = existing ?? await Macro.create({
-                ...source.toObject(),
-                _id: undefined,
-                folder: null,
-                ownership: { default: 0 },
-                flags: { [sys_id]: { hotbarOnly: true, sourceUuid: data.uuid } }
-            } as any)
-            if (macro) await game.user?.assignHotbarMacro(macro, slot)
-        })
-        return false
-    }
+  // Dragging a system compendium macro (from the compendium or a UUID link) onto the hotbar.
+  if (
+    data.type === "Macro" &&
+    typeof data.uuid === "string" &&
+    data.uuid.startsWith(`Compendium.${sys_id}.macros.`)
+  ) {
+    fromUuid(data.uuid).then(async (source: any) => {
+      if (!source) return
+      const existing = game.macros?.find(
+        (m) =>
+          m.getFlag(sys_id, "hotbarOnly") &&
+          m.getFlag(sys_id, "sourceUuid") === data.uuid &&
+          m.isOwner,
+      ) as any
+      const macro =
+        existing ??
+        (await Macro.create({
+          ...source.toObject(),
+          _id: undefined,
+          folder: null,
+          ownership: { default: 0 },
+          flags: { [sys_id]: { hotbarOnly: true, sourceUuid: data.uuid } },
+        } as any))
+      if (macro) await game.user?.assignHotbarMacro(macro, slot)
+    })
+    return false
+  }
 
-    if (data.type !== "RollPreset") return
+  if (data.type !== "RollPreset") return
 
-    const actor = game.actors?.get(data.owner) as any
-    const preset = (actor?.getFlag(sys_id, "rollPresets") as RollPreset[] | undefined)?.find(p => p.id === data.id)
-    if (!actor || !preset) return false
+  const actor = game.actors?.get(data.owner) as any
+  const preset = (
+    actor?.getFlag(sys_id, "rollPresets") as RollPreset[] | undefined
+  )?.find((p) => p.id === data.id)
+  if (!actor || !preset) return false
 
-    const img = actor.items.get(preset.weaponId)?.img ?? "icons/svg/dice-target.svg"
-    const command = `/** 
+  const img =
+    actor.items.get(preset.weaponId)?.img ?? "icons/svg/dice-target.svg"
+  const command = `/** 
  * Hold Shift to add Favor, Ctrl for Hinder
  */
 game.system.api.hero.rollPreset({ presetId: "${preset.id}", event: event });`
 
-    Macro.create({ name: `${actor.name}: ${preset.title}${preset.description?.length > 0 ? `: ${preset.description}` : ""}`, type: "script", img, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } } as any)
-        .then(macro => macro && game.user?.assignHotbarMacro(macro, slot))
+  Macro.create({
+    name: `${actor.name}: ${preset.title}${preset.description?.length > 0 ? `: ${preset.description}` : ""}`,
+    type: "script",
+    img,
+    command,
+    scope: "actors",
+    flags: { [sys_id]: { hotbarOnly: true } },
+  } as any).then((macro) => macro && game.user?.assignHotbarMacro(macro, slot))
 
-    return false
-});
+  return false
+})
 
-Hooks.on("preCreateMacro", (macro: any, data: any, options: any, userId: string) => {
-    const uuid = /(Actor\.[^"'\s.]+\.Item\.[^"'\s.]+)/.exec(data?.command ?? "")?.[1]
+Hooks.on(
+  "preCreateMacro",
+  (macro: any, data: any, options: any, userId: string) => {
+    const uuid = /(Actor\.[^"'\s.]+\.Item\.[^"'\s.]+)/.exec(
+      data?.command ?? "",
+    )?.[1]
     if (!uuid) return
 
     const item = fromUuidSync(uuid) as any
 
-    if ((item?.system instanceof WeaponDataModel)) {
-        const command = `/** 
+    if (item?.system instanceof WeaponDataModel) {
+      const command = `/** 
  * Hold Shift to add Favor, Ctrl for Hinder
  * Send skill as a 3rd param to override default...
  */
 game.system.api.hero.weaponAttack({ itemId: "${item.id}", /*skill: "brawl",*/ event: event});`
 
-        const actor = game.actors?.contents?.find(a => a.items.get(item.id))
-        macro.updateSource({ img: item.img, name: `${actor ? actor.name + ": " : ""}${item.name} Attack`, command, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } })
-        data.img = item.img
+      const actor = game.actors?.contents?.find((a) => a.items.get(item.id))
+      macro.updateSource({
+        img: item.img,
+        name: `${actor ? actor.name + ": " : ""}${item.name} Attack`,
+        command,
+        scope: "actors",
+        flags: { [sys_id]: { hotbarOnly: true } },
+      })
+      data.img = item.img
     }
     else {
-        macro.updateSource({ img: item.img, name: `${item.name}`, scope: "actors", flags: { [sys_id]: { hotbarOnly: true } } })
-        data.img = item.img
+      macro.updateSource({
+        img: item.img,
+        name: `${item.name}`,
+        scope: "actors",
+        flags: { [sys_id]: { hotbarOnly: true } },
+      })
+      data.img = item.img
     }
-});
+  },
+)
 
 Hooks.on("renderMacroDirectory", (_app: any, html: HTMLElement) => {
-    const root: any = html instanceof HTMLElement ? html : (html as any)[0]
-    root?.querySelectorAll(".directory-item[data-entry-id]").forEach((li: any) => {
-        const macro = game.macros?.get(li.dataset.entryId) as any
-        if (macro?.getFlag(sys_id, "hotbarOnly")) li.remove()
+  const root: any = html instanceof HTMLElement ? html : (html as any)[0]
+  root
+    ?.querySelectorAll(".directory-item[data-entry-id]")
+    .forEach((li: any) => {
+      const macro = game.macros?.get(li.dataset.entryId) as any
+      if (macro?.getFlag(sys_id, "hotbarOnly")) li.remove()
     })
-});
+})
 
-Hooks.once("item-piles-ready" as any, () => ItemPilesConfig.configure());
+Hooks.once("item-piles-ready" as any, () => ItemPilesConfig.configure())

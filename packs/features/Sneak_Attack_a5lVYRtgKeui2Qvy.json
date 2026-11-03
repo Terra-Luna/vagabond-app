@@ -54,9 +54,7 @@
         "label": "Flag",
         "level": 1,
         "value": true,
-        "selector": [
-          "flags.sneakattack"
-        ]
+        "selector": ["flags.sneakattack"]
       }
     ],
     "classId": "6TmIRB6wIVRxMZxv",

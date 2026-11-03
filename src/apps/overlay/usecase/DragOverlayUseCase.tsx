@@ -1,97 +1,106 @@
 import { useRef } from "react"
 
 export const useDragOverlayComponent = (
-    setState: (prev: any) => void,
-    saveSetting: (objects: any) => void,
-    permissionCheck: (object?: any) => boolean
+  setState: (prev: any) => void,
+  saveSetting: (objects: any) => void,
+  permissionCheck: (object?: any) => boolean,
 ) => {
+  const dragInfo = useRef<{
+    id: string
+    startX: number
+    startY: number
+    initialPixelX: number
+    initialPixelY: number
+    hasMoved: boolean
+    width: number
+    height: number
+  } | null>(null)
 
-    const dragInfo = useRef<{
-        id: string
-        startX: number
-        startY: number
-        initialPixelX: number
-        initialPixelY: number
-        hasMoved: boolean
-        width: number
-        height: number
-    } | null>(null)
+  const handleMouseDown = (e: React.MouseEvent, object: any) => {
+    if (!permissionCheck(object)) return
+    e.preventDefault()
 
-    const handleMouseDown = (e: React.MouseEvent, object: any) => {
-        if (!permissionCheck(object)) return
-        e.preventDefault()
+    const targetElement = e.currentTarget as HTMLElement
+    const rect = targetElement.getBoundingClientRect()
 
-        const targetElement = e.currentTarget as HTMLElement
-        const rect = targetElement.getBoundingClientRect()
-
-        dragInfo.current = {
-            id: object.id,
-            startX: e.clientX,
-            startY: e.clientY,
-            initialPixelX: rect.left,
-            initialPixelY: rect.top,
-            hasMoved: false,
-            width: rect.width,
-            height: rect.height
-        }
-
-        document.addEventListener('mousemove', handleMouseMove)
-        document.addEventListener('mouseup', handleMouseUp)
+    dragInfo.current = {
+      id: object.id,
+      startX: e.clientX,
+      startY: e.clientY,
+      initialPixelX: rect.left,
+      initialPixelY: rect.top,
+      hasMoved: false,
+      width: rect.width,
+      height: rect.height,
     }
 
-    const handleMouseMove = (e: MouseEvent) => {
-        if (!dragInfo.current) return
+    document.addEventListener("mousemove", handleMouseMove)
+    document.addEventListener("mouseup", handleMouseUp)
+  }
 
-        const info = dragInfo.current
-        const deltaX = e.clientX - info.startX
-        const deltaY = e.clientY - info.startY
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!dragInfo.current) return
 
-        if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
-            info.hasMoved = true
-        }
+    const info = dragInfo.current
+    const deltaX = e.clientX - info.startX
+    const deltaY = e.clientY - info.startY
 
-        if (info.hasMoved) {
-            const rawX = info.initialPixelX + deltaX
-            const rawY = info.initialPixelY + deltaY
-
-            // Clamp pixels to screen edges
-            const clampedPixelX = Math.max(0, Math.min(rawX, window.innerWidth - info.width))
-            const clampedPixelY = Math.max(0, Math.min(rawY, window.innerHeight - info.height))
-
-            // Convert clamped pixels to a relative percentage (0.0 to 1.0)
-            const relativeX = clampedPixelX / window.innerWidth
-            const relativeY = clampedPixelY / window.innerHeight
-
-            setState(prev => prev.map(c => {
-                if (c.id === info.id) {
-                    return {
-                        ...c,
-                        x: relativeX,
-                        y: relativeY,
-                        centered: false
-                    }
-                }
-                return c
-            }))
-        }
+    if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+      info.hasMoved = true
     }
 
-    const handleMouseUp = async () => {
-        if (!dragInfo.current) return
+    if (info.hasMoved) {
+      const rawX = info.initialPixelX + deltaX
+      const rawY = info.initialPixelY + deltaY
 
-        const info = dragInfo.current
-        document.removeEventListener('mousemove', handleMouseMove)
-        document.removeEventListener('mouseup', handleMouseUp)
+      // Clamp pixels to screen edges
+      const clampedPixelX = Math.max(
+        0,
+        Math.min(rawX, window.innerWidth - info.width),
+      )
+      const clampedPixelY = Math.max(
+        0,
+        Math.min(rawY, window.innerHeight - info.height),
+      )
 
-        if (info.hasMoved) {
-            setState(objects => {
-                saveSetting(objects)
-                return objects
-            })
-        }
+      // Convert clamped pixels to a relative percentage (0.0 to 1.0)
+      const relativeX = clampedPixelX / window.innerWidth
+      const relativeY = clampedPixelY / window.innerHeight
 
-        setTimeout(() => { dragInfo.current = null }, 50)
+      setState((prev) =>
+        prev.map((c) => {
+          if (c.id === info.id) {
+            return {
+              ...c,
+              x: relativeX,
+              y: relativeY,
+              centered: false,
+            }
+          }
+          return c
+        }),
+      )
+    }
+  }
+
+  const handleMouseUp = async () => {
+    if (!dragInfo.current) return
+
+    const info = dragInfo.current
+    document.removeEventListener("mousemove", handleMouseMove)
+    document.removeEventListener("mouseup", handleMouseUp)
+
+    if (info.hasMoved) {
+      setState((objects) => {
+        saveSetting(objects)
+        return objects
+      })
     }
 
-    return { dragInfo, handleMouseDown, handleMouseUp, handleMouseMove }
+    setTimeout(() => {
+      dragInfo.current = null
+    }, 50)
+  }
+
+  return { dragInfo, handleMouseDown, handleMouseUp, handleMouseMove }
 }

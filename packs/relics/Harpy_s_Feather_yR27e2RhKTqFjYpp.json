@@ -35,9 +35,7 @@
           "label": "Weapon +1",
           "modifiers": [
             {
-              "selector": [
-                "system.damage.dice.modifier"
-              ],
+              "selector": ["system.damage.dice.modifier"],
               "value": 1
             }
           ]
@@ -61,14 +59,8 @@
       "style": "H",
       "state": "H"
     },
-    "skills": [
-      "finesse",
-      "melee"
-    ],
-    "properties": [
-      "keen",
-      "thrown"
-    ],
+    "skills": ["finesse", "melee"],
+    "properties": ["keen", "thrown"],
     "material": "steel"
   },
   "effects": [],

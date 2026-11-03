@@ -10,9 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,13 +204,8 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "physical_lt0",
-            "poison"
-          ],
-          "weaknesses": [
-            "fire"
-          ],
+          "immunities": ["physical_lt0", "poison"],
+          "weaknesses": ["fire"],
           "statusImmunities": [
             "berserk",
             "charmed",
@@ -286,9 +279,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -318,9 +309,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": []
@@ -340,9 +329,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "halfDamageOnSave": false,
         "appliedEffects": [],
         "appliedActiveEffects": [

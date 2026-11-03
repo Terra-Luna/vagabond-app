@@ -10,10 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "darksight",
-      "seismicsense"
-    ],
+    "senses": ["darksight", "seismicsense"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -273,9 +270,7 @@
           },
           "type": "acid"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "burning",
@@ -297,9 +292,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "burning",

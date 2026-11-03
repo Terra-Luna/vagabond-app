@@ -1,54 +1,61 @@
 import { Trash } from "lucide-react"
 
-import { appLang } from "../../../utils/lang"
+import { appLang } from "../../../util/lang"
 import { useContextMenu } from "../../component/ContextMenu"
 import { ClearHeader } from "../../component/Header"
 
 /**
  * Displays an array of Token icons.
  */
-export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], onRemoveTarget?: any }) => {
-    const { onCtxMenu, ContextMenu } = useContextMenu()
-    return (
-        <div className="-mt-1 pb-2">
+export const TargetsDisplay = ({
+  targets,
+  onRemoveTarget,
+}: {
+  targets: any[]
+  onRemoveTarget?: any
+}) => {
+  const { onCtxMenu, ContextMenu } = useContextMenu()
+  return (
+    <div className="-mt-1 pb-2">
+      <ClearHeader title={`Targets`} />
 
-            <ClearHeader title={`Targets`} />
-
-            {targets && targets.length > 0 &&
-                <div className="flex flex-wrap -space-x-4 justify-center items-center px-2">
-                    {targets.map((target, index) => (
-                        <button
-                            key={target.id}
-                            title={target.token?.name}
-                            onClick={() => {
-                                target.token?.control({ releaseOthers: true })
-                                canvas?.animatePan({
-                                    x: target.token?.center.x,
-                                    y: target.token?.center.y
-                                })
-                            }}
-                            onContextMenu={(e) => {
-                                if (onRemoveTarget) {
-                                    onCtxMenu(e, [{
-                                            icon: Trash,
-                                            label: appLang.ButtonActions.remove,
-                                            action: () => onRemoveTarget(index),
-                                            isDestructive: true
-                                        }
-                                    ])
-                                }
-                            }}
-                            children={
-                                <img
-                                    src={target.src}
-                                    alt={target.token?.name}
-                                    className={`object-contain h-[34px] w-[34px] cursor-pointer`}
-                                />
-                            } />
-                    ))}
-                </div>
-            }
-            {game.user?.isActiveGM && <ContextMenu />}
+      {targets && targets.length > 0 && (
+        <div className="flex flex-wrap -space-x-4 justify-center items-center px-2">
+          {targets.map((target, index) => (
+            <button
+              key={target.id}
+              title={target.token?.name}
+              onClick={() => {
+                target.token?.control({ releaseOthers: true })
+                canvas?.animatePan({
+                  x: target.token?.center.x,
+                  y: target.token?.center.y,
+                })
+              }}
+              onContextMenu={(e) => {
+                if (onRemoveTarget) {
+                  onCtxMenu(e, [
+                    {
+                      icon: Trash,
+                      label: appLang.ButtonActions.remove,
+                      action: () => onRemoveTarget(index),
+                      isDestructive: true,
+                    },
+                  ])
+                }
+              }}
+              children={
+                <img
+                  src={target.src}
+                  alt={target.token?.name}
+                  className={`object-contain h-[34px] w-[34px] cursor-pointer`}
+                />
+              }
+            />
+          ))}
         </div>
-    )
+      )}
+      {game.user?.isActiveGM && <ContextMenu />}
+    </div>
+  )
 }

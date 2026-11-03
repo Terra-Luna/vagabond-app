@@ -7,63 +7,82 @@
 import ReactDom from "react-dom/client"
 
 import { api } from "../../apps/api/VagabondAPI"
-import { getTheme } from "../../utils/foundryUtils"
-import { createStyleTag } from "../../utils/styleUtils"
-import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
-import { EmotionCacheContext } from "../../view/context/EmotionCacheContext"
+import { getTheme } from "../../util/foundry-util"
+import { createStyleTag } from "../../util/style-util"
+import { EditModeContextProvider } from "../../view/wrappers/EditModeContextProvider"
+import { EmotionCacheContext } from "../../view/wrappers/EmotionCacheContext"
 import { CombatTracker } from "./CombatTracker"
 import { CombatContext } from "./hooks"
 
-export class VagabondCombatTracker extends foundry.applications.sidebar.tabs.CombatTracker {
-    static DEFAULT_OPTIONS = {
-        actions: {
-            nextTurn: async () => { await api.combat.next() }
-        }
-    } as any
+export class VagabondCombatTracker
+  extends foundry.applications.sidebar.tabs.CombatTracker
+{
+  static DEFAULT_OPTIONS = {
+    actions: {
+      nextTurn: async () => {
+        await api.combat.next()
+      },
+    },
+  } as any
 
-    htmlRoot?: HTMLElement
-    scaduRoot?: ShadowRoot
-    reactRoot?: ReactDom.Root
+  htmlRoot?: HTMLElement
+  scaduRoot?: ShadowRoot
+  reactRoot?: ReactDom.Root
 
-    /**
-     * This is the only function we need to override. The CombatTracker renders 3 different parts - the header, tracker (main content, what we care about), and footer
-     * What usually happens is that every time this is called, result.tracker will be the result of calling our handlebars template on the combat data
-     * Since that's always the same, we can intercept all renders after the first and just return the same div with a refreshed react tree
-     */
-    protected _replaceHTML(result: { tracker: HTMLElement }, content, options): void {
-        if (options.isFirstRender && result.tracker) {
-            this.htmlRoot = result.tracker
-            this.scaduRoot = this.htmlRoot.attachShadow({ mode: 'open' })
-            this.reactRoot = ReactDom.createRoot(this.scaduRoot!)
-            this.scaduRoot.appendChild(createStyleTag())
-        } else {
-            result.tracker = this.htmlRoot!
-        }
-
-        const combat = game.combat
-
-        const activeCombatantId = combat?.current?.combatantId
-
-        const theme = getTheme()
-
-        this.reactRoot?.render(
-            <EditModeContextProvider>
-                <CombatContext.Provider value={{ activeCombatantId: activeCombatantId, activeGroup: null, combatTracker: this }}>
-                    <EmotionCacheContext scaduRoot={this.scaduRoot}>
-                        <div className={`${theme} app-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col h-full`}>
-                            <CombatTracker combat={combat} />
-                        </div>
-                    </EmotionCacheContext>
-                </CombatContext.Provider>
-            </EditModeContextProvider>
-        );
-
-        super._replaceHTML(result, content, options)
-
-        this.element?.querySelectorAll('[data-action="rollNPC"]').forEach(el => el.remove())
+  /**
+   * This is the only function we need to override. The CombatTracker renders 3 different parts - the header, tracker (main content, what we care about), and footer
+   * What usually happens is that every time this is called, result.tracker will be the result of calling our handlebars template on the combat data
+   * Since that's always the same, we can intercept all renders after the first and just return the same div with a refreshed react tree
+   */
+  protected _replaceHTML(
+    result: { tracker: HTMLElement },
+    content,
+    options,
+  ): void {
+    if (options.isFirstRender && result.tracker) {
+      this.htmlRoot = result.tracker
+      this.scaduRoot = this.htmlRoot.attachShadow({ mode: "open" })
+      this.reactRoot = ReactDom.createRoot(this.scaduRoot!)
+      this.scaduRoot.appendChild(createStyleTag())
     }
+    else {
+      result.tracker = this.htmlRoot!
+    }
+
+    const combat = game.combat
+
+    const activeCombatantId = combat?.current?.combatantId
+
+    const theme = getTheme()
+
+    this.reactRoot?.render(
+      <EditModeContextProvider>
+        <CombatContext.Provider
+          value={{
+            activeCombatantId: activeCombatantId,
+            activeGroup: null,
+            combatTracker: this,
+          }}
+        >
+          <EmotionCacheContext scaduRoot={this.scaduRoot}>
+            <div
+              className={`${theme} app-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col h-full`}
+            >
+              <CombatTracker combat={combat} />
+            </div>
+          </EmotionCacheContext>
+        </CombatContext.Provider>
+      </EditModeContextProvider>,
+    )
+
+    super._replaceHTML(result, content, options)
+
+    this.element
+      ?.querySelectorAll('[data-action="rollNPC"]')
+      .forEach((el) => el.remove())
+  }
 }
 
 interface CombatTracker {
-    hoverCombatant: (combatant: any, hovered: boolean) => void;
+  hoverCombatant: (combatant: any, hovered: boolean) => void
 }

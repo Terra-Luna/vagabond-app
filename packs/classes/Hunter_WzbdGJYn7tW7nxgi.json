@@ -34,9 +34,7 @@
       }
     ],
     "complexity": 2,
-    "keyStats": [
-      "awareness"
-    ],
+    "keyStats": ["awareness"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.F62niHMK5Hg4TmMn",
       "Compendium.vagabond-app.gear.Item.hug6ifnaIOy45vvj"

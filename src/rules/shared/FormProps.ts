@@ -1,4 +1,4 @@
 export interface FormProps {
-    rule: any
-    onChange: (data: any) => void
+  rule: any
+  onChange: (data: any) => void
 }

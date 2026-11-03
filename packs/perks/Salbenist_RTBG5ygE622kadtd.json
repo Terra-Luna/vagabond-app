@@ -14,10 +14,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "craft",
-              "mysticism"
-            ],
+            "skillNames": ["craft", "mysticism"],
             "andOr": "and"
           }
         ]

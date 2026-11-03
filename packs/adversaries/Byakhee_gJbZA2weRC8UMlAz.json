@@ -10,10 +10,7 @@
     "armor": {
       "rating": 5
     },
-    "senses": [
-      "darksight",
-      "telepath"
-    ],
+    "senses": ["darksight", "telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -209,9 +206,7 @@
           "resistances": [],
           "immunities": [],
           "weaknesses": [],
-          "statusImmunities": [
-            "suffocating"
-          ]
+          "statusImmunities": ["suffocating"]
         },
         "out": {
           "melee": {},
@@ -275,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Bite",
@@ -293,9 +286,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Sickened",
@@ -311,9 +302,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "sickened",
@@ -339,9 +328,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2
         },
         {
@@ -358,9 +345,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1
         }
       ],

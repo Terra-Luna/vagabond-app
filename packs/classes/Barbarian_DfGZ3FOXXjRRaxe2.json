@@ -26,16 +26,11 @@
         "label": "Training",
         "level": "1",
         "value": true,
-        "selector": [
-          "skills.melee.trained",
-          "skills.survival.trained"
-        ]
+        "selector": ["skills.melee.trained", "skills.survival.trained"]
       }
     ],
     "complexity": 2,
-    "keyStats": [
-      "might"
-    ],
+    "keyStats": ["might"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.3svveHnNn60fHHiX",
       "Compendium.vagabond-app.gear.Item.hug6ifnaIOy45vvj"

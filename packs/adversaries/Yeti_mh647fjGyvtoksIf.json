@@ -10,9 +10,7 @@
     "armor": {
       "rating": 2
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,12 +204,8 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "cold"
-          ],
-          "weaknesses": [
-            "fire"
-          ],
+          "immunities": ["cold"],
+          "weaknesses": ["fire"],
           "statusImmunities": []
         },
         "out": {
@@ -276,9 +270,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "appliedEffects": [
           {
             "effect": "frightened",
@@ -304,9 +296,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

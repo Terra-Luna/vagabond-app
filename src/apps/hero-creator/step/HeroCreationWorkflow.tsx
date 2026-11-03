@@ -1,17 +1,23 @@
-import { useCallback, useEffect,useMemo } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { addCoins, Coins } from "../../../model/common/CoinValue"
+import { addCoins, Coins } from "../../../model/common/coin-value-schema"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { getItemRuleSources, normalizeRuleSelections, randomId, saveItemRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
+import {
+  getItemRuleSources,
+  normalizeRuleSelections,
+  randomId,
+  saveItemRuleSelections,
+  savePerkSelections,
+} from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { addItems } from "../../../utils/heroInventoryUtil"
-import { appLang } from "../../../utils/lang"
-import { createDropdownEntriesFromObj } from "../../../utils/localeUtils"
+import { addItems } from "../../../util/inventory-util"
+import { appLang } from "../../../util/lang"
+import { createDropdownEntriesFromObj } from "../../../util/locale-util"
 import { Header } from "../../../view/component/Header"
-import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { useNavigation } from "../../../view/context/navigation/NavigationContext"
+import { EditModeContextProvider } from "../../../view/wrappers/EditModeContextProvider"
 import { AlchemySelectionApp } from "../../hero-choices/alchemy/AlchemySelectionApp"
 import { usePerkBonusSelection } from "../../hero-choices/perks/PerkBonusSelection"
 import { usePerkSelectionView } from "../../hero-choices/perks/PerkSelectionView"
@@ -26,366 +32,584 @@ import { useCoreStats } from "./CoreStats"
 import { useEquipmentSelection } from "./EquipmentSelection"
 
 export interface HeroCreatorArgs {
-    actor: Actor & { system: HeroDataModel }
-    setClosed: () => void
+  actor: Actor & { system: HeroDataModel }
+  setClosed: () => void
 }
 
 export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
-    const { stepId, registerStepIds, registerOnFinish, backButton, nextButton } = useNavigation()
+  const { stepId, registerStepIds, registerOnFinish, backButton, nextButton } =
+    useNavigation()
 
-    /**
-     * Ancestry & Class
-     */
-    const { AncestrySelection, ancestryItem, levelZero, selectedAncestryMiscChoices, setSelectedAncestryMiscChoices } = useAncestrySelection([backButton, nextButton])
-    const { ClassSelection, classItem, setClassItem } = useClassSelection([backButton, nextButton])
+  /**
+   * Ancestry & Class
+   */
+  const {
+    AncestrySelection,
+    ancestryItem,
+    levelZero,
+    selectedAncestryMiscChoices,
+    setSelectedAncestryMiscChoices,
+  } = useAncestrySelection([backButton, nextButton])
+  const { ClassSelection, classItem, setClassItem } = useClassSelection([
+    backButton,
+    nextButton,
+  ])
 
-    /**
-     * Core stats
-     */
-    const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses, resetAssignedStats } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
+  /**
+   * Core stats
+   */
+  const {
+    CoreStats,
+    selectedArr,
+    assignedStats,
+    bonusStatSelections,
+    flatStatBonuses,
+    resetAssignedStats,
+  } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
 
-    const statsWithBonuses = useMemo(() => {
-        return (assignedStats || []).map(assignedStat => {
-            const bonus = [...bonusStatSelections, ...flatStatBonuses]
-                .filter(b => b.stat.replace("stats.", "") === assignedStat.stat)
-                .reduce((sum, it) => sum + it.bonus, 0)
-            return { stat: assignedStat.stat, value: ((assignedStat?.value ?? 0) + bonus) }
+  const statsWithBonuses = useMemo(() => {
+    return (assignedStats || []).map((assignedStat) => {
+      const bonus = [...bonusStatSelections, ...flatStatBonuses]
+        .filter((b) => b.stat.replace("stats.", "") === assignedStat.stat)
+        .reduce((sum, it) => sum + it.bonus, 0)
+      return {
+        stat: assignedStat.stat,
+        value: (assignedStat?.value ?? 0) + bonus,
+      }
+    })
+  }, [assignedStats, bonusStatSelections, flatStatBonuses])
+
+  const statsAsKeyValue = useMemo(() => {
+    return statsWithBonuses.reduce((schema, { stat, value }) => {
+      schema[stat] = value
+      return schema
+    }, {} as any)
+  }, [statsWithBonuses])
+
+  /**
+   * Trainings
+   */
+  const {
+    TrainingSelection,
+    requiredTrainingRules,
+    chosenTrainings,
+    chosenBonusSkills,
+    setChosenTrainings,
+    setChosenBonusSkills,
+    electiveTrainingRules,
+    electiveTrainingsRuleId,
+  } = useTrainingSelection(ancestryItem, classItem, statsWithBonuses, [
+    backButton,
+    nextButton,
+  ])
+
+  const allTrainings = useMemo(() => {
+    return [
+      ...chosenTrainings,
+      ...chosenBonusSkills,
+      ...requiredTrainingRules,
+    ].map((sk) => sk.skill)
+  }, [chosenTrainings, chosenBonusSkills, requiredTrainingRules])
+
+  /**
+   * Spellcasting
+   */
+  const {
+    SpellSelection,
+    ancestrySpellSlots,
+    classSpellSlots,
+    perkSpellSlots,
+    classSpellGrants,
+    ancestrySpellGrants,
+  } = useSpellSelectionView(
+    1,
+    ancestryItem,
+    classItem,
+    undefined,
+    [],
+    [backButton, nextButton],
+  )
+
+  const selectedSpellNames = useMemo(() => {
+    const selectedSpells = [...ancestrySpellSlots, ...classSpellSlots].map(
+      (slot) => slot.label,
+    )
+    const grantedSpells = ItemsCache.spells()
+      .filter((sp) =>
+        [...classSpellGrants, ...ancestrySpellGrants]
+          .map((g) => g.uuid)
+          .includes(sp.uuid),
+      )
+      .map((sp) => sp.name)
+    return [...selectedSpells, ...grantedSpells]
+  }, [ancestrySpellSlots, classSpellSlots, classSpellGrants])
+
+  const hasSpellSlots = useMemo(() => {
+    return [...ancestrySpellSlots, ...classSpellSlots].length > 0
+  }, [ancestrySpellSlots, classSpellSlots, perkSpellSlots])
+
+  /**
+   * Perks
+   */
+  const { PerkSelection, ancestryPerkSlots, classPerkSlots } =
+    usePerkSelectionView(
+      ancestryItem,
+      classItem,
+      statsAsKeyValue,
+      allTrainings,
+      selectedSpellNames,
+      [backButton, nextButton],
+      1,
+    )
+
+  const perksWithBonusChoices = useMemo(
+    () =>
+      [...ancestryPerkSlots, ...classPerkSlots].flatMap((slot) => {
+        const perk = ItemsCache.perks().find((item) => item.uuid === slot.value)
+        return perk?.system.rules.some((rule) => rule.key === "ChoiceSet")
+          ? [{ ...perk, sourceKey: slot.selectionId }]
+          : []
+      }),
+    [ancestryPerkSlots, classPerkSlots],
+  ) as unknown as (Item & { system: PerkDataModel })[]
+
+  const {
+    bonusChoicesByPerk,
+    advancement,
+    perkTraining,
+    reasonTraining,
+    advancements,
+    perkTrainings,
+    reasonTrainings,
+    spells,
+    resetPerkBonusSelections,
+    reasonTrainingRules,
+    reasonTrainingSelections,
+    setReasonTrainingSelections,
+  } = usePerkBonusSelection(
+    perksWithBonusChoices,
+    statsWithBonuses,
+    requiredTrainingRules,
+    [...chosenTrainings, ...chosenBonusSkills],
+    [...ancestrySpellSlots, ...classSpellSlots],
+    classSpellGrants,
+    ancestrySpellGrants,
+    [backButton, nextButton],
+    {},
+    true,
+  )
+
+  // Whether the Advancement perk pushed Reason from even to odd, unlocking another training slot.
+  const needsExtraTraining = reasonTrainingRules.length > 0
+
+  const canProceedExtraTraining = useMemo(() => {
+    return reasonTrainingRules.every((rule) =>
+      Boolean(reasonTrainingSelections[rule.selectionKey]),
+    )
+  }, [reasonTrainingRules, reasonTrainingSelections])
+
+  const ExtraTrainingSelection = (
+    <div className="@container bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
+      <div className="flex-shrink-0 space-y-4">
+        <Header title={appLang.HeroChoices.additionalTraining} />
+        <TopNavButtons
+          navButtons={[backButton, nextButton]}
+          subtitle={appLang.HeroChoices.additionalTrainingDescription}
+          canProceed={canProceedExtraTraining}
+        />
+      </div>
+      <div className="flex-1 overflow-y-auto flex flex-col w-full justify-start">
+        <div className="inline-flex flex-col items-stretch space-y-2 @2xl:w-1/2 mx-auto">
+          {reasonTrainingRules.map((rule) => (
+            <div
+              key={rule.selectionKey}
+              className="flex flex-col items-center gap-y-1"
+            >
+              <HeroCreationDropdown
+                value={reasonTrainingSelections[rule.selectionKey] ?? ""}
+                options={createDropdownEntriesFromObj(appLang.Skills).filter(
+                  (sk) =>
+                    !requiredTrainingRules
+                      .map((t) => t.skill)
+                      .includes(sk.value) && !allTrainings.includes(sk.value),
+                )}
+                onChange={(val) =>
+                  setReasonTrainingSelections((prev) => ({
+                    ...prev,
+                    [rule.selectionKey]: val,
+                  }))
+                }
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+
+  /**
+   * Starting packs & Item shop
+   */
+  const { EquipmentSelection, wallet, cart, selectedPack } =
+    useEquipmentSelection(classItem, [backButton, nextButton])
+
+  /**
+   * This is a view mapper for the Hero creation wizard. The
+   * current index is controlled by the Navigation Context
+   * Provider.
+   */
+  const renderStepContent = useCallback(
+    (id: string | undefined) => {
+      switch (id) {
+        case "identity":
+          return AncestrySelection
+        case "class-selection":
+          return ClassSelection
+        case "core-stats":
+          return CoreStats
+        case "training-selection":
+          return TrainingSelection
+        case "spell-selection":
+          return hasSpellSlots ? SpellSelection : null
+        case "perk-selection":
+          return <PerkSelection bonusChoices={bonusChoicesByPerk} />
+        case "extra-training-selection":
+          return ExtraTrainingSelection
+        case "equipment-selection":
+          return EquipmentSelection
+        default:
+          return null
+      }
+    },
+    [
+      hasSpellSlots,
+      perksWithBonusChoices,
+      statsWithBonuses,
+      AncestrySelection,
+      ClassSelection,
+      CoreStats,
+      TrainingSelection,
+      SpellSelection,
+      PerkSelection,
+      bonusChoicesByPerk,
+      ExtraTrainingSelection,
+      EquipmentSelection,
+    ],
+  )
+
+  /**
+   * This memo will "inject" optional views into the workflow.
+   */
+  const activeStepIds = useMemo(() => {
+    const ids = ["identity"]
+    if (!levelZero) {
+      ids.push("class-selection")
+    }
+
+    ids.push("core-stats")
+    ids.push("training-selection")
+
+    if (hasSpellSlots) {
+      ids.push("spell-selection")
+    }
+    if ([...ancestryPerkSlots, ...classPerkSlots].length > 0)
+      ids.push("perk-selection")
+    if (needsExtraTraining) ids.push("extra-training-selection")
+
+    ids.push("equipment-selection")
+
+    return ids
+  }, [hasSpellSlots, perksWithBonusChoices, needsExtraTraining, levelZero])
+
+  useEffect(() => {
+    registerStepIds(activeStepIds)
+  }, [activeStepIds, registerStepIds])
+
+  /**
+   * Clear out selections when key updates are made.
+   */
+  useEffect(() => {
+    setSelectedAncestryMiscChoices({})
+  }, [ancestryItem])
+
+  useEffect(() => {
+    resetAssignedStats()
+    setChosenTrainings([])
+    setChosenBonusSkills([])
+    resetPerkBonusSelections()
+  }, [ancestryItem, classItem])
+
+  /**
+   * If Level Zero start gets toggled, blank-out their selected Class.
+   */
+  useEffect(() => {
+    setClassItem(undefined)
+  }, [levelZero])
+
+  /**
+   * Copies the selected ancestry and class onto the Hero and maps
+   * all the player's choices onto their respective rules. Bonus
+   * selections (stats/training/spells) are not set statically, the
+   * rules engine will pick them up during the Hero's prepareDerivedData
+   * lifecycle step.
+   */
+  const handleSaveAndFinish = useCallback(async () => {
+    if (!actor.isOwner || !ancestryItem || (!classItem && !levelZero)) return
+
+    try {
+      const heroItems = [ancestryItem.toObject()]
+      if (classItem) heroItems.push(classItem.toObject())
+      const createdItems = (await actor.createEmbeddedDocuments(
+        "Item",
+        heroItems,
+      )) as (Item & { system: { rules: any } })[]
+
+      const stats: Record<string, number | number[]> = {
+        "system.level.current": levelZero ? 0 : 1,
+      }
+
+      for (const stat of [
+        "might",
+        "dexterity",
+        "awareness",
+        "reason",
+        "presence",
+        "luck",
+      ] as const) {
+        const value = assignedStats?.find((s) => s.stat === stat)?.value ?? 2
+        stats[`system.stats.${stat}`] = value
+        stats[`system.baseStats.${stat}`] = value
+      }
+
+      await actor.update(stats)
+
+      const ancestry = createdItems.find(
+        (i) => (i.type as string) === "ancestry",
+      )
+      const clazz = createdItems.find((i) => (i.type as string) === "class")
+      const ancestryRules = ancestry
+        ? foundry.utils.deepClone(ancestry.system.rules || [])
+        : []
+      const classRules = clazz
+        ? foundry.utils.deepClone([
+            ...(clazz.system.rules || []),
+            ...electiveTrainingRules,
+          ])
+        : []
+      const baseClassRuleSelections = Object.fromEntries(
+        (clazz?.system.rules || []).map((rule: any) => [
+          rule.id,
+          rule.selections,
+        ]),
+      )
+      const featureRuleSources = clazz
+        ? getItemRuleSources(clazz)
+            .slice(1)
+            .map((source) => ({
+              rules: foundry.utils.deepClone(source.rules),
+            }))
+        : []
+
+      const getRuleSet = (id: string) => {
+        return (
+          ancestryRules.find(
+            (r: any) => r.id === id && r.key === "ChoiceSet",
+          ) ??
+          [classRules, ...featureRuleSources.map((source) => source.rules)]
+            .flat()
+            .find((r: any) => r.id === id && r.key === "ChoiceSet")
+        )
+      }
+
+      const addSelection = (
+        targetRuleSet: any,
+        selection: string,
+        selectionId?: string,
+      ) => {
+        if (targetRuleSet) {
+          if (!Array.isArray(targetRuleSet.selections)) {
+            targetRuleSet.selections = []
+          }
+          targetRuleSet.selections = [
+            ...normalizeRuleSelections(targetRuleSet.selections),
+            { id: selectionId ?? randomId(), value: selection, subselect: "" },
+          ]
+        }
+        else {
+          actor.update({ [`system.${selection}`]: true })
+        }
+      }
+
+      Object.entries(selectedAncestryMiscChoices).forEach(
+        ([ruleId, choiceValue]) => {
+          addSelection(getRuleSet(ruleId), choiceValue)
+        },
+      )
+
+      bonusStatSelections.forEach((selection) => {
+        const targetRuleId = selection.id_index.split("_slot_")[0]
+        addSelection(getRuleSet(targetRuleId), selection.stat)
+      })
+
+      const allTrainings = [...chosenTrainings, ...chosenBonusSkills]
+
+      reasonTrainings.forEach((selection) => {
+        allTrainings.push({
+          skill: selection.value,
+          ruleId: electiveTrainingsRuleId,
         })
-    }, [assignedStats, bonusStatSelections, flatStatBonuses])
+      })
 
-    const statsAsKeyValue = useMemo(() => {
-        return statsWithBonuses.reduce((schema, { stat, value }) => { schema[stat] = value; return schema; }, {} as any)
-    }, [statsWithBonuses])
+      allTrainings.forEach((selection) => {
+        addSelection(
+          getRuleSet(selection.ruleId),
+          `skills.${selection.skill}.trained`,
+        )
+      })
+      ;[...classSpellSlots, ...ancestrySpellSlots].forEach((selection) => {
+        addSelection(getRuleSet(selection.ruleId), selection.value)
+      })
+      ;[...classPerkSlots, ...ancestryPerkSlots].forEach((selection) => {
+        addSelection(
+          getRuleSet(selection.ruleId),
+          selection.value,
+          selection.selectionId,
+        )
+      })
 
-    /**
-     * Trainings
-     */
-    const { TrainingSelection, requiredTrainingRules, chosenTrainings, chosenBonusSkills, setChosenTrainings, setChosenBonusSkills, electiveTrainingRules, electiveTrainingsRuleId }
-        = useTrainingSelection(ancestryItem, classItem, statsWithBonuses, [backButton, nextButton])
+      // Push Rule alterations to Ancestry and Class
+      if (ancestry) {
+        await ancestry.update({ "system.rules": ancestryRules } as Record<
+          string,
+          any
+        >)
+      }
 
-    const allTrainings = useMemo(() => {
-        return [...chosenTrainings, ...chosenBonusSkills, ...requiredTrainingRules].map(sk => sk.skill)
-    }, [chosenTrainings, chosenBonusSkills, requiredTrainingRules])
-
-    /**
-     * Spellcasting
-     */
-    const { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots, classSpellGrants, ancestrySpellGrants } =
-        useSpellSelectionView(1, ancestryItem, classItem, undefined, [], [backButton, nextButton])
-
-    const selectedSpellNames = useMemo(() => {
-        const selectedSpells = [...ancestrySpellSlots, ...classSpellSlots].map(slot => slot.label)
-        const grantedSpells = ItemsCache.spells()
-            .filter(sp => [...classSpellGrants, ...ancestrySpellGrants].map(g => g.uuid).includes(sp.uuid))
-            .map(sp => sp.name)
-        return [...selectedSpells, ...grantedSpells]
-    }, [ancestrySpellSlots, classSpellSlots, classSpellGrants])
-
-    const hasSpellSlots = useMemo(() => {
-        return [...ancestrySpellSlots, ...classSpellSlots].length > 0
-    }, [ancestrySpellSlots, classSpellSlots, perkSpellSlots])
-
-    /**
-     * Perks
-     */
-    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelectionView(ancestryItem, classItem, statsAsKeyValue, allTrainings, selectedSpellNames, [backButton, nextButton], 1)
-
-    const perksWithBonusChoices = useMemo(() => [...ancestryPerkSlots, ...classPerkSlots].flatMap(slot => {
-        const perk = ItemsCache.perks().find(item => item.uuid === slot.value)
-        return perk?.system.rules.some(rule => rule.key === "ChoiceSet") ? [{ ...perk, sourceKey: slot.selectionId }] : []
-    }), [ancestryPerkSlots, classPerkSlots]) as unknown as (Item & { system: PerkDataModel })[]
-
-    const {
-        bonusChoicesByPerk, advancement, perkTraining, reasonTraining, advancements, perkTrainings, reasonTrainings, spells, resetPerkBonusSelections,
-        reasonTrainingRules, reasonTrainingSelections, setReasonTrainingSelections
-    } = usePerkBonusSelection(
-        perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,
-        [...chosenTrainings, ...chosenBonusSkills],
-        [...ancestrySpellSlots, ...classSpellSlots],
-        classSpellGrants, ancestrySpellGrants,
-        [backButton, nextButton],
-        {},
-        true
-    )
-
-    // Whether the Advancement perk pushed Reason from even to odd, unlocking another training slot.
-    const needsExtraTraining = reasonTrainingRules.length > 0
-
-    const canProceedExtraTraining = useMemo(() => {
-        return reasonTrainingRules.every(rule => Boolean(reasonTrainingSelections[rule.selectionKey]))
-    }, [reasonTrainingRules, reasonTrainingSelections])
-
-    const ExtraTrainingSelection = (
-        <div className="@container bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
-            <div className="flex-shrink-0 space-y-4">
-                <Header title={appLang.HeroChoices.additionalTraining} />
-                <TopNavButtons navButtons={[backButton, nextButton]} subtitle={appLang.HeroChoices.additionalTrainingDescription} canProceed={canProceedExtraTraining} />
-            </div>
-            <div className="flex-1 overflow-y-auto flex flex-col w-full justify-start">
-                <div className="inline-flex flex-col items-stretch space-y-2 @2xl:w-1/2 mx-auto">
-                    {reasonTrainingRules.map(rule => (
-                        <div key={rule.selectionKey} className="flex flex-col items-center gap-y-1">
-                            <HeroCreationDropdown
-                                value={reasonTrainingSelections[rule.selectionKey] ?? ''}
-                                options={createDropdownEntriesFromObj(appLang.Skills).filter(sk =>
-                                    !requiredTrainingRules.map(t => t.skill).includes(sk.value) &&
-                                    !allTrainings.includes(sk.value)
-                                )}
-                                onChange={(val) => setReasonTrainingSelections(prev => ({ ...prev, [rule.selectionKey]: val }))}
-                            />
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    )
-
-    /**
-     * Starting packs & Item shop
-     */
-    const { EquipmentSelection, wallet, cart, selectedPack } = useEquipmentSelection(classItem, [backButton, nextButton])
-
-    /**
-     * This is a view mapper for the Hero creation wizard. The 
-     * current index is controlled by the Navigation Context
-     * Provider.
-     */
-    const renderStepContent = useCallback((id: string | undefined) => {
-        switch (id) {
-            case 'identity': return AncestrySelection
-            case 'class-selection': return ClassSelection
-            case 'core-stats': return CoreStats
-            case 'training-selection': return TrainingSelection
-            case 'spell-selection': return hasSpellSlots ? SpellSelection : null
-            case 'perk-selection': return <PerkSelection bonusChoices={bonusChoicesByPerk} />
-            case 'extra-training-selection': return ExtraTrainingSelection
-            case 'equipment-selection': return EquipmentSelection
-            default: return null
-        }
-    }, [
-        hasSpellSlots, perksWithBonusChoices, statsWithBonuses, AncestrySelection, ClassSelection,
-        CoreStats, TrainingSelection, SpellSelection, PerkSelection, bonusChoicesByPerk, ExtraTrainingSelection, EquipmentSelection
-    ])
-
-    /**
-     * This memo will "inject" optional views into the workflow.
-     */
-    const activeStepIds = useMemo(() => {
-        const ids = ['identity']
-        if (!levelZero) { ids.push('class-selection') }
-
-        ids.push('core-stats')
-        ids.push('training-selection')
-
-        if (hasSpellSlots) { ids.push('spell-selection') }
-        if ([...ancestryPerkSlots, ...classPerkSlots].length > 0) ids.push('perk-selection')
-        if (needsExtraTraining) ids.push('extra-training-selection')
-
-        ids.push('equipment-selection')
-
-        return ids
-    }, [hasSpellSlots, perksWithBonusChoices, needsExtraTraining, levelZero])
-
-    useEffect(() => {
-        registerStepIds(activeStepIds)
-    }, [activeStepIds, registerStepIds])
-
-    /**
-     * Clear out selections when key updates are made.
-     */
-    useEffect(() => {
-        setSelectedAncestryMiscChoices({})
-    }, [ancestryItem])
-
-    useEffect(() => {
-        resetAssignedStats()
-        setChosenTrainings([])
-        setChosenBonusSkills([])
-        resetPerkBonusSelections()
-    }, [ancestryItem, classItem])
-
-    /**
-     * If Level Zero start gets toggled, blank-out their selected Class.
-     */
-    useEffect(() => {
-        setClassItem(undefined)
-    }, [levelZero])
-    
-    /**
-     * Copies the selected ancestry and class onto the Hero and maps
-     * all the player's choices onto their respective rules. Bonus
-     * selections (stats/training/spells) are not set statically, the 
-     * rules engine will pick them up during the Hero's prepareDerivedData
-     * lifecycle step.
-     */
-    const handleSaveAndFinish = useCallback(async () => {
-        if (!actor.isOwner || !ancestryItem || (!classItem && !levelZero)) return
-
-        try {
-            const heroItems = [ancestryItem.toObject()]
-            if (classItem) heroItems.push(classItem.toObject())
-            const createdItems = await actor.createEmbeddedDocuments("Item", heroItems) as (Item & { system: { rules: any } })[]
-
-            const stats: Record<string, number | number[]> = {
-                'system.level.current': levelZero ? 0 : 1
-            }
-
-            for (const stat of ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck'] as const) {
-                const value = assignedStats?.find((s) => s.stat === stat)?.value ?? 2
-                stats[`system.stats.${stat}`] = value
-                stats[`system.baseStats.${stat}`] = value
-            }
-
-            await actor.update(stats)
-
-            const ancestry = createdItems.find(i => (i.type as string) === "ancestry")
-            const clazz = createdItems.find(i => (i.type as string) === "class")
-            const ancestryRules = ancestry ? foundry.utils.deepClone(ancestry.system.rules || []) : []
-            const classRules = clazz ? foundry.utils.deepClone([...(clazz.system.rules || []), ...electiveTrainingRules]) : []
-            const baseClassRuleSelections = Object.fromEntries((clazz?.system.rules || []).map((rule: any) => [rule.id, rule.selections]))
-            const featureRuleSources = clazz
-                ? getItemRuleSources(clazz).slice(1).map(source => ({
-                    rules: foundry.utils.deepClone(source.rules)
-                }))
-                : []
-
-            const getRuleSet = (id: string) => {
-                return ancestryRules.find((r: any) => r.id === id && r.key === 'ChoiceSet') ??
-                    [classRules, ...featureRuleSources.map(source => source.rules)]
-                        .flat()
-                        .find((r: any) => r.id === id && r.key === 'ChoiceSet')
-            }
-
-            const addSelection = (targetRuleSet: any, selection: string, selectionId?: string) => {
-                if (targetRuleSet) {
-                    if (!Array.isArray(targetRuleSet.selections)) {
-                        targetRuleSet.selections = []
-                    }
-                    targetRuleSet.selections = [
-                        ...normalizeRuleSelections(targetRuleSet.selections),
-                        { id: selectionId ?? randomId(), value: selection, subselect: "" }
-                    ]
-                }
-                else {
-                    actor.update({ [`system.${selection}`]: true })
-                }
-            }
-
-            Object.entries(selectedAncestryMiscChoices).forEach(([ruleId, choiceValue]) => {
-                addSelection(getRuleSet(ruleId), choiceValue)
-            })
-
-            bonusStatSelections.forEach(selection => {
-                const targetRuleId = selection.id_index.split('_slot_')[0]
-                addSelection(getRuleSet(targetRuleId), selection.stat)
-            });
-
-            const allTrainings = [...chosenTrainings, ...chosenBonusSkills]
-
-            reasonTrainings.forEach(selection => {
-                allTrainings.push({ skill: selection.value, ruleId: electiveTrainingsRuleId })
-            });
-
-            allTrainings.forEach(selection => {
-                addSelection(getRuleSet(selection.ruleId), `skills.${selection.skill}.trained`)
-            });
-
-            [...classSpellSlots, ...ancestrySpellSlots].forEach(selection => {
-                addSelection(getRuleSet(selection.ruleId), selection.value)
-            });
-
-            [...classPerkSlots, ...ancestryPerkSlots].forEach(selection => {
-                addSelection(getRuleSet(selection.ruleId), selection.value, selection.selectionId)
-            });
-
-            // Push Rule alterations to Ancestry and Class
-            if (ancestry) {
-                await ancestry.update({ "system.rules": ancestryRules } as Record<string, any>)
-            }
-            
-            if (clazz) {
-                const classSelections = Object.fromEntries(classRules
-                    .filter(rule => Array.isArray(rule.selections) && rule.selections.length > 0)
-                    .map(rule => [rule.id, rule.selections]))
-                const classRulesWithoutSelections = classRules.map(rule => ({
-                    ...rule,
-                    selections: baseClassRuleSelections[rule.id] ?? []
-                }))
-                await clazz.update({ "system.rules": classRulesWithoutSelections } as Record<string, any>)
-                await saveItemRuleSelections(clazz, classSelections)
-                const featureSelections = Object.fromEntries(featureRuleSources
-                    .flatMap(source => source.rules)
-                    .filter(rule => Array.isArray(rule.selections) && rule.selections.length > 0)
-                    .map(rule => [rule.id, rule.selections]))
-                
-                await saveItemRuleSelections(clazz, featureSelections)
-            }
-
-            // Process their shop selections and add their wallet balance to their starting coin.
-            const cartItems = [...cart.map(it => it.uuid)]
-            if (selectedPack) cartItems.push(selectedPack.uuid)
-            await addItems(actor, cartItems)
-
-            const coins = addCoins([actor.system.inventory.coins, wallet])
-            await actor.update({ 'system.inventory.coins': coins } as Record<string, Coins>)
-
-            /**
-             * Process selections made due to choosing perks:
-             * 'Advancement', 'New Training', and 'Magical Secret'.
-             */
-            const bonusSelections = [...advancements, ...perkTrainings, ...spells]
-            if (bonusSelections.length > 0) await savePerkSelections(actor, bonusSelections)
-
-        }
-        catch (error) {
-            console.error("Vagabond App | Hero Creator commit error:", error)
-            ui.notifications?.error(appLang.HeroCreation.saveCharacterError)
-        }
-        finally {
-            // Set the Hero up with max resources.
-            await actor.update({
-                'system.health.value': actor.system.health.max,
-                'system.mana.value': actor.system.mana.max,
-                'system.statuses.counters.luck': actor.system.stats.luck
-            } as Record<any, any>,
-                { ['skipTrackerChatCard' as string]: true }
+      if (clazz) {
+        const classSelections = Object.fromEntries(
+          classRules
+            .filter(
+              (rule) =>
+                Array.isArray(rule.selections) && rule.selections.length > 0,
             )
-            setClosed()
+            .map((rule) => [rule.id, rule.selections]),
+        )
+        const classRulesWithoutSelections = classRules.map((rule) => ({
+          ...rule,
+          selections: baseClassRuleSelections[rule.id] ?? [],
+        }))
+        await clazz.update({
+          "system.rules": classRulesWithoutSelections,
+        } as Record<string, any>)
+        await saveItemRuleSelections(clazz, classSelections)
+        const featureSelections = Object.fromEntries(
+          featureRuleSources
+            .flatMap((source) => source.rules)
+            .filter(
+              (rule) =>
+                Array.isArray(rule.selections) && rule.selections.length > 0,
+            )
+            .map((rule) => [rule.id, rule.selections]),
+        )
 
-            const features = ItemsCache.features()
-            const classFeats = actor.system.class?.featureIds?.map(id => features.find(f => f.uuid === id))
+        await saveItemRuleSelections(clazz, featureSelections)
+      }
 
-            if (classFeats?.filter(f => f?.system?.rules.some(rule => rule.key === "ChoiceSet" && rule.pack === "alchemical")).length > 0) {
-                showConfirmationDialog({
-                    title: appLang.HeroChoices.alchemyRecipes,
-                    description: appLang.HeroChoices.alchemyRecipesDescription,
-                    confirmText: "Let's cook",
-                    variant: "info"
-                }).then(() => {
-                    new AlchemySelectionApp(actor).render({ force: true })
-                })
-            }
-        }
-    }, [
-        actor, ancestryItem, classItem, selectedArr, assignedStats,
-        bonusStatSelections, chosenTrainings, chosenBonusSkills,
-        ancestrySpellSlots, classSpellSlots, ancestryPerkSlots, classPerkSlots,
-        advancement, perkTraining, reasonTraining, advancements, perkTrainings, reasonTrainings, spells,
-        wallet, cart, selectedPack, setClosed
-    ])
+      // Process their shop selections and add their wallet balance to their starting coin.
+      const cartItems = [...cart.map((it) => it.uuid)]
+      if (selectedPack) cartItems.push(selectedPack.uuid)
+      await addItems(actor, cartItems)
 
-    useEffect(() => {
-        registerOnFinish(handleSaveAndFinish)
-    }, [registerOnFinish, handleSaveAndFinish])
+      const coins = addCoins([actor.system.inventory.coins, wallet])
+      await actor.update({ "system.inventory.coins": coins } as Record<
+        string,
+        Coins
+      >)
 
-    return (
-        <div className="text-text-primary text-lg font-eskapade flex flex-col min-h-0 h-full p-2 overflow-hidden">
-            {/* Current Step View */}
-            <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-                    {renderStepContent(stepId)}
-                </div>
-            </EditModeContextProvider>
+      /**
+       * Process selections made due to choosing perks:
+       * 'Advancement', 'New Training', and 'Magical Secret'.
+       */
+      const bonusSelections = [...advancements, ...perkTrainings, ...spells]
+      if (bonusSelections.length > 0)
+        await savePerkSelections(actor, bonusSelections)
+    }
+    catch (error) {
+      console.error("Vagabond App | Hero Creator commit error:", error)
+      ui.notifications?.error(appLang.HeroCreation.saveCharacterError)
+    }
+    finally {
+      // Set the Hero up with max resources.
+      await actor.update(
+        {
+          "system.health.value": actor.system.health.max,
+          "system.mana.value": actor.system.mana.max,
+          "system.statuses.counters.luck": actor.system.stats.luck,
+        } as Record<any, any>,
+        { ["skipTrackerChatCard" as string]: true },
+      )
+      setClosed()
+
+      const features = ItemsCache.features()
+      const classFeats = actor.system.class?.featureIds?.map((id) =>
+        features.find((f) => f.uuid === id),
+      )
+
+      if (
+        classFeats?.filter((f) =>
+          f?.system?.rules.some(
+            (rule) => rule.key === "ChoiceSet" && rule.pack === "alchemical",
+          ),
+        ).length > 0
+      ) {
+        showConfirmationDialog({
+          title: appLang.HeroChoices.alchemyRecipes,
+          description: appLang.HeroChoices.alchemyRecipesDescription,
+          confirmText: "Let's cook",
+          variant: "info",
+        }).then(() => {
+          new AlchemySelectionApp(actor).render({ force: true })
+        })
+      }
+    }
+  }, [
+    actor,
+    ancestryItem,
+    classItem,
+    selectedArr,
+    assignedStats,
+    bonusStatSelections,
+    chosenTrainings,
+    chosenBonusSkills,
+    ancestrySpellSlots,
+    classSpellSlots,
+    ancestryPerkSlots,
+    classPerkSlots,
+    advancement,
+    perkTraining,
+    reasonTraining,
+    advancements,
+    perkTrainings,
+    reasonTrainings,
+    spells,
+    wallet,
+    cart,
+    selectedPack,
+    setClosed,
+  ])
+
+  useEffect(() => {
+    registerOnFinish(handleSaveAndFinish)
+  }, [registerOnFinish, handleSaveAndFinish])
+
+  return (
+    <div className="text-text-primary text-lg font-eskapade flex flex-col min-h-0 h-full p-2 overflow-hidden">
+      {/* Current Step View */}
+      <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+          {renderStepContent(stepId)}
         </div>
-    )
+      </EditModeContextProvider>
+    </div>
+  )
 }

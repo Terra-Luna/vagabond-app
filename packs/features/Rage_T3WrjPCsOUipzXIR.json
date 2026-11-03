@@ -12,9 +12,7 @@
         "label": "Flag",
         "level": 1,
         "value": true,
-        "selector": [
-          "flags.rage"
-        ]
+        "selector": ["flags.rage"]
       },
       {
         "id": "YnruOEJu1PETj49m",
@@ -22,9 +20,7 @@
         "label": "Berserk",
         "level": 1,
         "value": true,
-        "selector": [
-          "statuses.toggles.berserk"
-        ],
+        "selector": ["statuses.toggles.berserk"],
         "toggleableEffect": true
       },
       {
@@ -46,9 +42,7 @@
         "label": "Per-die Mitigation",
         "level": 1,
         "value": "1",
-        "selector": [
-          "modifiers.damage.in.perDieReduction.global"
-        ],
+        "selector": ["modifiers.damage.in.perDieReduction.global"],
         "toggleableEffect": true
       }
     ],

@@ -25,9 +25,7 @@
         "label": "Flag",
         "level": 0,
         "value": true,
-        "selector": [
-          "flags.patience"
-        ]
+        "selector": ["flags.patience"]
       }
     ],
     "prerequisites": [
@@ -38,9 +36,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "arcana"
-            ],
+            "skillNames": ["arcana"],
             "andOr": null
           }
         ]
@@ -52,9 +48,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "detect"
-            ],
+            "skillNames": ["detect"],
             "andOr": null
           }
         ]

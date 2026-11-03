@@ -3,168 +3,296 @@ import { useEffect, useMemo, useRef } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { getItemChoiceRules, getItemRules, normalizeRuleSelections, randomId, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
+import {
+  getItemChoiceRules,
+  getItemRules,
+  normalizeRuleSelections,
+  randomId,
+  saveItemRuleSelections,
+} from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { getRuleSelectors, normalizeSelector } from "../../../rules/util/selector-util"
-import { groupBy } from "../../../utils/collectionUtil"
-import { sys_id } from "../../../utils/foundryUtils"
+import {
+  getRuleSelectors,
+  normalizeSelector,
+} from "../../../rules/util/selector-util"
+import { groupBy } from "../../../util/collection-util"
+import { sys_id } from "../../../util/foundry-util"
 import { usePerkBonusSelection } from "./PerkBonusSelection"
 import { usePerkSelectionView } from "./PerkSelectionView"
 
-export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean, pendingClassItem?: Item & { system: ClassDataModel }) => {
-    const dataLoaded = useRef(false)
-    const loadedSelectionKey = useRef("")
-    const ancestry = actor.items.find(item => (item.type as string) === "ancestry") as Item & { system: AncestryDataModel }
-    const clazz = pendingClassItem ?? (actor.items.find(item => (item.type as string) === "class") as Item & { system: ClassDataModel })
-    const level = (actor.system.level.current ?? 0) + (isLevelUp ? 1 : 0)
-    const stats = actor.system.stats as any
-    const trainings = useMemo(() => Object.keys(actor.system.skills).filter(skill => actor.system.skills[skill].trained), [actor.system.skills])
-    const spells = useMemo(() => actor.system.spells.map(spell => spell.parent.name), [actor.system.spells])
+export const usePerkSelection = (
+  actor: Actor & { system: HeroDataModel },
+  isLevelUp?: boolean,
+  pendingClassItem?: Item & { system: ClassDataModel },
+) => {
+  const dataLoaded = useRef(false)
+  const loadedSelectionKey = useRef("")
+  const ancestry = actor.items.find(
+    (item) => (item.type as string) === "ancestry",
+  ) as Item & { system: AncestryDataModel }
+  const clazz =
+    pendingClassItem ??
+    (actor.items.find((item) => (item.type as string) === "class") as Item & {
+      system: ClassDataModel
+    })
+  const level = (actor.system.level.current ?? 0) + (isLevelUp ? 1 : 0)
+  const stats = actor.system.stats as any
+  const trainings = useMemo(
+    () =>
+      Object.keys(actor.system.skills).filter(
+        (skill) => actor.system.skills[skill].trained,
+      ),
+    [actor.system.skills],
+  )
+  const spells = useMemo(
+    () => actor.system.spells.map((spell) => spell.parent.name),
+    [actor.system.spells],
+  )
 
-    /**
-     * Keep these as-is, since they are used as a key to determine whether to reload the perk selections.
-     * Foundry will track the added bonuses applied by Perk sub-selections so they can be used as a source
-     * of truth after Hero creation is done. During Hero creation, the stat assignments and bonuses are held
-     * in-memory and not persisted to the Actor on the final save.
-     */
-    const actorStats = Object.keys(stats).map(stat => ({ stat, value: stats[stat] }))
+  /**
+   * Keep these as-is, since they are used as a key to determine whether to reload the perk selections.
+   * Foundry will track the added bonuses applied by Perk sub-selections so they can be used as a source
+   * of truth after Hero creation is done. During Hero creation, the stat assignments and bonuses are held
+   * in-memory and not persisted to the Actor on the final save.
+   */
+  const actorStats = Object.keys(stats).map((stat) => ({
+    stat,
+    value: stats[stat],
+  }))
 
-    const actorSpellSlots = useMemo(() => actor.system.spells.map(spell => ({
-        value: (spell as any)._sourceId ?? (spell as any).uuid ?? "",
-        label: (spell as any).parent?.name ?? "",
-        ruleName: "",
-        ruleId: ""
-    })).filter(spell => spell.value), [actor.system.spells])
+  const actorSpellSlots = useMemo(
+    () =>
+      actor.system.spells
+        .map((spell) => ({
+          value: (spell as any)._sourceId ?? (spell as any).uuid ?? "",
+          label: (spell as any).parent?.name ?? "",
+          ruleName: "",
+          ruleId: "",
+        }))
+        .filter((spell) => spell.value),
+    [actor.system.spells],
+  )
 
-    const { PerkSelection, allPerks, perksList, classPerkSlots, ancestryPerkSlots, loadInitialSlots, setAncestryPerkSlots, setClassPerkSlots } =
-        usePerkSelectionView(ancestry, clazz, stats, trainings, spells, [], level, true, actor)
+  const {
+    PerkSelection,
+    allPerks,
+    perksList,
+    classPerkSlots,
+    ancestryPerkSlots,
+    loadInitialSlots,
+    setAncestryPerkSlots,
+    setClassPerkSlots,
+  } = usePerkSelectionView(
+    ancestry,
+    clazz,
+    stats,
+    trainings,
+    spells,
+    [],
+    level,
+    true,
+    actor,
+  )
 
-    const bonusPerks = useMemo(() => [...ancestryPerkSlots, ...classPerkSlots].flatMap(slot => {
-        const perk = ItemsCache.perks().find(item => item.uuid === slot.value)
-        return perk?.system.rules.some(rule => rule.key === "ChoiceSet") ? [{ sourceKey: slot.selectionId, system: perk.system } as any] : []
-    }), [ancestryPerkSlots, classPerkSlots])
+  const bonusPerks = useMemo(
+    () =>
+      [...ancestryPerkSlots, ...classPerkSlots].flatMap((slot) => {
+        const perk = ItemsCache.perks().find((item) => item.uuid === slot.value)
+        return perk?.system.rules.some((rule) => rule.key === "ChoiceSet")
+          ? [{ sourceKey: slot.selectionId, system: perk.system } as any]
+          : []
+      }),
+    [ancestryPerkSlots, classPerkSlots],
+  )
 
-    const initialSelections = Object.fromEntries(
-        (actor.items.contents as any[]).filter(item => ["class", "ancestry"].includes(item.type)).flatMap(item =>
-            getItemRules(item).flatMap(parentRule => normalizeRuleSelections(parentRule.selections).flatMap(selection => {
-                const perk = ItemsCache.perks().find(candidate => candidate.uuid === selection.value)
-                return (perk?.system.rules ?? [])
-                    .filter(rule => rule.key === "ChoiceSet")
-                    .map(rule => [`${selection.id}:${rule.id}`, selection.subselect ? [selection.subselect] : []])
-            })))
+  const initialSelections = Object.fromEntries(
+    (actor.items.contents as any[])
+      .filter((item) => ["class", "ancestry"].includes(item.type))
+      .flatMap((item) =>
+        getItemRules(item).flatMap((parentRule) =>
+          normalizeRuleSelections(parentRule.selections).flatMap(
+            (selection) => {
+              const perk = ItemsCache.perks().find(
+                (candidate) => candidate.uuid === selection.value,
+              )
+              return (perk?.system.rules ?? [])
+                .filter((rule) => rule.key === "ChoiceSet")
+                .map((rule) => [
+                  `${selection.id}:${rule.id}`,
+                  selection.subselect ? [selection.subselect] : [],
+                ])
+            },
+          ),
+        ),
+      ),
+  )
+
+  const { bonusChoicesByPerk, allBonusSelections } = usePerkBonusSelection(
+    bonusPerks,
+    actorStats,
+    [],
+    trainings.map((skill) => ({ skill, ruleId: "" })),
+    actorSpellSlots,
+    [],
+    [],
+    [],
+    initialSelections,
+  )
+
+  const getPerkName = (id: string) =>
+    allPerks.find((item) => item.uuid === id)?.name ?? "unk"
+
+  const loadSelections = (rules: any[], setSlots: any) => {
+    const slots = loadInitialSlots(rules)
+    let offset = 0
+    rules.forEach((rule) => {
+      const count = Number(rule.maxChoices) || 0
+      normalizeRuleSelections(rule.selections).forEach((selection, i) => {
+        const slotIndex = offset + i
+        if (i < count && slots[slotIndex])
+          slots[slotIndex] = {
+            ...slots[slotIndex],
+            selectionId: selection.id,
+            value: selection.value,
+            label: getPerkName(selection.value),
+            ruleName: rule.label,
+            ruleId: rule.id,
+          }
+      })
+      offset += count
+    })
+    setSlots(slots)
+  }
+
+  const perksLoaded = perksList.length > 1
+
+  /**
+   * This side-effect is used to load the initial perk selections for the Actor's ancestry and class.
+   * It will only run once per ancestry/class/level combination, and will not re-run if the Actor's
+   * perks are updated in-memory (like a sub-selection, stat or training).
+   */
+  useEffect(() => {
+    if (!perksLoaded) return
+    const key = `${ancestry?.id ?? ""}:${clazz?.id ?? ""}:${level}`
+    if (loadedSelectionKey.current === key) return
+
+    if (clazz)
+      loadSelections(
+        getItemChoiceRules(level, getItemRules(clazz))
+          .filter((rule) => rule.pack === "perk")
+          .sort((a, b) => (a as any).level - (b as any).level)
+          .sort((a, b) => (a as any).label.localeCompare((b as any).label)),
+        setClassPerkSlots,
+      )
+
+    if (ancestry)
+      loadSelections(
+        getItemChoiceRules(level, getItemRules(ancestry)).filter(
+          (rule) => rule.pack === "perk",
+        ),
+        setAncestryPerkSlots,
+      )
+
+    dataLoaded.current = true
+    loadedSelectionKey.current = key
+  }, [ancestry?.id, clazz?.id, level, perksLoaded])
+
+  /**
+   * When the Actor's perks are updated in-memory (a sub-selection like a stat or training), this side-effect will
+   * persist the changes to the Actor's ancestry and class items.
+   * @param item
+   * @param slots
+   * @param pendingBonusSelections
+   * @returns
+   */
+  const disableRemovedPerkToggle = (perkUuid: string) => {
+    const perk = ItemsCache.perks().find((it) => it.uuid === perkUuid)
+    if (!perk?.id) return
+    const stillSelected = [...classPerkSlots, ...ancestryPerkSlots].some(
+      (slot) => slot.value === perkUuid,
     )
+    if (stillSelected) return
+    if (actor.system.getRuleToggleState(perk.id))
+      actor.system.toggleItemRule(perk, true)
+    getItemRules(perk)
+      .flatMap((rule) => getRuleSelectors(rule))
+      .map((selector) => normalizeSelector(selector))
+      .filter((selector) => selector.startsWith("flags."))
+      .forEach((selector) =>
+        actor.setFlag(sys_id, selector.replace("flags.", ""), false),
+      )
+  }
 
-    const { bonusChoicesByPerk, allBonusSelections } = usePerkBonusSelection(bonusPerks, actorStats, [], trainings.map(skill => ({ skill, ruleId: "" })), actorSpellSlots, [], [], [], initialSelections)
+  const persistSlots = (
+    item: any,
+    slots: any[],
+    pendingBonusSelections: {
+      ruleId: string
+      selectionId?: string
+      value: string
+    }[] = [],
+  ) => {
+    if (!item || !slots.length || !dataLoaded.current) return
+    if (item.parent !== actor) return // Not yet embedded on the Actor; nothing to persist to.
+    const rules = getItemRules(item)
+    const selectionUpdates: Record<string, any> = {}
 
-    const getPerkName = (id: string) => allPerks.find(item => item.uuid === id)?.name ?? "unk"
+    const groupedSlots = Object.entries(groupBy("ruleId", slots)) as [
+      string,
+      any[],
+    ][]
 
-    const loadSelections = (rules: any[], setSlots: any) => {
-        const slots = loadInitialSlots(rules)
-        let offset = 0
-        rules.forEach(rule => {
-            const count = Number(rule.maxChoices) || 0
-            normalizeRuleSelections(rule.selections).forEach((selection, i) => {
-                const slotIndex = offset + i
-                if (i < count && slots[slotIndex]) slots[slotIndex] = { ...slots[slotIndex], selectionId: selection.id, value: selection.value, label: getPerkName(selection.value), ruleName: rule.label, ruleId: rule.id }
-            })
-            offset += count
-        })
-        setSlots(slots)
-    }
-
-    const perksLoaded = perksList.length > 1
-
-    /**
-     * This side-effect is used to load the initial perk selections for the Actor's ancestry and class.
-     * It will only run once per ancestry/class/level combination, and will not re-run if the Actor's
-     * perks are updated in-memory (like a sub-selection, stat or training).
-     */
-    useEffect(() => {
-        if (!perksLoaded) return
-        const key = `${ancestry?.id ?? ""}:${clazz?.id ?? ""}:${level}`
-        if (loadedSelectionKey.current === key) return
-
-        if (clazz) loadSelections(
-            getItemChoiceRules(level, getItemRules(clazz))
-                .filter(rule => rule.pack === "perk")
-                .sort((a, b) => (a as any).level - (b as any).level)
-                .sort((a, b) => (a as any).label.localeCompare((b as any).label)),
-            setClassPerkSlots
+    groupedSlots.forEach(([ruleId, grouped]) => {
+      const rule = rules.find((candidate) => candidate.id === ruleId)
+      if (!rule) return
+      const current = normalizeRuleSelections(rule.selections)
+      const newValues = grouped.map((slot) => slot.value)
+      current
+        .filter(
+          (selection) =>
+            selection.value && !newValues.includes(selection.value),
         )
-
-        if (ancestry) loadSelections(getItemChoiceRules(level, getItemRules(ancestry))
-            .filter(rule => rule.pack === "perk"),
-            setAncestryPerkSlots
-        )
-
-        dataLoaded.current = true
-        loadedSelectionKey.current = key
-    }, [ancestry?.id, clazz?.id, level, perksLoaded])
-
-    /**
-     * When the Actor's perks are updated in-memory (a sub-selection like a stat or training), this side-effect will
-     * persist the changes to the Actor's ancestry and class items.
-     * @param item 
-     * @param slots 
-     * @param pendingBonusSelections 
-     * @returns 
-     */
-    const disableRemovedPerkToggle = (perkUuid: string) => {
-        const perk = ItemsCache.perks().find(it => it.uuid === perkUuid)
-        if (!perk?.id) return
-        const stillSelected = [...classPerkSlots, ...ancestryPerkSlots].some(slot => slot.value === perkUuid)
-        if (stillSelected) return
-        if (actor.system.getRuleToggleState(perk.id)) actor.system.toggleItemRule(perk, true)
-        getItemRules(perk)
-            .flatMap(rule => getRuleSelectors(rule))
-            .map(selector => normalizeSelector(selector))
-            .filter(selector => selector.startsWith("flags."))
-            .forEach(selector => actor.setFlag(sys_id, selector.replace("flags.", ""), false))
-    }
-
-    const persistSlots = (item: any, slots: any[], pendingBonusSelections: { ruleId: string, selectionId?: string, value: string }[] = []) => {
-        if (!item || !slots.length || !dataLoaded.current) return
-        if (item.parent !== actor) return // Not yet embedded on the Actor; nothing to persist to.
-        const rules = getItemRules(item)
-        const selectionUpdates: Record<string, any> = {}
-
-        const groupedSlots = Object.entries(groupBy("ruleId", slots)) as [string, any[]][]
-
-        groupedSlots.forEach(([ruleId, grouped]) => {
-            const rule = rules.find(candidate => candidate.id === ruleId)
-            if (!rule) return
-            const current = normalizeRuleSelections(rule.selections)
-            const newValues = grouped.map(slot => slot.value)
-            current
-                .filter(selection => selection.value && !newValues.includes(selection.value))
-                .forEach(selection => disableRemovedPerkToggle(selection.value))
-            rule.selections = grouped.map(slot => {
-                const existing = current.find(selection => selection.id === slot.selectionId)
-                const existingValue = existing?.value
-                const pendingBonus = pendingBonusSelections.find(b => b.selectionId === slot.selectionId)
-                const preservedSubselect = pendingBonus ? pendingBonus.value : (existing?.subselect ?? "")
-                return {
-                    ...(existing ?? { id: slot.selectionId ?? randomId() }),
-                    value: slot.value,
-                    subselect: existingValue === slot.value ? preservedSubselect : ""
-                }
-            }).filter(selection => selection.value)
-            selectionUpdates[ruleId] = rule.selections
+        .forEach((selection) => disableRemovedPerkToggle(selection.value))
+      rule.selections = grouped
+        .map((slot) => {
+          const existing = current.find(
+            (selection) => selection.id === slot.selectionId,
+          )
+          const existingValue = existing?.value
+          const pendingBonus = pendingBonusSelections.find(
+            (b) => b.selectionId === slot.selectionId,
+          )
+          const preservedSubselect = pendingBonus
+            ? pendingBonus.value
+            : (existing?.subselect ?? "")
+          return {
+            ...(existing ?? { id: slot.selectionId ?? randomId() }),
+            value: slot.value,
+            subselect: existingValue === slot.value ? preservedSubselect : "",
+          }
         })
+        .filter((selection) => selection.value)
+      selectionUpdates[ruleId] = rule.selections
+    })
 
-        saveItemRuleSelections(item, selectionUpdates)
-        actor.system.forceUpdate()
-    }
+    saveItemRuleSelections(item, selectionUpdates)
+    actor.system.forceUpdate()
+  }
 
-    useEffect(() => persistSlots(clazz, classPerkSlots, allBonusSelections), [clazz, classPerkSlots, allBonusSelections])
-    useEffect(() => persistSlots(ancestry, ancestryPerkSlots, allBonusSelections), [ancestry, ancestryPerkSlots, allBonusSelections])
+  useEffect(
+    () => persistSlots(clazz, classPerkSlots, allBonusSelections),
+    [clazz, classPerkSlots, allBonusSelections],
+  )
+  useEffect(
+    () => persistSlots(ancestry, ancestryPerkSlots, allBonusSelections),
+    [ancestry, ancestryPerkSlots, allBonusSelections],
+  )
 
-    return {
-        PerkSelection,
-        bonusChoicesByPerk,
-        hasBonusChoices: bonusPerks.length > 0,
-        classPerkSlots,
-        setClassPerkSlots
-    }
-
+  return {
+    PerkSelection,
+    bonusChoicesByPerk,
+    hasBonusChoices: bonusPerks.length > 0,
+    classPerkSlots,
+    setClassPerkSlots,
+  }
 }

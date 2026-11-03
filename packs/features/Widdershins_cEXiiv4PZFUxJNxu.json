@@ -12,9 +12,7 @@
         "label": "Spell Eff. Level Bonus",
         "level": 2,
         "value": "1",
-        "selector": [
-          "modifiers.casting.effectiveLevelBonus"
-        ],
+        "selector": ["modifiers.casting.effectiveLevelBonus"],
         "scale": 4,
         "toggleableEffect": true
       }

@@ -5,19 +5,30 @@ import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
 import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { recordSheetSaveOnActiveAttacks } from "../../../../../combat/engine/util/attack-save-sync"
-import { HUNTERS_MARK_FLAG } from "../../../../../combat/engine/util/hunters-mark"
-import { getArmor, HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { sortedItems } from "../../../../../model/actor/type/Inventory"
+import { HuntersMark } from "../../../../../combat/engine/util/HuntersMark"
+import {
+  getArmor,
+  HeroDataModel,
+} from "../../../../../model/actor/HeroDataModel"
+import { sortedItems } from "../../../../../model/actor/schema/inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { SundryDataModel } from "../../../../../model/item/equip/SundryDataModel"
-import { isEquippedSundry, isEquippedWeapon, WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
-import { sys_id } from "../../../../../utils/foundryUtils"
-import { equipmentContextMenuItems, equippedItemContextMenu, inventoryItemDragDropHandler } from "../../../../../utils/heroInventoryUtil"
-import { appLang } from "../../../../../utils/lang"
-import { LightSourceUtil } from "../../../../../utils/LightSourceUtil"
-import { damageTypesWithPhysicalThresholds } from "../../../../../utils/localeUtils"
-import { getId } from "../../../../../utils/modelUtil"
-import { formatSpeeds } from "../../../../../utils/speedUtils"
+import {
+  isEquippedSundry,
+  isEquippedWeapon,
+  WeaponDataModel,
+} from "../../../../../model/item/equip/WeaponDataModel"
+import { sys_id } from "../../../../../util/foundry-util"
+import {
+  equipmentContextMenuItems,
+  equippedItemContextMenu,
+  inventoryItemDragDropHandler,
+} from "../../../../../util/inventory-util"
+import { appLang } from "../../../../../util/lang"
+import { LightSourceUtil } from "../../../../../util/LightSourceUtil"
+import { damageTypesWithPhysicalThresholds } from "../../../../../util/locale-util"
+import { getId } from "../../../../../util/model-util"
+import { formatSpeeds } from "../../../../../util/speed-util"
 import { buttonAnimation } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
@@ -25,8 +36,8 @@ import { Header, ItemDivider } from "../../../../component/Header"
 import { LightToggleButton } from "../../../../component/LightToggleButton"
 import { Timer } from "../../../../component/Timer"
 import { Tooltip } from "../../../../component/Tooltip"
-import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
+import { EditModeContextProvider } from "../../../../wrappers/EditModeContextProvider"
 import { RelicEffectList } from "../../../item/equip/component/RelicEffectList"
 import { WeaponPropsList } from "../../../item/equip/component/WeaponPropsList"
 import { ItemIconImg } from "../../../shared/ItemIconImg"
@@ -36,367 +47,608 @@ import { Actions } from "../../npc/component/Actions"
 import { DamageTypeSelector } from "../../npc/component/NpcSheetComponent"
 
 export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
-    const [documentUpdateKey, setDocumentUpdateKey] = useState(0)
+  const [documentUpdateKey, setDocumentUpdateKey] = useState(0)
 
-    useEffect(() => {
-        const handleActorUpdate = (updatedActor: Actor) => {
-            if (updatedActor.id === hero.parent.id) {
-                setDocumentUpdateKey(prev => prev + 1)
-            }
-        }
-        const handleItemUpdate = (item: Item) => {
-            if ((item.parent as Actor | null)?.id === hero.parent.id) {
-                setDocumentUpdateKey(prev => prev + 1)
-            }
-        }
+  useEffect(() => {
+    const handleActorUpdate = (updatedActor: Actor) => {
+      if (updatedActor.id === hero.parent.id) {
+        setDocumentUpdateKey((prev) => prev + 1)
+      }
+    }
+    const handleItemUpdate = (item: Item) => {
+      if ((item.parent as Actor | null)?.id === hero.parent.id) {
+        setDocumentUpdateKey((prev) => prev + 1)
+      }
+    }
 
-        Hooks.on("updateActor", handleActorUpdate)
-        Hooks.on("createItem", handleItemUpdate)
-        Hooks.on("updateItem", handleItemUpdate)
-        Hooks.on("deleteItem", handleItemUpdate)
-        return () => {
-            Hooks.off("updateActor", handleActorUpdate)
-            Hooks.off("createItem", handleItemUpdate)
-            Hooks.off("updateItem", handleItemUpdate)
-            Hooks.off("deleteItem", handleItemUpdate)
-        }
-    }, [hero.parent.id])
+    Hooks.on("updateActor", handleActorUpdate)
+    Hooks.on("createItem", handleItemUpdate)
+    Hooks.on("updateItem", handleItemUpdate)
+    Hooks.on("deleteItem", handleItemUpdate)
+    return () => {
+      Hooks.off("updateActor", handleActorUpdate)
+      Hooks.off("createItem", handleItemUpdate)
+      Hooks.off("updateItem", handleItemUpdate)
+      Hooks.off("deleteItem", handleItemUpdate)
+    }
+  }, [hero.parent.id])
 
-    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
-    const equippedSundries = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => (it instanceof SundryDataModel && isEquippedSundry(it) && !it.isWearable) || isEquippedAlchemical(it)) as SundryDataModel[])
+  const equippedWeapons = sortedItems<WeaponDataModel>(
+    hero.inventory.items.filter((it) =>
+      isEquippedWeapon(it),
+    ) as WeaponDataModel[],
+  )
+  const equippedSundries = sortedItems<SundryDataModel>(
+    hero.inventory.items.filter(
+      (it) =>
+        (it instanceof SundryDataModel &&
+          isEquippedSundry(it) &&
+          !it.isWearable) ||
+        isEquippedAlchemical(it),
+    ) as SundryDataModel[],
+  )
 
-    const armor = getArmor(hero) as any as ArmorDataModel
-    const wearables = hero.inventory.items.filter(it =>
-        it instanceof SundryDataModel && isEquippedSundry(it) && it.isWearable
-    ) as SundryDataModel[]
+  const armor = getArmor(hero) as any as ArmorDataModel
+  const wearables = hero.inventory.items.filter(
+    (it) =>
+      it instanceof SundryDataModel && isEquippedSundry(it) && it.isWearable,
+  ) as SundryDataModel[]
 
-    const boundRelics = hero.boundRelics().filter(it => !it.isEquipped) as any[]
+  const boundRelics = hero.boundRelics().filter((it) => !it.isEquipped) as any[]
 
-    const hasEquippedWeapons = [...equippedWeapons, ...equippedSundries, ...wearables].length > 0
-    const hasEquippedArmor = !!armor || wearables.length > 0 || boundRelics.length > 0
+  const hasEquippedWeapons =
+    [...equippedWeapons, ...equippedSundries, ...wearables].length > 0
+  const hasEquippedArmor =
+    !!armor || wearables.length > 0 || boundRelics.length > 0
 
-    return (
-        <div className="flex flex-col h-full">
-            {(!hasEquippedWeapons && !hasEquippedArmor && !hero.polymorph)
-                ? <div className="text-text-aux text-center italic mt-4 mb-8">
-                    {appLang.HeroSheet.noEquipment}
-                </div>
-                : <div className="space-y-2 mb-4">
-                    {(hasEquippedWeapons || hero.polymorph) && <Weapons hero={hero} equippedWeapons={equippedWeapons} equippedSundries={equippedSundries} documentUpdateKey={documentUpdateKey} />}
-                    {hasEquippedArmor && <Armor hero={hero} armor={armor} wearables={wearables} boundRelics={boundRelics} />}
-                </div>
-            }
+  return (
+    <div className="flex flex-col h-full">
+      {!hasEquippedWeapons && !hasEquippedArmor && !hero.polymorph ? (
+        <div className="text-text-aux text-center italic mt-4 mb-8">
+          {appLang.HeroSheet.noEquipment}
         </div>
-    )
+      ) : (
+        <div className="space-y-2 mb-4">
+          {(hasEquippedWeapons || hero.polymorph) && (
+            <Weapons
+              hero={hero}
+              equippedWeapons={equippedWeapons}
+              equippedSundries={equippedSundries}
+              documentUpdateKey={documentUpdateKey}
+            />
+          )}
+          {hasEquippedArmor && (
+            <Armor
+              hero={hero}
+              armor={armor}
+              wearables={wearables}
+              boundRelics={boundRelics}
+            />
+          )}
+        </div>
+      )}
+    </div>
+  )
 }
 
-const isEquippedAlchemical = (item: any): boolean => item.parent?.type === 'alchemical' && item.isEquipped
+const isEquippedAlchemical = (item: any): boolean =>
+  item.parent?.type === "alchemical" && item.isEquipped
 
-const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }: { hero: HeroDataModel, equippedWeapons: WeaponDataModel[], equippedSundries: SundryDataModel[], documentUpdateKey: number }) => {
-    const gripStyle = "text-text-aux text-lg text-center font-eskapade"
-    const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
-    const propsStyle = "text-text-aux text-sm italic line-clamp-1"
+const Weapons = ({
+  hero,
+  equippedWeapons,
+  equippedSundries,
+  documentUpdateKey,
+}: {
+  hero: HeroDataModel
+  equippedWeapons: WeaponDataModel[]
+  equippedSundries: SundryDataModel[]
+  documentUpdateKey: number
+}) => {
+  const gripStyle = "text-text-aux text-lg text-center font-eskapade"
+  const dmgStyle =
+    "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
+  const propsStyle = "text-text-aux text-sm italic line-clamp-1"
 
-    const { onCtxMenu, ContextMenu } = useContextMenu()
-    const combinedEquipped = sortedItems<WeaponDataModel | SundryDataModel>([...equippedWeapons, ...equippedSundries])
+  const { onCtxMenu, ContextMenu } = useContextMenu()
+  const combinedEquipped = sortedItems<WeaponDataModel | SundryDataModel>([
+    ...equippedWeapons,
+    ...equippedSundries,
+  ])
 
-    const { dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(
+  const { dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } =
+    useDragDrop(combinedEquipped, () =>
+      inventoryItemDragDropHandler(
+        hero,
+        dragItem,
+        targetItem ?? combinedEquipped[combinedEquipped.length - 1],
         combinedEquipped,
-        () => inventoryItemDragDropHandler(
-            hero, dragItem, targetItem ?? combinedEquipped[combinedEquipped.length - 1], combinedEquipped
-        )
+      ),
     )
 
-    const equipDependency = combinedEquipped.map(i => i?.parent?.id)?.join(',')
-    const [targetIds, setTargetIds] = useState("")
+  const equipDependency = combinedEquipped.map((i) => i?.parent?.id)?.join(",")
+  const [targetIds, setTargetIds] = useState("")
 
-    useEffect(() => {
-        const handleTargetChange = (user, token, isTargeted) => {
-            if (user.id !== game.user?.id) return
-            setTargetIds(Array.from(game.user?.targets ?? []).join("."))
+  useEffect(() => {
+    const handleTargetChange = (user, token, isTargeted) => {
+      if (user.id !== game.user?.id) return
+      setTargetIds(Array.from(game.user?.targets ?? []).join("."))
+    }
+    const hookId = Hooks.on("targetToken", handleTargetChange)
+    return () => {
+      Hooks.off("targetToken", hookId)
+    }
+  }, [])
+
+  /**
+   * Monitor for Active Effect updates that might alter their
+   * equipped weapon attack rolls.
+   */
+  const [effectUpdateKey, setEffectUpdateKey] = useState(0)
+
+  useEffect(() => {
+    const onEffectChange = (effect: ActiveEffect) => {
+      if (
+        effect.parent?.id === hero.parent?.id ||
+        effect.flags?.[sys_id]?.[HuntersMark.HUNTERS_MARK_FLAG]
+      ) {
+        setEffectUpdateKey((prev) => prev + 1)
+      }
+    }
+
+    const onTargetChange = (user: User) => {
+      if (user.id === game.user?.id) {
+        setEffectUpdateKey((prev) => prev + 1)
+      }
+    }
+
+    Hooks.on("createActiveEffect", onEffectChange)
+    Hooks.on("updateActiveEffect", onEffectChange)
+    Hooks.on("deleteActiveEffect", onEffectChange)
+    Hooks.on("targetToken", onTargetChange)
+
+    return () => {
+      Hooks.off("createActiveEffect", onEffectChange)
+      Hooks.off("updateActiveEffect", onEffectChange)
+      Hooks.off("deleteActiveEffect", onEffectChange)
+      Hooks.off("targetToken", onTargetChange)
+    }
+  }, [hero.parent?.id])
+
+  const equipDisplayData = useMemo(() => {
+    const weaponData = equippedWeapons.map((item) => {
+      let attackInstance = HeroAttack.buildWeaponAttack(
+        hero.parent,
+        item.parent,
+      )
+      return {
+        item,
+        damageString: attackInstance?.damageRoll?.toString() ?? "",
+        properties: attackInstance?.weaponProperties ?? [],
+        skill: attackInstance?.skillCheck?.skill ?? "",
+        preset: {
+          id: "",
+          title: item.parent.name,
+          description: "",
+          weaponId: item.parent.id,
+          skill: attackInstance?.skillCheck?.skill ?? "",
+          d20Count: attackInstance?.skillCheck?.d20Count ?? 1,
+          skillCheckMod: attackInstance?.skillCheck?.modifier ?? 0,
+          critThreshold: attackInstance?.skillCheck?.critThreshold ?? 20,
+          critSum: attackInstance?.skillCheck?.critSum,
+          explodeFavor: attackInstance?.skillCheck?.explodeFavor,
+          favorHinder: attackInstance?.skillCheck?.favorHinder ?? "none",
+          damageRolls: attackInstance?.damageRoll?.dice ?? [],
+          flatModifier: attackInstance?.damageRoll?.flatDmgBonus ?? 0,
+          perDieBonus: attackInstance?.damageRoll?.perDieDmgBonus ?? 0,
+          armorPiercing: attackInstance?.damageRoll?.armorPiercing ?? 0,
+        } as RollPreset,
+        initiateAttack: async (e: React.MouseEvent) => {
+          attackInstance = HeroAttack.buildWeaponAttack(
+            hero.parent,
+            item.parent,
+          )
+          await attackInstance.initiate(e)
+          attackInstance = HeroAttack.buildWeaponAttack(
+            hero.parent,
+            item.parent,
+          )
+        },
+        rollDefenseCheck: async (e: React.MouseEvent) => {
+          attackInstance = HeroAttack.buildWeaponAttack(
+            hero.parent,
+            item.parent,
+            undefined,
+            true,
+          )
+          await attackInstance.initiate(e, {
+            isDefenseCheck: true,
+            skipChatCard: true,
+          })
+          const result = attackInstance.skillCheck?.result
+          if (!result) return
+          const armorBonus = HeroAttack.getDefenseArmorBonus(
+            hero,
+            attackInstance,
+          )
+          const recorded = await recordSheetSaveOnActiveAttacks(
+            hero.parent,
+            result,
+            { armorBonus },
+          )
+          if (!recorded) await attackInstance.sendChatCard()
+        },
+      }
+    })
+
+    const sundriesData = equippedSundries.map((item) => {
+      return {
+        item,
+        damageString: "",
+        properties: [] as string[],
+        skill: "",
+        preset: undefined as RollPreset | undefined,
+        initiateAttack: () => {},
+        rollDefenseCheck: () => {},
+      }
+    })
+
+    return [...weaponData, ...sundriesData].sort(
+      (a, b) => a.item.parent.sort - b.item.parent.sort,
+    )
+  }, [
+    hero.parent,
+    equipDependency,
+    targetIds,
+    effectUpdateKey,
+    documentUpdateKey,
+    hero.modifiers,
+  ])
+
+  return (
+    <div className="w-full">
+      <Header
+        title={
+          hero.polymorph ? appLang.HeroSheet.attacks : appLang.HeroSheet.weapons
         }
-        const hookId = Hooks.on('targetToken', handleTargetChange)
-        return () => { Hooks.off('targetToken', hookId) }
-    }, [])
+      />
+      {equipDisplayData?.map(
+        (
+          {
+            item,
+            damageString,
+            properties,
+            skill,
+            preset,
+            initiateAttack,
+            rollDefenseCheck,
+          },
+          index: number,
+        ) => {
+          const isDefense =
+            hero.skills[skill]?.trained && item instanceof WeaponDataModel
+              ? item.properties.includes("defense") ||
+                hero.modifiers.damage.out[skill]?.properties?.granted?.includes(
+                  "defense",
+                )
+              : false
 
-    /**
-     * Monitor for Active Effect updates that might alter their
-     * equipped weapon attack rolls.
-     */
-    const [effectUpdateKey, setEffectUpdateKey] = useState(0)
+          return (
+            <div
+              key={getId(item)}
+              draggable
+              onDragStart={(e) => onDragStart(e, index)}
+              onDragEnter={(e) => onDragEnter(e, index)}
+              onDragOver={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+              }}
+              onDragEnd={(e) => onDragEnd(e, index)}
+              onContextMenu={async (e) =>
+                onCtxMenu(e, equippedItemContextMenu(hero, item))
+              }
+            >
+              <div className="flex items-center my-0.5 gap-x-1">
+                <ItemImage item={item} />
 
-    useEffect(() => {
-        const onEffectChange = (effect: ActiveEffect) => {
-            if (effect.parent?.id === hero.parent?.id || effect.flags?.[sys_id]?.[HUNTERS_MARK_FLAG]) {
-                setEffectUpdateKey(prev => prev + 1)
-            }
-        }
-
-        const onTargetChange = (user: User) => {
-            if (user.id === game.user?.id) {
-                setEffectUpdateKey(prev => prev + 1)
-            }
-        }
-
-        Hooks.on("createActiveEffect", onEffectChange)
-        Hooks.on("updateActiveEffect", onEffectChange)
-        Hooks.on("deleteActiveEffect", onEffectChange)
-        Hooks.on("targetToken", onTargetChange)
-
-        return () => {
-            Hooks.off("createActiveEffect", onEffectChange)
-            Hooks.off("updateActiveEffect", onEffectChange)
-            Hooks.off("deleteActiveEffect", onEffectChange)
-            Hooks.off("targetToken", onTargetChange)
-        }
-    }, [hero.parent?.id])
-
-    const equipDisplayData = useMemo(() => {
-        const weaponData = equippedWeapons.map(item => {
-            let attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent)
-            return {
-                item,
-                damageString: attackInstance?.damageRoll?.toString() ?? '',
-                properties: attackInstance?.weaponProperties ?? [],
-                skill: attackInstance?.skillCheck?.skill ?? '',
-                preset: {
-                    id: "",
-                    title: item.parent.name,
-                    description: '',
-                    weaponId: item.parent.id,
-                    skill: attackInstance?.skillCheck?.skill ?? '',
-                    d20Count: attackInstance?.skillCheck?.d20Count ?? 1,
-                    skillCheckMod: attackInstance?.skillCheck?.modifier ?? 0,
-                    critThreshold: attackInstance?.skillCheck?.critThreshold ?? 20,
-                    critSum: attackInstance?.skillCheck?.critSum,
-                    explodeFavor: attackInstance?.skillCheck?.explodeFavor,
-                    favorHinder: attackInstance?.skillCheck?.favorHinder ?? 'none',
-                    damageRolls: attackInstance?.damageRoll?.dice ?? [],
-                    flatModifier: attackInstance?.damageRoll?.flatDmgBonus ?? 0,
-                    perDieBonus: attackInstance?.damageRoll?.perDieDmgBonus ?? 0,
-                    armorPiercing: attackInstance?.damageRoll?.armorPiercing ?? 0
-                } as RollPreset,
-                initiateAttack: async (e: React.MouseEvent) => {
-                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent)
-                    await attackInstance.initiate(e)
-                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent)
-                },
-                rollDefenseCheck: async (e: React.MouseEvent) => {
-                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, true)
-                    await attackInstance.initiate(e, { isDefenseCheck: true, skipChatCard: true })
-                    const result = attackInstance.skillCheck?.result
-                    if (!result) return
-                    const armorBonus = HeroAttack.getDefenseArmorBonus(hero, attackInstance)
-                    const recorded = await recordSheetSaveOnActiveAttacks(hero.parent, result, { armorBonus })
-                    if (!recorded) await attackInstance.sendChatCard()
-                }
-            }
-        })
-
-        const sundriesData = equippedSundries.map(item => {
-            return { item, damageString: "", properties: [] as string[], skill: "", preset: undefined as RollPreset | undefined, initiateAttack: () => { }, rollDefenseCheck: () => { } }
-        })
-
-        return [...weaponData, ...sundriesData].sort((a, b) => a.item.parent.sort - b.item.parent.sort)
-    }, [hero.parent, equipDependency, targetIds, effectUpdateKey, documentUpdateKey, hero.modifiers])
-
-    return (
-        <div className="w-full">
-            <Header title={hero.polymorph ? appLang.HeroSheet.attacks : appLang.HeroSheet.weapons} />
-            {
-                equipDisplayData?.map(({ item, damageString, properties, skill, preset, initiateAttack, rollDefenseCheck }, index: number) => {
-                    const isDefense = hero.skills[skill]?.trained && item instanceof WeaponDataModel
-                        ? (item.properties.includes('defense') || hero.modifiers.damage.out[skill]?.properties?.granted?.includes('defense'))
-                        : false
-
-                    return (
-                        <div
-                            key={getId(item)}
-                            draggable
-                            onDragStart={(e) => onDragStart(e, index)}
-                            onDragEnter={(e) => onDragEnter(e, index)}
-                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                            onDragEnd={(e) => onDragEnd(e, index)}
-                            onContextMenu={async (e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}
-                        >
-                            <div className="flex items-center my-0.5 gap-x-1">
-                                <ItemImage item={item} />
-
-                                <div className="flex flex-col w-full px-2">
-                                    <div className="flex justify-between items-center">
-                                        <div className={`text-lg line-clamp-1`}>{item.displayName}</div>
-                                        <div className="flex justify-end items-center">
-                                            {LightSourceUtil.showsTimer((item as any).lightSourceData) &&
-                                                <Timer
-                                                    className="mr-2 text-sm"
-                                                    running={(item as any).lightSourceData.litTS > 0}
-                                                    getSeconds={(now) => LightSourceUtil.remainingSeconds((item as any).lightSourceData, now)}
-                                                />
-                                            }
-                                            <LightToggleButton item={item} className="mr-2" />
-                                            {/* WEAPON GRIP DISPLAY */}
-                                            {item instanceof WeaponDataModel && (
-                                                <Tooltip
-                                                    title={"Grip"}
-                                                    disabled={item.grip.style !== 'V'}
-                                                    content={`${item.grip.style === 'V' && (item as any).grip.state === 'HH'
-                                                        ? 'Switch to One-Handed'
-                                                        : 'Switch to Two-Handed'}`}
-                                                >
-                                                    <div
-                                                        className={`mr-2 ${gripStyle} ${item.grip.style === 'V' ? 'hover-glow' : ''}`}
-                                                        onClick={() => hero.toggleVersatileGrip(item.parent)}>
-                                                        {appLang.GripsAbbr[item.grip.state]}
-                                                    </div>
-                                                </Tooltip>
-                                            )}
-
-                                            {/* SUNDRY BULK DISPLAY */}
-                                            {(item instanceof SundryDataModel || isEquippedAlchemical(item)) && (
-                                                <p className={gripStyle}>
-                                                    {appLang.GripsAbbr[item.bulk.slots === 0 ? "" : (item.bulk.slots > 1 ? 'HH' : 'H')]}
-                                                </p>
-                                            )}
-
-                                            <div className="flex content-right items-center gap-x-1">
-                                                {/* CLICKABLE DAMAGE ROLL */}
-                                                <Tooltip content={<RollBuilderView actor={hero.parent} showHeader={true} preset={preset} lockWeaponSelection={true} saveOnRoll={false} />} interactive={true}>
-                                                    <div className={`${dmgStyle} hover-glow`} onClick={(e) => initiateAttack(e)}>
-                                                        {damageString}
-                                                    </div>
-                                                </Tooltip>
-
-                                                {/* DEFENSE ACTION BUTTON */}
-                                                {isDefense &&
-                                                    <Tooltip title={"Defense Action"} content={"Roll defense check to apply weapon damage as armor"}>
-                                                        <button onClick={(e) => rollDefenseCheck(e)} onMouseDown={(e) => e.preventDefault()} className="hover-glow cursor-pointer">
-                                                            <Shield className="text-ic-armor-border fill-ic-armor-fill -mb-1.5" size={22} />
-                                                        </button>
-                                                    </Tooltip>
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* WEAPON RELIC LISTS */}
-                                    <div className="flex justify-between items-center -mt-1">
-                                        <RelicEffectList relicPowers={item.effectiveRelicPowers()} textColor="text-text-header-tertiary" />
-                                    </div>
-
-                                    {/* WEAPON PROPERTIES AND RANGE */}
-                                    <div className="flex justify-between items-center pb-1">
-                                        <WeaponPropsList weaponProps={properties.length > 0 ? properties : ((item as any).properties ?? [])} />
-                                        <div className={propsStyle + " text-right"}>{appLang.Ranges[(item as any).range ?? '']}</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <ItemDivider />
-                        </div>
-                    )
-                })
-            }
-
-            {/* POLYMORPH SECTION */}
-            {hero.polymorph &&
-                <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                    <Actions npc={hero.polymorph.statBlock.system} hero={hero.parent} isPolymorph={true} />
-                    <Abilities actor={hero.polymorph.statBlock} disabled={true} />
-                    <div className="w-full space-y-2 px-2 pb-2 text-base text-text-header-tertiary font-normal">
-                        {appLang.NpcSheet.speed}: {formatSpeeds(hero.polymorph.statBlock.system.speeds)}
-                        <SelectableTextOptions obj={hero.parent} label={appLang.NpcSheet.senses} path={['senses']} localeObj={appLang.Senses} />
-                        <DamageTypeSelector actorModel={hero} label={appLang.NpcSheet.immune} path={['modifiers', 'damage', 'in', 'immunities']} localeObj={damageTypesWithPhysicalThresholds()} />
-                        <DamageTypeSelector actorModel={hero} label={appLang.NpcSheet.weak} path={['modifiers', 'damage', 'in', 'weaknesses']} localeObj={appLang.DamageTypes} />
-                        <SelectableTextOptions obj={hero.parent} label={appLang.NpcSheet.status_immunities} path={['modifiers', 'damage', 'in', 'statusImmunities']} localeObj={appLang.StatusConditions} />
+                <div className="flex flex-col w-full px-2">
+                  <div className="flex justify-between items-center">
+                    <div className={`text-lg line-clamp-1`}>
+                      {item.displayName}
                     </div>
-                </EditModeContextProvider>
-            }
+                    <div className="flex justify-end items-center">
+                      {LightSourceUtil.showsTimer(
+                        (item as any).lightSourceData,
+                      ) && (
+                        <Timer
+                          className="mr-2 text-sm"
+                          running={(item as any).lightSourceData.litTS > 0}
+                          getSeconds={(now) =>
+                            LightSourceUtil.remainingSeconds(
+                              (item as any).lightSourceData,
+                              now,
+                            )
+                          }
+                        />
+                      )}
+                      <LightToggleButton item={item} className="mr-2" />
+                      {/* WEAPON GRIP DISPLAY */}
+                      {item instanceof WeaponDataModel && (
+                        <Tooltip
+                          title={"Grip"}
+                          disabled={item.grip.style !== "V"}
+                          content={`${
+                            item.grip.style === "V" &&
+                            (item as any).grip.state === "HH"
+                              ? "Switch to One-Handed"
+                              : "Switch to Two-Handed"
+                          }`}
+                        >
+                          <div
+                            className={`mr-2 ${gripStyle} ${item.grip.style === "V" ? "hover-glow" : ""}`}
+                            onClick={() =>
+                              hero.toggleVersatileGrip(item.parent)
+                            }
+                          >
+                            {appLang.GripsAbbr[item.grip.state]}
+                          </div>
+                        </Tooltip>
+                      )}
 
-            <ContextMenu />
-        </div>
-    )
+                      {/* SUNDRY BULK DISPLAY */}
+                      {(item instanceof SundryDataModel ||
+                        isEquippedAlchemical(item)) && (
+                        <p className={gripStyle}>
+                          {
+                            appLang.GripsAbbr[
+                              item.bulk.slots === 0
+                                ? ""
+                                : item.bulk.slots > 1
+                                  ? "HH"
+                                  : "H"
+                            ]
+                          }
+                        </p>
+                      )}
+
+                      <div className="flex content-right items-center gap-x-1">
+                        {/* CLICKABLE DAMAGE ROLL */}
+                        <Tooltip
+                          content={
+                            <RollBuilderView
+                              actor={hero.parent}
+                              showHeader={true}
+                              preset={preset}
+                              lockWeaponSelection={true}
+                              saveOnRoll={false}
+                            />
+                          }
+                          interactive={true}
+                        >
+                          <div
+                            className={`${dmgStyle} hover-glow`}
+                            onClick={(e) => initiateAttack(e)}
+                          >
+                            {damageString}
+                          </div>
+                        </Tooltip>
+
+                        {/* DEFENSE ACTION BUTTON */}
+                        {isDefense && (
+                          <Tooltip
+                            title={"Defense Action"}
+                            content={
+                              "Roll defense check to apply weapon damage as armor"
+                            }
+                          >
+                            <button
+                              onClick={(e) => rollDefenseCheck(e)}
+                              onMouseDown={(e) => e.preventDefault()}
+                              className="hover-glow cursor-pointer"
+                            >
+                              <Shield
+                                className="text-ic-armor-border fill-ic-armor-fill -mb-1.5"
+                                size={22}
+                              />
+                            </button>
+                          </Tooltip>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* WEAPON RELIC LISTS */}
+                  <div className="flex justify-between items-center -mt-1">
+                    <RelicEffectList
+                      relicPowers={item.effectiveRelicPowers()}
+                      textColor="text-text-header-tertiary"
+                    />
+                  </div>
+
+                  {/* WEAPON PROPERTIES AND RANGE */}
+                  <div className="flex justify-between items-center pb-1">
+                    <WeaponPropsList
+                      weaponProps={
+                        properties.length > 0
+                          ? properties
+                          : ((item as any).properties ?? [])
+                      }
+                    />
+                    <div className={propsStyle + " text-right"}>
+                      {appLang.Ranges[(item as any).range ?? ""]}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <ItemDivider />
+            </div>
+          )
+        },
+      )}
+
+      {/* POLYMORPH SECTION */}
+      {hero.polymorph && (
+        <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+          <Actions
+            npc={hero.polymorph.statBlock.system}
+            hero={hero.parent}
+            isPolymorph={true}
+          />
+          <Abilities actor={hero.polymorph.statBlock} disabled={true} />
+          <div className="w-full space-y-2 px-2 pb-2 text-base text-text-header-tertiary font-normal">
+            {appLang.NpcSheet.speed}:{" "}
+            {formatSpeeds(hero.polymorph.statBlock.system.speeds)}
+            <SelectableTextOptions
+              obj={hero.parent}
+              label={appLang.NpcSheet.senses}
+              path={["senses"]}
+              localeObj={appLang.Senses}
+            />
+            <DamageTypeSelector
+              actorModel={hero}
+              label={appLang.NpcSheet.immune}
+              path={["modifiers", "damage", "in", "immunities"]}
+              localeObj={damageTypesWithPhysicalThresholds()}
+            />
+            <DamageTypeSelector
+              actorModel={hero}
+              label={appLang.NpcSheet.weak}
+              path={["modifiers", "damage", "in", "weaknesses"]}
+              localeObj={appLang.DamageTypes}
+            />
+            <SelectableTextOptions
+              obj={hero.parent}
+              label={appLang.NpcSheet.status_immunities}
+              path={["modifiers", "damage", "in", "statusImmunities"]}
+              localeObj={appLang.StatusConditions}
+            />
+          </div>
+        </EditModeContextProvider>
+      )}
+
+      <ContextMenu />
+    </div>
+  )
 }
 
-const Armor = ({ hero, armor, wearables, boundRelics }: { hero: any, armor: ArmorDataModel, wearables: SundryDataModel[], boundRelics: any[] }) => {
-    const { onCtxMenu, ContextMenu } = useContextMenu()
+const Armor = ({
+  hero,
+  armor,
+  wearables,
+  boundRelics,
+}: {
+  hero: any
+  armor: ArmorDataModel
+  wearables: SundryDataModel[]
+  boundRelics: any[]
+}) => {
+  const { onCtxMenu, ContextMenu } = useContextMenu()
 
-    const renderItemSection = (title: string, items: any[]) => (
-        <div className="flex flex-col gap-1 mt-1">
-            <Header title={title} />
-            {items.map((item, index) => (
-                <div key={index}>
-                    <div className="flex items-center gap-x-1" onContextMenu={(e) => onCtxMenu(e, equipmentContextMenuItems(hero, item))}>
-                        <ItemImage item={item} />
-                        <div className="flex flex-col gap-0.5 pl-2">
-                            <p className="text-base line-clamp-1">{item.displayName}</p>
-                            <RelicEffectList relicPowers={item.effectiveRelicPowers()} textColor="text-text-header-tertiary -mt-1" />
-                        </div>
-                        {LightSourceUtil.showsTimer(item.lightSourceData) &&
-                            <div className="flex items-center ml-auto mr-2 gap-x-2">
-                                <Timer
-                                    className="text-sm"
-                                    running={item.lightSourceData.litTS > 0}
-                                    getSeconds={(now) => LightSourceUtil.remainingSeconds(item.lightSourceData, now)}
-                                />
-                                <LightToggleButton item={item} />
-                            </div>
-                        }
-                    </div>
-                    <ItemDivider />
-                </div>
-            ))}
-        </div>
-    )
-
-    return (
-        <div className="w-full -mt-1">
-
-            {/* EQUIPPED ARMOR */}
-            {armor &&
-                <div onContextMenu={(e) => onCtxMenu(e, equippedItemContextMenu(hero, armor))}>
-                    <Header title={appLang.HeroSheet.armor} />
-                    <div className="flex items-center  gap-x-1">
-                        <ItemImage item={armor} />
-                        <div className="flex flex-col w-full px-2">
-                            {/* ARMOR NAME AND RATING */}
-                            <div className="flex items-center justify-between">
-                                <div className="text-lg line-clamp-1">{armor.displayName ?? '-'}</div>
-                                <div className="flex justify-end items-center">
-                                    <Shield className="mr-1" size={18} />
-                                    <div className="line-clamp-1 text-lg text-right font-eskapade font-bold mr-1">{armor.rating ?? '-'}</div>
-                                </div>
-                            </div>
-
-                            {/* ARMOR CATEGORY AND MATERIAL */}
-                            <div className="flex items-center justify-between -mt-1">
-                                {/* RELIC INFO */}
-                                <RelicEffectList relicPowers={armor.effectiveRelicPowers()} textColor="text-text-header-tertiary" />
-                                <div className={"text-text-aux text-sm italic line-clamp-1 text-right mr-1"}>{appLang.Metals[armor.material]?.name ?? '-'}</div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <ItemDivider />
-                </div>
+  const renderItemSection = (title: string, items: any[]) => (
+    <div className="flex flex-col gap-1 mt-1">
+      <Header title={title} />
+      {items.map((item, index) => (
+        <div key={index}>
+          <div
+            className="flex items-center gap-x-1"
+            onContextMenu={(e) =>
+              onCtxMenu(e, equipmentContextMenuItems(hero, item))
             }
-
-            {/* BOUND RELICS */}
-            {boundRelics.length > 0 && renderItemSection("BOUND RELICS", boundRelics)}
-
-            {/* WEARABLE ITEMS */}
-            {wearables.length > 0 && renderItemSection("MISC", wearables)}
-
-            <ContextMenu />
+          >
+            <ItemImage item={item} />
+            <div className="flex flex-col gap-0.5 pl-2">
+              <p className="text-base line-clamp-1">{item.displayName}</p>
+              <RelicEffectList
+                relicPowers={item.effectiveRelicPowers()}
+                textColor="text-text-header-tertiary -mt-1"
+              />
+            </div>
+            {LightSourceUtil.showsTimer(item.lightSourceData) && (
+              <div className="flex items-center ml-auto mr-2 gap-x-2">
+                <Timer
+                  className="text-sm"
+                  running={item.lightSourceData.litTS > 0}
+                  getSeconds={(now) =>
+                    LightSourceUtil.remainingSeconds(item.lightSourceData, now)
+                  }
+                />
+                <LightToggleButton item={item} />
+              </div>
+            )}
+          </div>
+          <ItemDivider />
         </div>
-    )
+      ))}
+    </div>
+  )
+
+  return (
+    <div className="w-full -mt-1">
+      {/* EQUIPPED ARMOR */}
+      {armor && (
+        <div
+          onContextMenu={(e) =>
+            onCtxMenu(e, equippedItemContextMenu(hero, armor))
+          }
+        >
+          <Header title={appLang.HeroSheet.armor} />
+          <div className="flex items-center  gap-x-1">
+            <ItemImage item={armor} />
+            <div className="flex flex-col w-full px-2">
+              {/* ARMOR NAME AND RATING */}
+              <div className="flex items-center justify-between">
+                <div className="text-lg line-clamp-1">
+                  {armor.displayName ?? "-"}
+                </div>
+                <div className="flex justify-end items-center">
+                  <Shield className="mr-1" size={18} />
+                  <div className="line-clamp-1 text-lg text-right font-eskapade font-bold mr-1">
+                    {armor.rating ?? "-"}
+                  </div>
+                </div>
+              </div>
+
+              {/* ARMOR CATEGORY AND MATERIAL */}
+              <div className="flex items-center justify-between -mt-1">
+                {/* RELIC INFO */}
+                <RelicEffectList
+                  relicPowers={armor.effectiveRelicPowers()}
+                  textColor="text-text-header-tertiary"
+                />
+                <div
+                  className={
+                    "text-text-aux text-sm italic line-clamp-1 text-right mr-1"
+                  }
+                >
+                  {appLang.Metals[armor.material]?.name ?? "-"}
+                </div>
+              </div>
+            </div>
+          </div>
+          <ItemDivider />
+        </div>
+      )}
+
+      {/* BOUND RELICS */}
+      {boundRelics.length > 0 && renderItemSection("BOUND RELICS", boundRelics)}
+
+      {/* WEARABLE ITEMS */}
+      {wearables.length > 0 && renderItemSection("MISC", wearables)}
+
+      <ContextMenu />
+    </div>
+  )
 }
 
 const ItemImage = ({ item }) => {
-    return <button
-        className={`flex items-center mx-1 -mr-3 my-0.5 shrink-0
+  return (
+    <button
+      className={`flex items-center mx-1 -mr-3 my-0.5 shrink-0
             hover-glow cursor-pointer ${buttonAnimation}`}
-        onClick={() => item.parent?.sheet?.render(true)}
+      onClick={() => item.parent?.sheet?.render(true)}
     >
-        <ItemIconImg item={item} size={34} />
+      <ItemIconImg item={item} size={34} />
     </button>
+  )
 }

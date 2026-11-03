@@ -10,10 +10,7 @@
     "armor": {
       "rating": 7
     },
-    "senses": [
-      "darksight",
-      "telepath"
-    ],
+    "senses": ["darksight", "telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,11 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "fire",
-            "physical_lt0",
-            "poison"
-          ],
+          "immunities": ["fire", "physical_lt0", "poison"],
           "weaknesses": [],
           "statusImmunities": []
         },
@@ -277,9 +270,7 @@
           },
           "type": "psychic"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "recharge": "Cd4",
         "appliedEffects": [
           {
@@ -299,9 +290,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       },
@@ -319,9 +308,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {
@@ -338,9 +325,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1,
           "type": "melee",
           "range": "close"
@@ -356,9 +341,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2,
           "type": "melee",
           "range": "close"

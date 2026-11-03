@@ -29,9 +29,7 @@
         "count": 2,
         "faces": 6,
         "modifier": 0,
-        "explodesOn": [
-          6
-        ]
+        "explodesOn": [6]
       },
       "type": "none"
     },
@@ -39,10 +37,7 @@
       "style": "-",
       "state": "H"
     },
-    "skills": [
-      "endure",
-      "will"
-    ],
+    "skills": ["endure", "will"],
     "properties": [],
     "material": "none",
     "imbueExempt": true

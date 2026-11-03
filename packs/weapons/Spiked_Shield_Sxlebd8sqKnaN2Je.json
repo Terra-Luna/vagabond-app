@@ -41,14 +41,9 @@
       "style": "V",
       "state": "H"
     },
-    "properties": [
-      "defense",
-      "vicious"
-    ],
+    "properties": ["defense", "vicious"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ]
+    "skills": ["melee"]
   },
   "effects": [],
   "folder": null,

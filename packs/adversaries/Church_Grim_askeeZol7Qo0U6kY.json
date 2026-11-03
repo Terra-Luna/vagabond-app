@@ -10,9 +10,7 @@
     "armor": {
       "rating": 2
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": ["darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -206,16 +204,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "physical_lt0"
-          ],
+          "immunities": ["physical_lt0"],
           "weaknesses": [],
-          "statusImmunities": [
-            "charmed",
-            "fatigued",
-            "sickened",
-            "suffocating"
-          ]
+          "statusImmunities": ["charmed", "fatigued", "sickened", "suffocating"]
         },
         "out": {
           "melee": {},
@@ -279,9 +270,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Claws",
@@ -297,9 +286,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {
@@ -319,9 +306,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1
         },
         {
@@ -338,9 +323,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2
         }
       ],
@@ -543,9 +526,7 @@
       "description": "",
       "tint": "#ffffff",
       "transfer": false,
-      "statuses": [
-        "berserk"
-      ],
+      "statuses": ["berserk"],
       "showIcon": 2,
       "folder": null,
       "sort": 0,

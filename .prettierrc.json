@@ -1,0 +1,5 @@
+{
+  "semi": false,
+  "plugins": ["prettier-plugin-brace-style"],
+  "braceStyle": "stroustrup"
+}

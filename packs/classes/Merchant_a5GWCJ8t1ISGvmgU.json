@@ -34,10 +34,7 @@
       }
     ],
     "complexity": 3,
-    "keyStats": [
-      "reason",
-      "luck"
-    ],
+    "keyStats": ["reason", "luck"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.ycpzC6K9R1qFrLBZ",
       "Compendium.vagabond-app.gear.Item.tfyvhtABlx28fMIr",

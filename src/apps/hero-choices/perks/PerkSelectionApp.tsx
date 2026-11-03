@@ -1,28 +1,31 @@
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { appLang } from "../../../utils/lang"
+import { appLang } from "../../../util/lang"
 import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { usePerkSelection } from "./PerkSelectionUseCase"
 
 export class PerkSelectionApp extends VagabondApplication {
+  actor: Actor & { system: HeroDataModel }
+  isLevelUp?: boolean
 
-    actor: Actor & { system: HeroDataModel }
-    isLevelUp?: boolean
-
-    constructor(actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) {
-        super({
-            window: { title: `${appLang.HeroChoices.selectPerks}: ${actor.name}` },
-            position: { width: 800, height: 900 },
-            actorId: actor.id ?? undefined,
-            enforceSingleInstancePerActor: true,
-            Component: () => {
-                const { PerkSelection, bonusChoicesByPerk } = usePerkSelection(actor, isLevelUp)
-                return <div className="flex flex-col min-h-0 w-full p-1 mb-4 overflow-y-auto">
-                    <PerkSelection bonusChoices={bonusChoicesByPerk} />
-                </div>
-            }
-        } as VagabondAppArgs)
-        this.actor = actor
-        this.isLevelUp = isLevelUp
-    }
-
+  constructor(actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) {
+    super({
+      window: { title: `${appLang.HeroChoices.selectPerks}: ${actor.name}` },
+      position: { width: 800, height: 900 },
+      actorId: actor.id ?? undefined,
+      enforceSingleInstancePerActor: true,
+      Component: () => {
+        const { PerkSelection, bonusChoicesByPerk } = usePerkSelection(
+          actor,
+          isLevelUp,
+        )
+        return (
+          <div className="flex flex-col min-h-0 w-full p-1 mb-4 overflow-y-auto">
+            <PerkSelection bonusChoices={bonusChoicesByPerk} />
+          </div>
+        )
+      },
+    } as VagabondAppArgs)
+    this.actor = actor
+    this.isLevelUp = isLevelUp
+  }
 }

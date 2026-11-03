@@ -10,10 +10,7 @@
     "armor": {
       "rating": 4
     },
-    "senses": [
-      "darksight",
-      "telepath"
-    ],
+    "senses": ["darksight", "telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -289,9 +286,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "appliedEffects": [
           {
             "effect": "charmed",
@@ -313,9 +308,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "appliedEffects": [
           {
             "effect": "unconscious",
@@ -337,9 +330,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "restrained",
@@ -361,9 +352,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "appliedEffects": [
           {
             "effect": "paralyzed",
@@ -385,9 +374,7 @@
           },
           "type": "necrotic"
         },
-        "saves": [
-          "endure"
-        ]
+        "saves": ["endure"]
       },
       {
         "name": "Fear",
@@ -403,9 +390,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "appliedEffects": [
           {
             "effect": "frightened",
@@ -427,9 +412,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ]
+        "saves": ["will"]
       },
       {
         "name": "Paralysis",
@@ -445,9 +428,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "paralyzed",
@@ -466,9 +447,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       }
@@ -504,9 +483,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1,
           "type": "melee",
           "range": "close"

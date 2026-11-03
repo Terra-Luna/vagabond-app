@@ -1,112 +1,156 @@
-import { appLang } from "../../../utils/lang"
-import { andOrToSymbol, removeLastComma } from "../../../utils/stringUtil"
+import { appLang } from "../../../util/lang"
+import { andOrToSymbol, removeLastComma } from "../../../util/string-util"
 import type { CardSubHeaderValues } from "../../../view/component/SkillCard"
-import { statsSchema } from "../../actor/type/Stats"
-import { fields, optionalString, requiredString, standardInteger } from "../../common/sharedSchemas"
-import {BaseItemSchema,ItemDataModel } from "../ItemDataModel"
+import { statsSchema } from "../../actor/schema/stats"
+import {
+  fields,
+  optionalString,
+  requiredString,
+  standardInteger,
+} from "../../common/shared-schemas"
+import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
 
 const perkSchema = () => {
-    return {
-        prerequisites: new fields.ArrayField(new fields.SchemaField({ ...prerequisiteSchema() }), { initial: [] }),
-        canTakeMultiple: new fields.BooleanField({ initial: false })
-    }
+  return {
+    prerequisites: new fields.ArrayField(
+      new fields.SchemaField({ ...prerequisiteSchema() }),
+      { initial: [] },
+    ),
+    canTakeMultiple: new fields.BooleanField({ initial: false }),
+  }
 }
 
 const prerequisiteSchema = () => {
-    return {
-        type: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.PrerequisiteTypes) }),
-        stat: new fields.StringField({ ...optionalString, choices: Object.keys(appLang.Stat), initial: Object.keys(appLang.Stat)[0] }),
-        value: new fields.NumberField({ ...standardInteger, initial: 3 }),
-        spell: new fields.StringField({ ...optionalString, initial: 'Any' }),
-        skills: new fields.ArrayField(
-            new fields.SchemaField({
-                skillNames: new fields.ArrayField(
-                    new fields.StringField({ ...requiredString, choices: Object.keys(appLang.Skills) }),
-                    { initial: [Object.keys(appLang.Skills)[0]] }
-                ),
-                andOr: new fields.StringField({ ...optionalString, choices: ['and', 'or'], initial: null })
-            }), { initial: [{ skillNames: [Object.keys(appLang.Skills)[0]] }] }
-        )
-    }
+  return {
+    type: new fields.StringField({
+      ...requiredString,
+      choices: Object.keys(appLang.PrerequisiteTypes),
+    }),
+    stat: new fields.StringField({
+      ...optionalString,
+      choices: Object.keys(appLang.Stat),
+      initial: Object.keys(appLang.Stat)[0],
+    }),
+    value: new fields.NumberField({ ...standardInteger, initial: 3 }),
+    spell: new fields.StringField({ ...optionalString, initial: "Any" }),
+    skills: new fields.ArrayField(
+      new fields.SchemaField({
+        skillNames: new fields.ArrayField(
+          new fields.StringField({
+            ...requiredString,
+            choices: Object.keys(appLang.Skills),
+          }),
+          { initial: [Object.keys(appLang.Skills)[0]] },
+        ),
+        andOr: new fields.StringField({
+          ...optionalString,
+          choices: ["and", "or"],
+          initial: null,
+        }),
+      }),
+      { initial: [{ skillNames: [Object.keys(appLang.Skills)[0]] }] },
+    ),
+  }
 }
 
 export type PerkSchema = ReturnType<typeof perkSchema> & BaseItemSchema
 
 export class PerkDataModel extends ItemDataModel<PerkSchema> {
-    public _sourceId?: string
-    public isRuleSelection?: boolean
+  public _sourceId?: string
+  public isRuleSelection?: boolean
 
-    static override defineSchema() {
-        return {
-            ...super.defineSchema(),
-            ...perkSchema()
-        }
+  static override defineSchema() {
+    return {
+      ...super.defineSchema(),
+      ...perkSchema(),
     }
+  }
 
-    subheader = (): CardSubHeaderValues[] => {
-        if (this.prerequisites.length === 0) return [{ label: appLang.PerkSheet.prereqLabel, value: appLang.FavorHinder.none }]
-        const values: CardSubHeaderValues[] = []
-        const spellReqs = perkSpellRerequisitesAsString(this)
-        const statReqs = perkStatPrerequisitesAsString(this)
-        const trainedReqs = perkTrainingPrerequisitesAsString(this)
-        if (spellReqs !== '') values.push({ label: appLang.PrerequisiteTypes.spell, value: spellReqs })
-        if (statReqs !== '') values.push({ label: appLang.PrerequisiteTypes.stat, value: statReqs })
-        if (trainedReqs !== '') values.push({ label: appLang.PrerequisiteTypes.trained, value: trainedReqs })
-        return values
-    }
-
+  subheader = (): CardSubHeaderValues[] => {
+    if (this.prerequisites.length === 0)
+      return [
+        {
+          label: appLang.PerkSheet.prereqLabel,
+          value: appLang.FavorHinder.none,
+        },
+      ]
+    const values: CardSubHeaderValues[] = []
+    const spellReqs = perkSpellRerequisitesAsString(this)
+    const statReqs = perkStatPrerequisitesAsString(this)
+    const trainedReqs = perkTrainingPrerequisitesAsString(this)
+    if (spellReqs !== "")
+      values.push({ label: appLang.PrerequisiteTypes.spell, value: spellReqs })
+    if (statReqs !== "")
+      values.push({ label: appLang.PrerequisiteTypes.stat, value: statReqs })
+    if (trainedReqs !== "")
+      values.push({
+        label: appLang.PrerequisiteTypes.trained,
+        value: trainedReqs,
+      })
+    return values
+  }
 }
 
 export function addPerkPrerequisite(perk: Item & { system: PerkDataModel }) {
-    perk.update(
-        {
-            'system.prerequisites': [
-                ...perk.system.prerequisites,
-                { type: Object.keys(appLang.PrerequisiteTypes)[0] }
-            ]
-        } as Record<string, any[]>)
+  perk.update({
+    "system.prerequisites": [
+      ...perk.system.prerequisites,
+      { type: Object.keys(appLang.PrerequisiteTypes)[0] },
+    ],
+  } as Record<string, any[]>)
 }
 
-export function deletePerkPrerequisite(perk: Item & { system: PerkDataModel }, deleteIndex: number) {
-    perk.update({
-        'system.prerequisites': [
-            ...perk.system.prerequisites.filter((_, index) => index !== deleteIndex)
-        ]
-    } as Record<string, any>)
+export function deletePerkPrerequisite(
+  perk: Item & { system: PerkDataModel },
+  deleteIndex: number,
+) {
+  perk.update({
+    "system.prerequisites": [
+      ...perk.system.prerequisites.filter((_, index) => index !== deleteIndex),
+    ],
+  } as Record<string, any>)
 }
 
 export const perkSpellRerequisitesAsString = (perk: PerkDataModel): string => {
-    const spellPrereqs = perk.prerequisites?.filter(it => it.type === 'spell')?.map(p => p.spell)
-    return removeLastComma(spellPrereqs?.join(", "), ' &')
+  const spellPrereqs = perk.prerequisites
+    ?.filter((it) => it.type === "spell")
+    ?.map((p) => p.spell)
+  return removeLastComma(spellPrereqs?.join(", "), " &")
 }
 
 export const perkStatPrerequisitesAsString = (perk: PerkDataModel): string => {
-    const statPrereqs = perk.prerequisites?.filter(it => it.type === 'stat')
-    const stats: string[] = []
-    statPrereqs?.forEach(s => {
-        stats.push(`${appLang.Stat[s.stat].abbr} ${s.value}+`)
-    })
-    return stats?.join(" | ") ?? ''
+  const statPrereqs = perk.prerequisites?.filter((it) => it.type === "stat")
+  const stats: string[] = []
+  statPrereqs?.forEach((s) => {
+    stats.push(`${appLang.Stat[s.stat].abbr} ${s.value}+`)
+  })
+  return stats?.join(" | ") ?? ""
 }
 
-export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string => {
-    const trainedPrereqs = perk.prerequisites?.filter(it => it.type === 'trained')
-    const trainings: string[] = []
-    trainedPrereqs?.forEach(p => {
-        p.skills.forEach(s => {
-            if (s.skillNames.length === 1) {
-                trainings.push(appLang.Skills[s.skillNames[0]].name)
-            }
-            else {
-                const skillNames: string[] = []
-                s.skillNames.forEach(n => {
-                    skillNames.push(appLang.Skills[n].name)
-                })
-                trainings.push(removeLastComma(skillNames.join(', '), andOrToSymbol(s.andOr)))
-            }
+export const perkTrainingPrerequisitesAsString = (
+  perk: PerkDataModel,
+): string => {
+  const trainedPrereqs = perk.prerequisites?.filter(
+    (it) => it.type === "trained",
+  )
+  const trainings: string[] = []
+  trainedPrereqs?.forEach((p) => {
+    p.skills.forEach((s) => {
+      if (s.skillNames.length === 1) {
+        trainings.push(appLang.Skills[s.skillNames[0]].name)
+      }
+      else {
+        const skillNames: string[] = []
+        s.skillNames.forEach((n) => {
+          skillNames.push(appLang.Skills[n].name)
         })
+        trainings.push(
+          removeLastComma(skillNames.join(", "), andOrToSymbol(s.andOr)),
+        )
+      }
     })
-    return trainings.join(' & ') ?? ''
+  })
+  return trainings.join(" & ") ?? ""
 }
 
 /**
@@ -120,43 +164,45 @@ export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string =
  * @returns
  */
 export const isEligibleForPerk = (
-    stats: ReturnType<typeof statsSchema>,
-    trainings: string[],
-    spells: string[],
-    perk: PerkDataModel,
-    options?: { ignoreStats?: boolean, ignoreTrainings?: boolean }
+  stats: ReturnType<typeof statsSchema>,
+  trainings: string[],
+  spells: string[],
+  perk: PerkDataModel,
+  options?: { ignoreStats?: boolean; ignoreTrainings?: boolean },
 ): boolean => {
-    let isEligible = true
+  let isEligible = true
 
-    for (const pre of perk.prerequisites) {
+  for (const pre of perk.prerequisites) {
+    if (!isEligible) continue
+
+    if (pre.type === "stat") {
+      if (options?.ignoreStats) continue
+      isEligible = stats[pre.stat] >= (pre.value ?? 2)
+    }
+    else if (pre.type === "trained") {
+      if (options?.ignoreTrainings) continue
+      for (const skill of pre.skills) {
         if (!isEligible) continue
 
-        if (pre.type === 'stat') {
-            if (options?.ignoreStats) continue
-            isEligible = stats[pre.stat] >= (pre.value ?? 2)
+        if (skill.skillNames.length === 1) {
+          isEligible = trainings.includes(pre.skills[0].skillNames[0])
         }
-        else if (pre.type === 'trained') {
-            if (options?.ignoreTrainings) continue
-            for (const skill of pre.skills) {
-                if (!isEligible) continue
-
-                if (skill.skillNames.length === 1) {
-                    isEligible = trainings.includes(pre.skills[0].skillNames[0])
-                }
-                else if (skill.andOr === 'and') {
-                    isEligible = skill.skillNames.every(sk => trainings.includes(sk))
-                }
-                else if (skill.andOr === 'or') {
-                    isEligible = skill.skillNames.some(sk => trainings.includes(sk))
-                }
-            }
+        else if (skill.andOr === "and") {
+          isEligible = skill.skillNames.every((sk) => trainings.includes(sk))
         }
-        else if (pre.type === 'spell') {
-            isEligible = (pre.spell.toUpperCase() === 'ANY' && spells.length > 0) || spells.includes(pre.spell)
+        else if (skill.andOr === "or") {
+          isEligible = skill.skillNames.some((sk) => trainings.includes(sk))
         }
+      }
     }
+    else if (pre.type === "spell") {
+      isEligible =
+        (pre.spell.toUpperCase() === "ANY" && spells.length > 0) ||
+        spells.includes(pre.spell)
+    }
+  }
 
-    return isEligible
+  return isEligible
 }
 
 /**
@@ -165,14 +211,21 @@ export const isEligibleForPerk = (
  * @param perk
  * @returns
  */
-export const isTrainingPrereqMatch = (trainings: string[], perk: PerkDataModel): boolean => {
-    let isMatch = false
-    const trainingPrereqs = perk.prerequisites.filter(pre => pre.type === 'training')
+export const isTrainingPrereqMatch = (
+  trainings: string[],
+  perk: PerkDataModel,
+): boolean => {
+  let isMatch = false
+  const trainingPrereqs = perk.prerequisites.filter(
+    (pre) => pre.type === "training",
+  )
 
-    for (const training of trainings) {
-        if (isMatch) continue
-        isMatch = trainingPrereqs.some(pr => pr.skills.flatMap(sk => sk.skillNames).includes(training))
-    }
+  for (const training of trainings) {
+    if (isMatch) continue
+    isMatch = trainingPrereqs.some((pr) =>
+      pr.skills.flatMap((sk) => sk.skillNames).includes(training),
+    )
+  }
 
-    return isMatch
+  return isMatch
 }

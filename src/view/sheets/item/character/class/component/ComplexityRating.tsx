@@ -1,33 +1,40 @@
 import { Star } from "lucide-react"
 
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import { appLang } from "../../../../../../utils/lang"
+import { appLang } from "../../../../../../util/lang"
 import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
 import { ClassSheetLabel } from "./ClassSheetText"
 
-export const ComplexityRating = ({ item }: { item: Item & { system: ClassDataModel } }) => {
-    const { isEditMode } = useEditMode()
-    return (
-        <div className="flex gap-x-1 items-center">
-            <ClassSheetLabel text={`${appLang.ClassSheet.labelComplexity}:`} />
-            <div className="flex gap-x-0.25">
-                {
-                    Array.from({ length: 5 }, (_, index) => (
-                        <Star key={index} size={12}
-                            className={`
+export const ComplexityRating = ({
+  item,
+}: {
+  item: Item & { system: ClassDataModel }
+}) => {
+  const { isEditMode } = useEditMode()
+  return (
+    <div className="flex gap-x-1 items-center">
+      <ClassSheetLabel text={`${appLang.ClassSheet.labelComplexity}:`} />
+      <div className="flex gap-x-0.25">
+        {Array.from({ length: 5 }, (_, index) => (
+          <Star
+            key={index}
+            size={12}
+            className={`
                                 text-text-header-tertiary
-                                ${index < item.system.complexity ? 'fill-text-header-tertiary' : ''}
-                                ${isEditMode ? 'cursor-pointer' : ''}
+                                ${index < item.system.complexity ? "fill-text-header-tertiary" : ""}
+                                ${isEditMode ? "cursor-pointer" : ""}
                             `}
-                            onClick={() => {
-                                if (isEditMode) {
-                                    item.update({ 'system.complexity': index + 1 } as Record<string, number>)
-                                }
-                            }}
-                        />
-                    ))
-                }
-            </div>
-        </div>
-    )
+            onClick={() => {
+              if (isEditMode) {
+                item.update({ "system.complexity": index + 1 } as Record<
+                  string,
+                  number
+                >)
+              }
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  )
 }

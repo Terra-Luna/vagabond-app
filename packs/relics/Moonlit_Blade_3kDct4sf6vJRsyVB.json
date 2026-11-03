@@ -36,14 +36,9 @@
       "style": "HH",
       "state": "H"
     },
-    "properties": [
-      "cleave",
-      "keen"
-    ],
+    "properties": ["cleave", "keen"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ],
+    "skills": ["melee"],
     "copperValue": 8000,
     "relicPowers": [
       {
@@ -108,9 +103,7 @@
           "label": "Weapon +3",
           "modifiers": [
             {
-              "selector": [
-                "system.damage.dice.modifier"
-              ],
+              "selector": ["system.damage.dice.modifier"],
               "value": 3
             }
           ],

@@ -1,13 +1,19 @@
 import { Check, Clover, MinusCircle, Shield, Swords, X } from "lucide-react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { canRollForActor, getFollowerContext } from "../../../model/actor/util/NpcDataModelUtil"
-import { appLang } from "../../../utils/lang"
+import {
+  canRollForActor,
+  getFollowerContext,
+} from "../../../model/actor/util/npc-data-model-util"
+import { appLang } from "../../../util/lang"
 import { DamageRollsComponent } from "../../../view/chat/component/DamageRollsComponent"
 import { SkillCheckDiceComponent } from "../../../view/chat/SkillCheckChatCard"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
-import { CtxMenuItem, useContextMenu } from "../../../view/component/ContextMenu"
+import {
+  CtxMenuItem,
+  useContextMenu,
+} from "../../../view/component/ContextMenu"
 import { ClearHeader, Divider, Header } from "../../../view/component/Header"
 import { CardSubHeader } from "../../../view/component/SkillCard"
 import { Tooltip } from "../../../view/component/Tooltip"
@@ -15,300 +21,499 @@ import { AdversaryAttack, SavingThrowType } from "../../engine/AdversaryAttack"
 import { AdversaryComboAttack } from "../../engine/AdversaryComboAttack"
 import { DamageRoll } from "../../engine/roll/DamageRoll"
 import { SkillCheckResult } from "../../engine/roll/SkillCheck"
-import { TargetDisplayItem, useAdversaryAttack, useAdversaryAttackSaveHandlers, useAdversaryAttackTargets } from "../hooks"
+import {
+  TargetDisplayItem,
+  useAdversaryAttack,
+  useAdversaryAttackSaveHandlers,
+  useAdversaryAttackTargets,
+} from "../hooks"
 import { ImbuedDamageSections } from "./ImbueComponents"
 
-export const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAttack, setRevision: any }) => {
-    const { targets, ownedTargets, handleSave, handleRerollSave, handleSetSaveOutcome, handleRemoveTarget } = useAdversaryAttack(attack, setRevision)
-    const unownedTargets = targets.filter(target => !ownedTargets.some(ownedTarget => ownedTarget.id === target.id))
-
-    return (
-        <div className="flex flex-col gap-1">
-            {attack.skillCheck?.result &&
-                <div>
-                    <Header title={`${attack.skillCheck.result.skillName} Check`} textLeft={true} />
-                    <CardSubHeader showRightBorder={false} values={[
-                        { label: appLang.Combat.difficulty, value: attack.skillCheck.difficulty?.toString() },
-                        { label: appLang.Combat.result, value: attack.skillCheck.result.outcome }
-                    ]} />
-                    <div className="flex flex-col justify-center items-center">
-                        <SkillCheckDiceComponent
-                            d20s={attack.skillCheck.result.d20s}
-                            d6s={attack.skillCheck.result.d6s}
-                            modifier={attack.skillCheck.modifier}
-                            favHinder={attack.skillCheck.favorHinder}
-                            bonusDice={[]}
-                        />
-                    </div>
-                </div>
-            }
-            <AttackDamageAndSavesSection
-                attack={attack}
-                damageRoll={attack.damageRoll}
-                saveTypes={attack.saveTypes}
-                saveResults={attack.saveResults}
-                defenseArmorBonuses={attack.defenseArmorBonuses}
-                rerolledSaveTargetIds={attack.rerolledSaveTargetIds}
-                isResolved={attack.isResolved}
-                ownedTargets={ownedTargets}
-                unownedTargets={unownedTargets}
-                onRollSave={handleSave}
-                onRerollSave={handleRerollSave}
-                onSetSaveOutcome={handleSetSaveOutcome}
-                onRemoveTarget={handleRemoveTarget}
-            />
-            <ImbuedDamageSections attack={attack} />
-        </div>
-    )
-}
-
-export const AdversaryComboAttackComponent = ({ attack, setRevision }: { attack: AdversaryComboAttack, setRevision: any }) => {
-    const { targets, ownedTargets } = useAdversaryAttackTargets(attack)
-    const unownedTargets = targets.filter(target => !ownedTargets.some(ownedTarget => ownedTarget.id === target.id))
-
-    return (
-        <div className={`flex flex-col gap-2`}>
-            {/* ONE DAMAGE + SAVES SECTION PER COMBO ACTION */}
-            {attack.subAttacks.map((sub, index) => (
-                <AdversaryComboAttackSection attack={attack} sub={sub} subIndex={index} ownedTargets={ownedTargets} unownedTargets={unownedTargets} setRevision={setRevision} key={index} />
-            ))}
-        </div>
-    )
-}
-
-const AdversaryComboAttackSection = ({ attack, sub, subIndex, ownedTargets, unownedTargets, setRevision }: {
-    attack: AdversaryComboAttack
-    sub: AdversaryComboAttack["subAttacks"][number]
-    subIndex: number
-    ownedTargets: TargetDisplayItem[]
-    unownedTargets: TargetDisplayItem[]
-    setRevision: any
+export const AdversaryAttackComponent = ({
+  attack,
+  setRevision,
+}: {
+  attack: AdversaryAttack
+  setRevision: any
 }) => {
-    const { handleSave, handleRerollSave, handleSetSaveOutcome, handleRemoveTarget } = useAdversaryAttackSaveHandlers(attack, setRevision, subIndex)
+  const {
+    targets,
+    ownedTargets,
+    handleSave,
+    handleRerollSave,
+    handleSetSaveOutcome,
+    handleRemoveTarget,
+  } = useAdversaryAttack(attack, setRevision)
+  const unownedTargets = targets.filter(
+    (target) =>
+      !ownedTargets.some((ownedTarget) => ownedTarget.id === target.id),
+  )
 
-    return (
-        <div className={`${tableBorderRounded} bg-context-menu-fill/25`}>
-            <AttackDamageAndSavesSection
-                attack={sub}
-                title={sub.name}
-                damageRoll={sub.damageRoll}
-                saveTypes={sub.saveTypes}
-                saveResults={sub.saveResults}
-                defenseArmorBonuses={sub.defenseArmorBonuses}
-                rerolledSaveTargetIds={sub.rerolledSaveTargetIds}
-                isResolved={attack.isResolved}
-                ownedTargets={ownedTargets}
-                unownedTargets={unownedTargets}
-                onRollSave={handleSave}
-                onRerollSave={handleRerollSave}
-                onSetSaveOutcome={handleSetSaveOutcome}
-                onRemoveTarget={handleRemoveTarget}
+  return (
+    <div className="flex flex-col gap-1">
+      {attack.skillCheck?.result && (
+        <div>
+          <Header
+            title={`${attack.skillCheck.result.skillName} Check`}
+            textLeft={true}
+          />
+          <CardSubHeader
+            showRightBorder={false}
+            values={[
+              {
+                label: appLang.Combat.difficulty,
+                value: attack.skillCheck.difficulty?.toString(),
+              },
+              {
+                label: appLang.Combat.result,
+                value: attack.skillCheck.result.outcome,
+              },
+            ]}
+          />
+          <div className="flex flex-col justify-center items-center">
+            <SkillCheckDiceComponent
+              d20s={attack.skillCheck.result.d20s}
+              d6s={attack.skillCheck.result.d6s}
+              modifier={attack.skillCheck.modifier}
+              favHinder={attack.skillCheck.favorHinder}
+              bonusDice={[]}
             />
+          </div>
         </div>
-    )
+      )}
+      <AttackDamageAndSavesSection
+        attack={attack}
+        damageRoll={attack.damageRoll}
+        saveTypes={attack.saveTypes}
+        saveResults={attack.saveResults}
+        defenseArmorBonuses={attack.defenseArmorBonuses}
+        rerolledSaveTargetIds={attack.rerolledSaveTargetIds}
+        isResolved={attack.isResolved}
+        ownedTargets={ownedTargets}
+        unownedTargets={unownedTargets}
+        onRollSave={handleSave}
+        onRerollSave={handleRerollSave}
+        onSetSaveOutcome={handleSetSaveOutcome}
+        onRemoveTarget={handleRemoveTarget}
+      />
+      <ImbuedDamageSections attack={attack} />
+    </div>
+  )
+}
+
+export const AdversaryComboAttackComponent = ({
+  attack,
+  setRevision,
+}: {
+  attack: AdversaryComboAttack
+  setRevision: any
+}) => {
+  const { targets, ownedTargets } = useAdversaryAttackTargets(attack)
+  const unownedTargets = targets.filter(
+    (target) =>
+      !ownedTargets.some((ownedTarget) => ownedTarget.id === target.id),
+  )
+
+  return (
+    <div className={`flex flex-col gap-2`}>
+      {/* ONE DAMAGE + SAVES SECTION PER COMBO ACTION */}
+      {attack.subAttacks.map((sub, index) => (
+        <AdversaryComboAttackSection
+          attack={attack}
+          sub={sub}
+          subIndex={index}
+          ownedTargets={ownedTargets}
+          unownedTargets={unownedTargets}
+          setRevision={setRevision}
+          key={index}
+        />
+      ))}
+    </div>
+  )
+}
+
+const AdversaryComboAttackSection = ({
+  attack,
+  sub,
+  subIndex,
+  ownedTargets,
+  unownedTargets,
+  setRevision,
+}: {
+  attack: AdversaryComboAttack
+  sub: AdversaryComboAttack["subAttacks"][number]
+  subIndex: number
+  ownedTargets: TargetDisplayItem[]
+  unownedTargets: TargetDisplayItem[]
+  setRevision: any
+}) => {
+  const {
+    handleSave,
+    handleRerollSave,
+    handleSetSaveOutcome,
+    handleRemoveTarget,
+  } = useAdversaryAttackSaveHandlers(attack, setRevision, subIndex)
+
+  return (
+    <div className={`${tableBorderRounded} bg-context-menu-fill/25`}>
+      <AttackDamageAndSavesSection
+        attack={sub}
+        title={sub.name}
+        damageRoll={sub.damageRoll}
+        saveTypes={sub.saveTypes}
+        saveResults={sub.saveResults}
+        defenseArmorBonuses={sub.defenseArmorBonuses}
+        rerolledSaveTargetIds={sub.rerolledSaveTargetIds}
+        isResolved={attack.isResolved}
+        ownedTargets={ownedTargets}
+        unownedTargets={unownedTargets}
+        onRollSave={handleSave}
+        onRerollSave={handleRerollSave}
+        onSetSaveOutcome={handleSetSaveOutcome}
+        onRemoveTarget={handleRemoveTarget}
+      />
+    </div>
+  )
 }
 
 /**
  * GM context menu options for manually setting targets' saving throws or removing them from the attack.
  */
 const AttackDamageAndSavesSection = ({
-    attack, title, damageRoll, saveTypes, saveResults, defenseArmorBonuses,
-    rerolledSaveTargetIds, isResolved, ownedTargets, unownedTargets,
-    onRollSave, onRerollSave, onSetSaveOutcome, onRemoveTarget
+  attack,
+  title,
+  damageRoll,
+  saveTypes,
+  saveResults,
+  defenseArmorBonuses,
+  rerolledSaveTargetIds,
+  isResolved,
+  ownedTargets,
+  unownedTargets,
+  onRollSave,
+  onRerollSave,
+  onSetSaveOutcome,
+  onRemoveTarget,
 }: {
-    attack?: any
-    title?: string
-    damageRoll: DamageRoll | undefined
-    saveTypes: SavingThrowType[]
-    saveResults: Record<string, SkillCheckResult>
-    defenseArmorBonuses?: Record<string, number>
-    rerolledSaveTargetIds: string[]
-    isResolved: boolean
-    ownedTargets: TargetDisplayItem[]
-    unownedTargets: TargetDisplayItem[]
-    onRollSave: (targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent) => void
-    onRerollSave: (targetId: string) => void
-    onSetSaveOutcome: (targetId: string, outcome: string) => void
-    onRemoveTarget: (targetId: string) => void
+  attack?: any
+  title?: string
+  damageRoll: DamageRoll | undefined
+  saveTypes: SavingThrowType[]
+  saveResults: Record<string, SkillCheckResult>
+  defenseArmorBonuses?: Record<string, number>
+  rerolledSaveTargetIds: string[]
+  isResolved: boolean
+  ownedTargets: TargetDisplayItem[]
+  unownedTargets: TargetDisplayItem[]
+  onRollSave: (
+    targetId: string,
+    saveType: SavingThrowType,
+    clickEvent?: React.MouseEvent,
+  ) => void
+  onRerollSave: (targetId: string) => void
+  onSetSaveOutcome: (targetId: string, outcome: string) => void
+  onRemoveTarget: (targetId: string) => void
 }) => {
-    const showDamage = (damageRoll?.result?.total ?? 0) > 0
+  const showDamage = (damageRoll?.result?.total ?? 0) > 0
 
-    const { onCtxMenu, ContextMenu } = useContextMenu()
+  const { onCtxMenu, ContextMenu } = useContextMenu()
 
-    /**
-     * Options for a GM to manually set targets' saving throws in instances that the target
-     * is a Hero's pet or a player who is playing via pen & paper.
-     * >> Critical, Success, Failure
-     */
-    const gmContextMenu = (targetId: string): CtxMenuItem[] => [
-        { icon: Swords, label: appLang.RollResult.crit, action: () => onSetSaveOutcome(targetId, appLang.RollResult.crit) },
-        { icon: Check, label: appLang.RollResult.success, action: () => onSetSaveOutcome(targetId, appLang.RollResult.success) },
-        { icon: X, label: appLang.RollResult.failure, action: () => onSetSaveOutcome(targetId, appLang.RollResult.failure) },
-        { icon: MinusCircle, label: "Remove", isDestructive: true, action: () => onRemoveTarget(targetId) }
-    ]
+  /**
+   * Options for a GM to manually set targets' saving throws in instances that the target
+   * is a Hero's pet or a player who is playing via pen & paper.
+   * >> Critical, Success, Failure
+   */
+  const gmContextMenu = (targetId: string): CtxMenuItem[] => [
+    {
+      icon: Swords,
+      label: appLang.RollResult.crit,
+      action: () => onSetSaveOutcome(targetId, appLang.RollResult.crit),
+    },
+    {
+      icon: Check,
+      label: appLang.RollResult.success,
+      action: () => onSetSaveOutcome(targetId, appLang.RollResult.success),
+    },
+    {
+      icon: X,
+      label: appLang.RollResult.failure,
+      action: () => onSetSaveOutcome(targetId, appLang.RollResult.failure),
+    },
+    {
+      icon: MinusCircle,
+      label: "Remove",
+      isDestructive: true,
+      action: () => onRemoveTarget(targetId),
+    },
+  ]
 
-    const targetCtxMenuHandler = (targetId: string) => game.user?.isActiveGM && !isResolved
-        ? (e: React.MouseEvent) => onCtxMenu(e, gmContextMenu(targetId))
-        : undefined
+  const targetCtxMenuHandler = (targetId: string) =>
+    game.user?.isActiveGM && !isResolved
+      ? (e: React.MouseEvent) => onCtxMenu(e, gmContextMenu(targetId))
+      : undefined
 
-    return (
-        <div className="flex flex-col gap-1 pb-1">
-            <ContextMenu />
+  return (
+    <div className="flex flex-col gap-1 pb-1">
+      <ContextMenu />
 
-            {/* SAVING THROW BUTTONS */}
-            {saveTypes.length > 0 && (ownedTargets.length > 0 || unownedTargets.length > 0) &&
-                <div className="px-1">
-                    <ClearHeader title={appLang.Combat.targets} />
-                    <div className="flex flex-col gap-1 mt-1 px-1">
+      {/* SAVING THROW BUTTONS */}
+      {saveTypes.length > 0 &&
+        (ownedTargets.length > 0 || unownedTargets.length > 0) && (
+          <div className="px-1">
+            <ClearHeader title={appLang.Combat.targets} />
+            <div className="flex flex-col gap-1 mt-1 px-1">
+              {/* OWNED TARGETS */}
+              {ownedTargets.map((target) => {
+                const result = saveResults[target.id]
+                const follower = getFollowerContext(target.token?.actor)
+                const canRollSave =
+                  !isResolved &&
+                  !result &&
+                  (target.token?.actor?.system instanceof HeroDataModel ||
+                    !!follower) &&
+                  canRollForActor(target.token?.actor)
+                const luckActor = follower?.hero ?? target.token?.actor
+                const luck =
+                  (luckActor?.system as HeroDataModel | undefined)?.statuses
+                    ?.counters?.luck ?? 0
+                const canReroll =
+                  !isResolved &&
+                  result?.outcome === appLang.RollResult.failure &&
+                  !rerolledSaveTargetIds.includes(target.id) &&
+                  luck > 0 &&
+                  canRollForActor(target.token?.actor)
 
-                        {/* OWNED TARGETS */}
-                        {ownedTargets.map(target => {
-                            const result = saveResults[target.id]
-                            const follower = getFollowerContext(target.token?.actor)
-                            const canRollSave = !isResolved && !result && (target.token?.actor?.system instanceof HeroDataModel || !!follower) && canRollForActor(target.token?.actor)
-                            const luckActor = follower?.hero ?? target.token?.actor
-                            const luck = (luckActor?.system as HeroDataModel | undefined)?.statuses?.counters?.luck ?? 0
-                            const canReroll = !isResolved && result?.outcome === appLang.RollResult.failure &&
-                                !rerolledSaveTargetIds.includes(target.id) && luck > 0 &&
-                                canRollForActor(target.token?.actor)
+                const canDefend =
+                  canRollSave &&
+                  !follower &&
+                  (
+                    target.token?.actor?.system as HeroDataModel
+                  )?.defenseWeapons()?.length > 0 &&
+                  saveTypes.includes("reflex")
+                const targetSaveTypes: SavingThrowType[] = follower
+                  ? [saveTypes[0]]
+                  : canDefend && !saveTypes.includes("defend")
+                    ? [...saveTypes, "defend"]
+                    : saveTypes
 
-                            const canDefend = canRollSave && !follower && (target.token?.actor?.system as HeroDataModel)?.defenseWeapons()?.length > 0 && saveTypes.includes('reflex')
-                            const targetSaveTypes: SavingThrowType[] = follower
-                                ? [saveTypes[0]]
-                                : canDefend && !saveTypes.includes('defend')
-                                    ? [...saveTypes, 'defend']
-                                    : saveTypes
+                const defenseBonus =
+                  result?.outcome === appLang.RollResult.failure
+                    ? undefined
+                    : defenseArmorBonuses?.[target.id]
 
-                            const defenseBonus = result?.outcome === appLang.RollResult.failure ? undefined : defenseArmorBonuses?.[target.id]
+                return (
+                  <div
+                    key={target.id}
+                    title={
+                      game.user?.isActiveGM ? "R-click for options" : undefined
+                    }
+                    onContextMenu={targetCtxMenuHandler(target.id)}
+                    className="flex min-w-0 items-center gap-1 whitespace-nowrap font-normal"
+                  >
+                    {result ? (
+                      <div className="flex shrink-0 items-center gap-1">
+                        {/* SAVING THROW OUTCOME */}
+                        <SaveOutcomeIcon
+                          result={result}
+                          isFollower={!!follower}
+                        />
+                        <p>
+                          {result.isManual
+                            ? "(GM)"
+                            : defenseBonus !== undefined
+                              ? `(${defenseBonus})`
+                              : `(${result.total} vs. ${result.difficulty})`}
+                        </p>
 
+                        {/* REROLL BUTTON */}
+                        {canReroll && (
+                          <Tooltip
+                            title={"Fluke"}
+                            content={"Spend a Luck to reroll"}
+                          >
+                            <UtilityButton
+                              onClick={(e) => {
+                                e?.stopPropagation()
+                                e?.preventDefault()
+                                onRerollSave(target.id)
+                              }}
+                            >
+                              <Clover size={14} className="text-ic-luck" />
+                            </UtilityButton>
+                          </Tooltip>
+                        )}
+                      </div>
+                    ) : (
+                      canRollSave && (
+                        <div className="flex gap-1">
+                          {/* ROLL SAVE BUTTONS */}
+                          {targetSaveTypes.map((saveType) => {
+                            const label = follower
+                              ? (appLang.Skills[follower.skill]?.name ??
+                                follower.skill)
+                              : (appLang.Saves[saveType]?.name ?? saveType)
                             return (
-                                <div key={target.id}
-                                    title={game.user?.isActiveGM ? "R-click for options" : undefined}
-                                    onContextMenu={targetCtxMenuHandler(target.id)}
-                                    className="flex min-w-0 items-center gap-1 whitespace-nowrap font-normal"
+                              <Tooltip
+                                key={saveType}
+                                title={`${label} Save`}
+                                content={
+                                  follower
+                                    ? (appLang.Skills[follower.skill]
+                                        ?.description ?? "")
+                                    : `${appLang.HeroSheet[`${saveType}_tooltip`]}<br>${appLang.HeroSheet.skills_tooltip}`
+                                }
+                              >
+                                <UtilityButton
+                                  onClick={(e) => {
+                                    e?.stopPropagation()
+                                    e?.preventDefault()
+                                    onRollSave(target.id, saveType, e)
+                                  }}
                                 >
-                                    {result
-                                        ? <div className="flex shrink-0 items-center gap-1">
-                                            {/* SAVING THROW OUTCOME */}
-                                            <SaveOutcomeIcon result={result} isFollower={!!follower} />
-                                            <p>{result.isManual
-                                                ? "(GM)"
-                                                : defenseBonus !== undefined
-                                                    ? `(${defenseBonus})`
-                                                    : `(${result.total} vs. ${result.difficulty})`}</p>
-
-                                            {/* REROLL BUTTON */}
-                                            {canReroll &&
-                                                <Tooltip title={"Fluke"} content={"Spend a Luck to reroll"}>
-                                                    <UtilityButton onClick={(e) => {
-                                                        e?.stopPropagation()
-                                                        e?.preventDefault()
-                                                        onRerollSave(target.id)
-                                                    }}>
-                                                        <Clover size={14} className="text-ic-luck" />
-                                                    </UtilityButton>
-                                                </Tooltip>
-                                            }
-                                        </div>
-                                        : canRollSave && <div className="flex gap-1">
-                                            {/* ROLL SAVE BUTTONS */}
-                                            {targetSaveTypes.map(saveType => {
-                                                const label = follower
-                                                    ? (appLang.Skills[follower.skill]?.name ?? follower.skill)
-                                                    : (appLang.Saves[saveType]?.name ?? saveType)
-                                                return (
-                                                    <Tooltip key={saveType} title={`${label} Save`} content={follower ? (appLang.Skills[follower.skill]?.description ?? '') : `${appLang.HeroSheet[`${saveType}_tooltip`]}<br>${appLang.HeroSheet.skills_tooltip}`}>
-                                                        <UtilityButton onClick={(e) => {
-                                                            e?.stopPropagation()
-                                                            e?.preventDefault()
-                                                            onRollSave(target.id, saveType, e)
-                                                        }}>
-                                                            {label}
-                                                        </UtilityButton>
-                                                    </Tooltip>
-                                                )
-                                            })}
-                                        </div>
-                                    }
-                                    <div className="flex min-w-0 items-center gap-2">
-                                        <TargetPortrait target={target} />
-                                        <p className="min-w-0 truncate">{target.token?.name}</p>
-                                    </div>
-                                </div>
+                                  {label}
+                                </UtilityButton>
+                              </Tooltip>
                             )
-                        })}
-
-                        {/* UNOWNED TARGETS */}
-                        {ownedTargets.length > 0 && unownedTargets.length > 0 && <Divider />}
-                        <div className="grid grid-cols-2 gap-x-2 gap-y-1">
-                            {unownedTargets.map(target => {
-                                const result = saveResults[target.id]
-
-                                return (
-                                    <div key={target.id} onContextMenu={targetCtxMenuHandler(target.id)} className="flex min-w-0 items-center gap-2 font-normal">
-                                        <TargetPortrait target={target} result={result} />
-                                        <p className="min-w-0 truncate" title={target.token?.name}>{target.token?.name}</p>
-                                    </div>
-                                )
-                            })}
+                          })}
                         </div>
+                      )
+                    )}
+                    <div className="flex min-w-0 items-center gap-2">
+                      <TargetPortrait target={target} />
+                      <p className="min-w-0 truncate">{target.token?.name}</p>
                     </div>
-                </div>
-            }
+                  </div>
+                )
+              })}
 
-            {/* DAMAGE DISPLAY */}
-            {showDamage &&
-                <div>
-                    {title
-                        ? <ClearHeader title={title} />
-                        : <ClearHeader title={appLang.Combat.damage} />
-                    }
-                    <DamageRollsComponent attack={attack} />
-                </div>
-            }
+              {/* UNOWNED TARGETS */}
+              {ownedTargets.length > 0 && unownedTargets.length > 0 && (
+                <Divider />
+              )}
+              <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+                {unownedTargets.map((target) => {
+                  const result = saveResults[target.id]
+
+                  return (
+                    <div
+                      key={target.id}
+                      onContextMenu={targetCtxMenuHandler(target.id)}
+                      className="flex min-w-0 items-center gap-2 font-normal"
+                    >
+                      <TargetPortrait target={target} result={result} />
+                      <p
+                        className="min-w-0 truncate"
+                        title={target.token?.name}
+                      >
+                        {target.token?.name}
+                      </p>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+      {/* DAMAGE DISPLAY */}
+      {showDamage && (
+        <div>
+          {title ? (
+            <ClearHeader title={title} />
+          ) : (
+            <ClearHeader title={appLang.Combat.damage} />
+          )}
+          <DamageRollsComponent attack={attack} />
         </div>
-    )
+      )}
+    </div>
+  )
 }
 
-const TargetPortrait = ({ target, result }: { target: TargetDisplayItem, result?: SkillCheckResult }) => {
-    return (
-        <div className="relative h-[28px] w-[28px] shrink-0">
-            <img src={target.src} alt={target.token?.name} className="object-contain h-[28px] w-[28px]" />
-            <SaveOutcomeIcon result={result} overlay isFollower={!!getFollowerContext(target.token?.actor)} />
-        </div>
-    )
+const TargetPortrait = ({
+  target,
+  result,
+}: {
+  target: TargetDisplayItem
+  result?: SkillCheckResult
+}) => {
+  return (
+    <div className="relative h-[28px] w-[28px] shrink-0">
+      <img
+        src={target.src}
+        alt={target.token?.name}
+        className="object-contain h-[28px] w-[28px]"
+      />
+      <SaveOutcomeIcon
+        result={result}
+        overlay
+        isFollower={!!getFollowerContext(target.token?.actor)}
+      />
+    </div>
+  )
 }
 
-const SaveOutcomeIcon = ({ result, overlay = false, isFollower = false }: { result?: SkillCheckResult, overlay?: boolean, isFollower?: boolean }) => {
-    if (!result) return null
+const SaveOutcomeIcon = ({
+  result,
+  overlay = false,
+  isFollower = false,
+}: {
+  result?: SkillCheckResult
+  overlay?: boolean
+  isFollower?: boolean
+}) => {
+  if (!result) return null
 
-    const isFailure = result.outcome === appLang.RollResult.failure
-    const isSuccess = result.outcome === appLang.RollResult.success || result.outcome === appLang.RollResult.crit
-    const isDefense = !isFollower && result.skill !== 'reflex' && result.skill !== 'will' && result.skill !== 'endure'
-    const isSuccessfulDefense = isSuccess && isDefense
-    if (!isFailure && !isSuccess) return null
+  const isFailure = result.outcome === appLang.RollResult.failure
+  const isSuccess =
+    result.outcome === appLang.RollResult.success ||
+    result.outcome === appLang.RollResult.crit
+  const isDefense =
+    !isFollower &&
+    result.skill !== "reflex" &&
+    result.skill !== "will" &&
+    result.skill !== "endure"
+  const isSuccessfulDefense = isSuccess && isDefense
+  if (!isFailure && !isSuccess) return null
 
-    return (
-        <span className={`${overlay ? "absolute -right-1 top-2 rounded-full bg-context-menu-fill" : "relative"} flex h-4 w-4 shrink-0 items-center justify-center`}>
-            {isFailure
-                ? <Tooltip content={"Failure"}>
-                    {isDefense
-                        ? <Shield size={14} strokeWidth={3} className={`text-destructive-action fill-ic-armor-fill`} />
-                        : <X size={14} strokeWidth={3} className="text-destructive-action" />
-                    }
-                </Tooltip>
-                : isSuccessfulDefense
-                    ? <Tooltip content={`Successful Defense (${result?.total ?? 0} vs. ${result?.difficulty ?? 0})`}>
-                        <Shield size={14} strokeWidth={2} className={`text-ic-luck ${result?.outcome === "CRITICAL" ? "fill-ic-luck" : "fill-ic-armor-fill"}`} />
-                    </Tooltip>
-                    : result.outcome === appLang.RollResult.crit
-                        ? <Tooltip title={appLang.Combat.criticalSuccess} content={appLang.Combat.critSaveTooltip}>
-                            <Swords size={14} strokeWidth={2} className="text-ic-luck" />
-                        </Tooltip>
-                        : <Tooltip content={"Success"}>
-                            <Check size={14} strokeWidth={3} className="text-ic-luck" />
-                        </Tooltip>
-            }
-        </span>
-    )
+  return (
+    <span
+      className={`${overlay ? "absolute -right-1 top-2 rounded-full bg-context-menu-fill" : "relative"} flex h-4 w-4 shrink-0 items-center justify-center`}
+    >
+      {isFailure ? (
+        <Tooltip content={"Failure"}>
+          {isDefense ? (
+            <Shield
+              size={14}
+              strokeWidth={3}
+              className={`text-destructive-action fill-ic-armor-fill`}
+            />
+          ) : (
+            <X size={14} strokeWidth={3} className="text-destructive-action" />
+          )}
+        </Tooltip>
+      ) : isSuccessfulDefense ? (
+        <Tooltip
+          content={`Successful Defense (${result?.total ?? 0} vs. ${result?.difficulty ?? 0})`}
+        >
+          <Shield
+            size={14}
+            strokeWidth={2}
+            className={`text-ic-luck ${result?.outcome === "CRITICAL" ? "fill-ic-luck" : "fill-ic-armor-fill"}`}
+          />
+        </Tooltip>
+      ) : result.outcome === appLang.RollResult.crit ? (
+        <Tooltip
+          title={appLang.Combat.criticalSuccess}
+          content={appLang.Combat.critSaveTooltip}
+        >
+          <Swords size={14} strokeWidth={2} className="text-ic-luck" />
+        </Tooltip>
+      ) : (
+        <Tooltip content={"Success"}>
+          <Check size={14} strokeWidth={3} className="text-ic-luck" />
+        </Tooltip>
+      )}
+    </span>
+  )
 }

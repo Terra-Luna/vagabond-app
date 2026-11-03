@@ -270,9 +270,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "burning",
@@ -294,9 +292,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "burning",

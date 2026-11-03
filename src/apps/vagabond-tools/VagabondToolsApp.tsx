@@ -1,64 +1,67 @@
 import { Cog } from "lucide-react"
 import { createRoot } from "react-dom/client"
 
-import { getTheme } from "../../utils/foundryUtils"
-import { appLang } from "../../utils/lang"
-import { createStyleTag } from "../../utils/styleUtils"
+import { getTheme } from "../../util/foundry-util"
+import { appLang } from "../../util/lang"
+import { createStyleTag } from "../../util/style-util"
 import { PrimaryButton } from "../../view/component/Button"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { VagabondToolsAppView } from "./VagabondToolsAppView"
 
 export class VagabondToolsApp extends VagabondApplication {
+  constructor() {
+    super({
+      window: { title: appLang.VagabondTools.title },
+      position: { width: 400, top: 500, left: 18 },
+      Component: VagabondToolsAppView,
+    } as VagabondAppArgs)
+  }
 
-    constructor() {
-        super({
-            window: { title: appLang.VagabondTools.title },
-            position: { width: 400, top: 500, left: 18 },
-            Component: VagabondToolsAppView,
-        } as VagabondAppArgs)
+  static renderCanvasButton() {
+    if (!game.user?.isActiveGM) return
+
+    const playersElement = document.getElementById("players")
+    if (!playersElement) return
+
+    const parentElement = playersElement.parentElement
+    if (!parentElement) return
+
+    let hostElement = parentElement.querySelector(
+      "vagabond-ui-root",
+    ) as HTMLElement
+    let root = (hostElement as any)?._reactRoot
+
+    if (!hostElement) {
+      hostElement = document.createElement("div")
+      hostElement.id = "vagabond-ui-root"
+      hostElement.style.display = "flex"
+      hostElement.style.pointerEvents = "auto"
+
+      playersElement.before(hostElement)
+      const scaduRoot = hostElement.attachShadow({ mode: "open" })
+
+      scaduRoot.appendChild(createStyleTag())
+
+      const reactContainer = document.createElement("div")
+      scaduRoot.appendChild(reactContainer)
+
+      root = createRoot(reactContainer)
+      ;(hostElement as any)._reactRoot = root
     }
 
-    static renderCanvasButton() {
-        if (!game.user?.isActiveGM) return
-
-        const playersElement = document.getElementById("players")
-        if (!playersElement) return
-
-        const parentElement = playersElement.parentElement
-        if (!parentElement) return
-
-        let hostElement = parentElement.querySelector("vagabond-ui-root") as HTMLElement
-        let root = (hostElement as any)?._reactRoot
-
-        if (!hostElement) {
-            hostElement = document.createElement("div")
-            hostElement.id = "vagabond-ui-root"
-            hostElement.style.display = "flex"
-            hostElement.style.pointerEvents = "auto"
-
-            playersElement.before(hostElement)
-            const scaduRoot = hostElement.attachShadow({ mode: 'open' })
-
-            scaduRoot.appendChild(createStyleTag())
-
-            const reactContainer = document.createElement('div')
-            scaduRoot.appendChild(reactContainer)
-
-            root = createRoot(reactContainer);
-            (hostElement as any)._reactRoot = root
-        }
-
-        root.render(
-            <div className={`${getTheme()} app-themed-content flex w-50`}>
-                <PrimaryButton onClick={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    new VagabondToolsApp().render({ force: true })
-                }} icon={<Cog size={16} />}>
-                    Vagabond Tools
-                </PrimaryButton>
-            </div>
-        )
-    }
-
+    root.render(
+      <div className={`${getTheme()} app-themed-content flex w-50`}>
+        <PrimaryButton
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            new VagabondToolsApp().render({ force: true })
+          }}
+          icon={<Cog size={16} />}
+        >
+          Vagabond Tools
+        </PrimaryButton>
+      </div>,
+    )
+  }
 }

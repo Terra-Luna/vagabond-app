@@ -11,10 +11,7 @@
     "armor": {
       "rating": 0
     },
-    "senses": [
-      "blindsight",
-      "telepath"
-    ],
+    "senses": ["blindsight", "telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -208,16 +205,8 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "acid",
-            "cold",
-            "physical",
-            "poison",
-            "shock"
-          ],
-          "weaknesses": [
-            "fire"
-          ],
+          "immunities": ["acid", "cold", "physical", "poison", "shock"],
+          "weaknesses": ["fire"],
           "statusImmunities": [
             "berserk",
             "charmed",
@@ -293,9 +282,7 @@
           },
           "type": "poison"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "appliedEffects": [
           {
             "effect": "sickened",

@@ -10,10 +10,7 @@
     "armor": {
       "rating": 3
     },
-    "senses": [
-      "allsight",
-      "telepath"
-    ],
+    "senses": ["allsight", "telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -282,9 +279,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "sickened",

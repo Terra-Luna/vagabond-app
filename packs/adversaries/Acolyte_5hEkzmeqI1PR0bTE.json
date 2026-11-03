@@ -227,9 +227,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -252,9 +250,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false
       }
     ],

@@ -11,9 +11,7 @@
     "armor": {
       "rating": 0
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -208,14 +206,8 @@
           "perDieReduction": 0,
           "resistances": [],
           "immunities": [],
-          "weaknesses": [
-            "fire",
-            "poison",
-            "slash"
-          ],
-          "statusImmunities": [
-            "sickened"
-          ]
+          "weaknesses": ["fire", "poison", "slash"],
+          "statusImmunities": ["sickened"]
         },
         "out": {
           "melee": {},
@@ -295,9 +287,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "restrained",

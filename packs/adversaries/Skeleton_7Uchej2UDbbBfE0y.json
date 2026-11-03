@@ -204,14 +204,8 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "pierce",
-            "poison",
-            "slash"
-          ],
-          "weaknesses": [
-            "blunt"
-          ],
+          "immunities": ["pierce", "poison", "slash"],
+          "weaknesses": ["blunt"],
           "statusImmunities": [
             "fatigued",
             "sickened",
@@ -281,9 +275,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

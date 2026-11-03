@@ -12,9 +12,7 @@
         "label": "Flag",
         "level": 4,
         "value": true,
-        "selector": [
-          "flags.lethalprecision"
-        ],
+        "selector": ["flags.lethalprecision"],
         "toggleableEffect": false
       }
     ],

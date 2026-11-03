@@ -12,9 +12,7 @@
         "label": "Continual Self Polymorph",
         "level": 6,
         "value": true,
-        "selector": [
-          "modifiers.polymorph.continualSelf"
-        ],
+        "selector": ["modifiers.polymorph.continualSelf"],
         "toggleableEffect": false
       },
       {
@@ -23,9 +21,7 @@
         "label": "Relic Polymorph Attacks",
         "level": 6,
         "value": true,
-        "selector": [
-          "modifiers.polymorph.relicAttacks"
-        ]
+        "selector": ["modifiers.polymorph.relicAttacks"]
       }
     ],
     "level": 6,

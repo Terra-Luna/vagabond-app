@@ -40,14 +40,9 @@
       "style": "H",
       "state": "H"
     },
-    "properties": [
-      "keen"
-    ],
+    "properties": ["keen"],
     "material": "steel",
-    "skills": [
-      "brawl",
-      "finesse"
-    ]
+    "skills": ["brawl", "finesse"]
   },
   "effects": [],
   "folder": null,

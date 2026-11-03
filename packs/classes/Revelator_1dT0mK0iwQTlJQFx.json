@@ -26,17 +26,11 @@
         "label": "Training",
         "level": "1",
         "value": true,
-        "selector": [
-          "skills.melee.trained",
-          "skills.leadership.trained"
-        ]
+        "selector": ["skills.melee.trained", "skills.leadership.trained"]
       }
     ],
     "complexity": 3,
-    "keyStats": [
-      "might",
-      "presence"
-    ],
+    "keyStats": ["might", "presence"],
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.ImIcBC3E6UZcHsK4",
       "Compendium.vagabond-app.gear.Item.hug6ifnaIOy45vvj"

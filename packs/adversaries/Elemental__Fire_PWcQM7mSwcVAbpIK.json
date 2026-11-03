@@ -11,9 +11,7 @@
     "armor": {
       "rating": 4
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,11 +205,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "fire",
-            "physical_lt0",
-            "poison"
-          ],
+          "immunities": ["fire", "physical_lt0", "poison"],
           "weaknesses": [],
           "statusImmunities": [
             "fatigued",
@@ -283,9 +277,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "burning",

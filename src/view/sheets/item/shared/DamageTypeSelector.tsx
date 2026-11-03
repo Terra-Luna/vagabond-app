@@ -1,23 +1,35 @@
-import { appLang } from "../../../../utils/lang"
-import { createDropdownEntries } from "../../../../utils/localeUtils"
+import { appLang } from "../../../../util/lang"
+import { createDropdownEntries } from "../../../../util/locale-util"
 import { DamageTypeIcon } from "../../../component/DamageTypeIcon"
 import { CustomDropDown } from "../../../component/Dropdown"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../equip/component/ItemSheetLabelComponent"
 
-export const DamageTypeSelector = ({ item, path }: { item: Item, path: string }) => {
-    const { isEditMode } = useEditMode()
-    return (
-        <div>
-            <ItemSheetPropLabel label={appLang.ItemSheet.damageType} />
-            <div className="flex gap-x-1 items-center font-normal">
-                <CustomDropDown
-                    value={foundry.utils.getProperty(item, path) as string}
-                    options={createDropdownEntries(appLang.DamageTypes, true)}
-                    onChange={(e) => item.update({ [path]: e.target.value } as Record<string, string>)}
-                />
-                {!isEditMode && <DamageTypeIcon dmgType={foundry.utils.getProperty(item, path) as string} />}
-            </div>
-        </div>
-    )
+export const DamageTypeSelector = ({
+  item,
+  path,
+}: {
+  item: Item
+  path: string
+}) => {
+  const { isEditMode } = useEditMode()
+  return (
+    <div>
+      <ItemSheetPropLabel label={appLang.ItemSheet.damageType} />
+      <div className="flex gap-x-1 items-center font-normal">
+        <CustomDropDown
+          value={foundry.utils.getProperty(item, path) as string}
+          options={createDropdownEntries(appLang.DamageTypes, true)}
+          onChange={(e) =>
+            item.update({ [path]: e.target.value } as Record<string, string>)
+          }
+        />
+        {!isEditMode && (
+          <DamageTypeIcon
+            dmgType={foundry.utils.getProperty(item, path) as string}
+          />
+        )}
+      </div>
+    </div>
+  )
 }

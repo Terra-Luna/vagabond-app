@@ -3,47 +3,60 @@ import { ReactNode } from "react"
 import { HeroAttack } from "../../../combat/engine/HeroAttack"
 import { DiceRoll } from "../../../combat/engine/roll/DiceRoll"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { appLang } from "../../../utils/lang"
+import { appLang } from "../../../util/lang"
 import { RollPreset } from "../model/RollPreset"
 import { RollButton } from "./RollButton"
 
-export const RollPresetCard = ({ actor, preset, EditButton, TrashButton }: {
-    actor: Actor & { system: HeroDataModel },
-    preset: RollPreset,
-    EditButton: ReactNode,
-    TrashButton: ReactNode
+export const RollPresetCard = ({
+  actor,
+  preset,
+  EditButton,
+  TrashButton,
+}: {
+  actor: Actor & { system: HeroDataModel }
+  preset: RollPreset
+  EditButton: ReactNode
+  TrashButton: ReactNode
 }) => {
-    return (
-        <div className="flex px-2 py-1 border-t border-solid border-table-border">
-            {/* PRESET TITLE + DESCRIPTION */}
-            <div>
-                <div className="flex gap-x-1 text-base font-eskapade">
-                    {preset.title.length > 0 && <p className="font-bold">{`${preset.title}${preset.description.length > 0 ? ':' : ''}`}</p>}
-                    {preset.description.length > 0 && <p className={`${preset.title ? "" : "font-bold"}`}>{preset.description}</p>}
-                </div>
-
-                {/* PRESET METADATA GHOST TEXT */}
-                <div className="flex gap-x-1 text-xs text-text-tertiary font-paradigm italic -mt-1">
-                    <p>{`${appLang.Skills[preset.skill]?.name ?? appLang.Saves[preset.skill]?.name ?? ''},`}</p>
-                    <p>{`${preset.d20Count}d20,`}</p>
-                    <p>{`${preset.favorHinder !== 'none' ? appLang.FavorHinder[preset.favorHinder] + "," : ''}`}</p>
-                    <p>{`Crit: ${preset.critThreshold},`}</p>
-                    <p>{`${preset.damageRolls.map(r => new DiceRoll(r).toRollFormula()).join("+")}`}</p>
-                </div>
-            </div>
-
-            {/* ROLL | EDIT | DELETE BUTTONS */}
-            <div className="flex gap-x-4 items-center content-center ml-auto">
-                <div className="mr-2">
-                    <RollButton onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        HeroAttack.buildCustomRoll(actor, preset, e)
-                    }} />
-                </div>
-                {EditButton}
-                {TrashButton}
-            </div>
+  return (
+    <div className="flex px-2 py-1 border-t border-solid border-table-border">
+      {/* PRESET TITLE + DESCRIPTION */}
+      <div>
+        <div className="flex gap-x-1 text-base font-eskapade">
+          {preset.title.length > 0 && (
+            <p className="font-bold">{`${preset.title}${preset.description.length > 0 ? ":" : ""}`}</p>
+          )}
+          {preset.description.length > 0 && (
+            <p className={`${preset.title ? "" : "font-bold"}`}>
+              {preset.description}
+            </p>
+          )}
         </div>
-    )
+
+        {/* PRESET METADATA GHOST TEXT */}
+        <div className="flex gap-x-1 text-xs text-text-tertiary font-paradigm italic -mt-1">
+          <p>{`${appLang.Skills[preset.skill]?.name ?? appLang.Saves[preset.skill]?.name ?? ""},`}</p>
+          <p>{`${preset.d20Count}d20,`}</p>
+          <p>{`${preset.favorHinder !== "none" ? appLang.FavorHinder[preset.favorHinder] + "," : ""}`}</p>
+          <p>{`Crit: ${preset.critThreshold},`}</p>
+          <p>{`${preset.damageRolls.map((r) => new DiceRoll(r).toRollFormula()).join("+")}`}</p>
+        </div>
+      </div>
+
+      {/* ROLL | EDIT | DELETE BUTTONS */}
+      <div className="flex gap-x-4 items-center content-center ml-auto">
+        <div className="mr-2">
+          <RollButton
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              HeroAttack.buildCustomRoll(actor, preset, e)
+            }}
+          />
+        </div>
+        {EditButton}
+        {TrashButton}
+      </div>
+    </div>
+  )
 }

@@ -12,9 +12,7 @@
     "armor": {
       "rating": 0
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": ["blindsight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -148,16 +146,9 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "poison"
-          ],
-          "weaknesses": [
-            "fire"
-          ],
-          "statusImmunities": [
-            "sickened",
-            "suffocating"
-          ]
+          "immunities": ["poison"],
+          "weaknesses": ["fire"],
+          "statusImmunities": ["sickened", "suffocating"]
         },
         "out": {
           "melee": {},
@@ -210,9 +201,7 @@
           },
           "type": "cold"
         },
-        "saves": [
-          "endure"
-        ],
+        "saves": ["endure"],
         "recharge": "Cd4"
       },
       {
@@ -229,9 +218,7 @@
           },
           "type": "shock"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "recharge": "Cd4",
         "appliedEffects": [
           {

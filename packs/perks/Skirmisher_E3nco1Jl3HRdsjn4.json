@@ -12,9 +12,7 @@
         "label": "Speed Bonus",
         "level": 0,
         "value": 5,
-        "selector": [
-          "speed.turn"
-        ],
+        "selector": ["speed.turn"],
         "toggleableEffect": true
       }
     ],
@@ -26,9 +24,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "arcana"
-            ],
+            "skillNames": ["arcana"],
             "andOr": null
           }
         ]
@@ -40,9 +36,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "melee"
-            ],
+            "skillNames": ["melee"],
             "andOr": null
           }
         ]

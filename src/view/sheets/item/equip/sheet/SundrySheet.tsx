@@ -1,30 +1,58 @@
 import { SundryDataModel } from "../../../../../model/item/equip/SundryDataModel"
-import { appLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../util/lang"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { ItemToggleOption } from "../component/ItemToggleOption"
 
-export const SundrySheet = ({ item }: { item: Item & { system: SundryDataModel } }) => {
-    const { isEditMode } = useEditMode()
+export const SundrySheet = ({
+  item,
+}: {
+  item: Item & { system: SundryDataModel }
+}) => {
+  const { isEditMode } = useEditMode()
 
-    return (
-        <EquipmentSheetSubtypeBody>
-            <div className="flex gap-x-8">
-                <div>
-                    {isEditMode && <ItemToggleOption item={item} label={appLang.ItemSheet.equippable} path={"system.isEquippable"} />}
-                    {isEditMode && item.system.isEquippable &&
-                        <ItemToggleOption item={item} label={appLang.ItemSheet.wearable} path={"system.isWearable"} />
-                    }
-                </div>
-                {!item.system.lightSourceData?.isLightSource && <div>
-                    {isEditMode && <ItemToggleOption item={item} label={appLang.ItemSheet.consumable} path={"system.isConsumable"} />}
-                    {isEditMode && <ItemToggleOption item={item} label={appLang.ItemSheet.isRation} path={"system.isRation"} />}
-                </div>}
+  return (
+    <EquipmentSheetSubtypeBody>
+      <div className="flex gap-x-8">
+        <div>
+          {isEditMode && (
+            <ItemToggleOption
+              item={item}
+              label={appLang.ItemSheet.equippable}
+              path={"system.isEquippable"}
+            />
+          )}
+          {isEditMode && item.system.isEquippable && (
+            <ItemToggleOption
+              item={item}
+              label={appLang.ItemSheet.wearable}
+              path={"system.isWearable"}
+            />
+          )}
+        </div>
+        {!item.system.lightSourceData?.isLightSource && (
+          <div>
+            {isEditMode && (
+              <ItemToggleOption
+                item={item}
+                label={appLang.ItemSheet.consumable}
+                path={"system.isConsumable"}
+              />
+            )}
+            {isEditMode && (
+              <ItemToggleOption
+                item={item}
+                label={appLang.ItemSheet.isRation}
+                path={"system.isRation"}
+              />
+            )}
+          </div>
+        )}
 
-                {/* One-time configs for specific items... */}
-                {/* <ItemToggleOption item={item} label={appLang.ItemSheet.materials} path={"system.isMaterials"} />
+        {/* One-time configs for specific items... */}
+        {/* <ItemToggleOption item={item} label={appLang.ItemSheet.materials} path={"system.isMaterials"} />
                 <ItemToggleOption item={item} label={appLang.ItemSheet.alchtools} path={"system.isAlchemyTools"} /> */}
-            </div>
-        </EquipmentSheetSubtypeBody>
-    )
+      </div>
+    </EquipmentSheetSubtypeBody>
+  )
 }

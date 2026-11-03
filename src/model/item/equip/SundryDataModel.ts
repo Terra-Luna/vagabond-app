@@ -1,4 +1,4 @@
-import { fields } from "../../common/sharedSchemas"
+import { fields } from "../../common/shared-schemas"
 import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
 /**
@@ -6,22 +6,21 @@ import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
  * Eg.: magnifying glass, compass, books...
  */
 const sundrySchema = () => {
-    return {
-        isRation: new fields.BooleanField({ initial: false }),
-        isMaterials: new fields.BooleanField({ initial: false }),
-        isAlchemyTools: new fields.BooleanField({ initial: false }),
-        isWearable: new fields.BooleanField({ initial: false })
-    }
+  return {
+    isRation: new fields.BooleanField({ initial: false }),
+    isMaterials: new fields.BooleanField({ initial: false }),
+    isAlchemyTools: new fields.BooleanField({ initial: false }),
+    isWearable: new fields.BooleanField({ initial: false }),
+  }
 }
 
 export type SundrySchema = ReturnType<typeof sundrySchema> & EquipmentSchema
 
 export class SundryDataModel extends EquipmentDataModel<SundrySchema> {
-    static defineSchema() {
-        return {
-            ...super.defineSchema(),
-            ...sundrySchema()
-        }
+  static defineSchema() {
+    return {
+      ...super.defineSchema(),
+      ...sundrySchema(),
     }
-
+  }
 }

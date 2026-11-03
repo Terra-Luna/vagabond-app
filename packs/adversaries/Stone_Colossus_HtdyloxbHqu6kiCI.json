@@ -203,10 +203,7 @@
       },
       "damage": {
         "in": {
-          "immunities": [
-            "fire",
-            "poison"
-          ],
+          "immunities": ["fire", "poison"],
           "weaknesses": [],
           "statusImmunities": [
             "berserk",
@@ -280,9 +277,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Laser",
@@ -298,9 +293,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       }
     ],
     "combo": {

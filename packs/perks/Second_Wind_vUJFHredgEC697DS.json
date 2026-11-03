@@ -12,9 +12,7 @@
         "label": "Used this Shift",
         "level": 0,
         "value": false,
-        "selector": [
-          "flags.ruleToggle_vUJFHredgEC697DS"
-        ],
+        "selector": ["flags.ruleToggle_vUJFHredgEC697DS"],
         "toggleableEffect": true
       }
     ],
@@ -26,9 +24,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "arcana"
-            ],
+            "skillNames": ["arcana"],
             "andOr": null
           }
         ]
@@ -40,9 +36,7 @@
         "spell": "Any",
         "skills": [
           {
-            "skillNames": [
-              "brawl"
-            ],
+            "skillNames": ["brawl"],
             "andOr": null
           }
         ]

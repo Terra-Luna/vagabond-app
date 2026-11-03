@@ -207,10 +207,7 @@
           "resistances": [],
           "immunities": [],
           "weaknesses": [],
-          "statusImmunities": [
-            "charmed",
-            "unconscious"
-          ]
+          "statusImmunities": ["charmed", "unconscious"]
         },
         "out": {
           "melee": {},
@@ -287,9 +284,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "type": "melee",
         "range": "close"
       }

@@ -36,15 +36,9 @@
       "style": "H",
       "state": "H"
     },
-    "properties": [
-      "grapple",
-      "long",
-      "vicious"
-    ],
+    "properties": ["grapple", "long", "vicious"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ],
+    "skills": ["melee"],
     "copperValue": 4000,
     "relicPowers": [
       {

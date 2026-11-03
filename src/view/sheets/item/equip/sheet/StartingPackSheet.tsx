@@ -1,44 +1,62 @@
 import { Trash } from "lucide-react"
 import { useCallback } from "react"
 
-import { openItemSheet } from "../../../../../model/actor/type/Inventory"
+import { openItemSheet } from "../../../../../model/actor/schema/inventory"
 import { StartingPackDataModel } from "../../../../../model/item/equip/StartingPackDataModel"
 import { ItemsCache } from "../../../../../rules/util/ItemsCache"
-import { appLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../util/lang"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { ItemSheetProperty } from "../component/ItemSheetLabelComponent"
 
-export const StartingPackSheet = ({ item }: { item: Item & { system: StartingPackDataModel } }) => {
-    const { ContextMenu, onCtxMenu } = useContextMenu()
+export const StartingPackSheet = ({
+  item,
+}: {
+  item: Item & { system: StartingPackDataModel }
+}) => {
+  const { ContextMenu, onCtxMenu } = useContextMenu()
 
-    const deleteItem = useCallback(async (index: number) => {
-        const updatedItems = [...item.system.consolidatedItems]
-        updatedItems.splice(index, 1)
-        await item.update({ "system.items": updatedItems } as Record<string, any>)
-    }, [item])
+  const deleteItem = useCallback(
+    async (index: number) => {
+      const updatedItems = [...item.system.consolidatedItems]
+      updatedItems.splice(index, 1)
+      await item.update({ "system.items": updatedItems } as Record<string, any>)
+    },
+    [item],
+  )
 
-    return (
-        <EquipmentSheetSubtypeBody>
-            <div className="grid grid-cols-2 gap-x-4 items-start">
-                {item.system.consolidatedItems.map((it, index) => (
-                    <button key={index}
-                        onContextMenu={(e) => onCtxMenu(e, [
-                            { icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteItem(index), isDestructive: true }
-                        ])}
-                        onClick={() => {
-                            const target = ItemsCache.equipment().find(eq => eq.id === it.id || (eq as any)._id === it.id)
-                            if (target) {
-                                openItemSheet(target)
-                            }
-                        }} className="flex flex-col items-start space-y-1 w-full text-left cursor-pointer hover-glow">
-                        <ItemSheetProperty label={it.name} value={`(x ${it.qty})`} />
-                    </button>
-                ))}
-                
-                <ContextMenu />
+  return (
+    <EquipmentSheetSubtypeBody>
+      <div className="grid grid-cols-2 gap-x-4 items-start">
+        {item.system.consolidatedItems.map((it, index) => (
+          <button
+            key={index}
+            onContextMenu={(e) =>
+              onCtxMenu(e, [
+                {
+                  icon: Trash,
+                  label: appLang.ButtonActions.delete,
+                  action: () => deleteItem(index),
+                  isDestructive: true,
+                },
+              ])
+            }
+            onClick={() => {
+              const target = ItemsCache.equipment().find(
+                (eq) => eq.id === it.id || (eq as any)._id === it.id,
+              )
+              if (target) {
+                openItemSheet(target)
+              }
+            }}
+            className="flex flex-col items-start space-y-1 w-full text-left cursor-pointer hover-glow"
+          >
+            <ItemSheetProperty label={it.name} value={`(x ${it.qty})`} />
+          </button>
+        ))}
 
-            </div>
-        </EquipmentSheetSubtypeBody>
-    )
+        <ContextMenu />
+      </div>
+    </EquipmentSheetSubtypeBody>
+  )
 }

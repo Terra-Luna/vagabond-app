@@ -10,10 +10,7 @@
     "armor": {
       "rating": 4
     },
-    "senses": [
-      "darksight",
-      "telepath"
-    ],
+    "senses": ["darksight", "telepath"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,11 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "cold",
-            "physical_lt0",
-            "poison"
-          ],
+          "immunities": ["cold", "physical_lt0", "poison"],
           "weaknesses": [],
           "statusImmunities": [
             "charmed",
@@ -283,9 +276,7 @@
           },
           "type": "none"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "appliedEffects": [
           {
             "effect": "charmed",
@@ -307,9 +298,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Bite",
@@ -325,9 +314,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ]
+        "saves": ["reflex"]
       },
       {
         "name": "Vampire's Curse",
@@ -343,9 +330,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "endure"
-        ]
+        "saves": ["endure"]
       }
     ],
     "combo": {
@@ -365,9 +350,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 2
         },
         {
@@ -384,9 +367,7 @@
             },
             "type": "physical"
           },
-          "saves": [
-            "reflex"
-          ],
+          "saves": ["reflex"],
           "comboCount": 1
         }
       ],

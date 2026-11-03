@@ -1,50 +1,57 @@
 import { MessageSquareText } from "lucide-react"
 
-import { appLang } from "../../../../utils/lang"
-import { getId } from "../../../../utils/modelUtil"
+import { appLang } from "../../../../util/lang"
+import { getId } from "../../../../util/model-util"
 import { sendVagabondChatCard } from "../../../chat/ChatCardSerializer"
-import { CtxMenuItem,useContextMenu } from "../../../component/ContextMenu"
+import { CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
 
-export const ItemPortraitComponent = ({ item, size = 56, className, disableCtxMenu }: {
-    item: Item, size?: number, className?: string, disableCtxMenu?: boolean
+export const ItemPortraitComponent = ({
+  item,
+  size = 56,
+  className,
+  disableCtxMenu,
+}: {
+  item: Item
+  size?: number
+  className?: string
+  disableCtxMenu?: boolean
 }) => {
-    const { onCtxMenu, ContextMenu } = useContextMenu()
-    const { imageEditCtxMenuItems } = useImageEdit(item)
+  const { onCtxMenu, ContextMenu } = useContextMenu()
+  const { imageEditCtxMenuItems } = useImageEdit(item)
 
-    const contextMenuItems: CtxMenuItem[] = []
-    contextMenuItems.push(
-        {
-            icon: MessageSquareText,
-            label: appLang.HeroSheet.Inventory.ctxChat,
-            action: () => sendVagabondChatCard(
-                item.parent,
-                "ItemChatCard",
-                {
-                    actorId: item.parent?.id ?? '',
-                    itemId: getId(item),
-                    itemName: item.name
-                }
-            )
-        },
-        ...imageEditCtxMenuItems
-    )
+  const contextMenuItems: CtxMenuItem[] = []
+  contextMenuItems.push(
+    {
+      icon: MessageSquareText,
+      label: appLang.HeroSheet.Inventory.ctxChat,
+      action: () =>
+        sendVagabondChatCard(item.parent, "ItemChatCard", {
+          actorId: item.parent?.id ?? "",
+          itemId: getId(item),
+          itemName: item.name,
+        }),
+    },
+    ...imageEditCtxMenuItems,
+  )
 
-    return (
-        <div>
-            {item.img == null ? <></> :
-                <div className={`${className ? className : 'mt-0.5 mb-1 mr-2'}`}>
-                    <img
-                        className={`object-contain border border-solid border-text-header-primary rounded-sm`}
-                        width={size}
-                        height={size}
-                        src={item.img}
-                        alt={''}
-                        onContextMenu={(e) => onCtxMenu(e, contextMenuItems)}
-                    />
-                    {!disableCtxMenu && <ContextMenu />}
-                </div>
-            }
+  return (
+    <div>
+      {item.img == null ? (
+        <></>
+      ) : (
+        <div className={`${className ? className : "mt-0.5 mb-1 mr-2"}`}>
+          <img
+            className={`object-contain border border-solid border-text-header-primary rounded-sm`}
+            width={size}
+            height={size}
+            src={item.img}
+            alt={""}
+            onContextMenu={(e) => onCtxMenu(e, contextMenuItems)}
+          />
+          {!disableCtxMenu && <ContextMenu />}
         </div>
-    )
+      )}
+    </div>
+  )
 }

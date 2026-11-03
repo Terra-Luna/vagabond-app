@@ -13,17 +13,17 @@ import { SkillCheckChatCard } from "../chat/SkillCheckChatCard"
 import { TrackerUpdateChatCard } from "../chat/TrackerUpdateChatCard"
 
 export const ComponentRegistry = {
-    "AbilityChatCard": AbilityChatCard,
-    "BindRelicRequestChatCard": BindRelicRequestChatCard,
-    "CountdownRollChatCard": CountdownRollChatCard,
-    "DamageRolls": DamageRollsComponent,
-    "DiceRoll": DiceRollComponent,
-    "DieIcon": DieIcon,
-    "InlineRollChatCard": InlineRollChatCard,
-    "InteractiveAttackChatCard": InteractiveAttackChatCard,
-    "ItemChatCard": ItemChatCard,
-    "PolymorphRequestChatCard": PolymorphRequestChatCard,
-    "SkillCheckChatCard": SkillCheckChatCard,
-    "SpellCastChatCard": SpellAttackInfoComponent,
-    "TrackerUpdateChatCard": TrackerUpdateChatCard
+  AbilityChatCard: AbilityChatCard,
+  BindRelicRequestChatCard: BindRelicRequestChatCard,
+  CountdownRollChatCard: CountdownRollChatCard,
+  DamageRolls: DamageRollsComponent,
+  DiceRoll: DiceRollComponent,
+  DieIcon: DieIcon,
+  InlineRollChatCard: InlineRollChatCard,
+  InteractiveAttackChatCard: InteractiveAttackChatCard,
+  ItemChatCard: ItemChatCard,
+  PolymorphRequestChatCard: PolymorphRequestChatCard,
+  SkillCheckChatCard: SkillCheckChatCard,
+  SpellCastChatCard: SpellAttackInfoComponent,
+  TrackerUpdateChatCard: TrackerUpdateChatCard,
 } as const

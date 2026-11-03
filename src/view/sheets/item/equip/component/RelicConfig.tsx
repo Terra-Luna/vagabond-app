@@ -2,162 +2,312 @@ import { Diamond, Plus } from "lucide-react"
 import { useMemo, useState } from "react"
 
 import { RelicPowerProcessor } from "../../../../../apps/vagabond-tools/relic/RelicPowerProcessor"
-import { RelicPower, RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPowers"
-import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
-import { appLang } from "../../../../../utils/lang"
+import {
+  RelicPower,
+  RelicPowers,
+} from "../../../../../apps/vagabond-tools/relic/RelicPowers"
+import {
+  EquipmentDataModel,
+  EquipmentSchema,
+} from "../../../../../model/item/equip/EquipmentDataModel"
+import { appLang } from "../../../../../util/lang"
 import { tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { Option, Select } from "../../../../component/Dropdown"
-import { FoundryHotkeyBlocker } from "../../../../component/FoundryHotkeyBlocker"
 import { IconOnlyButton } from "../../../../component/IconOnlyButton"
 import { TrashButton } from "../../../../component/TrashButton"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
+import { FoundryHotkeyBlocker } from "../../../../wrappers/FoundryHotkeyBlocker"
 
-export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
-    
-    const { isEditMode } = useEditMode()
-    const relics = useMemo(() => RelicPowers.get(item.type), [])
-    
-    const categories = useMemo(() => [
-        ...Object.values(
-            relics.reduce((cats, r) => {
-                cats[r.category.value] = { value: r.category.value, label: r.category.label }
-                return cats
-            }, {})
-        )
-    ], [relics]) as { value: string, label: string }[]
+export const RelicConfig = ({
+  item,
+}: {
+  item: Item & { system: EquipmentDataModel<EquipmentSchema> }
+}) => {
+  const { isEditMode } = useEditMode()
+  const relics = useMemo(() => RelicPowers.get(item.type), [])
 
-    const filteredRelics = (category: string): RelicPower[] => {
-        return relics.filter(r => r.category.value === category)
-    }
+  const categories = useMemo(
+    () => [
+      ...Object.values(
+        relics.reduce((cats, r) => {
+          cats[r.category.value] = {
+            value: r.category.value,
+            label: r.category.label,
+          }
+          return cats
+        }, {}),
+      ),
+    ],
+    [relics],
+  ) as { value: string; label: string }[]
 
-    return (<>
-        {isEditMode && <div className="flex flex-col gap-y-1 items-stretch w-full mb-2">
-            <CollapsibleSection title={appLang.ButtonActions.relic} startCollapsed={true} content={
-                <div className="flex flex-col gap-1 w-full">
+  const filteredRelics = (category: string): RelicPower[] => {
+    return relics.filter((r) => r.category.value === category)
+  }
 
-                    {/* ACTIVE POWERS */}
-                    <div className="flex flex-wrap gap-1 mt-0.5 w-full">
-                        {item.system.relicPowers?.map(relic => (
-                            <div key={relic.id} className="flex flex-col items-center gap-0.5">
-                                <RelicCard item={item} relic={relic} />
-                                {RelicPowerProcessor.getRelicAppliedEffects([relic as RelicPower])
-                                    .some(fx => fx.effect === 'burning') && <RelicDamageTypeSelect item={item} relic={relic as RelicPower} />}
-                                {RelicPowerProcessor.hasBeingTypeChoice(relic as RelicPower) && <RelicBeingTypeSelect item={item} relic={relic as RelicPower} />}
-                                {RelicPowerProcessor.isResistance(relic as RelicPower) && <RelicResistanceSelect item={item} relic={relic as RelicPower} />}
-                                {RelicPowerProcessor.isNiche(relic as RelicPower) && <RelicNicheInput item={item} relic={relic as RelicPower} />}
-                            </div>
-                        ))}
+  return (
+    <>
+      {isEditMode && (
+        <div className="flex flex-col gap-y-1 items-stretch w-full mb-2">
+          <CollapsibleSection
+            title={appLang.ButtonActions.relic}
+            startCollapsed={true}
+            content={
+              <div className="flex flex-col gap-1 w-full">
+                {/* ACTIVE POWERS */}
+                <div className="flex flex-wrap gap-1 mt-0.5 w-full">
+                  {item.system.relicPowers?.map((relic) => (
+                    <div
+                      key={relic.id}
+                      className="flex flex-col items-center gap-0.5"
+                    >
+                      <RelicCard item={item} relic={relic} />
+                      {RelicPowerProcessor.getRelicAppliedEffects([
+                        relic as RelicPower,
+                      ]).some((fx) => fx.effect === "burning") && (
+                        <RelicDamageTypeSelect
+                          item={item}
+                          relic={relic as RelicPower}
+                        />
+                      )}
+                      {RelicPowerProcessor.hasBeingTypeChoice(
+                        relic as RelicPower,
+                      ) && (
+                        <RelicBeingTypeSelect
+                          item={item}
+                          relic={relic as RelicPower}
+                        />
+                      )}
+                      {RelicPowerProcessor.isResistance(
+                        relic as RelicPower,
+                      ) && (
+                        <RelicResistanceSelect
+                          item={item}
+                          relic={relic as RelicPower}
+                        />
+                      )}
+                      {RelicPowerProcessor.isNiche(relic as RelicPower) && (
+                        <RelicNicheInput
+                          item={item}
+                          relic={relic as RelicPower}
+                        />
+                      )}
                     </div>
+                  ))}
+                </div>
 
-                    {/* LIST OF RELIC POWERS */}
-                    {categories.map((cat, index) => (
-                        <div key={index} className="flex flex-col gap-y-2 w-full">
-
-                            {/* RELICS LISTED BY CATEGORY */}
-                            <CollapsibleSection title={cat.label} useClearHeader={true} startCollapsed={true} content={
-                                <div className="flex flex-wrap gap-1 justify-center w-full mt-1 text-lg text-text-primary font-eskapade font-normal">
-                                    {/* TOGGLEABLE RELIC INFO CARD */}
-                                    {filteredRelics(cat.value).map(relic => (
-                                        <RelicCard key={relic.id} item={item} relic={relic} />
-                                    ))}
-                                </div>
-                            } />
+                {/* LIST OF RELIC POWERS */}
+                {categories.map((cat, index) => (
+                  <div key={index} className="flex flex-col gap-y-2 w-full">
+                    {/* RELICS LISTED BY CATEGORY */}
+                    <CollapsibleSection
+                      title={cat.label}
+                      useClearHeader={true}
+                      startCollapsed={true}
+                      content={
+                        <div className="flex flex-wrap gap-1 justify-center w-full mt-1 text-lg text-text-primary font-eskapade font-normal">
+                          {/* TOGGLEABLE RELIC INFO CARD */}
+                          {filteredRelics(cat.value).map((relic) => (
+                            <RelicCard
+                              key={relic.id}
+                              item={item}
+                              relic={relic}
+                            />
+                          ))}
                         </div>
-                    ))}
-                </div>
-            } />
-        </div>}
-    </>)
-}
-
-const RelicDamageTypeSelect = ({ item, relic }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower }) => {
-    const excluded = ["none", "mana", "silvered", "coldiron", "adamant", "fatigue"]
-    const options = Object.keys(appLang.DamageTypes).filter(it => !excluded.includes(it))
-    const current = RelicPowerProcessor.getRelicAppliedEffects([relic])[0]?.damageType ?? ''
-
-    return (
-        <Select value={current} onChange={e => RelicPowerProcessor.setRelicDamageType(item, relic, e.target.value)}>
-            <Option value="">{`Weapon (${appLang.DamageTypes[(item.system as any).damage?.type] ?? '-'})`}</Option>
-            {options.map(it => <Option key={it} value={it}>{appLang.DamageTypes[it]}</Option>)}
-        </Select>
-    )
-}
-
-const RelicResistanceSelect = ({ item, relic }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower }) => {
-    const excluded = ["none", "mana", "fatigue"]
-    const options = Object.keys(appLang.DamageTypes).filter(it => !excluded.includes(it))
-
-    return (
-        <Select value={relic.power.damageType ?? ''} onChange={e => RelicPowerProcessor.setRelicResistanceType(item, relic, e.target.value)}>
-            <Option value="">Select Damage Type</Option>
-            {options.map(it => <Option key={it} value={it}>{appLang.DamageTypes[it]}</Option>)}
-        </Select>
-    )
-}
-
-const RelicBeingTypeSelect = ({ item, relic }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower }) => {
-    const isSubtype = RelicPowerProcessor.usesBeingSubtype(relic)
-    const options = Object.entries(isSubtype ? appLang.BeingSubtypes : appLang.BeingTypes).filter(([key]) => key !== 'none')
-    const selected = relic.power.beingTypes?.length ? relic.power.beingTypes : ['']
-    const save = (types: string[]) => RelicPowerProcessor.setRelicBeingTypes(item, relic, types)
-
-    return (
-        <div className="flex flex-col items-stretch gap-0.5">
-            {selected.map((type, index) => (
-                <div key={index} className="flex items-center gap-x-1">
-                    <Select value={type} onChange={e => save(selected.map((it, i) => i === index ? e.target.value : it))}>
-                        <Option value="">{isSubtype ? "Select Being Subtype" : "Select Being Type"}</Option>
-                        {options.map(([key, label]) => <Option key={key} value={key}>{label as string}</Option>)}
-                    </Select>
-                    <TrashButton onClick={() => save(selected.filter((_, i) => i !== index))} />
-                </div>
-            ))}
-            <IconOnlyButton Icon={Plus} size={18} title="Add" className="self-start" onClick={() => save([...selected, ''])} />
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+            }
+          />
         </div>
-    )
+      )}
+    </>
+  )
+}
+
+const RelicDamageTypeSelect = ({
+  item,
+  relic,
+}: {
+  item: Item & { system: EquipmentDataModel<EquipmentSchema> }
+  relic: RelicPower
+}) => {
+  const excluded = [
+    "none",
+    "mana",
+    "silvered",
+    "coldiron",
+    "adamant",
+    "fatigue",
+  ]
+  const options = Object.keys(appLang.DamageTypes).filter(
+    (it) => !excluded.includes(it),
+  )
+  const current =
+    RelicPowerProcessor.getRelicAppliedEffects([relic])[0]?.damageType ?? ""
+
+  return (
+    <Select
+      value={current}
+      onChange={(e) =>
+        RelicPowerProcessor.setRelicDamageType(item, relic, e.target.value)
+      }
+    >
+      <Option value="">{`Weapon (${appLang.DamageTypes[(item.system as any).damage?.type] ?? "-"})`}</Option>
+      {options.map((it) => (
+        <Option key={it} value={it}>
+          {appLang.DamageTypes[it]}
+        </Option>
+      ))}
+    </Select>
+  )
+}
+
+const RelicResistanceSelect = ({
+  item,
+  relic,
+}: {
+  item: Item & { system: EquipmentDataModel<EquipmentSchema> }
+  relic: RelicPower
+}) => {
+  const excluded = ["none", "mana", "fatigue"]
+  const options = Object.keys(appLang.DamageTypes).filter(
+    (it) => !excluded.includes(it),
+  )
+
+  return (
+    <Select
+      value={relic.power.damageType ?? ""}
+      onChange={(e) =>
+        RelicPowerProcessor.setRelicResistanceType(item, relic, e.target.value)
+      }
+    >
+      <Option value="">Select Damage Type</Option>
+      {options.map((it) => (
+        <Option key={it} value={it}>
+          {appLang.DamageTypes[it]}
+        </Option>
+      ))}
+    </Select>
+  )
+}
+
+const RelicBeingTypeSelect = ({
+  item,
+  relic,
+}: {
+  item: Item & { system: EquipmentDataModel<EquipmentSchema> }
+  relic: RelicPower
+}) => {
+  const isSubtype = RelicPowerProcessor.usesBeingSubtype(relic)
+  const options = Object.entries(
+    isSubtype ? appLang.BeingSubtypes : appLang.BeingTypes,
+  ).filter(([key]) => key !== "none")
+  const selected = relic.power.beingTypes?.length
+    ? relic.power.beingTypes
+    : [""]
+  const save = (types: string[]) =>
+    RelicPowerProcessor.setRelicBeingTypes(item, relic, types)
+
+  return (
+    <div className="flex flex-col items-stretch gap-0.5">
+      {selected.map((type, index) => (
+        <div key={index} className="flex items-center gap-x-1">
+          <Select
+            value={type}
+            onChange={(e) =>
+              save(selected.map((it, i) => (i === index ? e.target.value : it)))
+            }
+          >
+            <Option value="">
+              {isSubtype ? "Select Being Subtype" : "Select Being Type"}
+            </Option>
+            {options.map(([key, label]) => (
+              <Option key={key} value={key}>
+                {label as string}
+              </Option>
+            ))}
+          </Select>
+          <TrashButton
+            onClick={() => save(selected.filter((_, i) => i !== index))}
+          />
+        </div>
+      ))}
+      <IconOnlyButton
+        Icon={Plus}
+        size={18}
+        title="Add"
+        className="self-start"
+        onClick={() => save([...selected, ""])}
+      />
+    </div>
+  )
 }
 
 // Display-only text; saved on blur so the item isn't updated on every keystroke.
-const RelicNicheInput = ({ item, relic }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower }) => {
-    const saved = relic.power.beingTypes?.[0] ?? ''
-    const [text, setText] = useState(saved)
-    return (
-        <FoundryHotkeyBlocker>
-            <input
-                type="text"
-                value={text}
-                placeholder="Being type"
-                autoComplete="off"
-                className={`w-28 text-sm text-text-secondary font-paradigm font-normal italic px-1 ${tableBorderRounded}`}
-                onChange={e => setText(e.target.value)}
-                onBlur={() => {
-                    if (text !== saved) RelicPowerProcessor.setRelicBeingTypes(item, relic, [text])
-                }}
-            />
-        </FoundryHotkeyBlocker>
-    )
+const RelicNicheInput = ({
+  item,
+  relic,
+}: {
+  item: Item & { system: EquipmentDataModel<EquipmentSchema> }
+  relic: RelicPower
+}) => {
+  const saved = relic.power.beingTypes?.[0] ?? ""
+  const [text, setText] = useState(saved)
+  return (
+    <FoundryHotkeyBlocker>
+      <input
+        type="text"
+        value={text}
+        placeholder="Being type"
+        autoComplete="off"
+        className={`w-28 text-sm text-text-secondary font-paradigm font-normal italic px-1 ${tableBorderRounded}`}
+        onChange={(e) => setText(e.target.value)}
+        onBlur={() => {
+          if (text !== saved)
+            RelicPowerProcessor.setRelicBeingTypes(item, relic, [text])
+        }}
+      />
+    </FoundryHotkeyBlocker>
+  )
 }
 
 const RelicCard = ({ item, relic }) => {
-    return (
-        <button
-            key={relic.id}
-            title={`${relic.description}${relic.bound ? `\n(Bound)` : ""}`}
-            className={buttonAnimation}
-            onClick={async () => await RelicPowerProcessor.toggleRelicEffect(item, relic)}
-        >
-            <div className={`
+  return (
+    <button
+      key={relic.id}
+      title={`${relic.description}${relic.bound ? `\n(Bound)` : ""}`}
+      className={buttonAnimation}
+      onClick={async () =>
+        await RelicPowerProcessor.toggleRelicEffect(item, relic)
+      }
+    >
+      <div
+        className={`
                 flex flex-col justify-center text-center p-1 ${tableBorderRounded} hover-glow
-                ${item.system.relicPowers.some(p => p.id === relic.id) ? 'bg-context-menu-fill' : ''}
-            `}>
-                <div className="flex gap-x-1">
-                    {relic.bound && <Diamond size={8} className="text-text-header-tertiary fill-text-header-tertiary" />}
-                    <p className="text-base">{RelicPowerProcessor.getFormattedRelicName(relic)}</p>
-                </div>
-                <p className="text-xs font-paradigm font-normal italic">{relic.goldValue}g</p>
-            </div>
-        </button>
-    )
+                ${item.system.relicPowers.some((p) => p.id === relic.id) ? "bg-context-menu-fill" : ""}
+            `}
+      >
+        <div className="flex gap-x-1">
+          {relic.bound && (
+            <Diamond
+              size={8}
+              className="text-text-header-tertiary fill-text-header-tertiary"
+            />
+          )}
+          <p className="text-base">
+            {RelicPowerProcessor.getFormattedRelicName(relic)}
+          </p>
+        </div>
+        <p className="text-xs font-paradigm font-normal italic">
+          {relic.goldValue}g
+        </p>
+      </div>
+    </button>
+  )
 }

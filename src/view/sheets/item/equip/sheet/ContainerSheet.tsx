@@ -1,11 +1,20 @@
 import { Undo } from "lucide-react"
 
-import type { ActorDataModel, BaseActorSchema } from "../../../../../model/actor/ActorDataModel"
-import { sortedItems } from "../../../../../model/actor/type/Inventory"
-import { ContainerDataModel, itemsInContainer } from "../../../../../model/item/equip/ContainerDataModel"
-import type { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
-import { containerItemContextMenuItems } from "../../../../../utils/heroInventoryUtil"
-import { appLang } from "../../../../../utils/lang"
+import type {
+  ActorDataModel,
+  BaseActorSchema,
+} from "../../../../../model/actor/ActorDataModel"
+import { sortedItems } from "../../../../../model/actor/schema/inventory"
+import {
+  ContainerDataModel,
+  itemsInContainer,
+} from "../../../../../model/item/equip/ContainerDataModel"
+import type {
+  EquipmentDataModel,
+  EquipmentSchema,
+} from "../../../../../model/item/equip/EquipmentDataModel"
+import { containerItemContextMenuItems } from "../../../../../util/inventory-util"
+import { appLang } from "../../../../../util/lang"
 import { SecondaryButton } from "../../../../component/Button"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -14,54 +23,83 @@ import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { ItemSheetProperty } from "../component/ItemSheetLabelComponent"
 
-export const ContainerSheet = ({ item, hideButtons }: { item: Item & { system: ContainerDataModel }, hideButtons?: boolean }) => {
-    const { isEditMode } = useEditMode()
-    const owner = item?.actor?.system as ActorDataModel<BaseActorSchema> | null
-    const contents = sortedItems<EquipmentDataModel<EquipmentSchema>>(itemsInContainer(item.system).map(it => it?.system))
+export const ContainerSheet = ({
+  item,
+  hideButtons,
+}: {
+  item: Item & { system: ContainerDataModel }
+  hideButtons?: boolean
+}) => {
+  const { isEditMode } = useEditMode()
+  const owner = item?.actor?.system as ActorDataModel<BaseActorSchema> | null
+  const contents = sortedItems<EquipmentDataModel<EquipmentSchema>>(
+    itemsInContainer(item.system).map((it) => it?.system),
+  )
 
-    return (
-        <EquipmentSheetSubtypeBody>
-            <div className="mb-2">
-                <div className="flex gap-x-2 mb-2 -mx-1.5">
-                    {isEditMode && <ItemSheetProperty
-                        label={appLang.ItemSheet.capacity}
-                        value={<EditableTextField
-                            boundValue={item.system.capacity.toString()}
-                            updateProps={{ object: item, path: ['capacity'] }}
-                            placeholder={"2"}
-                        />}
-                    />}
+  return (
+    <EquipmentSheetSubtypeBody>
+      <div className="mb-2">
+        <div className="flex gap-x-2 mb-2 -mx-1.5">
+          {isEditMode && (
+            <ItemSheetProperty
+              label={appLang.ItemSheet.capacity}
+              value={
+                <EditableTextField
+                  boundValue={item.system.capacity.toString()}
+                  updateProps={{ object: item, path: ["capacity"] }}
+                  placeholder={"2"}
+                />
+              }
+            />
+          )}
 
-                    <CapacityGauge label={appLang.ItemSheet.capacity} capacityInfo={{
-                        bulk: item.system.capacity - item.system.emptySlots,
-                        capacity: item.system.capacity,
-                        isOverEncumbered: false
-                    }} />
-
-                </div>
-                {contents.length === 0
-                    ? <p className="text-text-tertiary italic">{appLang.ItemSheet.drag}</p>
-                    : <div className="space-y-2 text-text-primary font-normal">
-                        <div className="-mx-1.5">
-                            <InventoryItemsTable
-                                actor={owner}
-                                items={contents}
-                                contextMenuItems={(targetItem) => containerItemContextMenuItems(owner, targetItem, item.system)}
-                                showEquipColumn={false}
-                            />
-                        </div>
-
-                        {/* EXTRACT ALL BUTTON */}
-                        {!hideButtons && <div className="w-full mb-12">
-                            <div className="float-right">
-                                <SecondaryButton onClick={() => item.update({ 'system.itemIds': [] } as Record<string, string[]>)}>
-                                    <div className="flex gap-x-2 items-center">{<Undo />}{"Extract all"}</div>
-                                </SecondaryButton>
-                            </div>
-                        </div>}
-                    </div>
+          <CapacityGauge
+            label={appLang.ItemSheet.capacity}
+            capacityInfo={{
+              bulk: item.system.capacity - item.system.emptySlots,
+              capacity: item.system.capacity,
+              isOverEncumbered: false,
+            }}
+          />
+        </div>
+        {contents.length === 0 ? (
+          <p className="text-text-tertiary italic">{appLang.ItemSheet.drag}</p>
+        ) : (
+          <div className="space-y-2 text-text-primary font-normal">
+            <div className="-mx-1.5">
+              <InventoryItemsTable
+                actor={owner}
+                items={contents}
+                contextMenuItems={(targetItem) =>
+                  containerItemContextMenuItems(owner, targetItem, item.system)
                 }
+                showEquipColumn={false}
+              />
             </div>
-        </EquipmentSheetSubtypeBody>
-    )
+
+            {/* EXTRACT ALL BUTTON */}
+            {!hideButtons && (
+              <div className="w-full mb-12">
+                <div className="float-right">
+                  <SecondaryButton
+                    onClick={() =>
+                      item.update({ "system.itemIds": [] } as Record<
+                        string,
+                        string[]
+                      >)
+                    }
+                  >
+                    <div className="flex gap-x-2 items-center">
+                      {<Undo />}
+                      {"Extract all"}
+                    </div>
+                  </SecondaryButton>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </EquipmentSheetSubtypeBody>
+  )
 }

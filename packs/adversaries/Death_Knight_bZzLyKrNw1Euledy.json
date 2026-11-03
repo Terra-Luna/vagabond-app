@@ -10,10 +10,7 @@
     "armor": {
       "rating": 4
     },
-    "senses": [
-      "allsight",
-      "darksight"
-    ],
+    "senses": ["allsight", "darksight"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -207,11 +204,7 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": [
-            "fire",
-            "physical_lt0",
-            "poison"
-          ],
+          "immunities": ["fire", "physical_lt0", "poison"],
           "weaknesses": [],
           "statusImmunities": [
             "fatigued",
@@ -282,9 +275,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "will"
-        ],
+        "saves": ["will"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {
@@ -307,9 +298,7 @@
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": []
       },
@@ -327,9 +316,7 @@
           },
           "type": "fire"
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "halfDamageOnSave": false,
         "appliedEffects": [
           {

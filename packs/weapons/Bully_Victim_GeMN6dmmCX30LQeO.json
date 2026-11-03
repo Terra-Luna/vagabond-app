@@ -38,12 +38,8 @@
       "style": "HH",
       "state": "H"
     },
-    "skills": [
-      "brawl"
-    ],
-    "properties": [
-      "defense"
-    ],
+    "skills": ["brawl"],
+    "properties": ["defense"],
     "material": "steel",
     "imbueExempt": true
   },

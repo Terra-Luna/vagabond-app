@@ -12,9 +12,7 @@
         "label": "Healing Bonus",
         "level": 2,
         "value": "0.5",
-        "selector": [
-          "modifiers.healing.out.spell.bonus.flat"
-        ],
+        "selector": ["modifiers.healing.out.spell.bonus.flat"],
         "valueMultiplier": "level.current"
       }
     ],

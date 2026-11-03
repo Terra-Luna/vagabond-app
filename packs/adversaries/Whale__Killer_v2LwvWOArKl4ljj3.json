@@ -10,9 +10,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "echolocation"
-    ],
+    "senses": ["echolocation"],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -272,9 +270,7 @@
             "explodesOn": []
           }
         },
-        "saves": [
-          "reflex"
-        ],
+        "saves": ["reflex"],
         "appliedEffects": [
           {
             "effect": "restrained",

@@ -36,14 +36,9 @@
       "style": "H",
       "state": "H"
     },
-    "properties": [
-      "defense",
-      "thrown"
-    ],
+    "properties": ["defense", "thrown"],
     "material": "steel",
-    "skills": [
-      "melee"
-    ],
+    "skills": ["melee"],
     "copperValue": 7500,
     "relicPowers": [
       {
@@ -74,9 +69,7 @@
           "label": "Armor +1",
           "modifiers": [
             {
-              "selector": [
-                "system.armor.rating"
-              ],
+              "selector": ["system.armor.rating"],
               "value": 1
             }
           ],

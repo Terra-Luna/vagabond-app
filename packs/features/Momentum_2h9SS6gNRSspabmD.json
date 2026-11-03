@@ -12,9 +12,7 @@
         "label": "Favor",
         "level": 1,
         "value": true,
-        "selector": [
-          "modifiers.skillCheck.attack.favored"
-        ],
+        "selector": ["modifiers.skillCheck.attack.favored"],
         "toggleableEffect": true
       }
     ],

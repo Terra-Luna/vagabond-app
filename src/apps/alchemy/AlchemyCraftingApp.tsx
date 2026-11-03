@@ -1,30 +1,28 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
-import { appLang } from "../../utils/lang"
-import { VagabondAppArgs,VagabondApplication } from "../VagabondApplication"
+import { appLang } from "../../util/lang"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { AlchemyCraftingView } from "./AlchemyCraftingView"
 
 export class AlchemyCraftingApp extends VagabondApplication {
+  actor: Actor & { system: HeroDataModel }
+  isLevelUp?: boolean
+  alchemyItems = ItemsCache.alchemical()
 
-    actor: Actor & { system: HeroDataModel }
-    isLevelUp?: boolean
-    alchemyItems = ItemsCache.alchemical()
+  constructor(actor: Actor & { system: HeroDataModel }) {
+    super({
+      window: { title: appLang.AlchemyCrafting.title },
+      position: { width: 433 },
+      Component: AlchemyCraftingView,
+    } as VagabondAppArgs)
 
-    constructor(actor: Actor & { system: HeroDataModel }) {
-        super({
-            window: { title: appLang.AlchemyCrafting.title },
-            position: { width: 433 },
-            Component: AlchemyCraftingView
-        } as VagabondAppArgs)
+    this.actor = actor
+  }
 
-        this.actor = actor
+  override getReactProps() {
+    return {
+      ...super.getReactProps(),
+      actor: this.actor,
     }
-
-    override getReactProps() {
-        return {
-            ...super.getReactProps(),
-            actor: this.actor
-        }
-    }
-
+  }
 }

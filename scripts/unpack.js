@@ -1,25 +1,28 @@
-import { execSync } from "child_process";
-import fs from "fs";
+import { execSync } from "child_process"
+import fs from "fs"
 
-const manifest = JSON.parse(fs.readFileSync("./public/system.json", "utf8"));
-const packNames = manifest.packs.map(p => p.name);
+const manifest = JSON.parse(fs.readFileSync("./public/system.json", "utf8"))
+const packNames = manifest.packs.map((p) => p.name)
 
-console.info(`[Foundry CLI | Unpacking ${packNames.length} compendiums...`);
+console.info(`[Foundry CLI | Unpacking ${packNames.length} compendiums...`)
 
 for (const name of packNames) {
-    const outputDirectory = `./packs/${name}`;
+  const outputDirectory = `./packs/${name}`
 
-    console.info(`Unpacking: "${name}" -> ${outputDirectory}/`);
+  console.info(`Unpacking: "${name}" -> ${outputDirectory}/`)
 
-    try {
-        execSync(`pnpm exec fvtt configure set dataPath %userprofile%/AppData/Local/FoundryVTT`)
-        execSync(
-            `pnpm exec fvtt package unpack --type=System --id=vagabond-app --out="${outputDirectory}" ${name}`,
-            { stdio: "inherit" }
-        );
-    } catch (err) {
-        console.error(`Failed to unpack compendium ${name}`);
-    }
+  try {
+    execSync(
+      `pnpm exec fvtt configure set dataPath %userprofile%/AppData/Local/FoundryVTT`,
+    )
+    execSync(
+      `pnpm exec fvtt package unpack --type=System --id=vagabond-app --out="${outputDirectory}" ${name}`,
+      { stdio: "inherit" },
+    )
+  }
+  catch (err) {
+    console.error(`Failed to unpack compendium ${name}`)
+  }
 }
 
-console.info("Foundry CLI | All packs extracted successfully into ./packs");
+console.info("Foundry CLI | All packs extracted successfully into ./packs")

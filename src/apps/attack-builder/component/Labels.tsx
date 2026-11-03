@@ -1,11 +1,23 @@
 export const SectionLabel = ({ text }) => {
-    return (
-        <div className="text-base text-text-header-tertiary font-eskapade font-bold">{text}</div>
-    )
+  return (
+    <div className="text-base text-text-header-tertiary font-eskapade font-bold">
+      {text}
+    </div>
+  )
 }
 
-export const Label = ({ text, className }: { text: string, className?: string }) => {
-    return (
-        <div className={`text-base text-text-primary font-eskapade font-normal ${className ?? ''}`}>{text}</div>
-    )
+export const Label = ({
+  text,
+  className,
+}: {
+  text: string
+  className?: string
+}) => {
+  return (
+    <div
+      className={`text-base text-text-primary font-eskapade font-normal ${className ?? ""}`}
+    >
+      {text}
+    </div>
+  )
 }

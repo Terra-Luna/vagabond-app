@@ -1,75 +1,83 @@
 import { useEffect, useRef, useState } from "react"
 
-import { appLang } from "../../../utils/lang"
+import { appLang } from "../../../util/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
-import { FoundryHotkeyBlocker } from "../../../view/component/FoundryHotkeyBlocker"
+import { FoundryHotkeyBlocker } from "../../../view/wrappers/FoundryHotkeyBlocker"
 
-export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {
-    label: string, onLabelChange: (newValue) => void, permissionCheck: () => boolean
+export const WidgetLabel = ({
+  label,
+  onLabelChange,
+  permissionCheck,
+}: {
+  label: string
+  onLabelChange: (newValue) => void
+  permissionCheck: () => boolean
 }) => {
+  const [isEditing, setIsEditing] = useState(false)
+  const [editValue, setEditValue] = useState(label ?? "")
+  const inputRef = useRef<HTMLInputElement>(null)
 
-    const [isEditing, setIsEditing] = useState(false)
-    const [editValue, setEditValue] = useState(label ?? '')
-    const inputRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    setEditValue(label ?? "")
+  }, [label])
 
-    useEffect(() => {
-        setEditValue(label ?? '')
-    }, [label])
-
-    useEffect(() => {
-        if (isEditing) {
-            inputRef.current?.focus()
-            inputRef.current?.select()
-        }
-    }, [isEditing])
-
-    const handleSave = () => {
-        setIsEditing(false)
-        if (editValue.trim() !== label) {
-            onLabelChange(editValue.trim())
-        }
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current?.focus()
+      inputRef.current?.select()
     }
+  }, [isEditing])
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') handleSave()
-        if (e.key === 'Escape') {
-            setEditValue(label ?? '')
-            setIsEditing(false)
-        }
+  const handleSave = () => {
+    setIsEditing(false)
+    if (editValue.trim() !== label) {
+      onLabelChange(editValue.trim())
     }
+  }
 
-    const hoverEffect = "transform transition-transform duration-300 hover:scale-105"
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") handleSave()
+    if (e.key === "Escape") {
+      setEditValue(label ?? "")
+      setIsEditing(false)
+    }
+  }
 
-    return (
-        <FoundryHotkeyBlocker>
-            {isEditing
-                ? <input
-                    ref={inputRef}
-                    type="text"
-                    value={editValue}
-                    onChange={(e) => setEditValue(e.target.value)}
-                    onBlur={handleSave}
-                    onKeyDown={handleKeyDown}
-                    className={`
+  const hoverEffect =
+    "transform transition-transform duration-300 hover:scale-105"
+
+  return (
+    <FoundryHotkeyBlocker>
+      {isEditing ? (
+        <input
+          ref={inputRef}
+          type="text"
+          value={editValue}
+          onChange={(e) => setEditValue(e.target.value)}
+          onBlur={handleSave}
+          onKeyDown={handleKeyDown}
+          className={`
                         text-sm text-text-primary text-center font-eskapade font-normal
                         bg-sheet-main-fill ${tableBorderRounded} mt-2 px-1
                         focus:outline-none focus:border-destructive-action/50 w-32
                     `}
-                />
-                : <span title={appLang.Overlay.doubleClickToEdit}
-                    onDoubleClick={() => {
-                        if (!permissionCheck()) return
-                        setIsEditing(true)
-                    }}
-                    className={`
+        />
+      ) : (
+        <span
+          title={appLang.Overlay.doubleClickToEdit}
+          onDoubleClick={() => {
+            if (!permissionCheck()) return
+            setIsEditing(true)
+          }}
+          className={`
                             text-base text-text-primary text-center leading-4 font-eskapade font-normal
                             bg-sheet-main-fill/40 rounded-sm px-1 py-0.25
                             mt-1 block w-full select-none break-words ${hoverEffect}`}
-                    style={{ maxWidth: 100 }}
-                >
-                    {label && label.trim() !== '' ? label : 'Clock'}
-                </span>
-            }
-        </FoundryHotkeyBlocker>
-    )
+          style={{ maxWidth: 100 }}
+        >
+          {label && label.trim() !== "" ? label : "Clock"}
+        </span>
+      )}
+    </FoundryHotkeyBlocker>
+  )
 }
