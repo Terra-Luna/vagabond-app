@@ -24,10 +24,12 @@ import {
   showConfirmationDialog,
   showInputDialog,
 } from "../vagabond-tools/dialog/ConfirmationDialogUseCase"
-import { cleanTagalongItemName, fetchHero, TagalongItem } from "./TagalongApi"
+import { TagalongApi, TagalongItem } from "./TagalongApi"
 import { TagalongItemCreator } from "./TagalongItemCreator"
 
-type TagalongCharacter = Awaited<ReturnType<typeof fetchHero>>["character"]
+type TagalongCharacter = Awaited<
+  ReturnType<typeof TagalongApi.fetchHero>
+>["character"]
 type ImportableItem = Item | TypedIndexEntry
 type RuleBearingItem = Item & {
   system: { rules: any[]; featureIds?: string[] }
@@ -52,7 +54,7 @@ export class TagalongImporter {
     try {
       ui.notifications?.info(appLang.Notifications.importingCharacter)
       const url = new URL(tagalongUrl)
-      const res = (await fetchHero(url)).character
+      const res = (await TagalongApi.fetchHero(url)).character
 
       if (!res) {
         ui.notifications?.error(
@@ -180,7 +182,9 @@ export class TagalongImporter {
        */
       const newItems: TagalongItem[] = []
       for (const tagalongItem of res.inventory) {
-        const tagalongItemName = cleanTagalongItemName(tagalongItem.name)
+        const tagalongItemName = TagalongApi.cleanTagalongItemName(
+          tagalongItem.name,
+        )
         const systemItem = ItemsCache.equipment().find(
           (it) => it.name.toUpperCase() === tagalongItemName.toUpperCase(),
         )
@@ -207,7 +211,7 @@ export class TagalongImporter {
         const sysItem = ItemsCache.equipment().find(
           (it) =>
             it.name.toUpperCase() ===
-            cleanTagalongItemName(tagalongItem.name).toUpperCase(),
+            TagalongApi.cleanTagalongItemName(tagalongItem.name).toUpperCase(),
         )
         if (sysItem && !TagalongItemCreator.hasRelicPowers(tagalongItem)) {
           const createdItem = await addItemToActor(hero.parent, sysItem)
@@ -219,8 +223,7 @@ export class TagalongImporter {
             createdItem &&
             typeof (createdItem.system as any).isEquipped === "boolean"
           ) {
-            updates["system.isEquipped"] =
-              tagalongItem.is_equipped ?? tagalongItem.is_eqiupped ?? false
+            updates["system.isEquipped"] = tagalongItem.is_equipped ?? false
           }
           if (createdItem && Object.keys(updates).length > 0) {
             await createdItem.update(updates)

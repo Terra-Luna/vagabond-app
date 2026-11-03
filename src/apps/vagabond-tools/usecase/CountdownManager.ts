@@ -412,7 +412,6 @@ export class CountdownManager {
       await CountdownManager.rollPendingCountdowns(combatant)
     }
     else if (game.users?.activeGM) {
-      // Players can't roll countdowns themselves; ask the active GM's client to.
       game.socket?.emit(`system.${sys_id}`, {
         action: "rollCombatantCountdowns",
         user: game.user?.id,

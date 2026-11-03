@@ -1,3 +1,4 @@
+import { TagalongExporter } from "../../apps/io/TagalongExporter"
 import { VagabondActiveEffect } from "../../combat/documents/VagabondActiveEffect"
 import { showFloatingText, sys_id } from "../../util/foundry-util"
 import { portraitFrameFlag } from "../../view/sheets/actor/component/PortraitFrame"
@@ -20,6 +21,16 @@ export class VagabondActor<
       defaultArtworkByType[actorData.type as Actor.SubType] ??
       (super.getDefaultArtwork(actorData) as any).img
     return { img, texture: { src: img } }
+  }
+
+  /**
+   * Heroes use the Tagalong filename format for the standard Foundry export.
+   */
+  override exportToJSON(options?: any): void {
+    if (this.type !== "hero") {
+      return super.exportToJSON(options)
+    }
+    TagalongExporter.exportFoundryData(this, options)
   }
 
   protected override async _preUpdate(

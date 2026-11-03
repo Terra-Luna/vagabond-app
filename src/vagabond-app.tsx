@@ -5,6 +5,7 @@ import { RollPreset } from "./apps/attack-builder/model/RollPreset"
 import { registerAdversaryCompendiumFilters } from "./apps/compendium/AdversaryCompendium"
 import { registerAlchemicalItemCompendiumFilters } from "./apps/compendium/AlchemicalItemCompendium"
 import { CountdownApp } from "./apps/countdown/CountdownApp"
+import { TagalongExporter } from "./apps/io/TagalongExporter"
 import { TagalongItemCreator } from "./apps/io/TagalongItemCreator"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
 import {
@@ -342,6 +343,10 @@ Hooks.once("ready", async () => {
   countdownOverlay.render({ force: true })
 
   VagabondToolsApp.renderCanvasButton()
+})
+
+Hooks.on("getActorContextOptions" as any, (_app: any, options: any[]) => {
+  TagalongExporter.extendContextOptions(options)
 })
 
 Hooks.on("preCreateItem", (item: any, _options, _userId) => {
