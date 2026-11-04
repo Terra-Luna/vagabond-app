@@ -483,7 +483,16 @@
       "img": "/icons/commodities/treasure/token-engraved-blue-glowing.webp",
       "system": {
         "description": "<p><span style=\"white-space:pre-wrap\">It can't be transformed.</span></p>",
-        "rules": [],
+        "rules": [
+          {
+            "id": "5ZxHTWB9xV5KabPY",
+            "key": "ToggleRule",
+            "label": "Immutable",
+            "level": 0,
+            "value": true,
+            "selector": ["modifiers.polymorph.immutable"]
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0
@@ -515,7 +524,16 @@
       "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
       "system": {
         "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 3 or more.</span></p>",
-        "rules": [],
+        "rules": [
+          {
+            "id": "kBc41DWiObihNrHk",
+            "key": "FlatModifier",
+            "label": "Magic Ward III",
+            "level": 0,
+            "value": "3",
+            "selector": ["modifiers.skillCheck.cast.modifier"]
+          }
+        ],
         "level": 1,
         "scale": 0,
         "maxLevel": 0

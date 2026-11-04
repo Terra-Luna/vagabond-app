@@ -325,6 +325,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
       ...args,
       isSpellAttack: this.isSpellAttack,
     })) {
+      if (row.failed) continue
       if (row.dmgType === "healing") {
         const absorber = getTargetActor(row.targetId)
         if (absorber)
@@ -407,6 +408,53 @@ export abstract class Attack<TActor extends Actor = Actor> {
    * Per-target preview of what "Apply" will do for standard damage. Mirrors applyDamage.
    */
   getDamageSummary(args: AttackResolutionArgs): TargetDamageSummary[] {
+    const failedRows = this.resolveTargetIds(args)
+      .filter((id) => this.isMissedTarget(id))
+      .map((id) => this.buildFailedRow(id, args))
+    return [...failedRows, ...this.getHitDamageSummary(args)]
+  }
+
+  /**
+   * Whether the attacker's check failed against this specific target (e.g. due to a defense penalty).
+   * Override in attacks that roll a check.
+   */
+  protected isMissedTarget(_targetId: string): boolean {
+    return false
+  }
+
+  private buildFailedRow(
+    targetId: string,
+    args: AttackResolutionArgs,
+  ): TargetDamageSummary {
+    return {
+      ...buildSummaryRow(
+        targetId,
+        0,
+        {
+          damageBeforeHalving: 0,
+          damage: 0,
+          imbueDamage: 0,
+          imbueParts: [],
+          resistanceDivisor: 1,
+          armor: 0,
+          armorPiercing: 0,
+          otherMitigation: 0,
+          mitigatedBeforeSave: 0,
+          saveHalved: false,
+          mitigated: 0,
+        },
+        0,
+        args,
+        this.damageRoll?.dmgType ?? "",
+        undefined,
+      ),
+      failed: true,
+    }
+  }
+
+  private getHitDamageSummary(
+    args: AttackResolutionArgs,
+  ): TargetDamageSummary[] {
     const dmgType = this.damageRoll?.dmgType
     if (this.damageRoll?.result && dmgType === "healing")
       return this.getHealingSummary(args)
@@ -415,13 +463,14 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
     const summaries: TargetDamageSummary[] = []
     // Targets that absorb this damage type are healed by it instead of damaged.
-    const absorbingIds = this.resolveTargetIds(args).filter((id) =>
-      absorbsDamage(id, this.damageRoll),
+    const absorbingIds = this.resolveTargetIds(args).filter(
+      (id) => !this.isMissedTarget(id) && absorbsDamage(id, this.damageRoll),
     )
     if (absorbingIds.length)
       summaries.push(...this.getHealingSummary(args, absorbingIds))
     const targetIds = this.resolveTargetIds(args).filter(
       (id) =>
+        !this.isMissedTarget(id) &&
         !absorbingIds.includes(id) &&
         (this.shouldApplyDamageToTarget(id) || this.hasApplicableImbue(id)),
     )
@@ -492,6 +541,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
 
   protected shouldApplyDamageToTarget(targetId: string): boolean {
     return (
+      !this.isMissedTarget(targetId) &&
       !absorbsDamage(targetId, this.damageRoll) &&
       !isImmuneToDamage(targetId, this.damageRoll, this.isSpellAttack)
     )

@@ -133,6 +133,7 @@ export const modifierSchema = () => {
       useCastSkill: new fields.BooleanField({ initial: false }),
       relicAttacks: new fields.BooleanField({ initial: false }),
       damageBonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+      immutable: new fields.BooleanField({ initial: false }),
     }),
 
     misc: new fields.SchemaField({

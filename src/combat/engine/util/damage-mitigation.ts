@@ -49,6 +49,19 @@ export interface TargetDamageSummary extends DamageBreakdown {
   isOverridden: boolean
   healing?: { flat: number; perDie: number; setValue: number }
   absorbed?: boolean
+  failed?: boolean
+}
+
+/** Difficulty penalty a target imposes on the attacker's check (attack or cast). */
+export const getDefensePenalty = (
+  targetId: string,
+  isCast: boolean,
+): number => {
+  const skillCheck = (getTargetActor(targetId)?.system as any)?.modifiers
+    ?.skillCheck
+  return (
+    Number((isCast ? skillCheck?.cast : skillCheck?.attack)?.modifier ?? 0) || 0
+  )
 }
 
 export const isImmuneToStatus = (

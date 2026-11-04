@@ -400,7 +400,16 @@
       "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
       "system": {
         "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 2 or more.</span></p>",
-        "rules": [],
+        "rules": [
+          {
+            "id": "25QxZBOXNlrLgy6z",
+            "key": "FlatModifier",
+            "label": "Magic Ward II",
+            "level": 0,
+            "value": "2",
+            "selector": ["modifiers.skillCheck.cast.modifier"]
+          }
+        ],
         "level": 1,
         "scale": 0,
         "maxLevel": 0

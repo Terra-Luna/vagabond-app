@@ -107,7 +107,12 @@ export const PolymorphRequestChatCard = ({
     .filter((it) => !!it.actor)
 
   const [excluded, setExcluded] = useState<Set<string>>(() => {
-    if (!caster || (caster.type as string) !== "hero") return new Set()
+    const isImmutable = (it: (typeof entries)[number]) =>
+      !!(it.actor!.system as any).modifiers?.polymorph?.immutable
+
+    if (!caster || (caster.type as string) !== "hero") {
+      return new Set(entries.filter(isImmutable).map((it) => it.key))
+    }
 
     const casterSystem = caster.system as any
     const maxHd =
@@ -117,8 +122,9 @@ export const PolymorphRequestChatCard = ({
       entries
         .filter(
           (it) =>
-            (it.actor!.type as string) !== "hero" &&
-            !((it.actor!.system as any).hitDice <= maxHd),
+            isImmutable(it) ||
+            ((it.actor!.type as string) !== "hero" &&
+              !((it.actor!.system as any).hitDice <= maxHd)),
         )
         .map((it) => it.key),
     )

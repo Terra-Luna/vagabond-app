@@ -6,7 +6,16 @@
   "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 3 or more.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "kBc41DWiObihNrHk",
+        "key": "FlatModifier",
+        "label": "Magic Ward III",
+        "level": 0,
+        "value": "3",
+        "selector": ["modifiers.skillCheck.cast.modifier"]
+      }
+    ],
     "level": 1,
     "scale": 0,
     "maxLevel": 0
@@ -19,11 +28,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.19",
+    "systemVersion": "0.2.180",
     "createdTime": 1789830912123,
-    "modifiedTime": 1790116688500,
+    "modifiedTime": 1793776317872,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

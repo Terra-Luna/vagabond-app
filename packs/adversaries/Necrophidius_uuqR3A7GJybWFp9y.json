@@ -406,7 +406,16 @@
       "img": "/icons/commodities/treasure/token-engraved-blue-glowing.webp",
       "system": {
         "description": "<p><span style=\"white-space:pre-wrap\">It can't be transformed.</span></p>",
-        "rules": [],
+        "rules": [
+          {
+            "id": "5ZxHTWB9xV5KabPY",
+            "key": "ToggleRule",
+            "label": "Immutable",
+            "level": 0,
+            "value": true,
+            "selector": ["modifiers.polymorph.immutable"]
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0

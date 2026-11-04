@@ -34,6 +34,7 @@ import {
 } from "./roll/SkillCheck"
 import { deserializeAttack } from "./util/attack-deserializer"
 import { serializeAttack } from "./util/attack-serializer"
+import { getDefensePenalty } from "./util/damage-mitigation"
 import { getDiceTerms } from "./util/dice-util"
 import { HuntersMark } from "./util/HuntersMark"
 
@@ -1249,6 +1250,19 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
       }))
       .sort((a, b) => a.value - b.value)[0]
     return defaultSkill
+  }
+
+  /**
+   * A target's defense penalty raises the difficulty of the attacker's check versus that target.
+   */
+  protected override isMissedTarget(targetId: string): boolean {
+    const result = this.skillCheck?.result
+    if (!result || this.skipSkillCheck || this.isDefenseCheck) return false
+    if (!this.isSuccessOrCrit) return false
+    const dmgType = this.damageRoll?.dmgType
+    if (dmgType === "healing" || dmgType === "mana") return false
+    const penalty = getDefensePenalty(targetId, this.isSpellAttack)
+    return penalty > 0 && result.total < result.difficulty + penalty
   }
 
   override shouldApplyDamageToTarget(targetId: string): boolean {

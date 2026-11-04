@@ -115,144 +115,162 @@ const SummaryRow = ({
         ref={damageRef}
         className={`flex shrink-0 items-center gap-1 whitespace-nowrap ml-auto ${wrapped ? "-mt-2" : ""}`}
       >
-        {row.label && (
-          <p className="min-w-0 truncate" title={row.label}>
-            {row.label}:
+        {row.failed ? (
+          <p className="font-bold" title="The check failed against this target">
+            Failed
           </p>
-        )}
-        {row.saveHalved && <p>(</p>}
-        <p>
-          {row.resistanceDivisor > 1
-            ? `${row.damageBeforeHalving}/${row.resistanceDivisor}`
-            : row.damage}
-        </p>
-        {row.bonus !== 0 && (
-          <p title="Bonus damage">
-            {row.bonus > 0 ? `+ ${row.bonus}` : `− ${Math.abs(row.bonus)}`}
-          </p>
-        )}
-        {row.imbueParts.map((part, index) => {
-          const tip = `${part.label ?? part.dmgType}: ${part.bonus > 0 ? `${part.amount - part.bonus} + ${part.bonus}` : part.amount} damage`
-          return (
-            <div key={index} className="flex items-center gap-0.5" title={tip}>
-              <p>+</p>
-              <DamageTypeIcon dmgType={part.dmgType} size={24} title={tip} />
-            </div>
-          )
-        })}
-        {row.healing && (
+        ) : (
           <>
-            {row.healing.setValue > 0 ? (
-              <p title="Healing is set to a fixed amount per die">
-                → {row.healing.setValue}
+            {row.label && (
+              <p className="min-w-0 truncate" title={row.label}>
+                {row.label}:
               </p>
-            ) : (
+            )}
+            {row.saveHalved && <p>(</p>}
+            <p>
+              {row.resistanceDivisor > 1
+                ? `${row.damageBeforeHalving}/${row.resistanceDivisor}`
+                : row.damage}
+            </p>
+            {row.bonus !== 0 && (
+              <p title="Bonus damage">
+                {row.bonus > 0 ? `+ ${row.bonus}` : `− ${Math.abs(row.bonus)}`}
+              </p>
+            )}
+            {row.imbueParts.map((part, index) => {
+              const tip = `${part.label ?? part.dmgType}: ${part.bonus > 0 ? `${part.amount - part.bonus} + ${part.bonus}` : part.amount} damage`
+              return (
+                <div
+                  key={index}
+                  className="flex items-center gap-0.5"
+                  title={tip}
+                >
+                  <p>+</p>
+                  <DamageTypeIcon
+                    dmgType={part.dmgType}
+                    size={24}
+                    title={tip}
+                  />
+                </div>
+              )
+            })}
+            {row.healing && (
               <>
-                {row.healing.flat !== 0 && (
-                  <p title="Flat healing modifier">
-                    {row.healing.flat > 0
-                      ? `+ ${row.healing.flat}`
-                      : `− ${Math.abs(row.healing.flat)}`}
+                {row.healing.setValue > 0 ? (
+                  <p title="Healing is set to a fixed amount per die">
+                    → {row.healing.setValue}
                   </p>
-                )}
-                {row.healing.perDie !== 0 && (
-                  <p title="Per-die healing modifier">
-                    {row.healing.perDie > 0
-                      ? `+ ${row.healing.perDie}`
-                      : `− ${Math.abs(row.healing.perDie)}`}
-                  </p>
+                ) : (
+                  <>
+                    {row.healing.flat !== 0 && (
+                      <p title="Flat healing modifier">
+                        {row.healing.flat > 0
+                          ? `+ ${row.healing.flat}`
+                          : `− ${Math.abs(row.healing.flat)}`}
+                      </p>
+                    )}
+                    {row.healing.perDie !== 0 && (
+                      <p title="Per-die healing modifier">
+                        {row.healing.perDie > 0
+                          ? `+ ${row.healing.perDie}`
+                          : `− ${Math.abs(row.healing.perDie)}`}
+                      </p>
+                    )}
+                  </>
                 )}
               </>
             )}
-          </>
-        )}
 
-        {!row.healing && (
-          <div className="flex items-center gap-1">
-            {row.otherMitigation !== 0 && (
-              <p
-                title={
-                  row.otherMitigation > 0 ? "Bonus mitigation" : "Bonus damage"
-                }
-              >
-                {row.otherMitigation > 0
-                  ? `− ${row.otherMitigation}`
-                  : `+ ${Math.abs(row.otherMitigation)}`}
-              </p>
-            )}
+            {!row.healing && (
+              <div className="flex items-center gap-1">
+                {row.otherMitigation !== 0 && (
+                  <p
+                    title={
+                      row.otherMitigation > 0
+                        ? "Bonus mitigation"
+                        : "Bonus damage"
+                    }
+                  >
+                    {row.otherMitigation > 0
+                      ? `− ${row.otherMitigation}`
+                      : `+ ${Math.abs(row.otherMitigation)}`}
+                  </p>
+                )}
 
-            <div
-              className="flex items-center gap-0.5"
-              title={
-                row.armorPiercing > 0
-                  ? `Armor after ${row.armorPiercing} armor piercing`
-                  : "Armor"
-              }
-            >
-              <p>−</p>
-              <div className="relative w-[24px] h-[24px] shrink-0">
-                <Shield
-                  className="w-full h-full text-ic-armor-border fill-ic-armor-fill"
-                  strokeWidth={1}
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-sm leading-none text-text-armor font-eskapade font-bold">
-                    {row.armor}
-                  </span>
+                <div
+                  className="flex items-center gap-0.5"
+                  title={
+                    row.armorPiercing > 0
+                      ? `Armor after ${row.armorPiercing} armor piercing`
+                      : "Armor"
+                  }
+                >
+                  <p>−</p>
+                  <div className="relative w-[24px] h-[24px] shrink-0">
+                    <Shield
+                      className="w-full h-full text-ic-armor-border fill-ic-armor-fill"
+                      strokeWidth={1}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-sm leading-none text-text-armor font-eskapade font-bold">
+                        {row.armor}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
+            )}
 
-        {row.saveHalved && <p>) / 2</p>}
-        <p>=</p>
-        {isEditing ? (
-          <FoundryHotkeyBlocker>
-            <input
-              autoFocus
-              type="number"
-              min={0}
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onBlur={commit}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") commit()
-                else if (e.key === "Escape") setIsEditing(false)
-              }}
-              className="w-12 text-center font-bold"
-            />
-          </FoundryHotkeyBlocker>
-        ) : (
-          <p
-            className={`font-bold ${row.isOverridden ? "text-ic-luck" : ""}`}
-            title={
-              row.isOverridden
-                ? `Overridden (calculated: ${row.calculatedTotal})`
-                : `${row.healing ? "Total healing" : "Total damage"}\n(Double-click to override)`
-            }
-            onDoubleClick={
-              game.user?.isActiveGM && !isResolved
-                ? () => {
-                    setDraft(String(row.total))
-                    setIsEditing(true)
-                  }
-                : undefined
-            }
-          >
-            {row.total}
-          </p>
-        )}
-        {row.absorbed && (
-          <p title="Damage was absorbed and healed">(Absorbed)</p>
-        )}
-        {row.isOverridden && game.user?.isActiveGM && !isResolved && (
-          <IconOnlyButton
-            Icon={Undo2}
-            size={14}
-            title="Undo override"
-            onClick={() => onOverrideChange(undefined)}
-          />
+            {row.saveHalved && <p>) / 2</p>}
+            <p>=</p>
+            {isEditing ? (
+              <FoundryHotkeyBlocker>
+                <input
+                  autoFocus
+                  type="number"
+                  min={0}
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  onBlur={commit}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") commit()
+                    else if (e.key === "Escape") setIsEditing(false)
+                  }}
+                  className="w-12 text-center font-bold"
+                />
+              </FoundryHotkeyBlocker>
+            ) : (
+              <p
+                className={`font-bold ${row.isOverridden ? "text-ic-luck" : ""}`}
+                title={
+                  row.isOverridden
+                    ? `Overridden (calculated: ${row.calculatedTotal})`
+                    : `${row.healing ? "Total healing" : "Total damage"}\n(Double-click to override)`
+                }
+                onDoubleClick={
+                  game.user?.isActiveGM && !isResolved
+                    ? () => {
+                        setDraft(String(row.total))
+                        setIsEditing(true)
+                      }
+                    : undefined
+                }
+              >
+                {row.total}
+              </p>
+            )}
+            {row.absorbed && (
+              <p title="Damage was absorbed and healed">(Absorbed)</p>
+            )}
+            {row.isOverridden && game.user?.isActiveGM && !isResolved && (
+              <IconOnlyButton
+                Icon={Undo2}
+                size={14}
+                title="Undo override"
+                onClick={() => onOverrideChange(undefined)}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

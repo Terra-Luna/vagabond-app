@@ -6,7 +6,16 @@
   "img": "/icons/commodities/treasure/token-engraved-blue-glowing.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">It can't be transformed.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "5ZxHTWB9xV5KabPY",
+        "key": "ToggleRule",
+        "label": "Immutable",
+        "level": 0,
+        "value": true,
+        "selector": ["modifiers.polymorph.immutable"]
+      }
+    ],
     "level": 0,
     "scale": 0,
     "maxLevel": 0
@@ -19,11 +28,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.19",
+    "systemVersion": "0.2.180",
     "createdTime": 1789832748559,
-    "modifiedTime": 1790116688500,
+    "modifiedTime": 1793774702654,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
