@@ -179,7 +179,7 @@ export const ItemRulesManager = ({
                                   updatedBase = {
                                     id:
                                       e.target.id == null ||
-                                        e.target.id.length === 0
+                                      e.target.id.length === 0
                                         ? foundry.utils.randomID()
                                         : e.target.id,
                                     key: "FlatModifier",
@@ -195,7 +195,7 @@ export const ItemRulesManager = ({
                                   updatedBase = {
                                     id:
                                       e.target.id == null ||
-                                        e.target.id.length === 0
+                                      e.target.id.length === 0
                                         ? foundry.utils.randomID()
                                         : e.target.id,
                                     key: "ToggleRule",
@@ -209,7 +209,7 @@ export const ItemRulesManager = ({
                                   updatedBase = {
                                     id:
                                       e.target.id == null ||
-                                        e.target.id.length === 0
+                                      e.target.id.length === 0
                                         ? foundry.utils.randomID()
                                         : e.target.id,
                                     key: "GrantItem",
@@ -222,7 +222,7 @@ export const ItemRulesManager = ({
                                   updatedBase = {
                                     id:
                                       e.target.id == null ||
-                                        e.target.id.length === 0
+                                      e.target.id.length === 0
                                         ? foundry.utils.randomID()
                                         : e.target.id,
                                     key: "ChoiceSet",
@@ -240,7 +240,7 @@ export const ItemRulesManager = ({
                                   updatedBase = {
                                     id:
                                       e.target.id == null ||
-                                        e.target.id.length === 0
+                                      e.target.id.length === 0
                                         ? foundry.utils.randomID()
                                         : e.target.id,
                                     key: "ApplyStatus",
