@@ -7,9 +7,13 @@
     "description": "<p><span style=\"white-space:pre-wrap\">The Target sheds Moonlight out to Near for the duration. Shapechangers are Burning (d6) while illuminated by this Moonlight.</span></p>",
     "rules": [],
     "baseManaCost": 0,
-    "ignoreEffectCost": false,
+    "ignoreEffectCost": true,
     "damageType": "cold",
-    "appliedEffects": []
+    "appliedEffects": [
+      {
+        "effect": "berserk"
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -20,11 +24,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.1",
+    "systemVersion": "0.2.180",
     "createdTime": 1786721944536,
-    "modifiedTime": 1789663360043,
+    "modifiedTime": 1793778543124,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

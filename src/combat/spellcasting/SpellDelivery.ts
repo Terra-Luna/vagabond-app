@@ -23,6 +23,7 @@ export interface SpellSnapshot {
   upcastableEffect: boolean
   upcastableEffectDieRoll: boolean
   appliedEffects: { effect: string; duration: string; critDuration: string }[]
+  appliedActiveEffects?: { uuid: string; duration?: string }[]
 }
 
 export interface DeliveryMods {
@@ -160,6 +161,7 @@ export abstract class SpellDelivery {
       baseManaCost: spell.system.baseManaCost,
       ignoreEffectCost: spell.system.ignoreEffectCost,
       appliedEffects: spell.system.appliedEffects as any[],
+      appliedActiveEffects: spell.system.appliedActiveEffects as any[],
       upcastableEffect: spell.system.upcastableEffect,
       upcastableEffectDieRoll: spell.system.upcastableEffectDieRoll,
     }

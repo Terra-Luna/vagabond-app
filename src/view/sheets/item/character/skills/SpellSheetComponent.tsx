@@ -4,6 +4,7 @@ import { appLang } from "../../../../../util/lang"
 import { tableBorder } from "../../../../common/border-styles"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
+import { AppliedActiveEffectsInput } from "../../../actor/npc/component/AppliedActiveEffectsInput"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
@@ -39,6 +40,14 @@ export const SpellSheetComponent = ({
               </div>
 
               <AppliedEffectInput item={item} />
+              <AppliedActiveEffectsInput
+                effects={item.system.appliedActiveEffects ?? []}
+                onChange={(appliedActiveEffects) =>
+                  item.update({
+                    "system.appliedActiveEffects": appliedActiveEffects,
+                  } as Record<string, unknown>)
+                }
+              />
 
               <Checkbox
                 label={appLang.ItemSheet.ignoreEffCost}

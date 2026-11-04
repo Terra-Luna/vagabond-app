@@ -32,6 +32,7 @@ import {
   type SkillCheckResult,
   type SkillCheckType,
 } from "./roll/SkillCheck"
+import { collectAppliedFx } from "./util/active-effect-fx"
 import { deserializeAttack } from "./util/attack-deserializer"
 import { serializeAttack } from "./util/attack-serializer"
 import { getDefensePenalty } from "./util/damage-mitigation"
@@ -636,7 +637,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     this.critChoice = "spellFx"
     if (this.spellDelivery) {
       this.spellDelivery.applyEffect = true
-      this.spellDelivery.spell.appliedEffects.forEach((eff) => {
+      collectAppliedFx(this.spellDelivery.spell).forEach((eff) => {
         this.appliedEffects.push({
           ...eff,
           damageType: this.spellDelivery?.spell.damageType,
@@ -988,11 +989,10 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
       damageRoll,
     )
     attack.itemId = item.uuid
-    attack.appliedEffects =
-      item.system.appliedEffects?.map((eff) => ({
-        ...eff,
-        damageType: item.system.damage.type,
-      })) ?? []
+    attack.appliedEffects = collectAppliedFx(item.system).map((eff) => ({
+      ...eff,
+      damageType: item.system.damage.type,
+    }))
 
     return attack
   }
@@ -1123,10 +1123,10 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     attack.itemId = delivery.spell.uuid
     attack.spellDelivery = delivery.toJson()
     attack.appliedEffects = delivery.applyEffect
-      ? (delivery.spell.appliedEffects?.map((eff) => ({
+      ? collectAppliedFx(delivery.spell).map((eff) => ({
           ...eff,
           damageType: delivery.spell.damageType,
-        })) ?? [])
+        }))
       : []
     attack.skipSkillCheck = delivery instanceof Imbue
 

@@ -27,6 +27,13 @@ const spellSchema = () => {
       }),
       { initial: [] },
     ),
+    appliedActiveEffects: new fields.ArrayField(
+      new fields.SchemaField({
+        uuid: new fields.StringField({ ...requiredString }),
+        duration: new fields.StringField({ ...optionalString }),
+      }),
+      { initial: [] },
+    ),
   }
 }
 

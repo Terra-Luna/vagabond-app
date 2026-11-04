@@ -13,7 +13,8 @@
         "duration": "focus",
         "critDuration": "focus"
       }
-    ]
+    ],
+    "appliedActiveEffects": []
   },
   "effects": [],
   "folder": null,
@@ -24,11 +25,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.1",
+    "systemVersion": "0.2.180",
     "createdTime": 1784497124303,
-    "modifiedTime": 1789659558008,
+    "modifiedTime": 1793809752074,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

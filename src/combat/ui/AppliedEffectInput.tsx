@@ -87,7 +87,9 @@ export const AppliedEffectInput = ({
     <div className="flex flex-col w-full">
       {(appliedEffects.length > 0 || isEditMode) && (
         <div className="flex gap-x-1">
-          <ItemSheetPropLabel label={label ?? appLang.Effects.appliedEffects} />
+          <ItemSheetPropLabel
+            label={label ?? appLang.Effects.appliedStatuses}
+          />
         </div>
       )}
 

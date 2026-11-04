@@ -8,6 +8,7 @@ import { appLang } from "../../../../../util/lang"
 import { createDropdownEntriesFromObj } from "../../../../../util/locale-util"
 import { DropDown } from "../../../../component/Dropdown"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
+import { AppliedActiveEffectsInput } from "../../../actor/npc/component/AppliedActiveEffectsInput"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { ItemToggleOption } from "../component/ItemToggleOption"
@@ -44,6 +45,16 @@ export const AlchemicalSheet = ({
         />
 
         <AppliedEffectInput item={item} />
+        {isEditMode || (item.system.appliedActiveEffects ?? []).length > 0 ? (
+          <AppliedActiveEffectsInput
+            effects={item.system.appliedActiveEffects ?? []}
+            onChange={(appliedActiveEffects) =>
+              item.update({
+                "system.appliedActiveEffects": appliedActiveEffects,
+              } as Record<string, unknown>)
+            }
+          />
+        ) : null}
 
         <div className="flex justify-between w-full">
           {(isEditMode || item.system.damage.type !== "none") && (
