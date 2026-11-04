@@ -1,7 +1,11 @@
 import { FlaskRound, Lightbulb, LightbulbOff } from "lucide-react"
 
 import { showConfirmationDialog } from "../apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
+import { CountdownManager } from "../apps/vagabond-tools/usecase/CountdownManager"
 import { getRealtimeLightsources } from "../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { isImmuneToBurning } from "../combat/engine/util/burning-mitigation"
+import { isImmuneToStatus } from "../combat/engine/util/damage-mitigation"
+import { StatusEffectUtil } from "../model/actor/util/StatusEffectUtil"
 import type { CtxMenuItem } from "../view/component/ContextMenu"
 import { sys_id } from "./foundry-util"
 import { appLang } from "./lang"
@@ -41,11 +45,22 @@ type Emitter = {
 
 const LIGHT_KINDS: readonly LightKind[] = ["sunlight", "moonlight"]
 
+/** A status applied while in a light, as configured by an "ApplyStatus" rule. */
+type AppliedEffect = {
+  mode: "status" | "activeEffect"
+  status: string
+  damageType: string
+  die: number
+  uuid: string
+}
+
 export class LightSourceUtil {
 
   private static readonly LIGHT_FLAG = "lightSourceItemId"
   private static readonly TYPE_FLAG = "lightType"
   private static readonly EFFECT_FLAG = "lightEffect"
+  private static readonly APPLIED_FLAG = "appliedKeys"
+  private static readonly RULE_FX_FLAG = "ruleEffect"
   private static readonly NO_LIGHT = { dim: 0, bright: 0 }
   /* This value helps with odd dead-angles caused by calculating true distance on a grid system */
   private static readonly RANGE_TOLERANCE = 1
@@ -512,6 +527,119 @@ export class LightSourceUtil {
     return Promise.all(updates)
   }
 
+  /**
+   * Applies what the actor's "ApplyStatus" rules call for: unconditional entries always,
+   * light-conditional ones while the token is in that light. Anything no longer wanted is lifted.
+   */
+  private static async reconcileApplied(
+    token: any,
+    wanted: Record<LightKind, boolean>,
+  ) {
+    const actor = token.actor
+    const misc = actor.system?.modifiers?.misc
+    const active = new Map<string, AppliedEffect>()
+    const add = (effects?: AppliedEffect[]) =>
+      (effects ?? []).forEach((e) =>
+        active.set(LightSourceUtil.appliedKey(e), e),
+      )
+    add(misc?.applied)
+    for (const kind of LIGHT_KINDS)
+      if (wanted[kind]) add(misc?.light?.[kind]?.effects)
+    if (!wanted.sunlight && !wanted.moonlight) add(misc?.light?.basic?.effects)
+
+    const previous: string[] =
+      actor.getFlag(sys_id, LightSourceUtil.APPLIED_FLAG) ?? []
+    for (const key of previous)
+      if (!active.has(key)) await LightSourceUtil.liftApplied(token, key)
+
+    for (const effect of active.values()) {
+      if (effect.mode === "activeEffect")
+        await LightSourceUtil.applyActiveEffect(actor, effect)
+      else await LightSourceUtil.applyStatus(token, effect)
+    }
+
+    const current = [...active.keys()]
+    if (JSON.stringify(previous) === JSON.stringify(current)) return
+    if (current.length)
+      await actor.setFlag(sys_id, LightSourceUtil.APPLIED_FLAG, current)
+    else await actor.unsetFlag(sys_id, LightSourceUtil.APPLIED_FLAG)
+  }
+
+  private static appliedKey(effect: AppliedEffect): string {
+    return effect.mode === "activeEffect"
+      ? `effect:${effect.uuid}`
+      : `status:${effect.status}:${effect.damageType}`
+  }
+
+  private static async liftApplied(token: any, key: string) {
+    const actor = token.actor
+    const [kind, ...rest] = key.split(":")
+    if (kind === "effect") {
+      const ids = actor.effects
+        .filter(
+          (e: any) =>
+            e.getFlag(sys_id, LightSourceUtil.RULE_FX_FLAG) === rest.join(":"),
+        )
+        .map((e: any) => e.id)
+      if (ids.length) await actor.deleteEmbeddedDocuments("ActiveEffect", ids)
+      return
+    }
+    const [status, damageType] = rest
+    await CountdownManager.removeStatus(
+      actor.uuid,
+      token.document.uuid,
+      status,
+      damageType,
+    )
+    StatusEffectUtil.toggleStatusEffectOnce(actor, status, false)
+  }
+
+  private static async applyActiveEffect(actor: any, effect: AppliedEffect) {
+    const exists = actor.effects.some(
+      (e: any) =>
+        e.getFlag(sys_id, LightSourceUtil.RULE_FX_FLAG) === effect.uuid,
+    )
+    if (exists) return
+    const source = (await fromUuid(effect.uuid as any)) as any
+    if (!source) return
+    const data = source.toObject()
+    delete data._id
+    data.origin = effect.uuid
+    data.flags = foundry.utils.mergeObject(data.flags ?? {}, {
+      [sys_id]: { [LightSourceUtil.RULE_FX_FLAG]: effect.uuid },
+    })
+    await actor.createEmbeddedDocuments("ActiveEffect", [data])
+  }
+
+  private static async applyStatus(token: any, effect: AppliedEffect) {
+    const actor = token.actor
+    const { status, damageType, die } = effect
+    if (isImmuneToStatus(actor, status)) return
+    if (status === "burning" && isImmuneToBurning(actor, damageType)) return
+
+    StatusEffectUtil.toggleStatusEffectOnce(actor, status, true)
+    if (
+      die <= 0 ||
+      CountdownManager.hasStatus(
+        actor.uuid,
+        token.document.uuid,
+        status,
+        damageType,
+      )
+    )
+      return
+
+    await CountdownManager.add(
+      `${token.name}: ${appLang.StatusConditions[status]?.name ?? status}`,
+      die,
+      undefined,
+      undefined,
+      actor.uuid,
+      token.document.uuid,
+      { id: status, damageType: damageType || undefined },
+    )
+  }
+
   /** Tokens within reach of a sunlight/moonlight source get the matching in-light effect. */
   static async syncAmbientLightModifiers() {
     if (!game.user?.isActiveGM || !canvas?.ready) return
@@ -531,12 +659,14 @@ export class LightSourceUtil {
     await Promise.all(
       LightSourceUtil.sceneTokens()
         .filter((t) => t.actor && t.actor.type !== "container")
-        .map((target) =>
-          LightSourceUtil.reconcileEffects(target.actor, {
+        .map(async (target) => {
+          const wanted = {
             sunlight: reached(target, "sunlight"),
             moonlight: reached(target, "moonlight"),
-          }),
-        ),
+          }
+          await LightSourceUtil.reconcileEffects(target.actor, wanted)
+          await LightSourceUtil.reconcileApplied(target, wanted)
+        }),
     )
   }
 

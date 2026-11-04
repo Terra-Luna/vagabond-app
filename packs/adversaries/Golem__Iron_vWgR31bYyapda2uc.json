@@ -405,7 +405,16 @@
       "img": "icons/magic/defensive/shield-barrier-glowing-triangle-red.webp",
       "system": {
         "description": "<p><span style=\"white-space:pre-wrap\">Fire damage rolls heal it instead.</span></p>",
-        "rules": [],
+        "rules": [
+          {
+            "id": "P41tFDhAz6VeX8rg",
+            "key": "FlatModifier",
+            "label": "Flame Absorber",
+            "level": 0,
+            "value": "fire",
+            "selector": ["modifiers.damage.in.absorbs"]
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0

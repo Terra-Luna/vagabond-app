@@ -460,13 +460,29 @@
       "_key": "!actors.items!vZCYdWqC8IHRKGVV.2jX98U1BnHJmiie9"
     },
     {
-      "name": "Sun-Averse",
+      "name": "Sunblinded",
       "type": "feature",
       "_id": "DhNe2jcOj5wv2c2K",
-      "img": "/icons/magic/light/explosion-star-large-orange.webp",
+      "img": "/icons/magic/light/explosion-star-glow-orange.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Is Blinded (Cd4) by Sunlight.</span></p>",
-        "rules": [],
+        "description": "<p><span style=\"white-space:pre-wrap\">Blinded by Sunlight.</span></p>",
+        "rules": [
+          {
+            "id": "ylOsYrh08DWJBDzD",
+            "key": "ApplyStatus",
+            "label": "Blinded",
+            "level": 0,
+            "whileInLight": "sunlight",
+            "mode": "status",
+            "status": "blinded",
+            "damageType": "fire",
+            "die": 6,
+            "uuid": "",
+            "selector": [],
+            "value": 0,
+            "valueMultiplier": ""
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0
@@ -480,7 +496,7 @@
         "createdTime": 1790120453237,
         "modifiedTime": 1790120453237,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.DhNe2jcOj5wv2c2K",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.02pbMVe76rPn8rW2",
         "duplicateSource": null,
         "exportSource": null
       },

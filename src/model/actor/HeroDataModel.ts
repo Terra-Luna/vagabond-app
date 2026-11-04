@@ -150,6 +150,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     validateCurrentHP(this)
     StatusEffectUtil.validateCurrentFocus(this)
     PerkRulesSelectionsApplicator.apply(this.parent)
+    ActorBaseDataRulesApplicator.apply(this.parent, { lightPhase: true })
     RelicPowerProcessor.applyHeroBonuses(this.parent)
     PolymorphUtil.applyPolymorphChanges(this, calcTurnSpeed(this))
     this.armor.rating = Math.max(0, this.armor.rating)

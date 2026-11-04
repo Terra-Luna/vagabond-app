@@ -1,5 +1,5 @@
 import { Trash } from "lucide-react"
-import { useCallback } from "react"
+import { useCallback, useRef } from "react"
 
 import { HeroCreationLabel } from "../apps/hero-creator/component/HeroCreationTypography"
 import { BaseItemSchema, ItemDataModel } from "../model/item/ItemDataModel"
@@ -10,6 +10,7 @@ import { CollapsibleSection } from "../view/component/Collapsible"
 import { ItemDivider } from "../view/component/Header"
 import { useEditMode } from "../view/context/EditModeContext/Hooks"
 import { FoundryHotkeyBlocker } from "../view/wrappers/FoundryHotkeyBlocker"
+import { ApplyStatusForm } from "./form/ApplyStatusForm"
 import { ChoiceSetForm } from "./form/ChoiceSetForm"
 import { FlatModifierForm } from "./form/FlatModifierForm"
 import { GrantItemForm } from "./form/GrantItemForm"
@@ -45,14 +46,29 @@ export const ItemRulesManager = ({
 }) => {
   const { isEditMode } = useEditMode()
 
-  const rules: RuleElement[] = (item.system.rules as RuleElement[]) || []
+  const itemRules: RuleElement[] = (item.system.rules as RuleElement[]) || []
+
+  /**
+   * Edits can fire back-to-back (e.g. a text input flushing on blur right as a
+   * checkbox is clicked). Building each one from the latest pending list, rather
+   * than the last rendered one, keeps the second update from erasing the first.
+   */
+  const pendingRules = useRef<RuleElement[] | null>(null)
+  const currentRules = () => pendingRules.current ?? itemRules
+  const rules = currentRules()
 
   const updateRules = useCallback(
     async (newRules: RuleElement[]) => {
-      await item.update({ "system.rules": newRules } as Record<
-        string,
-        RuleElement[]
-      >)
+      pendingRules.current = newRules
+      try {
+        await item.update({ "system.rules": newRules } as Record<
+          string,
+          RuleElement[]
+        >)
+      }
+      finally {
+        if (pendingRules.current === newRules) pendingRules.current = null
+      }
     },
     [item],
   )
@@ -67,12 +83,14 @@ export const ItemRulesManager = ({
       value: 0,
       selector: [],
     }
-    updateRules([...rules, defaultRule])
+    updateRules([...currentRules(), defaultRule])
   }
 
   // Remove an item by its array index position
   const handleRemoveRule = (indexToRemove: number) => {
-    const filteredRules = rules.filter((_, idx) => idx !== indexToRemove)
+    const filteredRules = currentRules().filter(
+      (_, idx) => idx !== indexToRemove,
+    )
     updateRules(filteredRules)
   }
 
@@ -82,7 +100,7 @@ export const ItemRulesManager = ({
     updatedFields: Partial<RuleElement>,
     swapRuleType: boolean = false,
   ) => {
-    const advRules = rules.map((rule, idx) => {
+    const advRules = currentRules().map((rule, idx) => {
       if (idx !== indexToUpdate) return rule
       if (swapRuleType) {
         return { ...(updatedFields as RuleElement) }
@@ -148,6 +166,9 @@ export const ItemRulesManager = ({
                                   <option value="ChoiceSet">
                                     {appLang.RulesEditor.choiceSetType}
                                   </option>
+                                  <option value="ApplyStatus">
+                                    {appLang.RulesEditor.applyStatusType}
+                                  </option>
                                 </>
                               }
                               onChange={(e) => {
@@ -158,7 +179,7 @@ export const ItemRulesManager = ({
                                   updatedBase = {
                                     id:
                                       e.target.id == null ||
-                                      e.target.id.length === 0
+                                        e.target.id.length === 0
                                         ? foundry.utils.randomID()
                                         : e.target.id,
                                     key: "FlatModifier",
@@ -174,7 +195,7 @@ export const ItemRulesManager = ({
                                   updatedBase = {
                                     id:
                                       e.target.id == null ||
-                                      e.target.id.length === 0
+                                        e.target.id.length === 0
                                         ? foundry.utils.randomID()
                                         : e.target.id,
                                     key: "ToggleRule",
@@ -188,7 +209,7 @@ export const ItemRulesManager = ({
                                   updatedBase = {
                                     id:
                                       e.target.id == null ||
-                                      e.target.id.length === 0
+                                        e.target.id.length === 0
                                         ? foundry.utils.randomID()
                                         : e.target.id,
                                     key: "GrantItem",
@@ -201,7 +222,7 @@ export const ItemRulesManager = ({
                                   updatedBase = {
                                     id:
                                       e.target.id == null ||
-                                      e.target.id.length === 0
+                                        e.target.id.length === 0
                                         ? foundry.utils.randomID()
                                         : e.target.id,
                                     key: "ChoiceSet",
@@ -213,6 +234,27 @@ export const ItemRulesManager = ({
                                     sourceMode: "static", // "static" or "dynamic"
                                     choices: [],
                                     selections: [],
+                                  }
+                                }
+                                else if (newType === "ApplyStatus") {
+                                  updatedBase = {
+                                    id:
+                                      e.target.id == null ||
+                                        e.target.id.length === 0
+                                        ? foundry.utils.randomID()
+                                        : e.target.id,
+                                    key: "ApplyStatus",
+                                    label: rule.label || "",
+                                    level: level ?? 0,
+                                    whileInLight: "",
+                                    mode: "status",
+                                    status: "burning",
+                                    damageType: "fire",
+                                    die: 6,
+                                    uuid: "",
+                                    selector: [],
+                                    value: 0,
+                                    valueMultiplier: "",
                                   }
                                 }
                                 // Overwrite the rule in the current index with fresh data structure.
@@ -247,6 +289,14 @@ export const ItemRulesManager = ({
                           )}
                           {rule.key === "GrantItem" && (
                             <GrantItemForm
+                              rule={rule}
+                              onChange={(data) =>
+                                handleUpdateRuleData(index, data)
+                              }
+                            />
+                          )}
+                          {rule.key === "ApplyStatus" && (
+                            <ApplyStatusForm
                               rule={rule}
                               onChange={(data) =>
                                 handleUpdateRuleData(index, data)

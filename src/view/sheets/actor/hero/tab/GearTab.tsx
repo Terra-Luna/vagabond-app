@@ -551,7 +551,7 @@ const Armor = ({
       {items.map((item, index) => (
         <div key={index}>
           <div
-            className="flex items-center gap-x-1"
+            className="flex items-center gap-x-1 pb-1"
             onContextMenu={(e) =>
               onCtxMenu(e, equipmentContextMenuItems(hero, item))
             }

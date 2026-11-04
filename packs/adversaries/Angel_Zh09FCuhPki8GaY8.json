@@ -588,7 +588,7 @@
       "_id": "sfprKHipeqCvpjJg",
       "img": "icons/magic/light/explosion-beam-impact-silhouette.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Sheds Sunlight in Near.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Sheds Sunlight out to Near.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,

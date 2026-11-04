@@ -257,22 +257,10 @@
     "numberAppearing": "d4",
     "actions": [
       {
-        "name": "Bite",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 10,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "physical"
-        },
-        "saves": ["reflex"],
-        "type": "melee",
-        "range": "close"
-      },
-      {
+        "id": "",
         "name": "Claw",
+        "type": "melee",
+        "range": "close",
         "damage": {
           "dice": {
             "count": 1,
@@ -283,31 +271,38 @@
           "type": "physical"
         },
         "saves": ["reflex"],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
+      },
+      {
+        "id": "",
+        "name": "Bite",
         "type": "melee",
-        "range": "close"
+        "range": "close",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 10,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": ["reflex"],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       }
     ],
     "combo": {
-      "name": "1x Bite, 2x Claw",
+      "name": "2x Claw, 1x Bite",
       "actions": [
         {
-          "name": "Bite",
-          "damage": {
-            "dice": {
-              "count": 1,
-              "faces": 10,
-              "modifier": 0,
-              "explodesOn": []
-            },
-            "type": "physical"
-          },
-          "saves": ["reflex"],
-          "comboCount": 1,
-          "type": "melee",
-          "range": "close"
-        },
-        {
+          "id": "",
           "name": "Claw",
+          "type": "melee",
+          "range": "close",
           "damage": {
             "dice": {
               "count": 1,
@@ -318,9 +313,30 @@
             "type": "physical"
           },
           "saves": ["reflex"],
-          "comboCount": 2,
+          "halfDamageOnSave": false,
+          "appliedEffects": [],
+          "appliedActiveEffects": [],
+          "comboCount": 2
+        },
+        {
+          "id": "",
+          "name": "Bite",
           "type": "melee",
-          "range": "close"
+          "range": "close",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 10,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": ["reflex"],
+          "halfDamageOnSave": false,
+          "appliedEffects": [],
+          "appliedActiveEffects": [],
+          "comboCount": 1
         }
       ],
       "description": null
@@ -331,7 +347,8 @@
         "value": 40,
         "type": "walk"
       }
-    ]
+    ],
+    "forceUpdateTrack": true
   },
   "prototypeToken": {
     "name": "Troll",
@@ -432,8 +449,17 @@
       "_id": "RRcezgUQeJQLIoI5",
       "img": "icons/magic/life/crosses-trio-red.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Regains 4 (d8) HP on each of its Turns unless it took damage it was Weak to in the last Round. It can't be reduced below 1 HP except by damage it is Weak to.</span></p>",
-        "rules": [],
+        "description": "<p><span style=\"white-space:pre-wrap\">Regains 4 ([[/r d8#Lesser Regenerate I]]) HP on each of its Turns unless it took damage it was Weak to in the last Round. It can't be reduced below 1 HP except by damage it is Weak to.</span></p>",
+        "rules": [
+          {
+            "id": "Hg8yjdNaZnsIlhjh",
+            "key": "ToggleRule",
+            "label": "Death Req.",
+            "level": 0,
+            "value": true,
+            "selector": ["modifiers.damage.in.deathRequirements.weak"]
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0
@@ -441,11 +467,11 @@
       "effects": [],
       "flags": {},
       "_stats": {
-        "coreVersion": "14.361",
+        "coreVersion": "14.369",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.29",
-        "createdTime": 1790120998640,
-        "modifiedTime": 1790120998640,
+        "systemVersion": "0.2.180",
+        "createdTime": 1793769484859,
+        "modifiedTime": 1793769484859,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
         "compendiumSource": "Compendium.vagabond-app.features.Item.RRcezgUQeJQLIoI5",
         "duplicateSource": null,
@@ -465,8 +491,39 @@
       "_id": "esuAK91stp9WfqT7",
       "img": "/icons/magic/light/explosion-star-glow-orange.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its Armor and Lesser Regenerate trait are suspended while in sunlight, and it is Burning (d6). If the it dies within sunlight, it's turned to stone.</span></p>",
-        "rules": [],
+        "description": "<p><span style=\"white-space:pre-wrap\">Its Armor and Lesser Regenerate trait are suspended while in sunlight, and it is Burning ([[/r d6#Burning in the Sun]]). If it dies within sunlight, it's turned to stone.</span></p>",
+        "rules": [
+          {
+            "id": "Hdv5MG0dZNKofdh5",
+            "key": "ApplyStatus",
+            "label": "Burning in the Sun",
+            "level": 0,
+            "whileInLight": "sunlight",
+            "mode": "status",
+            "status": "burning",
+            "damageType": "fire",
+            "die": 6,
+            "uuid": "",
+            "selector": [],
+            "value": 0,
+            "valueMultiplier": ""
+          },
+          {
+            "id": "ufdY9EdV3qhUmNLO",
+            "key": "ApplyStatus",
+            "label": "Armor Break",
+            "level": 0,
+            "whileInLight": "sunlight",
+            "mode": "modifier",
+            "status": "burning",
+            "damageType": "fire",
+            "die": 6,
+            "uuid": "",
+            "selector": ["armor.rating"],
+            "value": "-99",
+            "valueMultiplier": ""
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0
@@ -474,11 +531,11 @@
       "effects": [],
       "flags": {},
       "_stats": {
-        "coreVersion": "14.361",
+        "coreVersion": "14.369",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.29",
-        "createdTime": 1790121070476,
-        "modifiedTime": 1790121070476,
+        "systemVersion": "0.2.180",
+        "createdTime": 1793769543063,
+        "modifiedTime": 1793770649556,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
         "compendiumSource": "Compendium.vagabond-app.features.Item.esuAK91stp9WfqT7",
         "duplicateSource": null,
@@ -501,11 +558,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.2.180",
     "createdTime": 1790119588433,
-    "modifiedTime": 1790121080513,
+    "modifiedTime": 1793769541579,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

@@ -48,6 +48,7 @@ export interface TargetDamageSummary extends DamageBreakdown {
   calculatedTotal: number
   isOverridden: boolean
   healing?: { flat: number; perDie: number; setValue: number }
+  absorbed?: boolean
 }
 
 export const isImmuneToStatus = (
@@ -57,6 +58,16 @@ export const isImmuneToStatus = (
   const immunities: string[] =
     (actor?.system as any)?.modifiers?.damage?.in?.statusImmunities ?? []
   return immunities.includes(status)
+}
+
+export const absorbsDamage = (
+  targetId: string,
+  damageRoll?: DamageRoll,
+): boolean => {
+  const absorbs: string[] =
+    (getTargetActor(targetId)?.system as any)?.modifiers?.damage?.in?.absorbs ??
+    []
+  return !!damageRoll?.dmgType && absorbs.includes(damageRoll.dmgType)
 }
 
 export const isImmuneToDamage = (

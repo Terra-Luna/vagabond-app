@@ -5,8 +5,24 @@
   "_id": "V4LtrAD0URqaYys8",
   "img": "/icons/magic/light/explosion-star-glow-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">It is Burning (d8) while illuminated by Sunlight.</span></p>",
-    "rules": [],
+    "description": "<p><span style=\"white-space:pre-wrap\">It is Burning ([[/r d8#Burning in the Sun]]) while illuminated by Sunlight.</span></p>",
+    "rules": [
+      {
+        "id": "iv0UutjPrssu1Eki",
+        "key": "ApplyStatus",
+        "label": "Burning in the Sun",
+        "level": 0,
+        "whileInLight": "sunlight",
+        "mode": "status",
+        "status": "burning",
+        "damageType": "fire",
+        "die": 8,
+        "uuid": "",
+        "selector": [],
+        "value": 0,
+        "valueMultiplier": ""
+      }
+    ],
     "level": 0,
     "scale": 0,
     "maxLevel": 0
@@ -19,11 +35,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.2.180",
     "createdTime": 1790099022599,
-    "modifiedTime": 1790116688501,
+    "modifiedTime": 1793770703392,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

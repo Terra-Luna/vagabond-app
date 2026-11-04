@@ -136,7 +136,11 @@ export const modifierSchema = () => {
     }),
 
     misc: new fields.SchemaField({
+      applied: new fields.ArrayField(
+        new fields.SchemaField({ ...appliedEffectFields() }),
+      ),
       light: new fields.SchemaField({
+        basic: new fields.SchemaField({ ...lightingMods() }),
         sunlight: new fields.SchemaField({ ...lightingMods() }),
         moonlight: new fields.SchemaField({ ...lightingMods() }),
       }),
@@ -309,6 +313,14 @@ const damageInSchema = () => {
       }),
       { initial: [] },
     ),
+    // Applied as healing instead of damage
+    absorbs: new fields.ArrayField(
+      new fields.StringField({
+        ...requiredString,
+        choices: Object.keys(appLang.DamageTypes),
+      }),
+      { initial: [] },
+    ),
     // Requirements for the target to die - "or"'d together in Attack / HeroAttack.
     deathRequirements: new fields.SchemaField({
       relic: new fields.BooleanField({ initial: false }),
@@ -350,10 +362,15 @@ const lightingMods = () => {
   return {
     active: new fields.BooleanField({ initial: false }),
     effects: new fields.ArrayField(
-      new fields.SchemaField({
-        type: new fields.StringField({ ...requiredString }),
-        value: new fields.StringField({ ...requiredString }),
-      })
-    )
+      new fields.SchemaField({ ...appliedEffectFields() }),
+    ),
   }
 }
+
+const appliedEffectFields = () => ({
+  mode: new fields.StringField({ ...requiredString, initial: "status" }),
+  status: new fields.StringField({ ...requiredString }),
+  damageType: new fields.StringField({ ...requiredString }),
+  die: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+  uuid: new fields.StringField({ ...requiredString }),
+})

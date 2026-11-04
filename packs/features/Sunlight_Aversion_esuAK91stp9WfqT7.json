@@ -5,8 +5,39 @@
   "_id": "esuAK91stp9WfqT7",
   "img": "/icons/magic/light/explosion-star-glow-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Its Armor and Lesser Regenerate trait are suspended while in sunlight, and it is Burning (d6). If the it dies within sunlight, it's turned to stone.</span></p>",
-    "rules": [],
+    "description": "<p><span style=\"white-space:pre-wrap\">Its Armor and Lesser Regenerate trait are suspended while in sunlight, and it is Burning ([[/r d6#Burning in the Sun]]). If it dies within sunlight, it's turned to stone.</span></p>",
+    "rules": [
+      {
+        "id": "Hdv5MG0dZNKofdh5",
+        "key": "ApplyStatus",
+        "label": "Burning in the Sun",
+        "level": 0,
+        "whileInLight": "sunlight",
+        "mode": "status",
+        "status": "burning",
+        "damageType": "fire",
+        "die": 6,
+        "uuid": "",
+        "selector": [],
+        "value": 0,
+        "valueMultiplier": ""
+      },
+      {
+        "id": "ufdY9EdV3qhUmNLO",
+        "key": "ApplyStatus",
+        "label": "Armor Break",
+        "level": 0,
+        "whileInLight": "sunlight",
+        "mode": "modifier",
+        "status": "burning",
+        "damageType": "fire",
+        "die": 6,
+        "uuid": "",
+        "selector": ["armor.rating"],
+        "value": "-99",
+        "valueMultiplier": ""
+      }
+    ],
     "level": 0,
     "scale": 0,
     "maxLevel": 0
@@ -19,11 +50,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.2.180",
     "createdTime": 1790121019031,
-    "modifiedTime": 1790121067391,
+    "modifiedTime": 1793770662054,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

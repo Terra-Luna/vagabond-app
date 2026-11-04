@@ -459,7 +459,7 @@
       "_id": "fMCMQDEdbNgc4Fuk",
       "img": "icons/magic/life/crosses-trio-red.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Regains 9 ([[/r 2d8#Regenerate]]) HP on its Turns.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Regains 4 ([[/r d8#Regenerate]]) HP on its Turns.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,

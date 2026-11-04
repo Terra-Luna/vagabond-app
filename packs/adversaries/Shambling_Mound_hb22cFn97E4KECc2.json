@@ -442,7 +442,16 @@
       "img": "icons/magic/defensive/shield-barrier-glowing-triangle-teal.webp",
       "system": {
         "description": "<p><span style=\"white-space:pre-wrap\">Shock damage rolls heal it instead.</span></p>",
-        "rules": [],
+        "rules": [
+          {
+            "id": "604aEwWSik0FS77Z",
+            "key": "FlatModifier",
+            "label": "Shock Absorber",
+            "level": 0,
+            "value": "shock",
+            "selector": ["modifiers.damage.in.absorbs"]
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0

@@ -24,6 +24,7 @@ import {
 import type { AttackSnapshot } from "./util/attack-serializer"
 import { isImmuneToBurning } from "./util/burning-mitigation"
 import {
+  absorbsDamage,
   AttackResolutionArgs,
   buildSummaryRow,
   calculateBonusDamage,
@@ -235,8 +236,11 @@ export abstract class Attack<TActor extends Actor = Actor> {
     }
   }
 
-  private getHealingSummary(args: AttackResolutionArgs): TargetDamageSummary[] {
-    const targetIds = this.resolveTargetIds(args)
+  private getHealingSummary(
+    args: AttackResolutionArgs,
+    onlyTargetIds?: string[],
+  ): TargetDamageSummary[] {
+    const targetIds = onlyTargetIds ?? this.resolveTargetIds(args)
     const rolled = this.damageRoll?.result?.total ?? 0
     const diceCount = this.damageRoll?.result?.rollSummaries?.length ?? 0
     const rows: TargetDamageSummary[] = []
@@ -280,7 +284,11 @@ export abstract class Attack<TActor extends Actor = Actor> {
         "healing",
         undefined,
       )
-      rows.push({ ...row, healing: { flat, perDie, setValue } })
+      rows.push({
+        ...row,
+        healing: { flat, perDie, setValue },
+        ...(onlyTargetIds ? { absorbed: true } : {}),
+      })
     }
     return rows
   }
@@ -317,6 +325,15 @@ export abstract class Attack<TActor extends Actor = Actor> {
       ...args,
       isSpellAttack: this.isSpellAttack,
     })) {
+      if (row.dmgType === "healing") {
+        const absorber = getTargetActor(row.targetId)
+        if (absorber)
+          this.updateHP(
+            absorber.system,
+            this.getHP(absorber.system) + row.total,
+          )
+        continue
+      }
       totals.set(row.targetId, (totals.get(row.targetId) ?? 0) + row.total)
     }
 
@@ -397,8 +414,16 @@ export abstract class Attack<TActor extends Actor = Actor> {
       return []
 
     const summaries: TargetDamageSummary[] = []
+    // Targets that absorb this damage type are healed by it instead of damaged.
+    const absorbingIds = this.resolveTargetIds(args).filter((id) =>
+      absorbsDamage(id, this.damageRoll),
+    )
+    if (absorbingIds.length)
+      summaries.push(...this.getHealingSummary(args, absorbingIds))
     const targetIds = this.resolveTargetIds(args).filter(
-      (id) => this.shouldApplyDamageToTarget(id) || this.hasApplicableImbue(id),
+      (id) =>
+        !absorbingIds.includes(id) &&
+        (this.shouldApplyDamageToTarget(id) || this.hasApplicableImbue(id)),
     )
 
     for (const id of targetIds) {
@@ -466,7 +491,10 @@ export abstract class Attack<TActor extends Actor = Actor> {
   }
 
   protected shouldApplyDamageToTarget(targetId: string): boolean {
-    return !isImmuneToDamage(targetId, this.damageRoll, this.isSpellAttack)
+    return (
+      !absorbsDamage(targetId, this.damageRoll) &&
+      !isImmuneToDamage(targetId, this.damageRoll, this.isSpellAttack)
+    )
   }
 
   /**

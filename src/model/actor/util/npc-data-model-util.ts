@@ -105,7 +105,25 @@ export const prepareNpcBaseData = (npc) => {
   // Apply Feature modifiers before the threat level, since they can change armor, HP, etc.
   if (npc.parent.items)
     ActorBaseDataRulesApplicator.apply(npc.parent, { npcMode: true })
+  floorArmor(npc)
   npc.threatLevel = setThreatLevel(npc)
+}
+
+/** Light-conditional rules need the in-light state, which Active Effects set after the base data. */
+export const prepareNpcDerivedData = (npc) => {
+  if (npc.parent?.items)
+    ActorBaseDataRulesApplicator.apply(npc.parent, {
+      npcMode: true,
+      lightPhase: true,
+    })
+  floorArmor(npc)
+  if (npc.health && npc.health.value > npc.health.max)
+    npc.health.value = npc.health.max
+}
+
+const floorArmor = (npc) => {
+  if (typeof npc.armor?.rating === "number")
+    npc.armor.rating = Math.max(0, npc.armor.rating)
 }
 
 // NPCs and Adversaries only have Features, which are always active.

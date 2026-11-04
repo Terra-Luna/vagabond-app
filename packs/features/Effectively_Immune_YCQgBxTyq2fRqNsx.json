@@ -6,7 +6,16 @@
   "img": "/icons/commodities/leather/scales-white.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Damage only kills it if it is Weak to the damage.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "MsaoqDPGDZ4iT4qW",
+        "key": "ToggleRule",
+        "label": "Effectively Immune",
+        "level": 0,
+        "value": true,
+        "selector": ["modifiers.damage.in.deathRequirements.weak"]
+      }
+    ],
     "level": 0,
     "scale": 0,
     "maxLevel": 0
@@ -19,11 +28,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.2.180",
     "createdTime": 1790121414907,
-    "modifiedTime": 1790121427064,
+    "modifiedTime": 1793771496422,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

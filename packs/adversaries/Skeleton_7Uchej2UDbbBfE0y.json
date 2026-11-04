@@ -390,7 +390,38 @@
       "img": "/icons/environment/wilderness/terrain-forest-gray.webp",
       "system": {
         "description": "<p><span style=\"white-space:pre-wrap\">Can't Move or Target over lines of salt or in areas illuminated by Sunlight. It is Incapacitated and Burning (d8) while in Sunlight.</span></p>",
-        "rules": [],
+        "rules": [
+          {
+            "id": "vVnRF7hFPBkLndtF",
+            "key": "ApplyStatus",
+            "label": "Burning",
+            "level": 0,
+            "whileInLight": "sunlight",
+            "mode": "status",
+            "status": "burning",
+            "damageType": "fire",
+            "die": 8,
+            "uuid": "",
+            "selector": [],
+            "value": 0,
+            "valueMultiplier": ""
+          },
+          {
+            "id": "uFDYTW2iBTzwiYE1",
+            "key": "ApplyStatus",
+            "label": "Incap",
+            "level": 0,
+            "whileInLight": "sunlight",
+            "mode": "status",
+            "status": "incapacitated",
+            "damageType": "fire",
+            "die": 0,
+            "uuid": "",
+            "selector": [],
+            "value": 0,
+            "valueMultiplier": ""
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0

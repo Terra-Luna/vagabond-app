@@ -5,7 +5,7 @@
   "_id": "sfprKHipeqCvpjJg",
   "img": "icons/magic/light/explosion-beam-impact-silhouette.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Sheds Sunlight in Near.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Sheds Sunlight out to Near.</span></p>",
     "rules": [],
     "level": 0,
     "scale": 0,
@@ -19,11 +19,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.31",
+    "systemVersion": "0.2.180",
     "createdTime": 1790182696388,
-    "modifiedTime": 1790182711873,
+    "modifiedTime": 1793771613426,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -8,6 +8,7 @@ import {
   onNpcPreCreate,
   onUpdateNpc,
   prepareNpcBaseData,
+  prepareNpcDerivedData,
   toggleNpcItemRule,
 } from "./util/npc-data-model-util"
 
@@ -41,6 +42,11 @@ export class NpcDataModel extends ActorDataModel<NpcSchema> {
   override prepareBaseData() {
     super.prepareBaseData()
     prepareNpcBaseData(this)
+  }
+
+  override prepareDerivedData() {
+    super.prepareDerivedData()
+    prepareNpcDerivedData(this)
   }
 
   getActiveRules = () => getNpcActiveRules(this)

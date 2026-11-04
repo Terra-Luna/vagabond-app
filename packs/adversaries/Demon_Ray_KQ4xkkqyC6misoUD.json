@@ -406,7 +406,23 @@
       "img": "/icons/magic/light/explosion-star-glow-orange.webp",
       "system": {
         "description": "<p><span style=\"white-space:pre-wrap\">Blinded by Sunlight.</span></p>",
-        "rules": [],
+        "rules": [
+          {
+            "id": "ylOsYrh08DWJBDzD",
+            "key": "ApplyStatus",
+            "label": "Blinded",
+            "level": 0,
+            "whileInLight": "sunlight",
+            "mode": "status",
+            "status": "blinded",
+            "damageType": "fire",
+            "die": 6,
+            "uuid": "",
+            "selector": [],
+            "value": 0,
+            "valueMultiplier": ""
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0

@@ -436,7 +436,7 @@
       "_id": "vOZfe4KYTxtn7xv3",
       "img": "icons/magic/defensive/shield-hex-blue.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">If Targeted with Magic, roll a d4. On a roll of 1, it ignores the effect.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">If Targeted with Magic, roll a [[/r d4#Magic Resistance I]]. On a roll of 1, it ignores the effect.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,

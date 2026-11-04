@@ -6,7 +6,16 @@
   "img": "icons/magic/defensive/shield-barrier-glowing-triangle-red.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Fire damage rolls heal it instead.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "P41tFDhAz6VeX8rg",
+        "key": "FlatModifier",
+        "label": "Flame Absorber",
+        "level": 0,
+        "value": "fire",
+        "selector": ["modifiers.damage.in.absorbs"]
+      }
+    ],
     "level": 0,
     "scale": 0,
     "maxLevel": 0
@@ -19,11 +28,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.19",
+    "systemVersion": "0.2.180",
     "createdTime": 1789833725373,
-    "modifiedTime": 1790116688500,
+    "modifiedTime": 1793771556601,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -5,7 +5,7 @@
   "_id": "vOZfe4KYTxtn7xv3",
   "img": "icons/magic/defensive/shield-hex-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">If Targeted with Magic, roll a d4. On a roll of 1, it ignores the effect.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">If Targeted with Magic, roll a [[/r d4#Magic Resistance I]]. On a roll of 1, it ignores the effect.</span></p>",
     "rules": [],
     "level": 0,
     "scale": 0,
@@ -19,11 +19,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.2.180",
     "createdTime": 1790110273678,
-    "modifiedTime": 1790116688502,
+    "modifiedTime": 1793771696323,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

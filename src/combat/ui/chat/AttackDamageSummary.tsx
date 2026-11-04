@@ -243,6 +243,9 @@ const SummaryRow = ({
             {row.total}
           </p>
         )}
+        {row.absorbed && (
+          <p title="Damage was absorbed and healed">(Absorbed)</p>
+        )}
         {row.isOverridden && game.user?.isActiveGM && !isResolved && (
           <IconOnlyButton
             Icon={Undo2}

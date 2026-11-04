@@ -65,6 +65,12 @@ export class CountdownManager {
     CountdownManager.removeStaleBurning()
   }
 
+  /** Burning applied by a rule with no countdown (Cd 0) is continual and tracked only by the actor's applied-keys flag. */
+  static hasContinualBurning(actor: any): boolean {
+    const keys: string[] = actor?.getFlag?.(sys_id, "appliedKeys") ?? []
+    return keys.some((key) => key.startsWith("status:burning:"))
+  }
+
   /**
    * Removes Burning from actors and tokens (in or out of combat) that no longer have an active burning countdown.
    */
@@ -90,7 +96,8 @@ export class CountdownManager {
         (e: any) =>
           e.statuses?.has?.("burning") || e._id === "vBurning00000000",
       )
-      if (!hasBurningEffect) continue
+      if (!hasBurningEffect || CountdownManager.hasContinualBurning(actor))
+        continue
       const stillBurning = burning.some(
         (r) =>
           r.actorUuid === actor.uuid &&
@@ -230,6 +237,62 @@ export class CountdownManager {
 
   static deleteAll() {
     return CountdownManager.setAll([])
+  }
+
+  private static matchesStatus(
+    cd: CountdownSchema,
+    actorUuid: string,
+    tokenUuid: string | undefined,
+    status: string,
+    damageType?: string,
+  ) {
+    const { result } = cd
+    return (
+      result.status === status &&
+      result.actorUuid === actorUuid &&
+      (result.tokenUuid ?? undefined) === tokenUuid &&
+      (status !== "burning" ||
+        (result.damageType ?? undefined) === (damageType || undefined))
+    )
+  }
+
+  static hasStatus(
+    actorUuid: string,
+    tokenUuid: string | undefined,
+    status: string,
+    damageType?: string,
+  ) {
+    return CountdownManager.getAll().some((cd) =>
+      CountdownManager.matchesStatus(
+        cd,
+        actorUuid,
+        tokenUuid,
+        status,
+        damageType,
+      ),
+    )
+  }
+
+  /** Removes a status's countdown from one actor/token, which also clears the status itself. */
+  static async removeStatus(
+    actorUuid: string,
+    tokenUuid: string | undefined,
+    status: string,
+    damageType?: string,
+  ) {
+    const all = CountdownManager.getAll()
+    const remaining = all.filter(
+      (cd) =>
+        !CountdownManager.matchesStatus(
+          cd,
+          actorUuid,
+          tokenUuid,
+          status,
+          damageType,
+        ),
+    )
+    if (remaining.length !== all.length)
+      await CountdownManager.setAll(remaining)
   }
 
   static checkPermission(): boolean {

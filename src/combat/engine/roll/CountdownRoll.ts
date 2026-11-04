@@ -1,6 +1,9 @@
 import { roll3dDice, sys_id } from "../../../util/foundry-util"
 import { sendVagabondChatCard } from "../../../view/chat/ChatCardSerializer"
-import { mitigateBurningDamage } from "../util/burning-mitigation"
+import {
+  absorbsBurning,
+  mitigateBurningDamage,
+} from "../util/burning-mitigation"
 import { getDiceTerms, playDiceSound } from "../util/dice-util"
 import { CountdownResult } from "./CountdownResult"
 import { RollSummary } from "./RollSummary"
@@ -87,7 +90,10 @@ export class CountdownRoll {
     }
     else {
       const adjHp =
-        this.result.damageType === "healing" ? health + damage : health - damage
+        this.result.damageType === "healing" ||
+        absorbsBurning(actor, this.result.damageType)
+          ? health + damage
+          : health - damage
 
       await actor.update({ "system.health.value": adjHp } as Record<
         string,

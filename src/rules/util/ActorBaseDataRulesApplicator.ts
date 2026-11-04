@@ -16,15 +16,17 @@ export class ActorBaseDataRulesApplicator {
    * Applies active rules from actor items and their referenced Feature Items.
    * @param actor
    * @param options.npcMode Applies only Toggle and FlatModifier rules, for every user. Used by NPCs/Adversaries.
+   * @param options.lightPhase Applies only the rules conditioned on an in-light state (`whileInLight`). Must run after Active Effects have set that state.
    * @returns
    */
   static apply(
     actor: Actor & { system: any },
-    options: { npcMode?: boolean } = {},
+    options: { npcMode?: boolean; lightPhase?: boolean } = {},
   ) {
     if (!actor || (!actor.isOwner && !options.npcMode)) return
 
     const npcMode = options.npcMode === true
+    const lightPhase = options.lightPhase === true
     const actorLevel = actor.system.level?.current ?? actor.system.hitDice ?? 1
     const activeRules = actor.system.getActiveRules()
     const perkGrants = activeRules.filter(
@@ -34,7 +36,15 @@ export class ActorBaseDataRulesApplicator {
       (r) => r.key === "ChoiceSet" && r.pack === "perk",
     )
     const toggleRules = activeRules.filter((r) => r.key === "ToggleRule")
-    const flatModifiers = activeRules.filter((r) => r.key === "FlatModifier")
+    const asFlatModifier = (r: any) =>
+      r.key === "ApplyStatus" && r.mode === "modifier"
+        ? { ...r, key: "FlatModifier" }
+        : r.key === "FlatModifier"
+          ? { ...r, whileInLight: "" }
+          : r
+    const flatModifiers = activeRules
+      .map(asFlatModifier)
+      .filter((r) => r.key === "FlatModifier")
     const choiceRules = activeRules.filter(
       (r) =>
         r.key === "ChoiceSet" &&
@@ -58,8 +68,11 @@ export class ActorBaseDataRulesApplicator {
           perkRules.forEach((rule) => {
             if (rule.key === "ToggleRule")
               toggleRules.push({ ...rule, parentId: perk?.id })
-            if (rule.key === "FlatModifier")
-              flatModifiers.push({ ...rule, parentId: perk?.id })
+            if (asFlatModifier(rule).key === "FlatModifier")
+              flatModifiers.push({
+                ...asFlatModifier(rule),
+                parentId: perk?.id,
+              })
           })
         }
       })
@@ -74,8 +87,11 @@ export class ActorBaseDataRulesApplicator {
           perkRules?.forEach((rule) => {
             if (rule.key === "ToggleRule")
               toggleRules.push({ ...rule, parentId: perk?.id })
-            if (rule.key === "FlatModifier")
-              flatModifiers.push({ ...rule, parentId: perk?.id })
+            if (asFlatModifier(rule).key === "FlatModifier")
+              flatModifiers.push({
+                ...asFlatModifier(rule),
+                parentId: perk?.id,
+              })
           })
         })
 
@@ -185,6 +201,7 @@ export class ActorBaseDataRulesApplicator {
     const strongestMinMaxModifiers = new Map<string, number>()
 
     const applyFlatModifier = (rule) => {
+      if (!!rule.whileInLight !== lightPhase) return
       const toggleState =
         !rule.toggleableEffect || actor.system.getRuleToggleState(rule.parentId)
       if (!toggleState) return
@@ -356,6 +373,40 @@ export class ActorBaseDataRulesApplicator {
           actorLockSet.delete(rule.uuid)
         }, 500)
       }
+    }
+
+    const applyLightRules = () => {
+      const misc = actor.system.modifiers?.misc
+      const light = misc?.light
+      if (light?.basic)
+        light.basic.active = !light.sunlight?.active && !light.moonlight?.active
+      for (const rule of activeRules) {
+        if (rule.key !== "ApplyStatus" || rule.mode === "modifier") continue
+        const mode = rule.mode === "activeEffect" ? "activeEffect" : "status"
+        if (mode === "status" ? !rule.status : !rule.uuid) continue
+        const target = rule.whileInLight
+          ? light?.[rule.whileInLight]?.effects
+          : misc?.applied
+        target?.push({
+          mode,
+          status: rule.status ?? "",
+          damageType: rule.damageType ?? "",
+          die: Number(rule.die) || 0,
+          uuid: rule.uuid ?? "",
+        })
+      }
+      for (const rule of flatModifiers) {
+        if (light?.[rule.whileInLight]?.active) applyFlatModifier(rule)
+      }
+    }
+
+    if (lightPhase) {
+      if (!npcMode) {
+        injectGrantedPerkRules(perkGrants)
+        injectChosenPerkRules(chosenPerkRules)
+      }
+      applyLightRules()
+      return
     }
 
     if (npcMode) {

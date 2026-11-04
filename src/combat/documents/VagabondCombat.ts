@@ -202,15 +202,17 @@ export class VagabondCombatant<
   updateBurningStatus() {
     const actor = this.token?.actor
     if (actor) {
-      const isBurning = !!CountdownManager.getAll().find(
-        (countdown) =>
-          countdown.result.actorUuid === actor.uuid &&
-          countdown.result.status === "burning" &&
-          countdown.result.duration > 0 &&
-          (countdown.result.tokenUuid
-            ? countdown.result.tokenUuid === this.token?.uuid
-            : true),
-      )
+      const isBurning =
+        CountdownManager.hasContinualBurning(actor) ||
+        !!CountdownManager.getAll().find(
+          (countdown) =>
+            countdown.result.actorUuid === actor.uuid &&
+            countdown.result.status === "burning" &&
+            countdown.result.duration > 0 &&
+            (countdown.result.tokenUuid
+              ? countdown.result.tokenUuid === this.token?.uuid
+              : true),
+        )
       const currentBurning =
         actor.statuses?.has?.("burning") ||
         (actor.system as any)?.statuses?.toggles?.burning ||

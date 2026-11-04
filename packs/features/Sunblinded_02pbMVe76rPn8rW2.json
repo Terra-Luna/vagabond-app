@@ -6,7 +6,23 @@
   "img": "/icons/magic/light/explosion-star-glow-orange.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Blinded by Sunlight.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "ylOsYrh08DWJBDzD",
+        "key": "ApplyStatus",
+        "label": "Blinded",
+        "level": 0,
+        "whileInLight": "sunlight",
+        "mode": "status",
+        "status": "blinded",
+        "damageType": "fire",
+        "die": 6,
+        "uuid": "",
+        "selector": [],
+        "value": 0,
+        "valueMultiplier": ""
+      }
+    ],
     "level": 0,
     "scale": 0,
     "maxLevel": 0
@@ -19,11 +35,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.31",
+    "systemVersion": "0.2.180",
     "createdTime": 1790185270262,
-    "modifiedTime": 1790185296338,
+    "modifiedTime": 1793770761770,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

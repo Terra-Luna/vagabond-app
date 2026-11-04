@@ -405,7 +405,7 @@
       "_id": "1omKWo4zAYxM8WIk",
       "img": "/icons/skills/melee/strike-flail-spiked-red.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Starts with 5 Flails. Targetting a Flail causes a -4</span></p><p><span style=\"white-space:pre-wrap\">penalty to the Attack Check, but severs it if at least 4</span></p><p><span style=\"white-space:pre-wrap\">damage is dealt with the attack.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Starts with 5 Flails. Targeting a Flail causes a -4 penalty to the Attack Check, but severs it if at least 4 damage is dealt with the attack.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,

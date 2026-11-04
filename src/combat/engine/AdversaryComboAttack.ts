@@ -11,6 +11,7 @@ import type {
 } from "./util/attack-serializer"
 import { serializeAttack } from "./util/attack-serializer"
 import {
+  absorbsDamage,
   AttackResolutionArgs,
   buildSummaryRow,
   computeDamageBreakdown,
@@ -91,6 +92,7 @@ export class ComboSubAttack {
 
   shouldApplyDamageToTarget(targetId: string): boolean {
     return (
+      !absorbsDamage(targetId, this.damageRoll) &&
       !isImmuneToDamage(targetId, this.damageRoll, this.isSpellAttack) &&
       isDamagedAfterSave(this, targetId)
     )
@@ -349,13 +351,18 @@ export class AdversaryComboAttack extends Attack {
     for (const row of rows) {
       const actor = getTargetActor(row.targetId)
       const hp = this.getHP(actor?.system)
-      await this.updateHP(actor?.system, hp - row.total)
+      await this.updateHP(
+        actor?.system,
+        row.dmgType === "healing" ? hp + row.total : hp - row.total,
+      )
     }
 
     await this.applyStatusEffectsForSub(
       sub,
       args,
-      rows.filter((row) => row.total >= 1).map((row) => row.targetId),
+      rows
+        .filter((row) => row.dmgType !== "healing" && row.total >= 1)
+        .map((row) => row.targetId),
     )
   }
 
@@ -383,27 +390,61 @@ export class AdversaryComboAttack extends Attack {
   override getDamageSummary(args: AttackResolutionArgs): TargetDamageSummary[] {
     return this.subAttacks.flatMap((sub, subIndex) => {
       if (!sub.damageRoll.result) return []
+      const absorbingIds = this.resolveTargetIds(args).filter((id) =>
+        absorbsDamage(id, sub.damageRoll),
+      )
+      const absorbed = absorbingIds.map((id) => {
+        const amount = sub.damageRoll.result?.total ?? 0
+        return {
+          ...buildSummaryRow(
+            id,
+            subIndex,
+            {
+              damageBeforeHalving: amount,
+              damage: amount,
+              imbueDamage: 0,
+              imbueParts: [],
+              resistanceDivisor: 1,
+              armor: 0,
+              armorPiercing: 0,
+              otherMitigation: 0,
+              mitigatedBeforeSave: amount,
+              saveHalved: false,
+              mitigated: amount,
+            },
+            0,
+            args,
+            "healing",
+            sub.name,
+          ),
+          healing: { flat: 0, perDie: 0, setValue: 0 },
+          absorbed: true,
+        }
+      })
       const targetIds = this.resolveTargetIds(args).filter((id) =>
         sub.shouldApplyDamageToTarget(id),
       )
-      return targetIds.map((id) => {
-        const breakdown = computeDamageBreakdown(
-          sub.damageRoll,
-          id,
-          args,
-          sub.defenseArmorBonuses[id] ?? 0,
-          sub.isHalfDamageForTarget(id),
-        )
-        return buildSummaryRow(
-          id,
-          subIndex,
-          breakdown,
-          0,
-          args,
-          sub.damageRoll.dmgType,
-          sub.name,
-        )
-      })
+      return [
+        ...absorbed,
+        ...targetIds.map((id) => {
+          const breakdown = computeDamageBreakdown(
+            sub.damageRoll,
+            id,
+            args,
+            sub.defenseArmorBonuses[id] ?? 0,
+            sub.isHalfDamageForTarget(id),
+          )
+          return buildSummaryRow(
+            id,
+            subIndex,
+            breakdown,
+            0,
+            args,
+            sub.damageRoll.dmgType,
+            sub.name,
+          )
+        }),
+      ]
     })
   }
 

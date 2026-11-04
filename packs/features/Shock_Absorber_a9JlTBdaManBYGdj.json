@@ -6,7 +6,16 @@
   "img": "icons/magic/defensive/shield-barrier-glowing-triangle-teal.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Shock damage rolls heal it instead.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "604aEwWSik0FS77Z",
+        "key": "FlatModifier",
+        "label": "Shock Absorber",
+        "level": 0,
+        "value": "shock",
+        "selector": ["modifiers.damage.in.absorbs"]
+      }
+    ],
     "level": 0,
     "scale": 0,
     "maxLevel": 0
@@ -19,11 +28,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.19",
+    "systemVersion": "0.2.180",
     "createdTime": 1789833637419,
-    "modifiedTime": 1790116688501,
+    "modifiedTime": 1793772123758,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -505,7 +505,16 @@
       "img": "/icons/magic/defensive/shield-barrier-flaming-diamond-acid.webp",
       "system": {
         "description": "<p><span style=\"white-space:pre-wrap\">Acid damage rolls affect it as healing rolls.</span></p>",
-        "rules": [],
+        "rules": [
+          {
+            "id": "Mzv4sNsu1km93O0M",
+            "key": "FlatModifier",
+            "label": "Acid Bather",
+            "level": 0,
+            "value": "acid",
+            "selector": ["modifiers.damage.in.absorbs"]
+          }
+        ],
         "level": 0,
         "scale": 0,
         "maxLevel": 0

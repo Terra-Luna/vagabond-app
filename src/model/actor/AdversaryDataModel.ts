@@ -6,6 +6,7 @@ import {
   onNpcPreCreate,
   onUpdateNpc,
   prepareNpcBaseData,
+  prepareNpcDerivedData,
   setThreatLevel,
   toggleNpcItemRule,
 } from "./util/npc-data-model-util"
@@ -41,6 +42,11 @@ export class AdversaryDataModel extends ActorDataModel<NpcSchema> {
   override prepareBaseData() {
     super.prepareBaseData()
     prepareNpcBaseData(this)
+  }
+
+  override prepareDerivedData() {
+    super.prepareDerivedData()
+    prepareNpcDerivedData(this)
   }
 
   getActiveRules = () => getNpcActiveRules(this)

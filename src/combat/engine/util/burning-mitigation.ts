@@ -2,11 +2,23 @@ import { physicalDamageTypes } from "../../../model/common/shared-schemas"
 
 const nonDamageTypes = ["healing", "mana"]
 
+/** Burning of an absorbed damage type heals instead of damaging. */
+export const absorbsBurning = (
+  actor: Actor | null | undefined,
+  damageType?: string,
+): boolean => {
+  if (!damageType || nonDamageTypes.includes(damageType)) return false
+  const absorbs: string[] =
+    (actor?.system as any)?.modifiers?.damage?.in?.absorbs ?? []
+  return absorbs.includes(damageType)
+}
+
 export const isImmuneToBurning = (
   actor: Actor | null | undefined,
   damageType?: string,
 ): boolean => {
   if (!damageType || nonDamageTypes.includes(damageType)) return false
+  if (absorbsBurning(actor, damageType)) return false
   const immunities: string[] =
     (actor?.system as any)?.modifiers?.damage?.in?.immunities ?? []
   return (
@@ -29,6 +41,7 @@ export const mitigateBurningDamage = (
   roll: number,
 ): number => {
   if (!damageType || nonDamageTypes.includes(damageType)) return roll
+  if (absorbsBurning(actor, damageType)) return roll
 
   const mods = (actor.system as any)?.modifiers?.damage?.in ?? {}
   const flat =

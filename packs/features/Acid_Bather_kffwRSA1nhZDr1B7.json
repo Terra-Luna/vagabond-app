@@ -6,7 +6,16 @@
   "img": "/icons/magic/defensive/shield-barrier-flaming-diamond-acid.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Acid damage rolls affect it as healing rolls.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "Mzv4sNsu1km93O0M",
+        "key": "FlatModifier",
+        "label": "Acid Bather",
+        "level": 0,
+        "value": "acid",
+        "selector": ["modifiers.damage.in.absorbs"]
+      }
+    ],
     "level": 0,
     "scale": 0,
     "maxLevel": 0
@@ -19,11 +28,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.19",
+    "systemVersion": "0.2.180",
     "createdTime": 1789833430871,
-    "modifiedTime": 1790116688502,
+    "modifiedTime": 1793771196308,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
