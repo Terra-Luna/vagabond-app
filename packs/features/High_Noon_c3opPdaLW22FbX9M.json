@@ -2,7 +2,7 @@
   "name": "High Noon",
   "type": "feature",
   "_id": "c3opPdaLW22FbX9M",
-  "img": "/icons/magic/nature/symbol-sun-yellow.webp",
+  "img": "/icons/magic/air/weather-sunlight-sky.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">When you kill an Enemy, your Deadeye is immediately set to 17.</span></p>",
     "rules": [],
@@ -19,11 +19,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
     "systemVersion": "0.0.94",
     "createdTime": 1789497245799,
-    "modifiedTime": 1789521810217,
+    "modifiedTime": 1793765297979,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

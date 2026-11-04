@@ -1,16 +1,16 @@
 {
   "name": "In Moonlight",
   "_id": "NnDOEKfLfYN5OJKq",
-  "img": "/icons/magic/nature/moon-crescent.webp",
+  "img": "/icons/magic/nature/symbol-moon-stars-white.webp",
   "type": "base",
   "system": {
     "changes": [
       {
-        "key": "system.modifiers.misc.inMoonlight",
+        "key": "system.modifiers.misc.light.moonlight.active",
         "type": "override",
         "value": true,
         "phase": "initial",
-        "priority": 20
+        "priority": 1
       }
     ],
     "requiresEquip": true
@@ -37,7 +37,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.2.180",
     "createdTime": 1793668569306,
-    "modifiedTime": 1793687172354,
+    "modifiedTime": 1793765820249,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
