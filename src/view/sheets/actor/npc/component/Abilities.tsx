@@ -61,11 +61,11 @@ const FeatureCard = ({ actor, feature, disabled = false }) => {
 
   return (
     <div
-      className={`flex justify-between items-center gap-2 ${tableBorderRounded} p-2`}
+      className={`flex justify-between items-center gap-2 ${tableBorderRounded} bg-context-menu-fill p-2`}
     >
       <div className="flex flex-col gap-1">
         <p
-          className={`font-paradigm font-bold ${!disabled ? "hover-glow" : ""}`}
+          className={`text-text-header-tertiary font-paradigm font-bold ${!disabled ? "hover-glow" : ""}`}
           onClick={() => (!disabled ? feature.sheet.render(true) : null)}
         >
           {feature.name}

@@ -602,10 +602,8 @@
     },
     "HeroCreation": {
       "windowTitle": "Hero Creator",
-      "testAutoAssign": "AUTO ASSIGN (TEST ONLY)",
       "saveCharacterError": "An error occurred while saving your character, review your sheet for accuracy.",
       "identity": "IDENTITY",
-      "heroName": "Hero Name",
       "selectAncestry": "ANCESTRY",
       "beingType": "Type",
       "beingSize": "Size",
@@ -620,7 +618,6 @@
       "statsSelect": "or Select",
       "dropHere": "DROP HERE",
       "flatBonus": "FLAT BONUSES",
-      "vitals": "Vitals",
       "maxhp": "MAX HP",
       "traingingsHeader": "SELECT TRAININGS",
       "trainingSubheader": "Choose the skills your hero has mastered.",
@@ -642,7 +639,6 @@
       "grimoire": "Grimoire",
       "perksHeader": "SELECT PERKS",
       "grantedPerks": "Granted Perks",
-      "perksList": "Selected Perks",
       "equipHeader": "EQUIPMENT & WEALTH",
       "equipSubheader": "Choose a starting pack and/or purchase items individually."
     },
@@ -679,7 +675,6 @@
       "class": "Class Features",
       "perks": "Perks",
       "encumbrance": "ENCUMBRANCE",
-      "wealth": "WEALTH",
       "tab-main": "Equipped Gear",
       "tab-inv": "Inventory & Wealth",
       "tab-magic": "Spellcasting",
@@ -896,7 +891,6 @@
       "damage": "Damage",
       "healing": "Healing",
       "mana": "Mana",
-      "dmg": "Dmg",
       "damageType": "Damage Type",
       "effects": "Applied Effects",
       "duration": "Duration",
@@ -904,7 +898,6 @@
       "upcastableEffect": "Upcastable Effect",
       "upcastableEffectDieRoll": "Upcastable Effect rolls Dice",
       "baseManaCost": "Base Mana Cost",
-      "canExplode": "Exploding Dice",
       "explodeOnCritOnly": "❗crit only",
       "reroll": "Reroll",
       "range": "Range",
@@ -952,30 +945,6 @@
       "HH": "2H",
       "-": ""
     },
-    "Modifiers": {
-      "TargetStat": {
-        "maxHp": "MAX HP",
-        "maxMana": "MAX MANA",
-        "maxSlost": "MAX SLOTS",
-        "speed": "SPEED",
-        "armor": "ARMOR",
-        "castingMaxStat": "CASTING MAX STAT",
-        "breatherHealing": "BREATHER HEALING",
-        "statBonusPoints": "STAT BONUS POINTS",
-        "luckRecovery": "LUCK RECOVERY",
-        "breatherStudied": "BREATHER STUDIED",
-        "breatherMana": "BREATHER MANA",
-        "breatherLuck": "BREATHER LUCK",
-        "restLuck": "REST LUCK",
-        "restStudy": "REST STUDY",
-        "maxManaSpend": "MAX MANA SPEND"
-      },
-      "ModifierTypes": {
-        "BONUS": "BONUS",
-        "SET": "SET",
-        "FORMULA": "FORMULA"
-      }
-    },
     "Grants": {
       "Type": {
         "PERK": "PERK",
@@ -995,7 +964,6 @@
         "spell": "Spell",
         "training": "Training"
       },
-      "direct": "Direct",
       "choice": "Choice",
       "count": "Count",
       "filter": "Filter"
@@ -1003,7 +971,6 @@
     "ClassSheet": {
       "placeholder_classname": "New class...",
       "labelLevel": "Level",
-      "levels": "Levels",
       "scale": "Levels Hereafter",
       "maxLvl": "Max Level",
       "grants": "Grants",
@@ -1085,8 +1052,6 @@
     },
     "Effects": {
       "title": "Active Effects",
-      "burn": "Burning",
-      "by": "by",
       "env": "Environment",
       "suspended": "Suspended",
       "appliedEffects": "Applied Effects",
@@ -1108,7 +1073,6 @@
       "end": "End turn",
       "applyEff": "Apply Effects",
       "allSelected": "(All selected)",
-      "combatTracker": "Combat Tracker",
       "keyExplainer": "[Shift/Ctrl] to multi-select\n[Alt] to ping.\nR-click for menu.",
       "hpTooltip": "HP: {{hp}} / {{hpMax}}",
       "statTooltip": "HP: {{hp}} / {{hpMax}}\nMana: {{mana}} / {{manaMax}}\nLuck: {{luck}}",
@@ -1122,7 +1086,6 @@
       "criticalSuccess": "Critical Success",
       "gmTools": "GM TOOLS",
       "editCombatantHp": "Edit Combatant Hp",
-      "resolveAllAttacks": "Resolve All Attacks",
       "applyDamageTooltip": "Apply damage, effects, & lock attack from edits.",
       "applyStatusesTooltip": "Apply statuses only (no damage) & lock attack from edits.",
       "resolveWithoutUpdatesTooltip": "Resolve with no updates",
@@ -1160,7 +1123,6 @@
     },
     "AttackBuilder": {
       "title": "Roll Builder",
-      "deletePreset": "Delete preset?",
       "favorResultsCountTowardCrit": "Favor die results count towards Crit threshold.",
       "critSum": "Crit Sum",
       "favorDiceCanExplode": "Favor dice can explode.",
@@ -1547,7 +1509,6 @@
     "General": {
       "enterText": "Enter text...",
       "alchemyTab": "Alchemy",
-      "prerequisite": "Prerequisite",
       "addNewPrerequisite": "Add new prerequisite",
       "addNew": "Add new",
       "areYouSure": "Are you sure?",

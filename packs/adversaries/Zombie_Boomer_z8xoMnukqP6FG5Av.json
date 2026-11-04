@@ -265,8 +265,9 @@
     "numberAppearing": "3d8",
     "actions": [
       {
+        "id": "",
         "name": "Boom!",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Action, Aura Near | Reflex]: 7 (2d6) and pass</span></p><p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened (Cd4 damage). This Being dies.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Action, Aura Near | Reflex]: 7 (2d6) and pass [Endure] or Sickened (Cd4 damage). This Being dies.</span></p>",
         "type": "melee",
         "range": "near",
         "damage": {
@@ -278,9 +279,13 @@
           },
           "type": "physical"
         },
-        "saves": ["reflex"]
+        "saves": ["reflex"],
+        "halfDamageOnSave": false,
+        "appliedEffects": [],
+        "appliedActiveEffects": []
       },
       {
+        "id": "",
         "name": "Sicken",
         "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened (Cd4 damage).</span></p>",
         "type": "melee",
@@ -295,12 +300,14 @@
           "type": "none"
         },
         "saves": ["endure"],
+        "halfDamageOnSave": false,
         "appliedEffects": [
           {
             "effect": "sickened",
             "duration": "Cd4"
           }
-        ]
+        ],
+        "appliedActiveEffects": []
       }
     ],
     "combo": {
@@ -521,11 +528,11 @@
   "folder": "qMHTlKoPCfkn2dhA",
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.2.180",
     "createdTime": 1790099763192,
-    "modifiedTime": 1790100399665,
+    "modifiedTime": 1793776961966,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

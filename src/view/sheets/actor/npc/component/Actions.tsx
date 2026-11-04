@@ -250,8 +250,8 @@ export const Actions = ({
         }
       >
         {npc.combo.name !== "" && (
-          <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded}`}>
-            <p className="font-paradigm font-bold">{locale.combo}:</p>
+          <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded} bg-context-menu-fill cursor-pointer`}>
+            <p className="text-text-header-tertiary font-paradigm font-bold">{locale.combo}:</p>
             <div>
               <p className="text-text-secondary">{npc.combo.name}</p>
               <p className="text-xs text-text-secondary italic">
@@ -346,7 +346,7 @@ export const Actions = ({
           return (
             <div key={idx} className="flex flex-col gap-1">
               <div
-                className={`flex gap-2 p-2 justify-between ${tableBorderRounded} ${canReorder ? "cursor-grab" : ""} ${dragIndex === idx ? "opacity-40" : ""}`}
+                className={`flex gap-2 p-2 justify-between text-text-header-tertiary ${tableBorderRounded} bg-context-menu-fill ${canReorder ? "cursor-grab" : ""} ${dragIndex === idx ? "opacity-40" : ""}`}
                 draggable={canReorder}
                 onDragStart={(e) => {
                   if (!canReorder) return
@@ -399,7 +399,7 @@ export const Actions = ({
                     {action.description && action.description.length > 0 && (
                       <EnrichedContent
                         content={action.description}
-                        styleClasses="text-text-secondary italic"
+                        styleClasses="text-xs text-text-secondary italic"
                         actor={npc.parent}
                       />
                     )}
