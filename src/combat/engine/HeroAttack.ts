@@ -1303,7 +1303,9 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
           weaknesses.includes(this.damageRoll.dmgType),
       )
     if (deathRequirements.sunlight)
-      checks.push(!!targetActor?.system?.modifiers?.misc?.inSunlight)
+      checks.push(
+        !!targetActor?.system?.modifiers?.misc?.light?.sunlight?.active,
+      )
 
     return checks.length === 0 || checks.some(Boolean)
   }

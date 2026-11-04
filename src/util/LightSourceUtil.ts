@@ -18,76 +18,75 @@ type LightData = {
   requiresFuel?: boolean
   isFueled?: boolean
   expendable?: boolean
+  isDark?: boolean
+  isSunlight?: boolean
+  isMoonlight?: boolean
 }
+
+type LightKindFlags = Pick<LightData, "isDark" | "isSunlight" | "isMoonlight">
+
+/** Sunlight/moonlight designations that grant an in-light effect to tokens in range. */
+type LightKind = "sunlight" | "moonlight"
+type LightType = "none" | LightKind
+
+type Point = { x: number; y: number }
+
+type Emitter = {
+  id: unknown
+  center: Point
+  range: number
+  type: LightKind
+  ignoresWalls: boolean
+}
+
+const LIGHT_KINDS: readonly LightKind[] = ["sunlight", "moonlight"]
 
 export class LightSourceUtil {
 
   private static readonly LIGHT_FLAG = "lightSourceItemId"
+  private static readonly TYPE_FLAG = "lightType"
+  private static readonly EFFECT_FLAG = "lightEffect"
   private static readonly NO_LIGHT = { dim: 0, bright: 0 }
-  private static tickerId?: ReturnType<typeof setInterval>
-
-  private static buildLight(data: {
-    range: number
-    color: string
-    isDark?: boolean
-    isSunlight?: boolean
-    isMoonlight?: boolean
-  }) {
-    const isPlain = !data.isSunlight && !data.isMoonlight && !data.isDark
-    if (data.isMoonlight && !data.isDark) {
-      return {
-        dim: data.range,
-        bright: 0,
-        angle: 360,
-        color: data.color,
-        alpha: 0.8,
-        priority: 0,
-        negative: false,
-        coloration: 1,
-        luminosity: 0,
-        attenuation: 1,
-        animation: { type: "ghost", speed: 1, intensity: 2, reverse: false },
-      }
-    }
-    if (data.isSunlight && !data.isDark) {
-      return {
-        dim: data.range,
-        bright: 0,
-        angle: 360,
-        color: data.color,
-        alpha: 0.4,
-        priority: 0,
-        negative: false,
-        coloration: 1,
-        luminosity: 0.5,
-        attenuation: 1,
-        animation: {
-          type: "starlight",
-          speed: 1,
-          intensity: 1,
-          reverse: false,
-        },
-      }
-    }
-    return {
-      dim: data.range,
-      bright: isPlain ? Math.min(5, data.range) : 0,
-      angle: 360,
-      color: data.color,
-      alpha: isPlain ? 0.5 : 0.4,
-      priority: 0,
-      negative: !!data.isDark,
-      coloration: 1,
-      luminosity: 0.5,
-      attenuation: 0.5,
-      animation: {
-        type: "torch",
-        speed: isPlain ? 4 : 2,
-        intensity: 5,
-        reverse: false,
-      },
-    }
+  /* This value helps with odd dead-angles caused by calculating true distance on a grid system */
+  private static readonly RANGE_TOLERANCE = 1
+  private static readonly EFFECT_UUIDS: Record<LightKind, string> = {
+    sunlight:
+      "Compendium.vagabond-app.active-effects.ActiveEffect.40CQqoU8bdlmKUu5",
+    moonlight:
+      "Compendium.vagabond-app.active-effects.ActiveEffect.NnDOEKfLfYN5OJKq",
   }
+
+  private static tickerId?: ReturnType<typeof setInterval>
+  private static effectCache: Partial<Record<LightKind, any>> = {}
+  private static syncTimer?: ReturnType<typeof setTimeout>
+  private static syncRunning = false
+  private static syncQueued = false
+
+  // ---------------------------------------------------------------------------
+  // Shared helpers
+  // ---------------------------------------------------------------------------
+
+  private static typeFlagPath(): string {
+    return `flags.${sys_id}.${LightSourceUtil.TYPE_FLAG}`
+  }
+
+  private static hasRadius(light?: { dim?: number; bright?: number }): boolean {
+    return (light?.dim ?? 0) > 0 || (light?.bright ?? 0) > 0
+  }
+
+  private static sceneTokens(): any[] {
+    return ((canvas as any).tokens?.placeables ?? []) as any[]
+  }
+
+  /** Sunlight/moonlight designation stored as a flag next to a native light config. */
+  private static readLightType(doc: any): LightKind | undefined {
+    const type = doc.getFlag(sys_id, LightSourceUtil.TYPE_FLAG)
+    return LIGHT_KINDS.includes(type) ? type : undefined
+  }
+
+  // ---------------------------------------------------------------------------
+  // Burn state, fuel and timers (item data)
+  // ---------------------------------------------------------------------------
 
   static remainingSeconds(data: LightData, now: number = Date.now()): number {
     if (data.requiresFuel && !data.isFueled) return 0
@@ -149,137 +148,6 @@ export class LightSourceUtil {
       isLit && duration > 0 && getRealtimeLightsources() && !game.paused
         ? Date.now()
         : 0
-  }
-
-  /** If multiple light sources are active, return the one with the longest range. */
-  private static bestSource(actor: any): any | undefined {
-    const sources = (actor?.items?.filter((it: any) => {
-      const data = it.system?.lightSourceData
-      return (
-        data?.isLightSource &&
-        data.isLit &&
-        LightSourceUtil.hasFuel(data) &&
-        !LightSourceUtil.isUnbound(it.system)
-      )
-    }) ?? []) as any[]
-    return sources.sort(
-      (a, b) => b.system.lightSourceData.range - a.system.lightSourceData.range,
-    )[0]
-  }
-
-  static async syncActorLight(actor: any) {
-    if (!actor || actor.type === "container") return
-
-    const best = LightSourceUtil.bestSource(actor)
-    const previous = actor.getFlag(sys_id, LightSourceUtil.LIGHT_FLAG)
-
-    if (!best && !previous) return
-
-    const light = best
-      ? LightSourceUtil.buildLight(best.system.lightSourceData)
-      : LightSourceUtil.NO_LIGHT
-    const tokens = (actor.getActiveTokens?.(false, true) ?? []) as any[]
-
-    await Promise.all([
-      actor.update({
-        "prototypeToken.light": light,
-        [best
-          ? `flags.${sys_id}.${LightSourceUtil.LIGHT_FLAG}`
-          : `flags.${sys_id}.-=${LightSourceUtil.LIGHT_FLAG}`]: best
-          ? best.id
-          : null,
-      }),
-      ...tokens.map((token) => token.update({ light })),
-    ])
-  }
-
-  static async syncAllActors() {
-    if (!game.user?.isActiveGM) return
-    await Promise.all(
-      (game.actors?.contents ?? []).map((actor) =>
-        LightSourceUtil.syncActorLight(actor),
-      ),
-    )
-  }
-
-  static startTimer() {
-    if (LightSourceUtil.tickerId) return
-    LightSourceUtil.tickerId = setInterval(
-      () => LightSourceUtil.expireSpentSources(),
-      1000,
-    )
-    LightSourceUtil.registerTokenOverlay()
-
-    Hooks.on("createToken", (token: any, _options: any, userId: string) => {
-      if (game.user?.id !== userId) return
-      const best = LightSourceUtil.bestSource(token.actor)
-      if (best)
-        token.update({
-          light: LightSourceUtil.buildLight(best.system.lightSourceData),
-        })
-    })
-  }
-
-  /* Small, round icon in upper right of Actor's token when emitting light from an item. */
-  private static registerTokenOverlay() {
-    const refreshActorTokens = (item: any) => {
-      const actor = item?.parent
-      if (!actor?.getActiveTokens) return
-      for (const token of actor.getActiveTokens() as any[]) {
-        token.renderFlags?.set({ refreshState: true })
-      }
-    }
-    Hooks.on("createItem", refreshActorTokens)
-    Hooks.on("updateItem", refreshActorTokens)
-    Hooks.on("deleteItem", refreshActorTokens)
-
-    Hooks.on("refreshToken" as any, (token: any) => {
-      const PIXI = (globalThis as any).PIXI
-      if (!PIXI || !token?.document) return
-
-      const pileData = token.document.getFlag?.("item-piles", "data")
-      const hideForPile = !!pileData?.enabled && pileData.type !== "merchant"
-      const lit = hideForPile
-        ? undefined
-        : LightSourceUtil.bestSource(token.actor)
-      let overlay = token._vagabondLightIcon
-      if (!lit) {
-        if (overlay) overlay.visible = false
-        return
-      }
-
-      if (!overlay || overlay.destroyed) {
-        overlay = new PIXI.Container()
-        overlay.eventMode = "none"
-        overlay.sprite = new PIXI.Sprite()
-        overlay.mask = new PIXI.Graphics()
-        overlay.border = new PIXI.Graphics()
-        overlay.addChild(overlay.sprite, overlay.mask, overlay.border)
-        overlay.sprite.mask = overlay.mask
-        token._vagabondLightIcon = overlay
-        token.addChild(overlay)
-      }
-      if (overlay.src !== lit.img) {
-        overlay.src = lit.img
-        overlay.sprite.texture = PIXI.Texture.from(lit.img)
-      }
-
-      const size = Math.max(12, Math.min(token.w, token.h) * 0.3)
-      const radius = size / 2
-      overlay.sprite.width = size
-      overlay.sprite.height = size
-      overlay.mask
-        .clear()
-        .beginFill(0xffffff)
-        .drawCircle(radius, radius, radius)
-        .endFill()
-      overlay.border
-        .clear()
-        .lineStyle(Math.max(1, size * 0.08), 0x000000, 1)
-        .drawCircle(radius, radius, radius)
-      overlay.position.set(token.w - size, 0)
-      overlay.visible = true
-    })
   }
 
   private static async expireSpentSources() {
@@ -347,6 +215,515 @@ export class LightSourceUtil {
       }
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // Native light configuration (item -> actor / token light)
+  // ---------------------------------------------------------------------------
+
+  private static buildLight(
+    data: LightKindFlags & Pick<LightData, "range" | "color">,
+  ) {
+    const isPlain = !data.isSunlight && !data.isMoonlight && !data.isDark
+    if (data.isMoonlight && !data.isDark) {
+      return {
+        dim: data.range,
+        bright: 0,
+        angle: 360,
+        color: data.color,
+        alpha: 0.8,
+        priority: 0,
+        negative: false,
+        coloration: 1,
+        luminosity: 0,
+        attenuation: 1,
+        animation: { type: "ghost", speed: 1, intensity: 2, reverse: false },
+      }
+    }
+    if (data.isSunlight && !data.isDark) {
+      return {
+        dim: data.range,
+        bright: 0,
+        angle: 360,
+        color: data.color,
+        alpha: 0.4,
+        priority: 0,
+        negative: false,
+        coloration: 1,
+        luminosity: 0.5,
+        attenuation: 1,
+        animation: {
+          type: "starlight",
+          speed: 1,
+          intensity: 1,
+          reverse: false,
+        },
+      }
+    }
+    return {
+      dim: data.range,
+      bright: isPlain ? Math.min(5, data.range) : 0,
+      angle: 360,
+      color: data.color,
+      alpha: isPlain ? 0.5 : 0.4,
+      priority: 0,
+      negative: !!data.isDark,
+      coloration: 1,
+      luminosity: 0.5,
+      attenuation: 0.5,
+      animation: {
+        type: "torch",
+        speed: isPlain ? 4 : 2,
+        intensity: 5,
+        reverse: false,
+      },
+    }
+  }
+
+  static lightType(data: LightKindFlags): LightType {
+    if (data.isDark) return "none"
+    if (data.isSunlight) return "sunlight"
+    return data.isMoonlight ? "moonlight" : "none"
+  }
+
+  /** Token update payload (native light + type flag) for a lit item, or for no light at all. */
+  private static tokenLightUpdate(best: any | undefined) {
+    const data = best?.system?.lightSourceData
+    return {
+      light: data ? LightSourceUtil.buildLight(data) : LightSourceUtil.NO_LIGHT,
+      [LightSourceUtil.typeFlagPath()]: data
+        ? LightSourceUtil.lightType(data)
+        : "none",
+    }
+  }
+
+  /** If multiple light sources are active, return the one with the longest range. */
+  private static bestSource(actor: any): any | undefined {
+    const sources = (actor?.items?.filter((it: any) => {
+      const data = it.system?.lightSourceData
+      return (
+        data?.isLightSource &&
+        data.isLit &&
+        LightSourceUtil.hasFuel(data) &&
+        !LightSourceUtil.isUnbound(it.system)
+      )
+    }) ?? []) as any[]
+    return sources.sort(
+      (a, b) => b.system.lightSourceData.range - a.system.lightSourceData.range,
+    )[0]
+  }
+
+  static async syncActorLight(actor: any) {
+    if (!actor || actor.type === "container") return
+
+    const best = LightSourceUtil.bestSource(actor)
+    const previous = actor.getFlag(sys_id, LightSourceUtil.LIGHT_FLAG)
+
+    if (!best && !previous) return
+
+    const { light, ...flags } = LightSourceUtil.tokenLightUpdate(best)
+    const tokens = (actor.getActiveTokens?.(false, true) ?? []) as any[]
+
+    await Promise.all([
+      actor.update({
+        "prototypeToken.light": light,
+        ...Object.fromEntries(
+          Object.entries(flags).map(([path, value]) => [
+            `prototypeToken.${path}`,
+            value,
+          ]),
+        ),
+        [best
+          ? `flags.${sys_id}.${LightSourceUtil.LIGHT_FLAG}`
+          : `flags.${sys_id}.-=${LightSourceUtil.LIGHT_FLAG}`]: best
+          ? best.id
+          : null,
+      }),
+      ...tokens.map((token) => token.update({ light, ...flags })),
+    ])
+  }
+
+  static async syncAllActors() {
+    if (!game.user?.isActiveGM) return
+    await Promise.all(
+      (game.actors?.contents ?? []).map((actor) =>
+        LightSourceUtil.syncActorLight(actor),
+      ),
+    )
+  }
+
+  // ---------------------------------------------------------------------------
+  // Light geometry: which tokens are within reach of a sun/moon emitter
+  // ---------------------------------------------------------------------------
+
+  private static centerOf(token: any): Point {
+    const doc = token.document
+    const size = (canvas as any).grid.size
+    return {
+      x: doc.x + (doc.width * size) / 2,
+      y: doc.y + (doc.height * size) / 2,
+    }
+  }
+
+  /** True straight-line distance in scene units, ignoring the grid's measurement rules. */
+  private static distanceBetween(a: Point, b: Point): number {
+    const grid = (canvas as any).grid
+    return (Math.hypot(a.x - b.x, a.y - b.y) / grid.size) * grid.distance
+  }
+
+  private static isBlocked(a: Point, b: Point): boolean {
+    return !!(CONFIG as any).Canvas.polygonBackends.light.testCollision(a, b, {
+      type: "light",
+      mode: "any",
+    })
+  }
+
+  private static tokenEmitters(): Emitter[] {
+    return LightSourceUtil.sceneTokens().flatMap((token) => {
+      const light = token.document.light
+      const type = LightSourceUtil.readLightType(token.document)
+      if (!type || light?.negative || !LightSourceUtil.hasRadius(light))
+        return []
+      return [
+        {
+          id: token,
+          center: LightSourceUtil.centerOf(token),
+          range: Math.max(light.dim, light.bright),
+          type,
+          ignoresWalls: false,
+        },
+      ]
+    })
+  }
+
+  private static ambientEmitters(): Emitter[] {
+    const lights = ((canvas as any).lighting?.placeables ?? []) as any[]
+    return lights.flatMap((light) => {
+      const doc = light.document
+      const cfg = doc.config
+      const type = LightSourceUtil.readLightType(doc)
+      if (
+        !type ||
+        doc.hidden ||
+        cfg?.negative ||
+        !LightSourceUtil.hasRadius(cfg)
+      )
+        return []
+      return [
+        {
+          id: light,
+          center: { x: doc.x, y: doc.y },
+          range: Math.max(cfg.dim, cfg.bright),
+          type,
+          ignoresWalls: doc.walls === false,
+        },
+      ]
+    })
+  }
+
+  private static reaches(target: any, source: Emitter): boolean {
+    if (target === source.id) return true
+    const center = LightSourceUtil.centerOf(target)
+    return (
+      LightSourceUtil.distanceBetween(source.center, center) <=
+        source.range + LightSourceUtil.RANGE_TOLERANCE &&
+      (source.ignoresWalls || !LightSourceUtil.isBlocked(source.center, center))
+    )
+  }
+
+  /** Token movement is staged in Foundry; wait for it to finish before measuring. */
+  private static async settleAnimations(tokens: any[]) {
+    const pending = () =>
+      tokens.map((t) => t.movementAnimationPromise).filter(Boolean)
+    const moving = () =>
+      tokens.some((t) => t.document?.movement?.state === "pending")
+    // Waiting can chain into new animations (multi-step moves), so loop, but never hang on a stalled animation.
+    const deadline = Date.now() + 5000
+    for (
+      let list = pending();
+      (list.length || moving()) && Date.now() < deadline;
+      list = pending()
+    )
+      await Promise.race([
+        Promise.allSettled(list),
+        new Promise((resolve) => setTimeout(resolve, deadline - Date.now())),
+      ]).then(() => new Promise((resolve) => setTimeout(resolve, 50)))
+  }
+
+  // ---------------------------------------------------------------------------
+  // In-light active effects on actors
+  // ---------------------------------------------------------------------------
+
+  private static async loadEffects() {
+    for (const type of LIGHT_KINDS) {
+      if (LightSourceUtil.effectCache[type]) continue
+      const effect = await fromUuid(LightSourceUtil.EFFECT_UUIDS[type] as any)
+      if (effect) LightSourceUtil.effectCache[type] = effect.toObject()
+    }
+  }
+
+  private static effectData(type: LightKind) {
+    const data = foundry.utils.deepClone(LightSourceUtil.effectCache[type])
+    delete data._id
+    delete data.folder
+    delete data._stats
+    data.flags = { [sys_id]: { [LightSourceUtil.EFFECT_FLAG]: type } }
+    return data
+  }
+
+  private static managedEffects(actor: any, type: LightKind): any[] {
+    return actor.effects.filter(
+      (e: any) => e.getFlag(sys_id, LightSourceUtil.EFFECT_FLAG) === type,
+    )
+  }
+
+  /** Clears `active` values written directly to the actor by earlier versions. */
+  private static staleModifierClear(actor: any): Record<string, boolean> {
+    const stored = actor._source?.system?.modifiers?.misc?.light
+    return Object.fromEntries(
+      LIGHT_KINDS.filter((type) => stored?.[type]?.active).map((type) => [
+        `system.modifiers.misc.light.${type}.active`,
+        false,
+      ]),
+    )
+  }
+
+  /** Adds, removes or de-duplicates the managed effects so they match `wanted`. */
+  private static reconcileEffects(
+    actor: any,
+    wanted: Record<LightKind, boolean>,
+  ): Promise<unknown> {
+    const updates: Promise<unknown>[] = []
+    const stale = LightSourceUtil.staleModifierClear(actor)
+    if (Object.keys(stale).length) updates.push(actor.update(stale))
+
+    const toCreate: any[] = []
+    const toDelete: string[] = []
+    for (const type of LIGHT_KINDS) {
+      const existing = LightSourceUtil.managedEffects(actor, type)
+      if (!wanted[type]) toDelete.push(...existing.map((e) => e.id))
+      else if (existing.length === 0)
+        toCreate.push(LightSourceUtil.effectData(type))
+      else toDelete.push(...existing.slice(1).map((e) => e.id))
+    }
+    if (toCreate.length)
+      updates.push(actor.createEmbeddedDocuments("ActiveEffect", toCreate))
+    if (toDelete.length)
+      updates.push(actor.deleteEmbeddedDocuments("ActiveEffect", toDelete))
+    return Promise.all(updates)
+  }
+
+  /** Tokens within reach of a sunlight/moonlight source get the matching in-light effect. */
+  static async syncAmbientLightModifiers() {
+    if (!game.user?.isActiveGM || !canvas?.ready) return
+    await LightSourceUtil.settleAnimations(LightSourceUtil.sceneTokens())
+    if (!canvas?.ready) return
+    await LightSourceUtil.loadEffects()
+
+    const emitters = [
+      ...LightSourceUtil.tokenEmitters(),
+      ...LightSourceUtil.ambientEmitters(),
+    ]
+    const reached = (target: any, type: LightKind) =>
+      emitters.some(
+        (e) => e.type === type && LightSourceUtil.reaches(target, e),
+      )
+
+    await Promise.all(
+      LightSourceUtil.sceneTokens()
+        .filter((t) => t.actor && t.actor.type !== "container")
+        .map((target) =>
+          LightSourceUtil.reconcileEffects(target.actor, {
+            sunlight: reached(target, "sunlight"),
+            moonlight: reached(target, "moonlight"),
+          }),
+        ),
+    )
+  }
+
+  // ---------------------------------------------------------------------------
+  // Sync scheduling and hooks
+  // ---------------------------------------------------------------------------
+
+  /** Runs never overlap: a trigger during a run queues exactly one follow-up. */
+  private static async runSerialized() {
+    if (LightSourceUtil.syncRunning) {
+      LightSourceUtil.syncQueued = true
+      return
+    }
+    LightSourceUtil.syncRunning = true
+    try {
+      do {
+        LightSourceUtil.syncQueued = false
+        await LightSourceUtil.syncAmbientLightModifiers()
+      } while (LightSourceUtil.syncQueued)
+    }
+    finally {
+      LightSourceUtil.syncRunning = false
+    }
+  }
+
+  private static scheduleSync() {
+    clearTimeout(LightSourceUtil.syncTimer)
+    LightSourceUtil.syncTimer = setTimeout(
+      () => LightSourceUtil.runSerialized(),
+      250,
+    )
+  }
+
+  private static registerSyncHooks() {
+    const schedule = () => LightSourceUtil.scheduleSync()
+    for (const hook of [
+      "canvasReady",
+      "createToken",
+      "updateToken",
+      "moveToken",
+      "deleteToken",
+      "createItem",
+      "updateItem",
+      "deleteItem",
+      "createWall",
+      "updateWall",
+      "deleteWall",
+      "createAmbientLight",
+      "updateAmbientLight",
+      "deleteAmbientLight",
+    ])
+      Hooks.on(hook as any, schedule)
+  }
+
+  /** Newly created tokens pick up their actor's lit item right away. */
+  private static registerTokenLightHook() {
+    Hooks.on("createToken", (token: any, _options: any, userId: string) => {
+      if (game.user?.id !== userId) return
+      const best = LightSourceUtil.bestSource(token.actor)
+      if (best) token.update(LightSourceUtil.tokenLightUpdate(best))
+    })
+  }
+
+  static startTimer() {
+    if (LightSourceUtil.tickerId) return
+    LightSourceUtil.tickerId = setInterval(
+      () => LightSourceUtil.expireSpentSources(),
+      1000,
+    )
+    LightSourceUtil.registerTokenOverlay()
+    LightSourceUtil.registerSyncHooks()
+    LightSourceUtil.registerTokenConfigControl()
+    LightSourceUtil.registerTokenLightHook()
+  }
+
+  // ---------------------------------------------------------------------------
+  // UI: light config radio group, token overlay icon
+  // ---------------------------------------------------------------------------
+
+  private static lightTypeRadioGroup(current: string): HTMLElement {
+    const name = LightSourceUtil.typeFlagPath()
+    const option = (value: string, label: string) =>
+      `<label style="display:inline-flex;gap:4px;margin-right:12px;align-items:center">
+          <input type="radio" name="${name}" value="${value}" ${current === value ? "checked" : ""}>${label}
+        </label>`
+    const group = document.createElement("div")
+    group.className = "form-group"
+    group.dataset.vagabondLightType = "true"
+    group.innerHTML = `
+        <label>${appLang.ItemSheet.lightType}</label>
+        <div class="form-fields">
+          ${option("none", appLang.ItemSheet.lightTypeNone)}
+          ${option("sunlight", appLang.ItemSheet.sunlight)}
+          ${option("moonlight", appLang.ItemSheet.moonlight)}
+        </div>
+        <p class="hint">${appLang.ItemSheet.lightTypeHint}</p>`
+    return group
+  }
+
+  /** Adds a sunlight/moonlight radio group to the native token and ambient light config windows. */
+  private static registerTokenConfigControl() {
+    const inject = (app: any, html: any) => {
+      const root: HTMLElement = html instanceof HTMLElement ? html : html?.[0]
+      const negative = root?.querySelector?.(
+        '[name="light.negative"], [name="config.negative"]',
+      )
+      const anchor = negative?.closest(".form-group")
+      if (!anchor || root.querySelector(`[data-vagabond-light-type]`)) return
+
+      const current =
+        app.document?.getFlag?.(sys_id, LightSourceUtil.TYPE_FLAG) ?? "none"
+      anchor.after(LightSourceUtil.lightTypeRadioGroup(current))
+    }
+    for (const hook of [
+      "renderTokenConfig",
+      "renderPrototypeTokenConfig",
+      "renderAmbientLightConfig",
+      "renderAmbientLightPalette",
+    ])
+      Hooks.on(hook as any, inject)
+  }
+
+  /* Small, round icon in upper right of Actor's token when emitting light from an item. */
+  private static registerTokenOverlay() {
+    const refreshActorTokens = (item: any) => {
+      const actor = item?.parent
+      if (!actor?.getActiveTokens) return
+      for (const token of actor.getActiveTokens() as any[]) {
+        token.renderFlags?.set({ refreshState: true })
+      }
+    }
+    Hooks.on("createItem", refreshActorTokens)
+    Hooks.on("updateItem", refreshActorTokens)
+    Hooks.on("deleteItem", refreshActorTokens)
+
+    Hooks.on("refreshToken" as any, (token: any) => {
+      const PIXI = (globalThis as any).PIXI
+      if (!PIXI || !token?.document) return
+
+      const pileData = token.document.getFlag?.("item-piles", "data")
+      const hideForPile = !!pileData?.enabled && pileData.type !== "merchant"
+      const lit = hideForPile
+        ? undefined
+        : LightSourceUtil.bestSource(token.actor)
+      let overlay = token._vagabondLightIcon
+      if (!lit) {
+        if (overlay) overlay.visible = false
+        return
+      }
+
+      if (!overlay || overlay.destroyed) {
+        overlay = new PIXI.Container()
+        overlay.eventMode = "none"
+        overlay.sprite = new PIXI.Sprite()
+        overlay.mask = new PIXI.Graphics()
+        overlay.border = new PIXI.Graphics()
+        overlay.addChild(overlay.sprite, overlay.mask, overlay.border)
+        overlay.sprite.mask = overlay.mask
+        token._vagabondLightIcon = overlay
+        token.addChild(overlay)
+      }
+      if (overlay.src !== lit.img) {
+        overlay.src = lit.img
+        overlay.sprite.texture = PIXI.Texture.from(lit.img)
+      }
+
+      const size = Math.max(12, Math.min(token.w, token.h) * 0.3)
+      const radius = size / 2
+      overlay.sprite.width = size
+      overlay.sprite.height = size
+      overlay.mask
+        .clear()
+        .beginFill(0xffffff)
+        .drawCircle(radius, radius, radius)
+        .endFill()
+      overlay.border
+        .clear()
+        .lineStyle(Math.max(1, size * 0.08), 0x000000, 1)
+        .drawCircle(radius, radius, radius)
+      overlay.position.set(token.w - size, 0)
+      overlay.visible = true
+    })
+  }
+
+  // ---------------------------------------------------------------------------
+  // Player actions: refuel and light toggle context menu
+  // ---------------------------------------------------------------------------
 
   private static findOils(owner: any): any[] {
     return (

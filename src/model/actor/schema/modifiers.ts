@@ -136,8 +136,10 @@ export const modifierSchema = () => {
     }),
 
     misc: new fields.SchemaField({
-      inSunlight: new fields.BooleanField({ initial: false }),
-      inMoonlight: new fields.BooleanField({ initial: false }),
+      light: new fields.SchemaField({
+        sunlight: new fields.SchemaField({ ...lightingMods() }),
+        moonlight: new fields.SchemaField({ ...lightingMods() }),
+      }),
     }),
   }
 }
@@ -341,5 +343,17 @@ const combatModifiersSchema = () => {
     flanking: new fields.SchemaField({
       solo: new fields.BooleanField({ initial: false }),
     }),
+  }
+}
+
+const lightingMods = () => {
+  return {
+    active: new fields.BooleanField({ initial: false }),
+    effects: new fields.ArrayField(
+      new fields.SchemaField({
+        type: new fields.StringField({ ...requiredString }),
+        value: new fields.StringField({ ...requiredString }),
+      })
+    )
   }
 }
