@@ -43,7 +43,7 @@ type Emitter = {
   ignoresWalls: boolean
 }
 
-const LIGHT_KINDS: readonly LightKind[] = ["sunlight", "moonlight"]
+const LIGHT_TYPES: readonly LightKind[] = ["sunlight", "moonlight"]
 
 /** A status applied while in a light, as configured by an "ApplyStatus" rule. */
 type AppliedEffect = {
@@ -96,7 +96,7 @@ export class LightSourceUtil {
   /** Sunlight/moonlight designation stored as a flag next to a native light config. */
   private static readLightType(doc: any): LightKind | undefined {
     const type = doc.getFlag(sys_id, LightSourceUtil.TYPE_FLAG)
-    return LIGHT_KINDS.includes(type) ? type : undefined
+    return LIGHT_TYPES.includes(type) ? type : undefined
   }
 
   // ---------------------------------------------------------------------------
@@ -469,7 +469,7 @@ export class LightSourceUtil {
   // ---------------------------------------------------------------------------
 
   private static async loadEffects() {
-    for (const type of LIGHT_KINDS) {
+    for (const type of LIGHT_TYPES) {
       if (LightSourceUtil.effectCache[type]) continue
       const effect = await fromUuid(LightSourceUtil.EFFECT_UUIDS[type] as any)
       if (effect) LightSourceUtil.effectCache[type] = effect.toObject()
@@ -495,7 +495,7 @@ export class LightSourceUtil {
   private static staleModifierClear(actor: any): Record<string, boolean> {
     const stored = actor._source?.system?.modifiers?.misc?.light
     return Object.fromEntries(
-      LIGHT_KINDS.filter((type) => stored?.[type]?.active).map((type) => [
+      LIGHT_TYPES.filter((type) => stored?.[type]?.active).map((type) => [
         `system.modifiers.misc.light.${type}.active`,
         false,
       ]),
@@ -513,7 +513,7 @@ export class LightSourceUtil {
 
     const toCreate: any[] = []
     const toDelete: string[] = []
-    for (const type of LIGHT_KINDS) {
+    for (const type of LIGHT_TYPES) {
       const existing = LightSourceUtil.managedEffects(actor, type)
       if (!wanted[type]) toDelete.push(...existing.map((e) => e.id))
       else if (existing.length === 0)
@@ -543,7 +543,7 @@ export class LightSourceUtil {
         active.set(LightSourceUtil.appliedKey(e), e),
       )
     add(misc?.applied)
-    for (const kind of LIGHT_KINDS)
+    for (const kind of LIGHT_TYPES)
       if (wanted[kind]) add(misc?.light?.[kind]?.effects)
     if (!wanted.sunlight && !wanted.moonlight) add(misc?.light?.basic?.effects)
 

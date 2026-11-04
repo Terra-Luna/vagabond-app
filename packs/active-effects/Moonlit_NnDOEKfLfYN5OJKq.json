@@ -1,12 +1,12 @@
 {
-  "name": "In Sunlight",
-  "_id": "40CQqoU8bdlmKUu5",
-  "img": "/icons/magic/nature/symbol-sun-yellow.webp",
+  "name": "Moonlit",
+  "_id": "NnDOEKfLfYN5OJKq",
+  "img": "/icons/magic/nature/symbol-moon-stars-white.webp",
   "type": "base",
   "system": {
     "changes": [
       {
-        "key": "system.modifiers.misc.light.sunlight.active",
+        "key": "system.modifiers.misc.light.moonlight.active",
         "type": "override",
         "value": true,
         "phase": "initial",
@@ -30,18 +30,18 @@
   "statuses": [],
   "showIcon": 2,
   "folder": null,
-  "sort": 400000,
+  "sort": 500000,
   "flags": {},
   "_stats": {
     "coreVersion": "14.369",
     "systemId": "vagabond-app",
     "systemVersion": "0.2.180",
-    "createdTime": 1793668500846,
-    "modifiedTime": 1793765822940,
+    "createdTime": 1793668569306,
+    "modifiedTime": 1793807317969,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!effects!40CQqoU8bdlmKUu5"
+  "_key": "!effects!NnDOEKfLfYN5OJKq"
 }

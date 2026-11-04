@@ -250,8 +250,12 @@ export const Actions = ({
         }
       >
         {npc.combo.name !== "" && (
-          <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded} bg-context-menu-fill cursor-pointer`}>
-            <p className="text-text-header-tertiary font-paradigm font-bold">{locale.combo}:</p>
+          <div
+            className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded} bg-context-menu-fill cursor-pointer`}
+          >
+            <p className="text-text-header-tertiary font-paradigm font-bold">
+              {locale.combo}:
+            </p>
             <div>
               <p className="text-text-secondary">{npc.combo.name}</p>
               <p className="text-xs text-text-secondary italic">
