@@ -30,7 +30,7 @@ type AppliedEffectInputProps =
       label?: string
     }
 
-export const AppliedEffectInput = ({
+export const AppliedStatusesInput = ({
   item,
   effects,
   onChange,

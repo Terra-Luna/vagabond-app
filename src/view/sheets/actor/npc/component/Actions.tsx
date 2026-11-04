@@ -9,7 +9,7 @@ import { CountdownResult } from "../../../../../combat/engine/roll/CountdownResu
 import { CountdownRoll } from "../../../../../combat/engine/roll/CountdownRoll"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { collectAppliedFx } from "../../../../../combat/engine/util/active-effect-fx"
-import { AppliedEffectInput } from "../../../../../combat/ui/AppliedEffectInput"
+import { AppliedStatusesInput } from "../../../../../combat/ui/AppliedStatusesInput"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
@@ -804,7 +804,7 @@ export const NewActionWindow = ({
           {/* STATUS EFFECTS */}
           <div className="flex items-end gap-x-1">
             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-              <AppliedEffectInput
+                <AppliedStatusesInput
                 effects={newAction?.appliedEffects as any}
                 onChange={(appliedEffects) =>
                   updateAction({

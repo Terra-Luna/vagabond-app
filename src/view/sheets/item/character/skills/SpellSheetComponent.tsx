@@ -1,4 +1,4 @@
-import { AppliedEffectInput } from "../../../../../combat/ui/AppliedEffectInput"
+import { AppliedStatusesInput } from "../../../../../combat/ui/AppliedStatusesInput"
 import { SpellDataModel } from "../../../../../model/item/character/SpellDataModel"
 import { appLang } from "../../../../../util/lang"
 import { tableBorder } from "../../../../common/border-styles"
@@ -21,7 +21,7 @@ export const SpellSheetComponent = ({
       content={
         <div className="space-y-4 pb-4">
           {isEditMode && (
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div className="flex gap-x-8 items-end">
                 <DamageTypeSelector item={item} path={"system.damageType"} />
                 <div>
@@ -39,7 +39,8 @@ export const SpellSheetComponent = ({
                 </div>
               </div>
 
-              <AppliedEffectInput item={item} />
+              <AppliedStatusesInput item={item} />
+
               <AppliedActiveEffectsInput
                 effects={item.system.appliedActiveEffects ?? []}
                 onChange={(appliedActiveEffects) =>

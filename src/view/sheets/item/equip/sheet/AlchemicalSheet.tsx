@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
-import { AppliedEffectInput } from "../../../../../combat/ui/AppliedEffectInput"
+import { AppliedStatusesInput } from "../../../../../combat/ui/AppliedStatusesInput"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { AlchemicalItemDataModel } from "../../../../../model/item/equip/AlchemicalItemDataModel"
 import { appLang } from "../../../../../util/lang"
@@ -44,7 +44,7 @@ export const AlchemicalSheet = ({
           onChange={handleDiceChange}
         />
 
-        <AppliedEffectInput item={item} />
+        <AppliedStatusesInput item={item} />
         {isEditMode || (item.system.appliedActiveEffects ?? []).length > 0 ? (
           <AppliedActiveEffectsInput
             effects={item.system.appliedActiveEffects ?? []}
