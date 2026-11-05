@@ -49,6 +49,7 @@ const spellSchema = () => {
           initial: [],
         },
       ),
+      burnDamage: new fields.StringField({ ...requiredString, initial: "1d6" }),
     }),
   }
 }

@@ -1,8 +1,9 @@
-import { MessageSquareText } from "lucide-react"
+import { Eye, MessageSquareText } from "lucide-react"
 
 import { SpellSelectionApp } from "../../../../../../../apps/hero-choices/spells/SpellSelectionApp"
 import { getMiniCardsPref } from "../../../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
+import { FocusSpellUtil } from "../../../../../../../model/actor/util/FocusSpellUtil"
 import { spellDamageBase } from "../../../../../../../model/item/character/SpellDataModel"
 import { appLang } from "../../../../../../../util/lang"
 import { getId } from "../../../../../../../util/model-util"
@@ -10,10 +11,9 @@ import { sendVagabondChatCard } from "../../../../../../chat/ChatCardSerializer"
 import { UtilityButton } from "../../../../../../component/Button"
 import { useContextMenu } from "../../../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../../../component/DynamicGrid"
-import {
-  SkillCard,
-  SkillCardTitle,
-} from "../../../../../../component/SkillCard"
+import { FocusBadge } from "../../../../../../component/FocusBadge"
+import { FocusTooltipFooter } from "../../../../../../component/FocusTooltipFooter"
+import { SkillCard, SkillCardTitle } from "../../../../../../component/SkillCard"
 import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
 
 export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
@@ -21,17 +21,49 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
   const { setIsSpellcastingOpen, onSelectSpell, selectedSpellId } =
     useSpellcastingMenuContext()
   const useMiniCards = getMiniCardsPref(hero.parent.id)
+  const focusInstances =
+    (hero.statuses?.counters?.focus ?? 0) > 0
+      ? FocusSpellUtil.instances(hero.parent)
+      : []
+  const focusesFor = (sp: any) =>
+    focusInstances.filter(
+      (it) => it.spell === sp._sourceId || it.spell === sp.parent.uuid,
+    )
+  const sortedSpells = [...hero.spells].sort((a, b) =>
+    a.parent.name.localeCompare(b.parent.name),
+  )
 
   return (
     <div>
       <DynamicGrid widthIncrement={useMiniCards ? 1 : 2}>
-        {hero.spells
-          .sort((a, b) => a.parent.name.localeCompare(b.parent.name))
-          .map((sp: any, index: number) => (
+        {sortedSpells.map((sp: any) => {
+          const focuses = focusesFor(sp)
+          return (
             <div
-              key={index}
+              key={sp.parent.uuid}
               onContextMenu={(e) =>
                 onCtxMenu(e, [
+                  {
+                    icon: Eye,
+                    label: appLang.Spellcasting.focusAction,
+                    action: () => {
+                      const focus = hero.statuses?.counters?.focus ?? 0
+                      const canReplace =
+                        hero.maxFocus === 1 &&
+                        FocusSpellUtil.instances(hero.parent).length > 0
+                      if (focus >= hero.maxFocus && !canReplace) {
+                        ui.notifications?.warn(
+                          appLang.Spellcasting.maxFocusMessage,
+                        )
+                        return
+                      }
+                      FocusSpellUtil.add(
+                        hero.parent,
+                        sp._sourceId ?? sp.parent.uuid,
+                        foundry.utils.randomID(),
+                      )
+                    },
+                  },
                   {
                     icon: MessageSquareText,
                     label: appLang.ButtonActions.chat,
@@ -67,10 +99,33 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                   ]}
                   description={sp.description}
                   mini={useMiniCards}
+                  tooltipFooter={
+                    focuses.length > 0 ? (
+                      <FocusTooltipFooter instances={focuses} />
+                    ) : undefined
+                  }
+                  badge={
+                    focuses.length > 0 ? (
+                      <div className="flex items-center gap-1">
+                        {focuses.map((focus) => (
+                          <FocusBadge
+                            key={focus.id}
+                            size={24}
+                            title={appLang.Spellcasting.focusDropTooltip}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              FocusSpellUtil.drop(hero.parent, focus.id)
+                            }}
+                          />
+                        ))}
+                      </div>
+                    ) : undefined
+                  }
                 />
               </div>
             </div>
-          ))}
+          )
+        })}
       </DynamicGrid>
 
       <div className="flex justify-between items-end w-full h-full mt-1">

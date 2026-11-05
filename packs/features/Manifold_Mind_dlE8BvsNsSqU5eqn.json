@@ -4,7 +4,7 @@
   "_id": "dlE8BvsNsSqU5eqn",
   "img": "icons/magic/perception/orb-crystal-ball-scrying-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">The number of Spells you can Focus on at the same is increased by {{feature-value:1:1}}.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">This bonus increases by 1 every 4 levels hereafter.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can Focus on {{feature-value:2:1}} Spells at the same time. This value increases by 1 every 4 levels hereafter.</span></p>",
     "rules": [
       {
         "id": "58pRXxWAmbPKT14E",
@@ -29,11 +29,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.23",
+    "systemVersion": "0.2.180",
     "createdTime": 1789506228566,
-    "modifiedTime": 1789917713596,
+    "modifiedTime": 1793843003976,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

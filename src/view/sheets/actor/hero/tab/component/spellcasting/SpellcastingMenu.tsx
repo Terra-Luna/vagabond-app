@@ -3,16 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 
 import { getMiniCardsPref } from "../../../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
-import {
-  AreaOfEffectDelivery,
-  getNewDeliveryOptions,
-  Imbue,
-  Line,
-  PerTargetDelivery,
-  Remote,
-  SpellDelivery,
-  SpellSnapshot,
-} from "../../../../../../../combat/spellcasting/SpellDelivery"
+import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue, Line, PerTargetDelivery, Remote, SpellDelivery, SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { sys_id } from "../../../../../../../util/foundry-util"
@@ -26,11 +17,7 @@ import { DiceCountInput } from "./input/DiceCountInput"
 import { LineExpansionInut } from "./input/LineExpansionInput"
 import { ManaDiscount } from "./input/ManaDiscount"
 import { SkillSelector } from "./input/SkillSelector"
-import {
-  SpellcastingErrMsg,
-  SpellcastingLabel,
-  SpellcastingSubtext,
-} from "./input/SpellcastingTypography"
+import { SpellcastingErrMsg, SpellcastingLabel, SpellcastingSubtext } from "./input/SpellcastingTypography"
 import { SpellEffectToggle } from "./input/SpellEffectToggle"
 import { SpellFocusToggle } from "./input/SpellFocusToggle"
 import { SpellRangeInput } from "./input/SpellRangeInput"
@@ -160,18 +147,26 @@ export const useSpellCastingMenu = (
     })
   }, [castingModsJson])
 
+  /** Clones every delivery, lets `change` modify the clone, and stores the result. */
+  const updateDeliveries = useCallback(
+    (change: (clone: SpellDelivery) => void) =>
+      setDeliveries((prev) =>
+        prev.map((d) => {
+          const clone = d.clone()
+          change(clone)
+          return clone
+        }),
+      ),
+    [],
+  )
+
   const onUpdateTargetTokens = useCallback(
-    async (tokens: Token[]) => {
-      const delivs = deliveries.map((d) => {
-        const clone = d.clone()
-        if (clone instanceof PerTargetDelivery) {
-          clone.setTargetTokenIds(tokens.map((t) => t.id))
-        }
-        return clone
-      })
-      setDeliveries(delivs)
-    },
-    [deliveryIndex, deliveries],
+    (tokens: Token[]) =>
+      updateDeliveries((d) => {
+        if (d instanceof PerTargetDelivery)
+          d.setTargetTokenIds(tokens.map((t) => t.id))
+      }),
+    [updateDeliveries],
   )
 
   /**
@@ -179,7 +174,7 @@ export const useSpellCastingMenu = (
    * updates the target count for Remote & Imbue.
    */
   useEffect(() => {
-    const handleTargetChange = (user, token, isTargeted) => {
+    const handleTargetChange = (user) => {
       if (user.id !== game.user?.id) return
       onUpdateTargetTokens(Array.from(game.user?.targets ?? []))
     }
@@ -191,178 +186,94 @@ export const useSpellCastingMenu = (
 
   const onSelectSpell = useCallback(
     (uuid: string) => {
-      setSelectedSpellId(uuid)
       const sp = spells.find((it) => it.uuid === uuid)
-      if (!sp) return
-      setDeliveries((prev) =>
-        prev.map((d) => {
-          const clone = d.clone()
-          clone.setSpell(sp)
-          return clone
-        }),
-      )
+      setSelectedSpellId(uuid)
+      if (sp) updateDeliveries((d) => d.setSpell(sp))
     },
-    [spells, setDeliveries],
+    [spells, updateDeliveries],
   )
 
   const onSelectDelivery = useCallback((index) => {
     setDeliveryIndex(index)
   }, [])
 
-  const onSelectSkill = useCallback(
-    (skill: string) => {
-      setSkill(skill)
-    },
-    [skill],
-  )
+  const onSelectSkill = useCallback((skill: string) => setSkill(skill), [])
 
   const onUpdateAreaSize = useCallback(
-    async (input: string | null) => {
-      const size = Number(input)
-      setDeliveries(
-        deliveries.map((d) => {
-          if (d instanceof AreaOfEffectDelivery) {
-            const clone = d.clone()
-            clone.setSize(Math.round(size / d.increment) * d.increment)
-            return clone
-          }
-          else return d
-        }),
-      )
-    },
-    [deliveryIndex, deliveries],
+    (input: string | null) =>
+      updateDeliveries((d) => {
+        if (d instanceof AreaOfEffectDelivery)
+          d.setSize(Math.round(Number(input) / d.increment) * d.increment)
+      }),
+    [updateDeliveries],
   )
 
   const onUpdateLineHeight = useCallback(
-    (h: string) => {
-      const size = Number(h)
-      setDeliveries(
-        deliveries.map((d) => {
-          if (d instanceof Line) {
-            const clone = d.clone()
-            clone.setHeight(Math.round(size / 5) * 5)
-            return clone
-          }
-          else return d
-        }),
-      )
-    },
-    [deliveryIndex, deliveries],
+    (h: string) =>
+      updateDeliveries((d) => {
+        if (d instanceof Line) d.setHeight(Math.round(Number(h) / 5) * 5)
+      }),
+    [updateDeliveries],
   )
 
   const onUpdateLineWidth = useCallback(
-    (w: string) => {
-      const size = Number(w)
-      setDeliveries(
-        deliveries.map((d) => {
-          if (d instanceof Line) {
-            const clone = d.clone()
-            clone.setWidth(Math.round(size / 5) * 5)
-            return clone
-          }
-          else return d
-        }),
-      )
-    },
-    [deliveryIndex, deliveries],
+    (w: string) =>
+      updateDeliveries((d) => {
+        if (d instanceof Line) d.setWidth(Math.round(Number(w) / 5) * 5)
+      }),
+    [updateDeliveries],
   )
 
   const onUpdateDamageDice = useCallback(
-    async (input: string | null) => {
-      const dmgDice = Math.max(0, Number(input) || 0)
-      setDeliveries(
-        deliveries.map((d) => {
-          const clone = d.clone()
-          clone.setDamageDice(dmgDice)
-          return clone
-        }),
-      )
+    (input: string | null) => {
+      const dice = Math.max(0, Number(input) || 0)
+      updateDeliveries((d) => d.setDamageDice(dice))
     },
-    [deliveryIndex, deliveries],
+    [updateDeliveries],
   )
 
   const onUpdateStudyDamageDice = useCallback(
-    async (input: string | null) => {
+    (input: string | null) => {
       const dice = Math.max(0, Number(input) || 0)
-      setDeliveries(
-        deliveries.map((d) => {
-          const clone = d.clone()
-          clone.setStudyDamageDice(
-            Math.min(hero.statuses.counters.studied, dice),
-          )
-          return clone
-        }),
+      updateDeliveries((d) =>
+        d.setStudyDamageDice(Math.min(hero.statuses.counters.studied, dice)),
       )
     },
-    [deliveryIndex, deliveries],
+    [updateDeliveries, hero.statuses.counters.studied],
   )
 
   const onUpdateUpcast = useCallback(
-    async (input: string | null) => {
+    (input: string | null) => {
       const upcast = Math.max(0, Number(input) || 0)
-      setDeliveries(
-        deliveries.map((d) => {
-          const clone = d.clone()
-          clone.setUpcast(upcast)
-          return clone
-        }),
-      )
+      updateDeliveries((d) => d.setUpcast(upcast))
     },
-    [deliveryIndex, deliveries],
+    [updateDeliveries],
   )
 
   const onToggleSpellEffect = useCallback(
-    (isChecked: boolean) => {
-      setDeliveries(
-        deliveries.map((d) => {
-          const clone = d.clone()
-          clone.setApplyEffect(isChecked)
-          return clone
-        }),
-      )
-    },
-    [deliveryIndex, deliveries],
+    (isChecked: boolean) =>
+      updateDeliveries((d) => d.setApplyEffect(isChecked)),
+    [updateDeliveries],
   )
 
   const onToggleSpellFocus = useCallback(
-    (isChecked: boolean) => {
-      setDeliveries(
-        deliveries.map((d) => {
-          const clone = d.clone()
-          clone.setIsFocused(isChecked)
-          return clone
-        }),
-      )
-    },
-    [deliveryIndex, deliveries],
+    (isChecked: boolean) => updateDeliveries((d) => d.setIsFocused(isChecked)),
+    [updateDeliveries],
   )
 
   const onUpdateDiscount = useCallback(
-    (discount: number) => {
-      setDeliveries(
-        deliveries.map((d) => {
-          const clone = d.clone()
-          clone.setDiscount(discount)
-          return clone
-        }),
-      )
-    },
-    [deliveryIndex, deliveries],
+    (discount: number) => updateDeliveries((d) => d.setDiscount(discount)),
+    [updateDeliveries],
   )
 
   const onUpdateTargetCount = useCallback(
-    async (input: string | null) => {
+    (input: string | null) => {
       const count = Math.max(1, Number(input) || 1)
-      const delivs = deliveries.map((d) => {
-        const clone = d.clone()
-        if (clone instanceof PerTargetDelivery) {
-          clone.setTargetCount(count)
-        }
-        return clone
+      updateDeliveries((d) => {
+        if (d instanceof PerTargetDelivery) d.setTargetCount(count)
       })
-      setDeliveries(delivs)
     },
-    [deliveryIndex, deliveries],
+    [updateDeliveries],
   )
 
   const targetOrAreaInput = () => {
@@ -437,6 +348,12 @@ export const useSpellCastingMenu = (
   const castSpell = async (e: React.MouseEvent<HTMLDivElement>) => {
     const delivery = deliveries[deliveryIndex]
     if (delivery && delivery.spell) {
+      const focusCount = hero.parent.system.statuses?.counters?.focus ?? 0
+      const maxFocus = hero.parent.system.maxFocus
+      if (delivery.isFocused && maxFocus > 1 && focusCount >= maxFocus) {
+        ui.notifications?.warn(appLang.Spellcasting.maxFocusMessage)
+        return
+      }
       onUpdateStudyDamageDice("0")
       await saveSpellcastingMenuState(delivery)
       const sk = skill && skill.length > 0 ? skill : "arcana"
@@ -460,7 +377,9 @@ export const useSpellCastingMenu = (
         )
       }
       else {
-        HeroAttack.buildSpellAttack(hero.parent, sk, delivery, e)?.initiate(e)
+        HeroAttack.buildSpellAttack(hero.parent, sk, delivery, e)?.initiate(e, {
+          requireFocusUpkeep: true,
+        })
       }
       onCast?.()
       if (imbueMode && cast) onClose?.()

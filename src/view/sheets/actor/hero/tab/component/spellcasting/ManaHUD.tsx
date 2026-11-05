@@ -1,16 +1,17 @@
 import { Sparkle, Sparkles, X } from "lucide-react"
 import { useCallback } from "react"
 
+import { FocusManagerApp } from "../../../../../../../apps/focus-manager/FocusManagerApp"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
+import { FocusSpellUtil } from "../../../../../../../model/actor/util/FocusSpellUtil"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { updateDocument } from "../../../../../../../util/foundry-util"
 import { appLang } from "../../../../../../../util/lang"
+import { useContextMenu } from "../../../../../../component/ContextMenu"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
-import {
-  SkillCard,
-  SkillCardTitle,
-} from "../../../../../../component/SkillCard"
+import { FocusBadge } from "../../../../../../component/FocusBadge"
+import { SkillCard, SkillCardTitle } from "../../../../../../component/SkillCard"
 import { Tooltip } from "../../../../../../component/Tooltip"
 import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
 
@@ -23,8 +24,9 @@ export const ManaHUD = ({
   isCastMenuOpen?: boolean
   hideTab?: boolean
 }) => {
+  const { onCtxMenu, ContextMenu } = useContextMenu()
   const mana = hero.mana.value
-
+  const focusUsed = Math.min(hero.statuses?.counters?.focus ?? 0, hero.maxFocus)
   const updateMana = useCallback(
     (auxClick: boolean) => {
       updateDocument(hero.parent, {
@@ -48,7 +50,7 @@ export const ManaHUD = ({
         className={`flex gap-x-2 text-2xl font-eskapade font-bold mt-0.5 mb-1 justify-between`}
       >
         {hideTab && spell && (
-          <div className="-ml-0.5 -mt-0.5">
+          <div className="-ml-0.5 -mt-0.5 min-w-0 flex-1 [&>span]:block [&>span]:min-w-0">
             <SkillCard
               actor={hero.parent}
               img={spell.img ?? ""}
@@ -68,7 +70,7 @@ export const ManaHUD = ({
 
         {/* CURRENT MANA */}
         <div
-          className={`flex items-center gap-x-4 ml-auto ${hideTab ? "px-2" : ""}`}
+          className={`flex items-center gap-x-4 ml-auto shrink-0 ${hideTab ? "px-2" : ""}`}
         >
           <div className="flex gap-x-1 items-center">
             {/* <SpellcastingLabel text={appLang.HeroSheet.Magic.labelMana} /> */}
@@ -105,6 +107,45 @@ export const ManaHUD = ({
               <p>{hero.mana.maxCast}</p>
             </div>
           </Tooltip>
+
+          {/* FOCUS */}
+          {hero.maxFocus > 0 && (
+            <Tooltip
+              title={appLang.StatusConditions.focusing.name}
+              content={`${focusUsed} / ${hero.maxFocus}`}
+            >
+              <div
+                className="flex gap-x-1 items-center hover-glow cursor-pointer"
+                onClick={() => FocusManagerApp.launch(hero.parent as any)}
+                onContextMenu={(e) =>
+                  onCtxMenu(e, [
+                    {
+                      icon: X,
+                      label: appLang.Spellcasting.focusClearAll,
+                      isDestructive: true,
+                      action: () => FocusSpellUtil.clearAll(hero.parent),
+                    },
+                  ])
+                }
+              >
+                <FocusBadge
+                  size={20}
+                  className={
+                    focusUsed > 0
+                      ? "text-text-header-secondary"
+                      : "text-text-tertiary"
+                  }
+                />
+                {hero.maxFocus > 1 && (
+                  <div className="flex flex-col items-center text-sm leading-none">
+                    <span>{focusUsed}</span>
+                    <span className="block self-stretch h-px bg-current my-px" />
+                    <span>{hero.maxFocus}</span>
+                  </div>
+                )}
+              </div>
+            </Tooltip>
+          )}
         </div>
 
         {/* SPELLCASTING TAB */}
@@ -135,6 +176,7 @@ export const ManaHUD = ({
       </div>
 
       <SpellcastingMenu />
+      <ContextMenu />
     </div>
   )
 }

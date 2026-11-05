@@ -28,7 +28,7 @@
       "dice": {
         "count": 1,
         "faces": 10,
-        "modifier": 6,
+        "modifier": 3,
         "explodesOn": []
       }
     },
@@ -135,7 +135,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.2.180",
     "createdTime": 1790015134849,
-    "modifiedTime": 1793682759140,
+    "modifiedTime": 1793858518306,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

@@ -115,7 +115,12 @@ export const api: VagabondAPI = {
       if (!item) return
 
       if (item.system instanceof WeaponDataModel) {
-        HeroAttack.buildWeaponAttack(actor, item as any, skill).initiate(event)
+        HeroAttack.buildWeaponAttack(actor, item as any, skill).initiate(
+          event,
+          {
+            requireFocusUpkeep: true,
+          },
+        )
       }
     },
 

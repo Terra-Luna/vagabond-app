@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
 
-import { VagabondActiveEffect } from "../../../combat/documents/VagabondActiveEffect"
 import type { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
 import { CountdownResult } from "../../../combat/engine/roll/CountdownResult"
 import { CountdownRoll } from "../../../combat/engine/roll/CountdownRoll"
-import { isActiveEffectFx, isLightFx, removeActiveEffectCopy } from "../../../combat/engine/util/active-effect-fx"
 import { isImmuneToBurning } from "../../../combat/engine/util/burning-mitigation"
+import { removeFx } from "../../../combat/engine/util/fx-removal"
 import { StatusEffectUtil } from "../../../model/actor/util/StatusEffectUtil"
 import { sys_id } from "../../../util/foundry-util"
 import { LightSourceUtil } from "../../../util/LightSourceUtil"
@@ -19,6 +18,13 @@ export interface CountdownSchema extends OverlayObjectPermissions {
   result: CountdownResult
 }
 
+type CountdownStatus = {
+  id: string
+  damageType?: string
+  name?: string
+  focusId?: string
+}
+
 export interface CountdownToAdd {
   label: string
   duration: number
@@ -26,7 +32,7 @@ export interface CountdownToAdd {
   y?: number
   actorId?: string
   tokenUuid?: string
-  status?: { id: string; damageType?: string; name?: string }
+  status?: CountdownStatus
 }
 
 /**
@@ -122,6 +128,7 @@ export class CountdownManager {
       status: item.status?.id,
       statusName: item.status?.name,
       damageType: item.status?.damageType,
+      focusId: item.status?.focusId,
     })
 
     /**
@@ -218,7 +225,7 @@ export class CountdownManager {
     y?: number,
     actorId?: string,
     tokenUuid?: string,
-    status?: { id: string; damageType?: string; name?: string },
+    status?: CountdownStatus,
   ) {
     return CountdownManager.addAll([
       { label, duration, x, y, actorId, tokenUuid, status },
@@ -326,19 +333,7 @@ export class CountdownManager {
           ? ((await fromUuid(cd.result.actorUuid)) as Actor | null)
           : null)
       const status = cd.result.status as string
-      if (isActiveEffectFx(status)) {
-        if (actor) await removeActiveEffectCopy(actor, status)
-        continue
-      }
-      const effectId = VagabondActiveEffect.statusEffects.find(
-        (it) => it.id === status,
-      )?._id
-      const isActive =
-        actor?.statuses?.has(status) ||
-        (!!effectId && actor?.effects?.has(effectId))
-      if (actor && isActive) {
-        await StatusEffectUtil.toggleStatusEffectOnce(actor, status, false)
-      }
+      if (actor) await removeFx(actor, status)
     }
   }
 
@@ -439,6 +434,7 @@ export class CountdownManager {
       )
     )
       return
+    await LightSourceUtil.applyLightBurnDamage(combatant)
     const pending = CountdownManager.getCombatantStatusCountdowns(
       CountdownManager.getAll(),
       combatant,

@@ -1,10 +1,19 @@
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { appLang } from "../../util/lang"
+import type { EmitsLight } from "../engine/util/active-effect-fx"
 
 export interface SpellDeliverySnapshot {
   name: string
   applyEffect: boolean
   isFocused: boolean
+  /** Set once the cast spent a Focus; links applied effects to that Focus. */
+  focusId?: string
+  damageDice?: number
+  isArea?: boolean
+  /** Area deliveries: overall size, plus width and height for Lines. */
+  size?: number
+  width?: number
+  height?: number
   upcast: number
   discount: number
   _manaCost: number
@@ -22,8 +31,11 @@ export interface SpellSnapshot {
   ignoreEffectCost: boolean
   upcastableEffect: boolean
   upcastableEffectDieRoll: boolean
+  focusExempt?: boolean
+  upkeep?: { force: boolean; perTarget: boolean }
   appliedEffects: { effect: string; duration: string; critDuration: string }[]
   appliedActiveEffects?: { uuid: string; duration?: string }[]
+  emitsLight?: EmitsLight
 }
 
 export interface DeliveryMods {
@@ -141,6 +153,10 @@ export abstract class SpellDelivery {
       name: this.name,
       applyEffect: this.applyEffect,
       isFocused: this.isFocused,
+      damageDice: this.damageDice,
+      isArea: this instanceof AreaOfEffectDelivery,
+      ...(this instanceof AreaOfEffectDelivery && { size: this.size }),
+      ...(this instanceof Line && { width: this.width, height: this.height }),
       upcast: this.upcast,
       discount: this.discount,
       _manaCost: this._manaCost,
@@ -162,8 +178,11 @@ export abstract class SpellDelivery {
       ignoreEffectCost: spell.system.ignoreEffectCost,
       appliedEffects: spell.system.appliedEffects as any[],
       appliedActiveEffects: spell.system.appliedActiveEffects as any[],
+      emitsLight: spell.system.emitsLight as EmitsLight,
       upcastableEffect: spell.system.upcastableEffect,
       upcastableEffectDieRoll: spell.system.upcastableEffectDieRoll,
+      focusExempt: spell.system.focusExempt,
+      upkeep: spell.system.upkeep as SpellSnapshot["upkeep"],
     }
   }
 

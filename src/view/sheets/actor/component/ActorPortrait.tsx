@@ -4,7 +4,7 @@ import { StatusCountdowns } from "../../../../combat/ui/CombatTracker"
 import { ActorDataModel, BaseActorSchema } from "../../../../model/actor/ActorDataModel"
 import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
 import { ActorTypeConverter, CONVERTIBLE_ACTOR_TYPES } from "../../../../model/actor/util/ActorTypeConverter"
-import type { PolymorphFlag } from "../../../../model/actor/util/PolymorphUtil"
+import { type PolymorphFlag, PolymorphUtil } from "../../../../model/actor/util/PolymorphUtil"
 import { sys_id } from "../../../../util/foundry-util"
 import { appLang, appTypes } from "../../../../util/lang"
 import { tableBorder } from "../../../common/border-styles"
@@ -59,7 +59,10 @@ export const ActorPortrait = ({
         title={appLang.ButtonActions.cancelPolymorph}
         className="absolute top-1/2 right-1 z-999 mt-2 -mr-0.5"
         colorClassName="text-text-tertiary hover:text-destructive-action"
-        onClick={async () => await actor.setPolymorph(undefined)}
+        onClick={async () => {
+          await actor.setPolymorph(undefined)
+          await PolymorphUtil.dropFocusIfUnmaintained(polymorph.casterId)
+        }}
       />
     )
 

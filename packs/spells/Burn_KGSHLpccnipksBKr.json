@@ -14,7 +14,8 @@
         "critDuration": "Cd6"
       }
     ],
-    "ignoreEffectCost": false
+    "ignoreEffectCost": false,
+    "focusExempt": true
   },
   "effects": [],
   "folder": null,
@@ -25,11 +26,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.1",
+    "systemVersion": "0.2.180",
     "createdTime": 1784763177817,
-    "modifiedTime": 1789659335998,
+    "modifiedTime": 1793830004916,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

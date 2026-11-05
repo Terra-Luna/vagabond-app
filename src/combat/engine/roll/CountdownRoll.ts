@@ -25,6 +25,7 @@ export class CountdownRoll {
       actorUuid: this.result.actorUuid,
       tokenUuid: this.result.tokenUuid,
       damageType: this.result.damageType,
+      focusId: this.result.focusId,
       status: this.result.status,
       statusName: this.result.statusName,
       rollSummary: {
@@ -70,14 +71,22 @@ export class CountdownRoll {
       return
     }
 
-    const damage = mitigateBurningDamage(
+    await CountdownRoll.applyBurn(
       actor,
       this.result.damageType,
       this.result.rollSummary?.result ?? 0,
     )
-    const health = (actor.system as any)?.health?.value ?? 0
+  }
 
-    if (this.result.damageType === "mana") {
+  /** Applies one round of Burning to the actor's health. Reduced only by resistance and flat/per-die reductions, never by Armor. */
+  public static async applyBurn(
+    actor: Actor,
+    damageType: string | undefined,
+    amount: number,
+  ) {
+    const damage = mitigateBurningDamage(actor, damageType, amount)
+    const health = (actor.system as any)?.health?.value ?? 0
+    if (damageType === "mana") {
       if (!(actor.system as any)?.mana) return
       const adjMana = damage + (actor.system as any).mana.value
       await actor.update({ "system.mana.value": adjMana } as Record<
@@ -87,8 +96,7 @@ export class CountdownRoll {
     }
     else {
       const adjHp =
-        this.result.damageType === "healing" ||
-        absorbsBurning(actor, this.result.damageType)
+        damageType === "healing" || absorbsBurning(actor, damageType)
           ? health + damage
           : health - damage
 

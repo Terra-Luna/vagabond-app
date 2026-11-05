@@ -1,41 +1,18 @@
 import { CountdownManager } from "../../apps/vagabond-tools/usecase/CountdownManager"
-import {
-  getAttackRegistry,
-  setAttackRegistry,
-} from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
-import {
-  ActorDataModel,
-  BaseActorSchema,
-} from "../../model/actor/ActorDataModel"
+import { getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel"
+import { FocusSpellUtil } from "../../model/actor/util/FocusSpellUtil"
 import { StatusEffectUtil } from "../../model/actor/util/StatusEffectUtil"
 import { roll3dDice, sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
-import {
-  getCanvasToken,
-  getTargetActor,
-  getTargetIds,
-} from "../../util/model-util"
+import { LightSourceUtil } from "../../util/LightSourceUtil"
+import { getCanvasToken, getTargetActor, getTargetIds } from "../../util/model-util"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { DamageRoll } from "./roll/DamageRoll"
-import {
-  applyActiveEffectCopy,
-  isActiveEffectFx,
-} from "./util/active-effect-fx"
+import { applyActiveEffectCopy, isActiveEffectFx, isLightFx, parseLightFx } from "./util/active-effect-fx"
 import type { AttackSnapshot } from "./util/attack-serializer"
 import { isImmuneToBurning } from "./util/burning-mitigation"
-import {
-  absorbsDamage,
-  AttackResolutionArgs,
-  buildSummaryRow,
-  calculateBonusDamage,
-  computeDamageBreakdown,
-  DamageBreakdown,
-  ExtraDamage,
-  isImmuneToDamage,
-  isImmuneToStatus,
-  isWeakToDamage,
-  TargetDamageSummary,
-} from "./util/damage-mitigation"
+import { absorbsDamage, AttackResolutionArgs, buildSummaryRow, calculateBonusDamage, computeDamageBreakdown, DamageBreakdown, ExtraDamage, isImmuneToDamage, isImmuneToStatus, isWeakToDamage, TargetDamageSummary } from "./util/damage-mitigation"
 import { HuntersMark } from "./util/HuntersMark"
 
 export type {
@@ -223,7 +200,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
         this.applyFatigueDamage(args)
       }
       else {
-        this.applyDamage(args)
+        return this.applyDamage(args)
       }
     }
   }
@@ -317,8 +294,32 @@ export abstract class Attack<TActor extends Actor = Actor> {
     })
   }
 
+  /** Damage of FOCUS_DAMAGE_LIMIT or more from one attack breaks the target's Focus. */
+  protected async breakFocusIfHit(targetActor: any, damage: number) {
+    if (!targetActor || damage < FOCUS_DAMAGE_LIMIT) return
+    const isHero = targetActor.type === "hero"
+    const isFocusing =
+      (targetActor.system as ActorDataModel<BaseActorSchema>).statuses.toggles
+        .focusing ||
+      (isHero && FocusSpellUtil.instances(targetActor).length > 0)
+    if (!isFocusing) return
+
+    if (isHero) {
+      await FocusSpellUtil.breakAll(targetActor)
+      return
+    }
+    await targetActor.update({
+      "system.statuses.counters.focus": 0,
+    } as Record<string, number>)
+    await StatusEffectUtil.toggleStatusEffectOnce(
+      targetActor,
+      "focusing",
+      false,
+    )
+  }
+
   // Applies the HP change shown in the damage summary (including any GM overrides).
-  private applyDamage(args: AttackResolutionArgs) {
+  private async applyDamage(args: AttackResolutionArgs) {
     // Sum rows per target so multiple damage sources (e.g. Imbues) are applied in one HP update.
     const totals = new Map<string, number>()
     for (const row of this.getDamageSummary({
@@ -347,22 +348,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
       const deathRequirements =
         targetActor?.system?.modifiers?.damage?.in?.deathRequirements
 
-      if (
-        (targetActor.system as ActorDataModel<BaseActorSchema>).statuses.toggles
-          .focusing &&
-        adjDamage >= FOCUS_DAMAGE_LIMIT
-      ) {
-        targetActor.update({ "system.statuses.counters.focus": 0 } as Record<
-          string,
-          number
-        >)
-        if (targetActor.type !== "hero")
-          StatusEffectUtil.toggleStatusEffectOnce(
-            targetActor,
-            "focusing",
-            false,
-          )
-      }
+      await this.breakFocusIfHit(targetActor, adjDamage)
 
       const hp = this.getHP(targetActor?.system)
       const newHp = hp - adjDamage
@@ -639,7 +625,14 @@ export abstract class Attack<TActor extends Actor = Actor> {
             ? eff.critDuration
             : eff.duration
 
+        if (isLightFx(eff.effect)) {
+          await this.recordFocusFx(actor, eff.effect, duration)
+          await this.applyLight(actor, token, eff.effect, duration)
+          continue
+        }
+
         if (isActiveEffectFx(eff.effect)) {
+          await this.recordFocusFx(actor, eff.effect, duration)
           await this.applyActiveEffect(actor, token, eff.effect, duration)
           continue
         }
@@ -651,14 +644,90 @@ export abstract class Attack<TActor extends Actor = Actor> {
         )
           continue
 
+        await this.recordFocusFx(actor, eff.effect, duration, eff.damageType)
         await this.applyEffects(
           actor,
           token,
           eff.effect,
           duration,
           eff.damageType,
+          eff.effect === "burning" ? this.focusRef?.focusId : undefined,
         )
       }
+    }
+  }
+
+  /** The Focus (and its spell) maintaining this attack's effects, if any. */
+  protected get focusRef(): { spell: string; focusId: string } | undefined {
+    return undefined
+  }
+
+  private async recordFocusFx(
+    actor: Actor,
+    effect: string,
+    duration?: string,
+    damageType?: string,
+  ) {
+    const ref = this.focusRef
+    // Burning is always tied to the Focus, even with a countdown, so dropping Focus can extinguish it.
+    const isTied = duration?.toLowerCase() === "focus" || effect === "burning"
+    if (!StatusEffectUtil.isDesignatedUser()) return
+    try {
+      if (ref && isTied) {
+        await FocusSpellUtil.record(this.actor, {
+          ...ref,
+          targetUuid: actor.uuid,
+          effect,
+          ...(damageType && { damageType }),
+        })
+      }
+      else if (this.roundExpirySpell) {
+        await FocusSpellUtil.expireNextRound(this.actor, {
+          spell: this.roundExpirySpell,
+          targetUuid: actor.uuid,
+          effect,
+          ...(damageType && { damageType }),
+        })
+      }
+    }
+    catch (error) {
+      console.error("Failed to record Focus effect", error)
+    }
+  }
+
+  /** The spell whose effects wear off at the start of the next round unless Focused on or focus-exempt. */
+  protected get roundExpirySpell(): string | undefined {
+    return undefined
+  }
+
+  private async applyLight(
+    actor: Actor,
+    token: Token | undefined,
+    id: string,
+    duration?: string,
+  ) {
+    if (!duration || duration === "-") return
+
+    await LightSourceUtil.grantLight(actor, {
+      ...parseLightFx(id),
+      focused: duration.toLowerCase() === "focus",
+    })
+
+    const countdownFaces = duration.match(/^Cd(\d+)$/)?.[1]
+    if (countdownFaces) {
+      const name = appLang.Effects.emitsLight
+      const label = this.prefixCountdownWithTargetName
+        ? `${token?.name ?? actor.name}: ${name}`
+        : name
+      await CountdownManager.add(
+        label,
+        Number(countdownFaces),
+        undefined,
+        undefined,
+        actor.uuid,
+        token?.document?.uuid,
+        { id, name },
+      )
     }
   }
 
@@ -701,6 +770,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
     status: string,
     duration?: string,
     damageType?: string,
+    focusId?: string,
   ) {
     if (!duration || duration === "-") return
 
@@ -719,7 +789,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
         undefined,
         actor.uuid,
         token?.document?.uuid,
-        { id: status, damageType: damageType },
+        { id: status, damageType: damageType, focusId },
       )
     }
   }

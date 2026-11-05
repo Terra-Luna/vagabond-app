@@ -1,7 +1,10 @@
+import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { sys_id } from "../../../util/foundry-util"
+import { appLang } from "../../../util/lang"
 import type { AdversaryDataModel } from "../AdversaryDataModel"
 import type { HeroDataModel } from "../HeroDataModel"
 import type { NpcDataModel } from "../NpcDataModel"
+import { FocusSpellUtil } from "./FocusSpellUtil"
 import { StatusEffectUtil } from "./StatusEffectUtil"
 
 export interface PolymorphFlag {
@@ -103,14 +106,29 @@ export class PolymorphUtil {
     }
 
     if (polymorphFlag && duration === "focus" && caster) {
-      await PolymorphUtil.focusOnNewPolymorph(caster, targets)
+      const focused = await PolymorphUtil.focusOnNewPolymorph(caster, targets)
+      if (!focused) return
     }
+
+    const previousCasterIds = new Set(
+      targets.map(
+        (t) =>
+          (t.getFlag(sys_id, "polymorph") as PolymorphFlag | undefined)
+            ?.casterId,
+      ),
+    )
 
     for (const target of targets) {
       await target.system.setPolymorph(
         polymorphFlag &&
           PolymorphUtil.withOriginalTokens(polymorphFlag, target),
       )
+    }
+
+    if (!polymorphFlag) {
+      for (const casterId of previousCasterIds) {
+        await PolymorphUtil.dropFocusIfUnmaintained(casterId)
+      }
     }
 
     /**
@@ -184,7 +202,14 @@ export class PolymorphUtil {
   private static focusOnNewPolymorph = async (
     caster: Actor & { system: any },
     newTargets: Actor[],
-  ) => {
+  ): Promise<boolean> => {
+    if (
+      (caster.type as string) === "hero" &&
+      !(await PolymorphUtil.focusPolymorphSpell(caster, newTargets))
+    ) {
+      return false
+    }
+
     const newIds = new Set(newTargets.map((t) => t.id))
     const sceneActors = game.canvas?.scene?.tokens?.map((t) => t.actor) ?? []
     const demoted = new Set<string | null>()
@@ -199,10 +224,85 @@ export class PolymorphUtil {
       await actor.setFlag(sys_id, "polymorph", { ...flag, duration: "turn" })
     }
 
+    if ((caster.type as string) !== "hero") {
+      const focus = caster.system.statuses?.counters?.focus ?? 0
+      await caster.update({
+        "system.statuses.counters.focus": focus + 1,
+      } as Record<string, number>)
+    }
+    return true
+  }
+
+  /**
+   * Heroes track the polymorph as a Focused spell: earlier Polymorph Focuses are replaced, and with a single
+   * maxFocus any other Focused spell is replaced too. Hostile targets owe a Cast check each round.
+   * Returns false when the hero has no Focus capacity left, in which case nothing was changed.
+   */
+  private static focusPolymorphSpell = async (
+    caster: Actor & { system: any },
+    targets: Actor[],
+  ): Promise<boolean> => {
+    const known = (caster.system.spells ?? []).find(
+      (sp: any) => sp.parent?.flags?.[sys_id]?.polymorph,
+    )
+    const spellId: string | undefined = known
+      ? (known._sourceId ?? known.parent.uuid)
+      : ItemsCache.spells().find((it: any) => it.flags?.[sys_id]?.polymorph)
+          ?.uuid
+    if (!spellId) return true
+    const targetIds = targets.flatMap((t) =>
+      (t.getActiveTokens(false, true) as any[]).map((tok) => tok.id as string),
+    )
+    const isPolymorphSpell = (uuid: string) =>
+      uuid === spellId ||
+      uuid === known?.parent?.uuid ||
+      !!(fromUuidSync(uuid) as any)?.flags?.[sys_id]?.polymorph
+    const existing = FocusSpellUtil.instances(caster).filter((it) =>
+      isPolymorphSpell(it.spell),
+    )
+
+    const adopted = existing[existing.length - 1]
+    for (const it of existing) {
+      if (it !== adopted) await FocusSpellUtil.drop(caster, it.id, true, true)
+    }
+    if (adopted) {
+      await FocusSpellUtil.update(caster, adopted.id, {
+        targetIds,
+        polymorph: true,
+      })
+      return true
+    }
+
     const focus = caster.system.statuses?.counters?.focus ?? 0
-    await caster.update({
-      "system.statuses.counters.focus": focus + 1,
-    } as Record<string, number>)
+    if (focus >= caster.system.maxFocus && caster.system.maxFocus !== 1) {
+      ui.notifications?.warn(appLang.Spellcasting.maxFocusMessage)
+      return false
+    }
+    await FocusSpellUtil.add(caster, spellId, foundry.utils.randomID(), {
+      targetIds,
+      polymorph: true,
+    })
+    return true
+  }
+
+  /**
+   * Once nothing the caster polymorphed is still under their Focus, the Polymorph Focus ends too.
+   */
+  static dropFocusIfUnmaintained = async (casterId?: string | null) => {
+    const caster = casterId ? game.actors?.get(casterId) : undefined
+    if (!caster || (caster.type as string) !== "hero") return
+    const stillMaintained = game.canvas?.scene?.tokens?.some((t) => {
+      const flag = t.actor?.getFlag(sys_id, "polymorph") as
+        | PolymorphFlag
+        | undefined
+      return flag?.casterId === casterId && flag?.duration === "focus"
+    })
+    if (stillMaintained) return
+    for (const it of FocusSpellUtil.instances(caster).filter(
+      (i) => i.polymorph,
+    )) {
+      await FocusSpellUtil.drop(caster, it.id, true, true)
+    }
   }
 
   /**

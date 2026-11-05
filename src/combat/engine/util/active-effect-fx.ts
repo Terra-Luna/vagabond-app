@@ -9,18 +9,117 @@ export const isActiveEffectFx = (id?: string): id is string =>
   !!id && id.startsWith(AE_FX_PREFIX)
 const sourceUuid = (id: string) => id.slice(AE_FX_PREFIX.length)
 
+export type LightFxType = "basic" | "sunlight" | "moonlight"
+export const LIGHT_FX_TYPES: readonly LightFxType[] = [
+  "basic",
+  "sunlight",
+  "moonlight",
+]
+
+const LIGHT_FX_PREFIX = "light:"
+
+/** A light's range is a whole, non-negative number of grid units. */
+export const normalizeLightRange = (value: unknown): number => {
+  const n = Math.floor(Number(value))
+  return Number.isFinite(n) && n > 0 ? n : 0
+}
+
+export type LightFx = {
+  type: LightFxType
+  range: number
+  burns: string[]
+  damageType: string
+  burnDamage: string
+}
+
 /**
- * Normalizes the action's applied effects and active effects into a single array of AppliedFx.
+ * Makes a target emit light. Encoded as "light:" followed by a JSON payload so it travels with the other applied effects as a plain string.
+ * `burns` lists the being types that Burn (in `damageType`) while in the light.
+ */
+export const toLightFxId = (
+  type: LightFxType,
+  range: number,
+  burns: string[] = [],
+  damageType = "",
+  burnDamage = "",
+) =>
+  `${LIGHT_FX_PREFIX}${JSON.stringify({ type, range, burns, damageType, burnDamage })}`
+
+export const isLightFx = (id?: string): id is string =>
+  !!id && id.startsWith(LIGHT_FX_PREFIX)
+
+/** Reads the older "light:<type>:<range>:<burns>:<damageType>:<burnDamage>" encoding still found in saved Focus records and countdowns. */
+const parseLegacyLightFx = (body: string): Partial<LightFx> => {
+  const [type, range, burns, damageType, burnDamage] = body.split(":")
+  return {
+    type: type as LightFxType,
+    range: Number(range),
+    burns: burns ? burns.split(",") : [],
+    damageType,
+    burnDamage,
+  }
+}
+
+const readLightPayload = (body: string): Partial<LightFx> => {
+  if (!body.startsWith("{")) return parseLegacyLightFx(body)
+  try {
+    return JSON.parse(body)
+  }
+  catch {
+    return {}
+  }
+}
+
+export const parseLightFx = (id: string): LightFx => {
+  const raw = readLightPayload(id.slice(LIGHT_FX_PREFIX.length))
+  return {
+    type: LIGHT_FX_TYPES.includes(raw.type as LightFxType)
+      ? (raw.type as LightFxType)
+      : "basic",
+    range: normalizeLightRange(raw.range),
+    burns: Array.isArray(raw.burns) ? raw.burns.filter(Boolean) : [],
+    damageType: raw.damageType ?? "",
+    burnDamage: raw.burnDamage ?? "",
+  }
+}
+
+export type EmitsLight = {
+  enabled?: boolean
+  type?: string
+  range?: number
+  duration?: string
+  burns?: string[]
+  burnDamage?: string
+}
+
+/**
+ * Normalizes the action's applied effects, active effects and emitted light into a single array of AppliedFx.
  */
 export const collectAppliedFx = (action: {
   appliedEffects?: unknown
   appliedActiveEffects?: { uuid: string; duration?: string }[]
+  emitsLight?: EmitsLight
+  damageType?: string
 }): AppliedFx[] => [
   ...((action.appliedEffects ?? []) as AppliedFx[]),
   ...(action.appliedActiveEffects ?? []).map((ae) => ({
     effect: toActiveEffectFxId(ae.uuid),
     duration: ae.duration,
   })),
+  ...(action.emitsLight?.enabled
+    ? [
+        {
+          effect: toLightFxId(
+            action.emitsLight.type as LightFxType,
+            action.emitsLight.range || 30,
+            [...(action.emitsLight.burns ?? [])],
+            action.damageType,
+            action.emitsLight.burnDamage,
+          ),
+          duration: action.emitsLight.duration,
+        },
+      ]
+    : []),
 ]
 
 const findCopies = (actor: any, id: string): any[] =>

@@ -14,7 +14,12 @@
         "critDuration": "Cd4"
       }
     ],
-    "ignoreEffectCost": true
+    "ignoreEffectCost": true,
+    "emitsLight": {
+      "enabled": true,
+      "type": "basic",
+      "duration": "focus"
+    }
   },
   "effects": [],
   "folder": null,
@@ -29,7 +34,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.2.180",
     "createdTime": 1784496870877,
-    "modifiedTime": 1793809595998,
+    "modifiedTime": 1793814019621,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -29,7 +29,7 @@ export class VagabondActor<
    * Heroes use the Tagalong filename format for the standard Foundry export.
    */
   override exportToJSON(options?: any): void {
-    if (this.type !== "hero") {
+    if ((this.type as string) !== "hero") {
       return super.exportToJSON(options)
     }
     TagalongExporter.exportFoundryData(this, options)
@@ -217,7 +217,8 @@ export class VagabondActor<
       focusingEffectId &&
       ids.includes(focusingEffectId)
     ) {
-      PolymorphUtil.releaseAllPolymorphsOnce(this)
+      if (!FocusSpellUtil.hasPendingPolymorph(this))
+        PolymorphUtil.releaseAllPolymorphsOnce(this)
       if (
         this.getFlag(sys_id, "focusedSpells") &&
         StatusEffectUtil.isDesignatedUser()

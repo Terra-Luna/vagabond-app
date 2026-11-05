@@ -6,7 +6,10 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">You call forth a Beast or Beasts that can fit in the Area or nearest open space to the Target. They remain for the duration and can have a cumulative HD total count no higher than half your Level (minimum 1).</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">You must spend 1 Mana each Turn you Focus on this Spell after the Casting. You can choose to let the Beasts act independently, or to command them when you Focus. They use your Cast Skill for any Check they make.</span></p>",
     "rules": [],
-    "damageType": "none"
+    "damageType": "none",
+    "upkeep": {
+      "force": true
+    }
   },
   "effects": [],
   "folder": null,
@@ -17,12 +20,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.180",
     "createdTime": 1784761981429,
-    "modifiedTime": 1784762081194,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1793833174167,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

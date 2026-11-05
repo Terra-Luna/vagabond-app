@@ -237,7 +237,7 @@ const Weapons = ({
             hero.parent,
             item.parent,
           )
-          await attackInstance.initiate(e)
+          await attackInstance.initiate(e, { requireFocusUpkeep: true })
           attackInstance = HeroAttack.buildWeaponAttack(
             hero.parent,
             item.parent,

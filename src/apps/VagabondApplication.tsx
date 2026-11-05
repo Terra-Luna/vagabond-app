@@ -19,6 +19,7 @@ export interface VagabondAppArgs {
   enforceSingleInstance?: boolean
   editModeOptions?: EditModeOptions
   Component: React.FC<any>
+  minSize?: { width?: number; height?: number }
 }
 
 export abstract class VagabondApplication
@@ -26,6 +27,7 @@ export abstract class VagabondApplication
 {
 
   Component: FC
+  minSize?: { width?: number; height?: number }
   editModeOptions: EditModeOptions
   protected SYSTEM_ID = sys_id
 
@@ -68,6 +70,7 @@ export abstract class VagabondApplication
     )
 
     this.Component = args.Component
+    this.minSize = args.minSize
     this.editModeOptions = args.editModeOptions ?? EditModeOptions.NEVER
     this.actorId = args.actorId
     this.enforceSingleInstancePerActor =

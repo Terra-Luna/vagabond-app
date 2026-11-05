@@ -1,4 +1,4 @@
-import { Eraser, Eye, Hand, HandFist, Link, MessageSquareText, Split, Sword, Trash, Undo } from "lucide-react"
+﻿import { Eraser, Eye, Hand, HandFist, Link, MessageSquareText, Split, Sword, Trash, Undo } from "lucide-react"
 
 import { ItemStackSplitApp } from "../apps/inventory/ItemStackSplitApp"
 import { showConfirmationDialog } from "../apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
@@ -134,7 +134,7 @@ export const useItem = async (
           actor,
           item as Item & { system: AlchemicalItemDataModel },
         )
-        attack.initiate(e)
+        attack.initiate(e, { requireFocusUpkeep: true })
       }
       else {
         sendToChat()
@@ -174,7 +174,9 @@ export const equippedItemContextMenu = (
       icon: Sword,
       label: appLang.ButtonActions.attack,
       action: (e) => {
-        HeroAttack.buildWeaponAttack(hero.parent, item.parent).initiate(e)
+        HeroAttack.buildWeaponAttack(hero.parent, item.parent).initiate(e, {
+          requireFocusUpkeep: true,
+        })
       },
     })
     if (item.grip.style === "V") {
@@ -213,7 +215,9 @@ export const equipmentContextMenuItems = (
       icon: Sword,
       label: appLang.ButtonActions.throw,
       action: (e) => {
-        HeroAttack.buildWeaponAttack(hero.parent, item.parent).initiate(e)
+        HeroAttack.buildWeaponAttack(hero.parent, item.parent).initiate(e, {
+          requireFocusUpkeep: true,
+        })
       },
     })
   }

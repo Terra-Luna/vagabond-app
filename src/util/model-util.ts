@@ -57,6 +57,15 @@ export const getCanvasToken = (id): Token | undefined => {
   return canvas?.tokens?.get(id)
 }
 
+/** Scene tokens (by id) that have an image to show, ready for a TargetsDisplay. */
+export const toTargetDisplayItems = (ids: string[]) =>
+  ids
+    .map((id) => {
+      const token = getCanvasToken(id)
+      return { id, src: getTokenImg(token), token }
+    })
+    .filter((it) => it.src != null && it.src.length > 0)
+
 /**
  * The actor behind a token on the active scene (works for unlinked tokens, unlike game.actors).
  */

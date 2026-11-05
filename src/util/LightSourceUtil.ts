@@ -3,13 +3,15 @@ import { FlaskRound, Lightbulb, LightbulbOff } from "lucide-react"
 import { showConfirmationDialog } from "../apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { CountdownManager } from "../apps/vagabond-tools/usecase/CountdownManager"
 import { getRealtimeLightsources } from "../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { CountdownRoll } from "../combat/engine/roll/CountdownRoll"
 import { isImmuneToBurning } from "../combat/engine/util/burning-mitigation"
 import { getBeingTypes, isImmuneToStatus } from "../combat/engine/util/damage-mitigation"
 import { StatusEffectUtil } from "../model/actor/util/StatusEffectUtil"
 import type { CtxMenuItem } from "../view/component/ContextMenu"
-import { sys_id } from "./foundry-util"
+import { roll3dDice, sys_id } from "./foundry-util"
 import { appLang } from "./lang"
 import { localizeString } from "./locale-util"
+import { RoundMemo } from "./RoundMemo"
 
 type LightData = {
   isLightSource?: boolean
@@ -25,13 +27,28 @@ type LightData = {
   isDark?: boolean
   isSunlight?: boolean
   isMoonlight?: boolean
+  /** A spell-granted light with no special type: a steady glow with no animation. */
+  isBasicSpell?: boolean
 }
 
-type LightKindFlags = Pick<LightData, "isDark" | "isSunlight" | "isMoonlight">
+type LightKindFlags = Pick<
+  LightData,
+  "isDark" | "isSunlight" | "isMoonlight" | "isBasicSpell"
+>
 
 /** Sunlight/moonlight designations that grant an in-light effect to tokens in range. */
 type LightKind = "sunlight" | "moonlight"
 type LightType = "none" | LightKind
+
+type GrantedLight = {
+  type: "basic" | "sunlight" | "moonlight"
+  range: number
+  /** Maintained by a Focused spell, so it supersedes every other light the token emits. */
+  focused?: boolean
+  burns?: string[]
+  damageType?: string
+  burnDamage?: string
+}
 
 type Point = { x: number; y: number }
 
@@ -46,9 +63,26 @@ type Emitter = {
 type BurnEmitter = Omit<Emitter, "type"> & {
   burns: string[]
   damageType: string
+  burnDamage: string
+  lightType: string
 }
 
 const LIGHT_TYPES: readonly LightKind[] = ["sunlight", "moonlight"]
+const LIGHT_RELEVANT_TOKEN_KEYS = [
+  "x",
+  "y",
+  "elevation",
+  "width",
+  "height",
+  "hidden",
+  "disposition",
+  "light",
+  "flags",
+  "delta",
+  "actorId",
+  "actorLink",
+  "movement",
+]
 
 /** A status applied while in a light, as configured by an "ApplyStatus" rule. */
 type AppliedEffect = {
@@ -67,9 +101,10 @@ export class LightSourceUtil {
   private static readonly APPLIED_FLAG = "appliedKeys"
   private static readonly RULE_FX_FLAG = "ruleEffect"
   private static readonly NO_LIGHT = { dim: 0, bright: 0 }
-  private static readonly GRANTED_FLAG = "grantedLight"
+  private static readonly GRANTED_FLAG = "grantedLights"
+  private static readonly LEGACY_GRANTED_FLAG = "grantedLight"
   private static readonly GRANTED_COLORS: Record<string, string> = {
-    basic: "#ffffff",
+    basic: "#ffa642",
     sunlight: "#ffa733",
     moonlight: "#b0c4de",
   }
@@ -285,6 +320,21 @@ export class LightSourceUtil {
         },
       }
     }
+    if (data.isBasicSpell && !data.isDark) {
+      return {
+        dim: data.range,
+        bright: 0,
+        angle: 360,
+        color: data.color,
+        alpha: 0.5,
+        priority: 0,
+        negative: false,
+        coloration: 1,
+        luminosity: 0.5,
+        attenuation: 0.5,
+        animation: { type: null, speed: 5, intensity: 5, reverse: false },
+      }
+    }
     return {
       dim: data.range,
       bright: isPlain ? Math.min(5, data.range) : 0,
@@ -334,23 +384,28 @@ export class LightSourceUtil {
       )
     }) ?? []) as any[]
     const granted = LightSourceUtil.grantedSource(actor)
+    if (granted?.focused) return granted
     if (granted) sources.push(granted)
     return sources.sort(
       (a, b) => b.system.lightSourceData.range - a.system.lightSourceData.range,
     )[0]
   }
 
-  /** Light granted to an actor by an effect (e.g. a spell cast for effect), shaped like a lit item. */
+  /** Light granted to an actor by an effect (e.g. a spell cast for effect), shaped like a lit item. Focused lights supersede unfocused ones; then the widest wins. */
   private static grantedSource(actor: any): any | undefined {
-    const granted = actor?.getFlag?.(sys_id, LightSourceUtil.GRANTED_FLAG)
-    if (!granted?.range) return undefined
+    const granted = LightSourceUtil.activeGrantedLights(actor).sort(
+      (a, b) => b.range - a.range,
+    )[0]
+    if (!granted) return undefined
     return {
       id: LightSourceUtil.GRANTED_FLAG,
+      focused: !!granted.focused,
       img: "icons/magic/light/explosion-star-glow-yellow.webp",
       system: {
         lightSourceData: {
           range: granted.range,
           color: LightSourceUtil.GRANTED_COLORS[granted.type] ?? "#ffffff",
+          isBasicSpell: granted.type === "basic",
           isSunlight: granted.type === "sunlight",
           isMoonlight: granted.type === "moonlight",
         },
@@ -358,31 +413,59 @@ export class LightSourceUtil {
     }
   }
 
-  static async grantLight(
-    actor: any,
-    light: {
-      type: "basic" | "sunlight" | "moonlight"
-      range: number
-      burns?: string[]
-      damageType?: string
-    },
-  ) {
+  /** Every light granted to the actor, one per type, including one saved by an earlier version. */
+  private static grantedLights(actor: any): GrantedLight[] {
+    const byType = (actor?.getFlag?.(sys_id, LightSourceUtil.GRANTED_FLAG) ??
+      {}) as Record<string, GrantedLight>
+    const legacy = actor?.getFlag?.(
+      sys_id,
+      LightSourceUtil.LEGACY_GRANTED_FLAG,
+    ) as GrantedLight | undefined
+    const lights = { ...(legacy?.type && { [legacy.type]: legacy }), ...byType }
+    return Object.values(lights).filter((it) => it?.range > 0)
+  }
+
+  /** The granted lights actually emitted: only the Focused ones when there are any. */
+  private static activeGrantedLights(actor: any): GrantedLight[] {
+    const lights = LightSourceUtil.grantedLights(actor)
+    const focused = lights.filter((it) => it.focused)
+    return focused.length ? focused : lights
+  }
+
+  static async grantLight(actor: any, light: GrantedLight) {
     if (!game.user?.isGM || !actor) return
     if (light.range <= 0) {
       ui.notifications?.warn(`Light range is 0 for ${actor.name}.`)
       return
     }
-    await actor.setFlag(sys_id, LightSourceUtil.GRANTED_FLAG, light)
+    const legacy = actor.getFlag(sys_id, LightSourceUtil.LEGACY_GRANTED_FLAG)
+    await actor.update({
+      ...(legacy?.type && {
+        [`flags.${sys_id}.${LightSourceUtil.GRANTED_FLAG}.${legacy.type}`]:
+          legacy,
+      }),
+      [`flags.${sys_id}.${LightSourceUtil.GRANTED_FLAG}.${light.type}`]: light,
+      [`flags.${sys_id}.-=${LightSourceUtil.LEGACY_GRANTED_FLAG}`]: null,
+    })
     await LightSourceUtil.syncActorLight(actor)
   }
 
-  static async clearGrantedLight(actor: any) {
-    if (
-      !game.user?.isGM ||
-      !actor?.getFlag?.(sys_id, LightSourceUtil.GRANTED_FLAG)
-    )
-      return
-    await actor.unsetFlag(sys_id, LightSourceUtil.GRANTED_FLAG)
+  /** Removes the granted light of one type, or every granted light when no type is given. */
+  static async clearGrantedLight(actor: any, type?: GrantedLight["type"]) {
+    if (!game.user?.isGM || !actor) return
+    const lights = LightSourceUtil.grantedLights(actor)
+    if (!lights.some((it) => !type || it.type === type)) return
+
+    const removeOne = type
+      ? { [`flags.${sys_id}.${LightSourceUtil.GRANTED_FLAG}.-=${type}`]: null }
+      : { [`flags.${sys_id}.-=${LightSourceUtil.GRANTED_FLAG}`]: null }
+    const legacy = actor.getFlag(sys_id, LightSourceUtil.LEGACY_GRANTED_FLAG)
+    await actor.update({
+      ...removeOne,
+      ...((!type || legacy?.type === type) && {
+        [`flags.${sys_id}.-=${LightSourceUtil.LEGACY_GRANTED_FLAG}`]: null,
+      }),
+    })
     await LightSourceUtil.syncActorLight(actor)
   }
 
@@ -470,41 +553,99 @@ export class LightSourceUtil {
   }
 
   private static burnEmitters(): BurnEmitter[] {
-    return LightSourceUtil.sceneTokens().flatMap((token) => {
-      const granted = token.actor?.getFlag?.(
-        sys_id,
-        LightSourceUtil.GRANTED_FLAG,
-      )
-      if (!granted?.burns?.length || !(granted.range > 0)) return []
-      return [
-        {
+    return LightSourceUtil.sceneTokens().flatMap((token) =>
+      LightSourceUtil.activeGrantedLights(token.actor)
+        .filter(
+          (it) =>
+            it.burns?.length || (LIGHT_TYPES as string[]).includes(it.type),
+        )
+        .map((granted) => ({
           id: token,
           center: LightSourceUtil.centerOf(token),
           range: granted.range,
           ignoresWalls: false,
-          burns: granted.burns as string[],
-          damageType: (granted.damageType as string) ?? "",
-        },
-      ]
+          burns: (granted.burns ?? []) as string[],
+          damageType: granted.damageType ?? "",
+          burnDamage: granted.burnDamage ?? "",
+          lightType: granted.type as string,
+        })),
+    )
+  }
+
+  private static burnedThisRound = new RoundMemo()
+
+  /** Set by the Focus rules: true while a caster's light-burn upkeep is unpaid, so its light deals no damage yet. */
+  static holdBurn?: () => boolean
+
+  /** On the burned token's turn, it takes the burning light's damage once per round (the light itself only applies the Burning status). */
+  static applyLightBurnDamage(combatant: any) {
+    return LightSourceUtil.burnToken(combatant?.token?.object)
+  }
+
+  /** Rolls the burning light's damage against one token, at most once per round. */
+  static async burnToken(token: any) {
+    const actor = token?.actor
+    if (!actor || !game.user?.isActiveGM || !canvas?.ready) return
+    if (LightSourceUtil.holdBurn?.()) return
+
+    const round = `${game.combat?.id}:${game.combat?.round}`
+    const key = token.document.uuid
+    if (LightSourceUtil.burnedThisRound.has(round, key)) return
+
+    const types = getBeingTypes(actor)
+    const hit = LightSourceUtil.burnEmitters().find(
+      (e) =>
+        e.burnDamage &&
+        e.burns.some((b) => types.includes(b)) &&
+        LightSourceUtil.reaches(token, e),
+    )
+    if (!hit || isImmuneToBurning(actor, hit.damageType)) return
+    if (!Roll.validate(hit.burnDamage)) {
+      console.warn(`${sys_id} | Invalid light burn damage: ${hit.burnDamage}`)
+      return
+    }
+
+    LightSourceUtil.burnedThisRound.add(round, key)
+    const roll = await new Roll(hit.burnDamage).evaluate()
+    roll3dDice([roll])
+    await CountdownRoll.applyBurn(actor, hit.damageType, roll.total ?? 0)
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ token: token.document }),
+      flavor: `${token.name}: ${appLang.StatusConditions.burning?.name ?? "Burning"}${hit.damageType ? ` (${hit.damageType})` : ""}`,
     })
   }
 
-  /** True if a Hostile token that this actor's granted light would Burn is inside that light. */
-  static hasHostileBurned(actor: any): boolean {
-    if (!canvas?.ready) return false
-    const emitters = LightSourceUtil.burnEmitters().filter(
-      (e) => (e.id as any)?.actor?.id === actor.id,
-    )
-    if (!emitters.length) return false
-    return LightSourceUtil.sceneTokens().some((token) => {
+  /** Hostile tokens inside the emitter's light that it harms: a type it burns, or an in-light Burning rule for its light type (e.g. Sunlight Aversion). */
+  private static harmedBy(emitter: BurnEmitter): any[] {
+    return LightSourceUtil.sceneTokens().filter((token) => {
       if (token.document?.disposition !== -1 || !token.actor) return false
+      if (!LightSourceUtil.reaches(token, emitter)) return false
       const types = getBeingTypes(token.actor)
-      return emitters.some(
-        (e) =>
-          e.burns.some((b) => types.includes(b)) &&
-          LightSourceUtil.reaches(token, e),
+      if (emitter.burns.some((b) => types.includes(b))) return true
+      const effects: AppliedEffect[] =
+        token.actor.system?.modifiers?.misc?.light?.[emitter.lightType]
+          ?.effects ?? []
+      return effects.some(
+        (fx) => fx.mode === "status" && fx.status === "burning",
       )
     })
+  }
+
+  /** Hostile tokens harmed by the light shed by the given tokens (or by the actor's own token when none are given). */
+  static harmedHostiles(actor: any, tokenIds?: string[]): any[] {
+    if (!canvas?.ready) return []
+    const ids = tokenIds?.length ? tokenIds : undefined
+    const emitters = LightSourceUtil.burnEmitters().filter((e) =>
+      ids
+        ? ids.includes((e.id as any)?.document?.id)
+        : (e.id as any)?.actor?.id === actor.id,
+    )
+    return [...new Set(emitters.flatMap((e) => LightSourceUtil.harmedBy(e)))]
+  }
+
+  /** True if a Hostile that this light would harm is inside it. */
+  static hasHostileBurned(actor: any, tokenIds?: string[]): boolean {
+    return LightSourceUtil.harmedHostiles(actor, tokenIds).length > 0
   }
 
   private static ambientEmitters(): Emitter[] {
@@ -546,7 +687,7 @@ export class LightSourceUtil {
   }
 
   /** Token movement is staged in Foundry; wait for it to finish before measuring. */
-  private static async settleAnimations(tokens: any[]) {
+  static async settleAnimations(tokens: any[]) {
     const pending = () =>
       tokens.map((t) => t.movementAnimationPromise).filter(Boolean)
     const moving = () =>
@@ -779,21 +920,28 @@ export class LightSourceUtil {
         : []
     }
 
+    const byActor = new Map<string, any[]>()
+    for (const token of LightSourceUtil.sceneTokens()) {
+      if (!token.actor || token.actor.type === "container") continue
+      const group = byActor.get(token.actor.uuid)
+      if (group) group.push(token)
+      else byActor.set(token.actor.uuid, [token])
+    }
+
+    // Tokens sharing one actor (linked) are reconciled together: the actor is in a light if any of its tokens is.
     await Promise.all(
-      LightSourceUtil.sceneTokens()
-        .filter((t) => t.actor && t.actor.type !== "container")
-        .map(async (target) => {
-          const wanted = {
-            sunlight: reached(target, "sunlight"),
-            moonlight: reached(target, "moonlight"),
-          }
-          await LightSourceUtil.reconcileEffects(target.actor, wanted)
-          await LightSourceUtil.reconcileApplied(
-            target,
-            wanted,
-            burning(target),
-          )
-        }),
+      [...byActor.values()].map(async (tokens) => {
+        const wanted = {
+          sunlight: tokens.some((t) => reached(t, "sunlight")),
+          moonlight: tokens.some((t) => reached(t, "moonlight")),
+        }
+        await LightSourceUtil.reconcileEffects(tokens[0].actor, wanted)
+        await LightSourceUtil.reconcileApplied(
+          tokens[0],
+          wanted,
+          tokens.flatMap(burning),
+        )
+      }),
     )
   }
 
@@ -820,6 +968,7 @@ export class LightSourceUtil {
   }
 
   private static scheduleSync() {
+    if (!game.user?.isActiveGM) return
     clearTimeout(LightSourceUtil.syncTimer)
     LightSourceUtil.syncTimer = setTimeout(
       () => LightSourceUtil.runSerialized(),
@@ -829,14 +978,18 @@ export class LightSourceUtil {
 
   private static registerSyncHooks() {
     const schedule = () => LightSourceUtil.scheduleSync()
+    Hooks.on("updateToken", (_doc: any, changed: any) => {
+      if (LIGHT_RELEVANT_TOKEN_KEYS.some((key) => key in changed)) schedule()
+    })
+    Hooks.on("updateItem", (_item: any, changed: any) => {
+      if (changed?.system?.lightSourceData || changed?.flags) schedule()
+    })
     for (const hook of [
       "canvasReady",
       "createToken",
-      "updateToken",
       "moveToken",
       "deleteToken",
       "createItem",
-      "updateItem",
       "deleteItem",
       "createWall",
       "updateWall",
@@ -961,18 +1114,22 @@ export class LightSourceUtil {
       }
 
       const size = Math.max(12, Math.min(token.w, token.h) * 0.3)
-      const radius = size / 2
-      overlay.sprite.width = size
-      overlay.sprite.height = size
-      overlay.mask
-        .clear()
-        .beginFill(0xffffff)
-        .drawCircle(radius, radius, radius)
-        .endFill()
-      overlay.border
-        .clear()
-        .lineStyle(Math.max(1, size * 0.08), 0x000000, 1)
-        .drawCircle(radius, radius, radius)
+      const drawKey = `${lit.img}|${size}`
+      if (overlay.drawKey !== drawKey) {
+        overlay.drawKey = drawKey
+        const radius = size / 2
+        overlay.sprite.width = size
+        overlay.sprite.height = size
+        overlay.mask
+          .clear()
+          .beginFill(0xffffff)
+          .drawCircle(radius, radius, radius)
+          .endFill()
+        overlay.border
+          .clear()
+          .lineStyle(Math.max(1, size * 0.08), 0x000000, 1)
+          .drawCircle(radius, radius, radius)
+      }
       overlay.position.set(token.w - size, 0)
       overlay.visible = true
     })

@@ -5,7 +5,17 @@
   "img": "icons/magic/light/explosion-star-glow-blue-purple.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">You can cause the light shed by Spells you Cast to be Moonlight or Sunlight.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "PvD1nBtmq0Ho6Aqh",
+        "key": "ToggleRule",
+        "label": "Celestial Illum. Flag",
+        "level": 0,
+        "value": true,
+        "selector": ["flags.celestialIlluminator"],
+        "toggleableEffect": false
+      }
+    ],
     "prerequisites": [
       {
         "type": "spell",
@@ -31,12 +41,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.2.180",
     "createdTime": 1786634795952,
-    "modifiedTime": 1786634847715,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1793812043147,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

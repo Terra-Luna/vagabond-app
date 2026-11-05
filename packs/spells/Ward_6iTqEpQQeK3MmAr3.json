@@ -15,7 +15,11 @@
       }
     ],
     "upcastableEffect": true,
-    "upcastableEffectDieRoll": true
+    "upcastableEffectDieRoll": true,
+    "upkeep": {
+      "force": true,
+      "perTarget": true
+    }
   },
   "effects": [],
   "folder": null,
@@ -26,11 +30,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.103",
+    "systemVersion": "0.2.180",
     "createdTime": 1784497366772,
-    "modifiedTime": 1791181004931,
+    "modifiedTime": 1793833156849,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

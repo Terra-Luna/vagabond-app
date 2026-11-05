@@ -330,14 +330,22 @@ export class AdversaryComboAttack extends Attack {
       return
     }
 
+    const damageByTarget = new Map<string, number>()
     for (const row of rows) {
       const actor = getTargetActor(row.targetId)
+      if (row.dmgType !== "healing")
+        damageByTarget.set(
+          row.targetId,
+          (damageByTarget.get(row.targetId) ?? 0) + row.total,
+        )
       const hp = this.getHP(actor?.system)
       await this.updateHP(
         actor?.system,
         row.dmgType === "healing" ? hp + row.total : hp - row.total,
       )
     }
+    for (const [targetId, damage] of damageByTarget)
+      await this.breakFocusIfHit(getTargetActor(targetId), damage)
 
     await this.applyStatusEffectsForSub(
       sub,

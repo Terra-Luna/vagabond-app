@@ -6,6 +6,8 @@ export interface CountdownResult {
   name: string
   duration: number
   damageType?: string
+  /** The Focus maintaining this countdown (Burning only), so dropping that Focus clears only its own. */
+  focusId?: string
   status?: string
   statusName?: string
   rollSummary?: RollSummary

@@ -29,6 +29,7 @@ export const SkillCard = ({
   actions = [],
   mini,
   badge,
+  tooltipFooter,
 }: {
   actor?: Actor
   img?: string
@@ -41,24 +42,29 @@ export const SkillCard = ({
   actions?: SkillCardAction[]
   mini?: boolean
   badge?: ReactNode
+  /** Extra content shown beneath the full card in a mini card's tooltip. */
+  tooltipFooter?: ReactNode
 }) => {
   return mini ? (
     <Tooltip
       interactive={true}
       content={
-        <SkillCard
-          actor={actor}
-          img={img}
-          dmgType={dmgType}
-          title={title}
-          subtitles={subtitles}
-          description={description}
-          startCollapsed={false}
-          hideCollapseButton={true}
-          actions={actions}
-          mini={false}
-          badge={badge}
-        />
+        <div className="flex flex-col">
+          <SkillCard
+            actor={actor}
+            img={img}
+            dmgType={dmgType}
+            title={title}
+            subtitles={subtitles}
+            description={description}
+            startCollapsed={false}
+            hideCollapseButton={true}
+            actions={actions}
+            mini={false}
+            badge={badge}
+          />
+          {tooltipFooter}
+        </div>
       }
     >
       <div

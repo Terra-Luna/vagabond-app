@@ -1,40 +1,28 @@
 import { api } from "../../apps/api/VagabondAPI"
 import type { RollPreset } from "../../apps/attack-builder/model/RollPreset"
+import { showConfirmationDialog } from "../../apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
-import {
-  getAllowLateLuckStudy,
-  getAttackRegistry,
-  getManaEnforcement,
-} from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { getAllowLateLuckStudy, getAttackRegistry, getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { FocusSpellUtil } from "../../model/actor/util/FocusSpellUtil"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { roll3dDice, sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
 import { localizeString } from "../../util/locale-util"
-import {
-  canInitiateAttack,
-  getTargetIds,
-  isActorInScene,
-} from "../../util/model-util"
+import { canInitiateAttack, getTargetIds, isActorInScene } from "../../util/model-util"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
-import {
-  Imbue,
-  SpellDelivery,
-  type SpellDeliverySnapshot,
-} from "../spellcasting/SpellDelivery"
+import { FocusUpkeep } from "../spellcasting/FocusUpkeep"
+import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { AppliedFx, Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
-import {
-  SkillCheck,
-  type SkillCheckResult,
-  type SkillCheckType,
-} from "./roll/SkillCheck"
-import { collectAppliedFx } from "./util/active-effect-fx"
+import { SkillCheck, type SkillCheckResult, type SkillCheckType } from "./roll/SkillCheck"
+import { collectAppliedFx, isLightFx, type LightFxType, parseLightFx, toLightFxId } from "./util/active-effect-fx"
 import { deserializeAttack } from "./util/attack-deserializer"
-import { serializeAttack } from "./util/attack-serializer"
+import { type AttackSnapshot, serializeAttack } from "./util/attack-serializer"
+import { type AttackResolutionArgs } from "./util/damage-mitigation"
 import { getDefensePenalty } from "./util/damage-mitigation"
 import { getDiceTerms } from "./util/dice-util"
 import { HuntersMark } from "./util/HuntersMark"
@@ -90,12 +78,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
   }
 
   get hasHostileTargets(): boolean {
-    if (!this.targetIds || this.targetIds.length === 0) return false
-    return (
-      this.targetIds.some(
-        (id) => canvas?.scene?.tokens.get(id)?.disposition === -1,
-      ) ?? false
-    )
+    return FocusSpellUtil.hasHostileToken(this.targetIds)
   }
 
   get showSkillCheck(): boolean {
@@ -110,6 +93,22 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
   override get isSpellAttack(): boolean {
     return !!this.spellDelivery
+  }
+
+  protected override get focusRef():
+    | { spell: string; focusId: string }
+    | undefined {
+    const focusId = this.spellDelivery?.focusId
+    // Focus-exempt spells' effects linger on their own, so Focus never tracks or ends them.
+    if (this.spellDelivery?.spell.focusExempt) return undefined
+    return focusId && this.spellDelivery
+      ? { spell: this.spellDelivery.spell.uuid, focusId }
+      : undefined
+  }
+
+  protected override get roundExpirySpell(): string | undefined {
+    const spell = this.spellDelivery?.spell
+    return spell && !spell.focusExempt ? spell.uuid : undefined
   }
 
   override get isImbuable(): boolean {
@@ -152,9 +151,21 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
   async initiate(
     clickEvent?: any,
-    options?: { isDefenseCheck?: boolean; skipChatCard?: boolean },
+    options?: {
+      isDefenseCheck?: boolean
+      skipChatCard?: boolean
+      /** Refuse to start while the Hero has unresolved Focus upkeep (opens the Focus app instead). Pass from player-driven entry points. */
+      requireFocusUpkeep?: boolean
+    },
   ) {
     if (!canInitiateAttack(this.actor)) return
+    if (
+      options?.requireFocusUpkeep &&
+      !options.isDefenseCheck &&
+      (this.actor as any).type === "hero" &&
+      FocusUpkeep.blocksActions(this.actor)
+    )
+      return
     if (
       this.requiresTargets &&
       !options?.isDefenseCheck &&
@@ -179,6 +190,10 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
     if (this.isEligibleForDmgRoll && this.isSuccessOrCrit) {
       await this.rollInitialDamage()
+    }
+
+    if (this.skipSkillCheck || this.isSuccessOrCrit) {
+      await this.chooseLightType()
     }
 
     this.applyPostRollEffects()
@@ -219,19 +234,11 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
   }
 
   private applyPostRollEffects() {
-    // Update Focus, if available.
-    if (
-      this.isSpellAttack &&
-      this.spellDelivery?.isFocused &&
-      (this.skipSkillCheck || this.isSuccessOrCrit)
-    ) {
-      this.addFocus()
-    }
-
     // Take user to polymorph menu...
     if (
       game.user?.id === this.userId &&
       this.isSpellAttack &&
+      this.isSuccessOrCrit &&
       (fromUuidSync(this.itemId) as any)?.getFlag?.(sys_id, "polymorph")
     ) {
       if (this.actor.sheet?.rendered) {
@@ -247,16 +254,83 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     }
   }
 
-  private addFocus() {
+  /**
+   * Casters with Celestial Illuminator choose the type of light a spell sheds when cast for effect.
+   */
+  private async chooseLightType() {
+    if (
+      !this.isSpellAttack ||
+      !this.actor.getFlag(sys_id, "celestialIlluminator")
+    )
+      return
+    const index = this.appliedEffects.findIndex((fx) => isLightFx(fx.effect))
+    if (index < 0) return
+
+    const fx = this.appliedEffects[index]
+    const current = parseLightFx(fx.effect)
+    if (current.type !== "basic") return
+    let chosen: string = current.type
+    await showConfirmationDialog({
+      variant: "primary",
+      title: appLang.Spellcasting.chooseLightTitle,
+      description: appLang.Spellcasting.chooseLightDescription,
+      selectAsButtons: true,
+      selectDefaultValue: current.type,
+      selectOptions: [
+        { value: "basic", label: appLang.ItemSheet.lightTypeNone },
+        { value: "sunlight", label: appLang.ItemSheet.sunlight },
+        { value: "moonlight", label: appLang.ItemSheet.moonlight },
+      ],
+      onConfirm: (value) => {
+        if (value) chosen = value
+      },
+    })
+    this.appliedEffects[index] = {
+      ...fx,
+      effect: toLightFxId(
+        chosen as LightFxType,
+        current.range,
+        current.burns,
+        current.damageType,
+        current.burnDamage,
+      ),
+    }
+  }
+
+  /** Focus is only spent once the GM accepts the attack, before its effects are applied and recorded. */
+  override async applyDamageAndResolve(
+    args: AttackResolutionArgs,
+    serialize: (attack: Attack) => AttackSnapshot | undefined,
+  ) {
+    if (
+      !this.isResolved &&
+      this.isSpellAttack &&
+      this.spellDelivery?.isFocused &&
+      !this.spellDelivery.focusId &&
+      (this.skipSkillCheck || this.isSuccessOrCrit)
+    ) {
+      await this.addFocus()
+    }
+    await super.applyDamageAndResolve(args, serialize)
+  }
+
+  private async addFocus() {
+    const spell = this.spellDelivery?.spell.uuid
+    const max = this.actor.system.maxFocus
     const focus = this.actor.system.statuses.counters.focus ?? 0
-    if (focus >= this.actor.system.maxFocus) {
+    const instances = spell ? FocusSpellUtil.instances(this.actor) : []
+    const canReplace = max === 1 && instances.length > 0
+    if (!spell || (focus >= max && !canReplace)) {
       ui.notifications?.warn(appLang.Spellcasting.maxFocusMessage)
+      return
     }
-    else {
-      this.actor.update({
-        "system.statuses.counters.focus": focus + 1,
-      } as Record<string, number>)
-    }
+    const focusId = foundry.utils.randomID()
+    if (this.spellDelivery) this.spellDelivery.focusId = focusId
+    await FocusSpellUtil.add(this.actor, spell, focusId, {
+      skill: this.skillCheck?.skill,
+      delivery: this.spellDelivery && { ...this.spellDelivery },
+      targetIds: [...this.targetIds],
+    })
   }
 
   static findLatestWeaponAttack():
@@ -402,7 +476,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     })
 
     await latestAttack.save(serializeAttack)
-    if (spellAttack.spellDelivery?.isFocused) spellAttack.addFocus()
+    if (spellAttack.spellDelivery?.isFocused) await spellAttack.addFocus()
 
     return true
   }
@@ -644,6 +718,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         })
       })
     }
+    await this.chooseLightType()
     await this.save(serializeAttack)
   }
 
@@ -1002,6 +1077,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     skill: string,
     delivery: SpellDelivery,
     clickEvent?: any,
+    options?: { skipSkillCheck?: boolean },
   ): HeroAttack | null {
     const hero = actor.system
 
@@ -1128,7 +1204,8 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
           damageType: delivery.spell.damageType,
         }))
       : []
-    attack.skipSkillCheck = delivery instanceof Imbue
+    attack.skipSkillCheck =
+      delivery instanceof Imbue || !!options?.skipSkillCheck
 
     return attack
   }
@@ -1186,7 +1263,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
       attack.appliedEffects = baseAttack.appliedEffects
       attack.skipSkillCheck = preset.skill === "-"
 
-      attack.initiate(clickEvent)
+      attack.initiate(clickEvent, { requireFocusUpkeep: true })
     }
     else if (
       preset.skill &&
@@ -1214,7 +1291,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
       attack.itemId = weapon?.id ?? ""
       attack.skipSkillCheck = preset.skill === "-"
 
-      attack.initiate(clickEvent)
+      attack.initiate(clickEvent, { requireFocusUpkeep: true })
     }
     else if (
       (preset.skill && !preset.damageRolls) ||

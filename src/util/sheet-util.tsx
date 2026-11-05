@@ -87,8 +87,8 @@ export const centerOnFirstRender = (sheet: any, vertAdj = 500) => {
 }
 
 export const onUpdatePosition = (sheet: VagabondApplication, position: any) => {
-  const minWidth = 360
-  const minHeight = 248
+  const minWidth = (sheet as any).minSize?.width ?? 360
+  const minHeight = (sheet as any).minSize?.height ?? 248
   const { width, top, left } = position
   /**
    * Bottom edge (top + height) must not go past 88vh, i.e. within 12vh of the screen bottom
