@@ -1,12 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { ControlledMenu, MenuItem, SubMenu } from "@szhsin/react-menu"
-import {
-  FunctionComponent,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { FunctionComponent, useCallback, useMemo, useRef, useState } from "react"
 
 import { Divider } from "./Header"
 

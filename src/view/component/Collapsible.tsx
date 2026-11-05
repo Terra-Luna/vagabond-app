@@ -13,6 +13,7 @@ export interface CollapsibleHeaderProps {
   toggleCollapsedButton?: ReactNode
   toggleCollapsed?: () => void
   actions?: SkillCardAction[]
+  badge?: ReactNode
 }
 
 interface CollapsibleHeader {
@@ -29,6 +30,7 @@ export const Collapsible = ({
   hideCollapseButton,
   className,
   actions,
+  badge,
 }: {
   img?: string
   dmgType?: string
@@ -39,6 +41,7 @@ export const Collapsible = ({
   hideCollapseButton?: boolean
   className?: string
   actions?: SkillCardAction[]
+  badge?: ReactNode
 }) => {
   const [isCollapsed, setCollapsed] = useState(startCollapsed)
   const toggleCollapsed = useCallback(() => {
@@ -50,6 +53,7 @@ export const Collapsible = ({
         img={img}
         dmgType={dmgType}
         title={title}
+        badge={badge}
         toggleCollapsed={hideCollapseButton ? undefined : toggleCollapsed}
         actions={actions}
         toggleCollapsedButton={

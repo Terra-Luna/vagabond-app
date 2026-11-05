@@ -3,16 +3,9 @@ import { useCallback, useEffect, useMemo, useRef } from "react"
 
 import { HeroAttack } from "../../combat/engine/HeroAttack"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import {
-  isEquippedWeapon,
-  WeaponDataModel,
-} from "../../model/item/equip/WeaponDataModel"
+import { isEquippedWeapon, WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { appLang } from "../../util/lang"
-import {
-  DestructiveButton,
-  PrimaryButton,
-  SecondaryButton,
-} from "../../view/component/Button"
+import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { Header } from "../../view/component/Header"
 import { Tooltip } from "../../view/component/Tooltip"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"

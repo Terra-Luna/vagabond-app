@@ -11,6 +11,7 @@ export const CardHeader = ({
   toggleCollapsedButton,
   toggleCollapsed,
   actions = [],
+  badge,
 }: CollapsibleHeaderProps) => {
   const cardHeaderLayout = "flex items-center py-1 px-1 bg-section-header-fill"
   const cardHeaderStyle =
@@ -27,6 +28,8 @@ export const CardHeader = ({
       )}
       <span className={`${img ? "ml-2" : "ml-1"}`}>{title}</span>
       <Divider />
+
+      {badge && <div className="flex items-center mr-1">{badge}</div>}
 
       {toggleCollapsedButton}
 

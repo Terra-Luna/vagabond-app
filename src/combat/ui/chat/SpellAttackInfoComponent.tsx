@@ -5,10 +5,7 @@ import ReactHtmlParser from "react-html-parser"
 import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
 import { appLang } from "../../../util/lang"
 import { DamageRollsComponent } from "../../../view/chat/component/DamageRollsComponent"
-import {
-  CardSubHeader,
-  CardSubHeaderValues,
-} from "../../../view/component/SkillCard"
+import { CardSubHeader, CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { DamageRollResult } from "../../engine/roll/DamageRoll"
 
 export const SpellAttackInfoComponent = ({

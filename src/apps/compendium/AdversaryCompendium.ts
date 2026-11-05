@@ -1,11 +1,5 @@
 ﻿import { appLang } from "../../util/lang"
-import {
-  createFilterableCompendium,
-  filterRow,
-  numberFilter,
-  registerFilterableCompendium,
-  selectFilter,
-} from "./FilterableCompendium"
+import { createFilterableCompendium, filterRow, numberFilter, registerFilterableCompendium, selectFilter } from "./FilterableCompendium"
 
 export const ADVERSARY_FILTER_FIELDS = [
   "system.beingSize",

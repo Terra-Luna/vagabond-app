@@ -2,10 +2,7 @@ import { Square, SquareCheckBig } from "lucide-react"
 
 import { appLang } from "../../../util/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
-import {
-  HeroCreationLabel,
-  HeroCreationSubtext,
-} from "./HeroCreationTypography"
+import { HeroCreationLabel, HeroCreationSubtext } from "./HeroCreationTypography"
 
 export const TrainingSelector = ({ skill, label, isSelected, onSelect }) => {
   return (

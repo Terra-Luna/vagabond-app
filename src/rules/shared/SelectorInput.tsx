@@ -2,12 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 
 import { appLang } from "../../util/lang"
 import { MultiSelect, SelectOption } from "../../view/component/MultiSelect"
-import {
-  getSelectorOptions,
-  isValidSelector,
-  normalizeSelector,
-  SelectorKind,
-} from "../util/selector-util"
+import { getSelectorOptions, isValidSelector, normalizeSelector, SelectorKind } from "../util/selector-util"
 import { ItemRulesLabel } from "./ItemRulesTypography"
 
 interface SelectorInputProps {

@@ -1,17 +1,9 @@
 import { useLayoutEffect, useRef } from "react"
 
 import { openItemSheet } from "../../model/actor/schema/inventory"
-import {
-  coinsAsString,
-  toCopper,
-  zeroCoins,
-} from "../../model/common/coin-value-schema"
+import { coinsAsString, toCopper, zeroCoins } from "../../model/common/coin-value-schema"
 import { ArmorDataModel } from "../../model/item/equip/ArmorDataModel"
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-  getTotalSlots,
-} from "../../model/item/equip/EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema, getTotalSlots } from "../../model/item/equip/EquipmentDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { appLang } from "../../util/lang"
 import { UtilityButton } from "../../view/component/Button"

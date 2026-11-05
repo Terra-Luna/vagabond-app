@@ -1,13 +1,6 @@
 import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
 import { appLang } from "../../../util/lang"
-import {
-  damageTypeOptions,
-  fields,
-  optionalString,
-  requiredInteger,
-  requiredString,
-  savingThrowOptions,
-} from "../../common/shared-schemas"
+import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString, savingThrowOptions } from "../../common/shared-schemas"
 
 /**
  * A detailed adversary offensive action.

@@ -4,7 +4,7 @@ import { showConfirmationDialog } from "../apps/vagabond-tools/dialog/Confirmati
 import { CountdownManager } from "../apps/vagabond-tools/usecase/CountdownManager"
 import { getRealtimeLightsources } from "../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { isImmuneToBurning } from "../combat/engine/util/burning-mitigation"
-import { isImmuneToStatus } from "../combat/engine/util/damage-mitigation"
+import { getBeingTypes, isImmuneToStatus } from "../combat/engine/util/damage-mitigation"
 import { StatusEffectUtil } from "../model/actor/util/StatusEffectUtil"
 import type { CtxMenuItem } from "../view/component/ContextMenu"
 import { sys_id } from "./foundry-util"
@@ -43,6 +43,11 @@ type Emitter = {
   ignoresWalls: boolean
 }
 
+type BurnEmitter = Omit<Emitter, "type"> & {
+  burns: string[]
+  damageType: string
+}
+
 const LIGHT_TYPES: readonly LightKind[] = ["sunlight", "moonlight"]
 
 /** A status applied while in a light, as configured by an "ApplyStatus" rule. */
@@ -62,6 +67,12 @@ export class LightSourceUtil {
   private static readonly APPLIED_FLAG = "appliedKeys"
   private static readonly RULE_FX_FLAG = "ruleEffect"
   private static readonly NO_LIGHT = { dim: 0, bright: 0 }
+  private static readonly GRANTED_FLAG = "grantedLight"
+  private static readonly GRANTED_COLORS: Record<string, string> = {
+    basic: "#ffffff",
+    sunlight: "#ffa733",
+    moonlight: "#b0c4de",
+  }
   /* This value helps with odd dead-angles caused by calculating true distance on a grid system */
   private static readonly RANGE_TOLERANCE = 1
   private static readonly EFFECT_UUIDS: Record<LightKind, string> = {
@@ -322,9 +333,57 @@ export class LightSourceUtil {
         !LightSourceUtil.isUnbound(it.system)
       )
     }) ?? []) as any[]
+    const granted = LightSourceUtil.grantedSource(actor)
+    if (granted) sources.push(granted)
     return sources.sort(
       (a, b) => b.system.lightSourceData.range - a.system.lightSourceData.range,
     )[0]
+  }
+
+  /** Light granted to an actor by an effect (e.g. a spell cast for effect), shaped like a lit item. */
+  private static grantedSource(actor: any): any | undefined {
+    const granted = actor?.getFlag?.(sys_id, LightSourceUtil.GRANTED_FLAG)
+    if (!granted?.range) return undefined
+    return {
+      id: LightSourceUtil.GRANTED_FLAG,
+      img: "icons/magic/light/explosion-star-glow-yellow.webp",
+      system: {
+        lightSourceData: {
+          range: granted.range,
+          color: LightSourceUtil.GRANTED_COLORS[granted.type] ?? "#ffffff",
+          isSunlight: granted.type === "sunlight",
+          isMoonlight: granted.type === "moonlight",
+        },
+      },
+    }
+  }
+
+  static async grantLight(
+    actor: any,
+    light: {
+      type: "basic" | "sunlight" | "moonlight"
+      range: number
+      burns?: string[]
+      damageType?: string
+    },
+  ) {
+    if (!game.user?.isGM || !actor) return
+    if (light.range <= 0) {
+      ui.notifications?.warn(`Light range is 0 for ${actor.name}.`)
+      return
+    }
+    await actor.setFlag(sys_id, LightSourceUtil.GRANTED_FLAG, light)
+    await LightSourceUtil.syncActorLight(actor)
+  }
+
+  static async clearGrantedLight(actor: any) {
+    if (
+      !game.user?.isGM ||
+      !actor?.getFlag?.(sys_id, LightSourceUtil.GRANTED_FLAG)
+    )
+      return
+    await actor.unsetFlag(sys_id, LightSourceUtil.GRANTED_FLAG)
+    await LightSourceUtil.syncActorLight(actor)
   }
 
   static async syncActorLight(actor: any) {
@@ -410,6 +469,44 @@ export class LightSourceUtil {
     })
   }
 
+  private static burnEmitters(): BurnEmitter[] {
+    return LightSourceUtil.sceneTokens().flatMap((token) => {
+      const granted = token.actor?.getFlag?.(
+        sys_id,
+        LightSourceUtil.GRANTED_FLAG,
+      )
+      if (!granted?.burns?.length || !(granted.range > 0)) return []
+      return [
+        {
+          id: token,
+          center: LightSourceUtil.centerOf(token),
+          range: granted.range,
+          ignoresWalls: false,
+          burns: granted.burns as string[],
+          damageType: (granted.damageType as string) ?? "",
+        },
+      ]
+    })
+  }
+
+  /** True if a Hostile token that this actor's granted light would Burn is inside that light. */
+  static hasHostileBurned(actor: any): boolean {
+    if (!canvas?.ready) return false
+    const emitters = LightSourceUtil.burnEmitters().filter(
+      (e) => (e.id as any)?.actor?.id === actor.id,
+    )
+    if (!emitters.length) return false
+    return LightSourceUtil.sceneTokens().some((token) => {
+      if (token.document?.disposition !== -1 || !token.actor) return false
+      const types = getBeingTypes(token.actor)
+      return emitters.some(
+        (e) =>
+          e.burns.some((b) => types.includes(b)) &&
+          LightSourceUtil.reaches(token, e),
+      )
+    })
+  }
+
   private static ambientEmitters(): Emitter[] {
     const lights = ((canvas as any).lighting?.placeables ?? []) as any[]
     return lights.flatMap((light) => {
@@ -435,7 +532,10 @@ export class LightSourceUtil {
     })
   }
 
-  private static reaches(target: any, source: Emitter): boolean {
+  private static reaches(
+    target: any,
+    source: Pick<Emitter, "id" | "center" | "range" | "ignoresWalls">,
+  ): boolean {
     if (target === source.id) return true
     const center = LightSourceUtil.centerOf(target)
     return (
@@ -534,6 +634,7 @@ export class LightSourceUtil {
   private static async reconcileApplied(
     token: any,
     wanted: Record<LightKind, boolean>,
+    extra: AppliedEffect[] = [],
   ) {
     const actor = token.actor
     const misc = actor.system?.modifiers?.misc
@@ -543,6 +644,7 @@ export class LightSourceUtil {
         active.set(LightSourceUtil.appliedKey(e), e),
       )
     add(misc?.applied)
+    add(extra)
     for (const kind of LIGHT_TYPES)
       if (wanted[kind]) add(misc?.light?.[kind]?.effects)
     if (!wanted.sunlight && !wanted.moonlight) add(misc?.light?.basic?.effects)
@@ -656,6 +758,27 @@ export class LightSourceUtil {
         (e) => e.type === type && LightSourceUtil.reaches(target, e),
       )
 
+    const burners = LightSourceUtil.burnEmitters()
+    const burning = (target: any): AppliedEffect[] => {
+      const types = getBeingTypes(target.actor)
+      const hit = burners.find(
+        (e) =>
+          e.burns.some((b) => types.includes(b)) &&
+          LightSourceUtil.reaches(target, e),
+      )
+      return hit
+        ? [
+            {
+              mode: "status",
+              status: "burning",
+              damageType: hit.damageType,
+              die: 0,
+              uuid: "",
+            },
+          ]
+        : []
+    }
+
     await Promise.all(
       LightSourceUtil.sceneTokens()
         .filter((t) => t.actor && t.actor.type !== "container")
@@ -665,7 +788,11 @@ export class LightSourceUtil {
             moonlight: reached(target, "moonlight"),
           }
           await LightSourceUtil.reconcileEffects(target.actor, wanted)
-          await LightSourceUtil.reconcileApplied(target, wanted)
+          await LightSourceUtil.reconcileApplied(
+            target,
+            wanted,
+            burning(target),
+          )
         }),
     )
   }

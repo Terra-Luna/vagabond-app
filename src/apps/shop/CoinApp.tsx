@@ -1,10 +1,6 @@
 import { useCallback, useState } from "react"
 
-import {
-  Coins,
-  consolidateCoins,
-  zeroCoins,
-} from "../../model/common/coin-value-schema"
+import { Coins, consolidateCoins, zeroCoins } from "../../model/common/coin-value-schema"
 import { CoinAppView } from "./CoinAppView"
 
 /**

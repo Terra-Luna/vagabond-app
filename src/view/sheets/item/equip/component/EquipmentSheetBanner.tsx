@@ -1,7 +1,4 @@
-import type {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../../../../model/item/equip/EquipmentDataModel"
+import type { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { appLang } from "../../../../../util/lang"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"

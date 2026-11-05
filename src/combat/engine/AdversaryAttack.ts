@@ -8,14 +8,7 @@ import { SkillCheck, SkillCheckResult } from "./roll/SkillCheck"
 import { applyAdversaryDamageMods } from "./util/adversary-damage-mods"
 import type { AttackSnapshot } from "./util/attack-serializer"
 import { serializeAttack } from "./util/attack-serializer"
-import {
-  isDamagedAfterSave,
-  isHalvedBySave,
-  overrideTargetSave,
-  recordTargetSave,
-  rerollTargetSave,
-  rollTargetSave,
-} from "./util/save-state"
+import { isDamagedAfterSave, isHalvedBySave, overrideTargetSave, recordTargetSave, rerollTargetSave, rollTargetSave } from "./util/save-state"
 
 export type SavingThrowType = "reflex" | "endure" | "will" | "defend"
 

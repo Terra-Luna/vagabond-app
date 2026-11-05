@@ -4,14 +4,7 @@ import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import {
-  getItemChoiceRules,
-  getItemRules,
-  getItemRuleSources,
-  normalizeRuleSelections,
-  saveItemRuleSelections,
-  savePerkSelections,
-} from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemRules, getItemRuleSources, normalizeRuleSelections, saveItemRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
 import { groupBy } from "../../../util/collection-util"
 import { sys_id } from "../../../util/foundry-util"
 import { inventoryItemTypes } from "../../../util/model-util"

@@ -1,19 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
 
-import {
-  Aura,
-  Cone,
-  Cube,
-  getDeliveryDropdownOptions,
-  getNewDeliveryOptions,
-  Glyph,
-  Imbue,
-  Line,
-  Remote,
-  SpellSnapshot,
-  Sphere,
-  Touch,
-} from "../../../src/combat/spellcasting/SpellDelivery"
+import { Aura, Cone, Cube, getDeliveryDropdownOptions, getNewDeliveryOptions, Glyph, Imbue, Line, Remote, SpellSnapshot, Sphere, Touch } from "../../../src/combat/spellcasting/SpellDelivery"
 
 const spell: SpellSnapshot = {
   uuid: "x",

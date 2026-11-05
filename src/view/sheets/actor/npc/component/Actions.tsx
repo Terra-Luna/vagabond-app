@@ -20,41 +20,22 @@ import { updateDocumentAtPath } from "../../../../../util/foundry-util"
 import { sys_id } from "../../../../../util/foundry-util"
 import { appLang } from "../../../../../util/lang"
 import { createDropdownEntries } from "../../../../../util/locale-util"
-import {
-  subMenuLayout,
-  tableBorder,
-  tableBorderRounded,
-} from "../../../../common/border-styles"
+import { subMenuLayout, tableBorder, tableBorderRounded } from "../../../../common/border-styles"
 import { damageRoll } from "../../../../common/text-styles"
-import {
-  DestructiveButton,
-  PrimaryButton,
-  UtilityButton,
-} from "../../../../component/Button"
+import { DestructiveButton, PrimaryButton, UtilityButton } from "../../../../component/Button"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { DiceRollButton } from "../../../../component/DiceRollButton"
 import { DropDown } from "../../../../component/Dropdown"
-import {
-  EditableTextField,
-  NumericCounterInput,
-} from "../../../../component/EditableTextField"
+import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { RichTextField } from "../../../../component/RichTextField"
 import { Tooltip } from "../../../../component/Tooltip"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { EditModeContextProvider } from "../../../../wrappers/EditModeContextProvider"
-import {
-  buildFollowerAttack,
-  buildPolymorphAttack,
-  onClickAction,
-  onClickActionAsFollowerAttack,
-  onClickActionAsWeaponAttack,
-  onClickActionCombo,
-  onClickComboAsHeroAttacks,
-} from "./action-util"
+import { buildFollowerAttack, buildPolymorphAttack, onClickAction, onClickActionAsFollowerAttack, onClickActionAsWeaponAttack, onClickActionCombo, onClickComboAsHeroAttacks } from "./action-util"
 import { AppliedActiveEffectsInput } from "./AppliedActiveEffectsInput"
 
 const locale = appLang.NpcSheet
@@ -804,7 +785,7 @@ export const NewActionWindow = ({
           {/* STATUS EFFECTS */}
           <div className="flex items-end gap-x-1">
             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                <AppliedStatusesInput
+              <AppliedStatusesInput
                 effects={newAction?.appliedEffects as any}
                 onChange={(appliedEffects) =>
                   updateAction({

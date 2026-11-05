@@ -1,14 +1,8 @@
 import { useRef, useState } from "react"
 
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../model/item/equip/EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { appLang } from "../../util/lang"
-import {
-  tableBorder,
-  tableBorderRounded,
-} from "../../view/common/border-styles"
+import { tableBorder, tableBorderRounded } from "../../view/common/border-styles"
 import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { Divider } from "../../view/component/Header"
 

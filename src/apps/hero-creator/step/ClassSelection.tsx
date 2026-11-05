@@ -2,11 +2,7 @@ import { ReactNode, useCallback, useEffect, useState } from "react"
 
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { appLang } from "../../../util/lang"
-import {
-  CombinedItems,
-  getFullItem,
-  TypedIndexEntry,
-} from "../../../util/model-util"
+import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../util/model-util"
 import { Header } from "../../../view/component/Header"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { ClassSheetComponent } from "../../../view/sheets/item/character/class/ClassSheetComponent"

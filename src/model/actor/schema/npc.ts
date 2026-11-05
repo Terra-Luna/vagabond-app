@@ -1,11 +1,5 @@
 import { appLang } from "../../../util/lang"
-import {
-  fields,
-  optionalString,
-  requiredInteger,
-  requiredString,
-  zonePreferences,
-} from "../../common/shared-schemas"
+import { fields, optionalString, requiredInteger, requiredString, zonePreferences } from "../../common/shared-schemas"
 import { BaseActorSchema } from "../ActorDataModel"
 import { npcActionComboSchema, npcActionSchema } from "./npc-action"
 

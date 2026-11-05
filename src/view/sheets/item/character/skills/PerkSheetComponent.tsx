@@ -1,18 +1,10 @@
 import { Plus } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
-import {
-  addPerkPrerequisite,
-  deletePerkPrerequisite,
-  PerkDataModel,
-} from "../../../../../model/item/character/PerkDataModel"
+import { addPerkPrerequisite, deletePerkPrerequisite, PerkDataModel } from "../../../../../model/item/character/PerkDataModel"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 import { appLang } from "../../../../../util/lang"
-import {
-  createDropdownEntries,
-  createDropdownEntriesForItems,
-  createDropdownEntriesFromObj,
-} from "../../../../../util/locale-util"
+import { createDropdownEntries, createDropdownEntriesForItems, createDropdownEntriesFromObj } from "../../../../../util/locale-util"
 import { andOrToSymbol } from "../../../../../util/string-util"
 import { UtilityButton } from "../../../../component/Button"
 import { Checkbox } from "../../../../component/Checkbox"

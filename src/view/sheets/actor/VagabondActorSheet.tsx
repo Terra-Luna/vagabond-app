@@ -1,10 +1,7 @@
 const { sheets } = foundry.applications
 import { JSONValue } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
-import {
-  ActorDataModel,
-  BaseActorSchema,
-} from "../../../model/actor/ActorDataModel"
+import { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import { extractItemFromContainer } from "../../../model/item/equip/ContainerDataModel"
 import { deleteItemStack } from "../../../util/inventory-util"
 import { VagabondSheetMixin } from "../VagabondSheetMixin"

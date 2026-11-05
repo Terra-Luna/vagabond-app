@@ -2,10 +2,7 @@ import React, { useEffect, useRef, useState } from "react"
 import ReactHtmlParser from "react-html-parser"
 
 import { CountdownManager } from "../../apps/vagabond-tools/usecase/CountdownManager"
-import {
-  SkillCheck,
-  SkillCheckResult,
-} from "../../combat/engine/roll/SkillCheck"
+import { SkillCheck, SkillCheckResult } from "../../combat/engine/roll/SkillCheck"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { sys_id } from "../../util/foundry-util"
 import { getId } from "../../util/model-util"

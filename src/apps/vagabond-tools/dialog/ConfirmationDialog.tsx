@@ -2,12 +2,11 @@ import { useState } from "react"
 
 import { appLang } from "../../../util/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
-import {
-  DestructiveButton,
-  PrimaryButton,
-  SecondaryButton,
-} from "../../../view/component/Button"
+import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../../view/component/Button"
 import { Option, Select } from "../../../view/component/Dropdown"
+import { SingleSelect } from "../../../view/component/SingleSelect"
+import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
+import { EditModeContextProvider } from "../../../view/wrappers/EditModeContextProvider"
 
 interface ConfirmModalProps {
   isOpen: boolean
@@ -18,6 +17,8 @@ interface ConfirmModalProps {
   inputPlaceholder?: string
   inputDefaultValue?: string
   selectOptions?: { label: string; value: string }[]
+  selectAsButtons?: boolean
+  selectDefaultValue?: string
   title?: string
   description?: string
   confirmText?: string
@@ -38,11 +39,13 @@ export const ConfirmationDialog = ({
   inputPlaceholder,
   inputDefaultValue = "",
   selectOptions,
+  selectAsButtons = false,
+  selectDefaultValue,
 }: ConfirmModalProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [inputValue, setInputValue] = useState(inputDefaultValue)
   const [selectedValue, setSelectedValue] = useState(
-    selectOptions?.[0]?.value ?? "",
+    selectDefaultValue ?? selectOptions?.[0]?.value ?? "",
   )
 
   if (!isOpen) return null
@@ -103,7 +106,19 @@ export const ConfirmationDialog = ({
           />
         )}
 
-        {selectOptions && (
+        {selectOptions && selectAsButtons && (
+          <div className="mt-4 flex justify-center">
+            <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+              <SingleSelect
+                options={selectOptions}
+                value={selectedValue}
+                setValue={setSelectedValue}
+              />
+            </EditModeContextProvider>
+          </div>
+        )}
+
+        {selectOptions && !selectAsButtons && (
           <Select
             className={`mt-4 w-full px-2 py-1 text-base ${tableBorderRounded}`}
             value={selectedValue}

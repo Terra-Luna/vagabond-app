@@ -3,14 +3,8 @@ import { sys_id } from "../../../util/foundry-util"
 import { appLang } from "../../../util/lang"
 import { buttonAnimation } from "../../../view/component/Button"
 import { SkillCardAction } from "../../../view/component/Header"
-import {
-  CardSubHeaderValues,
-  SkillCard,
-} from "../../../view/component/SkillCard"
-import {
-  HeroCreationLabel,
-  HeroCreationSubtext,
-} from "../../hero-creator/component/HeroCreationTypography"
+import { CardSubHeaderValues, SkillCard } from "../../../view/component/SkillCard"
+import { HeroCreationLabel, HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
 
 export const Recipes = ({
   alchemySlots,

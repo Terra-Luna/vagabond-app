@@ -3,23 +3,12 @@ import { useEffect, useMemo, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import {
-  calculateRecurringRuleEligibility,
-  getItemChoiceRules,
-  getItemRules,
-  getRuleSelectionValues,
-  randomId,
-  saveItemRuleSelections,
-} from "../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, getItemRules, getRuleSelectionValues, randomId, saveItemRuleSelections } from "../../rules/util/item-rules-util"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { groupBy } from "../../util/collection-util"
 import { appLang } from "../../util/lang"
 import { createDropdownEntriesFromObj } from "../../util/locale-util"
-import {
-  DestructiveButton,
-  PrimaryButton,
-  SecondaryButton,
-} from "../../view/component/Button"
+import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { Divider, Header } from "../../view/component/Header"
 import { SkillCard } from "../../view/component/SkillCard"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"

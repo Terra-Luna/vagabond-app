@@ -1,8 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import {
-  removeStackableItemFromHero,
-  subtractCoinsFromHero,
-} from "../../util/inventory-util"
+import { removeStackableItemFromHero, subtractCoinsFromHero } from "../../util/inventory-util"
 import { appLang } from "../../util/lang"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { LodgingTypes } from "./rest-util"

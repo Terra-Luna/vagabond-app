@@ -1,13 +1,4 @@
-import {
-  ArrowBigUpDash,
-  BookText,
-  Dices,
-  FlaskConical,
-  Handbag,
-  PawPrint,
-  Swords,
-  WandSparkles,
-} from "lucide-react"
+import { ArrowBigUpDash, BookText, Dices, FlaskConical, Handbag, PawPrint, Swords, WandSparkles } from "lucide-react"
 import { ReactNode, useEffect, useRef, useState } from "react"
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs"
 
@@ -15,15 +6,9 @@ import { ActiveEffectsView } from "../../../../apps/active-effects/ActiveEffects
 import { HeroCreationApp } from "../../../../apps/hero-creator/HeroCreationApp"
 import { LevelUpApp } from "../../../../apps/level-up/LevelUpApp"
 import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
-import {
-  HeroDataModel,
-  isAlchemist,
-} from "../../../../model/actor/HeroDataModel"
+import { HeroDataModel, isAlchemist } from "../../../../model/actor/HeroDataModel"
 import { openItemSheet } from "../../../../model/actor/schema/inventory"
-import {
-  getItemChoiceRules,
-  getItemRules,
-} from "../../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemRules } from "../../../../rules/util/item-rules-util"
 import { sys_id } from "../../../../util/foundry-util"
 import { appLang } from "../../../../util/lang"
 import { localizeString } from "../../../../util/locale-util"
@@ -44,17 +29,7 @@ import { MagicTab } from "./tab/MagicTab"
 import { PolymorphTab } from "./tab/PolymorphTab"
 import { RollsTab } from "./tab/RollsTab"
 import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextProvider"
-import {
-  CustomTrackers,
-  Focus,
-  HPArmorFatigueHUD,
-  Luck,
-  Saves,
-  Skills,
-  Speeds,
-  StatsDrawer,
-  Studied,
-} from "./tab/TopSection"
+import { CustomTrackers, HPArmorFatigueHUD, Luck, Saves, Skills, Speeds, StatsDrawer, Studied } from "./tab/TopSection"
 
 const locale = appLang.HeroSheet
 
@@ -217,7 +192,6 @@ const HeroSheetUpperSection = ({
             <div className="flex items-center justify-around mt-5">
               <Luck hero={hero} />
               <Studied hero={hero} />
-              <Focus hero={hero} />
             </div>
           </div>
           <Saves hero={hero} />

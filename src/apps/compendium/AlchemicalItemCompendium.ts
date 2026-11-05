@@ -1,12 +1,6 @@
 import { toCopper } from "../../model/common/coin-value-schema"
 import { appLang } from "../../util/lang"
-import {
-  createFilterableCompendium,
-  filterRow,
-  numberFilter,
-  registerFilterableCompendium,
-  selectFilter,
-} from "./FilterableCompendium"
+import { createFilterableCompendium, filterRow, numberFilter, registerFilterableCompendium, selectFilter } from "./FilterableCompendium"
 
 export const ALCHEMICAL_FILTER_FIELDS = [
   "system.alchemyCategory",

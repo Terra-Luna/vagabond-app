@@ -1,9 +1,6 @@
 import { ActiveEffectsView } from "../../../../apps/active-effects/ActiveEffectsView"
 import { getRelicForgeAccess } from "../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../../../model/item/equip/EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel"
 import { ItemRulesManager } from "../../../../rules/ItemRulesManager"
 import { appLang } from "../../../../util/lang"
 import { PrimaryButton } from "../../../component/Button"

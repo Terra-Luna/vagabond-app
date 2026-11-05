@@ -1,15 +1,7 @@
 import { appLang } from "../../../util/lang"
 import { getId } from "../../../util/model-util"
-import {
-  fields,
-  requiredInteger,
-  requiredString,
-} from "../../common/shared-schemas"
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-  getTotalSlots,
-} from "./EquipmentDataModel"
+import { fields, requiredInteger, requiredString } from "../../common/shared-schemas"
+import { EquipmentDataModel, EquipmentSchema, getTotalSlots } from "./EquipmentDataModel"
 
 export const containerSchema = () => {
   return {

@@ -11,10 +11,7 @@ import { WidgetLabel } from "../overlay/component/WidgetLabel"
 import { useDragOverlayComponent } from "../overlay/usecase/DragOverlayUseCase"
 import { useOverlayItemSync } from "../overlay/usecase/OverlayItemSyncUseCase"
 import { useOverlayObjectPermissionsMenu } from "../overlay/usecase/OverlayObjectPermissionsMenuUseCase"
-import {
-  CountdownManager,
-  CountdownSchema,
-} from "../vagabond-tools/usecase/CountdownManager"
+import { CountdownManager, CountdownSchema } from "../vagabond-tools/usecase/CountdownManager"
 import { canInteractWithOverlayObject } from "../vagabond-tools/usecase/VagabondSettingsHelper"
 
 export const CountdownAppView = () => {

@@ -9,14 +9,7 @@ import { WidgetLabel } from "../overlay/component/WidgetLabel"
 import { useDragOverlayComponent } from "../overlay/usecase/DragOverlayUseCase"
 import { useOverlayItemSync } from "../overlay/usecase/OverlayItemSyncUseCase"
 import { useOverlayObjectPermissionsMenu } from "../overlay/usecase/OverlayObjectPermissionsMenuUseCase"
-import {
-  canInteractWithOverlayObject,
-  checkClockPermission,
-  getClockPlayerDefaultPermission,
-  getProgressClocks,
-  ProgressClockSchema,
-  setProgressClocks,
-} from "../vagabond-tools/usecase/VagabondSettingsHelper"
+import { canInteractWithOverlayObject, checkClockPermission, getClockPlayerDefaultPermission, getProgressClocks, ProgressClockSchema, setProgressClocks } from "../vagabond-tools/usecase/VagabondSettingsHelper"
 
 export const ProgressClockAppView = () => {
   const [clocks, setClocks] = useState<ProgressClockSchema[]>([])

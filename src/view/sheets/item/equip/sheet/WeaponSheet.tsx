@@ -6,10 +6,7 @@ import { WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel
 import { appLang } from "../../../../../util/lang"
 import { createDropdownEntries } from "../../../../../util/locale-util"
 import { CustomDropDown } from "../../../../component/Dropdown"
-import {
-  OptionsSelectionMenu,
-  StringOptionsDisplay,
-} from "../../../../component/OptionsSelectionMenu"
+import { OptionsSelectionMenu, StringOptionsDisplay } from "../../../../component/OptionsSelectionMenu"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"

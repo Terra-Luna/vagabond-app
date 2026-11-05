@@ -1,21 +1,9 @@
 import { useCallback, useMemo, useRef, useState } from "react"
 
 import { openItemSheet } from "../../model/actor/schema/inventory"
-import {
-  addCoins,
-  Coins,
-  coinsAsString,
-  isAffordable,
-  multiplyCoins,
-  subtractCoins,
-  zeroCoins,
-} from "../../model/common/coin-value-schema"
+import { addCoins, Coins, coinsAsString, isAffordable, multiplyCoins, subtractCoins, zeroCoins } from "../../model/common/coin-value-schema"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-  getTotalSlots,
-} from "../../model/item/equip/EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema, getTotalSlots } from "../../model/item/equip/EquipmentDataModel"
 import { StartingPackDataModel } from "../../model/item/equip/StartingPackDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { groupBy } from "../../util/collection-util"

@@ -1,27 +1,11 @@
 import { LockKeyhole } from "lucide-react"
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { statsSchema } from "../../../model/actor/schema/stats"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import {
-  addExtraPerk,
-  getExtraPerkRules,
-  removeExtraPerkRule,
-} from "../../../rules/util/extra-grants-util"
-import {
-  getItemChoiceRules,
-  getItemGrants,
-  getItemRules,
-  ItemRule,
-} from "../../../rules/util/item-rules-util"
+import { addExtraPerk, getExtraPerkRules, removeExtraPerkRule } from "../../../rules/util/extra-grants-util"
+import { getItemChoiceRules, getItemGrants, getItemRules, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../util/lang"
 import { localizeString } from "../../../util/locale-util"

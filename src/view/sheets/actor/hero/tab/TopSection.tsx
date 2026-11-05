@@ -1,20 +1,4 @@
-import {
-  ChevronRight,
-  Eye,
-  EyeOff,
-  Heart,
-  LucideBookMarked,
-  LucideClover,
-  LucideHeartOff,
-  Plus,
-  Shield,
-  SquarePen,
-  Star,
-  ToggleLeft,
-  ToggleRight,
-  Trash,
-  Wand2,
-} from "lucide-react"
+import { ChevronRight, EyeOff, Heart, LucideBookMarked, LucideClover, LucideHeartOff, Plus, Shield, SquarePen, Star, ToggleLeft, ToggleRight, Trash, Wand2 } from "lucide-react"
 import { ReactNode, useCallback } from "react"
 
 import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
@@ -31,18 +15,12 @@ import { appLang } from "../../../../../util/lang"
 import { localizeString } from "../../../../../util/locale-util"
 import { getId } from "../../../../../util/model-util"
 import { sendVagabondChatCard } from "../../../../chat/ChatCardSerializer"
-import {
-  tableBorder,
-  tableBorderRounded,
-} from "../../../../common/border-styles"
+import { tableBorder, tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../component/DynamicGrid"
-import {
-  EditableTextField,
-  NumericCounterInput,
-} from "../../../../component/EditableTextField"
+import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { IconOnlyButton } from "../../../../component/IconOnlyButton"
 import { Tooltip } from "../../../../component/Tooltip"
@@ -304,30 +282,6 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
       <div className={`${trackerLayout} text-text-studied-current`}>
         <LucideBookMarked size={20} strokeWidth={1} />
         {studied}
-      </div>
-    </Tracker>
-  )
-}
-
-export const Focus = ({ hero }: { hero: HeroDataModel }) => {
-  const focus = hero.statuses.counters.focus
-  const updateFocus = useCallback(
-    async (auxClick: boolean) => {
-      await hero.parent.update({
-        "system.statuses.counters.focus": focus + (auxClick ? 1 : -1),
-      } as Record<string, number>)
-    },
-    [focus],
-  )
-  return (
-    <Tracker
-      name={appLang.HeroSheet.focus}
-      title={`${appLang.HeroSheet.focus_tooltip}<br>${appLang.HeroSheet.counter_tooltip}`}
-      onClick={updateFocus}
-    >
-      <div className={`${trackerLayout} text-text-secondary`}>
-        <Eye size={20} strokeWidth={1} />
-        {focus}
       </div>
     </Tracker>
   )

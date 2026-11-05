@@ -1,7 +1,4 @@
-import {
-  getDeliveryDropdownOptions,
-  SpellDelivery,
-} from "../../../../../../../../combat/spellcasting/SpellDelivery"
+import { getDeliveryDropdownOptions, SpellDelivery } from "../../../../../../../../combat/spellcasting/SpellDelivery"
 import { appLang } from "../../../../../../../../util/lang"
 import { DropDown } from "../../../../../../../component/Dropdown"
 import { SpellcastingLabel } from "./SpellcastingTypography"

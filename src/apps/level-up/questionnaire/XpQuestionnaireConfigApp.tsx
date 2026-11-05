@@ -1,9 +1,6 @@
 import { sys_id } from "../../../util/foundry-util"
 import { appLang } from "../../../util/lang"
-import {
-  getXpQuestionnaiare,
-  XpQuestion,
-} from "../../vagabond-tools/usecase/VagabondSettingsHelper"
+import { getXpQuestionnaiare, XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { XpQuestionnaireConfigView } from "./XpQuestionnaireConfigView"
 

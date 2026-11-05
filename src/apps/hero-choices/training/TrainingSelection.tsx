@@ -2,31 +2,13 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import {
-  ChoiceRule,
-  createElectiveTrainingsRule,
-  findElectiveTrainingsRule,
-  getItemRules,
-  getPerkSkillSubselections,
-  getRequiredSkillTrainingRules,
-  getSkillNameFromPath,
-  getSkillTrainingChoiceRules,
-  ItemRule,
-  normalizeRuleSelections,
-  randomId,
-} from "../../../rules/util/item-rules-util"
+import { ChoiceRule, createElectiveTrainingsRule, findElectiveTrainingsRule, getItemRules, getPerkSkillSubselections, getRequiredSkillTrainingRules, getSkillNameFromPath, getSkillTrainingChoiceRules, ItemRule, normalizeRuleSelections, randomId } from "../../../rules/util/item-rules-util"
 import { appLang } from "../../../util/lang"
 import { Divider, Header } from "../../../view/component/Header"
 import { Tooltip } from "../../../view/component/Tooltip"
-import {
-  BonusChoiceContainer,
-  BonusChoiceTitle,
-} from "../../hero-creator/component/BonusChoiceContaner"
+import { BonusChoiceContainer, BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
 import { BorderedContent } from "../../hero-creator/component/BorderedContent"
-import {
-  HeroCreationLabel,
-  HeroCreationSubtext,
-} from "../../hero-creator/component/HeroCreationTypography"
+import { HeroCreationLabel, HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
 import { ItemGrantCard } from "../../hero-creator/component/ItemGrantCard"
 import { TopNavButtons } from "../../hero-creator/component/TopNavButtons"
 import { TrainingSelector } from "../../hero-creator/component/TrainingSelector"

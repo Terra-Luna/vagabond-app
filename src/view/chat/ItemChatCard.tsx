@@ -2,17 +2,10 @@ import { useEffect, useState } from "react"
 
 import { Coins, coinsAsString } from "../../model/common/coin-value-schema"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../model/item/equip/EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { appLang } from "../../util/lang"
-import {
-  CombinedItemsAll,
-  getFullItem,
-  getTokenImg,
-} from "../../util/model-util"
+import { CombinedItemsAll, getFullItem, getTokenImg } from "../../util/model-util"
 import { SkillCard } from "../component/SkillCard"
 import { EditModeOptions } from "../context/EditModeContext/EditModeOptions"
 import { EquipmentSheetComponent } from "../sheets/item/equip/EquipmentSheetComponent"

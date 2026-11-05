@@ -2,14 +2,8 @@ import { Diamond, Plus } from "lucide-react"
 import { useMemo, useState } from "react"
 
 import { RelicPowerProcessor } from "../../../../../apps/vagabond-tools/relic/RelicPowerProcessor"
-import {
-  RelicPower,
-  RelicPowers,
-} from "../../../../../apps/vagabond-tools/relic/RelicPowers"
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../../../../model/item/equip/EquipmentDataModel"
+import { RelicPower, RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPowers"
+import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { appLang } from "../../../../../util/lang"
 import { tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation } from "../../../../component/Button"

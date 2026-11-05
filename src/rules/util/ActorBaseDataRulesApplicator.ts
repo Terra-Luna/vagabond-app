@@ -2,11 +2,7 @@ import { sys_id } from "../../util/foundry-util"
 import { addItems } from "../../util/inventory-util"
 import { inventoryItemTypes, isPathOfType } from "../../util/model-util"
 import { removeWhitespace } from "../../util/string-util"
-import {
-  calculateRecurringRuleScale,
-  getRuleSelectionValues,
-  normalizeRuleSelections,
-} from "./item-rules-util"
+import { calculateRecurringRuleScale, getRuleSelectionValues, normalizeRuleSelections } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 import { getRuleSelectors, normalizeSelector } from "./selector-util"
 

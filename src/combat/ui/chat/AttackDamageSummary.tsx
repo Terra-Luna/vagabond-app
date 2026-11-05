@@ -6,12 +6,7 @@ import { DamageTypeIcon } from "../../../view/component/DamageTypeIcon"
 import { ClearHeader, ItemDivider } from "../../../view/component/Header"
 import { IconOnlyButton } from "../../../view/component/IconOnlyButton"
 import { FoundryHotkeyBlocker } from "../../../view/wrappers/FoundryHotkeyBlocker"
-import {
-  Attack,
-  AttackResolutionArgs,
-  damageOverrideKey,
-  TargetDamageSummary,
-} from "../../engine/Attack"
+import { Attack, AttackResolutionArgs, damageOverrideKey, TargetDamageSummary } from "../../engine/Attack"
 
 /**
  * Displays a per-target "preview" of the damage each target will take if Applied.

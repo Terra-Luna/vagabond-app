@@ -8,6 +8,7 @@ import { AppliedActiveEffectsInput } from "../../../actor/npc/component/AppliedA
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
+import { SpellLightConfig } from "./SpellLightConfig"
 
 export const SpellSheetComponent = ({
   item,
@@ -50,6 +51,8 @@ export const SpellSheetComponent = ({
                 }
               />
 
+              <SpellLightConfig item={item} />
+
               <Checkbox
                 label={appLang.ItemSheet.ignoreEffCost}
                 checked={item.system.ignoreEffectCost}
@@ -75,6 +78,35 @@ export const SpellSheetComponent = ({
                   onCheckedChanged={(isChecked) =>
                     item.update({
                       "system.upcastableEffectDieRoll": isChecked,
+                    } as Record<string, boolean>)
+                  }
+                />
+              )}
+              <Checkbox
+                label={appLang.ItemSheet.focusExempt}
+                checked={item.system.focusExempt}
+                onCheckedChanged={(isChecked) =>
+                  item.update({
+                    "system.focusExempt": isChecked,
+                  } as Record<string, boolean>)
+                }
+              />
+              <Checkbox
+                label={appLang.ItemSheet.upkeepForce}
+                checked={item.system.upkeep?.force}
+                onCheckedChanged={(isChecked) =>
+                  item.update({
+                    "system.upkeep.force": isChecked,
+                  } as Record<string, boolean>)
+                }
+              />
+              {item.system.upkeep?.force && (
+                <Checkbox
+                  label={appLang.ItemSheet.upkeepPerTarget}
+                  checked={item.system.upkeep?.perTarget}
+                  onCheckedChanged={(isChecked) =>
+                    item.update({
+                      "system.upkeep.perTarget": isChecked,
                     } as Record<string, boolean>)
                   }
                 />

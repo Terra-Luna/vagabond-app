@@ -1,8 +1,5 @@
 import { tableBorderRounded } from "../../../view/common/border-styles"
-import {
-  HeroCreationSubLabel,
-  HeroCreationSubtext,
-} from "./HeroCreationTypography"
+import { HeroCreationSubLabel, HeroCreationSubtext } from "./HeroCreationTypography"
 
 export const ItemGrantCard = ({
   img,

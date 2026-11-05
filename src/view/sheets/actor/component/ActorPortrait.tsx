@@ -1,37 +1,20 @@
 import { ArrowLeftRight, X } from "lucide-react"
 
 import { StatusCountdowns } from "../../../../combat/ui/CombatTracker"
-import {
-  ActorDataModel,
-  BaseActorSchema,
-} from "../../../../model/actor/ActorDataModel"
+import { ActorDataModel, BaseActorSchema } from "../../../../model/actor/ActorDataModel"
 import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
-import {
-  ActorTypeConverter,
-  CONVERTIBLE_ACTOR_TYPES,
-} from "../../../../model/actor/util/ActorTypeConverter"
+import { ActorTypeConverter, CONVERTIBLE_ACTOR_TYPES } from "../../../../model/actor/util/ActorTypeConverter"
 import type { PolymorphFlag } from "../../../../model/actor/util/PolymorphUtil"
 import { sys_id } from "../../../../util/foundry-util"
 import { appLang, appTypes } from "../../../../util/lang"
 import { tableBorder } from "../../../common/border-styles"
-import {
-  type CtxMenuItem,
-  useContextMenu,
-} from "../../../component/ContextMenu"
+import { type CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { Tooltip } from "../../../component/Tooltip"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
 import { NpcSheetComponent } from "../npc/component/NpcSheetComponent"
 import { usePolymorphActor } from "./PolymorphActorUseCase"
-import {
-  ACTOR_PORTRAIT_HEIGHT,
-  ACTOR_PORTRAIT_WIDTH,
-  defaultPortraitFrame,
-  PortraitFrameData,
-  portraitFrameFlag,
-  portraitFrameImageStyle,
-  useImageAspect,
-} from "./PortraitFrame"
+import { ACTOR_PORTRAIT_HEIGHT, ACTOR_PORTRAIT_WIDTH, defaultPortraitFrame, PortraitFrameData, portraitFrameFlag, portraitFrameImageStyle, useImageAspect } from "./PortraitFrame"
 
 /**
  * The size of this portrait is goverened by the PortraitAdjustApp and some flags saved on the Actor.

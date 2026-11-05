@@ -1,9 +1,5 @@
 import { appLang } from "../../../util/lang"
-import {
-  fields,
-  requiredInteger,
-  requiredString,
-} from "../../common/shared-schemas"
+import { fields, requiredInteger, requiredString } from "../../common/shared-schemas"
 import { EquipmentDataModel } from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 

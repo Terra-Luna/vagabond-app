@@ -6,17 +6,10 @@ import type { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { isEligibleForPerk } from "../../model/item/character/PerkDataModel"
 import type { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import type { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
-import type {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../model/item/equip/EquipmentDataModel"
+import type { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import type { SundryDataModel } from "../../model/item/equip/SundryDataModel"
 import type { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
-import {
-  CombinedItemsMultiType,
-  getFullItem,
-  inventoryItemTypes,
-} from "../../util/model-util"
+import { CombinedItemsMultiType, getFullItem, inventoryItemTypes } from "../../util/model-util"
 
 export class ItemsCache {
 

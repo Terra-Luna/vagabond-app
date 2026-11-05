@@ -1,11 +1,6 @@
 import { appLang } from "../../../util/lang"
 import type { CardSubHeaderValues } from "../../../view/component/SkillCard"
-import {
-  beingSizeOptions,
-  beingTypeOptions,
-  fields,
-  requiredString,
-} from "../../common/shared-schemas"
+import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/shared-schemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
 
 const ancestrySchema = () => {

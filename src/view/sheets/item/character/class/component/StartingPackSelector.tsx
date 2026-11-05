@@ -1,10 +1,7 @@
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
 import { ItemsCache } from "../../../../../../rules/util/ItemsCache"
 import { appLang } from "../../../../../../util/lang"
-import {
-  OptionsSelectionMenu,
-  OptionsSelectionMenuOption,
-} from "../../../../../component/OptionsSelectionMenu"
+import { OptionsSelectionMenu, OptionsSelectionMenuOption } from "../../../../../component/OptionsSelectionMenu"
 import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
 import { ClassSheetLabel, ClassSheetText } from "./ClassSheetText"
 

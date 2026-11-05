@@ -2,17 +2,9 @@ import { MessageSquareText } from "lucide-react"
 
 import { PerkSelectionApp } from "../../../../../apps/hero-choices/perks/PerkSelectionApp"
 import { TrainingSelectionApp } from "../../../../../apps/hero-choices/training/TrainingSelectionApp"
-import {
-  getMiniCardsPref,
-  getShowTrainingSelectionToggle,
-} from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { getMiniCardsPref, getShowTrainingSelectionToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import {
-  PerkDataModel,
-  perkSpellRerequisitesAsString,
-  perkStatPrerequisitesAsString,
-  perkTrainingPrerequisitesAsString,
-} from "../../../../../model/item/character/PerkDataModel"
+import { PerkDataModel, perkSpellRerequisitesAsString, perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
 import { ItemsCache } from "../../../../../rules/util/ItemsCache"
 import { groupBy } from "../../../../../util/collection-util"
 import { appLang } from "../../../../../util/lang"
@@ -22,12 +14,7 @@ import { UtilityButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../component/DynamicGrid"
 import { ClearHeader } from "../../../../component/Header"
-import {
-  CardSubHeaderValues,
-  ItemRuleToggleSwitch,
-  SkillCard,
-  SkillCardTitle,
-} from "../../../../component/SkillCard"
+import { CardSubHeaderValues, ItemRuleToggleSwitch, SkillCard, SkillCardTitle } from "../../../../component/SkillCard"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
   const { onCtxMenu, ContextMenu } = useContextMenu()

@@ -1,10 +1,6 @@
 import { sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
-import {
-  defaultPortraitFrame,
-  PortraitFrameData,
-  portraitFrameFlag,
-} from "../../view/sheets/actor/component/PortraitFrame"
+import { defaultPortraitFrame, PortraitFrameData, portraitFrameFlag } from "../../view/sheets/actor/component/PortraitFrame"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { PortraitAdjustView } from "./PortraitAdjustView"
 

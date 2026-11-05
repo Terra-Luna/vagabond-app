@@ -3,10 +3,7 @@ import { useCallback, useMemo, useState } from "react"
 
 import { appLang } from "../../../util/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
-import {
-  DestructiveButton,
-  PrimaryButton,
-} from "../../../view/component/Button"
+import { DestructiveButton, PrimaryButton } from "../../../view/component/Button"
 import { XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 
 export const XpQuestionnairePlayerView = ({

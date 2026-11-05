@@ -2,10 +2,7 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
 import { inventoryItemTypes } from "../../util/model-util"
-import {
-  type RelicPower,
-  RelicPowers,
-} from "../vagabond-tools/relic/RelicPowers"
+import { type RelicPower, RelicPowers } from "../vagabond-tools/relic/RelicPowers"
 import { TagalongItem } from "./TagalongApi"
 
 export class TagalongItemCreator {

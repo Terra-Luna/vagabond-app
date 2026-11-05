@@ -1,15 +1,9 @@
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { ActorBaseDataRulesApplicator } from "../../rules/util/ActorBaseDataRulesApplicator"
-import {
-  getItemChoiceRules,
-  getItemRules,
-} from "../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemRules } from "../../rules/util/item-rules-util"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/PerkRulesSelectionsApplicator"
-import {
-  getRuleToggleState,
-  toggleItemRule,
-} from "../../rules/util/rule-toggle-util"
+import { getRuleToggleState, toggleItemRule } from "../../rules/util/rule-toggle-util"
 import { sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
 import { localizeString } from "../../util/locale-util"
@@ -17,30 +11,18 @@ import { getId, inventoryItemTypes } from "../../util/model-util"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { CapacityInfo } from "../../view/sheets/shared/CapacityGauge"
 import { consolidateCoins } from "../common/coin-value-schema"
-import {
-  fields,
-  optionalString,
-  requiredInteger,
-  requiredString,
-} from "../common/shared-schemas"
+import { fields, optionalString, requiredInteger, requiredString } from "../common/shared-schemas"
 import { AncestryDataModel } from "../item/character/AncestryDataModel"
 import { ClassDataModel } from "../item/character/ClassDataModel"
 import { PerkDataModel } from "../item/character/PerkDataModel"
 import { SpellDataModel } from "../item/character/SpellDataModel"
 import { ArmorDataModel } from "../item/equip/ArmorDataModel"
 import { ContainerDataModel } from "../item/equip/ContainerDataModel"
-import type {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../item/equip/EquipmentDataModel"
+import type { EquipmentDataModel, EquipmentSchema } from "../item/equip/EquipmentDataModel"
 import { SundryDataModel } from "../item/equip/SundryDataModel"
 import { WeaponDataModel } from "../item/equip/WeaponDataModel"
 import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
-import {
-  inventorySchema,
-  isInContainer,
-  isInventoryItem,
-} from "./schema/inventory"
+import { inventorySchema, isInContainer, isInventoryItem } from "./schema/inventory"
 import { levelSchema } from "./schema/level"
 import { manaSchema } from "./schema/mana"
 import { savesSchema } from "./schema/saves"

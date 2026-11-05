@@ -3,22 +3,8 @@ import { appLang } from "../../../util/lang"
 import { LightSourceUtil } from "../../../util/LightSourceUtil"
 import { localizeString } from "../../../util/locale-util"
 import { sendVagabondChatCard } from "../../../view/chat/ChatCardSerializer"
-import {
-  addCoins,
-  Coins,
-  coinSchema,
-  consolidateCoins,
-  multiplyCoins,
-  toCopper,
-  zeroCoins,
-} from "../../common/coin-value-schema"
-import {
-  fields,
-  optionalString,
-  requiredInteger,
-  requiredString,
-  uncappedInteger,
-} from "../../common/shared-schemas"
+import { addCoins, Coins, coinSchema, consolidateCoins, multiplyCoins, toCopper, zeroCoins } from "../../common/coin-value-schema"
+import { fields, optionalString, requiredInteger, requiredString, uncappedInteger } from "../../common/shared-schemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
 
 export const BIND_REQUEST_FLAG = "bindRequestPending"

@@ -2,7 +2,9 @@ import { TagalongExporter } from "../../apps/io/TagalongExporter"
 import { VagabondActiveEffect } from "../../combat/documents/VagabondActiveEffect"
 import { showFloatingText, sys_id } from "../../util/foundry-util"
 import { portraitFrameFlag } from "../../view/sheets/actor/component/PortraitFrame"
+import { FOCUS_DROP_OPTION, FOCUS_FX_FLAG, FocusSpellUtil } from "./util/FocusSpellUtil"
 import { PolymorphUtil } from "./util/PolymorphUtil"
+import { StatusEffectUtil } from "./util/StatusEffectUtil"
 
 const defaultArtworkByType = {
   adversary: `systems/${sys_id}/assets/icons/ic_adversary.webp`,
@@ -171,6 +173,7 @@ export class VagabondActor<
   ): void {
     super._onUpdate(changed, options, userId)
     this.showFloatingChanges(changed, options)
+    FocusSpellUtil.release(options?.[FOCUS_DROP_OPTION])
 
     /**
      * Listen for name changes on tokens and update the combat tracker.
@@ -215,6 +218,14 @@ export class VagabondActor<
       ids.includes(focusingEffectId)
     ) {
       PolymorphUtil.releaseAllPolymorphsOnce(this)
+      if (
+        this.getFlag(sys_id, "focusedSpells") &&
+        StatusEffectUtil.isDesignatedUser()
+      ) {
+        FocusSpellUtil.endOrDefer(this, FocusSpellUtil.records(this))
+        this.unsetFlag(sys_id, "focusedSpells")
+        this.unsetFlag(sys_id, FOCUS_FX_FLAG)
+      }
     }
   }
 

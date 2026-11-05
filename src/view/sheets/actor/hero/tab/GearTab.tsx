@@ -6,24 +6,13 @@ import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderV
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { recordSheetSaveOnActiveAttacks } from "../../../../../combat/engine/util/attack-save-sync"
 import { HuntersMark } from "../../../../../combat/engine/util/HuntersMark"
-import {
-  getArmor,
-  HeroDataModel,
-} from "../../../../../model/actor/HeroDataModel"
+import { getArmor, HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/schema/inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { SundryDataModel } from "../../../../../model/item/equip/SundryDataModel"
-import {
-  isEquippedSundry,
-  isEquippedWeapon,
-  WeaponDataModel,
-} from "../../../../../model/item/equip/WeaponDataModel"
+import { isEquippedSundry, isEquippedWeapon, WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
 import { sys_id } from "../../../../../util/foundry-util"
-import {
-  equipmentContextMenuItems,
-  equippedItemContextMenu,
-  inventoryItemDragDropHandler,
-} from "../../../../../util/inventory-util"
+import { equipmentContextMenuItems, equippedItemContextMenu, inventoryItemDragDropHandler } from "../../../../../util/inventory-util"
 import { appLang } from "../../../../../util/lang"
 import { LightSourceUtil } from "../../../../../util/LightSourceUtil"
 import { damageTypesWithPhysicalThresholds } from "../../../../../util/locale-util"

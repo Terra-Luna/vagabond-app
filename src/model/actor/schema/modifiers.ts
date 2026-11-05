@@ -1,11 +1,5 @@
 import { appLang } from "../../../util/lang"
-import {
-  damageImmunityTypeOptions,
-  fields,
-  requiredInteger,
-  requiredString,
-  uncappedInteger,
-} from "../../common/shared-schemas"
+import { damageImmunityTypeOptions, fields, requiredInteger, requiredString, uncappedInteger } from "../../common/shared-schemas"
 
 export const modifierSchema = () => {
   return {

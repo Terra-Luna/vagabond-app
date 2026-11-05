@@ -1,9 +1,6 @@
 import { describe, expect, jest, test } from "@jest/globals"
 
-import {
-  getBonusSelections,
-  saveElectiveTraining,
-} from "../../../src/apps/level-up/LevelUpApp"
+import { getBonusSelections, saveElectiveTraining } from "../../../src/apps/level-up/LevelUpApp"
 
 describe("level up selections", () => {
   test("keeps nested bonus selections by id", () => {

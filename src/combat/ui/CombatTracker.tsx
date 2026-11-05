@@ -1,28 +1,8 @@
-import {
-  Clover,
-  Eye,
-  PlayIcon,
-  RefreshCw,
-  Sparkles,
-  StopCircle,
-  Trash,
-} from "lucide-react"
-import {
-  forwardRef,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react"
+import { Clover, Eye, PlayIcon, RefreshCw, Sparkles, StopCircle, Trash } from "lucide-react"
+import { forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react"
 
 import { useOverlayItemSync } from "../../apps/overlay/usecase/OverlayItemSyncUseCase"
-import {
-  CountdownManager,
-  CountdownSchema,
-} from "../../apps/vagabond-tools/usecase/CountdownManager"
+import { CountdownManager, CountdownSchema } from "../../apps/vagabond-tools/usecase/CountdownManager"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
@@ -39,19 +19,11 @@ import { Tooltip } from "../../view/component/Tooltip"
 import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
 import { FoundryHotkeyBlocker } from "../../view/wrappers/FoundryHotkeyBlocker"
 import { useFoundryHook } from "../../view/wrappers/hooks"
-import {
-  combineCombatantWithControlledCombatants,
-  getControlledCombatants,
-  getControlledTokens,
-  performAsyncActionOnControlledCombatants,
-} from "../combat-util"
+import { combineCombatantWithControlledCombatants, getControlledCombatants, getControlledTokens, performAsyncActionOnControlledCombatants } from "../combat-util"
 import { VagabondActiveEffect } from "../documents/VagabondActiveEffect"
 import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
 import { isActiveEffectFx } from "../engine/util/active-effect-fx"
-import {
-  controlledCombatantsHaveStatus,
-  getCombatantStatuses,
-} from "../engine/util/status"
+import { controlledCombatantsHaveStatus, getCombatantStatuses } from "../engine/util/status"
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
 import { useCombatContext, useIsCurrentCombatant } from "./hooks"
 

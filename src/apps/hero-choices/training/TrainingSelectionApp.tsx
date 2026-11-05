@@ -3,12 +3,7 @@ import { useEffect, useMemo, useRef } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import type { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import {
-  findOrCreateElectiveTrainingsRule,
-  getItemRules,
-  normalizeRuleSelections,
-  saveItemRuleSelections,
-} from "../../../rules/util/item-rules-util"
+import { findOrCreateElectiveTrainingsRule, getItemRules, normalizeRuleSelections, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
 import { appLang } from "../../../util/lang"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { EditModeContextProvider } from "../../../view/wrappers/EditModeContextProvider"

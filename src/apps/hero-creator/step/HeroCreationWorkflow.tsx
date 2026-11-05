@@ -3,13 +3,7 @@ import { useCallback, useEffect, useMemo } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { addCoins, Coins } from "../../../model/common/coin-value-schema"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import {
-  getItemRuleSources,
-  normalizeRuleSelections,
-  randomId,
-  saveItemRuleSelections,
-  savePerkSelections,
-} from "../../../rules/util/item-rules-util"
+import { getItemRuleSources, normalizeRuleSelections, randomId, saveItemRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { addItems } from "../../../util/inventory-util"
 import { appLang } from "../../../util/lang"

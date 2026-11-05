@@ -5,10 +5,7 @@ import { TargetDisplayItem } from "../../../combat/ui/hooks"
 import { AdversaryDataModel } from "../../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../model/actor/NpcDataModel"
-import {
-  PolymorphFlag,
-  PolymorphUtil,
-} from "../../../model/actor/util/PolymorphUtil"
+import { PolymorphFlag, PolymorphUtil } from "../../../model/actor/util/PolymorphUtil"
 import { VagabondAppError } from "../../../model/common/VagabondAppError"
 import { sys_id } from "../../../util/foundry-util"
 import { appLang } from "../../../util/lang"
@@ -18,10 +15,7 @@ import { formatSpeeds } from "../../../util/speed-util"
 import { sendVagabondChatCard } from "../../../view/chat/ChatCardSerializer"
 import { TargetsDisplay } from "../../../view/chat/component/TargetsDisplay"
 import { useTargetSync } from "../../../view/chat/component/TargetSyncUseCase"
-import {
-  tableBorderRounded,
-  wealthBorderRounded,
-} from "../../../view/common/border-styles"
+import { tableBorderRounded, wealthBorderRounded } from "../../../view/common/border-styles"
 import { buttonAnimation, UtilityButton } from "../../../view/component/Button"
 import { CollapsibleSection } from "../../../view/component/Collapsible"
 import { DropZone } from "../../../view/component/DropZone"

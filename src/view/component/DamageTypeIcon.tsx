@@ -1,23 +1,4 @@
-import {
-  Anvil,
-  Brain,
-  Cross,
-  Crosshair,
-  Droplets,
-  Flame,
-  FlaskRound,
-  Hammer,
-  HeartOff,
-  Section,
-  Shield,
-  Skull,
-  Snowflake,
-  Sparkle,
-  Sword,
-  Swords,
-  Wand2,
-  Zap,
-} from "lucide-react"
+import { Anvil, Brain, Cross, Crosshair, Droplets, Flame, FlaskRound, Hammer, HeartOff, Section, Shield, Skull, Snowflake, Sparkle, Sword, Swords, Wand2, Zap } from "lucide-react"
 import { ReactElement } from "react"
 
 import { appLang } from "../../util/lang"

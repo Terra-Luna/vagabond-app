@@ -3,14 +3,46 @@ import ts from "typescript"
 
 const parserNames = ["babel", "babel-ts", "typescript"]
 
-function addClassPadding(formattedText) {
-  const sourceFile = ts.createSourceFile(
+function parse(text, scriptKind = ts.ScriptKind.TSX) {
+  return ts.createSourceFile(
     "formatted.tsx",
-    formattedText,
+    text,
     ts.ScriptTarget.Latest,
     true,
-    ts.ScriptKind.TSX,
+    scriptKind,
   )
+}
+
+/** Prettier wraps long imports; keep each import declaration on a single line. */
+function joinImports(formattedText) {
+  const sourceFile = parse(formattedText)
+  const edits = []
+
+  for (const statement of sourceFile.statements) {
+    if (!ts.isImportDeclaration(statement)) continue
+    const original = statement.getText(sourceFile)
+    if (!/\r?\n/.test(original) || /\/\/|\/\*/.test(original)) continue
+    const joined = original
+      .replace(/\s*\r?\n\s*/g, " ")
+      .replace(/,\s*}/, " }")
+      .replace(/{\s+/, "{ ")
+      .replace(/\s+}/, " }")
+    edits.push({
+      start: statement.getStart(sourceFile),
+      end: statement.end,
+      text: joined,
+    })
+  }
+
+  for (const { start, end, text } of edits.sort((a, b) => b.start - a.start)) {
+    formattedText =
+      formattedText.slice(0, start) + text + formattedText.slice(end)
+  }
+  return formattedText
+}
+
+function addClassPadding(formattedText) {
+  const sourceFile = parse(formattedText)
   const insertionPoints = []
 
   function visit(node) {
@@ -66,7 +98,7 @@ export const parsers = Object.fromEntries(
             options.filepath ?? "",
           )
           if (ast.type === "FormattedText" && !isJsonFile) {
-            ast.body = addClassPadding(ast.body)
+            ast.body = addClassPadding(joinImports(ast.body))
           }
           return ast
         },

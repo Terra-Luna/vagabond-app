@@ -1,9 +1,6 @@
 import { useState } from "react"
 
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../model/item/equip/EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { getId, getUuid } from "../../util/model-util"
 
 /**

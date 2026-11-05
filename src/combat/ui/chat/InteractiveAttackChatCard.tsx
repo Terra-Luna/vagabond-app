@@ -16,10 +16,7 @@ import { AdversaryComboAttack } from "../../engine/AdversaryComboAttack"
 import { HeroAttack } from "../../engine/HeroAttack"
 import { deserializeAttack } from "../../engine/util/attack-deserializer"
 import { serializeAttack } from "../../engine/util/attack-serializer"
-import {
-  AdversaryAttackComponent,
-  AdversaryComboAttackComponent,
-} from "./AdversaryAttackComponent"
+import { AdversaryAttackComponent, AdversaryComboAttackComponent } from "./AdversaryAttackComponent"
 import { AttackDamageSummary } from "./AttackDamageSummary"
 import { subscribeToAttack } from "./AttackRegistryStore"
 import { HeroAttackComponent } from "./HeroAttackComponent"

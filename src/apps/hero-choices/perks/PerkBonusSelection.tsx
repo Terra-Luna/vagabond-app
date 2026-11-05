@@ -1,28 +1,15 @@
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react"
 
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import {
-  getItemChoiceRules,
-  getRuleSelectionValues,
-  getSkillTrainingChoiceRules,
-  getSpellChoices,
-  getStatChoiceRules,
-  ItemRule,
-} from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getRuleSelectionValues, getSkillTrainingChoiceRules, getSpellChoices, getStatChoiceRules, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../util/lang"
 import { createDropdownEntriesFromObj } from "../../../util/locale-util"
 import { Header } from "../../../view/component/Header"
 import { SkillCard } from "../../../view/component/SkillCard"
-import {
-  BonusChoiceContainer,
-  BonusChoiceTitle,
-} from "../../hero-creator/component/BonusChoiceContaner"
+import { BonusChoiceContainer, BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
 import { HeroCreationDropdown } from "../../hero-creator/component/HeroCreationDropdown"
-import {
-  HeroCreationLabel,
-  HeroCreationSubtext,
-} from "../../hero-creator/component/HeroCreationTypography"
+import { HeroCreationLabel, HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
 import { TopNavButtons } from "../../hero-creator/component/TopNavButtons"
 
 const expandChoiceRules = (rules: any[]) =>

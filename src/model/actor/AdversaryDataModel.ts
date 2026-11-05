@@ -1,15 +1,6 @@
 import { ActorDataModel } from "./ActorDataModel"
 import { NpcSchema, npcSchema } from "./schema/npc"
-import {
-  getNpcActiveRules,
-  getNpcRuleToggleState,
-  onNpcPreCreate,
-  onUpdateNpc,
-  prepareNpcBaseData,
-  prepareNpcDerivedData,
-  setThreatLevel,
-  toggleNpcItemRule,
-} from "./util/npc-data-model-util"
+import { getNpcActiveRules, getNpcRuleToggleState, onNpcPreCreate, onUpdateNpc, prepareNpcBaseData, prepareNpcDerivedData, setThreatLevel, toggleNpcItemRule } from "./util/npc-data-model-util"
 
 export { setThreatLevel }
 

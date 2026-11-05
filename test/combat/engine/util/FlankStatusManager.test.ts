@@ -1,12 +1,4 @@
-import {
-  afterAll,
-  beforeAll,
-  describe,
-  expect,
-  jest,
-  test,
-} from "@jest/globals"
-;(globalThis as any).ActiveEffect = class {}
+import { afterAll, beforeAll, describe, expect, jest, test } from "@jest/globals" ;(globalThis as any).ActiveEffect = class {}
 let FlankStatusManager: typeof import("../../../../src/combat/engine/util/FlankStatusManager").FlankStatusManager
 
 beforeAll(async () => {

@@ -5,28 +5,10 @@ import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
 import type { SkillCheckResult } from "./roll/SkillCheck"
 import { applyAdversaryDamageMods } from "./util/adversary-damage-mods"
-import type {
-  AttackSnapshot,
-  ComboSubAttackSnapshot,
-} from "./util/attack-serializer"
+import type { AttackSnapshot, ComboSubAttackSnapshot } from "./util/attack-serializer"
 import { serializeAttack } from "./util/attack-serializer"
-import {
-  absorbsDamage,
-  AttackResolutionArgs,
-  buildSummaryRow,
-  computeDamageBreakdown,
-  isImmuneToDamage,
-  isWeakToDamage,
-  TargetDamageSummary,
-} from "./util/damage-mitigation"
-import {
-  isDamagedAfterSave,
-  isHalvedBySave,
-  overrideTargetSave,
-  recordTargetSave,
-  rerollTargetSave,
-  rollTargetSave,
-} from "./util/save-state"
+import { absorbsDamage, AttackResolutionArgs, buildSummaryRow, computeDamageBreakdown, isImmuneToDamage, isWeakToDamage, TargetDamageSummary } from "./util/damage-mitigation"
+import { isDamagedAfterSave, isHalvedBySave, overrideTargetSave, recordTargetSave, rerollTargetSave, rollTargetSave } from "./util/save-state"
 
 export interface ComboSubAttackArgs {
   name: string

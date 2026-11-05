@@ -2,15 +2,7 @@ import { fields } from "../common/shared-schemas"
 import { ActorDataModel } from "./ActorDataModel"
 import { inventorySchema } from "./schema/inventory"
 import { NpcSchema, npcSchema } from "./schema/npc"
-import {
-  getNpcActiveRules,
-  getNpcRuleToggleState,
-  onNpcPreCreate,
-  onUpdateNpc,
-  prepareNpcBaseData,
-  prepareNpcDerivedData,
-  toggleNpcItemRule,
-} from "./util/npc-data-model-util"
+import { getNpcActiveRules, getNpcRuleToggleState, onNpcPreCreate, onUpdateNpc, prepareNpcBaseData, prepareNpcDerivedData, toggleNpcItemRule } from "./util/npc-data-model-util"
 
 export class NpcDataModel extends ActorDataModel<NpcSchema> {
 

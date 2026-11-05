@@ -12,13 +12,7 @@ import { FoundryHotkeyBlocker } from "../../view/wrappers/FoundryHotkeyBlocker"
 import { ConfirmationDialog } from "./dialog/ConfirmationDialog"
 import { PolymorphApp } from "./polymorph/PolymorphApp"
 import { CountdownManager } from "./usecase/CountdownManager"
-import {
-  addProgressClock,
-  deleteAllProgressClocks,
-  getItemShopToggle,
-  getProgressClocks,
-  setItemShopToggle,
-} from "./usecase/VagabondSettingsHelper"
+import { addProgressClock, deleteAllProgressClocks, getItemShopToggle, getProgressClocks, setItemShopToggle } from "./usecase/VagabondSettingsHelper"
 
 export const VagabondToolsAppView = () => {
   const targets = useTargetSync()

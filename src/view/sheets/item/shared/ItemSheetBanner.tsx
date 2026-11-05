@@ -1,24 +1,15 @@
 import { MessageSquareText } from "lucide-react"
 
-import {
-  AncestryDataModel,
-  ancestrySizeAndType,
-} from "../../../../model/item/character/AncestryDataModel"
+import { AncestryDataModel, ancestrySizeAndType } from "../../../../model/item/character/AncestryDataModel"
 import { FeatureDataModel } from "../../../../model/item/character/FeatureDataModel"
 import { PerkDataModel } from "../../../../model/item/character/PerkDataModel"
-import {
-  spellDamageBase,
-  SpellDataModel,
-} from "../../../../model/item/character/SpellDataModel"
+import { spellDamageBase, SpellDataModel } from "../../../../model/item/character/SpellDataModel"
 import { appLang } from "../../../../util/lang"
 import { sendVagabondChatCard } from "../../../chat/ChatCardSerializer"
 import { CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 import { EditableTextField } from "../../../component/EditableTextField"
 import { Divider } from "../../../component/Header"
-import {
-  CardSubHeader,
-  CardSubHeaderValues,
-} from "../../../component/SkillCard"
+import { CardSubHeader, CardSubHeaderValues } from "../../../component/SkillCard"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
 

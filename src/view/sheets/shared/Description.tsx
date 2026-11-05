@@ -1,9 +1,6 @@
 import { useCallback, useRef, useState } from "react"
 
-import {
-  BaseItemSchema,
-  ItemDataModel,
-} from "../../../model/item/ItemDataModel"
+import { BaseItemSchema, ItemDataModel } from "../../../model/item/ItemDataModel"
 import { updateDocument } from "../../../util/foundry-util"
 import { stripHtml } from "../../../util/string-util"
 import { EnrichedContent } from "../../component/EnrichedContent"

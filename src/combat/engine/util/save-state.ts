@@ -4,11 +4,7 @@ import { appLang } from "../../../util/lang"
 import { getTargetActor } from "../../../util/model-util"
 import type { SavingThrowType } from "../AdversaryAttack"
 import { HeroAttack } from "../HeroAttack"
-import {
-  buildManualSaveResult,
-  SkillCheck,
-  SkillCheckResult,
-} from "../roll/SkillCheck"
+import { buildManualSaveResult, SkillCheck, SkillCheckResult } from "../roll/SkillCheck"
 
 export interface SaveState {
   saveTypes: SavingThrowType[]

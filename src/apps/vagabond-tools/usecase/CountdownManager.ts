@@ -4,22 +4,12 @@ import { VagabondActiveEffect } from "../../../combat/documents/VagabondActiveEf
 import type { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
 import { CountdownResult } from "../../../combat/engine/roll/CountdownResult"
 import { CountdownRoll } from "../../../combat/engine/roll/CountdownRoll"
-import {
-  isActiveEffectFx,
-  removeActiveEffectCopy,
-} from "../../../combat/engine/util/active-effect-fx"
+import { isActiveEffectFx, isLightFx, removeActiveEffectCopy } from "../../../combat/engine/util/active-effect-fx"
 import { isImmuneToBurning } from "../../../combat/engine/util/burning-mitigation"
 import { StatusEffectUtil } from "../../../model/actor/util/StatusEffectUtil"
 import { sys_id } from "../../../util/foundry-util"
-import {
-  canInteractWithOverlayObject,
-  checkPermissionLevel,
-  findOpenOverlaySlots,
-  isPermissionLevelEveryone,
-  isVisibleInCurrentScene,
-  OverlayObjectPermissions,
-  updateSetting,
-} from "./VagabondSettingsHelper"
+import { LightSourceUtil } from "../../../util/LightSourceUtil"
+import { canInteractWithOverlayObject, checkPermissionLevel, findOpenOverlaySlots, isPermissionLevelEveryone, isVisibleInCurrentScene, OverlayObjectPermissions, updateSetting } from "./VagabondSettingsHelper"
 
 export interface CountdownSchema extends OverlayObjectPermissions {
   id: string

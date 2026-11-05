@@ -1,17 +1,8 @@
 import { useCallback, useEffect, useState } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import {
-  Coins,
-  coinsAsString,
-  multiplyCoins,
-  toCopper,
-  zeroCoins,
-} from "../../../model/common/coin-value-schema"
-import {
-  getItemChoiceRules,
-  getItemRules,
-} from "../../../rules/util/item-rules-util"
+import { Coins, coinsAsString, multiplyCoins, toCopper, zeroCoins } from "../../../model/common/coin-value-schema"
+import { getItemChoiceRules, getItemRules } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../util/lang"
 import { Header } from "../../../view/component/Header"

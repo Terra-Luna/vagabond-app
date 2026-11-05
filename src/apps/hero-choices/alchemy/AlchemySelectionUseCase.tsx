@@ -2,12 +2,7 @@ import { useEffect, useState } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import {
-  getItemChoiceRules,
-  getItemRules,
-  normalizeRuleSelections,
-  saveItemRuleSelections,
-} from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemRules, normalizeRuleSelections, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
 import { groupBy } from "../../../util/collection-util"
 import { useAlchemySelectionView } from "./AlchemySelectionView"
 

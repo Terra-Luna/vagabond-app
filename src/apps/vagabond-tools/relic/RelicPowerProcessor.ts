@@ -1,8 +1,5 @@
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import type {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../../model/item/equip/EquipmentDataModel"
+import type { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
 import type { RelicPower } from "./RelicPowers"
 import { RelicPowers } from "./RelicPowers"
 

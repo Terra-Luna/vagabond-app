@@ -1,9 +1,6 @@
 import { useCallback, useState } from "react"
 
-import {
-  ActorDataModel,
-  BaseActorSchema,
-} from "../../../model/actor/ActorDataModel"
+import { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import { VagabondCombatant } from "../../documents/VagabondCombat"
 
 export const useAdjustCombatantHP = (combatants: VagabondCombatant[]) => {

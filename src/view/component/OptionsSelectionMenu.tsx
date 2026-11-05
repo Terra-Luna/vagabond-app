@@ -2,12 +2,7 @@ import { Menu, MenuItem } from "@szhsin/react-menu"
 import { SquarePen } from "lucide-react"
 
 import { updateDocumentAtPath } from "../../util/foundry-util"
-import {
-  menuOptionContainer,
-  menuOptionText,
-  menuOptionTextDefault,
-  menuOptionTextSelected,
-} from "../common/text-styles"
+import { menuOptionContainer, menuOptionText, menuOptionTextDefault, menuOptionTextSelected } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 import { DamageTypeIcon } from "./DamageTypeIcon"
 

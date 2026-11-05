@@ -1,22 +1,10 @@
 import { Hand, HandFist, Shield } from "lucide-react"
 
-import type {
-  ActorDataModel,
-  BaseActorSchema,
-} from "../../../model/actor/ActorDataModel"
+import type { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import {
-  itemNameQty,
-  openItemSheet,
-} from "../../../model/actor/schema/inventory"
-import type {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../../model/item/equip/EquipmentDataModel"
-import {
-  inventoryItemDragDropHandler,
-  useItem,
-} from "../../../util/inventory-util"
+import { itemNameQty, openItemSheet } from "../../../model/actor/schema/inventory"
+import type { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
+import { inventoryItemDragDropHandler, useItem } from "../../../util/inventory-util"
 import { appLang } from "../../../util/lang"
 import { LightSourceUtil } from "../../../util/LightSourceUtil"
 import { getId } from "../../../util/model-util"

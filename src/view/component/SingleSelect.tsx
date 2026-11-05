@@ -18,7 +18,7 @@ export const SingleSelect = ({
 }: SingleSelectProps) => {
   const { isEditMode } = useEditMode()
   const selectedClass = `text-text-header-secondary border-text-header-primary rounded-sm px-1 ${isEditMode && canUnselect ? "cursor-pointer" : ""}`
-  const unselectedClass = `bg-sheet-main-fill px-1 ${isEditMode ? "cursor-pointer" : ""}`
+  const unselectedClass = `bg-sheet-main-fill text-text-secondary px-1 ${isEditMode ? "cursor-pointer" : ""}`
 
   const handleOptClick = useCallback(
     (clickedVal) => {

@@ -13,6 +13,8 @@ interface ConfirmDialogOptions {
   inputPlaceholder?: string
   inputDefaultValue?: string
   selectOptions?: { label: string; value: string }[]
+  selectAsButtons?: boolean
+  selectDefaultValue?: string
   cancelText?: string
   onCancel?: () => void
   variant?: "destructive" | "primary" | "info"

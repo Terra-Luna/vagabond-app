@@ -3,10 +3,7 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import {
-  getFlatStatBonuses,
-  getStatChoiceRules,
-} from "../../../rules/util/item-rules-util"
+import { getFlatStatBonuses, getStatChoiceRules } from "../../../rules/util/item-rules-util"
 import { appLang } from "../../../util/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { SecondaryButton } from "../../../view/component/Button"
@@ -14,11 +11,7 @@ import { Header } from "../../../view/component/Header"
 import { BorderedContent } from "../component/BorderedContent"
 import { DraggableStatBlock } from "../component/DraggableStatBlock"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
-import {
-  HeroCreationLabel,
-  HeroCreationLabeledField,
-  HeroCreationSubtext,
-} from "../component/HeroCreationTypography"
+import { HeroCreationLabel, HeroCreationLabeledField, HeroCreationSubtext } from "../component/HeroCreationTypography"
 import { StatDragTarget } from "../component/StatDragTarget"
 import { TopNavButtons } from "../component/TopNavButtons"
 

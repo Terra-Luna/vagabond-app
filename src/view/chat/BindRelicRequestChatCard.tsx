@@ -1,16 +1,9 @@
-import {
-  BIND_REQUEST_FLAG,
-  WAS_BOUND_FLAG,
-} from "../../model/item/equip/EquipmentDataModel"
+import { BIND_REQUEST_FLAG, WAS_BOUND_FLAG } from "../../model/item/equip/EquipmentDataModel"
 import { sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
 import { localizeString } from "../../util/locale-util"
 import { getTokenImg } from "../../util/model-util"
-import {
-  DestructiveButton,
-  PrimaryButton,
-  UtilityButton,
-} from "../component/Button"
+import { DestructiveButton, PrimaryButton, UtilityButton } from "../component/Button"
 import { useChatMessageId } from "./ChatMessageContext"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"

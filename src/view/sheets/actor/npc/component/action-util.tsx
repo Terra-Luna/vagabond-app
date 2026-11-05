@@ -1,14 +1,8 @@
 import { useState } from "react"
 
 import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRollSchema"
-import {
-  AdversaryAttack,
-  SavingThrowType,
-} from "../../../../../combat/engine/AdversaryAttack"
-import {
-  AdversaryComboAttack,
-  ComboSubAttackArgs,
-} from "../../../../../combat/engine/AdversaryComboAttack"
+import { AdversaryAttack, SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
+import { AdversaryComboAttack, ComboSubAttackArgs } from "../../../../../combat/engine/AdversaryComboAttack"
 import { AppliedFx } from "../../../../../combat/engine/Attack"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"

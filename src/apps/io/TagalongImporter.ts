@@ -1,17 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import {
-  findOrCreateElectiveTrainingsRule,
-  getItemChoiceRules,
-  getItemGrants,
-  getItemRules,
-  getSkillTrainingChoiceRules,
-  getStatChoiceRules,
-  isItemChoiceRule,
-  normalizeRuleSelections,
-  randomId,
-  RuleSelection,
-  saveItemRuleSelections,
-} from "../../rules/util/item-rules-util"
+import { findOrCreateElectiveTrainingsRule, getItemChoiceRules, getItemGrants, getItemRules, getSkillTrainingChoiceRules, getStatChoiceRules, isItemChoiceRule, normalizeRuleSelections, randomId, RuleSelection, saveItemRuleSelections } from "../../rules/util/item-rules-util"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { getRuleSelectors } from "../../rules/util/selector-util"
 import { updateDocument } from "../../util/foundry-util"
@@ -20,10 +8,7 @@ import { appLang } from "../../util/lang"
 import { localizeString } from "../../util/locale-util"
 import { addItemToActor, TypedIndexEntry } from "../../util/model-util"
 import { api } from "../api/VagabondAPI"
-import {
-  showConfirmationDialog,
-  showInputDialog,
-} from "../vagabond-tools/dialog/ConfirmationDialogUseCase"
+import { showConfirmationDialog, showInputDialog } from "../vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { TagalongApi, TagalongItem } from "./TagalongApi"
 import { TagalongItemCreator } from "./TagalongItemCreator"
 

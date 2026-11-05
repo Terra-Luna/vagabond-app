@@ -2,11 +2,7 @@ import { ReactNode, useCallback, useEffect, useState } from "react"
 
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { appLang } from "../../../util/lang"
-import {
-  CombinedItems,
-  getFullItem,
-  TypedIndexEntry,
-} from "../../../util/model-util"
+import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../util/model-util"
 import { Checkbox } from "../../../view/component/Checkbox"
 import { Header } from "../../../view/component/Header"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"

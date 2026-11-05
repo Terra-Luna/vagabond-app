@@ -3,24 +3,12 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../../model/item/equip/EquipmentDataModel"
-import {
-  getItemChoiceRules,
-  getItemGrants,
-  getItemRules,
-  getItemRuleSources,
-  ItemRule,
-} from "../../../rules/util/item-rules-util"
+import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
+import { getItemChoiceRules, getItemGrants, getItemRules, getItemRuleSources, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../util/lang"
 import { ClearHeader, Header } from "../../../view/component/Header"
-import {
-  BonusChoiceContainer,
-  BonusChoiceTitle,
-} from "../../hero-creator/component/BonusChoiceContaner"
+import { BonusChoiceContainer, BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
 import { HeroCreationLabel } from "../../hero-creator/component/HeroCreationTypography"
 import { ItemGrantCard } from "../../hero-creator/component/ItemGrantCard"
 import { ItemSelectorGroup } from "../../hero-creator/component/ItemSelectorGroup"

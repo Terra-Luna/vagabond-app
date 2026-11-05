@@ -1,10 +1,5 @@
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html"
-import {
-  INSERT_ORDERED_LIST_COMMAND,
-  INSERT_UNORDERED_LIST_COMMAND,
-  ListItemNode,
-  ListNode,
-} from "@lexical/list"
+import { INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, ListItemNode, ListNode } from "@lexical/list"
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 import { ContentEditable } from "@lexical/react/LexicalContentEditable"
@@ -16,42 +11,10 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin"
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin"
 import { TablePlugin } from "@lexical/react/LexicalTablePlugin"
-import {
-  $deleteTableColumnAtSelection,
-  $deleteTableRowAtSelection,
-  $getTableNodeFromLexicalNodeOrThrow,
-  $insertTableColumnAtSelection,
-  $insertTableRowAtSelection,
-  $isTableCellNode,
-  INSERT_TABLE_COMMAND,
-  TableCellNode,
-  TableNode,
-  TableRowNode,
-} from "@lexical/table"
+import { $deleteTableColumnAtSelection, $deleteTableRowAtSelection, $getTableNodeFromLexicalNodeOrThrow, $insertTableColumnAtSelection, $insertTableRowAtSelection, $isTableCellNode, INSERT_TABLE_COMMAND, TableCellNode, TableNode, TableRowNode } from "@lexical/table"
 import { $findMatchingParent } from "@lexical/utils"
-import {
-  $getNearestNodeFromDOMNode,
-  $getSelection,
-  $insertNodes,
-  $isRangeSelection,
-  INDENT_CONTENT_COMMAND,
-  LexicalEditor,
-  OUTDENT_CONTENT_COMMAND,
-} from "lexical"
-import {
-  BetweenHorizontalEnd,
-  BetweenHorizontalStart,
-  BetweenVerticalEnd,
-  BetweenVerticalStart,
-  Columns2,
-  IndentDecrease,
-  IndentIncrease,
-  List,
-  ListOrdered,
-  Rows2,
-  Table,
-  Trash2,
-} from "lucide-react"
+import { $getNearestNodeFromDOMNode, $getSelection, $insertNodes, $isRangeSelection, INDENT_CONTENT_COMMAND, LexicalEditor, OUTDENT_CONTENT_COMMAND } from "lexical"
+import { BetweenHorizontalEnd, BetweenHorizontalStart, BetweenVerticalEnd, BetweenVerticalStart, Columns2, IndentDecrease, IndentIncrease, List, ListOrdered, Rows2, Table, Trash2 } from "lucide-react"
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react"
 
 import { appLang } from "../../util/lang"

@@ -1,14 +1,8 @@
 const { sheets } = foundry.applications
 import { JSONValue } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
-import {
-  addItemToContainer,
-  ContainerDataModel,
-} from "../../../model/item/equip/ContainerDataModel"
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../../model/item/equip/EquipmentDataModel"
+import { addItemToContainer, ContainerDataModel } from "../../../model/item/equip/ContainerDataModel"
+import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
 import { StartingPackDataModel } from "../../../model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "../../../model/item/equip/SundryDataModel"
 import { appLang } from "../../../util/lang"

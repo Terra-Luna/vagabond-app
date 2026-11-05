@@ -2,10 +2,7 @@ import { useCallback } from "react"
 
 import { updateDocumentAtPath } from "../../util/foundry-util"
 import { tableBorder } from "../common/border-styles"
-import {
-  menuOptionContainer,
-  menuOptionTextDefault,
-} from "../common/text-styles"
+import { menuOptionContainer, menuOptionTextDefault } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 import { LabelledField } from "./LabelledField"
 

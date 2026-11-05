@@ -1,16 +1,9 @@
 import { appLang } from "../../../util/lang"
-import {
-  getFullItem,
-  getName,
-  inventoryItemTypes,
-} from "../../../util/model-util"
+import { getFullItem, getName, inventoryItemTypes } from "../../../util/model-util"
 import { coinSchema } from "../../common/coin-value-schema"
 import { fields, requiredInteger } from "../../common/shared-schemas"
 import { ContainerDataModel } from "../../item/equip/ContainerDataModel"
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../item/equip/EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema } from "../../item/equip/EquipmentDataModel"
 
 export const inventorySchema = () => {
   return {

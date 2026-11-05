@@ -1,19 +1,13 @@
 import { Check, Clover, MinusCircle, Shield, Swords, X } from "lucide-react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import {
-  canRollForActor,
-  getFollowerContext,
-} from "../../../model/actor/util/npc-data-model-util"
+import { canRollForActor, getFollowerContext } from "../../../model/actor/util/npc-data-model-util"
 import { appLang } from "../../../util/lang"
 import { DamageRollsComponent } from "../../../view/chat/component/DamageRollsComponent"
 import { SkillCheckDiceComponent } from "../../../view/chat/SkillCheckChatCard"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
-import {
-  CtxMenuItem,
-  useContextMenu,
-} from "../../../view/component/ContextMenu"
+import { CtxMenuItem, useContextMenu } from "../../../view/component/ContextMenu"
 import { ClearHeader, Divider, Header } from "../../../view/component/Header"
 import { CardSubHeader } from "../../../view/component/SkillCard"
 import { Tooltip } from "../../../view/component/Tooltip"
@@ -21,12 +15,7 @@ import { AdversaryAttack, SavingThrowType } from "../../engine/AdversaryAttack"
 import { AdversaryComboAttack } from "../../engine/AdversaryComboAttack"
 import { DamageRoll } from "../../engine/roll/DamageRoll"
 import { SkillCheckResult } from "../../engine/roll/SkillCheck"
-import {
-  TargetDisplayItem,
-  useAdversaryAttack,
-  useAdversaryAttackSaveHandlers,
-  useAdversaryAttackTargets,
-} from "../hooks"
+import { TargetDisplayItem, useAdversaryAttack, useAdversaryAttackSaveHandlers, useAdversaryAttackTargets } from "../hooks"
 import { ImbuedDamageSections } from "./ImbueComponents"
 
 export const AdversaryAttackComponent = ({

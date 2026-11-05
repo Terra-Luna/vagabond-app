@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react"
 
-import {
-  ActiveEffectsComponent,
-  Effect,
-} from "./component/ActiveEffectsComponent"
+import { ActiveEffectsComponent, Effect } from "./component/ActiveEffectsComponent"
 
 /**
  * This acts like a bridge between the Actor/Item and the react AppV2 window. By having

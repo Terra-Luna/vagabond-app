@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { TargetDisplayItem } from "../../../combat/ui/hooks"
-import {
-  getCanvasToken,
-  getTargets,
-  getTokenImg,
-} from "../../../util/model-util"
+import { getCanvasToken, getTargets, getTokenImg } from "../../../util/model-util"
 
 const readCanvasTargets = (): TargetDisplayItem[] =>
   getTargets()

@@ -3,18 +3,9 @@ import { useEffect, useMemo, useRef } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import {
-  getItemChoiceRules,
-  getItemRules,
-  normalizeRuleSelections,
-  randomId,
-  saveItemRuleSelections,
-} from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemRules, normalizeRuleSelections, randomId, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
-import {
-  getRuleSelectors,
-  normalizeSelector,
-} from "../../../rules/util/selector-util"
+import { getRuleSelectors, normalizeSelector } from "../../../rules/util/selector-util"
 import { groupBy } from "../../../util/collection-util"
 import { sys_id } from "../../../util/foundry-util"
 import { usePerkBonusSelection } from "./PerkBonusSelection"

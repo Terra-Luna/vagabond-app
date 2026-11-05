@@ -1,9 +1,6 @@
 import { ActorBaseDataRulesApplicator } from "../../../rules/util/ActorBaseDataRulesApplicator"
 import { getItemRules } from "../../../rules/util/item-rules-util"
-import {
-  getRuleToggleState,
-  toggleItemRule,
-} from "../../../rules/util/rule-toggle-util"
+import { getRuleToggleState, toggleItemRule } from "../../../rules/util/rule-toggle-util"
 import { sys_id } from "../../../util/foundry-util"
 import { getName } from "../../../util/model-util"
 import type { AdversaryDataModel } from "../AdversaryDataModel"

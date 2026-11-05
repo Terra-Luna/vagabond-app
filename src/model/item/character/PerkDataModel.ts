@@ -2,12 +2,7 @@ import { appLang } from "../../../util/lang"
 import { andOrToSymbol, removeLastComma } from "../../../util/string-util"
 import type { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { statsSchema } from "../../actor/schema/stats"
-import {
-  fields,
-  optionalString,
-  requiredString,
-  standardInteger,
-} from "../../common/shared-schemas"
+import { fields, optionalString, requiredString, standardInteger } from "../../common/shared-schemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
 
 const perkSchema = () => {

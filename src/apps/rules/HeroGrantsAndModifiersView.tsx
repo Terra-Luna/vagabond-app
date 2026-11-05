@@ -1,31 +1,15 @@
 import { useEffect, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import {
-  EffectCardContainer,
-  GrantsAndModifiersCard,
-} from "../../rules/shared/GrantsAndModifiersCard"
-import {
-  findExtraGrantsFeature,
-  getOrCreateExtraGrantsFeature,
-} from "../../rules/util/extra-grants-util"
-import {
-  calculateRecurringRuleScale,
-  getItemRuleSources,
-  RuleSelection,
-} from "../../rules/util/item-rules-util"
-import {
-  getRuleSelectors,
-  normalizeSelector,
-} from "../../rules/util/selector-util"
+import { EffectCardContainer, GrantsAndModifiersCard } from "../../rules/shared/GrantsAndModifiersCard"
+import { findExtraGrantsFeature, getOrCreateExtraGrantsFeature } from "../../rules/util/extra-grants-util"
+import { calculateRecurringRuleScale, getItemRuleSources, RuleSelection } from "../../rules/util/item-rules-util"
+import { getRuleSelectors, normalizeSelector } from "../../rules/util/selector-util"
 import { appLang } from "../../util/lang"
 import { tableBorder } from "../../view/common/border-styles"
 import { UtilityButton } from "../../view/component/Button"
 import { CollapsibleSection } from "../../view/component/Collapsible"
-import {
-  HeroCreationLabel,
-  HeroCreationSubtext,
-} from "../hero-creator/component/HeroCreationTypography"
+import { HeroCreationLabel, HeroCreationSubtext } from "../hero-creator/component/HeroCreationTypography"
 
 interface ActiveRuleDisplay {
   id: string

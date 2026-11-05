@@ -1,8 +1,5 @@
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import {
-  OptionsSelectionMenu,
-  OptionsSelectionMenuOption,
-} from "../../../../../component/OptionsSelectionMenu"
+import { OptionsSelectionMenu, OptionsSelectionMenuOption } from "../../../../../component/OptionsSelectionMenu"
 
 export const ClassSheetSelectionMenu = ({
   item,

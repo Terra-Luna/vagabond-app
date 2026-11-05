@@ -1,9 +1,6 @@
 import { roll3dDice, sys_id } from "../../../util/foundry-util"
 import { sendVagabondChatCard } from "../../../view/chat/ChatCardSerializer"
-import {
-  absorbsBurning,
-  mitigateBurningDamage,
-} from "../util/burning-mitigation"
+import { absorbsBurning, mitigateBurningDamage } from "../util/burning-mitigation"
 import { getDiceTerms, playDiceSound } from "../util/dice-util"
 import { CountdownResult } from "./CountdownResult"
 import { RollSummary } from "./RollSummary"

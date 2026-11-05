@@ -1,11 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import {
-  findOrCreateElectiveTrainingsRule,
-  normalizeRuleSelections,
-  randomId,
-  saveItemRuleSelections,
-  savePerkSelections,
-} from "../../rules/util/item-rules-util"
+import { findOrCreateElectiveTrainingsRule, normalizeRuleSelections, randomId, saveItemRuleSelections, savePerkSelections } from "../../rules/util/item-rules-util"
 import { sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
 import { centerOnFirstRender } from "../../util/sheet-util"

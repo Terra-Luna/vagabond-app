@@ -1,10 +1,7 @@
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { isInventoryItem } from "../../model/actor/schema/inventory"
 import type { ArmorDataModel } from "../../model/item/equip/ArmorDataModel"
-import type {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../model/item/equip/EquipmentDataModel"
+import type { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import type { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import type { TagalongApi, TagalongItem } from "./TagalongApi"
 

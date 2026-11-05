@@ -5,32 +5,18 @@ import { ActiveEffectsView } from "../../../../../apps/active-effects/ActiveEffe
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
-import {
-  getDocumentAtPath,
-  updateDocument,
-} from "../../../../../util/foundry-util"
+import { getDocumentAtPath, updateDocument } from "../../../../../util/foundry-util"
 import { sys_id } from "../../../../../util/foundry-util"
 import { appLang } from "../../../../../util/lang"
-import {
-  createDropdownEntries,
-  damageTypesWithPhysicalThresholds,
-  localizeString,
-} from "../../../../../util/locale-util"
+import { createDropdownEntries, damageTypesWithPhysicalThresholds, localizeString } from "../../../../../util/locale-util"
 import { formatSpeeds } from "../../../../../util/speed-util"
 import { tableBorder } from "../../../../common/border-styles"
 import { CardSubHeader } from "../../../../component/CardSubHeader"
 import { DropDown } from "../../../../component/Dropdown"
-import {
-  EditableNameField,
-  EditableTextField,
-  NumericCounterInput,
-} from "../../../../component/EditableTextField"
+import { EditableNameField, EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
 import { IconOnlyButton } from "../../../../component/IconOnlyButton"
-import {
-  DamageTypeIconDisplay,
-  OptionsSelectionMenu,
-} from "../../../../component/OptionsSelectionMenu"
+import { DamageTypeIconDisplay, OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
 import { Tooltip } from "../../../../component/Tooltip"
 import { TrashButton } from "../../../../component/TrashButton"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"

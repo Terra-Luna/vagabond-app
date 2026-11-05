@@ -1,18 +1,9 @@
 import { Undo } from "lucide-react"
 
-import type {
-  ActorDataModel,
-  BaseActorSchema,
-} from "../../../../../model/actor/ActorDataModel"
+import type { ActorDataModel, BaseActorSchema } from "../../../../../model/actor/ActorDataModel"
 import { sortedItems } from "../../../../../model/actor/schema/inventory"
-import {
-  ContainerDataModel,
-  itemsInContainer,
-} from "../../../../../model/item/equip/ContainerDataModel"
-import type {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../../../../model/item/equip/EquipmentDataModel"
+import { ContainerDataModel, itemsInContainer } from "../../../../../model/item/equip/ContainerDataModel"
+import type { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { containerItemContextMenuItems } from "../../../../../util/inventory-util"
 import { appLang } from "../../../../../util/lang"
 import { SecondaryButton } from "../../../../component/Button"

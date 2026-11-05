@@ -1,11 +1,5 @@
 import { appLang } from "../../../util/lang"
-import {
-  damageTypeOptions,
-  fields,
-  optionalString,
-  requiredInteger,
-  requiredString,
-} from "../../common/shared-schemas"
+import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/shared-schemas"
 import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
 const alchemySchema = () => {

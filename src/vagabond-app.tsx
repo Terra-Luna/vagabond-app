@@ -5,27 +5,18 @@ import { RollPreset } from "./apps/attack-builder/model/RollPreset"
 import { registerAdversaryCompendiumFilters } from "./apps/compendium/AdversaryCompendium"
 import { registerAlchemicalItemCompendiumFilters } from "./apps/compendium/AlchemicalItemCompendium"
 import { CountdownApp } from "./apps/countdown/CountdownApp"
+import { FocusManagerApp } from "./apps/focus-manager/FocusManagerApp"
 import { TagalongExporter } from "./apps/io/TagalongExporter"
 import { TagalongItemCreator } from "./apps/io/TagalongItemCreator"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
-import {
-  showConfirmationDialog,
-  showInputDialog,
-} from "./apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
+import { showConfirmationDialog, showInputDialog } from "./apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { CompendiumAccessor } from "./apps/vagabond-tools/usecase/CompendiumAccessor"
 import { CountdownManager } from "./apps/vagabond-tools/usecase/CountdownManager"
-import {
-  getAttackRegistry,
-  resolveAllAttacks,
-  setAttackRegistry,
-} from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { getAttackRegistry, resolveAllAttacks, setAttackRegistry } from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondSettingsRegistry } from "./apps/vagabond-tools/VagabondSettingsRegistry"
 import { VagabondToolsApp } from "./apps/vagabond-tools/VagabondToolsApp"
 import { VagabondActiveEffect } from "./combat/documents/VagabondActiveEffect"
-import {
-  VagabondCombat,
-  VagabondCombatant,
-} from "./combat/documents/VagabondCombat"
+import { VagabondCombat, VagabondCombatant } from "./combat/documents/VagabondCombat"
 import { Attack } from "./combat/engine/Attack"
 import { FlankStatusManager } from "./combat/engine/util/FlankStatusManager"
 import { HuntersMark } from "./combat/engine/util/HuntersMark"
@@ -35,6 +26,7 @@ import { HeroDataModel } from "./model/actor/HeroDataModel"
 import { ItemActorDataModel } from "./model/actor/ItemActorDataModel"
 import { NpcDataModel } from "./model/actor/NpcDataModel"
 import { isInventoryItem } from "./model/actor/schema/inventory"
+import { FocusSpellUtil } from "./model/actor/util/FocusSpellUtil"
 import { enforceSingletonPlaceholder } from "./model/actor/util/npc-data-model-util"
 import { PolymorphUtil } from "./model/actor/util/PolymorphUtil"
 import { VagabondActor } from "./model/actor/VagabondActor"
@@ -61,21 +53,14 @@ import { LightSourceUtil } from "./util/LightSourceUtil"
 import { localizeString } from "./util/locale-util"
 import { getFullItem, getId } from "./util/model-util"
 import { createStyleTag } from "./util/style-util"
-import {
-  installChatScrollGuard,
-  RehydratedChatCard,
-} from "./view/chat/ChatCardRehydrator"
+import { installChatScrollGuard, RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
 import { serializeRawChatMessage } from "./view/chat/ChatCardSerializer"
 import { HeroSheet } from "./view/sheets/actor/hero/HeroSheet"
 import { ItemActorSheet } from "./view/sheets/actor/npc/ItemActorSheet"
 import { NpcSheet } from "./view/sheets/actor/npc/NpcSheet"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
-import {
-  FeatureSheet,
-  PerkSheet,
-  SpellSheet,
-} from "./view/sheets/item/character/SkillSheets"
+import { FeatureSheet, PerkSheet, SpellSheet } from "./view/sheets/item/character/SkillSheets"
 import { EquipmentSheet } from "./view/sheets/item/equip/EquipmentSheet"
 
 // Add our fonts
@@ -888,6 +873,9 @@ Hooks.on("deleteChatMessage", (message: any) => {
 Hooks.on("deleteCombat", (combat: Combat, options: any, userId: string) => {
   resolveAllAttacks()
 })
+
+FocusSpellUtil.registerHooks()
+FocusManagerApp.registerHooks()
 
 Hooks.on(
   "dropCanvasData",

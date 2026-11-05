@@ -1,9 +1,6 @@
 import { useState } from "react"
 
-import {
-  FOLLOWER_HERO_FLAG,
-  FOLLOWER_SKILL_FLAG,
-} from "../../../../../model/actor/util/npc-data-model-util"
+import { FOLLOWER_HERO_FLAG, FOLLOWER_SKILL_FLAG } from "../../../../../model/actor/util/npc-data-model-util"
 import { sys_id } from "../../../../../util/foundry-util"
 import { appLang } from "../../../../../util/lang"
 import { DropDown } from "../../../../component/Dropdown"

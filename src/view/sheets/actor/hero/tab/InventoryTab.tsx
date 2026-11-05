@@ -4,24 +4,12 @@ import { useState } from "react"
 import { ItemShopApp } from "../../../../../apps/shop/ItemShopApp"
 import { getItemShopToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import {
-  isInContainer,
-  sortedItems,
-} from "../../../../../model/actor/schema/inventory"
+import { isInContainer, sortedItems } from "../../../../../model/actor/schema/inventory"
 import { ContainerDataModel } from "../../../../../model/item/equip/ContainerDataModel"
-import {
-  EquipmentDataModel,
-  EquipmentSchema,
-} from "../../../../../model/item/equip/EquipmentDataModel"
-import {
-  equipmentContextMenuItems,
-  stackStackables,
-} from "../../../../../util/inventory-util"
+import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
+import { equipmentContextMenuItems, stackStackables } from "../../../../../util/inventory-util"
 import { appLang } from "../../../../../util/lang"
-import {
-  tableBorder,
-  tableBorderRounded,
-} from "../../../../common/border-styles"
+import { tableBorder, tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation, PrimaryButton } from "../../../../component/Button"
 import { HeroCoinPurse } from "../../../../component/CoinPurse"
 import { useContextMenu } from "../../../../component/ContextMenu"

@@ -1,12 +1,7 @@
 import { ArrowBigRightDash, Check } from "lucide-react"
 import { useEffect, useState } from "react"
 
-import {
-  getPolymorphRequestRegistry,
-  PolymorphRequestStatus,
-  PolymorphRequestTargetRecord,
-  setPolymorphRequestStatuses,
-} from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { getPolymorphRequestRegistry, PolymorphRequestStatus, PolymorphRequestTargetRecord, setPolymorphRequestStatuses } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../model/actor/NpcDataModel"

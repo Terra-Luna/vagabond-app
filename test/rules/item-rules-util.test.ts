@@ -1,15 +1,7 @@
 import { describe, expect, jest, test } from "@jest/globals"
 
 import { isEligibleForPerk } from "../../src/model/item/character/PerkDataModel"
-import {
-  createElectiveTrainingsRule,
-  findElectiveTrainingsRule,
-  findOrCreateElectiveTrainingsRule,
-  getItemChoiceRules,
-  getItemRules,
-  getPerkSkillSubselections,
-  savePerkSelections,
-} from "../../src/rules/util/item-rules-util"
+import { createElectiveTrainingsRule, findElectiveTrainingsRule, findOrCreateElectiveTrainingsRule, getItemChoiceRules, getItemRules, getPerkSkillSubselections, savePerkSelections } from "../../src/rules/util/item-rules-util"
 import { ItemsCache } from "../../src/rules/util/ItemsCache"
 
 describe("getItemRules", () => {

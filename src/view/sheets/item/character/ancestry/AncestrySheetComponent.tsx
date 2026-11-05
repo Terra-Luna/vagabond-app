@@ -1,9 +1,6 @@
 import { AncestryDataModel } from "../../../../../model/item/character/AncestryDataModel"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
-import {
-  normalizeRuleSelections,
-  randomId,
-} from "../../../../../rules/util/item-rules-util"
+import { normalizeRuleSelections, randomId } from "../../../../../rules/util/item-rules-util"
 import { appLang } from "../../../../../util/lang"
 import { createDropdownEntries } from "../../../../../util/locale-util"
 import { useContextMenu } from "../../../../component/ContextMenu"

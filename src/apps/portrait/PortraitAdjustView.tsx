@@ -3,15 +3,7 @@ import { useState } from "react"
 import { appLang } from "../../util/lang"
 import { tableBorder } from "../../view/common/border-styles"
 import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
-import {
-  ACTOR_PORTRAIT_HEIGHT,
-  ACTOR_PORTRAIT_WIDTH,
-  calculateAdjImgDims,
-  portraitBoundry,
-  PortraitFrameData,
-  portraitFrameImageStyle,
-  useImageAspect,
-} from "../../view/sheets/actor/component/PortraitFrame"
+import { ACTOR_PORTRAIT_HEIGHT, ACTOR_PORTRAIT_WIDTH, calculateAdjImgDims, portraitBoundry, PortraitFrameData, portraitFrameImageStyle, useImageAspect } from "../../view/sheets/actor/component/PortraitFrame"
 
 const previewW = ACTOR_PORTRAIT_WIDTH * 2
 const previewH = ACTOR_PORTRAIT_HEIGHT * 2

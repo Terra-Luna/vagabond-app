@@ -4,11 +4,7 @@ import { ReactNode, useCallback } from "react"
 import { sys_id } from "../../util/foundry-util"
 import { tableBorderRounded } from "../common/border-styles"
 import { CardHeader } from "./CardHeader"
-import {
-  CardSubHeader,
-  type CardSubHeaderValues,
-  HeaderWithClipPath,
-} from "./CardSubHeader"
+import { CardSubHeader, type CardSubHeaderValues, HeaderWithClipPath } from "./CardSubHeader"
 import { Collapsible } from "./Collapsible"
 import { ImageWithDamageTypeBadge } from "./DamageTypeIcon"
 import { EnrichedContent } from "./EnrichedContent"
@@ -32,6 +28,7 @@ export const SkillCard = ({
   hideCollapseButton,
   actions = [],
   mini,
+  badge,
 }: {
   actor?: Actor
   img?: string
@@ -43,6 +40,7 @@ export const SkillCard = ({
   hideCollapseButton?: boolean
   actions?: SkillCardAction[]
   mini?: boolean
+  badge?: ReactNode
 }) => {
   return mini ? (
     <Tooltip
@@ -59,6 +57,7 @@ export const SkillCard = ({
           hideCollapseButton={true}
           actions={actions}
           mini={false}
+          badge={badge}
         />
       }
     >
@@ -73,6 +72,7 @@ export const SkillCard = ({
           </div>
         )}
         {title}
+        {badge && <div className="flex-shrink-0 pr-1">{badge}</div>}
       </div>
     </Tooltip>
   ) : (
@@ -83,6 +83,7 @@ export const SkillCard = ({
       startCollapsed={startCollapsed}
       hideCollapseButton={hideCollapseButton}
       actions={actions}
+      badge={badge}
       Header={CardHeader}
       content={
         <>

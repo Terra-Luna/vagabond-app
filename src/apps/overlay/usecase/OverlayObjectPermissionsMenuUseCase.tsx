@@ -2,14 +2,7 @@ import { Eye, Globe, Link2, Users } from "lucide-react"
 import { useRef } from "react"
 
 import { CtxMenuItem } from "../../../view/component/ContextMenu"
-import {
-  isVisibleInCurrentScene,
-  isVisibleToCurrentUser,
-  OverlayObjectPermissions,
-  togglePlayerInteraction,
-  togglePlayerVisibility,
-  toggleSceneLink,
-} from "../../vagabond-tools/usecase/VagabondSettingsHelper"
+import { isVisibleInCurrentScene, isVisibleToCurrentUser, OverlayObjectPermissions, togglePlayerInteraction, togglePlayerVisibility, toggleSceneLink } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 
 type PermissionedOverlayObject = OverlayObjectPermissions & { id: string }
 

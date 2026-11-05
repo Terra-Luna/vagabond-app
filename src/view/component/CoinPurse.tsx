@@ -2,12 +2,7 @@ import { useCallback, useState } from "react"
 
 import { useCoinApp } from "../../apps/shop/CoinApp"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import {
-  addCoins,
-  Coins,
-  isAffordable,
-  subtractCoins,
-} from "../../model/common/coin-value-schema"
+import { addCoins, Coins, isAffordable, subtractCoins } from "../../model/common/coin-value-schema"
 import { appLang } from "../../util/lang"
 import { tableBorder } from "../common/border-styles"
 import { EditableTextField } from "./EditableTextField"

@@ -1,8 +1,5 @@
 import { getDocumentAtPath } from "../../../util/foundry-util"
-import {
-  OptionsSelectionMenu,
-  StringOptionsDisplay,
-} from "../../component/OptionsSelectionMenu"
+import { OptionsSelectionMenu, StringOptionsDisplay } from "../../component/OptionsSelectionMenu"
 import { useEditMode } from "../../context/EditModeContext/Hooks"
 
 export const SelectableTextOptions = ({

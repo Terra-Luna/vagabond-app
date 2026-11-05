@@ -1,9 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
 
-import {
-  setMaxHP,
-  validateCurrentHP,
-} from "../../../../src/model/actor/HeroDataModel"
+import { setMaxHP, validateCurrentHP } from "../../../../src/model/actor/HeroDataModel"
 
 describe("health component tests", () => {
   test("hp cant exceed max", () => {

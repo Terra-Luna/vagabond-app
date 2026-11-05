@@ -2,11 +2,7 @@ import { describe, expect, test } from "@jest/globals"
 
 import { DamageRoll } from "../../../../src/combat/engine/roll/DamageRoll"
 import { mitigateBurningDamage } from "../../../../src/combat/engine/util/burning-mitigation"
-import {
-  buildSummaryRow,
-  calculateBonusDamage,
-  computeDamageBreakdown,
-} from "../../../../src/combat/engine/util/damage-mitigation"
+import { buildSummaryRow, calculateBonusDamage, computeDamageBreakdown } from "../../../../src/combat/engine/util/damage-mitigation"
 
 describe("calculateBonusDamage", () => {
   const target = { system: { hitDice: 8 } }
