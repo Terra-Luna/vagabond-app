@@ -93,6 +93,9 @@ const fontFaces = [
   document.fonts.add(font),
 )
 
+// Store the FocusAreaLayer instance globally for socket communication
+let focusAreaLayer: FocusAreaLayer | null = null
+
 let clocksOverlay: ProgressClockApp | null = null
 let countdownOverlay: CountdownApp | null = null
 
@@ -240,6 +243,27 @@ Hooks.once("ready", async () => {
           variant: "info",
         })
       }
+      return
+    }
+    if (packet?.action === "updateTemporarySpellAreas") {
+      const { sceneId, areas } = packet
+      const scene = game.scenes?.get(sceneId)
+      if (scene) {
+        if (game.user?.isActiveGM) {
+          // GM updates the flag and broadcasts to all clients
+          await scene.setFlag(sys_id, "temporarySpellAreas", areas || {})
+          // Broadcast update to all clients so they sync immediately
+          game.socket?.emit(`system.${sys_id}`, {
+            action: "syncTemporarySpellAreas",
+          })
+        }
+      }
+      return
+    }
+    if (packet?.action === "syncTemporarySpellAreas") {
+      // All clients sync their temporary spell areas rendering
+      const focusLayer = (window as any).focusAreaLayer
+      if (focusLayer) focusLayer.sync()
       return
     }
     if (!game.user?.isActiveGM) return
@@ -893,7 +917,9 @@ Hooks.on("deleteCombat", (combat: Combat, options: any, userId: string) => {
 
 FocusSpellUtil.registerHooks()
 TokenHeading.registerHooks()
-new FocusAreaLayer().registerHooks()
+focusAreaLayer = new FocusAreaLayer()
+focusAreaLayer.registerHooks()
+;(window as any).focusAreaLayer = focusAreaLayer
 FocusManagerApp.registerHooks()
 
 Hooks.on(

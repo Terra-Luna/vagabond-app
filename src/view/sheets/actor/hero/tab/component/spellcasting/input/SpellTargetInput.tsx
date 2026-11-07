@@ -17,7 +17,7 @@ export const SpellTargetInput = ({
         <SpellcastingLabel text={delivery.targetLabel} />
         <span className="text-2xl font-eskapade">
           {readOnly ? (
-            <p>{delivery.targetTokenIds.length}</p>
+            <p>{delivery.targetCount}</p>
           ) : (
             <NumericCounterInput
               value={delivery.targetCount}

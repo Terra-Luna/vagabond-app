@@ -5,6 +5,7 @@ import { CanvasPreview } from "./CanvasPreview"
 /**
  * Makes an area follow the mouse over the canvas; a click pins it in place (click again to release it).
  * While active, left clicks and the wheel events a subclass handles are consumed.
+ * Right-click toggles the preview on/off.
  */
 export abstract class PlacedAreaPreview extends CanvasPreview {
 
@@ -27,6 +28,7 @@ export abstract class PlacedAreaPreview extends CanvasPreview {
   start() {
     this.view?.addEventListener("pointermove", this.onMove)
     this.view?.addEventListener("pointerdown", this.onClick, true)
+    this.view?.addEventListener("pointerdown", this.onRightClick, true)
     this.view?.addEventListener("wheel", this.onWheel, {
       capture: true,
       passive: false,
@@ -36,6 +38,7 @@ export abstract class PlacedAreaPreview extends CanvasPreview {
   stop() {
     this.view?.removeEventListener("pointermove", this.onMove)
     this.view?.removeEventListener("pointerdown", this.onClick, true)
+    this.view?.removeEventListener("pointerdown", this.onRightClick, true)
     this.view?.removeEventListener("wheel", this.onWheel, true)
     cancelAnimationFrame(this.frame)
     this.renderer.clear()
@@ -55,13 +58,14 @@ export abstract class PlacedAreaPreview extends CanvasPreview {
   }
 
   private onMove = (event: PointerEvent) => {
-    if (this.pinned) return
+    if (this.pinned || !this.isEnabled) return
     this.cursor = this.toWorld(event)
     this.schedule(() => this.draw())
   }
 
   private onClick = (event: PointerEvent) => {
     if (event.button !== 0) return
+    if (!this.isEnabled) return
     event.preventDefault()
     event.stopImmediatePropagation()
     const point = this.toWorld(event)
@@ -80,7 +84,29 @@ export abstract class PlacedAreaPreview extends CanvasPreview {
     this.onArea?.(this.render(point, true))
   }
 
+  private onRightClick = (event: PointerEvent) => {
+    if (event.button !== 2) return
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    // Unpin and clear any pinned rendering before toggling disabled
+    if (this.pinned) {
+      this.pinned = false
+      this.renderer.clearPinned()
+    }
+    this.toggleEnabled()
+    if (!this.isEnabled) {
+      this.renderer.clear()
+    }
+  }
+
+  protected onReEnabled() {
+    this.pinned = false
+    this.renderer.clearPinned()
+    this.draw()
+  }
+
   private onWheel = (event: WheelEvent) => {
+    if (!this.isEnabled) return
     if (!this.handleWheel(event)) return
     event.preventDefault()
     event.stopImmediatePropagation()

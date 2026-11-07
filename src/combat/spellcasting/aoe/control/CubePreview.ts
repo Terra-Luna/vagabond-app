@@ -29,11 +29,13 @@ export class CubePreview extends CanvasPreview {
   start() {
     this.view?.addEventListener("pointermove", this.onMove)
     this.view?.addEventListener("pointerdown", this.onClick, true)
+    this.view?.addEventListener("pointerdown", this.onRightClick, true)
   }
 
   stop() {
     this.view?.removeEventListener("pointermove", this.onMove)
     this.view?.removeEventListener("pointerdown", this.onClick, true)
+    this.view?.removeEventListener("pointerdown", this.onRightClick, true)
     cancelAnimationFrame(this.frame)
     this.renderer.clear()
     this.renderer.clearPinned()
@@ -62,12 +64,14 @@ export class CubePreview extends CanvasPreview {
   }
 
   private onMove = (event: PointerEvent) => {
+    if (!this.isEnabled) return
     this.hover = this.toWorld(event)
     this.schedule(() => this.draw())
   }
 
   private onClick = (event: PointerEvent) => {
     if (event.button !== 0) return
+    if (!this.isEnabled) return
     event.preventDefault()
     event.stopImmediatePropagation()
     const point = this.toWorld(event)
@@ -78,6 +82,26 @@ export class CubePreview extends CanvasPreview {
     const covered = this.draw()
     this.options.onArea?.(covered)
     this.options.onCount?.(this.placed.size)
+  }
+
+  private onRightClick = (event: PointerEvent) => {
+    if (event.button !== 2) return
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    this.toggleEnabled()
+    if (!this.isEnabled) {
+      this.renderer.clear()
+      this.renderer.clearPinned()
+    }
+  }
+
+  protected onReEnabled() {
+    this.draw()
+  }
+
+  clearPlaced() {
+    this.placed.clear()
+    this.draw()
   }
 
 }

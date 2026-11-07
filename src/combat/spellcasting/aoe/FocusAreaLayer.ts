@@ -19,6 +19,7 @@ export class FocusAreaLayer {
     string,
     { key: string; node: any; label: string; edges: [Point, Point][] }
   >()
+  private lastCombatRound: number | undefined
 
   registerHooks() {
     Hooks.on("canvasReady", () => {
@@ -39,6 +40,24 @@ export class FocusAreaLayer {
       if (!("rotation" in changed) && !isMovement(changed)) return
       if (doc.object) await LightSourceUtil.settleAnimations([doc.object])
       this.sync()
+    })
+    Hooks.on("updateScene", (_scene: any, changed: any) => {
+      if (foundry.utils.hasProperty(changed, `flags.${sys_id}`)) this.sync()
+    })
+    Hooks.on("updateCombat", (combat: any, changed: any) => {
+      // Clear temporary spell areas at the start of a new round
+      if ("round" in changed && combat.round !== this.lastCombatRound) {
+        this.lastCombatRound = combat.round
+        const scene = canvas?.scene
+        if (scene) {
+          // Use socket to have GM update the scene flag (players don't have permission)
+          game.socket?.emit(`system.${sys_id}`, {
+            action: "updateTemporarySpellAreas",
+            sceneId: scene.id,
+            areas: {},
+          })
+        }
+      }
     })
   }
 
@@ -61,6 +80,8 @@ export class FocusAreaLayer {
     if (!cv?.ready || !scene) return this.clear()
 
     const wanted = new Map<string, PlacedArea & { label: string }>()
+    
+    // Add focused spell areas
     for (const actor of game.actors ?? []) {
       for (const instance of FocusSpellUtil.instances(actor)) {
         const stored = instance.delivery?.area
@@ -71,6 +92,19 @@ export class FocusAreaLayer {
         const label = `${actor.name} - ${spellName} (${instance.delivery?.name})`
         wanted.set(instance.id, { ...stored, cells, label })
       }
+    }
+    
+    // Add temporary (non-focused) spell areas
+    const tempAreas = (scene.getFlag(sys_id, "temporarySpellAreas") as Record<string, any>) || {}
+    for (const [attackId, area] of Object.entries(tempAreas)) {
+      if (!area || !area.cells) continue
+      const cells = PlacedAreaCells.of(area)
+      if (!cells.length) continue
+      const spellName = area.spell?.name ?? "Unknown Spell"
+      const casterName = area.casterName ?? "Unknown Caster"
+      const deliveryName = area.delivery?.name ?? "Unknown Delivery"
+      const label = `${casterName} - ${spellName} (${deliveryName})`
+      wanted.set(`temp-${attackId}`, { ...area, cells, label })
     }
 
     for (const [id, entry] of this.drawn) {

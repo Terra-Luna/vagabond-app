@@ -5,6 +5,7 @@ export abstract class CanvasPreview {
 
   protected readonly view: HTMLElement | undefined
   protected frame = 0
+  protected isEnabled = true
 
   constructor() {
     const app = (canvas as any)?.app
@@ -30,6 +31,27 @@ export abstract class CanvasPreview {
   protected schedule(draw: () => void) {
     cancelAnimationFrame(this.frame)
     this.frame = requestAnimationFrame(draw)
+  }
+
+  /** Re-enables the preview if it was disabled. */
+  ensureEnabled() {
+    if (!this.isEnabled) {
+      this.isEnabled = true
+      this.onReEnabled()
+    }
+  }
+
+  /** Toggles preview enabled/disabled state. */
+  protected toggleEnabled() {
+    this.isEnabled = !this.isEnabled
+    if (this.isEnabled) {
+      this.onReEnabled()
+    }
+  }
+
+  /** Called when preview is re-enabled. Override in subclasses if needed. */
+  protected onReEnabled() {
+    // Default: no-op
   }
 
 }

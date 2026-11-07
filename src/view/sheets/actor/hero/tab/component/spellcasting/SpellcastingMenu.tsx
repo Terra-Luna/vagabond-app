@@ -323,6 +323,8 @@ export const useSpellCastingMenu = (
         : undefined
   const previewSize = previewShape ? (activeDelivery as Aura | Cone).size : 0
 
+  const auraPreviewShow = useRef<(() => void) | undefined>(undefined)
+
   /** Previews an Aura's or Cone's reach on the grid while its size is being adjusted. */
   useEffect(() => {
     if (!previewShape || !previewSize) return
@@ -333,6 +335,7 @@ export const useSpellCastingMenu = (
           ? renderer.showAura(actor, previewSize)
           : renderer.showCone(actor, previewSize),
       )
+    auraPreviewShow.current = show
     show()
     // Positions and rotation are staged while a token animates, so redraw once it has settled.
     const hookId = Hooks.on("updateToken", async (doc: any, changed: any) => {
@@ -350,6 +353,7 @@ export const useSpellCastingMenu = (
       cancelled = true
       Hooks.off("updateToken", hookId)
       renderer.clear()
+      auraPreviewShow.current = undefined
     }
   }, [
     previewShape,
@@ -364,20 +368,29 @@ export const useSpellCastingMenu = (
   const isSpherePreview = isSpellcastingOpen && activeDelivery instanceof Sphere
   const previewSizeRef = useRef(previewSize)
   previewSizeRef.current = previewSize
+  const wheelResizeListener = useRef<WheelResizeListener | undefined>(undefined)
 
   /** Shift+scroll resizes an Aura or Cone. */
   useEffect(() => {
     if (!previewShape) return
     const area = activeDelivery as Aura | Cone
-    const listener = new WheelResizeListener({
-      getSize: () => previewSizeRef.current,
-      minSize: area.baseSize,
-      step: area.increment,
-      onResize: (size) => onUpdateAreaSize(String(size)),
-    })
+    const listener = new WheelResizeListener(
+      {
+        getSize: () => previewSizeRef.current,
+        minSize: area.baseSize,
+        step: area.increment,
+        onResize: (size) => onUpdateAreaSize(String(size)),
+        onReEnable: () => auraPreviewShow.current?.(),
+      },
+      renderer,
+    )
+    wheelResizeListener.current = listener
     listener.start()
-    return () => listener.stop()
-  }, [previewShape, onUpdateAreaSize])
+    return () => {
+      listener.stop()
+      wheelResizeListener.current = undefined
+    }
+  }, [previewShape, onUpdateAreaSize, renderer])
   const sphereSize = isSpherePreview ? (activeDelivery as Sphere).size : 0
   const sphereSizeRef = useRef(sphereSize)
   sphereSizeRef.current = sphereSize
@@ -407,6 +420,7 @@ export const useSpellCastingMenu = (
   }, [sphereSize, damageType, targetingPref])
 
   const isCubePreview = isSpellcastingOpen && activeDelivery instanceof Cube
+  const cubePreview = useRef<CubePreview | undefined>(undefined)
 
   /** Clicking the canvas drops a Cube there and raises the Cube count. */
   useEffect(() => {
@@ -415,11 +429,16 @@ export const useSpellCastingMenu = (
       onCount: (count) => onUpdateTargetCount(String(count)),
       onArea: targetArea,
     })
+    cubePreview.current = preview
     preview.start()
-    return () => preview.stop()
-  }, [isCubePreview, onUpdateTargetCount, targetArea, renderer])
+    return () => {
+      preview.stop()
+      cubePreview.current = undefined
+    }
+  }, [isCubePreview, onUpdateTargetCount, targetArea, renderer, selectedSpellId])
 
   const isGlyphPreview = isSpellcastingOpen && activeDelivery instanceof Glyph
+  const glyphPreview = useRef<CubePreview | undefined>(undefined)
 
   /** A Glyph is a single square; clicking again moves it. */
   useEffect(() => {
@@ -429,9 +448,13 @@ export const useSpellCastingMenu = (
       onArea: targetArea,
       icon: IconLayer.GLYPH,
     })
+    glyphPreview.current = preview
     preview.start()
-    return () => preview.stop()
-  }, [isGlyphPreview, targetArea, renderer])
+    return () => {
+      preview.stop()
+      glyphPreview.current = undefined
+    }
+  }, [isGlyphPreview, targetArea, renderer, selectedSpellId])
 
   const isLinePreview = isSpellcastingOpen && activeDelivery instanceof Line
   const line = isLinePreview ? (activeDelivery as Line) : undefined
@@ -468,6 +491,15 @@ export const useSpellCastingMenu = (
     linePreview.current?.refresh()
   }, [lineLength, lineWidth, damageType, targetingPref])
 
+  /** Re-enable previews when spell or delivery changes. */
+  useEffect(() => {
+    spherePreview.current?.ensureEnabled()
+    linePreview.current?.ensureEnabled()
+    cubePreview.current?.ensureEnabled()
+    glyphPreview.current?.ensureEnabled()
+    wheelResizeListener.current?.ensureEnabled()
+  }, [deliveryIndex, selectedSpellId])
+
   const targetOrAreaInput = () => {
     if (deliveries[deliveryIndex] instanceof AreaOfEffectDelivery) {
       return (
@@ -488,7 +520,7 @@ export const useSpellCastingMenu = (
           <SpellTargetInput
             delivery={delivery}
             onUpdateTargetCount={onUpdateTargetCount}
-            readOnly={delivery instanceof Remote || delivery instanceof Imbue}
+            readOnly={delivery instanceof Remote || delivery instanceof Imbue || delivery instanceof Cube || delivery instanceof Glyph}
           />
         )
       }
@@ -636,16 +668,46 @@ export const useSpellCastingMenu = (
         )
       }
       else {
-        const area = delivery.isFocused ? focusedArea(delivery) : undefined
+        const area = focusedArea(delivery)
         const toCast = area
           ? Object.assign(delivery.clone(), { area })
           : delivery
-        HeroAttack.buildSpellAttack(hero.parent, sk, toCast, e)?.initiate(e, {
-          requireFocusUpkeep: true,
-        })
+        const attack = HeroAttack.buildSpellAttack(hero.parent, sk, toCast, e)
+        if (attack) {
+          // Store non-focused spell areas in a temporary scene flag for all clients to see
+          if (area && !delivery.isFocused) {
+            const sceneId = canvas?.scene?.id
+            const existingAreas = (canvas?.scene?.getFlag(
+              sys_id,
+              "temporarySpellAreas",
+            ) as Record<string, any>) || {}
+            const attackId = attack.id
+            existingAreas[attackId] = {
+              ...area,
+              casterName: hero.parent.name,
+              spell: { name: delivery.spell.name },
+              delivery: { name: delivery.name },
+            }
+            // Use socket to have GM update the scene flag (players don't have permission)
+            game.socket?.emit(`system.${sys_id}`, {
+              action: "updateTemporarySpellAreas",
+              sceneId,
+              areas: existingAreas,
+            })
+          }
+          attack.initiate(e, { requireFocusUpkeep: true })
+        }
       }
       onCast?.()
       if (imbueMode && cast) onClose?.()
+       
+      if (delivery instanceof Cube || delivery instanceof Glyph) {
+        // Clear the placed cubes for the next cast
+        cubePreview.current?.clearPlaced()
+        updateDeliveries((d) => {
+          if (d instanceof Cube || d instanceof Glyph) d.setTargetCount(0)
+        })
+      }
     }
   }
 
