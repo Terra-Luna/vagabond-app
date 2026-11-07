@@ -1208,7 +1208,6 @@
       "canvasControlsRotate": "<b>Ctrl + scroll:</b> Turn the Line 45°.",
       "canvasControlsRotateToken": "<b>Ctrl + scroll:</b> Rotate your token to aim the Cone.",
       "canvasControlsToggle": "<b>Right-click:</b> Toggle the selection's visibility.",
-      "castCheckFailed": "A failed Cast check cannot apply the spell's effects.",
       "focusRepeatSkip": "Skip",
       "focusSummaryFocused": "Focused",
       "focusNothingDue": "You aren't Focusing on any Spells right now...",
