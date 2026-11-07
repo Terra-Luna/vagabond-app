@@ -1110,8 +1110,13 @@ const inTurnOrder = (combatants: VagabondCombatant[], group: string) => {
     const i = turns.findIndex((t) => t.id === c.id)
     return i < 0 ? Number.MAX_SAFE_INTEGER : i
   }
+  const currentScene = canvas?.scene
   return (combatants ?? [])
-    .filter((c) => c.actor && c.combatGroup === group)
+    .filter((c) => {
+      if (!c.actor || c.combatGroup !== group) return false
+      const tokenId = c.token?._id
+      return tokenId && currentScene?.tokens?.get(tokenId) !== undefined
+    })
     .sort((a, b) => turnIndex(a) - turnIndex(b))
 }
 const getHeroes = (combatants: VagabondCombatant[]) =>
