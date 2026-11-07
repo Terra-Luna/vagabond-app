@@ -75,7 +75,7 @@ export const useAlchemySelection = (
   }, [revision])
 
   useEffect(() => {
-    if (!clazz || !alchemySlots.length) return
+    if (!actor.isOwner || !clazz || !alchemySlots.length) return
 
     const rules = getItemRules(clazz)
     const selectionUpdates: Record<string, any> = {}
@@ -111,7 +111,7 @@ export const useAlchemySelection = (
     if (hasChanges) {
       saveItemRuleSelections(clazz, selectionUpdates)
     }
-  }, [alchemySlots])
+  }, [actor.isOwner, alchemySlots])
 
   return { AlchemySelectionView, alchemyItems, alchemySlots }
 }

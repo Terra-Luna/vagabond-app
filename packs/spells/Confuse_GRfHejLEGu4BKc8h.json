@@ -14,7 +14,8 @@
         "critDuration": "continual"
       }
     ],
-    "ignoreEffectCost": true
+    "ignoreEffectCost": true,
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

@@ -15,7 +15,8 @@
         "duration": "Cd4",
         "critDuration": "Cd6"
       }
-    ]
+    ],
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

@@ -38,6 +38,8 @@ export type FocusInstance = {
   litIds?: string[]
   /** The one late check this round (key) has been triggered for a newcomer. */
   lateKey?: string
+  /** Area Focuses: tokens that became targets but haven't had the spell's effects applied yet (upkeep unpaid). */
+  fxPendingIds?: string[]
 }
 
 export const FOCUS_FX_FLAG = "focusedSpellFx"
@@ -232,6 +234,24 @@ export class FocusSpellUtil {
     if (releasesPolymorph && !deferPolymorph) {
       await PolymorphUtil.releaseAllPolymorphs(actor)
     }
+  }
+
+  /** Ends this Focus's effects on specific targets (by actor uuid) while the Focus continues. Focus-exempt spells keep no records, so their effects are untouched. */
+  static async releaseFor(actor: any, focusId: string, targetUuids: string[]) {
+    if (!targetUuids.length) return
+    const records = FocusSpellUtil.records(actor)
+    const ended = records.filter(
+      (r) => r.focusId === focusId && targetUuids.includes(r.targetUuid ?? ""),
+    )
+    if (!ended.length) return
+    await actor.update(
+      {
+        [`flags.${sys_id}.${FOCUS_FX_FLAG}`]: records.filter(
+          (r) => !ended.includes(r),
+        ),
+      },
+      { [FOCUS_DROP_OPTION]: ended },
+    )
   }
 
   /** Damage breaks every Focus. In combat the effects linger until the next round starts; out of combat they end now. */

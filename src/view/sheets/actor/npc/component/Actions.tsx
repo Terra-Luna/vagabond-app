@@ -200,8 +200,9 @@ export const Actions = ({
 
       {/* DISPLAY COMBO FIRST */}
       <div
-        className={`${isPolymorph && !hero ? "" : "hover-glow"}`}
+        className={`${isPolymorph && !hero?.isOwner ? "" : "hover-glow"}`}
         onClick={(e) => {
+          if (isPolymorph && !hero?.isOwner) return
           const follower = isPolymorph
             ? undefined
             : getFollowerContext(npc.parent)
@@ -255,6 +256,7 @@ export const Actions = ({
           )
 
           const attack = async (e: React.MouseEvent, useAvgDmg?: boolean) => {
+            if (isPolymorph && !hero?.isOwner) return
             const roll: DiceRollSchema = useAvgDmg
               ? { count: 0, faces: avgDamage }
               : (action.damage.dice as DiceRollSchema)
@@ -320,7 +322,7 @@ export const Actions = ({
             : undefined
           const damageElement = (
             <p
-              className={`${damageRoll} leading-none cursor-pointer hover-glow`}
+              className={`${damageRoll} leading-none ${!isPolymorph || hero?.isOwner ? "cursor-pointer hover-glow" : ""}`}
               onClick={(e) => attack(e)}
             >
               {polyAttack?.damageRoll?.toString() ??
@@ -372,7 +374,7 @@ export const Actions = ({
                 <div className="flex flex-col">
                   {/* ACTION NAME */}
                   <p
-                    className="font-bold hover-glow cursor-pointer"
+                    className={`font-bold ${!isPolymorph || hero?.isOwner ? "hover-glow cursor-pointer" : ""}`}
                     onClick={(e) => attack(e)}
                   >
                     {action.name}
@@ -385,7 +387,7 @@ export const Actions = ({
                       <EnrichedContent
                         content={action.description}
                         styleClasses="text-xs text-text-secondary italic"
-                        actor={npc.parent}
+                        actor={isPolymorph ? hero : npc.parent}
                       />
                     )}
 
@@ -397,6 +399,7 @@ export const Actions = ({
                         </p>
                         {polyPreset && hero ? (
                           <Tooltip
+                            disabled={!hero.isOwner}
                             content={
                               <RollBuilderView
                                 actor={hero}

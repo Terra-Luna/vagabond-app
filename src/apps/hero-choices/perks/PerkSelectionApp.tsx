@@ -1,9 +1,10 @@
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { appLang } from "../../../util/lang"
-import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
+import { OwnerHeroApplication } from "../../OwnerHeroApplication"
+import { VagabondAppArgs } from "../../VagabondApplication"
 import { usePerkSelection } from "./PerkSelectionUseCase"
 
-export class PerkSelectionApp extends VagabondApplication {
+export class PerkSelectionApp extends OwnerHeroApplication {
 
   actor: Actor & { system: HeroDataModel }
   isLevelUp?: boolean

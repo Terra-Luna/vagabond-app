@@ -2,12 +2,26 @@ import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { appLang } from "../../util/lang"
 import type { EmitsLight } from "../engine/util/active-effect-fx"
 
+export interface PlacedArea {
+  sceneId: string
+  /** Centers of the grid squares the area covers. Empty for areas that follow the caster. */
+  cells: { x: number; y: number }[]
+  /** Set for Auras and Cones: the area is recomputed from the caster's token whenever it moves or turns. */
+  follow?: { kind: "aura" | "cone"; size: number; actorId: string }
+  /** CSS color of the area, taken from the spell's damage type. */
+  color: string
+  /** Image drawn in each square (Glyphs). */
+  icon?: string
+}
+
 export interface SpellDeliverySnapshot {
   name: string
   applyEffect: boolean
   isFocused: boolean
   /** Set once the cast spent a Focus; links applied effects to that Focus. */
   focusId?: string
+  /** The canvas area the caster marked; drawn for everyone while the Focus lasts. */
+  area?: PlacedArea
   damageDice?: number
   isArea?: boolean
   /** Area deliveries: overall size, plus width and height for Lines. */
@@ -36,6 +50,7 @@ export interface SpellSnapshot {
   appliedEffects: { effect: string; duration: string; critDuration: string }[]
   appliedActiveEffects?: { uuid: string; duration?: string }[]
   emitsLight?: EmitsLight
+  autoTargetingPref?: string
 }
 
 export interface DeliveryMods {
@@ -62,6 +77,8 @@ export abstract class SpellDelivery {
 
   applyEffect = false
   isFocused = false
+  /** Set just before casting a Focused spell, so the area can persist on the canvas. */
+  area?: PlacedArea
   damageDice = 1
   upcast = 0
   studyDamageDice = 0
@@ -153,6 +170,7 @@ export abstract class SpellDelivery {
       name: this.name,
       applyEffect: this.applyEffect,
       isFocused: this.isFocused,
+      ...(this.area && { area: this.area }),
       damageDice: this.damageDice,
       isArea: this instanceof AreaOfEffectDelivery,
       ...(this instanceof AreaOfEffectDelivery && { size: this.size }),
@@ -183,6 +201,7 @@ export abstract class SpellDelivery {
       upcastableEffectDieRoll: spell.system.upcastableEffectDieRoll,
       focusExempt: spell.system.focusExempt,
       upkeep: spell.system.upkeep as SpellSnapshot["upkeep"],
+      autoTargetingPref: spell.system.autoTargetingPref,
     }
   }
 

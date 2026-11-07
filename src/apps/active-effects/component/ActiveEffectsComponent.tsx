@@ -149,14 +149,14 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
               </Tooltip>
 
               {/* TOGGLE SWITCH */}
-              {game.user?.isActiveGM &&
-                eff.changes &&
-                eff.changes.length > 0 && (
-                  <ActiveEffectButtons
-                    effect={eff}
-                    onToggle={() => onToggle(eff.id)}
-                  />
-                )}
+              {game.user?.isActiveGM && (
+                <ActiveEffectButtons
+                  effect={eff}
+                  showToggle={!!eff.changes && eff.changes.length > 0}
+                  onToggle={() => onToggle(eff.id)}
+                  onDelete={() => onDelete(eff.id)}
+                />
+              )}
             </li>
           ))}
       </DynamicGrid>

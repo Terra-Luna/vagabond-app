@@ -10,9 +10,15 @@ import { DiceRollComponent } from "./component/DiceRollComponent"
 export const SkillCheckChatCard = ({
   actorId,
   result,
+  focusTitle,
+  icon,
 }: {
   actorId: string
   result: SkillCheckResult
+  /** Set for Focus checks: replaces the skill-based title. */
+  focusTitle?: string
+  /** Spell icon shown beside the d20 on Focus checks. */
+  icon?: string
 }) => {
   const actor = game.actors?.get(actorId)
 
@@ -22,7 +28,10 @@ export const SkillCheckChatCard = ({
         <ChatCardBanner
           tokenId={actor?.getActiveTokens()[0]?.id}
           portrait={getTokenImg(actor)}
-          title={`${appLang.Skills[result.skill]?.name ?? appLang.Saves[result.skill]?.name} Check`}
+          title={
+            focusTitle ??
+            `${appLang.Skills[result.skill]?.name ?? appLang.Saves[result.skill]?.name} Check`
+          }
           subtitle={[
             {
               label: appLang.Combat.difficulty,
@@ -40,6 +49,7 @@ export const SkillCheckChatCard = ({
             modifier={result.modifier}
             favHinder={result.favorHinder}
             bonusDice={result.bonusDice}
+            icon={icon}
           />
         </>
       }
@@ -53,12 +63,14 @@ export const SkillCheckDiceComponent = ({
   modifier,
   favHinder,
   bonusDice,
+  icon,
 }: {
   d20s?: number[]
   d6s?: number[]
   modifier?: number
   favHinder?: string
   bonusDice?: { faces: number; result: number }[]
+  icon?: string
 }) => {
   const favorHinderDice: number[] = d6s ?? []
   d20s = d20s ?? []
@@ -66,6 +78,9 @@ export const SkillCheckDiceComponent = ({
 
   return (
     <div className="flex flex-wrap px-1 gap-x-1 mt-2 justify-center items-center">
+      {icon && (
+        <img src={icon} alt="" className="w-12 h-12 rounded-md object-cover" />
+      )}{" "}
       {/* D20 DICE ARRAY */}
       {d20s.map((d20: number, index: number) => (
         <DiceRollComponent
@@ -102,7 +117,6 @@ export const SkillCheckDiceComponent = ({
           ))}
         </div>
       )}
-
       {/* BONUS DICE */}
       {bonusDice?.map((bonusDie, index) => (
         <div className="flex items-center" key={index}>
@@ -115,7 +129,6 @@ export const SkillCheckDiceComponent = ({
           />
         </div>
       ))}
-
       {/* MODIFIER */}
       {modifier !== 0 && (
         <div className="flex items-center -mt-3">

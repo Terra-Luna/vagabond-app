@@ -424,6 +424,7 @@ const Save = ({
   return (
     <Tooltip
       interactive={true}
+      disabled={!hero.parent.isOwner}
       maxWidth="max-w-[24rem]"
       content={
         <RollBuilderView
@@ -446,8 +447,9 @@ const Save = ({
       }
     >
       <div
-        className={`flex items-center font-eskapade hover-glow ${tableBorder}/50`}
+        className={`flex items-center font-eskapade ${hero.parent.isOwner ? "hover-glow" : ""} ${tableBorder}/50`}
         onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
+          if (!hero.parent.isOwner) return
           const skillCheck = await new SkillCheck(hero, {
             type: "save",
             skill: save.key,
@@ -535,6 +537,7 @@ export const Skill = ({
   return (
     <Tooltip
       interactive={true}
+      disabled={!hero.parent.isOwner}
       maxWidth="max-w-[24rem]"
       content={
         <RollBuilderView
@@ -563,8 +566,9 @@ export const Skill = ({
           size={18}
         />
         <div
-          className={`flex justify-between ml-2 mt-1 w-full min-w-0 text-base font-eskapade font-bold align-middle hover-glow`}
+          className={`flex justify-between ml-2 mt-1 w-full min-w-0 text-base font-eskapade font-bold align-middle ${hero.parent.isOwner ? "hover-glow" : ""}`}
           onClick={async (e: React.MouseEvent<HTMLDivElement>) => {
+            if (!hero.parent.isOwner) return
             const skillCheck = await new SkillCheck(hero, {
               type: "check",
               skill: skillKey,
@@ -578,7 +582,7 @@ export const Skill = ({
         >
           <div className="flex gap-x-2 items-center min-w-0">
             <span className="truncate">{name}</span>
-            {isCastSkill && (
+            {isCastSkill && hero.parent.isOwner && (
               <IconOnlyButton
                 Icon={Wand2}
                 size={18}

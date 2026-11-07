@@ -4,7 +4,8 @@ import { showConfirmationDialog } from "../apps/vagabond-tools/dialog/Confirmati
 import { CountdownManager } from "../apps/vagabond-tools/usecase/CountdownManager"
 import { getRealtimeLightsources } from "../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { CountdownRoll } from "../combat/engine/roll/CountdownRoll"
-import { isImmuneToBurning } from "../combat/engine/util/burning-mitigation"
+import type { LightFx } from "../combat/engine/util/active-effect-fx"
+import { absorbsBurning, isImmuneToBurning } from "../combat/engine/util/burning-mitigation"
 import { getBeingTypes, isImmuneToStatus } from "../combat/engine/util/damage-mitigation"
 import { StatusEffectUtil } from "../model/actor/util/StatusEffectUtil"
 import type { CtxMenuItem } from "../view/component/ContextMenu"
@@ -48,6 +49,8 @@ type GrantedLight = {
   burns?: string[]
   damageType?: string
   burnDamage?: string
+  /** Icon shown on the token for this light, e.g. the spell that cast it. */
+  img?: string
 }
 
 type Point = { x: number; y: number }
@@ -400,7 +403,7 @@ export class LightSourceUtil {
     return {
       id: LightSourceUtil.GRANTED_FLAG,
       focused: !!granted.focused,
-      img: "icons/magic/light/explosion-star-glow-yellow.webp",
+      img: granted.img || "icons/magic/light/explosion-star-glow-yellow.webp",
       system: {
         lightSourceData: {
           range: granted.range,
@@ -621,14 +624,59 @@ export class LightSourceUtil {
       if (token.document?.disposition !== -1 || !token.actor) return false
       if (!LightSourceUtil.reaches(token, emitter)) return false
       const types = getBeingTypes(token.actor)
-      if (emitter.burns.some((b) => types.includes(b))) return true
+      if (
+        emitter.burns.some((b) => types.includes(b)) &&
+        !isImmuneToBurning(token.actor, emitter.damageType) &&
+        !absorbsBurning(token.actor, emitter.damageType) &&
+        (emitter.burnDamage || !isImmuneToStatus(token.actor, "burning"))
+      )
+        return true
+      if (isImmuneToStatus(token.actor, "burning")) return false
       const effects: AppliedEffect[] =
         token.actor.system?.modifiers?.misc?.light?.[emitter.lightType]
           ?.effects ?? []
       return effects.some(
-        (fx) => fx.mode === "status" && fx.status === "burning",
+        (fx) =>
+          fx.mode === "status" &&
+          fx.status === "burning" &&
+          !isImmuneToBurning(token.actor, fx.damageType) &&
+          !absorbsBurning(token.actor, fx.damageType),
       )
     })
+  }
+
+  /** Hostiles a proposed light would burn when applied to the specified tokens. */
+  static harmedHostilesForLight(
+    tokenIds: string[],
+    light: LightFx,
+    focused = false,
+  ): any[] {
+    if (!canvas?.ready || !tokenIds.length || light.range <= 0) return []
+    const sources = LightSourceUtil.sceneTokens().filter((token) => {
+      if (!tokenIds.includes(token.document?.id) || !token.actor) return false
+      return (
+        focused ||
+        !LightSourceUtil.grantedLights(token.actor).some(
+          (existing) => existing.type !== light.type && existing.focused,
+        )
+      )
+    })
+    return [
+      ...new Set(
+        sources.flatMap((token) =>
+          LightSourceUtil.harmedBy({
+            id: token,
+            center: LightSourceUtil.centerOf(token),
+            range: light.range,
+            ignoresWalls: false,
+            burns: light.burns,
+            damageType: light.damageType,
+            burnDamage: light.burnDamage,
+            lightType: light.type,
+          }),
+        ),
+      ),
+    ]
   }
 
   /** Hostile tokens harmed by the light shed by the given tokens (or by the actor's own token when none are given). */
@@ -762,9 +810,17 @@ export class LightSourceUtil {
       else toDelete.push(...existing.slice(1).map((e) => e.id))
     }
     if (toCreate.length)
-      updates.push(actor.createEmbeddedDocuments("ActiveEffect", toCreate))
+      updates.push(
+        actor.createEmbeddedDocuments("ActiveEffect", toCreate, {
+          animate: false,
+        }),
+      )
     if (toDelete.length)
-      updates.push(actor.deleteEmbeddedDocuments("ActiveEffect", toDelete))
+      updates.push(
+        actor.deleteEmbeddedDocuments("ActiveEffect", toDelete, {
+          animate: false,
+        }),
+      )
     return Promise.all(updates)
   }
 
@@ -824,7 +880,10 @@ export class LightSourceUtil {
             e.getFlag(sys_id, LightSourceUtil.RULE_FX_FLAG) === rest.join(":"),
         )
         .map((e: any) => e.id)
-      if (ids.length) await actor.deleteEmbeddedDocuments("ActiveEffect", ids)
+      if (ids.length)
+        await actor.deleteEmbeddedDocuments("ActiveEffect", ids, {
+          animate: false,
+        })
       return
     }
     const [status, damageType] = rest
@@ -851,7 +910,9 @@ export class LightSourceUtil {
     data.flags = foundry.utils.mergeObject(data.flags ?? {}, {
       [sys_id]: { [LightSourceUtil.RULE_FX_FLAG]: effect.uuid },
     })
-    await actor.createEmbeddedDocuments("ActiveEffect", [data])
+    await actor.createEmbeddedDocuments("ActiveEffect", [data], {
+      animate: false,
+    })
   }
 
   private static async applyStatus(token: any, effect: AppliedEffect) {
@@ -1069,6 +1130,34 @@ export class LightSourceUtil {
       Hooks.on(hook as any, inject)
   }
 
+  private static effectIcons: Partial<Record<LightKind, string>> = {}
+  private static effectIconsLoading = false
+
+  /** Sunlit/Moonlit effect icon for sun/moon lights; any other light uses its own icon. Loads icons lazily, then redraws overlays. */
+  private static overlayIcon(lit: any): string {
+    const data = lit.system?.lightSourceData ?? {}
+    const type = LightSourceUtil.lightType(data)
+    if (type === "none") return lit.img
+    const icon = LightSourceUtil.effectIcons[type]
+    if (icon) return icon
+    if (!LightSourceUtil.effectIconsLoading) {
+      LightSourceUtil.effectIconsLoading = true
+      void LightSourceUtil.loadEffectIcons()
+    }
+    return lit.img
+  }
+
+  private static async loadEffectIcons() {
+    for (const type of LIGHT_TYPES) {
+      const effect = (await fromUuid(
+        LightSourceUtil.EFFECT_UUIDS[type] as any,
+      )) as any
+      if (effect?.img) LightSourceUtil.effectIcons[type] = effect.img
+    }
+    for (const token of (canvas?.tokens?.placeables ?? []) as any[])
+      token.renderFlags?.set({ refreshState: true })
+  }
+
   /* Small, round icon in upper right of Actor's token when emitting light from an item. */
   private static registerTokenOverlay() {
     const refreshActorTokens = (item: any) => {
@@ -1108,9 +1197,10 @@ export class LightSourceUtil {
         token._vagabondLightIcon = overlay
         token.addChild(overlay)
       }
-      if (overlay.src !== lit.img) {
-        overlay.src = lit.img
-        overlay.sprite.texture = PIXI.Texture.from(lit.img)
+      const icon = LightSourceUtil.overlayIcon(lit)
+      if (overlay.src !== icon) {
+        overlay.src = icon
+        overlay.sprite.texture = PIXI.Texture.from(icon)
       }
 
       const size = Math.max(12, Math.min(token.w, token.h) * 0.3)

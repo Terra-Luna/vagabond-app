@@ -5,6 +5,7 @@ import { localizeString } from "../../util/locale-util"
 import { isLightFx, parseLightFx } from "../engine/util/active-effect-fx"
 import { isNewEntrant, owesLateCheck } from "./focus-late-check"
 import { currentRoundKey } from "./focus-round"
+import { FocusAreaExposure } from "./FocusAreaExposure"
 import { FocusUpkeep } from "./FocusUpkeep"
 
 /**
@@ -53,7 +54,44 @@ export class FocusLightExposure {
    * When the upkeep is already settled this round, a Hostile that just moved in takes the light's damage immediately,
    * as do Hostiles whose entry is what triggered an upkeep that has since been paid.
    */
-  static async evaluate(movedToken?: any, quiet = false) {
+  /** Evaluations queue up so overlapping triggers (several tokens moving at once) never act on stale instances. */
+  private static queue: Promise<unknown> = Promise.resolve()
+
+  static evaluate(movedToken?: any, quiet = false): Promise<void> {
+    return FocusLightExposure.enqueue(() =>
+      FocusLightExposure.evaluateNow(movedToken, quiet),
+    )
+  }
+
+  /** Refresh and evaluate together so actor and token hooks cannot race the round-start updates. */
+  static evaluateRound(combat: any, round: number): Promise<void> {
+    return FocusLightExposure.enqueue(async () => {
+      if (
+        game.combat?.id !== combat.id ||
+        combat.round !== round ||
+        !combat.started
+      )
+        return
+      await FocusUpkeep.refreshAreas()
+      if (
+        game.combat?.id !== combat.id ||
+        combat.round !== round ||
+        !combat.started
+      )
+        return
+      await FocusLightExposure.evaluateNow(undefined, true)
+    })
+  }
+
+  private static enqueue(work: () => Promise<void>): Promise<void> {
+    const run = FocusLightExposure.queue.then(work)
+    FocusLightExposure.queue = run.catch((e) =>
+      console.error("Focus exposure evaluation failed", e),
+    )
+    return run
+  }
+
+  private static async evaluateNow(movedToken?: any, quiet = false) {
     const combat = game.combat as any
     if (!game.user?.isActiveGM || !canvas?.ready || !combat?.started) return
     if (movedToken) {
@@ -66,7 +104,11 @@ export class FocusLightExposure {
     )
     for (const hero of heroes) {
       for (const instance of FocusSpellUtil.instances(hero)) {
-        if (!FocusLightExposure.isLightBurn(hero, instance)) continue
+        if (
+          !FocusLightExposure.isLightBurn(hero, instance) &&
+          !FocusAreaExposure.hasArea(instance)
+        )
+          continue
         await FocusLightExposure.evaluateInstance(hero, instance, {
           combat,
           key,
@@ -83,24 +125,34 @@ export class FocusLightExposure {
     ctx: { combat: any; key: string; movedToken?: any; quiet: boolean },
   ) {
     const { combat, key, movedToken, quiet } = ctx
-    const harmed = LightSourceUtil.harmedHostiles(hero, it.targetIds)
-    const entered = movedToken && harmed.includes(movedToken)
-    const castThisRound = it.round === combat.round
+    const isArea = FocusAreaExposure.hasArea(it)
+    const harmed = FocusLightExposure.harmedBy(hero, it)
+    const baseline = it.litKey === key ? (it.litIds ?? []) : undefined
+    // Areas also catch Hostiles that were carried in (e.g. the caster moved), not just ones that moved themselves.
+    const entrants = harmed.filter(
+      (t) =>
+        t === movedToken || (isArea && !!baseline && !baseline.includes(t.id)),
+    )
+    const entered = entrants.length > 0
+    const castThisRound = it.combatId === combat.id && it.round === combat.round
     const settled = castThisRound || it.paidKey === key
 
-    const newcomer = isNewEntrant(
-      entered ? movedToken.id : undefined,
-      it.litKey,
-      it.litIds,
-      key,
+    const newcomer = entrants.some((t) =>
+      isNewEntrant(t.id, it.litKey, it.litIds, key),
     )
+    // A late check is owed once per round per spellcast, however many separate squares an area has, so only the
+    // first newcomer (not one that was inside when the round began) triggers it; `lateKey` blocks the rest.
+    // Cast with nobody to check against (no Hostile in range yet): the first one arriving later this round owes the check.
+    const uncheckedCast =
+      castThisRound && it.litKey === key && !(it.litIds ?? []).length
     const late = owesLateCheck({
       isNewcomer: newcomer,
-      alreadyPaid: !castThisRound && it.paidKey === key,
+      alreadyPaid: (!castThisRound && it.paidKey === key) || uncheckedCast,
       lateKey: it.lateKey,
       key,
     })
     await FocusLightExposure.trackLit(hero, it, harmed, key)
+    if (isArea && entered) await FocusAreaExposure.admit(hero, it, entrants)
 
     if (late) {
       await FocusSpellUtil.update(hero, it.id, {
@@ -108,30 +160,52 @@ export class FocusLightExposure {
         doneKey: undefined,
         failedKey: undefined,
         exposedKey: key,
-        exposedBy: [movedToken.id],
+        exposedBy: entrants.map((t) => t.id as string),
         lateKey: key,
       })
-      if (!quiet) FocusLightExposure.notifyLateCheck(hero)
+      if (!quiet) FocusLightExposure.notifyLateCheck(hero, it, key)
     }
     else if (settled) {
-      await FocusLightExposure.burnEntrants(hero, it, harmed, key, movedToken)
+      if (isArea) await FocusAreaExposure.applyPendingFx(hero, it.id)
+      else
+        await FocusLightExposure.burnEntrants(hero, it, harmed, key, movedToken)
     }
     else if (it.exposedKey !== key) {
       if (!harmed.length) return
       await FocusSpellUtil.update(hero, it.id, {
         exposedKey: key,
-        exposedBy: entered ? [movedToken.id] : [],
+        exposedBy: entrants.map((t) => t.id as string),
       })
-      if (!quiet) FocusLightExposure.notifyLateCheck(hero)
+      if (!quiet) FocusLightExposure.notifyLateCheck(hero, it, key)
     }
-    else if (entered && !(it.exposedBy ?? []).includes(movedToken.id)) {
-      await FocusSpellUtil.update(hero, it.id, {
-        exposedBy: [...(it.exposedBy ?? []), movedToken.id],
-      })
+    else if (entered) {
+      const known = it.exposedBy ?? []
+      const added = entrants
+        .map((t) => t.id as string)
+        .filter((id) => !known.includes(id))
+      if (added.length)
+        await FocusSpellUtil.update(hero, it.id, {
+          exposedBy: [...known, ...added],
+        })
     }
   }
 
-  private static notifyLateCheck(hero: any) {
+  /** Hostiles that make this Focus owe upkeep: those a burning light harms, and anyone in a placed area. */
+  private static harmedBy(hero: any, it: FocusInstance): any[] {
+    const light = FocusLightExposure.isLightBurn(hero, it)
+      ? LightSourceUtil.harmedHostiles(hero, it.targetIds)
+      : []
+    const inArea = FocusAreaExposure.hostilesIn(it)
+    return [...new Set([...light, ...inArea])]
+  }
+
+  private static readonly notified = new Set<string>()
+
+  /** Shown once per hero, Focus and round, however many times the check is re-evaluated. */
+  private static notifyLateCheck(hero: any, it: FocusInstance, key: string) {
+    const id = `${hero.id}:${it.id}:${key}`
+    if (FocusLightExposure.notified.has(id)) return
+    FocusLightExposure.notified.add(id)
     ui.notifications?.info(
       localizeString(appLang.Spellcasting.focusLateCheck, {
         name: hero.name ?? "",

@@ -32,6 +32,16 @@ interface PolymorphStatBlock {
   system: NpcDataModel
 }
 
+export interface PolymorphFormSnapshot {
+  id: string
+  uuid: string
+  name: string
+  img: string
+  prototypeToken: any
+  items: any[]
+  system: any
+}
+
 export class PolymorphUtil {
 
   /**
@@ -138,6 +148,42 @@ export class PolymorphUtil {
       StatusEffectUtil.toggleStatusEffectOnce(caster, "focusing", true)
     }
   }
+
+  /**
+   * A plain, serializable copy of a stat block with just what a polymorph reads, so a chat card can carry it to
+   * players who lack permission to load the source Actor.
+   */
+  static snapshotForm = (form: any): PolymorphFormSnapshot => {
+    const token = form.prototypeToken
+    return {
+      id: form.id,
+      uuid: form.uuid,
+      name: form.name,
+      img: form.img,
+      prototypeToken: {
+        width: token?.width,
+        height: token?.height,
+        depth: token?.depth,
+        texture: {
+          src: token?.texture?.src,
+          scaleX: token?.texture?.scaleX,
+          scaleY: token?.texture?.scaleY,
+        },
+        ring: { subject: { texture: token?.ring?.subject?.texture } },
+      },
+      items: form.items
+        .filter((it: any) => it.type === "feature")
+        .map((it: any) => it.toObject()),
+      system: form.system.toObject(),
+    }
+  }
+
+  /** Rebuilds an object that quacks like the stat-block Actor from a snapshot. */
+  static fromSnapshot = (snap: PolymorphFormSnapshot): any => ({
+    ...snap,
+    items: snap.items,
+    system: { ...snap.system, toObject: () => snap.system },
+  })
 
   static readTokenSize = (token: any): TokenSize => ({
     width: token?.width ?? 1,

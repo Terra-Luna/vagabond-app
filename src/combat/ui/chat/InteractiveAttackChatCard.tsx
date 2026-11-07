@@ -163,7 +163,9 @@ export const InteractiveAttackChatCard = ({
                         {/* GM TOOL BUTTONS */}
                         <div className="flex gap-1 w-full mt-1 [&>span]:flex-1 [&>span>button]:w-full">
                           {(attack.showDamage ||
-                            attack.appliedEffects.length > 0) && (
+                            (attack.appliedEffects.length > 0 &&
+                              (!(attack instanceof HeroAttack) ||
+                                attack.canApplySpellEffects))) && (
                             <InteractiveChatCardButton
                               label={appLang.ButtonActions.apply}
                               tooltip={appLang.Combat.applyDamageTooltip}

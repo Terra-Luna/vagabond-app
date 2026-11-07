@@ -19,19 +19,21 @@ export const RollsTab = ({
   return (
     <div>
       <RollPresetsListView actor={actor} />
-      <div className="mt-2 px-1">
-        <CollapsibleSection
-          title={"QUICK ROLL"}
-          startCollapsed={false}
-          content={
-            <RollBuilderView
-              actor={actor}
-              preset={customAttack}
-              showHeader={false}
-            />
-          }
-        />
-      </div>
+      {actor.isOwner && (
+        <div className="mt-2 px-1">
+          <CollapsibleSection
+            title={"QUICK ROLL"}
+            startCollapsed={false}
+            content={
+              <RollBuilderView
+                actor={actor}
+                preset={customAttack}
+                showHeader={false}
+              />
+            }
+          />
+        </div>
+      )}
       <div className="mb-4" />
     </div>
   )

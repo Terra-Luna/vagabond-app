@@ -11,7 +11,7 @@ export class PerkRulesSelectionsApplicator {
    * Feature Item rules are included by HeroDataModel.getActiveRules().
    */
   static apply(actor: Actor & { system: any }) {
-    if (!actor || !actor.isOwner) return
+    if (!actor) return
 
     actor.system.spells = []
     actor.system.perks = []

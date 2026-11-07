@@ -19,7 +19,7 @@ export const DiceRollComponent = ({
     "absolute flex items-center justify-center top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2"
   return (
     <div className={`relative ${textSize} leading-none`}>
-      <div className="relative inline-flex items-center justify-center">
+      <div className="relative flex items-center justify-center">
         <DieIcon
           faces={faces}
           exploded={exploded}

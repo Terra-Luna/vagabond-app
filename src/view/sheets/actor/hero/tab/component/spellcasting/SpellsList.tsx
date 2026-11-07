@@ -81,6 +81,7 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
             >
               <div
                 onClick={() => {
+                  if (!hero.parent.isOwner) return
                   onSelectSpell(sp._sourceId)
                   setIsSpellcastingOpen(true)
                 }}
@@ -128,16 +129,17 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
         })}
       </DynamicGrid>
 
-      <div className="flex justify-between items-end w-full h-full mt-1">
-        {/* LAUCH SPELL SELECTION APP */}
-        <UtilityButton
-          onClick={() =>
-            new SpellSelectionApp(hero.parent).render({ force: true })
-          }
-        >
-          {"Select Spells"}
-        </UtilityButton>
-      </div>
+      {hero.parent.isOwner && (
+        <div className="flex justify-between items-end w-full h-full mt-1">
+          <UtilityButton
+            onClick={() =>
+              new SpellSelectionApp(hero.parent).render({ force: true })
+            }
+          >
+            {"Select Spells"}
+          </UtilityButton>
+        </div>
+      )}
 
       <ContextMenu />
     </div>

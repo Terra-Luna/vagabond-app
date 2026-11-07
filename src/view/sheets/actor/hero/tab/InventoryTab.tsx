@@ -50,7 +50,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
 
       <div className="flex gap-x-1 mt-1 items-center">
         {/* ITEM SHOP BUTTON */}
-        {itemShopToggle && (
+        {hero.parent.isOwner && itemShopToggle && (
           <div className="flex w-fll justify-end">
             <PrimaryButton
               onClick={() =>

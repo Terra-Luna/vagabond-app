@@ -190,6 +190,7 @@ export const PolymorphAppView = ({
           targets: requested,
           duration,
           formUuid: statBlock.uuid,
+          formSnapshot: PolymorphUtil.snapshotForm(statBlock),
         })
       }
     },
@@ -346,7 +347,7 @@ export const PolymorphAppView = ({
         {/* HERO TYPES CAN HAVE FAVORITES */}
         {caster.system instanceof HeroDataModel &&
           caster.system.spells.some(
-            (sp) => sp.parent.flags[sys_id].polymorph,
+            (sp) => sp.parent.flags?.[sys_id]?.polymorph,
           ) && (
             <div className="w-full">
               <CollapsibleSection

@@ -20,6 +20,8 @@ import { VagabondCombat, VagabondCombatant } from "./combat/documents/VagabondCo
 import { Attack } from "./combat/engine/Attack"
 import { FlankStatusManager } from "./combat/engine/util/FlankStatusManager"
 import { HuntersMark } from "./combat/engine/util/HuntersMark"
+import { FocusAreaLayer } from "./combat/spellcasting/aoe/FocusAreaLayer"
+import { TokenHeading } from "./combat/spellcasting/aoe/TokenHeading"
 import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
 import { AdversaryDataModel } from "./model/actor/AdversaryDataModel"
 import { HeroDataModel } from "./model/actor/HeroDataModel"
@@ -311,6 +313,7 @@ Hooks.once("ready", async () => {
         ;(actor.system as HeroDataModel).forceUpdate()
       }
       else if (actor.visible) {
+        actor.prepareData()
         actor.sheet?.render(false)
       }
     })
@@ -546,6 +549,20 @@ Hooks.on("refreshToken" as any, (token: any) => {
       Math.sign(mesh.scale.y || 1) * scale,
     )
   }
+})
+
+/** Item actor tokens never show their status/effect icons. */
+Hooks.on("refreshToken" as any, (token: any) => {
+  if (token?.effects && token.document?.actor?.type === "itemActor")
+    token.effects.visible = false
+})
+
+Hooks.on("preCreateCombatant" as any, (combatant: any) => {
+  const actor =
+    combatant.actor ??
+    combatant.token?.actor ??
+    game.actors?.get(combatant.actorId)
+  if (actor?.type === "itemActor") return false
 })
 
 Hooks.on("refreshToken" as any, (token: any) => {
@@ -875,6 +892,8 @@ Hooks.on("deleteCombat", (combat: Combat, options: any, userId: string) => {
 })
 
 FocusSpellUtil.registerHooks()
+TokenHeading.registerHooks()
+new FocusAreaLayer().registerHooks()
 FocusManagerApp.registerHooks()
 
 Hooks.on(

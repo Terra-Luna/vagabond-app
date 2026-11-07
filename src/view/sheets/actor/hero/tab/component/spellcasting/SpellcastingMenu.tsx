@@ -1,13 +1,25 @@
 import { BookMarked, Dices } from "lucide-react"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
+import { isMovement } from "../../../../../../../apps/focus-manager/focus-hook-rules"
 import { getMiniCardsPref } from "../../../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
-import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue, Line, PerTargetDelivery, Remote, SpellDelivery, SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
+import { AreaColor } from "../../../../../../../combat/spellcasting/aoe/AreaColor"
+import { AreaRenderer } from "../../../../../../../combat/spellcasting/aoe/AreaRenderer"
+import type { Point } from "../../../../../../../combat/spellcasting/aoe/AreaTypes"
+import { CubePreview } from "../../../../../../../combat/spellcasting/aoe/control/CubePreview"
+import { LinePreview } from "../../../../../../../combat/spellcasting/aoe/control/LinePreview"
+import { SpherePreview } from "../../../../../../../combat/spellcasting/aoe/control/SpherePreview"
+import { WheelResizeListener } from "../../../../../../../combat/spellcasting/aoe/control/WheelResizeListener"
+import { IconLayer } from "../../../../../../../combat/spellcasting/aoe/IconLayer"
+import { AreaOccupants } from "../../../../../../../combat/spellcasting/aoe/targeting/AreaOccupants"
+import { AreaTargeter } from "../../../../../../../combat/spellcasting/aoe/targeting/AreaTargeter"
+import { AreaOfEffectDelivery, Aura, Cone, Cube, getNewDeliveryOptions, Glyph, Imbue, Line, PerTargetDelivery, PlacedArea, Remote, SpellDelivery, SpellSnapshot, Sphere } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { sys_id } from "../../../../../../../util/foundry-util"
 import { appLang } from "../../../../../../../util/lang"
+import { LightSourceUtil } from "../../../../../../../util/LightSourceUtil"
 import { tableBorder } from "../../../../../../common/border-styles"
 import { buttonAnimation } from "../../../../../../component/Button"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
@@ -276,6 +288,186 @@ export const useSpellCastingMenu = (
     [updateDeliveries],
   )
 
+  const activeDelivery = deliveries[deliveryIndex]
+  const damageType = activeDelivery?.spell?.damageType
+  // Only an Aura lets the caster choose; other areas hit everyone inside.
+  const targetingPref =
+    activeDelivery instanceof Aura
+      ? activeDelivery.spell?.autoTargetingPref
+      : "all"
+  const renderer = useMemo(() => new AreaRenderer(), [])
+  const targeter = useMemo(() => new AreaTargeter(), [])
+  renderer.setDamageType(damageType)
+  const autoTargetRef = useRef<string | undefined>(undefined)
+  autoTargetRef.current = targetingPref
+  // The squares the caster has marked, kept so a Focused cast can leave them on the canvas.
+  const placedRef = useRef<Point[]>([])
+  /** Targets the tokens inside the area that the spell's auto-targeting preference selects. */
+  const targetArea = useCallback(
+    (covered: Point[]) => {
+      placedRef.current = covered
+      targeter.target(covered, autoTargetRef.current)
+    },
+    [targeter],
+  )
+
+  useEffect(() => {
+    placedRef.current = []
+  }, [deliveryIndex, isSpellcastingOpen])
+
+  const previewShape =
+    isSpellcastingOpen && activeDelivery instanceof Aura
+      ? "aura"
+      : isSpellcastingOpen && activeDelivery instanceof Cone
+        ? "cone"
+        : undefined
+  const previewSize = previewShape ? (activeDelivery as Aura | Cone).size : 0
+
+  /** Previews an Aura's or Cone's reach on the grid while its size is being adjusted. */
+  useEffect(() => {
+    if (!previewShape || !previewSize) return
+    let cancelled = false
+    const show = () =>
+      targetArea(
+        previewShape === "aura"
+          ? renderer.showAura(actor, previewSize)
+          : renderer.showCone(actor, previewSize),
+      )
+    show()
+    // Positions and rotation are staged while a token animates, so redraw once it has settled.
+    const hookId = Hooks.on("updateToken", async (doc: any, changed: any) => {
+      if (doc.actorId !== actor.id) return
+      if (
+        previewShape === "cone" &&
+        !("rotation" in changed) &&
+        !isMovement(changed)
+      )
+        return
+      if (doc.object) await LightSourceUtil.settleAnimations([doc.object])
+      if (!cancelled) show()
+    })
+    return () => {
+      cancelled = true
+      Hooks.off("updateToken", hookId)
+      renderer.clear()
+    }
+  }, [
+    previewShape,
+    previewSize,
+    actor,
+    damageType,
+    targetingPref,
+    targetArea,
+    renderer,
+  ])
+
+  const isSpherePreview = isSpellcastingOpen && activeDelivery instanceof Sphere
+  const previewSizeRef = useRef(previewSize)
+  previewSizeRef.current = previewSize
+
+  /** Shift+scroll resizes an Aura or Cone. */
+  useEffect(() => {
+    if (!previewShape) return
+    const area = activeDelivery as Aura | Cone
+    const listener = new WheelResizeListener({
+      getSize: () => previewSizeRef.current,
+      minSize: area.baseSize,
+      step: area.increment,
+      onResize: (size) => onUpdateAreaSize(String(size)),
+    })
+    listener.start()
+    return () => listener.stop()
+  }, [previewShape, onUpdateAreaSize])
+  const sphereSize = isSpherePreview ? (activeDelivery as Sphere).size : 0
+  const sphereSizeRef = useRef(sphereSize)
+  sphereSizeRef.current = sphereSize
+  const spherePreview = useRef<SpherePreview | undefined>(undefined)
+
+  /** The Sphere's area follows the cursor; Shift+scroll resizes it and a click pins it. */
+  useEffect(() => {
+    if (!isSpherePreview) return
+    const sphere = activeDelivery as Sphere
+    const preview = new SpherePreview(renderer, {
+      getSize: () => sphereSizeRef.current,
+      minSize: sphere.baseSize,
+      step: sphere.increment,
+      onResize: (size) => onUpdateAreaSize(String(size)),
+      onArea: targetArea,
+    })
+    spherePreview.current = preview
+    preview.start()
+    return () => {
+      preview.stop()
+      spherePreview.current = undefined
+    }
+  }, [isSpherePreview, onUpdateAreaSize, targetArea, renderer])
+
+  useEffect(() => {
+    spherePreview.current?.refresh()
+  }, [sphereSize, damageType, targetingPref])
+
+  const isCubePreview = isSpellcastingOpen && activeDelivery instanceof Cube
+
+  /** Clicking the canvas drops a Cube there and raises the Cube count. */
+  useEffect(() => {
+    if (!isCubePreview) return
+    const preview = new CubePreview(renderer, {
+      onCount: (count) => onUpdateTargetCount(String(count)),
+      onArea: targetArea,
+    })
+    preview.start()
+    return () => preview.stop()
+  }, [isCubePreview, onUpdateTargetCount, targetArea, renderer])
+
+  const isGlyphPreview = isSpellcastingOpen && activeDelivery instanceof Glyph
+
+  /** A Glyph is a single square; clicking again moves it. */
+  useEffect(() => {
+    if (!isGlyphPreview) return
+    const preview = new CubePreview(renderer, {
+      limit: 1,
+      onArea: targetArea,
+      icon: IconLayer.GLYPH,
+    })
+    preview.start()
+    return () => preview.stop()
+  }, [isGlyphPreview, targetArea, renderer])
+
+  const isLinePreview = isSpellcastingOpen && activeDelivery instanceof Line
+  const line = isLinePreview ? (activeDelivery as Line) : undefined
+  const lineLength = line?.size ?? 0
+  const lineWidth = line?.width ?? 0
+  const lineRef = useRef({ length: lineLength, width: lineWidth })
+  lineRef.current = { length: lineLength, width: lineWidth }
+  const linePreview = useRef<LinePreview | undefined>(undefined)
+
+  /** The Line's area follows the cursor; Shift/Alt+scroll change length/width, Ctrl+scroll rotates, click pins. */
+  useEffect(() => {
+    if (!isLinePreview) return
+    const l = activeDelivery as Line
+    const preview = new LinePreview(renderer, {
+      getLength: () => lineRef.current.length,
+      getWidth: () => lineRef.current.width,
+      lengthStep: l.increment,
+      minLength: l.baseSize,
+      widthStep: 5,
+      minWidth: l.baseWidth,
+      onLength: (feet) => onUpdateAreaSize(String(feet)),
+      onWidth: (feet) => onUpdateLineWidth(String(feet)),
+      onArea: targetArea,
+    })
+    linePreview.current = preview
+    preview.start()
+    return () => {
+      preview.stop()
+      linePreview.current = undefined
+    }
+  }, [isLinePreview, onUpdateAreaSize, onUpdateLineWidth, targetArea, renderer])
+
+  useEffect(() => {
+    linePreview.current?.refresh()
+  }, [lineLength, lineWidth, damageType, targetingPref])
+
   const targetOrAreaInput = () => {
     if (deliveries[deliveryIndex] instanceof AreaOfEffectDelivery) {
       return (
@@ -345,13 +537,80 @@ export const useSpellCastingMenu = (
     [actor, skill],
   )
 
+  // Deliveries are replaced (never mutated) on every form change, so this saves each one.
+  useEffect(() => {
+    const delivery = deliveries[deliveryIndex]
+    if (actor.isOwner && delivery?.spell) saveSpellcastingMenuState(delivery)
+  }, [
+    actor.isOwner,
+    deliveries,
+    deliveryIndex,
+    skill,
+    saveSpellcastingMenuState,
+  ])
+
+  /** The marked area, if this delivery has one and the caster has marked it. */
+  const focusedArea = (delivery: SpellDelivery): PlacedArea | undefined => {
+    const hasArea =
+      delivery instanceof AreaOfEffectDelivery ||
+      delivery instanceof Cube ||
+      delivery instanceof Glyph
+    const sceneId = canvas?.scene?.id
+    if (!hasArea || !sceneId || !placedRef.current.length) return undefined
+    const followsCaster = delivery instanceof Aura || delivery instanceof Cone
+    return {
+      sceneId,
+      ...(followsCaster && {
+        follow: {
+          kind:
+            delivery instanceof Aura ? ("aura" as const) : ("cone" as const),
+          size: delivery.size,
+          actorId: actor.id ?? "",
+        },
+      }),
+      cells: (followsCaster ? [] : placedRef.current).map((p) => ({
+        x: Math.round(p.x),
+        y: Math.round(p.y),
+      })),
+      color: AreaColor.of(delivery.spell.damageType),
+      ...(delivery instanceof Glyph && { icon: IconLayer.GLYPH }),
+    }
+  }
+
+  /** Non-Aura areas hit everyone inside, so the targets must match exactly who is in the marked area. */
+  const targetsMismatchArea = (delivery: SpellDelivery): boolean => {
+    const hasArea =
+      delivery instanceof AreaOfEffectDelivery ||
+      delivery instanceof Cube ||
+      delivery instanceof Glyph
+    if (!hasArea || delivery instanceof Aura || !placedRef.current.length)
+      return false
+    const inside = new Set<string>(
+      AreaOccupants.targetsIn(placedRef.current, "all").map(
+        (t) => t.id as string,
+      ),
+    )
+    const targeted = new Set<string>(
+      Array.from(game.user?.targets ?? []).map((t: any) => t.id as string),
+    )
+    return (
+      inside.size !== targeted.size ||
+      [...inside].some((id) => !targeted.has(id))
+    )
+  }
+
   const castSpell = async (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!hero.parent.isOwner) return
     const delivery = deliveries[deliveryIndex]
     if (delivery && delivery.spell) {
       const focusCount = hero.parent.system.statuses?.counters?.focus ?? 0
       const maxFocus = hero.parent.system.maxFocus
       if (delivery.isFocused && maxFocus > 1 && focusCount >= maxFocus) {
         ui.notifications?.warn(appLang.Spellcasting.maxFocusMessage)
+        return
+      }
+      if (targetsMismatchArea(delivery)) {
+        ui.notifications?.warn(appLang.Spellcasting.castTargetsMismatchArea)
         return
       }
       onUpdateStudyDamageDice("0")
@@ -377,7 +636,11 @@ export const useSpellCastingMenu = (
         )
       }
       else {
-        HeroAttack.buildSpellAttack(hero.parent, sk, delivery, e)?.initiate(e, {
+        const area = delivery.isFocused ? focusedArea(delivery) : undefined
+        const toCast = area
+          ? Object.assign(delivery.clone(), { area })
+          : delivery
+        HeroAttack.buildSpellAttack(hero.parent, sk, toCast, e)?.initiate(e, {
           requireFocusUpkeep: true,
         })
       }

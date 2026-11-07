@@ -3,12 +3,19 @@ import { SpellDataModel } from "../../../../../model/item/character/SpellDataMod
 import { appLang } from "../../../../../util/lang"
 import { tableBorder } from "../../../../common/border-styles"
 import { Checkbox } from "../../../../component/Checkbox"
+import { SingleSelect } from "../../../../component/SingleSelect"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { AppliedActiveEffectsInput } from "../../../actor/npc/component/AppliedActiveEffectsInput"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 import { SpellLightConfig } from "./SpellLightConfig"
+
+const autoTargetingOptions = [
+  { value: "none", label: appLang.ItemSheet.autoTargetingNone },
+  { value: "hostile", label: appLang.ItemSheet.autoTargetingHostile },
+  { value: "friendly", label: appLang.ItemSheet.autoTargetingFriendly },
+]
 
 export const SpellSheetComponent = ({
   item,
@@ -38,6 +45,21 @@ export const SpellSheetComponent = ({
                     className={`${tableBorder} font-eskapade font-bold px-2 max-w-[8ch]`}
                   />
                 </div>
+              </div>
+
+              <div className="w-fit">
+                <ItemSheetPropLabel
+                  label={appLang.ItemSheet.autoTargetingPref}
+                />
+                <SingleSelect
+                  options={autoTargetingOptions}
+                  value={item.system.autoTargetingPref}
+                  setValue={(val) =>
+                    item.update({
+                      "system.autoTargetingPref": val,
+                    } as Record<string, string>)
+                  }
+                />
               </div>
 
               <AppliedStatusesInput item={item} />

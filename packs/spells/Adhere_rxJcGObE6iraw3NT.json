@@ -14,7 +14,8 @@
         "critDuration": "focus"
       }
     ],
-    "appliedActiveEffects": []
+    "appliedActiveEffects": [],
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

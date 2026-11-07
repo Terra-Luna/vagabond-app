@@ -15,15 +15,16 @@ export const AlchemyTab = ({
     <div className="flex flex-col gap-1 mb-4">
       <AlchemyCraftingView actor={actor} />
 
-      {/* SELECT ALCHEMY RECIPES */}
-      <UtilityButton
-        onClick={() => new AlchemySelectionApp(actor).render({ force: true })}
-      >
-        <div className="flex gap-x-1">
-          <Book size={18} className="self-center" />
-          {appLang.HeroSheet.Alchemy.recipesbtn}
-        </div>
-      </UtilityButton>
+      {actor.isOwner && (
+        <UtilityButton
+          onClick={() => new AlchemySelectionApp(actor).render({ force: true })}
+        >
+          <div className="flex gap-x-1">
+            <Book size={18} className="self-center" />
+            {appLang.HeroSheet.Alchemy.recipesbtn}
+          </div>
+        </UtilityButton>
+      )}
     </div>
   )
 }

@@ -115,9 +115,13 @@ export const ManaHUD = ({
               content={`${focusUsed} / ${hero.maxFocus}`}
             >
               <div
-                className="flex gap-x-1 items-center hover-glow cursor-pointer"
-                onClick={() => FocusManagerApp.launch(hero.parent as any)}
+                className={`flex gap-x-1 items-center ${hero.parent.isOwner ? "hover-glow cursor-pointer" : ""}`}
+                onClick={() => {
+                  if (hero.parent.isOwner)
+                    FocusManagerApp.launch(hero.parent as any)
+                }}
                 onContextMenu={(e) =>
+                  hero.parent.isOwner &&
                   onCtxMenu(e, [
                     {
                       icon: X,
@@ -149,7 +153,7 @@ export const ManaHUD = ({
         </div>
 
         {/* SPELLCASTING TAB */}
-        {!isCastMenuOpen && !hideTab && (
+        {hero.parent.isOwner && !isCastMenuOpen && !hideTab && (
           <div
             className={`
                             flex items-center gap-x-1 -mb-1 pl-6 pr-2 
@@ -175,7 +179,7 @@ export const ManaHUD = ({
         )}
       </div>
 
-      <SpellcastingMenu />
+      {hero.parent.isOwner && <SpellcastingMenu />}
       <ContextMenu />
     </div>
   )

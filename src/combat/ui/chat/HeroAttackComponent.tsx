@@ -78,12 +78,13 @@ export const HeroAttackComponent = ({
     const hasResources = luck > 0 || studied > 0
     return (
       hasPermission &&
+      actor.isOwner &&
       !attack.isResolved &&
       !attack.isRerolled &&
       isFailure &&
       hasResources
     )
-  }, [luck, studied, attack, setRevision])
+  }, [luck, studied, attack, actor.isOwner, setRevision])
 
   const targets = useMemo<TargetDisplayItem[]>(() => {
     return (attack.targetIds ?? [])
@@ -99,16 +100,18 @@ export const HeroAttackComponent = ({
   }, [attack.targetIds, setRevision])
 
   const handleLuckReroll = useCallback(async () => {
+    if (!actor.isOwner) return
     await attack.rollSkillCheck(true)
     setRevision((prev) => prev + 1)
-  }, [attack])
+  }, [actor, attack])
 
   const handleLateD6 = useCallback(
     async (resource: "luck" | "studied", currentValue: number) => {
+      if (!actor.isOwner) return
       await attack.addLateFavor(resource, currentValue)
       setRevision((prev) => prev + 1)
     },
-    [attack],
+    [actor, attack],
   )
 
   const addCritLuck = useCallback(async () => {

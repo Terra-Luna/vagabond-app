@@ -6,6 +6,7 @@ import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { SkillCheck } from "../engine/roll/SkillCheck"
 import { isLightFx } from "../engine/util/active-effect-fx"
 import { currentRoundKey, roundKey } from "./focus-round"
+import { FocusAreaExposure } from "./FocusAreaExposure"
 import { restoreBurning } from "./FocusBurning"
 import { FocusLightExposure } from "./FocusLightExposure"
 import { dealRepeatDamage, maxRepeatDice } from "./FocusRepeatDamage"
@@ -31,6 +32,12 @@ export class FocusUpkeep {
       return false
     const type = instance.delivery?.spell.damageType
     if (!type || type === "none") return false
+    // A placed area offers damage only when it has applicable targets inside right now.
+    if (
+      FocusAreaExposure.hasArea(instance) &&
+      FocusAreaExposure.autoPref(instance)
+    )
+      return FocusAreaExposure.targetsIn(instance).length > 0
     return FocusSpellUtil.hasHostileToken(instance.targetIds)
   }
 
@@ -76,6 +83,11 @@ export class FocusUpkeep {
     return FocusLightExposure.evaluate(movedToken, quiet)
   }
 
+  /** Refresh areas and evaluate exposure atomically with respect to other exposure checks. */
+  static evaluateRound(combat: any, round: number) {
+    return FocusLightExposure.evaluateRound(combat, round)
+  }
+
   /** A spell that burns (a Burning effect, or a burning light with a harmed Hostile newly in range) owes upkeep when Focused with its effect applied. */
   private static causesBurning(actor: any, instance: FocusInstance): boolean {
     const spell = instance.delivery?.spell
@@ -114,6 +126,9 @@ export class FocusUpkeep {
 
   /** The Cast check only applies by the normal rules: damage, burning or a Hostile target. */
   static needsCheck(actor: any, instance: FocusInstance): boolean {
+    // Areas stay free while no Hostile is inside, like a Focused light.
+    if (FocusAreaExposure.hasArea(instance))
+      return FocusAreaExposure.isExposed(instance)
     return (
       FocusUpkeep.isDamaging(instance) ||
       FocusUpkeep.causesBurning(actor, instance) ||
@@ -132,7 +147,9 @@ export class FocusUpkeep {
     const key = FocusUpkeep.roundKey(round)
     return FocusSpellUtil.instances(actor).filter(
       (it) =>
-        it.round !== round &&
+        (it.combatId !== game.combat?.id ||
+          it.round !== round ||
+          it.lateKey === key) &&
         it.doneKey !== key &&
         (FocusUpkeep.needsUpkeep(actor, it) || FocusUpkeep.canRepeatDamage(it)),
     )
@@ -145,7 +162,9 @@ export class FocusUpkeep {
     const key = FocusUpkeep.roundKey(round)
     return FocusSpellUtil.instances(actor).filter(
       (it) =>
-        it.round !== round &&
+        (it.combatId !== game.combat?.id ||
+          it.round !== round ||
+          it.lateKey === key) &&
         it.doneKey !== key &&
         FocusUpkeep.needsUpkeep(actor, it) &&
         (it.paidKey !== key || FocusUpkeep.hasPendingCheck(it.id)),
@@ -197,12 +216,18 @@ export class FocusUpkeep {
     return true
   }
 
-  private static postCheck(actor: any, check: SkillCheck) {
+  private static postCheck(actor: any, check: SkillCheck, focusId: string) {
     const result = check.result!
+    const spell = FocusSpellUtil.find(actor, focusId)?.delivery?.spell
     return sendVagabondChatCard(
       actor,
       "SkillCheckChatCard",
-      { actorId: actor.id ?? "", result },
+      {
+        actorId: actor.id ?? "",
+        result,
+        focusTitle: appLang.Spellcasting.focusCheck,
+        icon: spell?.img,
+      },
       result.rolls,
     )
   }
@@ -251,7 +276,7 @@ export class FocusUpkeep {
     if (modifier) check.favorHinder = modifier
     else if (favored) check.favorHinder = check.isHindered ? "none" : "favor"
     await check.roll()
-    await FocusUpkeep.postCheck(actor, check)
+    await FocusUpkeep.postCheck(actor, check, focusId)
 
     if (check.result?.outcome === appLang.RollResult.failure) {
       FocusUpkeep.pendingChecks.set(focusId, check)
@@ -277,6 +302,19 @@ export class FocusUpkeep {
       failedKey: undefined,
       ...(!FocusUpkeep.canRepeatDamage(instance) && { doneKey: key }),
     })
+    await FocusAreaExposure.applyPendingFx(actor, instance.id)
+  }
+
+  /** At the top of a round (GM): each Focused area drops targets that left and re-acquires Hostiles inside. */
+  static async refreshAreas() {
+    if (!game.user?.isActiveGM || !canvas?.ready) return
+    for (const hero of game.actors?.contents ?? []) {
+      if ((hero as any).type !== "hero") continue
+      for (const it of FocusSpellUtil.instances(hero)) {
+        if (FocusAreaExposure.hasArea(it))
+          await FocusAreaExposure.refresh(hero, it)
+      }
+    }
   }
 
   /** After a failed check, the caster accepts it: the Focus and its effects end. */
@@ -293,7 +331,7 @@ export class FocusUpkeep {
     check: SkillCheck,
     round: number,
   ): Promise<UpkeepResult> {
-    await FocusUpkeep.postCheck(actor, check)
+    await FocusUpkeep.postCheck(actor, check, focusId)
     if (check.result?.outcome === appLang.RollResult.failure) {
       // Nothing left to try: the failure stands.
       if (!FocusUpkeep.canRescue(actor, focusId)) {

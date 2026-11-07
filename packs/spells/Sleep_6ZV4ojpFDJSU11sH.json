@@ -16,7 +16,8 @@
         "critDuration": "focus"
       }
     ],
-    "upcastableEffect": true
+    "upcastableEffect": true,
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

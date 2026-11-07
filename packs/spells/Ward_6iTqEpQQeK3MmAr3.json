@@ -19,7 +19,8 @@
     "upkeep": {
       "force": true,
       "perTarget": true
-    }
+    },
+    "autoTargetingPref": "friendly"
   },
   "effects": [],
   "folder": null,
@@ -32,9 +33,9 @@
   "_stats": {
     "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.180",
+    "systemVersion": "0.3.1",
     "createdTime": 1784497366772,
-    "modifiedTime": 1793833156849,
+    "modifiedTime": 1793917948715,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

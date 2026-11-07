@@ -14,7 +14,7 @@ export const LightToggleButton = ({
   isHeld?: boolean
 }) => {
   const option = LightSourceUtil.contextMenuOption(item, isHeld)
-  if (!option) return null
+  if (!option || (item.parent?.actor && !item.parent.actor.isOwner)) return null
 
   return (
     <Tooltip content={option.label}>

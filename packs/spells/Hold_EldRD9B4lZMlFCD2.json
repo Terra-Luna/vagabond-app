@@ -16,7 +16,8 @@
         "critDuration": "scene"
       }
     ],
-    "upcastableEffect": true
+    "upcastableEffect": true,
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

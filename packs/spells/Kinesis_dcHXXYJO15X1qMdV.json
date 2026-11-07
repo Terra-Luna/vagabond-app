@@ -10,7 +10,8 @@
     "ignoreEffectCost": false,
     "damageType": "blunt",
     "appliedEffects": [],
-    "upcastableEffect": true
+    "upcastableEffect": true,
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

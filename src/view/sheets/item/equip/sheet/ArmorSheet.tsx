@@ -7,7 +7,7 @@ import { createDropdownEntriesFromObj } from "../../../../../util/locale-util"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
-import { ItemSheetProperty } from "../component/ItemSheetLabelComponent"
+import { ItemSheetProperty, ItemSheetPropLabel } from "../component/ItemSheetLabelComponent"
 import { MaterialSelection } from "../component/MaterialSelectionComponent"
 const lang = fullLang.APP
 
@@ -50,13 +50,18 @@ const ArmorType = ({ item }: { item: Item & { system: ArmorDataModel } }) => {
     [item.system.armorType],
   )
   return (
-    <DropDown
-      label={lang.ItemSheet.armorType}
-      value={item.system.armorType}
-      options={createDropdownEntriesFromObj(lang.ArmorTypes)}
-      updateMechanism={{ onChange: onUpdateArmorType }}
-      parent={item}
-    />
+    <div className="flex flex-col">
+      <ItemSheetPropLabel
+        label={lang.ItemSheet.armorType}
+      />
+      <DropDown
+        value={item.system.armorType}
+        options={createDropdownEntriesFromObj(lang.ArmorTypes)}
+        updateMechanism={{ onChange: onUpdateArmorType }}
+        parent={item}
+      />
+    </div>
+
   )
 }
 

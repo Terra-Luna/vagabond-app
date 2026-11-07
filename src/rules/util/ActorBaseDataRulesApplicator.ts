@@ -19,7 +19,7 @@ export class ActorBaseDataRulesApplicator {
     actor: Actor & { system: any },
     options: { npcMode?: boolean; lightPhase?: boolean } = {},
   ) {
-    if (!actor || (!actor.isOwner && !options.npcMode)) return
+    if (!actor || (!actor.isOwner && !actor.visible && !options.npcMode)) return
 
     const npcMode = options.npcMode === true
     const lightPhase = options.lightPhase === true
@@ -440,11 +440,13 @@ export class ActorBaseDataRulesApplicator {
     for (const rule of choiceRules) {
       applyChoiceRule(rule)
     }
-    for (const rule of itemGrantRules) {
-      applyInventoryItems(rule)
-    }
-    for (const rule of activeEffectGrantRules) {
-      applyActiveEffectGrants(rule)
+    if (actor.isOwner) {
+      for (const rule of itemGrantRules) {
+        applyInventoryItems(rule)
+      }
+      for (const rule of activeEffectGrantRules) {
+        applyActiveEffectGrants(rule)
+      }
     }
   }
 

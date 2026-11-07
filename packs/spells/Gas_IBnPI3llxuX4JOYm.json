@@ -9,7 +9,8 @@
     "baseManaCost": 0,
     "ignoreEffectCost": false,
     "damageType": "poison",
-    "appliedEffects": []
+    "appliedEffects": [],
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

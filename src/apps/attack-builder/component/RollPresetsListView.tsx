@@ -45,7 +45,7 @@ export const RollPresetsListView = ({
                       ? "opacity-40"
                       : "even:bg-table-row-even/50 odd:bg-table-row-odd/50"
                   }`}
-                  draggable={true}
+                  draggable={actor.isOwner}
                   onDragStart={(e) => onDragStart(e, preset, index)}
                   onDragEnter={(e) => onDragEnter(e, index)}
                   onDragOver={(e) => {
@@ -59,26 +59,32 @@ export const RollPresetsListView = ({
                     actor={actor}
                     preset={preset}
                     EditButton={
-                      <EditButton onEdit={() => editPreset(preset)} />
+                      actor.isOwner && (
+                        <EditButton onEdit={() => editPreset(preset)} />
+                      )
                     }
                     TrashButton={
-                      <TrashButton onClick={() => deletePreset(index)} />
+                      actor.isOwner && (
+                        <TrashButton onClick={() => deletePreset(index)} />
+                      )
                     }
                   />
                 </div>
               ))}
-              <div className="flex flex-col w-full p-0.25">
-                <ItemDivider />
-                <span className="text-text-header-tertiary ml-auto">
-                  <UtilityButton
-                    onClick={() =>
-                      new RollBuilderApp(actor).render({ force: true })
-                    }
-                  >
-                    +{appLang.ButtonActions.add}
-                  </UtilityButton>
-                </span>
-              </div>
+              {actor.isOwner && (
+                <div className="flex flex-col w-full p-0.25">
+                  <ItemDivider />
+                  <span className="text-text-header-tertiary ml-auto">
+                    <UtilityButton
+                      onClick={() =>
+                        new RollBuilderApp(actor).render({ force: true })
+                      }
+                    >
+                      +{appLang.ButtonActions.add}
+                    </UtilityButton>
+                  </span>
+                </div>
+              )}
             </div>
           </>
         }

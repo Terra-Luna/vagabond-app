@@ -8,7 +8,7 @@ import { applyAdversaryDamageMods } from "./util/adversary-damage-mods"
 import type { AttackSnapshot, ComboSubAttackSnapshot } from "./util/attack-serializer"
 import { serializeAttack } from "./util/attack-serializer"
 import { absorbsDamage, AttackResolutionArgs, buildSummaryRow, computeDamageBreakdown, isImmuneToDamage, isWeakToDamage, TargetDamageSummary } from "./util/damage-mitigation"
-import { isDamagedAfterSave, isHalvedBySave, overrideTargetSave, recordTargetSave, rerollTargetSave, rollTargetSave } from "./util/save-state"
+import { isDamagedAfterSave, isHalvedBySave, isSaveAllowed, overrideTargetSave, recordTargetSave, rerollTargetSave, rollTargetSave } from "./util/save-state"
 
 export interface ComboSubAttackArgs {
   name: string
@@ -275,10 +275,14 @@ export class AdversaryComboAttack extends Attack {
     armorBonus?: number,
   ): Promise<boolean> {
     if (this.isResolved || !this.targetIds.includes(targetId)) return false
-    const recorded = this.subAttacks.map((sub) =>
+    // A sheet save fills only the first sub-attack still awaiting this save; replacing a failed save is a last resort.
+    const open = this.subAttacks.find(
+      (sub) => isSaveAllowed(sub, saveType) && !sub.saveResults[targetId],
+    )
+    const recorded = (open ? [open] : this.subAttacks).some((sub) =>
       sub.recordSaveResult(targetId, saveType, result, armorBonus),
     )
-    if (!recorded.some(Boolean)) return false
+    if (!recorded) return false
     await this.saveOrAutoResolve(serializeAttack)
     return true
   }

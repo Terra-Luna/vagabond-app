@@ -10,8 +10,9 @@ import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDa
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { roll3dDice, sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
+import { LightSourceUtil } from "../../util/LightSourceUtil"
 import { localizeString } from "../../util/locale-util"
-import { canInitiateAttack, getTargetIds, isActorInScene } from "../../util/model-util"
+import { canInitiateAttack, canUseHeroActions, getTargetIds, isActorInScene } from "../../util/model-util"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { FocusUpkeep } from "../spellcasting/FocusUpkeep"
 import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
@@ -85,6 +86,10 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     return !!this.skillCheck?.result?.outcome && !this.skipSkillCheck
   }
 
+  get canApplySpellEffects(): boolean {
+    return !this.isSpellAttack || this.skipSkillCheck || this.isSuccessOrCrit
+  }
+
   get showCritChoices(): boolean {
     if (!this.isCrit) return false
     const hasPermission = game.user?.isActiveGM || game.user?.id === this.userId
@@ -104,6 +109,10 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     return focusId && this.spellDelivery
       ? { spell: this.spellDelivery.spell.uuid, focusId }
       : undefined
+  }
+
+  protected override get lightIcon(): string | undefined {
+    return this.spellDelivery?.spell.img || undefined
   }
 
   protected override get roundExpirySpell(): string | undefined {
@@ -144,9 +153,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
   override get showDamage(): boolean {
     const isSuccess = this.skipSkillCheck || this.isSuccessOrCrit
     const isDmgOrEffect = super.showDamage || this.isEffectOnlySpellAttack
-    return (
-      (isSuccess && isDmgOrEffect) || (!this.hasHostileTargets && isDmgOrEffect)
-    )
+    return isSuccess && isDmgOrEffect
   }
 
   async initiate(
@@ -158,6 +165,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
       requireFocusUpkeep?: boolean
     },
   ) {
+    if (this.actor.isOwner === false && !canUseHeroActions(this.actor)) return
     if (!canInitiateAttack(this.actor)) return
     if (
       options?.requireFocusUpkeep &&
@@ -178,6 +186,8 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     this.skipSkillCheck = this.skipSkillCheck || clickEvent?.altKey
     this.isDefenseCheck = !!options?.isDefenseCheck
 
+    await this.chooseLightType()
+
     if (this.shouldRollSkillCheck) {
       if (clickEvent?.shiftKey || clickEvent?.ctrlKey) {
         this.skillCheck!.setFavorHinder(
@@ -190,10 +200,6 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
     if (this.isEligibleForDmgRoll && this.isSuccessOrCrit) {
       await this.rollInitialDamage()
-    }
-
-    if (this.skipSkillCheck || this.isSuccessOrCrit) {
-      await this.chooseLightType()
     }
 
     this.applyPostRollEffects()
@@ -209,7 +215,25 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
       this.isSpellAttack &&
       (this.spellDelivery?.upcast ?? 0) > 0 &&
       !!this.spellDelivery?.spell?.upcastableEffectDieRoll
-    return this.hasHostileTargets || this.isDefenseCheck || isUpcastEffectRoll
+    const burnsHostile =
+      this.isSpellAttack &&
+      this.appliedEffects.some(
+        (fx) =>
+          isLightFx(fx.effect) &&
+          !!fx.duration &&
+          fx.duration !== "-" &&
+          LightSourceUtil.harmedHostilesForLight(
+            this.targetIds,
+            parseLightFx(fx.effect),
+            fx.duration.toLowerCase() === "focus",
+          ).length > 0,
+      )
+    return (
+      this.hasHostileTargets ||
+      this.isDefenseCheck ||
+      isUpcastEffectRoll ||
+      burnsHostile
+    )
   }
 
   private async rollInitialDamage() {
@@ -302,6 +326,10 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     args: AttackResolutionArgs,
     serialize: (attack: Attack) => AttackSnapshot | undefined,
   ) {
+    if (!this.canApplySpellEffects) {
+      ui.notifications?.warn(appLang.Spellcasting.castCheckFailed)
+      return
+    }
     if (
       !this.isResolved &&
       this.isSpellAttack &&
@@ -377,6 +405,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     target: { actorId: string; attackId: string },
     clickEvent?: any,
   ): Promise<boolean> {
+    if (actor.isOwner === false && !canUseHeroActions(actor)) return false
     const snapshot = (getAttackRegistry()[target.actorId] ?? []).find(
       (atk) => atk.id === target.attackId,
     )
@@ -1072,6 +1101,25 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     return attack
   }
 
+  /** Applies a Focused spell's effects to extra targets (e.g. a Hostile entering its area), with no roll or chat card. */
+  static async applyFocusEffects(
+    actor: Actor & { system: HeroDataModel },
+    snapshot: SpellDeliverySnapshot,
+    focusId: string,
+    targetIds: string[],
+  ) {
+    if (!snapshot.applyEffect || !targetIds.length) return
+    const attack = new HeroAttack(snapshot.spell.name, actor, targetIds)
+    attack.itemId = snapshot.spell.uuid
+    attack.spellDelivery = { ...snapshot, focusId }
+    // Light is shed by the caster's own token, not by affected targets.
+    attack.appliedEffects = collectAppliedFx({
+      ...snapshot.spell,
+      emitsLight: undefined,
+    }).map((eff) => ({ ...eff, damageType: snapshot.spell.damageType }))
+    await attack.applyFxToTargets(attack.appliedEffects, targetIds)
+  }
+
   static buildSpellAttack(
     actor: Actor & { system: HeroDataModel },
     skill: string,
@@ -1216,6 +1264,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     clickEvent?: any,
     baseAttack?: HeroAttack,
   ) {
+    if (actor.isOwner === false && !canUseHeroActions(actor)) return
     const makeSkillCheck = (type: SkillCheckType) => {
       return new SkillCheck(actor.system, {
         type: type,

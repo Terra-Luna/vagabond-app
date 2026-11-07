@@ -219,8 +219,14 @@ export class ItemsCache {
 
   static refreshAllActors() {
     game.actors
-      ?.filter((it) => (it.type as string) === "hero" && it.isOwner)
-      ?.forEach((actor) => (actor as any)?.system?.forceUpdate?.())
+      ?.filter((it) => (it.type as string) === "hero")
+      ?.forEach((actor) => {
+        if (actor.isOwner) (actor as any)?.system?.forceUpdate?.()
+        else if (actor.visible) {
+          actor.prepareData()
+          actor.sheet?.render(false)
+        }
+      })
   }
 
 }

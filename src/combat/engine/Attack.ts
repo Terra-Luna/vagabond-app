@@ -700,6 +700,11 @@ export abstract class Attack<TActor extends Actor = Actor> {
     return undefined
   }
 
+  /** The icon a granted light shows on its token (the spell's, when a spell cast it). */
+  protected get lightIcon(): string | undefined {
+    return undefined
+  }
+
   private async applyLight(
     actor: Actor,
     token: Token | undefined,
@@ -711,6 +716,7 @@ export abstract class Attack<TActor extends Actor = Actor> {
     await LightSourceUtil.grantLight(actor, {
       ...parseLightFx(id),
       focused: duration.toLowerCase() === "focus",
+      ...(this.lightIcon && { img: this.lightIcon }),
     })
 
     const countdownFaces = duration.match(/^Cd(\d+)$/)?.[1]

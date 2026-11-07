@@ -15,7 +15,8 @@
       }
     ],
     "ignoreEffectCost": false,
-    "focusExempt": true
+    "focusExempt": true,
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

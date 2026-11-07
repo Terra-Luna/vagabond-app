@@ -5,6 +5,7 @@ import { CountdownManager } from "../../apps/vagabond-tools/usecase/CountdownMan
 import { SkillCheck, SkillCheckResult } from "../../combat/engine/roll/SkillCheck"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { sys_id } from "../../util/foundry-util"
+import { appLang } from "../../util/lang"
 import { getId } from "../../util/model-util"
 import { sendVagabondChatCard } from "../chat/ChatCardSerializer"
 
@@ -44,6 +45,10 @@ export const EnrichedContent = ({
       "a.inline-roll",
     ) as HTMLAnchorElement | null
     if (inlineRoll) {
+      if (actor?.system instanceof HeroDataModel && !actor.isOwner) {
+        ui.notifications?.warn(appLang.HeroChoices.ownerRequired)
+        return
+      }
       const { formula, roll, flavor } = inlineRoll.dataset
       const speaker = ChatMessage.getSpeaker(actor ? { actor } : undefined)
 

@@ -3,6 +3,7 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { FocusSpellUtil } from "../../model/actor/util/FocusSpellUtil"
 import { appLang } from "../../util/lang"
 import { LightSourceUtil } from "../../util/LightSourceUtil"
+import { canUseHeroActions } from "../../util/model-util"
 import { centerOnFirstRender } from "../../util/sheet-util"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { changesFocusSpells, endsTurnOrRound, isHostile, isHostileTurn, isMovement, isRoundChange, isTurnOrRoundChange } from "./focus-hook-rules"
@@ -51,6 +52,7 @@ export class FocusManagerApp extends VagabondApplication {
   }
 
   private static open(hero: Hero, round: number) {
+    if (!canUseHeroActions(hero)) return
     const existing = FocusManagerApp.openApps.get(hero.id!)
     if (existing?.rendered) {
       existing.round = round
@@ -106,6 +108,7 @@ export class FocusManagerApp extends VagabondApplication {
 
   /** Opens the app for one Hero on demand, whether or not any Focus owes upkeep. */
   static launch(actor: Hero) {
+    if (!canUseHeroActions(actor)) return
     if (!FocusSpellUtil.instances(actor).length) {
       ui.notifications?.info(appLang.Spellcasting.focusNothingDue)
       return
@@ -126,7 +129,7 @@ export class FocusManagerApp extends VagabondApplication {
     Hooks.on("updateActor", FocusManagerApp.onUpdateActor)
   }
 
-  private static onUpdateCombat = (combat: any, changed: any) => {
+  private static onUpdateCombat = async (combat: any, changed: any) => {
     if (!combat.started) return
 
     if (
@@ -136,15 +139,29 @@ export class FocusManagerApp extends VagabondApplication {
     )
       FocusUpkeep.dropUnresolvedForHostileTurn()
 
-    if (isRoundChange(changed)) FocusManagerApp.launchForRound(combat)
-
-    // At the end of a turn or round, Hostiles newly inside a Focused light can make upkeep owed.
-    if (endsTurnOrRound(changed))
-      FocusUpkeep.evaluateExposures(undefined, isRoundChange(changed))
+    try {
+      if (isRoundChange(changed)) {
+        const round = combat.round
+        await FocusUpkeep.evaluateRound(combat, round)
+        if (
+          game.combat?.id === combat.id &&
+          combat.started &&
+          combat.round === round
+        )
+          FocusManagerApp.launchForRound(combat)
+      }
+      else if (endsTurnOrRound(changed)) {
+        await FocusUpkeep.evaluateExposures()
+      }
+    }
+    catch (error) {
+      console.error("Failed to process Focus combat exposure", error)
+    }
   }
 
   private static onUpdateToken = (doc: any, changed: any) => {
-    if (isMovement(changed) && isHostile(doc))
+    // A caster moving also moves their Aura/Cone, which can sweep Hostiles in.
+    if (isMovement(changed) && (isHostile(doc) || doc.actor?.type === "hero"))
       FocusUpkeep.evaluateExposures(doc.object)
   }
 

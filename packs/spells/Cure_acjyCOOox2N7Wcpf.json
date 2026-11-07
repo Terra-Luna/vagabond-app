@@ -6,7 +6,8 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">If the Target is Blinded or Sickened, the Status ends and they are immune to these Statuses for the duration.</span></p>",
     "rules": [],
-    "damageType": "none"
+    "damageType": "none",
+    "autoTargetingPref": "friendly"
   },
   "effects": [],
   "folder": null,
@@ -17,12 +18,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.3.1",
     "createdTime": 1784764620736,
-    "modifiedTime": 1784765052101,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1793917808526,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -19,7 +19,8 @@
         "effect": "paralyzed",
         "critDuration": "focus"
       }
-    ]
+    ],
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

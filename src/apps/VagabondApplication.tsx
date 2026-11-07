@@ -202,11 +202,7 @@ export abstract class VagabondApplication
   }
 
   protected override _onClose(options): void {
-    if (this.isSingleInstance && this.registeredInstance === this) {
-      VagabondApplication._openAppsRegistry
-        .get(this.constructor)
-        ?.delete(this.registryKey)
-    }
+    this.releaseRegistration()
 
     if (this._reactRoot) {
       this._reactRoot.unmount()
@@ -218,9 +214,16 @@ export abstract class VagabondApplication
       this.element.style.animation = "none"
     }
 
-    this.removeActorUpdateHook()
-
     super._onClose(options)
+  }
+
+  protected releaseRegistration() {
+    if (this.isSingleInstance && this.registeredInstance === this) {
+      VagabondApplication._openAppsRegistry
+        .get(this.constructor)
+        ?.delete(this.registryKey)
+    }
+    this.removeActorUpdateHook()
   }
 
   private removeActorUpdateHook() {

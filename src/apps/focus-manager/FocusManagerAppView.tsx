@@ -16,7 +16,7 @@ type Hero = Actor & { system: any }
 export const FocusManagerAppView = ({
   sheet,
   hero,
-  round,
+  round: openedRound,
 }: {
   sheet: { close: () => Promise<unknown> }
   hero: Hero
@@ -25,11 +25,19 @@ export const FocusManagerAppView = ({
   const [, refresh] = useState(0)
 
   useEffect(() => {
-    const hookId = Hooks.on("updateActor", (updated: any) => {
+    const actorHook = Hooks.on("updateActor", (updated: any) => {
       if (updated.id === hero.id) refresh((n) => n + 1)
     })
-    return () => Hooks.off("updateActor", hookId)
+    const combatHook = Hooks.on("updateCombat", () => refresh((n) => n + 1))
+    return () => {
+      Hooks.off("updateActor", actorHook)
+      Hooks.off("updateCombat", combatHook)
+    }
   }, [hero.id])
+
+  // The window can stay open across rounds, so the round it was opened with may be stale.
+  const combat = game.combat as any
+  const round = combat?.started ? (combat.round as number) : openedRound
 
   const dueIds = new Set(
     FocusUpkeep.dueInstances(hero, round).map((it) => it.id),
@@ -109,6 +117,7 @@ const FocusRow = ({
           hero={hero}
           round={round}
           instance={instance}
+          spellCard={spellCard}
           onDone={onDone}
         />
       )}

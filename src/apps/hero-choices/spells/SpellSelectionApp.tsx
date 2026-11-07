@@ -2,10 +2,11 @@ import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { appLang } from "../../../util/lang"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { EditModeContextProvider } from "../../../view/wrappers/EditModeContextProvider"
-import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
+import { OwnerHeroApplication } from "../../OwnerHeroApplication"
+import { VagabondAppArgs } from "../../VagabondApplication"
 import { useSpellSelection } from "./SpellSelectionUseCase"
 
-export class SpellSelectionApp extends VagabondApplication {
+export class SpellSelectionApp extends OwnerHeroApplication {
 
   actor: Actor & { system: HeroDataModel }
   isLevelUp?: boolean

@@ -7,10 +7,11 @@ import { findOrCreateElectiveTrainingsRule, getItemRules, normalizeRuleSelection
 import { appLang } from "../../../util/lang"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { EditModeContextProvider } from "../../../view/wrappers/EditModeContextProvider"
-import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
+import { OwnerHeroApplication } from "../../OwnerHeroApplication"
+import { VagabondAppArgs } from "../../VagabondApplication"
 import { useTrainingSelection } from "./TrainingSelection"
 
-export class TrainingSelectionApp extends VagabondApplication {
+export class TrainingSelectionApp extends OwnerHeroApplication {
 
   actor: Actor & { system: HeroDataModel }
 

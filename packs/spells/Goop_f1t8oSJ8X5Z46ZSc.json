@@ -17,7 +17,8 @@
       {
         "effect": "restrained"
       }
-    ]
+    ],
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

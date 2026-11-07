@@ -22,7 +22,7 @@ import { sys_id } from "./foundry-util"
 import { appLang } from "./lang"
 import { LightSourceUtil } from "./LightSourceUtil"
 import { localizeString } from "./locale-util"
-import { getFullItem, getId, getName } from "./model-util"
+import { canUseHeroActions, getFullItem, getId, getName } from "./model-util"
 
 /**
  * Use this function for programatically adding items to Actors. It mimics
@@ -113,6 +113,7 @@ export const useItem = async (
   skipDeletion?: boolean,
   e?: any,
 ) => {
+  if (!canUseHeroActions(actor)) return
   const sendToChat = () => {
     sendVagabondChatCard(actor, "ItemChatCard", {
       actorId: getId(actor),
@@ -169,7 +170,7 @@ export const equippedItemContextMenu = (
 ): CtxMenuItem[] => {
   const menuItems: CtxMenuItem[] = []
 
-  if (item instanceof WeaponDataModel) {
+  if (hero.parent.isOwner && item instanceof WeaponDataModel) {
     menuItems.push({
       icon: Sword,
       label: appLang.ButtonActions.attack,
@@ -194,7 +195,8 @@ export const equippedItemContextMenu = (
     action: () => hero.equip(item.parent),
   })
 
-  const lightOption = LightSourceUtil.contextMenuOption(item)
+  const lightOption =
+    hero.parent.isOwner && LightSourceUtil.contextMenuOption(item)
   if (lightOption) menuItems.unshift(lightOption)
 
   if (game.user?.isActiveGM && item.isCursed()) {
@@ -210,7 +212,11 @@ export const equipmentContextMenuItems = (
 ): CtxMenuItem[] => {
   const menuItems: CtxMenuItem[] = []
 
-  if (item instanceof WeaponDataModel && item.properties.includes("thrown")) {
+  if (
+    hero.parent.isOwner &&
+    item instanceof WeaponDataModel &&
+    item.properties.includes("thrown")
+  ) {
     menuItems.push({
       icon: Sword,
       label: appLang.ButtonActions.throw,
@@ -245,11 +251,12 @@ export const equipmentContextMenuItems = (
       })
     }
   }
-  else if (item.isConsumable) {
+  else if (hero.parent.isOwner && item.isConsumable) {
     menuItems.push(useItemContextOption(hero.parent, item.parent))
   }
 
-  const lightOption = LightSourceUtil.contextMenuOption(item)
+  const lightOption =
+    hero.parent.isOwner && LightSourceUtil.contextMenuOption(item)
   if (lightOption) menuItems.push(lightOption)
 
   if (item.isBoundRelic()) {
@@ -288,7 +295,11 @@ export const containerItemContextMenuItems = (
   container: ContainerDataModel,
 ): CtxMenuItem[] => {
   const menuItems: CtxMenuItem[] = []
-  if (item.isConsumable && actor?.parent?.type === "hero") {
+  if (
+    item.isConsumable &&
+    actor?.parent?.type === "hero" &&
+    actor.parent.isOwner
+  ) {
     menuItems.push(useItemContextOption(actor.parent, item.parent))
   }
   menuItems.push(viewItemSheetContextOption(item))

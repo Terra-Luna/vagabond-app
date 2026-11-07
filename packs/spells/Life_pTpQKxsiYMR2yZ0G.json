@@ -8,7 +8,8 @@
     "rules": [],
     "damageType": "healing",
     "baseManaCost": 1,
-    "ignoreEffectCost": true
+    "ignoreEffectCost": true,
+    "autoTargetingPref": "friendly"
   },
   "effects": [],
   "folder": null,
@@ -19,12 +20,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.3.1",
     "createdTime": 1784496877261,
-    "modifiedTime": 1785595900120,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1793917884932,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -24,13 +24,13 @@ export const FocusDoneSummary = ({
   return (
     <div className="flex gap-x-1 items-center">
       {spellCard}
-      <span className="shrink-0 ml-auto flex items-center gap-x-1 text-base text-text-primary pr-1">
+      <span className="shrink-0 ml-auto flex items-center text-base text-text-primary pr-1">
         {repeated > 0
           ? `${appLang.Spellcasting.focusSummaryFocused}:`
           : appLang.Spellcasting.focusSummaryFocused}
         {repeated > 0 && (
           <>
-            <span>{repeated}</span>
+            <span className="ml-1">{repeated}</span>
             <DamageTypeIcon dmgType={spellItem?.system?.damageType} size={18} />
           </>
         )}

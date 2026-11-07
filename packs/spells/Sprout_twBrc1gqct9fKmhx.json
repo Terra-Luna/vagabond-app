@@ -14,7 +14,8 @@
         "effect": "restrained",
         "critDuration": "focus"
       }
-    ]
+    ],
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

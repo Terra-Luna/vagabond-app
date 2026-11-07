@@ -117,27 +117,29 @@ export const HeroSheetMenu = ({
             </div>
           </div>
           <ul className="space-y-2 text-sm text-text-primary font-eskapade font-bold">
-            {!hero.tagalongId && hero.level.current === 0 && (
-              <span className="flex w-full mb-2 [&>span]:block [&>span]:w-full">
-                <Tooltip
-                  title={appLang.HeroSheet.Menu.importFromVgbndApp}
-                  content={appLang.HeroSheet.Menu.importFromVgbndAppTooltip}
-                >
-                  <MenuListItem
-                    text={
-                      <div className="flex gap-x-1">
-                        {appLang.HeroSheet.Menu.import}
-                        <p className="text-sm font-paradigm font-normal italic">
-                          (www.vgbnd.app)
-                        </p>
-                      </div>
-                    }
-                    onClick={() => TagalongImporter.importFromVgbndApp(hero)}
-                  />
-                </Tooltip>
-              </span>
-            )}
-            {!hero.ancestry && (
+            {hero.parent.isOwner &&
+              !hero.tagalongId &&
+              hero.level.current === 0 && (
+                <span className="flex w-full mb-2 [&>span]:block [&>span]:w-full">
+                  <Tooltip
+                    title={appLang.HeroSheet.Menu.importFromVgbndApp}
+                    content={appLang.HeroSheet.Menu.importFromVgbndAppTooltip}
+                  >
+                    <MenuListItem
+                      text={
+                        <div className="flex gap-x-1">
+                          {appLang.HeroSheet.Menu.import}
+                          <p className="text-sm font-paradigm font-normal italic">
+                            (www.vgbnd.app)
+                          </p>
+                        </div>
+                      }
+                      onClick={() => TagalongImporter.importFromVgbndApp(hero)}
+                    />
+                  </Tooltip>
+                </span>
+              )}
+            {hero.parent.isOwner && !hero.ancestry && (
               <MenuListItem
                 text={appLang.HeroSheet.Menu.create}
                 onClick={() =>

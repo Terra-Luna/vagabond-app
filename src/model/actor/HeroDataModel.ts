@@ -98,6 +98,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
   override prepareBaseData() {
     super.prepareBaseData()
+    this.spells ??= []
+    this.perks ??= []
     const actor = this.parent
     if (!actor?.items) return
 

@@ -45,15 +45,17 @@ export const RollPresetCard = ({
 
       {/* ROLL | EDIT | DELETE BUTTONS */}
       <div className="flex gap-x-4 items-center content-center ml-auto">
-        <div className="mr-2">
-          <RollButton
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              HeroAttack.buildCustomRoll(actor, preset, e)
-            }}
-          />
-        </div>
+        {actor.isOwner && (
+          <div className="mr-2">
+            <RollButton
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                HeroAttack.buildCustomRoll(actor, preset, e)
+              }}
+            />
+          </div>
+        )}
         {EditButton}
         {TrashButton}
       </div>

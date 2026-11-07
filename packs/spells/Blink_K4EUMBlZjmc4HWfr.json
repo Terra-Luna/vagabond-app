@@ -7,7 +7,8 @@
     "description": "<p><span style=\"white-space:pre-wrap\">The Target can skip their Move to teleport to an empty space they can see within Near. They can teleport through space occupied by other Beings, but can't teleport through spaces they couldn't otherwise Move through.</span></p>",
     "rules": [],
     "damageType": "none",
-    "appliedEffects": []
+    "appliedEffects": [],
+    "autoTargetingPref": "friendly"
   },
   "effects": [],
   "folder": null,
@@ -18,12 +19,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.3.1",
     "createdTime": 1784762661139,
-    "modifiedTime": 1785610965308,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1793917781953,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

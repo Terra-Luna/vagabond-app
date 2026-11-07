@@ -20,6 +20,7 @@ import { EditModeOptions } from "../../../context/EditModeContext/EditModeOption
 import { EditModeContextProvider } from "../../../wrappers/EditModeContextProvider"
 import { ActorPortrait } from "../component/ActorPortrait"
 import { VagabondActorSheet } from "../VagabondActorSheet"
+import { readHeroTab, writeHeroTab } from "./hero-tab-memory-util"
 import { HeroSheetMenu } from "./menu/HeroSheetMenu"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { AlchemyTab } from "./tab/AlchemyTab"
@@ -64,7 +65,7 @@ const HeroSheetHeader = ({
     const hasXpLevel =
       hero.level.xp! >= hero.level.xpToLevel! && hero.level.xpToLevel! > -1
     const isNewChar = !hero.ancestry
-    return hasDestiny || hasXpLevel || isNewChar
+    return hero.parent.isOwner && (hasDestiny || hasXpLevel || isNewChar)
   }
 
   return (
@@ -238,7 +239,7 @@ const HeroSheetBody = ({
     ...inventoryItems.flatMap((item) => getItemRules(item)),
   ]
   const canPolymorph = hero.spells.some(
-    (spell) => spell.parent.flags[sys_id].polymorph,
+    (spell) => spell.parent.flags?.[sys_id]?.polymorph,
   )
 
   const showAlchemyTab = isAlchemist(hero)
@@ -338,7 +339,7 @@ const HeroSheetBody = ({
           },
         ]
       : []),
-    ...(canPolymorph
+    ...(hero.parent.isOwner && canPolymorph
       ? [
           {
             id: "polymorph",
@@ -361,7 +362,13 @@ const HeroSheetBody = ({
     },
   ]
 
-  const [selectedId, setSelectedId] = useState("main")
+  const [selectedId, setSelectedId] = useState(
+    () => readHeroTab(hero.parent.id ?? "") ?? "main",
+  )
+
+  useEffect(() => {
+    if (hero.parent.id) writeHeroTab(hero.parent.id, selectedId)
+  }, [hero.parent.id, selectedId])
 
   useEffect(() => {
     const hookId = (Hooks as any).on(

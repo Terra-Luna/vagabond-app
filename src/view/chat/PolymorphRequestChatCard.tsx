@@ -5,7 +5,7 @@ import { getPolymorphRequestRegistry, PolymorphRequestStatus, PolymorphRequestTa
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../model/actor/NpcDataModel"
-import { PolymorphUtil } from "../../model/actor/util/PolymorphUtil"
+import { PolymorphFormSnapshot, PolymorphUtil } from "../../model/actor/util/PolymorphUtil"
 import { sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
 import { getCanvasToken, getTokenImg } from "../../util/model-util"
@@ -23,12 +23,14 @@ export const PolymorphRequestChatCard = ({
   targets,
   duration,
   formUuid,
+  formSnapshot,
   messageId,
 }: {
   casterId: string
   targets: RequestTarget[]
   duration: "focus" | "continual" | "turn"
   formUuid: string
+  formSnapshot?: PolymorphFormSnapshot
   messageId: string
 }) => {
   const caster = game.actors?.get(casterId)
@@ -56,6 +58,11 @@ export const PolymorphRequestChatCard = ({
     let isCurrent = true
 
     async function loadForm() {
+      // The snapshot travels with the card, so players don't need permission to the source Actor.
+      if (formSnapshot) {
+        setForm(PolymorphUtil.fromSnapshot(formSnapshot))
+        return
+      }
       try {
         const result = await fromUuid(formUuid)
         if (!isCurrent) return

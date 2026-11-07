@@ -30,6 +30,12 @@ export const getTargets = (): Token[] => {
 
 export const getTargetIds = (): string[] => getTargets().map((t) => t.id)
 
+export const canUseHeroActions = (actor: Actor): boolean => {
+  if (actor.isOwner) return true
+  ui.notifications?.warn(appLang.HeroChoices.ownerRequired)
+  return false
+}
+
 /**
  * Whether the actor has a token on the scene (defaults to the active scene).
  */

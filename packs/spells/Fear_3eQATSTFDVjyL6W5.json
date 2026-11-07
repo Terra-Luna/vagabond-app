@@ -15,7 +15,8 @@
         "duration": "focus",
         "critDuration": "continual"
       }
-    ]
+    ],
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

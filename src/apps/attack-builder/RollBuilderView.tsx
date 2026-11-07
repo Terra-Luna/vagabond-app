@@ -278,7 +278,7 @@ export const RollBuilderView = ({
           )}
 
           {/* ROLL BUTTON */}
-          {!setClosed && (
+          {!setClosed && actor.isOwner && (
             <div className="flex gap-x-1 ml-auto">
               <SecondaryButton onClick={reset}>
                 {appLang.ButtonActions.reset}
@@ -290,6 +290,7 @@ export const RollBuilderView = ({
               >
                 <PrimaryButton
                   onClick={async (e) => {
+                    if (!actor.isOwner) return
                     if (saveOnRoll) {
                       await saveCustomRoll()
                     }

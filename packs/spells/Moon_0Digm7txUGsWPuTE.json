@@ -17,7 +17,8 @@
       "duration": "focus",
       "burnDamage": "1d6"
     },
-    "upcastableEffect": false
+    "upcastableEffect": false,
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

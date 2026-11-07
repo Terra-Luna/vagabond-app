@@ -136,7 +136,7 @@ const Weapons = ({
 }) => {
   const gripStyle = "text-text-aux text-lg text-center font-eskapade"
   const dmgStyle =
-    "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
+    "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1"
   const propsStyle = "text-text-aux text-sm italic line-clamp-1"
 
   const { onCtxMenu, ContextMenu } = useContextMenu()
@@ -233,6 +233,7 @@ const Weapons = ({
           armorPiercing: attackInstance?.damageRoll?.armorPiercing ?? 0,
         } as RollPreset,
         initiateAttack: async (e: React.MouseEvent) => {
+          if (!hero.parent.isOwner) return
           attackInstance = HeroAttack.buildWeaponAttack(
             hero.parent,
             item.parent,
@@ -244,6 +245,7 @@ const Weapons = ({
           )
         },
         rollDefenseCheck: async (e: React.MouseEvent) => {
+          if (!hero.parent.isOwner) return
           attackInstance = HeroAttack.buildWeaponAttack(
             hero.parent,
             item.parent,
@@ -403,6 +405,7 @@ const Weapons = ({
                       <div className="flex content-right items-center gap-x-1">
                         {/* CLICKABLE DAMAGE ROLL */}
                         <Tooltip
+                          disabled={!hero.parent.isOwner}
                           content={
                             <RollBuilderView
                               actor={hero.parent}
@@ -415,7 +418,7 @@ const Weapons = ({
                           interactive={true}
                         >
                           <div
-                            className={`${dmgStyle} hover-glow`}
+                            className={`${dmgStyle} ${hero.parent.isOwner ? "hover-glow cursor-pointer" : ""}`}
                             onClick={(e) => initiateAttack(e)}
                           >
                             {damageString}
@@ -423,7 +426,7 @@ const Weapons = ({
                         </Tooltip>
 
                         {/* DEFENSE ACTION BUTTON */}
-                        {isDefense && (
+                        {isDefense && hero.parent.isOwner && (
                           <Tooltip
                             title={"Defense Action"}
                             content={

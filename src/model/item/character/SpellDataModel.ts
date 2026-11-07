@@ -11,6 +11,11 @@ const spellSchema = () => {
     damageType: new fields.StringField({ ...damageTypeOptions() }),
     upcastableEffect: new fields.BooleanField({ initial: false }),
     upcastableEffectDieRoll: new fields.BooleanField({ initial: false }),
+    autoTargetingPref: new fields.StringField({
+      ...requiredString,
+      initial: "none",
+      choices: ["none", "hostile", "friendly"],
+    }),
     upkeep: new fields.SchemaField({
       force: new fields.BooleanField({ initial: false }),
       perTarget: new fields.BooleanField({ initial: false }),

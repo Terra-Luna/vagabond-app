@@ -5,7 +5,7 @@ import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDa
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { deleteItems, getAlchemyMaterials, useItem } from "../../util/inventory-util"
 import { appLang } from "../../util/lang"
-import { addItemToActor, getFullItem } from "../../util/model-util"
+import { addItemToActor, canUseHeroActions, getFullItem } from "../../util/model-util"
 import { useAlchemySelection } from "../hero-choices/alchemy/AlchemySelectionUseCase"
 import { Recipes } from "../hero-choices/alchemy/Recipes"
 import { AlchemyToolsPill } from "./component/AlchemyToolsPill"
@@ -103,6 +103,7 @@ export const AlchemyCraftingView = ({
    * Spends Materials and generates item. See below for actions.
    */
   const craftItem = async (item, action: (fullItem: any) => Promise<void>) => {
+    if (!canUseHeroActions(actor)) return
     const fullItem = await getAlchemyItem(item)
     if (fullItem) {
       if (await consumeMaterials()) {
@@ -120,6 +121,7 @@ export const AlchemyCraftingView = ({
    */
   const addToInventory = useCallback(
     async (e, item) => {
+      if (!canUseHeroActions(actor)) return
       if (!validateToolsEquipped()) return
       craftItem(item, async (fullItem) => {
         await addItemToActor(actor, fullItem)
@@ -133,6 +135,7 @@ export const AlchemyCraftingView = ({
    */
   const craftAndUse = useCallback(
     async (e, item) => {
+      if (!canUseHeroActions(actor)) return
       if (!validateToolsEquipped()) return
       craftItem(item, async (fullItem) => {
         await useItem(actor, fullItem, true, e)
@@ -155,27 +158,31 @@ export const AlchemyCraftingView = ({
             alchemyItems={alchemyItems}
             hideHeaderLabel={true}
             hideCompendiumLink={true}
-            actions={[
-              {
-                label: appLang.HeroSheet.Alchemy.craft,
-                tooltip: {
-                  title: appLang.AlchemyCrafting.craftTooltipTitle,
-                  content: appLang.HeroSheet.Alchemy.craft_tooltip,
-                },
-                item: undefined,
-                action: addToInventory,
-              },
-              {
-                label: appLang.HeroSheet.Alchemy.use,
-                tooltip: {
-                  title: appLang.AlchemyCrafting.useTooltipTitle,
-                  content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}`,
-                },
-                item: undefined,
-                action: (e, item) => craftAndUse(e, item),
-                hideForItem: (item) => lightSourceIds.has(item?.value),
-              },
-            ]}
+            actions={
+              actor.isOwner
+                ? [
+                    {
+                      label: appLang.HeroSheet.Alchemy.craft,
+                      tooltip: {
+                        title: appLang.AlchemyCrafting.craftTooltipTitle,
+                        content: appLang.HeroSheet.Alchemy.craft_tooltip,
+                      },
+                      item: undefined,
+                      action: addToInventory,
+                    },
+                    {
+                      label: appLang.HeroSheet.Alchemy.use,
+                      tooltip: {
+                        title: appLang.AlchemyCrafting.useTooltipTitle,
+                        content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}`,
+                      },
+                      item: undefined,
+                      action: (e, item) => craftAndUse(e, item),
+                      hideForItem: (item) => lightSourceIds.has(item?.value),
+                    },
+                  ]
+                : []
+            }
           />
         </div>
       </div>

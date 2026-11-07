@@ -14,7 +14,8 @@
         "effect": "burning",
         "critDuration": 4
       }
-    ]
+    ],
+    "autoTargetingPref": "hostile"
   },
   "effects": [],
   "folder": null,

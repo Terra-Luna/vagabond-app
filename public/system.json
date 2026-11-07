@@ -24,17 +24,8 @@
   ],
   "flags": {
     "hotReload": {
-      "extensions": [
-        "css",
-        "html",
-        "hbs",
-        "json"
-      ],
-      "paths": [
-        "css",
-        "lang",
-        "templates"
-      ]
+      "extensions": ["css", "html", "hbs", "json"],
+      "paths": ["css", "lang", "templates"]
     }
   },
   "documentTypes": {
@@ -46,59 +37,37 @@
     },
     "Item": {
       "alchemical": {
-        "htmlFields": [
-          "description"
-        ]
+        "htmlFields": ["description"]
       },
       "ancestry": {
-        "htmlFields": [
-          "description"
-        ]
+        "htmlFields": ["description"]
       },
       "armor": {
-        "htmlFields": [
-          "description"
-        ]
+        "htmlFields": ["description"]
       },
       "class": {
-        "htmlFields": [
-          "description"
-        ]
+        "htmlFields": ["description"]
       },
       "feature": {
-        "htmlFields": [
-          "description"
-        ]
+        "htmlFields": ["description"]
       },
       "container": {
-        "htmlFields": [
-          "descripton"
-        ]
+        "htmlFields": ["descripton"]
       },
       "perk": {
-        "htmlFields": [
-          "description"
-        ]
+        "htmlFields": ["description"]
       },
       "spell": {
-        "htmlFields": [
-          "description"
-        ]
+        "htmlFields": ["description"]
       },
       "startingpack": {
-        "htmlFields": [
-          "description"
-        ]
+        "htmlFields": ["description"]
       },
       "sundry": {
-        "htmlFields": [
-          "description"
-        ]
+        "htmlFields": ["description"]
       },
       "weapon": {
-        "htmlFields": [
-          "description"
-        ]
+        "htmlFields": ["description"]
       }
     }
   },
@@ -260,9 +229,7 @@
       }
     }
   ],
-  "esmodules": [
-    "vagabond-app.js"
-  ],
+  "esmodules": ["vagabond-app.js"],
   "styles": [],
   "languages": [
     {

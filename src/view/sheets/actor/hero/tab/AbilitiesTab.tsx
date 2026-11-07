@@ -206,7 +206,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
       </span>
 
       {/* PERK AND TRAINING SELECTION BUTTONS */}
-      {hero.class && (
+      {hero.parent.isOwner && hero.class && (
         <>
           <div className={`flex gap-x-1 mt-1 w-full mb-4`}>
             <UtilityButton

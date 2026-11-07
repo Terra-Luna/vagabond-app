@@ -5,10 +5,11 @@ import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { stackStackables } from "../../util/inventory-util"
 import { appLang } from "../../util/lang"
 import { getFullItem } from "../../util/model-util"
-import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
+import { OwnerHeroApplication } from "../OwnerHeroApplication"
+import { VagabondAppArgs } from "../VagabondApplication"
 import { useItemShopView } from "./ItemShopView"
 
-export class ItemShopApp extends VagabondApplication {
+export class ItemShopApp extends OwnerHeroApplication {
 
   actor: Actor & { system: HeroDataModel }
 

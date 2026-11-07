@@ -152,6 +152,7 @@ export const InventoryItemsTable = ({
                         </div>
                       </td>
                     ) : item.isConsumable &&
+                      actor?.parent?.isOwner &&
                       !(actor as HeroDataModel).polymorph ? (
                       <td className="flex flex-col mt-1.5 items-center">
                         <Tooltip
