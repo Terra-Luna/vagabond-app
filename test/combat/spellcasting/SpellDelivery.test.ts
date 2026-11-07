@@ -350,3 +350,226 @@ describe("spell delivery mana calc tests", () => {
     expect(imbue.manaCost).toBe(4)
   })
 })
+
+describe("spell mana discount flag", () => {
+  const mods = { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 }
+
+  test("discounts the cast on top of modifier discounts", () => {
+    const aura = new Aura(
+      { ...spell, manaDiscount: 2 },
+      {
+        ...mods,
+        deliveryDiscounts: { aura: 1 },
+      },
+    )
+    aura.size = 35
+    aura.calculateManaCost()
+    expect(aura.manaCost).toBe(4)
+  })
+
+  test("a negative value is a penalty", () => {
+    const remote = new Remote({ ...spell, manaDiscount: -2 }, mods)
+    remote.setTargetTokenIds(["a"])
+    remote.damageDice = 1
+    remote.calculateManaCost()
+    expect(remote.manaCost).toBe(2)
+  })
+
+  test("never brings the cost below zero", () => {
+    const sphere = new Sphere({ ...spell, manaDiscount: 50 }, mods)
+    sphere.calculateManaCost()
+    expect(sphere.manaCost).toBe(0)
+  })
+
+  test("applies to every delivery, including Line and Cube", () => {
+    const line = new Line({ ...spell, manaDiscount: 1 }, mods)
+    line.calculateManaCost()
+    const baseline = new Line(spell, mods)
+    baseline.calculateManaCost()
+    expect(line.manaCost).toBe(Math.max(0, baseline.manaCost - 1))
+
+    const cube = new Cube({ ...spell, manaDiscount: -1 }, mods)
+    cube.calculateManaCost()
+    const cubeBase = new Cube(spell, mods)
+    cubeBase.calculateManaCost()
+    expect(cube.manaCost).toBe(cubeBase.manaCost + 1)
+  })
+})
+
+describe("spell noUpcast flag", () => {
+  const mods = { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 }
+  const fixed: SpellSnapshot = { ...spell, noUpcast: true }
+
+  test("an area can't grow", () => {
+    const sphere = new Sphere(fixed, mods)
+    sphere.setSize(35)
+    expect(sphere.size).toBe(sphere.baseSize)
+    expect(sphere.manaCost).toBe(2)
+
+    const line = new Line(fixed, mods)
+    line.setSize(60)
+    line.setHeight(40)
+    line.setWidth(20)
+    expect([line.size, line.height, line.width]).toEqual([30, 10, 5])
+    expect(line.manaCost).toBe(2)
+  })
+
+  test("a delivery set up for another spell is reset when the spell is selected", () => {
+    const aura = new Aura(spell, mods)
+    aura.setSize(35)
+    aura.setUpcast(2)
+    aura.setDamageDice(3)
+
+    aura.setSpell(fixed)
+
+    expect(aura.size).toBe(aura.baseSize)
+    expect(aura.upcast).toBe(0)
+    expect(aura.damageDice).toBe(1)
+    expect(aura.manaCost).toBe(2)
+  })
+
+  test("can't be upcast or cast for more than one damage die", () => {
+    const sphere = new Sphere(fixed, mods)
+    sphere.setUpcast(3)
+    sphere.setDamageDice(4)
+    expect(sphere.upcast).toBe(0)
+    expect(sphere.damageDice).toBe(1)
+  })
+
+  test("is cast for its damage or for its effect, never both", () => {
+    const sphere = new Sphere(fixed, mods)
+    sphere.setSize(sphere.baseSize)
+
+    sphere.setApplyEffect(true)
+    expect([sphere.applyEffect, sphere.damageDice]).toEqual([true, 0])
+
+    sphere.setDamageDice(1)
+    expect([sphere.applyEffect, sphere.damageDice]).toEqual([false, 1])
+    expect(sphere.manaCost).toBe(2)
+
+    sphere.setApplyEffect(false)
+    expect(sphere.damageDice).toBe(1)
+  })
+
+  test("a spell that doesn't charge for its effect can still do both", () => {
+    const free = new Sphere({ ...fixed, ignoreEffectCost: true }, mods)
+    free.setApplyEffect(true)
+    expect([free.applyEffect, free.damageDice]).toEqual([true, 1])
+  })
+
+  test("remote is always one target", () => {
+    const remote = new Remote(fixed, mods)
+    remote.setTargetTokenIds(["a", "b", "c"])
+
+    expect(remote.targetCount).toBe(1)
+    expect(remote.manaCost).toBe(0)
+    expect(remote.hasExtraTargets).toBe(true)
+
+    remote.setTargetTokenIds(["a"])
+    expect(remote.hasExtraTargets).toBe(false)
+  })
+
+  test("a cube or glyph can't be extended", () => {
+    const cube = new Cube(fixed, mods)
+    cube.setTargetCount(4)
+    expect(cube.targetCount).toBe(1)
+    expect(cube.manaCost).toBe(cube.baseManaCost)
+  })
+
+  test("other spells are unaffected", () => {
+    const sphere = new Sphere(spell, mods)
+    sphere.setSize(35)
+    sphere.setApplyEffect(true)
+    expect(sphere.size).toBe(35)
+    expect(sphere.hasFixedCost).toBe(false)
+  })
+})
+
+describe("spell noManaBoost flag", () => {
+  const capped: SpellSnapshot = { ...spell, noManaBoost: true }
+  const noDiscounts = { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 }
+  const discounted = { damageUpcastDiscount: 0, deliveryUpcastDiscount: 1 }
+
+  test("without discounts nothing can be upcast", () => {
+    const sphere = new Sphere(capped, noDiscounts)
+    sphere.setSize(sphere.baseSize)
+    sphere.setSize(25)
+    expect(sphere.size).toBe(sphere.baseSize)
+    expect(sphere.manaCost).toBe(2)
+  })
+
+  test("upcasting is allowed while discounts keep the cost at the base cost", () => {
+    const sphere = new Sphere(capped, discounted)
+    sphere.setSize(sphere.baseSize)
+
+    sphere.setSize(25)
+
+    // One step is paid for by the discount; a second would push the cost to 3.
+    expect(sphere.size).toBe(10)
+    expect(sphere.manaCost).toBe(2)
+  })
+
+  test("damage dice and the effect surcharge stop at the cap too", () => {
+    const sphere = new Sphere(capped, noDiscounts)
+    sphere.setSize(sphere.baseSize)
+
+    sphere.setDamageDice(4)
+    expect(sphere.damageDice).toBe(1)
+
+    sphere.setApplyEffect(true)
+    expect(sphere.applyEffect).toBe(false)
+    expect(sphere.manaCost).toBe(2)
+  })
+
+  test("a line can't be widened past the cap", () => {
+    const line = new Line(capped, noDiscounts)
+    line.setSize(line.baseSize)
+    line.setHeight(40)
+    line.setWidth(20)
+    expect([line.height, line.width]).toEqual([10, 5])
+    expect(line.manaCost).toBe(2)
+  })
+
+  test("a penalty doesn't make the base cast uncastable", () => {
+    const sphere = new Sphere({ ...capped, manaDiscount: -1 }, noDiscounts)
+    sphere.setSize(sphere.baseSize)
+    sphere.setSize(25)
+    expect(sphere.size).toBe(sphere.baseSize)
+    expect(sphere.exceedsManaCap).toBe(false)
+  })
+
+  test("a delivery configured for another spell is stepped down when the spell is selected", () => {
+    const sphere = new Sphere(spell, noDiscounts)
+    sphere.setSize(25)
+    sphere.setSpell(capped)
+    expect(sphere.size).toBe(sphere.baseSize)
+  })
+
+  test("cubes are limited to what the cap allows", () => {
+    const cube = new Cube(capped, discounted)
+    expect(cube.maxTargetCount).toBe(2)
+    cube.setTargetCount(5)
+    expect(cube.targetCount).toBe(2)
+    expect(new Cube(spell, discounted).maxTargetCount).toBeUndefined()
+  })
+
+  test("remote can't be cast on more targets than the cap allows", () => {
+    const remote = new Remote(capped, noDiscounts)
+    remote.setTargetTokenIds(["a", "b"])
+    expect(remote.exceedsManaCap).toBe(true)
+
+    remote.setTargetTokenIds(["a"])
+    expect(remote.exceedsManaCap).toBe(false)
+
+    const covered = new Remote(capped, discounted)
+    covered.setTargetTokenIds(["a", "b"])
+    expect(covered.exceedsManaCap).toBe(false)
+  })
+
+  test("other spells are unaffected", () => {
+    const sphere = new Sphere(spell, noDiscounts)
+    sphere.setSize(25)
+    expect(sphere.size).toBe(25)
+    expect(sphere.exceedsManaCap).toBe(false)
+  })
+})

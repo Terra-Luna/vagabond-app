@@ -73,12 +73,19 @@ export const useSpellCastingMenu = (
   const spells = useMemo((): SpellSnapshot[] => {
     const allSpells = ItemsCache.spells()
       .filter((it) => hero.spells.map((sp) => sp._sourceId).includes(it.uuid))
-      .map((sp) => SpellDelivery.getSpellSnapshot(sp))
+      .map((sp) =>
+        SpellDelivery.getSpellSnapshot(
+          sp,
+          hero.spells.find((known) => known._sourceId === sp.uuid)?.parent
+            ?.flags?.[sys_id],
+        ),
+      )
     return allSpells
   }, [
     actor,
     JSON.stringify(actor.system.class?.rules ?? []),
     JSON.stringify(hero.spells.map((sp) => sp._sourceId)),
+    JSON.stringify(hero.spells.map((sp) => sp.parent?.flags?.[sys_id] ?? {})),
   ])
 
   useEffect(() => {
@@ -420,12 +427,17 @@ export const useSpellCastingMenu = (
   }, [sphereSize, damageType, targetingPref])
 
   const isCubePreview = isSpellcastingOpen && activeDelivery instanceof Cube
+  const cubeLimit =
+    activeDelivery instanceof PerTargetDelivery
+      ? activeDelivery.maxTargetCount
+      : undefined
   const cubePreview = useRef<CubePreview | undefined>(undefined)
 
-  /** Clicking the canvas drops a Cube there and raises the Cube count. */
+  /** Clicking the canvas drops a Cube there and raises the Cube count. A fixed-cost spell gets a single one. */
   useEffect(() => {
     if (!isCubePreview) return
     const preview = new CubePreview(renderer, {
+      limit: cubeLimit,
       onCount: (count) => onUpdateTargetCount(String(count)),
       onArea: targetArea,
     })
@@ -437,6 +449,7 @@ export const useSpellCastingMenu = (
     }
   }, [
     isCubePreview,
+    cubeLimit,
     onUpdateTargetCount,
     targetArea,
     renderer,
@@ -515,6 +528,7 @@ export const useSpellCastingMenu = (
             label={deliveries[deliveryIndex].targetLabel}
             onUpdateAreaSize={onUpdateAreaSize}
             increment={deliveries[deliveryIndex].increment}
+            readOnly={deliveries[deliveryIndex].hasFixedCost}
           />
         </>
       )
@@ -545,6 +559,7 @@ export const useSpellCastingMenu = (
           delivery={deliveries[deliveryIndex]}
           onUpdateHeight={onUpdateLineHeight}
           onUpdateWidth={onUpdateLineWidth}
+          readOnly={deliveries[deliveryIndex].hasFixedCost}
         />
       )
     }
@@ -654,6 +669,14 @@ export const useSpellCastingMenu = (
       }
       if (targetsMismatchArea(delivery)) {
         ui.notifications?.warn(appLang.Spellcasting.castTargetsMismatchArea)
+        return
+      }
+      if (delivery instanceof PerTargetDelivery && delivery.hasExtraTargets) {
+        ui.notifications?.warn(appLang.Spellcasting.castNoUpcastSingleTarget)
+        return
+      }
+      if (delivery.exceedsManaCap) {
+        ui.notifications?.warn(appLang.Spellcasting.castNoManaBoost)
         return
       }
       onUpdateStudyDamageDice("0")
@@ -818,7 +841,7 @@ export const useSpellCastingMenu = (
                   </div>
                 )}
 
-                {spell.upcastableEffect && (
+                {spell.upcastableEffect && !delivery.hasFixedCost && (
                   <UpcastingInput
                     upcast={delivery?.upcast}
                     onUpdateUpcast={onUpdateUpcast}

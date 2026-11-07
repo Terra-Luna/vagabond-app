@@ -1,7 +1,7 @@
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { sys_id } from "../../util/foundry-util"
-import { isItemChoiceRule, normalizeRuleSelections } from "./item-rules-util"
+import { getRuleItemFlags, isItemChoiceRule, mergeItemFlags, normalizeRuleSelections } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 
 export class PerkRulesSelectionsApplicator {
@@ -58,6 +58,25 @@ export class PerkRulesSelectionsApplicator {
       )
 
     const selectionsByPerk = new Map<string, any[]>()
+
+    /** Flags configured on the ChoiceSet rules, keyed by the uuid of the item each rule selected. */
+    const flagsByItem = new Map<string, Record<string, unknown>>()
+    const stampFlags = (uuid: string, rule: any) =>
+      flagsByItem.set(
+        uuid,
+        mergeItemFlags(flagsByItem.get(uuid), getRuleItemFlags(rule)),
+      )
+    activeRules.filter(isItemChoiceRule).forEach((rule) =>
+      normalizeRuleSelections(rule.selections).forEach((selection) => {
+        stampFlags(selection.value, rule)
+        // A selected Perk's own item ChoiceSet rule configures the item chosen inside it.
+        const inner = ItemsCache.items
+          .get(selection.value)
+          ?.system?.rules?.filter(isItemChoiceRule)
+        if (selection.subselect)
+          inner?.forEach((it: any) => stampFlags(selection.subselect, it))
+      }),
+    )
 
     selectedPerkSelections.forEach((selection) => {
       const selections = selectionsByPerk.get(selection.value) ?? []
@@ -133,10 +152,12 @@ export class PerkRulesSelectionsApplicator {
             type: fullItem.type,
             flags: {
               ...fullItem.flags,
-              [sys_id]: {
-                ...fullItem.flags?.[sys_id],
-                sourceId: fullItem.uuid,
-              },
+              [sys_id]: mergeItemFlags(
+                fullItem.flags?.[sys_id],
+                // Set by the ChoiceSet rule that selected the item. The source item is never touched.
+                flagsByItem.get(fullItem.uuid),
+                { sourceId: fullItem.uuid },
+              ),
               isRuleSelection: true,
             },
           },

@@ -42,7 +42,14 @@
         "sourceMode": "dynamic",
         "choices": [],
         "selections": [],
-        "pack": "spell"
+        "pack": "spell",
+        "itemFlags": [
+          {
+            "key": "modifiers.spell.manaDiscount",
+            "value": "1"
+          }
+        ],
+        "skipAtHeroCreation": false
       }
     ],
     "senses": [],
@@ -58,12 +65,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.3.1",
     "createdTime": 1784494454047,
-    "modifiedTime": 1786171231312,
-    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "modifiedTime": 1794084432689,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

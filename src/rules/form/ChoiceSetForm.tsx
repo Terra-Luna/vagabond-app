@@ -11,6 +11,7 @@ import { ChoiceOption } from "../shared/ChoiceOption"
 import { FormProps } from "../shared/FormProps"
 import { ItemRuleInput, ItemRuleSelector } from "../shared/ItemRuleInput"
 import { ItemRulesLabel } from "../shared/ItemRulesTypography"
+import type { ItemFlag } from "../util/item-rules-util"
 
 export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
   // Read the options list array, defaulting to an empty array if uninitialized
@@ -55,6 +56,16 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
     rule.channel === "perk" ||
     rule.channel === "alchemical" ||
     rule.channel === "item"
+
+  const itemFlags: ItemFlag[] = rule.itemFlags || []
+
+  const updateItemFlag = (index: number, fields: Partial<ItemFlag>) =>
+    onChange({
+      ...rule,
+      itemFlags: itemFlags.map((flag, idx) =>
+        idx === index ? { ...flag, ...fields } : flag,
+      ),
+    })
 
   const handleDrop = async (e: React.DragEvent, index: number) => {
     if (!isItemChannel) return
@@ -376,6 +387,70 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                 </div>
               ))
             )}
+          </div>
+        </div>
+      )}
+
+      {isItemChannel && (
+        <div className="border-t border-solid border-table-border/40 pt-2 mt-1">
+          <div className="flex justify-between items-center mb-2">
+            <ItemRulesLabel text={appLang.RulesEditor.itemFlags} />
+            <button
+              type="button"
+              onClick={() =>
+                onChange({
+                  ...rule,
+                  itemFlags: [...itemFlags, { key: "", value: "true" }],
+                })
+              }
+              className={`flex items-center gap-1 bg-sheet-main-fill text-text-primary px-2 py-0.5 hover:bg-table-border/10 transition-colors ${tableBorder}`}
+            >
+              <Plus size={14} /> {appLang.RulesEditor.addItemFlag}
+            </button>
+          </div>
+          <p className="text-text-primary/50 text-xs italic px-1 pb-1">
+            {appLang.RulesEditor.itemFlagsHint}
+          </p>
+          <div className="space-y-2">
+            {itemFlags.map((flag, fIdx) => (
+              <div key={fIdx} className="flex gap-2 items-end">
+                <div className="w-1/2">
+                  <ItemRuleInput
+                    label={appLang.RulesEditor.flagKey}
+                    value={flag.key}
+                    placeholder="naturallyAttuned"
+                    onChange={(e) =>
+                      updateItemFlag(fIdx, { key: e.target.value })
+                    }
+                    type="text"
+                  />
+                </div>
+                <div className="w-1/2">
+                  <ItemRuleInput
+                    label={appLang.RulesEditor.flagValue}
+                    value={flag.value}
+                    placeholder="true"
+                    onChange={(e) =>
+                      updateItemFlag(fIdx, { value: e.target.value })
+                    }
+                    type="text"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    onChange({
+                      ...rule,
+                      itemFlags: itemFlags.filter((_, idx) => idx !== fIdx),
+                    })
+                  }
+                  className="p-1 mb-1 border border-solid border-transparent hover:border-table-border hover:bg-sheet-main-fill text-text-primary/60 hover:text-destructive-action transition-all shrink-0"
+                  title={appLang.RulesEditor.deleteOption}
+                >
+                  <Trash size={16} />
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       )}

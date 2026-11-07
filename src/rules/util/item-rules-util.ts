@@ -20,6 +20,67 @@ export interface ItemRule {
   ignoreTrainings?: boolean
   skipAtHeroCreation?: boolean
   sourceItemId?: string
+  /** ChoiceSet rules for Spells and Perks: flags written onto each selected item (under this system's scope). */
+  itemFlags?: ItemFlag[]
+}
+
+export interface ItemFlag {
+  key: string
+  value: string
+}
+
+/**
+ * The flags a ChoiceSet rule stamps onto the items it selects. Flag values are typed in as text, so "true", "false"
+ * and numbers become booleans and numbers; entries without a key are ignored. A dotted key is a path, so
+ * "modifiers.spell.manaDiscount" becomes { modifiers: { spell: { manaDiscount } } }.
+ */
+export const getRuleItemFlags = (
+  rule: { itemFlags?: ItemFlag[] } | undefined,
+): Record<string, any> => {
+  const flags: Record<string, any> = {}
+  for (const { key, value } of rule?.itemFlags ?? []) {
+    if (!key?.trim()) continue
+    const text = String(value ?? "").trim()
+    const typed =
+      text === "true"
+        ? true
+        : text === "false"
+          ? false
+          : text !== "" && !Number.isNaN(Number(text))
+            ? Number(text)
+            : text
+    const path = key.trim().split(".")
+    const last = path.pop()!
+    let node = flags
+    for (const segment of path) {
+      if (typeof node[segment] !== "object" || node[segment] === null)
+        node[segment] = {}
+      node = node[segment]
+    }
+    node[last] = typed
+  }
+  return flags
+}
+
+/** Merges flag objects, with later ones winning, without sharing any nested object with the inputs. */
+export const mergeItemFlags = (
+  ...flags: (Record<string, any> | undefined)[]
+): Record<string, any> => {
+  const merged: Record<string, any> = {}
+  for (const source of flags) {
+    for (const [key, value] of Object.entries(source ?? {})) {
+      merged[key] =
+        value && typeof value === "object" && !Array.isArray(value)
+          ? mergeItemFlags(
+              merged[key] && typeof merged[key] === "object"
+                ? merged[key]
+                : undefined,
+              value,
+            )
+          : value
+    }
+  }
+  return merged
 }
 
 export interface RuleSelection {

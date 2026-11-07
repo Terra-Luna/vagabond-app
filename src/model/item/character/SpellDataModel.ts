@@ -7,19 +7,31 @@ const spellSchema = () => {
   return {
     baseManaCost: new fields.NumberField({ ...requiredInteger, initial: 0 }),
     ignoreEffectCost: new fields.BooleanField({ initial: false }),
-    focusExempt: new fields.BooleanField({ initial: false }),
     damageType: new fields.StringField({ ...damageTypeOptions() }),
+
+    // Spells whose effects can linger without needing to be focused.
+    focusExempt: new fields.BooleanField({ initial: false }),
+
+    // Allows the caster to spend extra mana to increase their eff. level.
     upcastableEffect: new fields.BooleanField({ initial: false }),
+
+    // Some spells let you spend mana to roll dice for special circumstances (e.g.: Ward's armor mitigation).
     upcastableEffectDieRoll: new fields.BooleanField({ initial: false }),
+
+    // When cast as an Aura, this determines the preferred target disposition.
     autoTargetingPref: new fields.StringField({
       ...requiredString,
       initial: "none",
       choices: ["none", "hostile", "friendly"],
     }),
+
+    // Upkeep mods - some spells demand certain costs per round while focused.
     upkeep: new fields.SchemaField({
       force: new fields.BooleanField({ initial: false }),
       perTarget: new fields.BooleanField({ initial: false }),
     }),
+
+    // Status effects inflicted by the spell (basic).
     appliedEffects: new fields.ArrayField(
       new fields.SchemaField({
         effect: new fields.StringField({
@@ -31,6 +43,8 @@ const spellSchema = () => {
       }),
       { initial: [] },
     ),
+
+    // Applied Effects inflicted by teh spell (advanced).
     appliedActiveEffects: new fields.ArrayField(
       new fields.SchemaField({
         uuid: new fields.StringField({ ...requiredString }),
@@ -38,6 +52,7 @@ const spellSchema = () => {
       }),
       { initial: [] },
     ),
+
     // Makes targets emit light when cast for effect.
     emitsLight: new fields.SchemaField({
       enabled: new fields.BooleanField({ initial: false }),

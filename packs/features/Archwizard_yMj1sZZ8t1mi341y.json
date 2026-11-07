@@ -20,7 +20,13 @@
         "selections": [],
         "pack": "spell",
         "filters": [],
-        "skipAtHeroCreation": true
+        "skipAtHeroCreation": true,
+        "itemFlags": [
+          {
+            "key": "modifiers.spell.noManaBoost",
+            "value": "true"
+          }
+        ]
       }
     ],
     "level": 10,
@@ -35,11 +41,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.103",
+    "systemVersion": "0.3.1",
     "createdTime": 1791388800971,
-    "modifiedTime": 1791388918405,
+    "modifiedTime": 1794086943297,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

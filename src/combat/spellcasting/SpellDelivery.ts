@@ -51,6 +51,12 @@ export interface SpellSnapshot {
   appliedActiveEffects?: { uuid: string; duration?: string }[]
   emitsLight?: EmitsLight
   autoTargetingPref?: string
+  /** Mana off the cast (negative adds to it), set by the ChoiceSet rule that granted the spell. */
+  manaDiscount?: number
+  /** The spell can only be cast at its delivery's base cost: no upcasting of any kind. */
+  noUpcast?: boolean
+  /** The spell can be upcast, but never to more than its delivery's base cost (after discounts). */
+  noManaBoost?: boolean
 }
 
 export interface DeliveryMods {
@@ -115,13 +121,91 @@ export abstract class SpellDelivery {
     if (spell.damageType === "none") {
       this.damageDice = 0
     }
+    this.enforceFixedCost()
     this.calculateManaCost()
+    this.enforceManaCap()
+  }
+
+  /** True when the spell can't be upcast, so it may only ever be cast at its delivery's base cost. */
+  get hasFixedCost(): boolean {
+    return !!this.spell?.noUpcast
+  }
+
+  /** True when the spell may be upcast, but never so far that it costs more than its delivery's base cost. */
+  get hasManaCap(): boolean {
+    return !!this.spell?.noManaBoost
+  }
+
+  /**
+   * The most a capped spell may cost: its delivery's base cost (plus the spell's own base cost when it deals
+   * damage), before discounts. Never below what the base setup costs, so a penalty can't make a spell uncastable.
+   */
+  protected get manaCap(): number {
+    if (!this.hasManaCap) return Infinity
+    const probe = this.asBaseProbe()
+    probe.applyEffect = false
+    probe.calculateManaCost()
+    const base =
+      this.baseManaCost +
+      (probe.damageDice > 0 ? (this.spell?.baseManaCost ?? 0) : 0)
+    return Math.max(base, probe.manaCost)
+  }
+
+  /** True when a capped spell currently costs more than it may. */
+  get exceedsManaCap(): boolean {
+    return this.hasManaCap && this.manaCost > this.manaCap
+  }
+
+  /** Puts every upcast setting back to its base. Subclasses reset their own sizes and targets. */
+  protected resetToBase() {
+    this.upcast = 0
+    this.damageDice = Math.min(1, this.damageDice)
+  }
+
+  /** A copy of this delivery cast at its base setup, for working out what the base costs. */
+  protected asBaseProbe(): this {
+    const probe = this.clone()
+    probe.resetToBase()
+    return probe
+  }
+
+  /** Steps the settings down, one upcast at a time, until a capped spell fits its cap. Subclasses do their own. */
+  protected enforceManaCap() {
+    if (!this.hasManaCap) return
+    const over = () => (this.calculateManaCost(), this.exceedsManaCap)
+    while (over() && this.upcast > 0) this.upcast--
+    if (over() && this.applyEffect && this.damageDice > 0)
+      this.applyEffect = false
+    while (over() && this.damageDice > 1) this.damageDice--
+    this.calculateManaCost()
+  }
+
+  /**
+   * A fixed-cost spell is cast for its damage or for its effect, never both, as that is an upcast. Spells that
+   * don't charge for the extra effect, and effect-only spells, have nothing to trade.
+   */
+  protected get tradesDamageForEffect(): boolean {
+    return (
+      this.hasFixedCost &&
+      !this.spell.ignoreEffectCost &&
+      this.spell.damageType !== "none"
+    )
+  }
+
+  /** Brings a delivery that was configured for another spell back to its base cost. */
+  protected enforceFixedCost() {
+    if (!this.hasFixedCost) return
+    this.resetToBase()
+    if (this.tradesDamageForEffect && this.damageDice > 0)
+      this.applyEffect = false
   }
 
   setDamageDice(dice: number) {
     if (this.spell?.damageType !== "none") {
-      this.damageDice = dice
+      this.damageDice = this.hasFixedCost ? Math.min(1, dice) : dice
+      if (this.tradesDamageForEffect) this.applyEffect = this.damageDice === 0
       this.calculateManaCost()
+      this.enforceManaCap()
     }
   }
 
@@ -132,13 +216,16 @@ export abstract class SpellDelivery {
   }
 
   setUpcast(upcast: number) {
-    this.upcast = upcast
+    this.upcast = this.hasFixedCost ? 0 : upcast
     this.calculateManaCost()
+    this.enforceManaCap()
   }
 
   setApplyEffect(isApplied: boolean) {
     this.applyEffect = isApplied
+    if (this.tradesDamageForEffect) this.damageDice = isApplied ? 0 : 1
     this.calculateManaCost()
+    this.enforceManaCap()
   }
 
   setIsFocused(isFocused: boolean) {
@@ -148,10 +235,16 @@ export abstract class SpellDelivery {
   setMods(mods: DeliveryMods) {
     this.mods = mods
     this.calculateManaCost()
+    this.enforceManaCap()
   }
 
   setDiscount(discount: number) {
-    this.discount = Math.max(0, discount)
+    this.discount = discount
+  }
+
+  /** Adds the spell's own discount to the ones from modifiers. A negative one is a penalty. */
+  protected applySpellManaDiscount() {
+    this.discount += this.spell?.manaDiscount ?? 0
   }
 
   applyEffectManaCost() {
@@ -185,7 +278,13 @@ export abstract class SpellDelivery {
 
   static getSpellSnapshot(
     spell: Item & { system: SpellDataModel },
+    flags?: Record<string, any>,
   ): SpellSnapshot {
+    const modifier = (name: string) =>
+      flags?.[`modifiers.spell.${name}`] ?? flags?.modifiers?.spell?.[name]
+    const manaDiscount = Number(modifier("manaDiscount"))
+    const noUpcast = !!modifier("noUpcast")
+    const noManaBoost = !!modifier("noManaBoost")
     return {
       uuid: spell.uuid,
       name: spell.name,
@@ -202,6 +301,9 @@ export abstract class SpellDelivery {
       focusExempt: spell.system.focusExempt,
       upkeep: spell.system.upkeep as SpellSnapshot["upkeep"],
       autoTargetingPref: spell.system.autoTargetingPref,
+      ...(manaDiscount && { manaDiscount }),
+      ...(noUpcast && { noUpcast }),
+      ...(noManaBoost && { noManaBoost }),
     }
   }
 
@@ -219,8 +321,25 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
   protected deliveryUpcastCost = 0
 
   setSize(size: number) {
-    this.size = Math.max(this.baseSize, size)
+    this.size = this.hasFixedCost
+      ? this.baseSize
+      : Math.max(this.baseSize, size)
     this.calculateManaCost()
+    this.enforceManaCap()
+  }
+
+  protected override resetToBase() {
+    super.resetToBase()
+    this.size = this.baseSize
+  }
+
+  protected override enforceManaCap() {
+    super.enforceManaCap()
+    if (!this.hasManaCap) return
+    while (this.exceedsManaCap && this.size > this.baseSize) {
+      this.size = Math.max(this.baseSize, this.size - this.increment)
+      this.calculateManaCost()
+    }
   }
 
   protected calculateBaseManaCost() {
@@ -254,6 +373,7 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
     this.discount +=
       this.mods.deliveryDiscounts?.[this.constructor.name.toLowerCase()] ?? 0
 
+    this.applySpellManaDiscount()
     super.applyEffectManaCost()
   }
 
@@ -290,13 +410,38 @@ export class Line extends AreaOfEffectDelivery {
   width: number = 5
 
   setHeight(h: number) {
-    this.height = Math.max(this.baseHeight, h)
+    this.height = this.hasFixedCost
+      ? this.baseHeight
+      : Math.max(this.baseHeight, h)
     this.calculateManaCost()
+    this.enforceManaCap()
   }
 
   setWidth(w: number) {
-    this.width = Math.max(this.baseWidth, w)
+    this.width = this.hasFixedCost
+      ? this.baseWidth
+      : Math.max(this.baseWidth, w)
     this.calculateManaCost()
+    this.enforceManaCap()
+  }
+
+  protected override resetToBase() {
+    super.resetToBase()
+    this.height = this.baseHeight
+    this.width = this.baseWidth
+  }
+
+  protected override enforceManaCap() {
+    super.enforceManaCap()
+    if (!this.hasManaCap) return
+    while (this.exceedsManaCap && this.height > this.baseHeight) {
+      this.height = Math.max(this.baseHeight, this.height - this.baseHeight)
+      this.calculateManaCost()
+    }
+    while (this.exceedsManaCap && this.width > this.baseWidth) {
+      this.width = Math.max(this.baseWidth, this.width - this.baseWidth)
+      this.calculateManaCost()
+    }
   }
 
   override calculateManaCost() {
@@ -328,6 +473,7 @@ export class Line extends AreaOfEffectDelivery {
       this._manaCost -= Math.min(this.deliveryUpcastCost, dud)
     }
 
+    this.applySpellManaDiscount()
     super.applyEffectManaCost()
   }
 
@@ -352,15 +498,64 @@ export abstract class PerTargetDelivery extends SpellDelivery {
 
   setTargetCount(count: number) {
     if (this instanceof Cube || this instanceof Glyph) {
-      this.targetCount = count
+      this.targetCount = this.hasFixedCost ? Math.min(1, count) : count
       this.calculateManaCost()
+      this.enforceManaCap()
     }
   }
 
   setTargetTokenIds(targetTokenIds: string[]) {
     this.targetTokenIds = targetTokenIds
-    this.targetCount = targetTokenIds.length
+    this.targetCount = this.hasFixedCost
+      ? Math.min(1, targetTokenIds.length)
+      : targetTokenIds.length
     this.calculateManaCost()
+    this.enforceManaCap()
+  }
+
+  /** A fixed-cost spell is cast on one target, so more than one targeted token can't be cast on. */
+  get hasExtraTargets(): boolean {
+    return (
+      this.hasFixedCost &&
+      !(this instanceof Cube || this instanceof Glyph) &&
+      this.targetTokenIds.length > 1
+    )
+  }
+
+  /** The most Cubes or Glyph squares the spell can place, or undefined when it is not limited. */
+  get maxTargetCount(): number | undefined {
+    if (this.hasFixedCost) return 1
+    if (!this.hasManaCap) return undefined
+    const cap = this.manaCap
+    const probe = this.clone()
+    let fits = 1
+    for (let count = 2; count <= 50; count++) {
+      probe.targetCount = count
+      probe.calculateManaCost()
+      if (probe.manaCost > cap) break
+      fits = count
+    }
+    return fits
+  }
+
+  protected override resetToBase() {
+    super.resetToBase()
+    this.targetCount = Math.min(1, this.targetCount)
+  }
+
+  protected override asBaseProbe() {
+    const probe = super.asBaseProbe()
+    probe.targetTokenIds = probe.targetTokenIds.slice(0, 1)
+    return probe
+  }
+
+  protected override enforceManaCap() {
+    super.enforceManaCap()
+    if (!this.hasManaCap) return
+    while (this.exceedsManaCap && this.targetCount > 1) {
+      this.targetCount--
+      this.calculateManaCost()
+    }
   }
 
   override calculateManaCost() {
@@ -376,6 +571,7 @@ export abstract class PerTargetDelivery extends SpellDelivery {
     else {
       targets = Math.max(1, this.targetCount)
     }
+    if (this.hasFixedCost) targets = 1
 
     if (targets > 1) {
       this.discount += Math.min(targets, this.mods.deliveryUpcastDiscount)
@@ -390,6 +586,7 @@ export abstract class PerTargetDelivery extends SpellDelivery {
       (this.damageDice > 0 ? (this.spell?.baseManaCost ?? 0) : 0) +
       Math.max(0, this.damageDice - 1)
 
+    this.applySpellManaDiscount()
     super.applyEffectManaCost()
   }
 
