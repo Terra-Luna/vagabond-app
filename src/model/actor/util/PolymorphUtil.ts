@@ -44,6 +44,31 @@ export interface PolymorphFormSnapshot {
 
 export class PolymorphUtil {
 
+  static registerHooks() {
+    Hooks.on("updateCombat", (_combat: any, changed: any) => {
+      if ("round" in changed) PolymorphUtil.releaseRoundPolymorphs()
+    })
+    Hooks.on("deleteCombat", () => PolymorphUtil.releaseRoundPolymorphs())
+  }
+
+  /** Polymorphs that were not Focused on (or lost their Focus) wear off when the round ends. */
+  private static releaseRoundPolymorphs = async () => {
+    if (!StatusEffectUtil.isDesignatedUser()) return
+    const targets = (game.canvas?.scene?.tokens ?? [])
+      .map((t: any) => t.actor)
+      .filter(
+        (actor: any, index: number, all: any[]) =>
+          !!actor &&
+          all.indexOf(actor) === index &&
+          (actor.getFlag(sys_id, "polymorph") as PolymorphFlag | undefined)
+            ?.duration === "turn",
+      )
+    if (targets.length)
+      await PolymorphUtil.polymorph({ targets }).catch((err) =>
+        console.error(err),
+      )
+  }
+
   /**
    * The main function to call first when trying to polymorph something.
    * Requires either a caster and a form or just a target to release from polymorph.
@@ -147,6 +172,21 @@ export class PolymorphUtil {
     if (polymorphFlag && (caster?.type as string) !== "hero") {
       StatusEffectUtil.toggleStatusEffectOnce(caster, "focusing", true)
     }
+  }
+
+  /**
+   * A hero who can Focus on several spells (maxFocus > 1) and already does so on as many as they can has no
+   * Focus to spare for a new Focused Polymorph, unless it replaces their current one.
+   */
+  static isFocusFull = (caster: Actor & { system: any }): boolean => {
+    if ((caster.type as string) !== "hero") return false
+    const { maxFocus, statuses } = caster.system
+    const focus = statuses?.counters?.focus ?? 0
+    return (
+      maxFocus > 1 &&
+      focus >= maxFocus &&
+      !FocusSpellUtil.instances(caster).some((it) => it.polymorph)
+    )
   }
 
   /**

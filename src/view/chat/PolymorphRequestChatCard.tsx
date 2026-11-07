@@ -18,6 +18,13 @@ type TargetStatuses = Record<string, PolymorphRequestTargetRecord>
 
 const targetKey = (t: RequestTarget) => t.tokenId ?? t.actorId
 
+/** The stored duration "turn" is what a Polymorph lasts without Focus: until the round ends. */
+const durationLabels = {
+  focus: appLang.Polymorph.durationFocus,
+  continual: appLang.Polymorph.durationContinual,
+  turn: appLang.Polymorph.durationRound,
+}
+
 export const PolymorphRequestChatCard = ({
   casterId,
   targets,
@@ -108,10 +115,10 @@ export const PolymorphRequestChatCard = ({
     })
     .filter((it) => !!it.actor)
 
-  const [excluded, setExcluded] = useState<Set<string>>(() => {
-    const isImmutable = (it: (typeof entries)[number]) =>
-      !!(it.actor!.system as any).modifiers?.polymorph?.immutable
+  const isImmutable = (it: { actor?: Actor | null }) =>
+    !!(it.actor!.system as any).modifiers?.polymorph?.immutable
 
+  const [excluded, setExcluded] = useState<Set<string>>(() => {
     if (!caster || (caster.type as string) !== "hero") {
       return new Set(entries.filter(isImmutable).map((it) => it.key))
     }
@@ -250,7 +257,9 @@ export const PolymorphRequestChatCard = ({
               const result = statuses[entry.key]
               const info = targetInfo(entry.actor!)
               const canChoose = !result && !!game.user?.isActiveGM
-              const selectable = entries.length > 1 && !result
+              // The GM can overrule a target's HD, even when it is the only one.
+              const selectable =
+                !result && (entries.length > 1 || !!game.user?.isActiveGM)
               const selected = result
                 ? result.status === "applied"
                 : !excluded.has(entry.key)
@@ -322,7 +331,9 @@ export const PolymorphRequestChatCard = ({
             {/* DURATION SELECTED BY THE CASTER */}
             <span className="flex justify-center items-center gap-x-2">
               <p>Duration:</p>
-              <p className="font-normal">{duration.toUpperCase()}</p>
+              <p className="font-normal">
+                {durationLabels[duration].toUpperCase()}
+              </p>
             </span>
 
             {pendingEntries.length > 0 &&

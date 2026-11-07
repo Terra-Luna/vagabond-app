@@ -27,6 +27,8 @@ import { usePolymorphActor } from "../../../view/sheets/actor/component/Polymorp
 import { NpcSheetComponent } from "../../../view/sheets/actor/npc/component/NpcSheetComponent"
 import { HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
 import { showConfirmationDialog } from "../dialog/ConfirmationDialogUseCase"
+import { PolymorphCastCheck } from "./PolymorphCastCheck"
+import { PolymorphFocusChoice } from "./PolymorphFocusChoice"
 
 const FAVORITE_DRAG_TYPE = "application/x-vagabond-polymorph-favorite"
 
@@ -51,7 +53,14 @@ export const PolymorphAppView = ({
   const [selfPolymorph, setSelfPolymorph] = useState<PolymorphFlag | undefined>(
     () => caster.system.polymorph,
   )
-  const [isFocused, setIsFocused] = useState(true)
+  const [isFocused, setIsFocused] = useState(
+    () => PolymorphFocusChoice.take(caster.id) ?? true,
+  )
+
+  useEffect(
+    () => PolymorphFocusChoice.onChange(caster.id, setIsFocused),
+    [caster.id],
+  )
 
   const castingLevel =
     caster.system instanceof HeroDataModel
@@ -134,6 +143,18 @@ export const PolymorphAppView = ({
     })()
 
     if (statBlock) {
+      if (isFocused && PolymorphUtil.isFocusFull(caster)) {
+        ui.notifications?.warn(appLang.Spellcasting.maxFocusMessage)
+        return
+      }
+      if (
+        PolymorphCastCheck.isRequired(
+          caster,
+          targets.filter((t) => t.id !== caster.id).map((t) => t.token?.id),
+        ) &&
+        !(await PolymorphCastCheck.run(caster))
+      )
+        return
       polymorphTargets(statBlock, isFocused)
     }
     else {

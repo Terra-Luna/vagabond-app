@@ -6,12 +6,14 @@ import type { PlacedArea } from "../SpellDelivery"
 import { AreaOutline } from "./AreaOutline"
 import type { Point } from "./AreaTypes"
 import { PlacedAreaCells } from "./PlacedAreaCells"
+import { TemporaryArea } from "./TemporaryArea"
 
 const ICON_ALPHA = 0.6
 
 /**
  * Draws the areas of Focused spells on every client, for as long as the Focus lasts. The areas live on each
- * Focus instance (an actor flag), so all clients render them from synced data and nothing is stored on the scene.
+ * Focus instance (an actor flag), so all clients render them from synced data. Areas of unfocused spells are drawn
+ * the same way from a scene flag, until the next round of combat.
  */
 export class FocusAreaLayer {
 
@@ -19,7 +21,6 @@ export class FocusAreaLayer {
     string,
     { key: string; node: any; label: string; edges: [Point, Point][] }
   >()
-  private lastCombatRound: number | undefined
 
   registerHooks() {
     Hooks.on("canvasReady", () => {
@@ -44,21 +45,11 @@ export class FocusAreaLayer {
     Hooks.on("updateScene", (_scene: any, changed: any) => {
       if (foundry.utils.hasProperty(changed, `flags.${sys_id}`)) this.sync()
     })
-    Hooks.on("updateCombat", (combat: any, changed: any) => {
-      // Clear temporary spell areas at the start of a new round
-      if ("round" in changed && combat.round !== this.lastCombatRound) {
-        this.lastCombatRound = combat.round
-        const scene = canvas?.scene
-        if (scene) {
-          // Use socket to have GM update the scene flag (players don't have permission)
-          game.socket?.emit(`system.${sys_id}`, {
-            action: "updateTemporarySpellAreas",
-            sceneId: scene.id,
-            areas: {},
-          })
-        }
-      }
+    // Unfocused areas end when the next round begins, or when the combat does.
+    Hooks.on("updateCombat", (_combat: any, changed: any) => {
+      if ("round" in changed) TemporaryArea.clearAll()
     })
+    Hooks.on("deleteCombat", () => TemporaryArea.clearAll())
   }
 
   private followsActor(actorId?: string) {
@@ -80,7 +71,7 @@ export class FocusAreaLayer {
     if (!cv?.ready || !scene) return this.clear()
 
     const wanted = new Map<string, PlacedArea & { label: string }>()
-    
+
     // Add focused spell areas
     for (const actor of game.actors ?? []) {
       for (const instance of FocusSpellUtil.instances(actor)) {
@@ -93,17 +84,14 @@ export class FocusAreaLayer {
         wanted.set(instance.id, { ...stored, cells, label })
       }
     }
-    
-    // Add temporary (non-focused) spell areas
-    const tempAreas = (scene.getFlag(sys_id, "temporarySpellAreas") as Record<string, any>) || {}
-    for (const [attackId, area] of Object.entries(tempAreas)) {
-      if (!area || !area.cells) continue
+
+    // Add temporary spell areas, unless a Focus already draws the same one
+    const focused = [...wanted.values()].map((it) => this.signature(it))
+    for (const [attackId, area] of Object.entries(TemporaryArea.of(scene))) {
       const cells = PlacedAreaCells.of(area)
       if (!cells.length) continue
-      const spellName = area.spell?.name ?? "Unknown Spell"
-      const casterName = area.casterName ?? "Unknown Caster"
-      const deliveryName = area.delivery?.name ?? "Unknown Delivery"
-      const label = `${casterName} - ${spellName} (${deliveryName})`
+      const label = `${area.casterName} - ${area.spellName} (${area.deliveryName})`
+      if (focused.includes(this.signature({ label, cells }))) continue
       wanted.set(`temp-${attackId}`, { ...area, cells, label })
     }
 
@@ -122,6 +110,12 @@ export class FocusAreaLayer {
         edges: AreaOutline.perimeter(area.cells),
       })
     }
+  }
+
+  /** Identifies an area by its caster, spell and squares, so the same cast is never drawn twice. */
+  private signature(area: { label: string; cells: Point[] }) {
+    const squares = area.cells.map((c) => `${c.x},${c.y}`).sort()
+    return `${area.label}|${squares.join(";")}`
   }
 
   private draw(area: PlacedArea & { label: string }) {

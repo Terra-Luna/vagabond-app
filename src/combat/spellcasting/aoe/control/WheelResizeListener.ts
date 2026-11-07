@@ -17,7 +17,10 @@ export class WheelResizeListener extends CanvasPreview {
   private readonly stepper: WheelStep
   private renderer?: AreaRenderer
 
-  constructor(private readonly options: WheelResizeOptions, renderer?: AreaRenderer) {
+  constructor(
+    private readonly options: WheelResizeOptions,
+    renderer?: AreaRenderer,
+  ) {
     super()
     this.stepper = new WheelStep(options.step, options.minSize)
     this.renderer = renderer

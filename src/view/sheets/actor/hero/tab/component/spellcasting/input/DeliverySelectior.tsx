@@ -1,6 +1,7 @@
 import { getDeliveryDropdownOptions, SpellDelivery } from "../../../../../../../../combat/spellcasting/SpellDelivery"
 import { appLang } from "../../../../../../../../util/lang"
 import { DropDown } from "../../../../../../../component/Dropdown"
+import { CanvasControlsInfo } from "./CanvasControlsInfo"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const DeliverySelector = ({
@@ -14,7 +15,10 @@ export const DeliverySelector = ({
 }) => {
   return (
     <div>
-      <SpellcastingLabel text={appLang.HeroSheet.Magic.labelDelivery} />
+      <div className="flex items-center gap-x-1">
+        <SpellcastingLabel text={appLang.HeroSheet.Magic.labelDelivery} />
+        <CanvasControlsInfo delivery={currentDelivery} />
+      </div>
       <DropDown
         value={deliveries
           .findIndex((d) => d.name === currentDelivery?.name)

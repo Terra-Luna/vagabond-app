@@ -21,6 +21,7 @@ import { Attack } from "./combat/engine/Attack"
 import { FlankStatusManager } from "./combat/engine/util/FlankStatusManager"
 import { HuntersMark } from "./combat/engine/util/HuntersMark"
 import { FocusAreaLayer } from "./combat/spellcasting/aoe/FocusAreaLayer"
+import { TemporaryArea } from "./combat/spellcasting/aoe/TemporaryArea"
 import { TokenHeading } from "./combat/spellcasting/aoe/TokenHeading"
 import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
 import { AdversaryDataModel } from "./model/actor/AdversaryDataModel"
@@ -92,9 +93,6 @@ const fontFaces = [
 ;(await Promise.all(fontFaces.map((face) => face.load()))).forEach((font) =>
   document.fonts.add(font),
 )
-
-// Store the FocusAreaLayer instance globally for socket communication
-let focusAreaLayer: FocusAreaLayer | null = null
 
 let clocksOverlay: ProgressClockApp | null = null
 let countdownOverlay: CountdownApp | null = null
@@ -245,27 +243,7 @@ Hooks.once("ready", async () => {
       }
       return
     }
-    if (packet?.action === "updateTemporarySpellAreas") {
-      const { sceneId, areas } = packet
-      const scene = game.scenes?.get(sceneId)
-      if (scene) {
-        if (game.user?.isActiveGM) {
-          // GM updates the flag and broadcasts to all clients
-          await scene.setFlag(sys_id, "temporarySpellAreas", areas || {})
-          // Broadcast update to all clients so they sync immediately
-          game.socket?.emit(`system.${sys_id}`, {
-            action: "syncTemporarySpellAreas",
-          })
-        }
-      }
-      return
-    }
-    if (packet?.action === "syncTemporarySpellAreas") {
-      // All clients sync their temporary spell areas rendering
-      const focusLayer = (window as any).focusAreaLayer
-      if (focusLayer) focusLayer.sync()
-      return
-    }
+    if (await TemporaryArea.receive(packet)) return
     if (!game.user?.isActiveGM) return
 
     const activeGM = game.users?.activeGM
@@ -916,10 +894,9 @@ Hooks.on("deleteCombat", (combat: Combat, options: any, userId: string) => {
 })
 
 FocusSpellUtil.registerHooks()
+PolymorphUtil.registerHooks()
 TokenHeading.registerHooks()
-focusAreaLayer = new FocusAreaLayer()
-focusAreaLayer.registerHooks()
-;(window as any).focusAreaLayer = focusAreaLayer
+new FocusAreaLayer().registerHooks()
 FocusManagerApp.registerHooks()
 
 Hooks.on(

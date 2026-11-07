@@ -51,9 +51,7 @@ const ArmorType = ({ item }: { item: Item & { system: ArmorDataModel } }) => {
   )
   return (
     <div className="flex flex-col">
-      <ItemSheetPropLabel
-        label={lang.ItemSheet.armorType}
-      />
+      <ItemSheetPropLabel label={lang.ItemSheet.armorType} />
       <DropDown
         value={item.system.armorType}
         options={createDropdownEntriesFromObj(lang.ArmorTypes)}
@@ -61,7 +59,6 @@ const ArmorType = ({ item }: { item: Item & { system: ArmorDataModel } }) => {
         parent={item}
       />
     </div>
-
   )
 }
 

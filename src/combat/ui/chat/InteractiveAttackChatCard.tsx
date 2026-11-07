@@ -213,7 +213,9 @@ export const InteractiveAttackChatCard = ({
                               "border-2 border-solid border-table-border/75"
                             }
                             fn={async () => {
-                              await attack.resolve(serializeAttack)
+                              await attack.resolveWithoutUpdates(
+                                serializeAttack,
+                              )
                               setRevision((prev) => prev + 1)
                             }}
                           />

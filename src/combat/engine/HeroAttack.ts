@@ -1,6 +1,8 @@
 import { api } from "../../apps/api/VagabondAPI"
 import type { RollPreset } from "../../apps/attack-builder/model/RollPreset"
 import { showConfirmationDialog } from "../../apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
+import { PolymorphCastCheck } from "../../apps/vagabond-tools/polymorph/PolymorphCastCheck"
+import { PolymorphFocusChoice } from "../../apps/vagabond-tools/polymorph/PolymorphFocusChoice"
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { getAllowLateLuckStudy, getAttackRegistry, getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
@@ -14,6 +16,7 @@ import { LightSourceUtil } from "../../util/LightSourceUtil"
 import { localizeString } from "../../util/locale-util"
 import { canInitiateAttack, canUseHeroActions, getTargetIds, isActorInScene } from "../../util/model-util"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
+import { TemporaryArea } from "../spellcasting/aoe/TemporaryArea"
 import { FocusUpkeep } from "../spellcasting/FocusUpkeep"
 import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { AppliedFx, Attack } from "./Attack"
@@ -202,11 +205,22 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
       await this.rollInitialDamage()
     }
 
-    this.applyPostRollEffects()
+    if (this.canApplySpellEffects) await this.onCastSucceeded()
 
     if (options?.skipChatCard) return
 
     await this.sendChatCard()
+  }
+
+  /** Shows a spell's area as soon as its Cast check succeeds (or none was needed), without waiting for the GM to accept the attack. */
+  private async showArea() {
+    const area = this.spellDelivery?.area
+    if (!area || !this.isSpellAttack || !this.canApplySpellEffects) return
+    await TemporaryArea.add(this.id, area, {
+      casterName: this.actor.name ?? "",
+      spellName: this.spellDelivery!.spell.name,
+      deliveryName: this.spellDelivery!.name,
+    })
   }
 
   private get shouldRollSkillCheck(): boolean {
@@ -257,14 +271,21 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     return skill.trained ? (20 - skill.value) / 2 : 20 - skill.value
   }
 
-  private applyPostRollEffects() {
+  /** Runs once a spell's Cast check has succeeded (or none was needed), including after a reroll or late Favor turns a failure around. */
+  private async onCastSucceeded() {
+    if (!this.isSpellAttack) return
+    this.openPolymorphTab()
+    await this.showArea()
+  }
+
+  private openPolymorphTab() {
     // Take user to polymorph menu...
     if (
       game.user?.id === this.userId &&
-      this.isSpellAttack &&
-      this.isSuccessOrCrit &&
       (fromUuidSync(this.itemId) as any)?.getFlag?.(sys_id, "polymorph")
     ) {
+      PolymorphFocusChoice.set(this.actor.id, !!this.spellDelivery?.isFocused)
+      PolymorphCastCheck.markPassed(this.actor.id)
       if (this.actor.sheet?.rendered) {
         ;(Hooks as any).callAll(
           "vagabondSelectHeroTab",
@@ -342,6 +363,20 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     await super.applyDamageAndResolve(args, serialize)
   }
 
+  /** Drops this cast's temporary area from the canvas, as if its Cast check had failed. */
+  private async removeArea() {
+    const area = this.spellDelivery?.area
+    if (area) await TemporaryArea.remove(area.sceneId, this.id)
+  }
+
+  /** Resolving without applying drops the cast's area from the canvas, as if its Cast check had failed. */
+  override async resolveWithoutUpdates(
+    serialize: (attack: Attack) => AttackSnapshot | undefined,
+  ) {
+    if (!this.isResolved) await this.removeArea()
+    await super.resolveWithoutUpdates(serialize)
+  }
+
   private async addFocus() {
     const spell = this.spellDelivery?.spell.uuid
     const max = this.actor.system.maxFocus
@@ -359,6 +394,9 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
       delivery: this.spellDelivery && { ...this.spellDelivery },
       targetIds: [...this.targetIds],
     })
+    // The Focus now draws the area itself.
+    if (this.spellDelivery?.area)
+      await TemporaryArea.remove(this.spellDelivery.area.sceneId, this.id)
   }
 
   static findLatestWeaponAttack():
@@ -532,6 +570,8 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     if (!this.skillCheck) return
 
     this.isRerolled = isReroll
+    const wasFailure =
+      this.skillCheck.result?.outcome === appLang.RollResult.failure
     await this.skillCheck?.roll(isReroll, animate)
 
     if (isReroll) {
@@ -555,6 +595,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         this.autoResolveIfOuttaLuck()
         await this.save(serializeAttack)
       }
+      if (wasFailure && this.canApplySpellEffects) await this.onCastSucceeded()
     }
   }
 
@@ -607,6 +648,8 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         if (newResult.outcome !== appLang.RollResult.failure) {
           await this.damageRoll?.roll(false, this.hasWeakTarget)
           roll3dDice(this.damageRoll?.result?.rolls ?? [])
+          if (result.outcome === appLang.RollResult.failure)
+            await this.onCastSucceeded()
         }
         else {
           this.isResolved = true
@@ -648,6 +691,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
       else {
         newResult.outcome = appLang.RollResult.failure
         this.isResolved = true
+        await this.removeArea()
       }
 
       this.skillCheck.result = newResult
@@ -701,9 +745,11 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         if (wasFailure && this.isEligibleForDmgRoll) {
           await this.rollDamage(isCrit)
         }
+        if (wasFailure) await this.onCastSucceeded()
       }
       else {
         this.isResolved = true
+        await this.removeArea()
       }
 
       await this.save(serializeAttack)

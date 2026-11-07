@@ -435,7 +435,13 @@ export const useSpellCastingMenu = (
       preview.stop()
       cubePreview.current = undefined
     }
-  }, [isCubePreview, onUpdateTargetCount, targetArea, renderer, selectedSpellId])
+  }, [
+    isCubePreview,
+    onUpdateTargetCount,
+    targetArea,
+    renderer,
+    selectedSpellId,
+  ])
 
   const isGlyphPreview = isSpellcastingOpen && activeDelivery instanceof Glyph
   const glyphPreview = useRef<CubePreview | undefined>(undefined)
@@ -520,7 +526,12 @@ export const useSpellCastingMenu = (
           <SpellTargetInput
             delivery={delivery}
             onUpdateTargetCount={onUpdateTargetCount}
-            readOnly={delivery instanceof Remote || delivery instanceof Imbue || delivery instanceof Cube || delivery instanceof Glyph}
+            readOnly={
+              delivery instanceof Remote ||
+              delivery instanceof Imbue ||
+              delivery instanceof Cube ||
+              delivery instanceof Glyph
+            }
           />
         )
       }
@@ -673,34 +684,11 @@ export const useSpellCastingMenu = (
           ? Object.assign(delivery.clone(), { area })
           : delivery
         const attack = HeroAttack.buildSpellAttack(hero.parent, sk, toCast, e)
-        if (attack) {
-          // Store non-focused spell areas in a temporary scene flag for all clients to see
-          if (area && !delivery.isFocused) {
-            const sceneId = canvas?.scene?.id
-            const existingAreas = (canvas?.scene?.getFlag(
-              sys_id,
-              "temporarySpellAreas",
-            ) as Record<string, any>) || {}
-            const attackId = attack.id
-            existingAreas[attackId] = {
-              ...area,
-              casterName: hero.parent.name,
-              spell: { name: delivery.spell.name },
-              delivery: { name: delivery.name },
-            }
-            // Use socket to have GM update the scene flag (players don't have permission)
-            game.socket?.emit(`system.${sys_id}`, {
-              action: "updateTemporarySpellAreas",
-              sceneId,
-              areas: existingAreas,
-            })
-          }
-          attack.initiate(e, { requireFocusUpkeep: true })
-        }
+        if (attack) attack.initiate(e, { requireFocusUpkeep: true })
       }
       onCast?.()
       if (imbueMode && cast) onClose?.()
-       
+
       if (delivery instanceof Cube || delivery instanceof Glyph) {
         // Clear the placed cubes for the next cast
         cubePreview.current?.clearPlaced()

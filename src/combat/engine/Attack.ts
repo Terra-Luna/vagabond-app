@@ -168,6 +168,13 @@ export abstract class Attack<TActor extends Actor = Actor> {
     await this.save(serialize)
   }
 
+  /** Resolves without applying anything: the result of a 'Resolve' button, as opposed to 'Apply'. */
+  async resolveWithoutUpdates(
+    serialize: (attack: Attack) => AttackSnapshot | undefined,
+  ) {
+    await this.resolve(serialize)
+  }
+
   protected get isNegatedForAllTargets(): boolean {
     return false
   }

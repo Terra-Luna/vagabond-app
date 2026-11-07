@@ -257,7 +257,7 @@ export const HeroAttackComponent = ({
                         label={appLang.ButtonActions.resolve}
                         tooltip={appLang.Combat.resolveWithoutUpdatesTooltip}
                         fn={async () => {
-                          await attack.resolve(serializeAttack)
+                          await attack.resolveWithoutUpdates(serializeAttack)
                           setRevision((prev) => prev + 1)
                         }}
                       />
