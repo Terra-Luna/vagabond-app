@@ -516,6 +516,84 @@ export class LightSourceUtil {
     )
   }
 
+  /** GM escape hatch: strips granted lights, light emission and Sunlit/Moonlit from the given tokens' actors. */
+  static async lightsOut(tokens: Token[]) {
+    if (!game.user?.isGM) {
+      ui.notifications?.warn("Only a GM can do this.")
+      return
+    }
+    if (!tokens?.length) {
+      ui.notifications?.warn("Select one or more tokens first.")
+      return
+    }
+
+    // Group by actor so a linked actor is only cleaned once.
+    const byActor = new Map<string, { actor: any; docs: any[] }>()
+    for (const token of tokens) {
+      const actor = token.actor as any
+      if (!actor) continue
+      const entry = byActor.get(actor.uuid) ?? { actor, docs: [] }
+      entry.docs.push(token.document)
+      byActor.set(actor.uuid, entry)
+    }
+
+    const report: string[] = []
+    for (const { actor, docs } of byActor.values()) {
+      const notes: string[] = []
+
+      const granted = LightSourceUtil.grantedLights(actor)
+      if (granted.length) {
+        await actor.update({
+          [`flags.${sys_id}.-=${LightSourceUtil.GRANTED_FLAG}`]: null,
+          [`flags.${sys_id}.-=${LightSourceUtil.LEGACY_GRANTED_FLAG}`]: null,
+        })
+        notes.push(
+          `granted lights removed (${granted.map((it) => it.type).join(", ")})`,
+        )
+      }
+
+      // A genuinely lit item keeps the token's light.
+      if (LightSourceUtil.bestSource(actor)) {
+        notes.push("lit light source equipped, token light left alone")
+      }
+      else {
+        const none = LightSourceUtil.tokenLightUpdate(undefined)
+        const { light, ...flags } = none
+        await actor.update({
+          ...(!actor.isToken && {
+            "prototypeToken.light": light,
+            ...Object.fromEntries(
+              Object.entries(flags).map(([path, value]) => [
+                `prototypeToken.${path}`,
+                value,
+              ]),
+            ),
+          }),
+          [`flags.${sys_id}.-=${LightSourceUtil.LIGHT_FLAG}`]: null,
+        })
+        for (const doc of docs) await doc.update(none)
+        notes.push(`${docs.length} token(s) stopped emitting light`)
+      }
+
+      // Last, since these are re-created while a sunlight emitter is nearby.
+      const effects = actor.effects.filter((e: any) =>
+        e.getFlag(sys_id, LightSourceUtil.EFFECT_FLAG),
+      )
+      if (effects.length) {
+        await actor.deleteEmbeddedDocuments(
+          "ActiveEffect",
+          effects.map((e: any) => e.id),
+          { animate: false },
+        )
+        notes.push(`removed ${effects.map((e: any) => e.name).join(", ")}`)
+      }
+
+      report.push(`${actor.name}: ${notes.join("; ") || "nothing to remove"}`)
+    }
+
+    ui.notifications?.info(report.join(" | "))
+  }
+
   // ---------------------------------------------------------------------------
   // Light geometry: which tokens are within reach of a sun/moon emitter
   // ---------------------------------------------------------------------------

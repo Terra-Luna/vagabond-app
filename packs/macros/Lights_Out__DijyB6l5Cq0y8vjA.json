@@ -1,0 +1,28 @@
+{
+  "name": "Lights Out!",
+  "type": "script",
+  "command": "/**\n * Select tokens and run this macro for any which may get some\n * special lighting effects \"stuck\" on them after dropping focus.\n */\ngame.system.api.util.lightsOut(canvas.tokens.controlled);",
+  "img": "/icons/sundries/lights/torch-black.webp",
+  "_id": "DijyB6l5Cq0y8vjA",
+  "author": "KyorYoEvge7ElSaj",
+  "scope": "global",
+  "folder": "VKvmkamSfu4wxiPh",
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.369",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.3.1",
+    "createdTime": 1794178082947,
+    "modifiedTime": 1794178082947,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "_key": "!macros!DijyB6l5Cq0y8vjA"
+}

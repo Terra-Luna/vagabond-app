@@ -8,6 +8,7 @@ import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
+import { LightSourceUtil } from "../../util/LightSourceUtil"
 import { localizeString } from "../../util/locale-util"
 import type { RollPreset } from "../attack-builder/model/RollPreset"
 import { RestApp } from "../rest/RestApp"
@@ -62,6 +63,7 @@ export interface VagabondAPI {
       actor: Actor & { system: HeroDataModel },
       sendChat?: boolean,
     ) => Promise<void>
+    lightsOut: (tokens: Token[]) => Promise<void>
   }
 }
 
@@ -183,6 +185,11 @@ export const api: VagabondAPI = {
     },
 
     syncAncestryAndClass: HeroItemSync.syncAncestryAndClass,
+
+    /**
+     * GM only: removes granted lights, light emission and Sunlit/Moonlit from the given tokens' actors.
+     */
+    lightsOut: LightSourceUtil.lightsOut,
   },
 
   combat: {
