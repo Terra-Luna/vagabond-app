@@ -14,6 +14,8 @@ import { WheelResizeListener } from "../../../../../../../combat/spellcasting/ao
 import { IconLayer } from "../../../../../../../combat/spellcasting/aoe/IconLayer"
 import { AreaOccupants } from "../../../../../../../combat/spellcasting/aoe/targeting/AreaOccupants"
 import { AreaTargeter } from "../../../../../../../combat/spellcasting/aoe/targeting/AreaTargeter"
+import { applyCastDefaults } from "../../../../../../../combat/spellcasting/cast-defaults"
+import { restoreMenuState, type SpellcastingMenuState, spellStateKey } from "../../../../../../../combat/spellcasting/menu-state"
 import { AreaOfEffectDelivery, Aura, Cone, Cube, getNewDeliveryOptions, Glyph, Imbue, Line, PerTargetDelivery, PlacedArea, Remote, SpellDelivery, SpellSnapshot, Sphere } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
@@ -38,21 +40,6 @@ import { SpellTargetInput } from "./input/SpellTargetInput"
 import { TotalMana } from "./input/TotalMana"
 import { UpcastingInput } from "./input/UpcastingInput"
 
-interface SpellcastingMenuState {
-  skill: string
-  spellUuid: string
-  deliveryName: string
-  damageDice: number
-  studyDamageDice: number
-  applyEffect: boolean
-  isFocused: boolean
-  discount: number
-  size?: number
-  height?: number
-  width?: number
-  targetCount?: number
-}
-
 export const useSpellCastingMenu = (
   actor: Actor & { system: HeroDataModel },
   imbueMode?: boolean,
@@ -69,6 +56,16 @@ export const useSpellCastingMenu = (
   const [skill, setSkill] = useState(hero.class?.castingSkill ?? "arcana")
   const [deliveries, setDeliveries] = useState<SpellDelivery[]>([])
   const [deliveryIndex, setDeliveryIndex] = useState<number>(6)
+
+  // A caster at their Focus limit shouldn't be handed a Focused cast that would overwrite what they are Focusing on.
+  // With room for several Focuses they can't Focus another at all (the box is locked); with a single Focus they
+  // can still tick it to replace the old one. The refs let every change to the deliveries see the latest values.
+  const focusFull = (hero.statuses?.counters?.focus ?? 0) >= hero.maxFocus
+  const focusFullRef = useRef(focusFull)
+  focusFullRef.current = focusFull
+  const focusLocked = hero.maxFocus > 1 && focusFull
+  const focusLockedRef = useRef(focusLocked)
+  focusLockedRef.current = focusLocked
 
   const spells = useMemo((): SpellSnapshot[] => {
     const allSpells = ItemsCache.spells()
@@ -88,68 +85,69 @@ export const useSpellCastingMenu = (
     JSON.stringify(hero.spells.map((sp) => sp.parent?.flags?.[sys_id] ?? {})),
   ])
 
+  const flagSuffix = imbueMode ? "_imbue" : ""
+
+  /** What the menu was last set to for each spell, by spell. */
+  const readSpellStates = () =>
+    (actor.getFlag(sys_id, `spellcastingMenuSpells${flagSuffix}` as any) ??
+      {}) as Record<string, SpellcastingMenuState>
+
+  /**
+   * A fresh set of deliveries for the spell: every one starts from the defaults, and the settings last used for
+   * this spell (if any) replace those of the delivery they were used with. A caster at their Focus limit gets
+   * the Focus box unticked, however the spell was last cast.
+   */
+  const configureFor = useCallback(
+    (spell: SpellSnapshot, saved?: SpellcastingMenuState) => {
+      const all = getNewDeliveryOptions(spell, {
+        ...actor.system.modifiers.casting,
+      })
+      const options = imbueMode
+        ? all.filter((d) => d.name === appLang.SpellDeliveries.imbue.name)
+        : all
+      options.forEach(applyCastDefaults)
+
+      let index: number | undefined
+      if (saved && Object.keys(saved).length > 0) {
+        const found = options.findIndex((d) => d.name === saved.deliveryName)
+        if (found !== -1) {
+          restoreMenuState(options[found], saved)
+          index = found
+        }
+      }
+      if (focusFullRef.current) options.forEach((d) => d.setIsFocused(false))
+      return { options, index }
+    },
+    [actor, imbueMode],
+  )
+
   useEffect(() => {
-    const savedState = actor.getFlag(
+    const lastState = actor.getFlag(
       sys_id,
-      `spellcastingMenuState${imbueMode ? "_imbue" : ""}` as any,
+      `spellcastingMenuState${flagSuffix}` as any,
     ) as SpellcastingMenuState | undefined
     const spell =
-      spells.find((sp) => sp.uuid === savedState?.spellUuid) ?? spells[0]
-    const allDeliveryOptions = getNewDeliveryOptions(spell, {
-      ...actor.system.modifiers.casting,
-    })
-    const deliveryOptions = imbueMode
-      ? allDeliveryOptions.filter(
-          (d) => d.name === appLang.SpellDeliveries.imbue.name,
-        )
-      : allDeliveryOptions
+      spells.find((sp) => sp.uuid === lastState?.spellUuid) ?? spells[0]
+    if (!spell) return
+
+    const saved =
+      readSpellStates()[spellStateKey(spell.uuid)] ??
+      (lastState?.spellUuid === spell.uuid ? lastState : undefined)
+    const { options, index } = configureFor(spell, saved)
 
     if (imbueMode) setDeliveryIndex(0)
+    else if (index !== undefined) setDeliveryIndex(index)
 
-    if (savedState && Object.keys(savedState).length > 0) {
-      const index = deliveryOptions.findIndex(
-        (d) => d.name === savedState.deliveryName,
-      )
-      if (index !== -1) {
-        const delivery = deliveryOptions[index]
-        delivery.setDamageDice(savedState.damageDice)
-        delivery.setStudyDamageDice(savedState.studyDamageDice)
-        delivery.setApplyEffect(savedState.applyEffect)
-        delivery.setIsFocused(savedState.isFocused)
-        delivery.setDiscount(savedState.discount)
-        if (
-          delivery instanceof AreaOfEffectDelivery &&
-          savedState.size !== undefined
-        ) {
-          delivery.setSize(savedState.size)
-        }
-        if (
-          delivery instanceof Line &&
-          savedState.height !== undefined &&
-          savedState.width !== undefined
-        ) {
-          delivery.setHeight(savedState.height)
-          delivery.setWidth(savedState.width)
-        }
-        if (
-          delivery instanceof PerTargetDelivery &&
-          savedState.targetCount !== undefined
-        ) {
-          delivery.setTargetCount(savedState.targetCount)
-        }
-        setDeliveryIndex(index)
-      }
-
+    if (lastState && Object.keys(lastState).length > 0) {
       setSelectedSpellId(
-        hero.spells.some((sp) => sp._sourceId === savedState?.spellUuid)
-          ? (savedState.spellUuid ?? null)
+        hero.spells.some((sp) => sp._sourceId === lastState.spellUuid)
+          ? (lastState.spellUuid ?? null)
           : (hero.spells[0]?._sourceId ?? null),
       )
-
-      setSkill(savedState.skill)
+      setSkill(saved?.skill ?? lastState.skill)
     }
 
-    setDeliveries(deliveryOptions)
+    setDeliveries(options)
   }, [])
 
   const castingModsJson = JSON.stringify(actor.system.modifiers.casting ?? {})
@@ -166,13 +164,17 @@ export const useSpellCastingMenu = (
     })
   }, [castingModsJson])
 
-  /** Clones every delivery, lets `change` modify the clone, and stores the result. */
+  /**
+   * Clones every delivery, lets `change` modify the clone, and stores the result. Whatever the change was (picking a
+   * spell and its defaults, targets, sizes...), Focus never comes back on while the caster is at their Focus limit.
+   */
   const updateDeliveries = useCallback(
     (change: (clone: SpellDelivery) => void) =>
       setDeliveries((prev) =>
         prev.map((d) => {
           const clone = d.clone()
           change(clone)
+          if (focusLockedRef.current) clone.setIsFocused(false)
           return clone
         }),
       ),
@@ -190,26 +192,40 @@ export const useSpellCastingMenu = (
 
   /**
    * A hook that listens to their token targeting events and
-   * updates the target count for Remote & Imbue.
+   * updates the target count for Remote & Imbue. Targeting a friendly or neutral token drops the damage dice to 0
+   * (healing and support are the likely intent); it isn't locked, so the caster can raise it again.
    */
   useEffect(() => {
     const handleTargetChange = (user) => {
       if (user.id !== game.user?.id) return
-      onUpdateTargetTokens(Array.from(game.user?.targets ?? []))
+      const targets = Array.from(game.user?.targets ?? [])
+      onUpdateTargetTokens(targets)
+      if (
+        targets.some((t: any) =>
+          AreaOccupants.matches("friendly", t.document.disposition),
+        )
+      )
+        updateDeliveries((d) => d.setDamageDice(0))
     }
     const hookId = Hooks.on("targetToken", handleTargetChange)
     return () => {
       Hooks.off("targetToken", hookId)
     }
-  }, [onUpdateTargetTokens])
+  }, [onUpdateTargetTokens, updateDeliveries])
 
   const onSelectSpell = useCallback(
     (uuid: string) => {
       const sp = spells.find((it) => it.uuid === uuid)
       setSelectedSpellId(uuid)
-      if (sp) updateDeliveries((d) => d.setSpell(sp))
+      if (!sp) return
+      // The menu comes back set the way this spell was last configured, not the way the previous spell was.
+      const saved = readSpellStates()[spellStateKey(uuid)]
+      const { options, index } = configureFor(sp, saved)
+      setDeliveries(options)
+      if (index !== undefined) setDeliveryIndex(index)
+      if (saved?.skill) setSkill(saved.skill)
     },
-    [spells, updateDeliveries],
+    [spells, configureFor],
   )
 
   const onSelectDelivery = useCallback((index) => {
@@ -276,9 +292,19 @@ export const useSpellCastingMenu = (
   )
 
   const onToggleSpellFocus = useCallback(
-    (isChecked: boolean) => updateDeliveries((d) => d.setIsFocused(isChecked)),
-    [updateDeliveries],
+    (isChecked: boolean) => {
+      if (focusLocked) return
+      updateDeliveries((d) => d.setIsFocused(isChecked))
+    },
+    [updateDeliveries, focusLocked],
   )
+
+  // Backstop for when the limit is reached while the menu is open (a Focus the GM just accepted): any Focus still
+  // ticked is cleared. The menu's save-state follows, since it is stored whenever the deliveries change.
+  useEffect(() => {
+    if (focusLocked && deliveries.some((d) => d.isFocused))
+      updateDeliveries((d) => d.setIsFocused(false))
+  }, [focusLocked, deliveries, updateDeliveries])
 
   const onUpdateDiscount = useCallback(
     (discount: number) => updateDeliveries((d) => d.setDiscount(discount)),
@@ -586,13 +612,14 @@ export const useSpellCastingMenu = (
             ? delivery.targetCount
             : undefined,
       }
-      await actor.setFlag(
-        sys_id,
-        `spellcastingMenuState${imbueMode ? "_imbue" : ""}` as any,
-        state,
-      )
+      // The latest settings are kept as the menu's last state, and under the spell for when it is picked again.
+      await actor.update({
+        [`flags.${sys_id}.spellcastingMenuState${flagSuffix}`]: state,
+        [`flags.${sys_id}.spellcastingMenuSpells${flagSuffix}.${spellStateKey(delivery.spell.uuid)}`]:
+          state,
+      } as any)
     },
-    [actor, skill],
+    [actor, skill, flagSuffix],
   )
 
   // Deliveries are replaced (never mutated) on every form change, so this saves each one.
@@ -728,6 +755,10 @@ export const useSpellCastingMenu = (
       onCast?.()
       if (imbueMode && cast) onClose?.()
 
+      // A Focused cast that fills the caster's Focus uses it up, so the box is cleared for their next cast.
+      if (delivery.isFocused && (maxFocus <= 1 || focusCount + 1 >= maxFocus))
+        updateDeliveries((d) => d.setIsFocused(false))
+
       if (delivery instanceof Cube || delivery instanceof Glyph) {
         // Clear the placed cubes for the next cast
         cubePreview.current?.clearPlaced()
@@ -858,12 +889,14 @@ export const useSpellCastingMenu = (
                   </div>
                 )}
 
-                {spell.upcastableEffect && !delivery.hasFixedCost && !isGlyph && (
-                  <UpcastingInput
-                    upcast={delivery?.upcast}
-                    onUpdateUpcast={onUpdateUpcast}
-                  />
-                )}
+                {spell.upcastableEffect &&
+                  !delivery.hasFixedCost &&
+                  !isGlyph && (
+                    <UpcastingInput
+                      upcast={delivery?.upcast}
+                      onUpdateUpcast={onUpdateUpcast}
+                    />
+                  )}
 
                 {/* MANA DISCOUNT INPUT */}
                 <ManaDiscount
@@ -881,6 +914,7 @@ export const useSpellCastingMenu = (
                     <SpellFocusToggle
                       isFocused={delivery?.isFocused}
                       onToggleSpellFocus={onToggleSpellFocus}
+                      disabled={focusLocked}
                     />
                   </div>
                 )}

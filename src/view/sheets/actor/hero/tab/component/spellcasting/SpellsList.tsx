@@ -5,6 +5,7 @@ import { getMiniCardsPref } from "../../../../../../../apps/vagabond-tools/useca
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { FocusSpellUtil } from "../../../../../../../model/actor/util/FocusSpellUtil"
 import { spellDamageBase } from "../../../../../../../model/item/character/SpellDataModel"
+import type { RuleFlagSource } from "../../../../../../../rules/util/item-rules-util"
 import { appLang } from "../../../../../../../util/lang"
 import { getId } from "../../../../../../../util/model-util"
 import { sendVagabondChatCard } from "../../../../../../chat/ChatCardSerializer"
@@ -13,6 +14,7 @@ import { useContextMenu } from "../../../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../../../component/DynamicGrid"
 import { FocusBadge } from "../../../../../../component/FocusBadge"
 import { FocusTooltipFooter } from "../../../../../../component/FocusTooltipFooter"
+import { InfoIcon } from "../../../../../../component/InfoIcon"
 import { SkillCard, SkillCardTitle } from "../../../../../../component/SkillCard"
 import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
 
@@ -91,7 +93,29 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                   actor={hero.parent}
                   img={sp.parent.img}
                   dmgType={sp.damageType}
-                  title={<SkillCardTitle text={sp.parent.name} />}
+                  title={
+                    <SkillCardTitle text={sp.parent.name}>
+                      {(sp.ruleFlags ?? []).map(
+                        (source: RuleFlagSource, index: number) => (
+                          <InfoIcon
+                            key={`${source.rule}-${index}`}
+                            className="mr-0.5"
+                            title={source.rule || appLang.RulesEditor.itemFlags}
+                            content={
+                              <div>
+                                {source.flags.map((flag) => (
+                                  <div
+                                    key={flag.key}
+                                    className="text-sm text-text-primary italic"
+                                  >{`${flag.key}: ${flag.value}`}</div>
+                                ))}
+                              </div>
+                            }
+                          />
+                        ),
+                      )}
+                    </SkillCardTitle>
+                  }
                   subtitles={[
                     {
                       label: appLang.HeroSheet.Magic.labelDmgBase,
@@ -100,6 +124,7 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                   ]}
                   description={sp.description}
                   mini={useMiniCards}
+                  interactiveTooltip={false}
                   tooltipFooter={
                     focuses.length > 0 ? (
                       <FocusTooltipFooter instances={focuses} />

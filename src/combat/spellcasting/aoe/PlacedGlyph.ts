@@ -26,7 +26,9 @@ export class PlacedGlyph {
   private static selectedId: string | undefined
 
   static of(actor: any): PlacedGlyphData[] {
-    return (actor?.getFlag?.(sys_id, PlacedGlyph.FLAG) as PlacedGlyphData[]) ?? []
+    return (
+      (actor?.getFlag?.(sys_id, PlacedGlyph.FLAG) as PlacedGlyphData[]) ?? []
+    )
   }
 
   /** The Glyphs of an actor that sit on the scene being viewed. */
@@ -69,7 +71,11 @@ export class PlacedGlyph {
   /** Slides the camera over to the Glyph. */
   static async panTo(glyph: PlacedGlyphData) {
     if ((canvas as any)?.scene?.id !== glyph.sceneId) return
-    await canvas?.animatePan({ x: glyph.cell.x, y: glyph.cell.y, duration: 500 })
+    await canvas?.animatePan({
+      x: glyph.cell.x,
+      y: glyph.cell.y,
+      duration: 500,
+    })
   }
 
 }

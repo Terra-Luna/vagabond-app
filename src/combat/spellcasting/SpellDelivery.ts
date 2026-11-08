@@ -53,6 +53,8 @@ export interface SpellSnapshot {
   autoTargetingPref?: string
   /** Mana off the cast (negative adds to it), set by the ChoiceSet rule that granted the spell. */
   manaDiscount?: number
+  /** Mana off the spell's Delivery, whichever one is used, set by the ChoiceSet rule that granted the spell. Adds to the modifiers' delivery discounts. */
+  deliveryDiscount?: number
   /** The spell can only be cast at its delivery's base cost: no upcasting of any kind. */
   noUpcast?: boolean
   /** The spell can be upcast, but never to more than its delivery's base cost (after discounts). */
@@ -256,9 +258,28 @@ export abstract class SpellDelivery {
     this.discount = discount
   }
 
-  /** Adds the spell's own discount to the ones from modifiers. A negative one is a penalty. */
+  /**
+   * Adds the spell's own discount to the ones from modifiers. A negative one is a penalty.
+   */
   protected applySpellManaDiscount() {
     this.discount += this.spell?.manaDiscount ?? 0
+  }
+
+  /**
+   * The delivery-specific discounts (the casting modifiers' per-delivery ones, plus the spell's own) come off what
+   * the Delivery itself costs, and nothing more: not the spell's own base cost, extra damage dice or the Effect
+   * surcharge. `deliveryCost` is what the Delivery charges, and `alreadyApplied` what other delivery discounts
+   * (such as the upcast ones) have already taken off it. A negative total is a penalty and is applied as is.
+   */
+  protected applyDeliveryDiscounts(deliveryCost: number, alreadyApplied = 0) {
+    const total =
+      (this.mods.deliveryDiscounts?.[this.constructor.name.toLowerCase()] ??
+        0) + (this.spell?.deliveryDiscount ?? 0)
+    if (total <= 0) {
+      this.discount += total
+      return
+    }
+    this.discount += Math.min(total, Math.max(0, deliveryCost - alreadyApplied))
   }
 
   applyEffectManaCost() {
@@ -297,6 +318,8 @@ export abstract class SpellDelivery {
     const modifier = (name: string) =>
       flags?.[`modifiers.spell.${name}`] ?? flags?.modifiers?.spell?.[name]
     const manaDiscount = Number(modifier("manaDiscount"))
+    // A flag set to true (or any positive amount) grants that much; true counts as 1.
+    const deliveryDiscount = Number(modifier("deliveryDiscount"))
     const noUpcast = !!modifier("noUpcast")
     const noManaBoost = !!modifier("noManaBoost")
     return {
@@ -316,6 +339,7 @@ export abstract class SpellDelivery {
       upkeep: spell.system.upkeep as SpellSnapshot["upkeep"],
       autoTargetingPref: spell.system.autoTargetingPref,
       ...(manaDiscount && { manaDiscount }),
+      ...(deliveryDiscount && { deliveryDiscount }),
       ...(noUpcast && { noUpcast }),
       ...(noManaBoost && { noManaBoost }),
       ...(spell.system.surface?.enabled && {
@@ -374,11 +398,13 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
 
   override calculateManaCost() {
     this.calculateBaseManaCost()
+    let upcastDiscounted = 0
     if (this.size > this.baseSize) {
-      this.discount += Math.min(
+      upcastDiscounted = Math.min(
         this.deliveryUpcastCost,
         this.mods.deliveryUpcastDiscount,
       )
+      this.discount += upcastDiscounted
     }
     if (this.damageDice > 1) {
       this.discount += Math.min(
@@ -387,8 +413,10 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
       )
     }
 
-    this.discount +=
-      this.mods.deliveryDiscounts?.[this.constructor.name.toLowerCase()] ?? 0
+    this.applyDeliveryDiscounts(
+      this.baseManaCost + this.deliveryUpcastCost,
+      upcastDiscounted,
+    )
 
     this.applySpellManaDiscount()
     super.applyEffectManaCost()
@@ -466,13 +494,16 @@ export class Line extends AreaOfEffectDelivery {
 
     // Track the delivery upcast discount and "expend" it as the calculations are done...
     let dud = this.mods.deliveryUpcastDiscount
+    let upcastDiscounted = 0
     if (dud > 0) {
-      this.discount += Math.min(this.deliveryUpcastCost, dud)
+      upcastDiscounted = Math.min(this.deliveryUpcastCost, dud)
+      this.discount += upcastDiscounted
       dud -= this.deliveryUpcastCost
     }
 
     const isLineExpanded =
       this.height > this.baseHeight || this.width > this.baseWidth
+    let lineDeliveryCost = this.baseManaCost + this.deliveryUpcastCost
     if (isLineExpanded) {
       const expansionSteps =
         (this.height - this.baseHeight) / this.baseHeight +
@@ -480,6 +511,7 @@ export class Line extends AreaOfEffectDelivery {
 
       const deliveryCost =
         (this.baseManaCost + this.deliveryUpcastCost) * 2 ** expansionSteps
+      lineDeliveryCost = deliveryCost
 
       const damageUpcastCost = this.damageDice - 1
 
@@ -490,6 +522,7 @@ export class Line extends AreaOfEffectDelivery {
       this._manaCost -= Math.min(this.deliveryUpcastCost, dud)
     }
 
+    this.applyDeliveryDiscounts(lineDeliveryCost, upcastDiscounted)
     this.applySpellManaDiscount()
     super.applyEffectManaCost()
   }
@@ -590,16 +623,22 @@ export abstract class PerTargetDelivery extends SpellDelivery {
     }
     if (this.hasFixedCost) targets = 1
 
+    let upcastDiscounted = 0
     if (targets > 1) {
-      this.discount += Math.min(targets, this.mods.deliveryUpcastDiscount)
+      // The upcast discount can only take off what the extra targets cost, never the rest of the cast.
+      upcastDiscounted = Math.min(
+        (targets - 1) * this.extraTargetMultiplier,
+        this.mods.deliveryUpcastDiscount,
+      )
+      this.discount += upcastDiscounted
     }
 
-    this.discount +=
-      this.mods.deliveryDiscounts?.[this.constructor.name.toLowerCase()] ?? 0
+    const deliveryCost =
+      Math.max(0, targets - 1) * this.extraTargetMultiplier + this.baseManaCost
+    this.applyDeliveryDiscounts(deliveryCost, upcastDiscounted)
 
     this._manaCost =
-      Math.max(0, targets - 1) * this.extraTargetMultiplier +
-      this.baseManaCost +
+      deliveryCost +
       (this.damageDice > 0 ? (this.spell?.baseManaCost ?? 0) : 0) +
       Math.max(0, this.damageDice - 1)
 

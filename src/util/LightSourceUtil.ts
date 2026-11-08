@@ -300,7 +300,12 @@ export class LightSourceUtil {
         coloration: 1,
         luminosity: 0,
         attenuation: 1,
-        animation: { type: "ghost", speed: 1, intensity: 2, reverse: false },
+        animation: {
+          type: "ghost",
+          speed: 1,
+          intensity: 2,
+          reverse: false,
+        },
       }
     }
     if (data.isSunlight && !data.isDark) {
@@ -317,8 +322,8 @@ export class LightSourceUtil {
         attenuation: 1,
         animation: {
           type: "starlight",
-          speed: 1,
-          intensity: 1,
+          speed: 3,
+          intensity: 10,
           reverse: false,
         },
       }

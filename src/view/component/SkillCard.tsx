@@ -27,6 +27,7 @@ export const SkillCard = ({
   startCollapsed = true,
   hideCollapseButton,
   actions = [],
+  interactiveTooltip = true,
   mini,
   badge,
   tooltipFooter,
@@ -40,6 +41,7 @@ export const SkillCard = ({
   startCollapsed?: boolean
   hideCollapseButton?: boolean
   actions?: SkillCardAction[]
+  interactiveTooltip?: boolean
   mini?: boolean
   badge?: ReactNode
   /** Extra content shown beneath the full card in a mini card's tooltip. */
@@ -47,7 +49,7 @@ export const SkillCard = ({
 }) => {
   return mini ? (
     <Tooltip
-      interactive={true}
+      interactive={interactiveTooltip}
       content={
         <div className="flex flex-col">
           <SkillCard
@@ -114,7 +116,7 @@ export const SkillCardTitle = ({
         <p className="text-text-header-primary font-eskapade font-normal truncate min-w-0 flex-1">
           {text}
         </p>
-        <div className="flex-shrink-0">{children}</div>
+        <div className="flex flex-shrink-0 items-center">{children}</div>
       </div>
     </div>
   )

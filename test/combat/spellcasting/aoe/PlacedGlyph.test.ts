@@ -16,7 +16,6 @@ const actor = {
 const spell: any = { uuid: "s", name: "Zap", damageType: "shock" }
 
 describe("PlacedGlyph", () => {
-
   const listeners: ((id: string | undefined) => void)[] = []
 
   beforeEach(() => {
@@ -56,8 +55,18 @@ describe("PlacedGlyph", () => {
   })
 
   it("removes one Glyph, clearing the flag when none are left", async () => {
-    await PlacedGlyph.add(actor, { sceneId: "here", cell: { x: 1, y: 1 }, spell, skill: "a" })
-    await PlacedGlyph.add(actor, { sceneId: "here", cell: { x: 2, y: 2 }, spell, skill: "a" })
+    await PlacedGlyph.add(actor, {
+      sceneId: "here",
+      cell: { x: 1, y: 1 },
+      spell,
+      skill: "a",
+    })
+    await PlacedGlyph.add(actor, {
+      sceneId: "here",
+      cell: { x: 2, y: 2 },
+      spell,
+      skill: "a",
+    })
     const [first] = PlacedGlyph.of(actor)
 
     await PlacedGlyph.remove(actor, first.id)
@@ -71,7 +80,12 @@ describe("PlacedGlyph", () => {
   it("announces which Glyph is highlighted, and drops the highlight of a removed one", async () => {
     const seen: (string | undefined)[] = []
     PlacedGlyph.onSelect((id) => seen.push(id))
-    await PlacedGlyph.add(actor, { sceneId: "here", cell: { x: 1, y: 1 }, spell, skill: "a" })
+    await PlacedGlyph.add(actor, {
+      sceneId: "here",
+      cell: { x: 1, y: 1 },
+      spell,
+      skill: "a",
+    })
     const [glyph] = PlacedGlyph.of(actor)
 
     PlacedGlyph.select(glyph.id)
@@ -82,5 +96,4 @@ describe("PlacedGlyph", () => {
     expect(PlacedGlyph.selected).toBeUndefined()
     expect(seen).toEqual([glyph.id, undefined])
   })
-
 })

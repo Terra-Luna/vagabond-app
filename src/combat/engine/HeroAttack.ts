@@ -1267,9 +1267,15 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     const cell = area.cells[0]
     if (!cell) return false
     // Building the attack is what spends the mana; the attack itself is never sent.
-    const spent = HeroAttack.buildSpellAttack(actor, skill, delivery, undefined, {
-      skipSkillCheck: true,
-    })
+    const spent = HeroAttack.buildSpellAttack(
+      actor,
+      skill,
+      delivery,
+      undefined,
+      {
+        skipSkillCheck: true,
+      },
+    )
     if (!spent) return false
     await PlacedGlyph.add(actor, {
       sceneId: area.sceneId,

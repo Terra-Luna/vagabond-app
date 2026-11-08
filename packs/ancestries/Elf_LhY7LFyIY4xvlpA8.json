@@ -45,7 +45,7 @@
         "pack": "spell",
         "itemFlags": [
           {
-            "key": "modifiers.spell.manaDiscount",
+            "key": "modifiers.spell.deliveryDiscount",
             "value": "1"
           }
         ],
@@ -69,7 +69,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.3.1",
     "createdTime": 1784494454047,
-    "modifiedTime": 1794084432689,
+    "modifiedTime": 1794174777274,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

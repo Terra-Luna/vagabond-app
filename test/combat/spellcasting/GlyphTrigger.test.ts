@@ -3,14 +3,17 @@ import { describe, expect, it, jest } from "@jest/globals"
 import { GlyphTrigger } from "../../../src/combat/spellcasting/GlyphTrigger"
 import { Glyph, type SpellSnapshot } from "../../../src/combat/spellcasting/SpellDelivery"
 
-jest.mock("../../../src/combat/spellcasting/aoe/targeting/AreaOccupants", () => ({
-  AreaOccupants: {
-    tokensIn: (points: { x: number; y: number }[]) =>
-      points.some((p) => p.x === 50)
-        ? [{ document: { id: "a" } }, { document: { id: "b" } }]
-        : [],
-  },
-}))
+jest.mock(
+  "../../../src/combat/spellcasting/aoe/targeting/AreaOccupants",
+  () => ({
+    AreaOccupants: {
+      tokensIn: (points: { x: number; y: number }[]) =>
+        points.some((p) => p.x === 50)
+          ? [{ document: { id: "a" } }, { document: { id: "b" } }]
+          : [],
+    },
+  }),
+)
 
 const spell: SpellSnapshot = {
   uuid: "s",
@@ -34,7 +37,6 @@ const glyph = (over: Partial<SpellSnapshot> = {}) => ({
 })
 
 describe("Glyph placement", () => {
-
   it("only ever pays for the Glyph; Focus, effect and dice are chosen on triggering", () => {
     const placed = new Glyph(spell, mods)
     placed.setDamageDice(5)
@@ -47,11 +49,9 @@ describe("Glyph placement", () => {
     // 2 for the Glyph + 1 for the spell's own base cost, which a damaging cast pays.
     expect(placed.manaCost).toBe(3)
   })
-
 })
 
 describe("GlyphTrigger", () => {
-
   it("finds everyone standing on the Glyph, and nobody elsewhere", () => {
     expect(GlyphTrigger.occupantIds(glyph())).toEqual(["a", "b"])
     expect(
@@ -120,5 +120,4 @@ describe("GlyphTrigger", () => {
       cells: [{ x: 50, y: 50 }],
     })
   })
-
 })

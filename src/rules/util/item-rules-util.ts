@@ -29,6 +29,23 @@ export interface ItemFlag {
   value: string
 }
 
+/** Which rule flagged an item, and the flags (path and value, as typed into the rule) it set. */
+export interface RuleFlagSource {
+  rule: string
+  flags: ItemFlag[]
+}
+
+/** The flags a ChoiceSet rule sets, as written in the rule, leaving out any row without a path. */
+export const getRuleItemFlagEntries = (
+  rule: { itemFlags?: ItemFlag[] } | undefined,
+): ItemFlag[] =>
+  (rule?.itemFlags ?? [])
+    .filter((flag) => !!flag?.key?.trim())
+    .map((flag) => ({
+      key: flag.key.trim(),
+      value: String(flag.value ?? "").trim(),
+    }))
+
 /**
  * The flags a ChoiceSet rule stamps onto the items it selects. Flag values are typed in as text, so "true", "false"
  * and numbers become booleans and numbers; entries without a key are ignored. A dotted key is a path, so

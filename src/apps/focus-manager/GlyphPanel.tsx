@@ -117,6 +117,9 @@ const GlyphTriggerOptions = ({
   const [dice, setDice] = useState(hasDamage ? 1 : 0)
   const [effect, setEffect] = useState(false)
   const [focused, setFocused] = useState(false)
+  const focusLocked =
+    hero.system.maxFocus > 1 &&
+    (hero.system.statuses?.counters?.focus ?? 0) >= hero.system.maxFocus
 
   // The Cube it is cast as applies the spell's own limits (e.g. no upcasting), so it decides what is allowed.
   const cube = useMemo(
@@ -124,9 +127,9 @@ const GlyphTriggerOptions = ({
       GlyphTrigger.deliveryFor(
         glyph,
         { ...hero.system.modifiers.casting },
-        { dice, effect, focused },
+        { dice, effect, focused: focused && !focusLocked },
       ),
-    [glyph, hero, dice, effect, focused],
+    [glyph, hero, dice, effect, focused, focusLocked],
   )
 
   const cast = async (clickEvent?: any) => {
@@ -175,6 +178,7 @@ const GlyphTriggerOptions = ({
           <SpellFocusToggle
             isFocused={cube.isFocused}
             onToggleSpellFocus={setFocused}
+            disabled={focusLocked}
           />
         </div>
         <div className="ml-auto">

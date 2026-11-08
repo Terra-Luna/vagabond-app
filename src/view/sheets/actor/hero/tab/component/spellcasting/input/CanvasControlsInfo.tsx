@@ -1,8 +1,6 @@
-import { Info } from "lucide-react"
-
 import { Aura, Cone, Cube, Glyph, Line, type SpellDelivery, Sphere } from "../../../../../../../../combat/spellcasting/SpellDelivery"
 import { appLang } from "../../../../../../../../util/lang"
-import { Tooltip } from "../../../../../../../component/Tooltip"
+import { InfoIcon } from "../../../../../../../component/InfoIcon"
 
 const controls = appLang.Spellcasting
 
@@ -39,12 +37,10 @@ export const CanvasControlsInfo = ({
   const lines = controlsFor(delivery)
   if (!lines) return null
   return (
-    <Tooltip
+    <InfoIcon
       title={controls.canvasControlsTitle}
       content={[...lines, controls.canvasControlsToggle].join("<br>")}
-      maxWidth="260px"
-    >
-      <Info size={14} strokeWidth={3} className="text-text-header-tertiary" />
-    </Tooltip>
+      maxWidth="max-w-[260px]"
+    />
   )
 }

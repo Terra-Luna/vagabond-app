@@ -1,3 +1,4 @@
+import type { RuleFlagSource } from "../../../rules/util/item-rules-util"
 import { appLang } from "../../../util/lang"
 import { andOrToSymbol, removeLastComma } from "../../../util/string-util"
 import type { CardSubHeaderValues } from "../../../view/component/SkillCard"
@@ -54,6 +55,8 @@ export class PerkDataModel extends ItemDataModel<PerkSchema> {
 
   public _sourceId?: string
   public isRuleSelection?: boolean
+  /** Set on a hero's perk entries: the ChoiceSet rules that flagged this perk. */
+  public ruleFlags?: RuleFlagSource[]
 
   static override defineSchema() {
     return {

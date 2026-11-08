@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
 
-import { Aura, Cone, Cube, getDeliveryDropdownOptions, getNewDeliveryOptions, Glyph, Imbue, Line, Remote, SpellSnapshot, Sphere, Touch } from "../../../src/combat/spellcasting/SpellDelivery"
+import { Aura, Cone, Cube, getDeliveryDropdownOptions, getNewDeliveryOptions, Glyph, Imbue, Line, Remote, SpellDelivery, SpellSnapshot, Sphere, Touch } from "../../../src/combat/spellcasting/SpellDelivery"
 
 const spell: SpellSnapshot = {
   uuid: "x",
@@ -393,6 +393,144 @@ describe("spell mana discount flag", () => {
     const cubeBase = new Cube(spell, mods)
     cubeBase.calculateManaCost()
     expect(cube.manaCost).toBe(cubeBase.manaCost + 1)
+  })
+})
+
+describe("spell deliveryDiscount flag", () => {
+  const mods = { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 }
+
+  test("takes its amount off the delivery, on any delivery", () => {
+    const sphere = new Sphere({ ...spell, deliveryDiscount: 1 }, mods)
+    sphere.setSize(sphere.baseSize)
+    expect(sphere.manaCost).toBe(1)
+
+    const remote = new Remote({ ...spell, deliveryDiscount: 1 }, mods)
+    remote.setTargetTokenIds(["a", "b"])
+    remote.damageDice = 1
+    remote.calculateManaCost()
+    // Two targets cost 1 extra; the discount takes it back.
+    expect(remote.manaCost).toBe(0)
+  })
+
+  test("adds to the casting modifiers' delivery discounts", () => {
+    const sphere = new Sphere(
+      { ...spell, deliveryDiscount: 1 },
+      { ...mods, deliveryDiscounts: { sphere: 1 } },
+    )
+    sphere.setSize(sphere.baseSize)
+    expect(sphere.manaCost).toBe(0)
+
+    const plain = new Sphere(spell, {
+      ...mods,
+      deliveryDiscounts: { sphere: 1 },
+    })
+    plain.setSize(plain.baseSize)
+    expect(plain.manaCost).toBe(1)
+  })
+
+  test("stacks with the spell's mana discount, and never goes below zero", () => {
+    const sphere = new Sphere(
+      { ...spell, deliveryDiscount: 1, manaDiscount: 1 },
+      mods,
+    )
+    sphere.setSize(sphere.baseSize)
+    expect(sphere.manaCost).toBe(0)
+
+    const big = new Sphere({ ...spell, deliveryDiscount: 50 }, mods)
+    big.setSize(big.baseSize)
+    expect(big.manaCost).toBe(0)
+  })
+
+  test("never discounts extra damage dice or the effect surcharge", () => {
+    // A Sphere is 2 Mana. 3 damage dice add 2, and casting damage with its effect adds 1.
+    const sphere = new Sphere({ ...spell, deliveryDiscount: 5 }, mods)
+    sphere.setSize(sphere.baseSize)
+    sphere.setDamageDice(3)
+    sphere.setApplyEffect(true)
+
+    // Only the Delivery's own 2 Mana is discounted; the 2 dice + 1 effect (3) remain.
+    expect(sphere.manaCost).toBe(3)
+
+    const modifiers = new Sphere(spell, {
+      ...mods,
+      deliveryDiscounts: { sphere: 5 },
+    })
+    modifiers.setSize(modifiers.baseSize)
+    modifiers.setDamageDice(3)
+    modifiers.setApplyEffect(true)
+    expect(modifiers.manaCost).toBe(3)
+  })
+
+  test("is limited to what the Delivery costs, after the upcast discounts", () => {
+    // 15' is one step of upcast: 3 Mana for the Delivery, 1 of it already discounted.
+    const sphere = new Sphere(
+      { ...spell, deliveryDiscount: 5 },
+      { damageUpcastDiscount: 0, deliveryUpcastDiscount: 1 },
+    )
+    sphere.setSize(sphere.baseSize + 5)
+    expect(sphere.manaCost).toBe(0)
+
+    const remote = new Remote({ ...spell, deliveryDiscount: 5 }, mods)
+    remote.setTargetTokenIds(["a", "b", "c"])
+    remote.setDamageDice(2)
+    // Delivery: 2 extra targets = 2 Mana, discounted; the extra die (1) stays.
+    expect(remote.manaCost).toBe(1)
+  })
+
+  test("a line's delivery discounts apply too", () => {
+    const line = new Line({ ...spell, deliveryDiscount: 1 }, mods)
+    line.setSize(line.baseSize)
+    expect(line.manaCost).toBe(1)
+
+    const viaModifiers = new Line(spell, {
+      ...mods,
+      deliveryDiscounts: { line: 1 },
+    })
+    viaModifiers.setSize(viaModifiers.baseSize)
+    expect(viaModifiers.manaCost).toBe(1)
+  })
+
+  test("remote: the first extra target is free, so 1 damage die + effect costs the same for 1 or 2 targets", () => {
+    const remoteCost = (targets: number, mods: any) => {
+      const remote = new Remote({ ...spell, deliveryDiscount: 1 }, mods)
+      remote.setDamageDice(1)
+      remote.setApplyEffect(true)
+      remote.setTargetTokenIds(
+        Array.from({ length: targets }, (_, i) => `t${i}`),
+      )
+      return remote.manaCost
+    }
+    const plain = { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 }
+    expect([1, 2, 3, 4].map((n) => remoteCost(n, plain))).toEqual([1, 1, 2, 3])
+
+    // A big upcast discount can't reach past the extra targets' own cost either.
+    const generous = { damageUpcastDiscount: 0, deliveryUpcastDiscount: 5 }
+    expect([1, 2, 3, 4].map((n) => remoteCost(n, generous))).toEqual([
+      1, 1, 1, 1,
+    ])
+  })
+
+  test("is read from the flag as a number, or true for 1", () => {
+    const item: any = {
+      uuid: "u",
+      name: "N",
+      system: {
+        description: "",
+        damageType: "fire",
+        baseManaCost: 0,
+        ignoreEffectCost: false,
+        appliedEffects: [],
+        appliedActiveEffects: [],
+        upcastableEffect: false,
+        upcastableEffectDieRoll: false,
+      },
+    }
+    const read = (flags: any) =>
+      SpellDelivery.getSpellSnapshot(item, flags).deliveryDiscount
+
+    expect(read({ modifiers: { spell: { deliveryDiscount: true } } })).toBe(1)
+    expect(read({ modifiers: { spell: { deliveryDiscount: 2 } } })).toBe(2)
+    expect(read({})).toBeUndefined()
   })
 })
 

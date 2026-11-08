@@ -27,8 +27,10 @@ export class GlyphTrigger {
   /** What the Glyph's placement already paid toward a Cube cast with this many damage dice. */
   private static prepaid(spell: SpellSnapshot, dice: number): number {
     const damage = dice > 0 && spell.damageType !== "none"
-    return new Cube(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
-      .baseManaCost + (damage ? (spell.baseManaCost ?? 0) : 0)
+    return (
+      new Cube(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
+        .baseManaCost + (damage ? (spell.baseManaCost ?? 0) : 0)
+    )
   }
 
   /** The Cube the Glyph casts for the given choices, with its prepaid base cost taken off. */
@@ -39,6 +41,8 @@ export class GlyphTrigger {
   ): Cube {
     const spell: SpellSnapshot = {
       ...glyph.spell,
+      // The Glyph's own delivery was paid for (with this discount) when it was placed.
+      deliveryDiscount: undefined,
       manaDiscount:
         (glyph.spell.manaDiscount ?? 0) +
         GlyphTrigger.prepaid(glyph.spell, choices.dice),

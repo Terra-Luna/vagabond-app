@@ -1,3 +1,4 @@
+import type { RuleFlagSource } from "../../../rules/util/item-rules-util"
 import { appLang } from "../../../util/lang"
 import type { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/shared-schemas"
@@ -87,6 +88,8 @@ export class SpellDataModel extends ItemDataModel<SpellSchema> {
 
   public _sourceId?: string
   public isRuleSelection?: boolean
+  /** Set on a hero's spell entries: the ChoiceSet rules that flagged this spell. */
+  public ruleFlags?: RuleFlagSource[]
 
   static override defineSchema() {
     return {

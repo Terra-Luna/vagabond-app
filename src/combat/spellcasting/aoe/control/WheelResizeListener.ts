@@ -3,7 +3,6 @@ import { CanvasPreview } from "./CanvasPreview"
 import { WheelStep } from "./WheelStep"
 
 type WheelResizeOptions = {
-  /** Current size in feet; read on every event so the listener never goes stale. */
   getSize: () => number
   minSize: number
   step: number

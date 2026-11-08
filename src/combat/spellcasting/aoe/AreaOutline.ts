@@ -1,9 +1,8 @@
 import type { Point } from "./AreaTypes"
 
-export const AREA_FILL_ALPHA = 0.033
-
 /** Corner rounding of area outlines, in pixels (Tailwind's rounded-md is 0.375rem = 6px). */
-export const CORNER_RADIUS = 6
+export const AREA_FILL_ALPHA = 0.04
+export const CORNER_RADIUS = 8
 
 export class AreaOutline {
 

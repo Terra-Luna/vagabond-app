@@ -79,6 +79,7 @@ describe("hero rule selections", () => {
         getActiveRules: () => [
           {
             key: "ChoiceSet",
+            label: "Naturally Attuned",
             channel: "item",
             selections: [{ id: "s1", value: "spell-uuid", subselect: "" }],
             itemFlags: [
@@ -101,6 +102,49 @@ describe("hero rule selections", () => {
       sourceId: "spell-uuid",
     })
     expect(ItemsCache.items.get("spell-uuid")?.flags).toEqual({})
+    // The sheet is told which rule flagged the spell and what it set, as typed into the rule.
+    expect((actor.system as any).spells[0].ruleFlags).toEqual([
+      {
+        rule: "Naturally Attuned",
+        flags: [
+          { key: "naturallyAttuned", value: "true" },
+          { key: "modifiers.spell.manaDiscount", value: "-1" },
+        ],
+      },
+    ])
+  })
+
+  test("items no rule flagged have no flag sources", () => {
+    ItemsCache.items = new Map([
+      [
+        "spell-uuid",
+        {
+          uuid: "spell-uuid",
+          name: "Fireball",
+          type: "spell",
+          flags: {},
+          system: { toObject: () => ({ description: "spell" }) },
+        },
+      ],
+    ])
+    const actor = {
+      prepareBaseData: jest.fn(),
+      system: {
+        getActiveRules: () => [
+          { key: "GrantItem", type: "spell", uuid: "spell-uuid" },
+          {
+            key: "ChoiceSet",
+            label: "No flags",
+            channel: "item",
+            selections: [],
+          },
+        ],
+      },
+    }
+
+    PerkRulesSelectionsApplicator.apply(actor as any)
+
+    expect((actor.system as any).spells[0].ruleFlags).toEqual([])
   })
 
   test("refreshes visible observer sheets when cached items change", () => {

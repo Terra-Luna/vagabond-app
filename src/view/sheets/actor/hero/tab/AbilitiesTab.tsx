@@ -5,6 +5,7 @@ import { TrainingSelectionApp } from "../../../../../apps/hero-choices/training/
 import { getMiniCardsPref, getShowTrainingSelectionToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { PerkDataModel, perkSpellRerequisitesAsString, perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
+import type { RuleFlagSource } from "../../../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../../../rules/util/ItemsCache"
 import { groupBy } from "../../../../../util/collection-util"
 import { appLang } from "../../../../../util/lang"
@@ -14,6 +15,7 @@ import { UtilityButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DynamicGrid } from "../../../../component/DynamicGrid"
 import { ClearHeader } from "../../../../component/Header"
+import { InfoIcon } from "../../../../component/InfoIcon"
 import { CardSubHeaderValues, ItemRuleToggleSwitch, SkillCard, SkillCardTitle } from "../../../../component/SkillCard"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
@@ -172,9 +174,32 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                       img={p.parent.img}
                       title={
                         <SkillCardTitle text={p.parent.name}>
-                          {p.rules?.some(
-                            (rule: any) => rule.toggleableEffect,
-                          ) && <ItemRuleToggleSwitch actor={hero} item={p} />}
+                          <span className="flex items-center gap-x-1">
+                            {(p.ruleFlags ?? []).map(
+                              (source: RuleFlagSource, index: number) => (
+                                <InfoIcon
+                                  key={`${source.rule}-${index}`}
+                                  className="mr-0.5"
+                                  title={
+                                    source.rule || appLang.RulesEditor.itemFlags
+                                  }
+                                  content={
+                                    <div>
+                                      {source.flags.map((flag) => (
+                                        <div
+                                          key={flag.key}
+                                          className="text-sm text-text-primary italic"
+                                        >{`${flag.key}: ${flag.value}`}</div>
+                                      ))}
+                                    </div>
+                                  }
+                                />
+                              ),
+                            )}
+                            {p.rules?.some(
+                              (rule: any) => rule.toggleableEffect,
+                            ) && <ItemRuleToggleSwitch actor={hero} item={p} />}
+                          </span>
                         </SkillCardTitle>
                       }
                       subtitles={getPerkSubheader(p)}

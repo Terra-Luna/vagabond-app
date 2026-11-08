@@ -17,9 +17,6 @@ export class PolymorphCastCheck {
     if (actorId) PolymorphCastCheck.cleared.set(actorId, currentRoundKey())
   }
 
-  /**
-   * Whether dropping a form on these targets still needs a Cast check. A passed cast is used up by the drop it covers.
-   */
   static isRequired(caster: any, tokenIds: (string | undefined)[]): boolean {
     if ((caster?.type as string) !== "hero") return false
     if (!FocusSpellUtil.hasHostileToken(tokenIds.filter(Boolean) as string[]))

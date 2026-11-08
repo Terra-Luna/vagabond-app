@@ -9,6 +9,7 @@ interface CheckboxProps {
   onCheckedChanged: (checked: boolean) => void
   inverted?: boolean
   color?: string
+  disabled?: boolean
 }
 
 export const Checkbox = ({
@@ -17,13 +18,15 @@ export const Checkbox = ({
   onCheckedChanged,
   inverted = false,
   color = "text-text-header-tertiary",
+  disabled = false,
 }: CheckboxProps) => {
   const { isEditMode } = useEditMode()
   return (
     <label
-      className={`flex items-center ${label.length > 0 ? "gap-1" : ""} ${sheetPropLabel} ${isEditMode ? "cursor-pointer" : ""}`}
+      className={`flex items-center ${label.length > 0 ? "gap-1" : ""} ${sheetPropLabel} ${disabled ? "opacity-40 cursor-not-allowed" : isEditMode ? "cursor-pointer" : ""}`}
+      aria-disabled={disabled || undefined}
       onClick={() => {
-        if (isEditMode) {
+        if (isEditMode && !disabled) {
           onCheckedChanged(!checked)
         }
       }}

@@ -1,7 +1,7 @@
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { sys_id } from "../../util/foundry-util"
-import { getRuleItemFlags, isItemChoiceRule, mergeItemFlags, normalizeRuleSelections } from "./item-rules-util"
+import { getRuleItemFlagEntries, getRuleItemFlags, isItemChoiceRule, mergeItemFlags, normalizeRuleSelections, type RuleFlagSource } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 
 export class PerkRulesSelectionsApplicator {
@@ -61,11 +61,20 @@ export class PerkRulesSelectionsApplicator {
 
     /** Flags configured on the ChoiceSet rules, keyed by the uuid of the item each rule selected. */
     const flagsByItem = new Map<string, Record<string, unknown>>()
-    const stampFlags = (uuid: string, rule: any) =>
+    /** The same flags, with the rule that set them, so the sheet can say where an item's flags came from. */
+    const sourcesByItem = new Map<string, RuleFlagSource[]>()
+    const stampFlags = (uuid: string, rule: any) => {
       flagsByItem.set(
         uuid,
         mergeItemFlags(flagsByItem.get(uuid), getRuleItemFlags(rule)),
       )
+      const flags = getRuleItemFlagEntries(rule)
+      if (!flags.length) return
+      const sources = sourcesByItem.get(uuid) ?? []
+      const source = { rule: String(rule.label ?? ""), flags }
+      if (!sources.some((it) => JSON.stringify(it) === JSON.stringify(source)))
+        sourcesByItem.set(uuid, [...sources, source])
+    }
     activeRules.filter(isItemChoiceRule).forEach((rule) =>
       normalizeRuleSelections(rule.selections).forEach((selection) => {
         stampFlags(selection.value, rule)
@@ -162,6 +171,7 @@ export class PerkRulesSelectionsApplicator {
             },
           },
           ...systemClone,
+          ruleFlags: sourcesByItem.get(fullItem.uuid) ?? [],
         }
 
         if (fullItem.type === "spell") {
