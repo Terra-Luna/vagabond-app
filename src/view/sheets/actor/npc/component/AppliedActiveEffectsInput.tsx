@@ -55,9 +55,11 @@ const AppliedActiveEffectRow = ({
 export const AppliedActiveEffectsInput = ({
   effects,
   onChange,
+  label = appLang.Effects.appliedActiveEffects,
 }: {
   effects: AppliedActiveEffect[]
   onChange: (effects: AppliedActiveEffect[]) => unknown
+  label?: string
 }) => {
   const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
     const dragData = foundry.applications.ux.TextEditor.getDragEventData(
@@ -70,7 +72,7 @@ export const AppliedActiveEffectsInput = ({
 
   return (
     <div className="flex flex-col w-full gap-0.5">
-      <ItemSheetPropLabel label={appLang.Effects.appliedActiveEffects} />
+      <ItemSheetPropLabel label={label} />
 
       {effects.map((entry, index) => (
         <AppliedActiveEffectRow

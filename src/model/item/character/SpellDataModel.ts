@@ -71,6 +71,13 @@ const spellSchema = () => {
       ),
       burnDamage: new fields.StringField({ ...requiredString, initial: "1d6" }),
     }),
+
+    // Effects applied to the area of effect that trigger on entering or staying.
+    surface: new fields.SchemaField({
+      enabled: new fields.BooleanField({ initial: false }),
+      onEnter: new fields.SchemaField(surfaceEffect()),
+      onStay: new fields.SchemaField(surfaceEffect()),
+    }),
   }
 }
 
@@ -100,3 +107,18 @@ export const spellDamageBase = (
     },
   ]
 }
+
+/**
+ * What a surface does to a token that enters its area (once a round) or is still in it when a round starts:
+ * a damage formula (e.g. "1d6"), rolled for free, and Active Effects.
+ */
+const surfaceEffect = () => ({
+  damage: new fields.StringField({ ...requiredString, initial: "" }),
+  activeEffects: new fields.ArrayField(
+    new fields.SchemaField({
+      uuid: new fields.StringField({ ...requiredString }),
+      duration: new fields.StringField({ ...optionalString }),
+    }),
+    { initial: [] },
+  ),
+})

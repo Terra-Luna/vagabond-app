@@ -5,6 +5,7 @@ import { HeroAttack } from "../engine/HeroAttack"
 import { PlacedAreaCells } from "./aoe/PlacedAreaCells"
 import { AreaOccupants } from "./aoe/targeting/AreaOccupants"
 import { currentRoundKey } from "./focus-round"
+import { FocusSurface } from "./FocusSurface"
 
 /**
  * Focused spells with a canvas area follow the same rules as a Focused burning light, except they affect everyone:
@@ -138,13 +139,19 @@ export class FocusAreaExposure {
     })
   }
 
-  /** Applies the spell's effects to targets that joined since upkeep was last settled. */
+  /** Applies the spell's effects to targets that joined since upkeep was last settled, and a surface's On Enter to its newcomers. */
   static async applyPendingFx(actor: any, focusId: string) {
     const instance = FocusSpellUtil.find(actor, focusId)
     const ids = instance?.fxPendingIds ?? []
-    if (!instance?.delivery || !ids.length) return
-    await FocusSpellUtil.update(actor, focusId, { fxPendingIds: undefined })
-    await HeroAttack.applyFocusEffects(actor, instance.delivery, focusId, ids)
+    const surfaceIds = instance?.surfacePendingIds ?? []
+    if (!instance?.delivery || (!ids.length && !surfaceIds.length)) return
+    await FocusSpellUtil.update(actor, focusId, {
+      fxPendingIds: undefined,
+      surfacePendingIds: undefined,
+    })
+    if (ids.length)
+      await HeroAttack.applyFocusEffects(actor, instance.delivery, focusId, ids)
+    if (surfaceIds.length) await FocusSurface.applyPending(actor, instance)
   }
 
 }

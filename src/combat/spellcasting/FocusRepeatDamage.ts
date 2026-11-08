@@ -30,6 +30,7 @@ export const buildRepeatDelivery = (
       appliedActiveEffects: [],
       emitsLight: undefined,
     },
+    area: undefined,
     isFocused: false,
     focusId: reapply ? instance.id : undefined,
     applyEffect: reapply,

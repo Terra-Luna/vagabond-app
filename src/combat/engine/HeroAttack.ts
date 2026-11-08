@@ -7,27 +7,30 @@ import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerP
 import { getAllowLateLuckStudy, getAttackRegistry, getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { FocusSpellUtil } from "../../model/actor/util/FocusSpellUtil"
+import { type FocusInstance, FocusSpellUtil } from "../../model/actor/util/FocusSpellUtil"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { roll3dDice, sys_id } from "../../util/foundry-util"
 import { appLang } from "../../util/lang"
 import { LightSourceUtil } from "../../util/LightSourceUtil"
 import { localizeString } from "../../util/locale-util"
-import { canInitiateAttack, canUseHeroActions, getTargetIds, isActorInScene } from "../../util/model-util"
+import { canInitiateAttack, canUseHeroActions, getCanvasToken, getTargetIds, isActorInScene } from "../../util/model-util"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { TemporaryArea } from "../spellcasting/aoe/TemporaryArea"
+import { currentRoundKey } from "../spellcasting/focus-round"
+import { FocusSurface } from "../spellcasting/FocusSurface"
 import { FocusUpkeep } from "../spellcasting/FocusUpkeep"
 import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { AppliedFx, Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
 import { SkillCheck, type SkillCheckResult, type SkillCheckType } from "./roll/SkillCheck"
-import { collectAppliedFx, isLightFx, type LightFxType, parseLightFx, toLightFxId } from "./util/active-effect-fx"
+import { collectAppliedFx, isLightFx, type LightFxType, parseLightFx, toActiveEffectFxId, toLightFxId } from "./util/active-effect-fx"
 import { deserializeAttack } from "./util/attack-deserializer"
 import { type AttackSnapshot, serializeAttack } from "./util/attack-serializer"
 import { type AttackResolutionArgs } from "./util/damage-mitigation"
 import { getDefensePenalty } from "./util/damage-mitigation"
+import { DamageFormulaUtil } from "./util/DamageFormulaUtil"
 import { getDiceTerms } from "./util/dice-util"
 import { HuntersMark } from "./util/HuntersMark"
 
@@ -223,6 +226,16 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     })
   }
 
+  /** A surface spell hurts every target in its area the moment the cast succeeds, on top of the cast's own damage. */
+  private async dealSurfaceOnCast() {
+    const delivery = this.spellDelivery
+    if (!delivery?.area || !delivery.spell.surface?.enabled) return
+    const targetIds = this.targetIds.filter(
+      (id) => getCanvasToken(id)?.actor?.id !== this.actor.id,
+    )
+    await HeroAttack.dealSurface(this.actor, delivery, "onEnter", targetIds)
+  }
+
   private get shouldRollSkillCheck(): boolean {
     if (!this.skillCheck || this.skipSkillCheck) return false
     const isUpcastEffectRoll =
@@ -276,6 +289,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     if (!this.isSpellAttack) return
     this.openPolymorphTab()
     await this.showArea()
+    await this.dealSurfaceOnCast()
   }
 
   private openPolymorphTab() {
@@ -392,6 +406,13 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
       skill: this.skillCheck?.skill,
       delivery: this.spellDelivery && { ...this.spellDelivery },
       targetIds: [...this.targetIds],
+      ...(this.spellDelivery?.spell.surface?.enabled && {
+        // Everyone already in the area was hit by the cast, so only later arrivals take On Enter.
+        surfaceKey: currentRoundKey(),
+        surfaceIds: FocusSurface.tokensIn({
+          delivery: this.spellDelivery,
+        } as FocusInstance),
+      }),
     })
     // The Focus now draws the area itself.
     if (this.spellDelivery?.area)
@@ -1163,6 +1184,69 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
       emitsLight: undefined,
     }).map((eff) => ({ ...eff, damageType: snapshot.spell.damageType }))
     await attack.applyFxToTargets(attack.appliedEffects, targetIds)
+  }
+
+  /**
+   * Deals a surface's damage and Active Effects to tokens that entered (or are staying in) a spell's area. This is
+   * free: no Cast check, no mana, and no Focus. The damage goes out as its own chat card, like a repeated Focus damage.
+   */
+  static async dealSurface(
+    actor: Actor & { system: HeroDataModel },
+    snapshot: SpellDeliverySnapshot,
+    phase: "onEnter" | "onStay",
+    targetIds: string[],
+    focusId?: string,
+  ) {
+    const config = snapshot.spell.surface?.[phase]
+    if (!config || !targetIds.length) return
+    const formula = DamageFormulaUtil.parse(config.damage)
+    const effects = (config.activeEffects ?? []).map((ae) => ({
+      effect: toActiveEffectFxId(ae.uuid),
+      duration: ae.duration || (focusId ? "focus" : "round"),
+    }))
+    if (!formula && !effects.length) return
+
+    const attack = new HeroAttack(
+      snapshot.spell.name,
+      actor,
+      targetIds,
+      // Never rolled, but the chat card expects a check to exist, as it does for a repeated Focus damage.
+      new SkillCheck(actor.system, {
+        type: "cast",
+        skill: actor.system.class?.castingSkill ?? "arcana",
+      }),
+      false,
+      formula &&
+        new DamageRoll({
+          atkName: snapshot.spell.name,
+          dmgType: snapshot.spell.damageType,
+          dice: formula.dice.map((d) => new DiceRoll(d)),
+          flatDmgBonus: formula.flat,
+        }),
+    )
+    attack.itemId = snapshot.spell.uuid
+    attack.spellDelivery = {
+      ...snapshot,
+      spell: {
+        ...snapshot.spell,
+        appliedEffects: [],
+        appliedActiveEffects: [],
+        emitsLight: undefined,
+        surface: undefined,
+      },
+      area: undefined,
+      isFocused: false,
+      focusId,
+      applyEffect: false,
+      damageDice: formula?.dice.length ? 1 : 0,
+      upcast: 0,
+      discount: 0,
+      _manaCost: 0,
+    }
+    attack.skipSkillCheck = true
+    attack.requiresTargets = true
+    if (formula) await attack.initiate(undefined)
+    if (effects.length) await attack.applyFxToTargets(effects, targetIds)
   }
 
   static buildSpellAttack(

@@ -10,7 +10,13 @@
     "ignoreEffectCost": false,
     "damageType": "none",
     "appliedEffects": [],
-    "autoTargetingPref": "friendly"
+    "autoTargetingPref": "friendly",
+    "appliedActiveEffects": [
+      {
+        "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.oif8YyFCskBrpWkK",
+        "duration": "focus"
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -25,7 +31,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.3.1",
     "createdTime": 1786720794715,
-    "modifiedTime": 1793917862414,
+    "modifiedTime": 1794097335395,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

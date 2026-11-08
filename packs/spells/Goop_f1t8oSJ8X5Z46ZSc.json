@@ -12,10 +12,12 @@
     "appliedEffects": [
       {
         "effect": "burning",
-        "duration": 6
+        "duration": "Cd6",
+        "critDuration": "Cd6"
       },
       {
-        "effect": "restrained"
+        "effect": "restrained",
+        "critDuration": "focus"
       }
     ],
     "autoTargetingPref": "hostile"
@@ -29,12 +31,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.3.1",
     "createdTime": 1786720381925,
-    "modifiedTime": 1786720501426,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1794097000796,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

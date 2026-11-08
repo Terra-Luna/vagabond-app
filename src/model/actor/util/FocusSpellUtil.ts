@@ -12,6 +12,8 @@ export type FocusFxRecord = {
   targetUuid: string
   effect: string
   damageType?: string
+  /** A Continual effect: tied to no Focus, never worn off by one, and kept by any other spell's release of the same effect. */
+  permanent?: boolean
 }
 
 /** One Focus point spent on casting a spell. */
@@ -40,6 +42,11 @@ export type FocusInstance = {
   lateKey?: string
   /** Area Focuses: tokens that became targets but haven't had the spell's effects applied yet (upkeep unpaid). */
   fxPendingIds?: string[]
+  /** Surface spells: tokens already in the area this round (key), so only newcomers take the On Enter effects. */
+  surfaceKey?: string
+  surfaceIds?: string[]
+  /** Surface spells: newcomers whose On Enter effects wait for the Focus check to be passed. */
+  surfacePendingIds?: string[]
 }
 
 export const FOCUS_FX_FLAG = "focusedSpellFx"
@@ -124,6 +131,31 @@ export class FocusSpellUtil {
     ])
   }
 
+  /**
+   * Makes an effect on a target Continual: it stops being tied to any Focus (or waiting to wear off at the end of
+   * the round) and is marked so that nothing else ends it.
+   */
+  static async makePermanent(
+    actor: any,
+    entry: Omit<FocusFxRecord, "focusId" | "permanent">,
+  ) {
+    const same = (r: FocusFxRecord) =>
+      r.targetUuid === entry.targetUuid && r.effect === entry.effect
+    const kept = FocusSpellUtil.records(actor).filter((r) => !same(r))
+    await actor.setFlag(sys_id, FOCUS_FX_FLAG, [
+      ...kept,
+      { ...entry, permanent: true },
+    ])
+
+    const pending = FocusSpellUtil.pending(actor)
+    if (!pending.some((p) => p.records.some(same))) return
+    const rest = pending
+      .map((p) => ({ ...p, records: p.records.filter((r) => !same(r)) }))
+      .filter((p) => p.records.length || p.polymorph)
+    if (rest.length) await actor.setFlag(sys_id, PENDING_FLAG, rest)
+    else await actor.unsetFlag(sys_id, PENDING_FLAG)
+  }
+
   /** Remembers an effect that a Focused spell is maintaining on a target. */
   static async record(actor: any, entry: FocusFxRecord) {
     const existing = FocusSpellUtil.records(actor)
@@ -148,7 +180,12 @@ export class FocusSpellUtil {
     id: string,
     extra?: Pick<
       FocusInstance,
-      "skill" | "delivery" | "targetIds" | "polymorph"
+      | "skill"
+      | "delivery"
+      | "targetIds"
+      | "polymorph"
+      | "surfaceKey"
+      | "surfaceIds"
     >,
   ) {
     const focus = actor.system.statuses?.counters?.focus ?? 0

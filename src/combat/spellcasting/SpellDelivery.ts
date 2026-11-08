@@ -57,6 +57,20 @@ export interface SpellSnapshot {
   noUpcast?: boolean
   /** The spell can be upcast, but never to more than its delivery's base cost (after discounts). */
   noManaBoost?: boolean
+  /** Damage and Active Effects dealt to tokens entering, or staying in, the spell's area. */
+  surface?: SurfaceConfig
+}
+
+export interface SurfaceEffectConfig {
+  /** A damage formula such as "1d6". */
+  damage: string
+  activeEffects: { uuid: string; duration?: string }[]
+}
+
+export interface SurfaceConfig {
+  enabled: boolean
+  onEnter: SurfaceEffectConfig
+  onStay: SurfaceEffectConfig
 }
 
 export interface DeliveryMods {
@@ -304,6 +318,9 @@ export abstract class SpellDelivery {
       ...(manaDiscount && { manaDiscount }),
       ...(noUpcast && { noUpcast }),
       ...(noManaBoost && { noManaBoost }),
+      ...(spell.system.surface?.enabled && {
+        surface: JSON.parse(JSON.stringify(spell.system.surface)),
+      }),
     }
   }
 

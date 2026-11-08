@@ -10,6 +10,7 @@ import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponen
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 import { SpellLightConfig } from "./SpellLightConfig"
+import { SpellSurfaceConfig } from "./SpellSurfaceConfig"
 
 const autoTargetingOptions = [
   { value: "none", label: appLang.ItemSheet.autoTargetingNone },
@@ -74,6 +75,8 @@ export const SpellSheetComponent = ({
               />
 
               <SpellLightConfig item={item} />
+
+              <SpellSurfaceConfig item={item} />
 
               <Checkbox
                 label={appLang.ItemSheet.ignoreEffCost}

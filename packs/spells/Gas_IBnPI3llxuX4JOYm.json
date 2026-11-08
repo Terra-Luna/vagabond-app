@@ -9,8 +9,22 @@
     "baseManaCost": 0,
     "ignoreEffectCost": false,
     "damageType": "poison",
-    "appliedEffects": [],
-    "autoTargetingPref": "hostile"
+    "appliedEffects": [
+      {
+        "effect": "sickened",
+        "duration": "focus",
+        "critDuration": "focus"
+      },
+      {
+        "effect": "vulnerable",
+        "duration": "focus",
+        "critDuration": "focus"
+      }
+    ],
+    "autoTargetingPref": "hostile",
+    "surface": {
+      "enabled": true
+    }
   },
   "effects": [],
   "folder": null,
@@ -21,12 +35,12 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.3.1",
     "createdTime": 1786720281713,
-    "modifiedTime": 1786720355565,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1794096698230,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

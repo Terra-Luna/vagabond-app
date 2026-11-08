@@ -676,11 +676,23 @@ export abstract class Attack<TActor extends Actor = Actor> {
     damageType?: string,
   ) {
     const ref = this.focusRef
+    const isContinual = duration?.toLowerCase() === "continual"
     // Burning is always tied to the Focus, even with a countdown, so dropping Focus can extinguish it.
-    const isTied = duration?.toLowerCase() === "focus" || effect === "burning"
+    const isTied =
+      !isContinual &&
+      (duration?.toLowerCase() === "focus" || effect === "burning")
     if (!StatusEffectUtil.isDesignatedUser()) return
     try {
-      if (ref && isTied) {
+      if (isContinual) {
+        // Continual (e.g. a crit's duration) outlasts the Focus, the area, and the end of the round.
+        await FocusSpellUtil.makePermanent(this.actor, {
+          spell: ref?.spell ?? this.roundExpirySpell ?? "",
+          targetUuid: actor.uuid,
+          effect,
+          ...(damageType && { damageType }),
+        })
+      }
+      else if (ref && isTied) {
         await FocusSpellUtil.record(this.actor, {
           ...ref,
           targetUuid: actor.uuid,

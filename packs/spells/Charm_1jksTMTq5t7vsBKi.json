@@ -14,7 +14,13 @@
         "critDuration": "continual"
       }
     ],
-    "autoTargetingPref": "hostile"
+    "autoTargetingPref": "hostile",
+    "emitsLight": {
+      "enabled": false
+    },
+    "surface": {
+      "enabled": true
+    }
   },
   "effects": [],
   "folder": null,
@@ -27,9 +33,9 @@
   "_stats": {
     "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.2.180",
+    "systemVersion": "0.3.1",
     "createdTime": 1784763382757,
-    "modifiedTime": 1793840077828,
+    "modifiedTime": 1794098273242,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

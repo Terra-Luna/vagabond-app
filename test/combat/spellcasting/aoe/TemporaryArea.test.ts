@@ -4,7 +4,7 @@ import { TemporaryArea } from "../../../../src/combat/spellcasting/aoe/Temporary
 
 const sceneWith = (areas: Record<string, unknown>) => ({
   getFlag: jest.fn(() => areas),
-  unsetFlag: jest.fn(async () => undefined),
+  unsetFlag: jest.fn(async (..._args: unknown[]) => undefined),
 })
 
 const setGame = (isActiveGM: boolean, scenes: any[]) => {

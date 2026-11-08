@@ -6,6 +6,7 @@ import { isLightFx, parseLightFx } from "../engine/util/active-effect-fx"
 import { isNewEntrant, owesLateCheck } from "./focus-late-check"
 import { currentRoundKey } from "./focus-round"
 import { FocusAreaExposure } from "./FocusAreaExposure"
+import { FocusSurface } from "./FocusSurface"
 import { FocusUpkeep } from "./FocusUpkeep"
 
 /**
@@ -79,6 +80,13 @@ export class FocusLightExposure {
         !combat.started
       )
         return
+      await FocusSurface.startOfRound()
+      if (
+        game.combat?.id !== combat.id ||
+        combat.round !== round ||
+        !combat.started
+      )
+        return
       await FocusLightExposure.evaluateNow(undefined, true)
     })
   }
@@ -115,6 +123,9 @@ export class FocusLightExposure {
           movedToken,
           quiet,
         })
+        // The Focus may have ended during evaluation (nothing then to surface).
+        const current = FocusSpellUtil.find(hero, instance.id)
+        if (current) await FocusSurface.onMove(hero, current)
       }
     }
   }

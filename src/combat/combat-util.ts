@@ -39,9 +39,23 @@ export const performAsyncActionOnCombatants = async (
 }
 
 /**
+ * Advances calls one at a time. Opening a sheet and panning take a moment, so a quick second click would otherwise
+ * close the sheets before the previous one had finished opening, leaving it open on the next turn or round.
+ */
+let advancing: Promise<unknown> = Promise.resolve()
+
+/**
  * Let's the GM advance thru combatants. Opens adversary sheets automatically for hostile combatants.
  */
-export const nextCombatant = async () => {
+export const nextCombatant = (): Promise<void> => {
+  const run = advancing.then(advanceCombatant)
+  advancing = run.catch((error) =>
+    console.error("Failed to advance to the next combatant", error),
+  )
+  return run
+}
+
+const advanceCombatant = async () => {
   const combat = game.combat as any
   if (!game.user?.isGM || !combat) return
   if (!combat.started) {
@@ -102,7 +116,7 @@ export const nextCombatant = async () => {
     next.actor
   ) {
     await closeActorSheets()
-    next.actor.sheet?.render({ force: true })
+    await next.actor.sheet?.render({ force: true })
   }
 }
 

@@ -1,24 +1,23 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals"
 
+import { PolymorphCastCheck } from "../../../../src/apps/vagabond-tools/polymorph/PolymorphCastCheck"
+
 // The check itself pulls in dice and chat code that these tests don't exercise.
-const stub = (path: string, exports: Record<string, unknown>) =>
-  jest.unstable_mockModule(path, () => exports)
-stub("../../../../src/combat/engine/roll/SkillCheck", { SkillCheck: class {} })
-stub("../../../../src/view/chat/ChatCardSerializer", {
+jest.mock("../../../../src/combat/engine/roll/SkillCheck", () => ({
+  SkillCheck: class {},
+}))
+jest.mock("../../../../src/view/chat/ChatCardSerializer", () => ({
   sendVagabondChatCard: async () => undefined,
-})
-stub("../../../../src/model/actor/util/FocusSpellUtil", {
+}))
+jest.mock("../../../../src/model/actor/util/FocusSpellUtil", () => ({
   FocusSpellUtil: {
     hasHostileToken: (ids: string[]) => ids.includes("hostile"),
   },
-})
-stub("../../../../src/combat/spellcasting/focus-round", {
+}))
+jest.mock("../../../../src/combat/spellcasting/focus-round", () => ({
   currentRoundKey: () => "c:1",
-})
-stub("../../../../src/util/lang", { appLang: {} })
-
-const { PolymorphCastCheck } =
-  await import("../../../../src/apps/vagabond-tools/polymorph/PolymorphCastCheck")
+}))
+jest.mock("../../../../src/util/lang", () => ({ appLang: {} }))
 
 describe("PolymorphCastCheck.isRequired", () => {
   const hero = { id: "h", type: "hero" }

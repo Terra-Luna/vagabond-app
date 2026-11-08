@@ -1,5 +1,7 @@
 import { ActiveEffectDataModel } from "../../model/combat/ActiveEffectDataModel"
 import { EquipmentDataModel } from "../../model/item/equip/EquipmentDataModel"
+import { appLang } from "../../util/lang"
+import { localizeString } from "../../util/locale-util"
 
 /**
  * The static effects' names and descriptions can be displayed to a GM user when configuring
@@ -492,6 +494,35 @@ export class VagabondActiveEffect<
     "focusing",
     "prone",
   ]
+
+  /**
+   * An actor immune to a status (modifiers.damage.in.statusImmunities) never gets it, however it is applied:
+   * the token HUD, the combat tracker menus, a spell, a macro...
+   */
+  protected override async _preCreate(
+    data: any,
+    options: any,
+    user: User,
+  ): Promise<boolean | void> {
+    const allowed = await super._preCreate(data, options, user)
+    if (allowed === false) return false
+
+    const immunities: string[] =
+      (this.parent as any)?.system?.modifiers?.damage?.in?.statusImmunities ??
+      []
+    const statuses: string[] = [...((this as any).statuses ?? [])]
+    const blocked = statuses.find((status) => immunities.includes(status))
+    if (!blocked) return
+
+    if (user.id === game.userId)
+      ui.notifications?.info(
+        localizeString(appLang.Notifications.immuneToStatus, {
+          name: this.parent?.name ?? "",
+          status: appLang.StatusConditions[blocked]?.name ?? blocked,
+        }),
+      )
+    return false
+  }
 
   /**
    * Intercepts when an effect is created so the canvas scrolling text

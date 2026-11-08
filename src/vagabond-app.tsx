@@ -32,6 +32,7 @@ import { isInventoryItem } from "./model/actor/schema/inventory"
 import { FocusSpellUtil } from "./model/actor/util/FocusSpellUtil"
 import { enforceSingletonPlaceholder } from "./model/actor/util/npc-data-model-util"
 import { PolymorphUtil } from "./model/actor/util/PolymorphUtil"
+import { StatusImmunityUtil } from "./model/actor/util/StatusImmunityUtil"
 import { VagabondActor } from "./model/actor/VagabondActor"
 import { ActiveEffectDataModel } from "./model/combat/ActiveEffectDataModel"
 import { VagabondCombatantModel } from "./model/combat/VagabondCombatant"
@@ -895,6 +896,7 @@ Hooks.on("deleteCombat", (combat: Combat, options: any, userId: string) => {
 
 FocusSpellUtil.registerHooks()
 PolymorphUtil.registerHooks()
+StatusImmunityUtil.registerHooks()
 TokenHeading.registerHooks()
 new FocusAreaLayer().registerHooks()
 FocusManagerApp.registerHooks()

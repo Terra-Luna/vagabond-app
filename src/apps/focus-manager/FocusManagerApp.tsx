@@ -1,3 +1,4 @@
+import { FocusSurface } from "../../combat/spellcasting/FocusSurface"
 import { FocusUpkeep } from "../../combat/spellcasting/FocusUpkeep"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { FocusSpellUtil } from "../../model/actor/util/FocusSpellUtil"
@@ -160,8 +161,11 @@ export class FocusManagerApp extends VagabondApplication {
   }
 
   private static onUpdateToken = (doc: any, changed: any) => {
-    // A caster moving also moves their Aura/Cone, which can sweep Hostiles in.
-    if (isMovement(changed) && (isHostile(doc) || doc.actor?.type === "hero"))
+    // A caster moving also moves their Aura/Cone, which can sweep Hostiles in. Surfaces affect any token.
+    if (
+      isMovement(changed) &&
+      (isHostile(doc) || doc.actor?.type === "hero" || FocusSurface.hasAny())
+    )
       FocusUpkeep.evaluateExposures(doc.object)
   }
 
