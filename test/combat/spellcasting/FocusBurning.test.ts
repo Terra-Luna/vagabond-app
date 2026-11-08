@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@jest/globals"
 
-import { burningStartDie } from "../../../src/combat/spellcasting/FocusBurning"
 import { isOwnedByFocus } from "../../../src/combat/spellcasting/focus-ownership"
+import { burningStartDie } from "../../../src/combat/spellcasting/FocusBurning"
 
 describe("isOwnedByFocus", () => {
   test("matches a countdown tagged with the Focus", () => {

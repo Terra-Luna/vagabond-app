@@ -632,6 +632,22 @@ export class Glyph extends PerTargetDelivery {
   override baseManaCost: number = 2
   override targetLimit: number = 1
 
+  /**
+   * Placing a Glyph only pays for the Glyph. Whether to Focus, to cast for effect and how many damage dice to roll
+   * are chosen later, when the Glyph is triggered (as a Cube).
+   */
+  override setDamageDice(dice: number) {
+    super.setDamageDice(Math.min(1, dice))
+  }
+
+  override setApplyEffect(_isApplied: boolean) {
+    super.setApplyEffect(false)
+  }
+
+  override setIsFocused(_isFocused: boolean) {
+    super.setIsFocused(false)
+  }
+
 }
 export class Remote extends PerTargetDelivery {
 

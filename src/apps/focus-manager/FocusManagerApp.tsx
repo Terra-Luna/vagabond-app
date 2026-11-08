@@ -1,3 +1,4 @@
+import { PlacedGlyph } from "../../combat/spellcasting/aoe/PlacedGlyph"
 import { FocusSurface } from "../../combat/spellcasting/FocusSurface"
 import { FocusUpkeep } from "../../combat/spellcasting/FocusUpkeep"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
@@ -110,7 +111,10 @@ export class FocusManagerApp extends VagabondApplication {
   /** Opens the app for one Hero on demand, whether or not any Focus owes upkeep. */
   static launch(actor: Hero) {
     if (!canUseHeroActions(actor)) return
-    if (!FocusSpellUtil.instances(actor).length) {
+    if (
+      !FocusSpellUtil.instances(actor).length &&
+      !PlacedGlyph.onScene(actor).length
+    ) {
       ui.notifications?.info(appLang.Spellcasting.focusNothingDue)
       return
     }

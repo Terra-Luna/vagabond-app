@@ -641,7 +641,12 @@ export const useSpellCastingMenu = (
       delivery instanceof AreaOfEffectDelivery ||
       delivery instanceof Cube ||
       delivery instanceof Glyph
-    if (!hasArea || delivery instanceof Aura || !placedRef.current.length)
+    if (
+      !hasArea ||
+      delivery instanceof Aura ||
+      delivery instanceof Glyph ||
+      !placedRef.current.length
+    )
       return false
     const inside = new Set<string>(
       AreaOccupants.targetsIn(placedRef.current, "all").map(
@@ -701,6 +706,17 @@ export const useSpellCastingMenu = (
           e,
         )
       }
+      else if (delivery instanceof Glyph) {
+        const area = focusedArea(delivery)
+        if (!area?.cells.length) {
+          ui.notifications?.warn(appLang.Spellcasting.glyphPlaceFirst)
+          return
+        }
+        if (await HeroAttack.placeGlyph(hero.parent, sk, delivery, area)) {
+          glyphPreview.current?.clearPlaced()
+          placedRef.current = []
+        }
+      }
       else {
         const area = focusedArea(delivery)
         const toCast = area
@@ -725,6 +741,7 @@ export const useSpellCastingMenu = (
   const SpellcastingMenu = () => {
     const delivery = deliveries[deliveryIndex]
     const spell = delivery?.spell
+    const isGlyph = delivery instanceof Glyph
 
     return (
       <>
@@ -801,7 +818,7 @@ export const useSpellCastingMenu = (
               </div>
 
               <div className="flex gap-x-1 ml-auto items-end font-eskapade">
-                {spell.damageType !== "none" && (
+                {spell.damageType !== "none" && !isGlyph && (
                   <div className="flex gap-x-1">
                     {/* DAMAGE DICE INPUT */}
                     <div className="flex flex-col">
@@ -841,7 +858,7 @@ export const useSpellCastingMenu = (
                   </div>
                 )}
 
-                {spell.upcastableEffect && !delivery.hasFixedCost && (
+                {spell.upcastableEffect && !delivery.hasFixedCost && !isGlyph && (
                   <UpcastingInput
                     upcast={delivery?.upcast}
                     onUpdateUpcast={onUpdateUpcast}
@@ -854,17 +871,19 @@ export const useSpellCastingMenu = (
                   onUpdateDiscount={onUpdateDiscount}
                 />
 
-                {/* SPELL EFFECT AND FOCUS TOGGLES */}
-                <div className="flex-col ml-auto">
-                  <SpellEffectToggle
-                    isEffect={delivery?.applyEffect}
-                    onSpellEffectToggle={onToggleSpellEffect}
-                  />
-                  <SpellFocusToggle
-                    isFocused={delivery?.isFocused}
-                    onToggleSpellFocus={onToggleSpellFocus}
-                  />
-                </div>
+                {/* SPELL EFFECT AND FOCUS TOGGLES (a Glyph's are chosen when it is triggered) */}
+                {!isGlyph && (
+                  <div className="flex-col ml-auto">
+                    <SpellEffectToggle
+                      isEffect={delivery?.applyEffect}
+                      onSpellEffectToggle={onToggleSpellEffect}
+                    />
+                    <SpellFocusToggle
+                      isFocused={delivery?.isFocused}
+                      onToggleSpellFocus={onToggleSpellFocus}
+                    />
+                  </div>
+                )}
 
                 <TotalMana cost={delivery?.manaCost ?? 0} />
               </div>

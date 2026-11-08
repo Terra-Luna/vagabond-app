@@ -16,11 +16,13 @@ import { LightSourceUtil } from "../../util/LightSourceUtil"
 import { localizeString } from "../../util/locale-util"
 import { canInitiateAttack, canUseHeroActions, getCanvasToken, getTargetIds, isActorInScene } from "../../util/model-util"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
+import { PlacedGlyph, type PlacedGlyphData } from "../spellcasting/aoe/PlacedGlyph"
 import { TemporaryArea } from "../spellcasting/aoe/TemporaryArea"
 import { currentRoundKey } from "../spellcasting/focus-round"
 import { FocusSurface } from "../spellcasting/FocusSurface"
 import { FocusUpkeep } from "../spellcasting/FocusUpkeep"
-import { Imbue, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
+import { GlyphTrigger, type GlyphTriggerChoices } from "../spellcasting/GlyphTrigger"
+import { Imbue, type PlacedArea, SpellDelivery, type SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { AppliedFx, Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
@@ -43,6 +45,8 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
   weaponProperties: string[] = []
   skipSkillCheck: boolean = false
   requiresTargets: boolean = false
+  /** Rolls the Cast check even when no Hostile is targeted (a triggered Glyph always needs one). Not saved. */
+  alwaysRollCheck: boolean = false
   spellDelivery: SpellDeliverySnapshot | undefined
   skillCheck?: SkillCheck
   isDefenseCheck: boolean = false
@@ -256,6 +260,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
           ).length > 0,
       )
     return (
+      this.alwaysRollCheck ||
       this.hasHostileTargets ||
       this.isDefenseCheck ||
       isUpcastEffectRoll ||
@@ -1247,6 +1252,86 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     attack.requiresTargets = true
     if (formula) await attack.initiate(undefined)
     if (effects.length) await attack.applyFxToTargets(effects, targetIds)
+  }
+
+  /**
+   * Places a Glyph: pays the delivery's mana and leaves the spell waiting on the canvas. Nothing is rolled or
+   * dealt until the Glyph is triggered.
+   */
+  static async placeGlyph(
+    actor: Actor & { system: HeroDataModel },
+    skill: string,
+    delivery: SpellDelivery,
+    area: PlacedArea,
+  ): Promise<boolean> {
+    const cell = area.cells[0]
+    if (!cell) return false
+    // Building the attack is what spends the mana; the attack itself is never sent.
+    const spent = HeroAttack.buildSpellAttack(actor, skill, delivery, undefined, {
+      skipSkillCheck: true,
+    })
+    if (!spent) return false
+    await PlacedGlyph.add(actor, {
+      sceneId: area.sceneId,
+      cell,
+      spell: delivery.spell,
+      skill,
+    })
+    return true
+  }
+
+  /**
+   * Casts a triggered Glyph as a Cube on its square, on everyone standing there, as one ordinary spell attack: its
+   * Cast check (always made for a Glyph), damage and effects all come out on the usual chat card. The choices (dice,
+   * effect, Focus) are made beforehand because they set the Mana cost. The Glyph is used up once the cast goes out,
+   * whatever the check rolls. Resolves to whether it went out.
+   */
+  static async triggerGlyph(
+    actor: Actor & { system: HeroDataModel },
+    glyph: PlacedGlyphData,
+    choices: GlyphTriggerChoices,
+    clickEvent?: any,
+  ): Promise<boolean> {
+    const { maxFocus } = actor.system
+    const focusCount = actor.system.statuses?.counters?.focus ?? 0
+    if (choices.focused && maxFocus > 1 && focusCount >= maxFocus) {
+      ui.notifications?.warn(appLang.Spellcasting.maxFocusMessage)
+      return false
+    }
+    if (FocusUpkeep.blocksActions(actor)) return false
+
+    const targetIds = GlyphTrigger.occupantIds(glyph)
+    if (!targetIds.length) {
+      ui.notifications?.warn(appLang.Spellcasting.glyphNoOccupants)
+      return false
+    }
+    const delivery = GlyphTrigger.deliveryFor(
+      glyph,
+      { ...actor.system.modifiers.casting },
+      choices,
+    )
+    if (delivery.exceedsManaCap) {
+      ui.notifications?.warn(appLang.Spellcasting.castNoManaBoost)
+      return false
+    }
+    delivery.area = GlyphTrigger.areaOf(glyph)
+
+    const attack = HeroAttack.buildSpellAttack(
+      actor,
+      glyph.skill,
+      delivery,
+      clickEvent,
+    )
+    if (!attack) return false
+    attack.targetIds = targetIds
+    attack.requiresTargets = true
+    attack.alwaysRollCheck = true
+    // initiate() gives the attack a new id once it gets past its guards, so a new id means it was sent.
+    const before = attack.id
+    await attack.initiate(clickEvent, { requireFocusUpkeep: true })
+    const sent = attack.id !== before
+    if (sent) await PlacedGlyph.remove(actor, glyph.id)
+    return sent
   }
 
   static buildSpellAttack(

@@ -3,6 +3,9 @@ export class AreaColor {
 
   static readonly DEFAULT = "#9ca3af"
 
+  /** The outline of the Glyph picked in the Focus app: the theme's wealth-denom-label color, as a fixed value. */
+  static readonly SELECTED = "#bb4d00"
+
   private static readonly BY_DAMAGE_TYPE: Record<string, string> = {
     acid: "#80e31c",
     cold: "#00d0ff",

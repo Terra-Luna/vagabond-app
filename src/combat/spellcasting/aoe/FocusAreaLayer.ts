@@ -1,11 +1,15 @@
 import { isMovement } from "../../../apps/focus-manager/focus-hook-rules"
 import { FocusSpellUtil } from "../../../model/actor/util/FocusSpellUtil"
 import { sys_id } from "../../../util/foundry-util"
+import { appLang } from "../../../util/lang"
 import { LightSourceUtil } from "../../../util/LightSourceUtil"
 import type { PlacedArea } from "../SpellDelivery"
+import { AreaColor } from "./AreaColor"
 import { AreaOutline } from "./AreaOutline"
 import type { Point } from "./AreaTypes"
+import { IconLayer } from "./IconLayer"
 import { PlacedAreaCells } from "./PlacedAreaCells"
+import { PlacedGlyph } from "./PlacedGlyph"
 import { TemporaryArea } from "./TemporaryArea"
 
 const ICON_ALPHA = 0.6
@@ -50,6 +54,7 @@ export class FocusAreaLayer {
       if ("round" in changed) TemporaryArea.clearAll()
     })
     Hooks.on("deleteCombat", () => TemporaryArea.clearAll())
+    PlacedGlyph.onSelect(() => this.sync())
   }
 
   private followsActor(actorId?: string) {
@@ -93,6 +98,23 @@ export class FocusAreaLayer {
       const label = `${area.casterName} - ${area.spellName} (${area.deliveryName})`
       if (focused.includes(this.signature({ label, cells }))) continue
       wanted.set(`temp-${attackId}`, { ...area, cells, label })
+    }
+
+    // Add Glyphs: they stay put without any Focus, and the one picked in the Focus app is highlighted.
+    const picked = PlacedGlyph.selected
+    for (const actor of game.actors ?? []) {
+      for (const glyph of PlacedGlyph.onScene(actor)) {
+        wanted.set(`glyph-${glyph.id}`, {
+          sceneId: glyph.sceneId,
+          cells: [glyph.cell],
+          color:
+            glyph.id === picked
+              ? AreaColor.SELECTED
+              : AreaColor.of(glyph.spell.damageType),
+          icon: IconLayer.GLYPH,
+          label: `${actor.name} - ${glyph.spell.name} (${appLang.SpellDeliveries.glyph.name})`,
+        })
+      }
     }
 
     for (const [id, entry] of this.drawn) {

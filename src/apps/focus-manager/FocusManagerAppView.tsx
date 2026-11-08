@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 
+import { PlacedGlyph } from "../../combat/spellcasting/aoe/PlacedGlyph"
 import { FocusUpkeep } from "../../combat/spellcasting/FocusUpkeep"
 import { type FocusInstance, FocusSpellUtil } from "../../model/actor/util/FocusSpellUtil"
 import { tableBorderRounded } from "../../view/common/border-styles"
@@ -8,6 +9,7 @@ import { FailedCheckPanel } from "./FailedCheckPanel"
 import { resolveFocusPhase } from "./focus-phase"
 import { FocusDoneSummary } from "./FocusDoneSummary"
 import { FocusSpellCard } from "./FocusSpellCard"
+import { GlyphPanel } from "./GlyphPanel"
 import { RepeatDamagePanel } from "./RepeatDamagePanel"
 import { UpkeepPanel } from "./UpkeepPanel"
 
@@ -44,10 +46,11 @@ export const FocusManagerAppView = ({
   )
   const instances = FocusSpellUtil.instances(hero)
   const roundKey = FocusUpkeep.roundKey(round)
+  const hasGlyphs = PlacedGlyph.onScene(hero).length > 0
 
   useEffect(() => {
-    if (instances.length === 0) sheet.close()
-  }, [instances.length])
+    if (instances.length === 0 && !hasGlyphs) sheet.close()
+  }, [instances.length, hasGlyphs])
 
   return (
     <div className="bg-sheet-main-fill text-text-header-primary font-eskapade h-full min-h-0 p-1 overflow-y-auto overflow-x-hidden">
@@ -69,6 +72,7 @@ export const FocusManagerAppView = ({
           />
         ))}
       </DynamicGrid>
+      <GlyphPanel hero={hero} />
     </div>
   )
 }
