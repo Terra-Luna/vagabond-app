@@ -1,10 +1,11 @@
-import type { Point } from "../AreaTypes"
+import type { Point, Rect } from "../AreaTypes"
 import { AreaShape } from "./AreaShape"
+import { AuraShape } from "./AuraShape"
 
 export class SphereShape extends AreaShape {
 
   constructor(
-    private readonly origin: Point,
+    private readonly originSquare: Rect,
     private readonly radius: number,
     private readonly pixelsPerUnit: number,
   ) {
@@ -13,7 +14,7 @@ export class SphereShape extends AreaShape {
 
   contains(point: Point) {
     return (
-      Math.hypot(point.x - this.origin.x, point.y - this.origin.y) <=
+      AuraShape.gapToRect(point, this.originSquare, false) <=
       this.radius * this.pixelsPerUnit + 1e-6
     )
   }

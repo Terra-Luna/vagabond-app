@@ -97,16 +97,24 @@ export class AreaRenderer {
     return { grid, rect, shape }
   }
 
-  /** Highlights a sphere of `radiusFeet` centered on a point, snapped to the nearest grid corner. */
+  /** Highlights a sphere of `radiusFeet` centered on a point, measured from the grid square under the point, like an Aura from its caster's square. */
   showSphere(point: Point, radiusFeet: number, pinned = false) {
     const grid = AreaRenderer.grid()
     if (!grid) return []
-    const center = AreaRenderer.snap(grid, point, "VERTEX")
+    const offset = grid.getOffset(point)
+    const topLeft = grid.getTopLeftPoint(offset) as Point
+    const square: Rect = {
+      x: topLeft.x,
+      y: topLeft.y,
+      width: grid.size,
+      height: grid.size,
+    }
     return this.paint(
       pinned ? this.pinned : this.preview,
-      { x: center.x, y: center.y, width: 0, height: 0 },
+      square,
       radiusFeet,
-      new SphereShape(center, radiusFeet, AreaRenderer.pixelsPerUnit(grid)),
+      new SphereShape(square, radiusFeet, AreaRenderer.pixelsPerUnit(grid)),
+      true,
     )
   }
 

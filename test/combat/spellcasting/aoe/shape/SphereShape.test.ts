@@ -4,14 +4,22 @@ import { WheelStep } from "../../../../../src/combat/spellcasting/aoe/control/Wh
 import { SphereShape } from "../../../../../src/combat/spellcasting/aoe/shape/SphereShape"
 
 describe("SphereShape", () => {
-  test("keeps centers within the radius", () => {
-    const centers = [
+  test("measures the radius from the edges of its origin square", () => {
+    // 10px per foot: a 50px square at (50, 50), so a 5' radius reaches one square out.
+    const square = { x: 50, y: 50, width: 50, height: 50 }
+    const inside = [
+      { x: 75, y: 75 },
+      { x: 25, y: 75 },
+      { x: 125, y: 75 },
       { x: 25, y: 25 },
-      { x: 75, y: 25 },
-      { x: 175, y: 25 },
     ]
-    const shape = new SphereShape({ x: 50, y: 50 }, 5, 10)
-    expect(shape.select(centers)).toEqual([centers[0], centers[1]])
+    const outside = [
+      { x: -25, y: 75 },
+      { x: 175, y: 75 },
+      { x: 75, y: 175 },
+    ]
+    const shape = new SphereShape(square, 5, 10)
+    expect(shape.select([...inside, ...outside])).toEqual(inside)
   })
 })
 
