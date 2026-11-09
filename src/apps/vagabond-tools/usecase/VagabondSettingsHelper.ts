@@ -266,6 +266,15 @@ export const setRealtimeLightsources = async (enabled: boolean) => {
   await updateSetting("realtimeLightsources", enabled)
 }
 
+/** Last time (epoch ms) a GM was online to tick light sources; used to pause burning while the server was down. */
+export const getLightHeartbeat = (): number => {
+  return (game.settings as any)?.get(sys_id, "lightHeartbeat") ?? 0
+}
+
+export const setLightHeartbeat = async (timestamp: number) => {
+  await updateSetting("lightHeartbeat", timestamp)
+}
+
 /**
  * Use this function to provide access for players with ganted permissions.
  * @param setting

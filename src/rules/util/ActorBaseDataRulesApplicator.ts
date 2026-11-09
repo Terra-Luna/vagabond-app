@@ -19,7 +19,7 @@ export class ActorBaseDataRulesApplicator {
     actor: Actor & { system: any },
     options: { npcMode?: boolean; lightPhase?: boolean } = {},
   ) {
-    if (!actor || (!actor.isOwner && !actor.visible && !options.npcMode)) return
+    if (!actor || (!options.npcMode && !actor.isOwner && !actor.visible)) return
 
     const npcMode = options.npcMode === true
     const lightPhase = options.lightPhase === true

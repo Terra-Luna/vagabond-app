@@ -196,7 +196,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
     this.skipSkillCheck = this.skipSkillCheck || clickEvent?.altKey
     this.isDefenseCheck = !!options?.isDefenseCheck
 
-    await this.chooseLightType()
+    if (!(await this.chooseLightType())) return
 
     if (this.shouldRollSkillCheck) {
       if (clickEvent?.shiftKey || clickEvent?.ctrlKey) {
@@ -320,21 +320,22 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
 
   /**
    * Casters with Celestial Illuminator choose the type of light a spell sheds when cast for effect.
+   * Resolves false when the caster cancels the choice, meaning the cast should be aborted.
    */
-  private async chooseLightType() {
+  private async chooseLightType(): Promise<boolean> {
     if (
       !this.isSpellAttack ||
       !this.actor.getFlag(sys_id, "celestialIlluminator")
     )
-      return
+      return true
     const index = this.appliedEffects.findIndex((fx) => isLightFx(fx.effect))
-    if (index < 0) return
+    if (index < 0) return true
 
     const fx = this.appliedEffects[index]
     const current = parseLightFx(fx.effect)
-    if (current.type !== "basic") return
+    if (current.type !== "basic") return true
     let chosen: string = current.type
-    await showConfirmationDialog({
+    const confirmed = await showConfirmationDialog({
       variant: "primary",
       title: appLang.Spellcasting.chooseLightTitle,
       description: appLang.Spellcasting.chooseLightDescription,
@@ -349,6 +350,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         if (value) chosen = value
       },
     })
+    if (!confirmed) return false
     this.appliedEffects[index] = {
       ...fx,
       effect: toLightFxId(
@@ -359,6 +361,7 @@ export class HeroAttack extends Attack<Actor & { system: HeroDataModel }> {
         current.burnDamage,
       ),
     }
+    return true
   }
 
   /** Focus is only spent once the GM accepts the attack, before its effects are applied and recorded. */

@@ -25,6 +25,7 @@ export class VagabondSettingsRegistry {
     VagabondSettingsRegistry.registerAllowLateLuckStudy()
     VagabondSettingsRegistry.registerCombatAutoFlanking()
     VagabondSettingsRegistry.registerRealtimeLightsources()
+    VagabondSettingsRegistry.registerLightHeartbeat()
 
     VagabondSettingsRegistry.registerItemShopToggle()
     VagabondSettingsRegistry.registerAttackRegistry()
@@ -313,6 +314,15 @@ export class VagabondSettingsRegistry {
       onChange: () => {
         LightSourceUtil.syncAllActors()
       },
+    })
+  }
+
+  private static registerLightHeartbeat() {
+    game.settings?.register(sys_id, "lightHeartbeat" as any, {
+      scope: "world",
+      config: false,
+      type: Number,
+      default: 0,
     })
   }
 

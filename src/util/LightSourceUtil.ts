@@ -2,7 +2,11 @@ import { FlaskRound, Lightbulb, LightbulbOff } from "lucide-react"
 
 import { showConfirmationDialog } from "../apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { CountdownManager } from "../apps/vagabond-tools/usecase/CountdownManager"
-import { getRealtimeLightsources } from "../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import {
+  getLightHeartbeat,
+  getRealtimeLightsources,
+  setLightHeartbeat,
+} from "../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { CountdownRoll } from "../combat/engine/roll/CountdownRoll"
 import type { LightFx } from "../combat/engine/util/active-effect-fx"
 import { absorbsBurning, isImmuneToBurning } from "../combat/engine/util/burning-mitigation"
@@ -125,6 +129,10 @@ export class LightSourceUtil {
   private static syncTimer?: ReturnType<typeof setTimeout>
   private static syncRunning = false
   private static syncQueued = false
+  private static downtimeHandled = false
+  private static lastBeat = 0
+  private static readonly HEARTBEAT_INTERVAL_MS = 10_000
+  private static readonly HEARTBEAT_GRACE_MS = 15_000
 
   // ---------------------------------------------------------------------------
   // Shared helpers
@@ -214,18 +222,62 @@ export class LightSourceUtil {
         : 0
   }
 
+  /** Burning only counts down while a GM is online, the game isn't paused and the carrier has a token in the active scene. */
+  private static activeSceneActors(): Set<any> {
+    const actors = new Set<any>()
+    for (const scene of game.scenes?.contents ?? []) {
+      if (!scene.active) continue
+      for (const token of scene.tokens as any) {
+        if (token.actor) actors.add(token.actor)
+      }
+    }
+    return actors
+  }
+
+  /**
+   * Item timers run on wall-clock timestamps, so time with no GM online (server down) would otherwise count as burn.
+   * On the first tick of a session, push every running timer forward by the offline gap.
+   */
+  private static async trackHeartbeat(actors: Set<any>) {
+    const now = Date.now()
+    if (!LightSourceUtil.downtimeHandled) {
+      LightSourceUtil.downtimeHandled = true
+      const last = getLightHeartbeat()
+      const gap = last > 0 ? now - last : 0
+      if (gap > LightSourceUtil.HEARTBEAT_GRACE_MS) {
+        for (const actor of actors) {
+          for (const item of actor.items as any) {
+            const data = item.system?.lightSourceData
+            if (!data?.isLightSource || !(data.litTS > 0)) continue
+            await item.update({
+              "system.lightSourceData.litTS": Math.min(now, data.litTS + gap),
+            })
+          }
+        }
+      }
+    }
+    if (now - LightSourceUtil.lastBeat >= LightSourceUtil.HEARTBEAT_INTERVAL_MS) {
+      LightSourceUtil.lastBeat = now
+      await setLightHeartbeat(now)
+    }
+  }
+
   private static async expireSpentSources() {
     if (!game.user?.isActiveGM || !getRealtimeLightsources()) return
 
-    const paused = !!game.paused
     const actors = new Set<any>(game.actors?.contents ?? [])
     for (const scene of game.scenes?.contents ?? []) {
       for (const token of scene.tokens as any) {
         if (!token.actorLink && token.actor) actors.add(token.actor)
       }
     }
+    await LightSourceUtil.trackHeartbeat(actors)
 
+    const burning = game.paused
+      ? new Set<any>()
+      : LightSourceUtil.activeSceneActors()
     for (const actor of actors) {
+      const paused = !burning.has(actor)
       for (const item of actor.items as any) {
         const data = item.system?.lightSourceData
         if (!data?.isLightSource || LightSourceUtil.isInfinite(data)) continue

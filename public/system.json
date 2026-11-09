@@ -2,10 +2,10 @@
   "id": "vagabond-app",
   "title": "Vagabond - React",
   "description": "A lightweight system for the pulp fantasy RPG, Vagabond!",
-  "version": "0.3.1",
+  "version": "0.3.5",
   "url": "https://github.com/Terra-Luna/vagabond-app",
   "manifest": "https://github.com/Terra-Luna/vagabond-app/releases/latest/download/system.json",
-  "download": "https://github.com/Terra-Luna/vagabond-app/releases/download/v0.3.0/vagabond-app-v0.3.0.zip",
+  "download": "https://github.com/Terra-Luna/vagabond-app/releases/download/v0.3.4/vagabond-app-v0.3.4.zip",
   "license": "LICENSE",
   "compatibility": {
     "minimum": "14",
@@ -24,8 +24,17 @@
   ],
   "flags": {
     "hotReload": {
-      "extensions": ["css", "html", "hbs", "json"],
-      "paths": ["css", "lang", "templates"]
+      "extensions": [
+        "css",
+        "html",
+        "hbs",
+        "json"
+      ],
+      "paths": [
+        "css",
+        "lang",
+        "templates"
+      ]
     }
   },
   "documentTypes": {
@@ -37,37 +46,59 @@
     },
     "Item": {
       "alchemical": {
-        "htmlFields": ["description"]
+        "htmlFields": [
+          "description"
+        ]
       },
       "ancestry": {
-        "htmlFields": ["description"]
+        "htmlFields": [
+          "description"
+        ]
       },
       "armor": {
-        "htmlFields": ["description"]
+        "htmlFields": [
+          "description"
+        ]
       },
       "class": {
-        "htmlFields": ["description"]
+        "htmlFields": [
+          "description"
+        ]
       },
       "feature": {
-        "htmlFields": ["description"]
+        "htmlFields": [
+          "description"
+        ]
       },
       "container": {
-        "htmlFields": ["descripton"]
+        "htmlFields": [
+          "descripton"
+        ]
       },
       "perk": {
-        "htmlFields": ["description"]
+        "htmlFields": [
+          "description"
+        ]
       },
       "spell": {
-        "htmlFields": ["description"]
+        "htmlFields": [
+          "description"
+        ]
       },
       "startingpack": {
-        "htmlFields": ["description"]
+        "htmlFields": [
+          "description"
+        ]
       },
       "sundry": {
-        "htmlFields": ["description"]
+        "htmlFields": [
+          "description"
+        ]
       },
       "weapon": {
-        "htmlFields": ["description"]
+        "htmlFields": [
+          "description"
+        ]
       }
     }
   },
@@ -229,7 +260,9 @@
       }
     }
   ],
-  "esmodules": ["vagabond-app.js"],
+  "esmodules": [
+    "vagabond-app.js"
+  ],
   "styles": [],
   "languages": [
     {
