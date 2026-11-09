@@ -2,11 +2,7 @@ import { FlaskRound, Lightbulb, LightbulbOff } from "lucide-react"
 
 import { showConfirmationDialog } from "../apps/vagabond-tools/dialog/ConfirmationDialogUseCase"
 import { CountdownManager } from "../apps/vagabond-tools/usecase/CountdownManager"
-import {
-  getLightHeartbeat,
-  getRealtimeLightsources,
-  setLightHeartbeat,
-} from "../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { getLightHeartbeat, getRealtimeLightsources, setLightHeartbeat } from "../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { CountdownRoll } from "../combat/engine/roll/CountdownRoll"
 import type { LightFx } from "../combat/engine/util/active-effect-fx"
 import { absorbsBurning, isImmuneToBurning } from "../combat/engine/util/burning-mitigation"
@@ -256,7 +252,10 @@ export class LightSourceUtil {
         }
       }
     }
-    if (now - LightSourceUtil.lastBeat >= LightSourceUtil.HEARTBEAT_INTERVAL_MS) {
+    if (
+      now - LightSourceUtil.lastBeat >=
+      LightSourceUtil.HEARTBEAT_INTERVAL_MS
+    ) {
       LightSourceUtil.lastBeat = now
       await setLightHeartbeat(now)
     }

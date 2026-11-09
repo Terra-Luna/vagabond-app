@@ -4,7 +4,13 @@ import { LightSourceUtil } from "../../src/util/LightSourceUtil"
 
 const NOW = 1_000_000_000_000
 
-type Lit = { isLightSource: true; expendable: true; isLit: true; remaining: number; litTS: number }
+type Lit = {
+  isLightSource: true
+  expendable: true
+  isLit: true
+  remaining: number
+  litTS: number
+}
 
 const torch = (litTS: number): Lit => ({
   isLightSource: true,
