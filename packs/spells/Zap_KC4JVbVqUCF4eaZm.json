@@ -7,7 +7,7 @@
     "description": "<p><span style=\"white-space:pre-wrap\">The Target is Dazed for the duration if it can be damaged by shocks.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> The Target is Paralyzed, rather than Dazed, for the duration.</span></p>",
     "rules": [],
     "baseManaCost": 0,
-    "ignoreEffectCost": true,
+    "ignoreEffectCost": false,
     "damageType": "shock",
     "appliedEffects": [
       {
@@ -31,11 +31,11 @@
   },
   "flags": {},
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.369",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.1",
+    "systemVersion": "0.3.13",
     "createdTime": 1786723596046,
-    "modifiedTime": 1789663499354,
+    "modifiedTime": 1794520070412,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

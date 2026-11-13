@@ -25,6 +25,7 @@ export class ItemPilesConfig {
         { path: "type", filters: "ancestry" },
         { path: "type", filters: "perk" },
         { path: "type", filters: "spell" },
+        { path: "type", filters: "feature" },
         { path: "type", filters: "startingpack" },
       ],
 

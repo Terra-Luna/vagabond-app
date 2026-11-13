@@ -7,6 +7,7 @@ import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/E
 import { getItemChoiceRules, getItemGrants, getItemRules, getItemRuleSources, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../util/lang"
+import { EditButton } from "../../../view/component/EditButton"
 import { ClearHeader, Header } from "../../../view/component/Header"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
 import { HeroCreationLabel } from "../../hero-creator/component/HeroCreationTypography"
@@ -26,7 +27,7 @@ export const useSpellSelectionView = (
 ) => {
   const strings = appLang.HeroCreation
   const isCreationMode = navButtons?.length > 0
-
+  const [isChangingAncestrySpell, setIsChangingAncestrySpell] = useState(false)
   // All spells for selection.
   const [spellsList, setSpellsList] = useState<
     {
@@ -272,6 +273,15 @@ export const useSpellSelectionView = (
                         }
                         name={slot.label}
                         source={slot.ruleName}
+                        action={
+                          idx === 0 ? (
+                            <EditButton
+                              onEdit={() =>
+                                setIsChangingAncestrySpell((prev) => !prev)
+                              }
+                            />
+                          ) : undefined
+                        }
                       />
                     ))}
                 </div>
@@ -325,9 +335,10 @@ export const useSpellSelectionView = (
                 </div>
               )}
 
-              {/* SELECTABLE ANCESTRY SPELL SLOTS (HERO CREATION ONLY) */}
+              {/* SELECTABLE ANCESTRY SPELL SLOTS (HERO CREATION, UNFILLED SLOTS, OR WHEN CHANGING) */}
               {ancestrySpellSlots.length > 0 &&
                 (isCreationMode ||
+                  isChangingAncestrySpell ||
                   ancestrySpellSlots.some(
                     (slot) => slot.value.length === 0,
                   )) && (

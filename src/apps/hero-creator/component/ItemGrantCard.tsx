@@ -1,3 +1,5 @@
+import { ReactNode } from "react"
+
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { HeroCreationSubLabel, HeroCreationSubtext } from "./HeroCreationTypography"
 
@@ -6,11 +8,13 @@ export const ItemGrantCard = ({
   name,
   subtext,
   source,
+  action,
 }: {
   img?: string
   name: string
   subtext?: string | undefined
   source: string
+  action?: ReactNode
 }) => {
   return (
     <div
@@ -28,8 +32,13 @@ export const ItemGrantCard = ({
         <HeroCreationSubLabel text={name} />
         {subtext && <HeroCreationSubtext text={subtext} />}
       </div>
-      <div className={`bg-context-menu-fill px-1 py-0.5 ${tableBorderRounded}`}>
-        <HeroCreationSubtext text={source} />
+      <div className="flex gap-x-2 items-center">
+        <div
+          className={`bg-context-menu-fill px-1 py-0.5 ${tableBorderRounded}`}
+        >
+          <HeroCreationSubtext text={source} />
+        </div>
+        {action}
       </div>
     </div>
   )
