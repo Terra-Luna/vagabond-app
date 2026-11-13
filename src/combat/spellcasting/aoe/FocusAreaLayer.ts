@@ -41,11 +41,18 @@ export class FocusAreaLayer {
     })
     Hooks.on("updateToken", async (doc: any, changed: any) => {
       if ("disposition" in changed) this.sync()
-      if (!this.followsActor(doc.actorId)) return
       if (!("rotation" in changed) && !isMovement(changed)) return
+      if (!this.followsToken(doc)) return
       if (doc.object) await LightSourceUtil.settleAnimations([doc.object])
       this.sync()
     })
+    // A Familiar dying (or coming back) changes whether the Aura centered on it exists.
+    const syncOnDeadStatus = (effect: any) => {
+      if (effect?.statuses?.has("dead")) this.sync()
+    }
+    Hooks.on("createActiveEffect", syncOnDeadStatus)
+    Hooks.on("deleteActiveEffect", syncOnDeadStatus)
+    Hooks.on("deleteToken", () => this.sync())
     Hooks.on("updateScene", (_scene: any, changed: any) => {
       if (foundry.utils.hasProperty(changed, `flags.${sys_id}`)) this.sync()
     })
@@ -57,10 +64,16 @@ export class FocusAreaLayer {
     PlacedGlyph.onSelect(() => this.sync())
   }
 
-  private followsActor(actorId?: string) {
-    const actor = actorId ? game.actors?.get(actorId) : undefined
-    return FocusSpellUtil.instances(actor).some(
-      (it) => it.delivery?.area?.follow?.actorId === actorId,
+  /** Whether a Focus area is drawn around this token: its caster's, or the Familiar an Aura is centered on. */
+  private followsToken(doc: any) {
+    return [...(game.actors ?? [])].some((actor: any) =>
+      FocusSpellUtil.instances(actor).some((it) => {
+        const follow = it.delivery?.area?.follow
+        if (!follow) return false
+        return follow.tokenId
+          ? follow.tokenId === doc.id
+          : follow.actorId === doc.actorId
+      }),
     )
   }
 

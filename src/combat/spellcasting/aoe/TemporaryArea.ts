@@ -7,6 +7,8 @@ export type TemporaryAreaType = PlacedArea & {
   casterName: string
   spellName: string
   deliveryName: string
+  /** The Familiar token an Aura was centered on: the area ends if that token dies. */
+  anchorTokenId?: string
 }
 
 /**
@@ -44,6 +46,7 @@ export class TemporaryArea {
       })),
     }
     delete fixed.follow
+    if (area.follow?.tokenId) fixed.anchorTokenId = area.follow.tokenId
     if (!fixed.cells.length) return
     if (game.user?.isActiveGM)
       return TemporaryArea.store(area.sceneId, attackId, fixed)

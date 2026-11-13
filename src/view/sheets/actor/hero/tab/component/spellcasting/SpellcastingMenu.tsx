@@ -16,8 +16,9 @@ import { AreaOccupants } from "../../../../../../../combat/spellcasting/aoe/targ
 import { AreaTargeter } from "../../../../../../../combat/spellcasting/aoe/targeting/AreaTargeter"
 import { applyCastDefaults } from "../../../../../../../combat/spellcasting/cast-defaults"
 import { restoreMenuState, type SpellcastingMenuState, spellStateKey } from "../../../../../../../combat/spellcasting/menu-state"
-import { AreaOfEffectDelivery, Aura, Cone, Cube, getNewDeliveryOptions, Glyph, Imbue, Line, PerTargetDelivery, PlacedArea, Remote, SpellDelivery, SpellSnapshot, Sphere } from "../../../../../../../combat/spellcasting/SpellDelivery"
+import { AreaOfEffectDelivery, Aura, type AuraCenter, Cone, Cube, getNewDeliveryOptions, Glyph, Imbue, Line, PerTargetDelivery, PlacedArea, Remote, SpellDelivery, SpellSnapshot, Sphere } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
+import { FamiliarUtil } from "../../../../../../../model/actor/util/FamiliarUtil"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { sys_id } from "../../../../../../../util/foundry-util"
 import { appLang } from "../../../../../../../util/lang"
@@ -26,6 +27,8 @@ import { tableBorder } from "../../../../../../common/border-styles"
 import { buttonAnimation } from "../../../../../../component/Button"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { Tooltip } from "../../../../../../component/Tooltip"
+import { useFoundryHook } from "../../../../../../wrappers/hooks"
+import { AuraCenterInput } from "./input/AuraCenterInput"
 import { DeliverySelector } from "./input/DeliverySelectior"
 import { DiceCountInput } from "./input/DiceCountInput"
 import { LineExpansionInut } from "./input/LineExpansionInput"
@@ -57,6 +60,22 @@ export const useSpellCastingMenu = (
   const [deliveries, setDeliveries] = useState<SpellDelivery[]>([])
   const [deliveryIndex, setDeliveryIndex] = useState<number>(6)
 
+  // A Familiar following the caster can be the center of their Aura. Redraw when one appears, moves out of reach or dies.
+  const [, setFamiliarRevision] = useState(0)
+  const refreshFamiliars = () => setFamiliarRevision((prev) => prev + 1)
+  useFoundryHook("createToken" as any, refreshFamiliars)
+  useFoundryHook("deleteToken" as any, refreshFamiliars)
+  useFoundryHook("canvasReady" as any, refreshFamiliars)
+  useFoundryHook("createActiveEffect" as any, refreshFamiliars)
+  useFoundryHook("deleteActiveEffect" as any, refreshFamiliars)
+  useFoundryHook("updateActor" as any, (_doc: any, changed: any) => {
+    if (foundry.utils.hasProperty(changed, `flags.${sys_id}`))
+      refreshFamiliars()
+  })
+  useFoundryHook("updateToken" as any, (_doc: any, changed: any) => {
+    if ("delta" in changed) refreshFamiliars()
+  })
+  const familiarToken = FamiliarUtil.tokensOf(actor)[0]
   // A caster at their Focus limit shouldn't be handed a Focused cast that would overwrite what they are Focusing on.
   // With room for several Focuses they can't Focus another at all (the box is locked); with a single Focus they
   // can still tick it to replace the old one. The refs let every change to the deliveries see the latest values.
@@ -311,6 +330,14 @@ export const useSpellCastingMenu = (
     [updateDeliveries],
   )
 
+  const onSelectAuraCenter = useCallback(
+    (center: AuraCenter) =>
+      updateDeliveries((d) => {
+        if (d instanceof Aura) d.setCenter(center)
+      }),
+    [updateDeliveries],
+  )
+
   const onUpdateTargetCount = useCallback(
     (input: string | null) => {
       const count = Math.max(1, Number(input) || 1)
@@ -322,6 +349,11 @@ export const useSpellCastingMenu = (
   )
 
   const activeDelivery = deliveries[deliveryIndex]
+  // The Aura is centered on the Familiar only while the caster has one on the scene; otherwise it falls back to them.
+  const auraCenterTokenId =
+    activeDelivery instanceof Aura && activeDelivery.center === "familiar"
+      ? (familiarToken?.id as string | undefined)
+      : undefined
   const damageType = activeDelivery?.spell?.damageType
   // Only an Aura lets the caster choose; other areas hit everyone inside.
   const targetingPref =
@@ -365,14 +397,20 @@ export const useSpellCastingMenu = (
     const show = () =>
       targetArea(
         previewShape === "aura"
-          ? renderer.showAura(actor, previewSize)
+          ? renderer.showAura(
+              actor,
+              previewSize,
+              auraCenterTokenId
+                ? canvas?.scene?.tokens.get(auraCenterTokenId)?.object
+                : undefined,
+            )
           : renderer.showCone(actor, previewSize),
       )
     auraPreviewShow.current = show
     show()
     // Positions and rotation are staged while a token animates, so redraw once it has settled.
     const hookId = Hooks.on("updateToken", async (doc: any, changed: any) => {
-      if (doc.actorId !== actor.id) return
+      if (doc.actorId !== actor.id && doc.id !== auraCenterTokenId) return
       if (
         previewShape === "cone" &&
         !("rotation" in changed) &&
@@ -392,6 +430,7 @@ export const useSpellCastingMenu = (
     previewShape,
     previewSize,
     actor,
+    auraCenterTokenId,
     damageType,
     targetingPref,
     targetArea,
@@ -611,6 +650,7 @@ export const useSpellCastingMenu = (
           delivery instanceof PerTargetDelivery
             ? delivery.targetCount
             : undefined,
+        auraCenter: delivery instanceof Aura ? delivery.center : undefined,
       }
       // The latest settings are kept as the menu's last state, and under the spell for when it is picked again.
       await actor.update({
@@ -651,6 +691,8 @@ export const useSpellCastingMenu = (
             delivery instanceof Aura ? ("aura" as const) : ("cone" as const),
           size: delivery.size,
           actorId: actor.id ?? "",
+          ...(delivery instanceof Aura &&
+            auraCenterTokenId && { tokenId: auraCenterTokenId }),
         },
       }),
       cells: (followsCaster ? [] : placedRef.current).map((p) => ({
@@ -846,6 +888,12 @@ export const useSpellCastingMenu = (
               <div className="flex gap-x-1 items-end">
                 {targetOrAreaInput()}
                 {renderLineExpansions()}
+                {delivery instanceof Aura && familiarToken && (
+                  <AuraCenterInput
+                    center={auraCenterTokenId ? "familiar" : "self"}
+                    onSelectCenter={onSelectAuraCenter}
+                  />
+                )}
               </div>
 
               <div className="flex gap-x-1 ml-auto items-end font-eskapade">

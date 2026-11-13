@@ -2,7 +2,7 @@ import { describe, expect, test } from "@jest/globals"
 
 import { applyCastDefaults } from "../../../src/combat/spellcasting/cast-defaults"
 import { restoreMenuState, type SpellcastingMenuState, spellStateKey } from "../../../src/combat/spellcasting/menu-state"
-import { Line, type SpellSnapshot, Sphere } from "../../../src/combat/spellcasting/SpellDelivery"
+import { Aura, Line, type SpellSnapshot, Sphere } from "../../../src/combat/spellcasting/SpellDelivery"
 
 const spell = (uuid: string): SpellSnapshot => ({
   uuid,
@@ -70,5 +70,21 @@ describe("menu state", () => {
       settings({ deliveryName: "Line", size: 60, height: 20, width: 10 }),
     )
     expect([line.size, line.height, line.width]).toEqual([60, 20, 10])
+  })
+
+  test("an Aura comes back centered where it was last set", () => {
+    const aura = new Aura(spell("a"), mods)
+    expect(aura.center).toBe("self")
+    restoreMenuState(
+      aura,
+      settings({ deliveryName: "Aura", auraCenter: "familiar" }),
+    )
+    expect(aura.center).toBe("familiar")
+  })
+
+  test("an older saved state leaves the Aura centered on its caster", () => {
+    const aura = new Aura(spell("a"), mods)
+    restoreMenuState(aura, settings({ deliveryName: "Aura" }))
+    expect(aura.center).toBe("self")
   })
 })

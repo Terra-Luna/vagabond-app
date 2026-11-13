@@ -25,6 +25,14 @@ const DefaultEditModeContextValue: EditModeContextProps = {
 /** This is the react wiring to make a context, all we care about is that now there is a EditModeContext.Provider property we can render out */
 export const EditModeContext = createContext(DefaultEditModeContextValue)
 
+/** For controls that must always be interactive, whatever the surrounding sheet's edit mode. */
+export const alwaysEditingContext: EditModeContextProps = {
+  isEditMode: true,
+  setEditMode: () => {},
+  toggleEditMode: () => {},
+  editModeToggleBtn: null,
+}
+
 export const useEditMode = (item?: Item) => {
   const context = useContext(EditModeContext)
   const canToggleEditMode = game.user?.isActiveGM || item?.isOwner

@@ -34,9 +34,9 @@ export class AreaRenderer {
     this.pinned.clear()
   }
 
-  /** Highlights every grid square within `radiusFeet` of the Hero's token. */
-  showAura(actor: any, radiusFeet: number) {
-    return this.showAroundToken(actor, "aura", radiusFeet)
+  /** Highlights every grid square within `radiusFeet` of the Hero's token, or of `token` when the Aura is centered elsewhere. */
+  showAura(actor: any, radiusFeet: number, token?: any) {
+    return this.showAroundToken(actor, "aura", radiusFeet, token)
   }
 
   /** Highlights the squares of a cone `lengthFeet` long, from the token's center toward where it faces. */
@@ -44,13 +44,14 @@ export class AreaRenderer {
     return this.showAroundToken(actor, "cone", lengthFeet)
   }
 
-  /** The square centers an Aura or Cone currently covers around the Hero's token, without drawing anything. */
+  /** The square centers an Aura or Cone currently covers around the Hero's token (or `token`), without drawing anything. */
   static cellsAroundToken(
     actor: any,
     kind: TokenEmittedArea,
     feet: number,
+    token?: any,
   ): Point[] {
-    const placement = AreaRenderer.placeAtToken(actor, kind, feet)
+    const placement = AreaRenderer.placeAtToken(actor, kind, feet, token)
     if (!placement || !(feet > 0)) return []
     const { grid, rect, shape } = placement
     return WallClip.reachable(
@@ -71,9 +72,10 @@ export class AreaRenderer {
     actor: any,
     kind: TokenEmittedArea,
     feet: number,
+    anchor?: any,
   ) {
     const grid = AreaRenderer.grid()
-    const token = AreaRenderer.tokenFor(actor)
+    const token = anchor ?? AreaRenderer.tokenFor(actor)
     if (!grid || !token) return undefined
     const rect: Rect = {
       x: token.document.x,
@@ -163,9 +165,10 @@ export class AreaRenderer {
     actor: any,
     kind: TokenEmittedArea,
     reachFeet: number,
+    anchor?: any,
   ): Point[] {
     this.clear()
-    const placement = AreaRenderer.placeAtToken(actor, kind, reachFeet)
+    const placement = AreaRenderer.placeAtToken(actor, kind, reachFeet, anchor)
     if (!placement) return []
     return this.paint(
       this.preview,

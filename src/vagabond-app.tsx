@@ -23,6 +23,7 @@ import { HuntersMark } from "./combat/engine/util/HuntersMark"
 import { FocusAreaLayer } from "./combat/spellcasting/aoe/FocusAreaLayer"
 import { TemporaryArea } from "./combat/spellcasting/aoe/TemporaryArea"
 import { TokenHeading } from "./combat/spellcasting/aoe/TokenHeading"
+import { FamiliarAura } from "./combat/spellcasting/FamiliarAura"
 import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
 import { AdversaryDataModel } from "./model/actor/AdversaryDataModel"
 import { HeroDataModel } from "./model/actor/HeroDataModel"
@@ -895,6 +896,7 @@ Hooks.on("deleteCombat", (combat: Combat, options: any, userId: string) => {
 })
 
 FocusSpellUtil.registerHooks()
+FamiliarAura.registerHooks()
 PolymorphUtil.registerHooks()
 StatusImmunityUtil.registerHooks()
 TokenHeading.registerHooks()

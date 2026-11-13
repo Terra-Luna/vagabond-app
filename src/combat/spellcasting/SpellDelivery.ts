@@ -7,7 +7,12 @@ export interface PlacedArea {
   /** Centers of the grid squares the area covers. Empty for areas that follow the caster. */
   cells: { x: number; y: number }[]
   /** Set for Auras and Cones: the area is recomputed from the caster's token whenever it moves or turns. */
-  follow?: { kind: "aura" | "cone"; size: number; actorId: string }
+  follow?: {
+    kind: "aura" | "cone"
+    size: number
+    actorId: string
+    tokenId?: string
+  }
   /** CSS color of the area, taken from the spell's damage type. */
   color: string
   /** Image drawn in each square (Glyphs). */
@@ -423,6 +428,8 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
   }
 
 }
+export type AuraCenter = "self" | "familiar"
+
 export class Aura extends AreaOfEffectDelivery {
 
   override name = appLang.SpellDeliveries.aura.name
@@ -430,6 +437,11 @@ export class Aura extends AreaOfEffectDelivery {
   override targetLabel = appLang.SpellDeliveries.aura.targetLabel
   override baseSize: number = 10
   override baseManaCost: number = 2
+  center: AuraCenter = "self"
+
+  setCenter(center: AuraCenter) {
+    this.center = center
+  }
 
 }
 export class Cone extends AreaOfEffectDelivery {

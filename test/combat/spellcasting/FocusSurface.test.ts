@@ -84,6 +84,16 @@ describe("FocusSurface", () => {
     expect(ids).toEqual(["b"])
   })
 
+  it("never hits the Familiar an Aura is centered on", () => {
+    mockInside = [token("fam", "familiarActor"), token("b", "other")]
+    const ids = FocusSurface.tokensIn({
+      delivery: {
+        area: { follow: { actorId: "caster", tokenId: "fam" } },
+      },
+    } as any)
+    expect(ids).toEqual(["b"])
+  })
+
   it("an arrival takes On Enter straight away when no check is owed", async () => {
     await FocusSurface.onMove({}, surfaceInstance() as any)
 

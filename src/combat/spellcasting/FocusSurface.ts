@@ -28,15 +28,16 @@ export class FocusSurface {
 
   /**
    * Ids of the tokens the surface affects: those the spell's auto-targeting preference selects (everyone, unless it is
-   * an Aura set to a disposition). A caster is never hit by an area that follows them.
+   * an Aura set to a disposition). A caster is never hit by an area that follows them, nor is the Familiar an Aura is centered on.
    */
   static tokensIn(instance: FocusInstance): string[] {
     const tokens = FocusAreaExposure.autoPref(instance)
       ? FocusAreaExposure.targetsIn(instance)
       : FocusAreaExposure.occupantsOf(instance)
-    const follower = instance.delivery?.area?.follow?.actorId
+    const follow = instance.delivery?.area?.follow
     return tokens
-      .filter((t) => !follower || t.document.actorId !== follower)
+      .filter((t) => !follow || t.document.actorId !== follow.actorId)
+      .filter((t) => !follow?.tokenId || t.document.id !== follow.tokenId)
       .map((t) => t.document.id as string)
   }
 

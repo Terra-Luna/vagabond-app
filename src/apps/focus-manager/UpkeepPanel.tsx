@@ -6,17 +6,10 @@ import type { FocusInstance } from "../../model/actor/util/FocusSpellUtil"
 import { appLang } from "../../util/lang"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { SingleSelect } from "../../view/component/SingleSelect"
-import { EditModeContext } from "../../view/context/EditModeContext/Hooks"
+import { alwaysEditingContext, EditModeContext } from "../../view/context/EditModeContext/Hooks"
 import { useBusy } from "./useBusy"
 
 type FavorSource = "none" | "luck" | "studied"
-
-const alwaysEditing = {
-  isEditMode: true,
-  setEditMode: () => {},
-  toggleEditMode: () => {},
-  editModeToggleBtn: null,
-}
 
 /** Step one of a round: pay the mana and attempt the Cast check, or let the Focus go. */
 export const UpkeepPanel = ({
@@ -82,7 +75,7 @@ export const UpkeepPanel = ({
       {(luck > 0 || studied > 0) && needsCheck && (
         <div className="flex items-center justify-center gap-x-2 text-sm my-1">
           <span>{appLang.Spellcasting.focusFavorLabel}</span>
-          <EditModeContext.Provider value={alwaysEditing}>
+          <EditModeContext.Provider value={alwaysEditingContext}>
             <SingleSelect
               value={favorWith}
               setValue={setFavorWith}

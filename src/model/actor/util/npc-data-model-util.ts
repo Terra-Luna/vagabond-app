@@ -7,9 +7,9 @@ import type { AdversaryDataModel } from "../AdversaryDataModel"
 import type { HeroDataModel } from "../HeroDataModel"
 import type { NpcDataModel } from "../NpcDataModel"
 import { getDamageAverage } from "../schema/npc-action"
+import { FOLLOWER_HERO_FLAG, FOLLOWER_SKILL_FLAG } from "./follower-flags"
 
-export const FOLLOWER_HERO_FLAG = "followerHeroId"
-export const FOLLOWER_SKILL_FLAG = "followerSkill"
+export { FOLLOWER_HERO_FLAG, FOLLOWER_SKILL_FLAG }
 
 export interface FollowerContext {
   hero: Actor & { system: HeroDataModel }

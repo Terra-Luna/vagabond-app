@@ -2,6 +2,7 @@ import { PlacedGlyph } from "../../combat/spellcasting/aoe/PlacedGlyph"
 import { FocusSurface } from "../../combat/spellcasting/FocusSurface"
 import { FocusUpkeep } from "../../combat/spellcasting/FocusUpkeep"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { FamiliarUtil } from "../../model/actor/util/FamiliarUtil"
 import { FocusSpellUtil } from "../../model/actor/util/FocusSpellUtil"
 import { appLang } from "../../util/lang"
 import { LightSourceUtil } from "../../util/LightSourceUtil"
@@ -165,10 +166,13 @@ export class FocusManagerApp extends VagabondApplication {
   }
 
   private static onUpdateToken = (doc: any, changed: any) => {
-    // A caster moving also moves their Aura/Cone, which can sweep Hostiles in. Surfaces affect any token.
+    // A caster moving also moves their Aura/Cone, which can sweep Hostiles in, as can their Familiar's. Surfaces affect any token.
     if (
       isMovement(changed) &&
-      (isHostile(doc) || doc.actor?.type === "hero" || FocusSurface.hasAny())
+      (isHostile(doc) ||
+        doc.actor?.type === "hero" ||
+        FamiliarUtil.isFamiliar(doc.actor) ||
+        FocusSurface.hasAny())
     )
       FocusUpkeep.evaluateExposures(doc.object)
   }

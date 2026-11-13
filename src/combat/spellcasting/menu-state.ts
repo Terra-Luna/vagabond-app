@@ -1,4 +1,4 @@
-import { AreaOfEffectDelivery, Line, PerTargetDelivery, type SpellDelivery } from "./SpellDelivery"
+import { AreaOfEffectDelivery, Aura, type AuraCenter, Line, PerTargetDelivery, type SpellDelivery } from "./SpellDelivery"
 
 /** How the Spellcasting menu was last set for a spell. */
 export interface SpellcastingMenuState {
@@ -14,6 +14,7 @@ export interface SpellcastingMenuState {
   height?: number
   width?: number
   targetCount?: number
+  auraCenter?: AuraCenter
 }
 
 /** The key a spell's menu settings are stored under (a uuid has dots, which flag paths can't hold). */
@@ -32,6 +33,8 @@ export const restoreMenuState = (
   delivery.setDiscount(saved.discount)
   if (delivery instanceof AreaOfEffectDelivery && saved.size !== undefined)
     delivery.setSize(saved.size)
+  if (delivery instanceof Aura && saved.auraCenter)
+    delivery.setCenter(saved.auraCenter)
   if (
     delivery instanceof Line &&
     saved.height !== undefined &&
