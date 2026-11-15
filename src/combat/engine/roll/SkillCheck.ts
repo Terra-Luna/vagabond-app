@@ -16,6 +16,7 @@ export interface SkillCheckArgs {
   type: SkillCheckType
   item?: AlchemicalItemDataModel | WeaponDataModel
   skill: string
+  difficulty?: number
   d20Count?: number
   bonusDice?: DiceRollSchema[]
   modifier?: number
@@ -120,7 +121,8 @@ export class SkillCheck {
 
     this.type = args.type
     this.skill = args.skill
-    this.difficulty = hero.skills[args.skill]?.value ?? hero.saves[args.skill]
+    this.difficulty =
+      args.difficulty ?? hero.skills[args.skill]?.value ?? hero.saves[args.skill]
     this.d20Count =
       args.d20Count ??
       1 + (skillMods?.extraDice ?? 0) + (globalMods?.extraDice ?? 0)
@@ -162,6 +164,7 @@ export class SkillCheck {
       const skillCheck = new SkillCheck(actor.system, {
         type: snapshot.type,
         skill: snapshot.skill,
+        difficulty: snapshot.difficulty,
         d20Count: snapshot.d20Count,
         bonusDice: snapshot.bonusDice?.map((d) => ({
           count: 1,

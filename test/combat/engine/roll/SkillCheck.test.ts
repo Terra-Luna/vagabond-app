@@ -54,6 +54,26 @@ const makeSkillCheck = (
     result: undefined,
   }) as SkillCheck
 
+describe("SkillCheck.fromJson", () => {
+  test("keeps the snapshot difficulty instead of recomputing it from the actor", () => {
+    const actor = {
+      system: { skills: { finesse: { value: 13, trained: false } }, saves: {} },
+    }
+
+    const check = SkillCheck.fromJson(actor, {
+      type: "attack",
+      skill: "finesse",
+      difficulty: 6,
+      d20Count: 1,
+      modifier: 0,
+      critThreshold: 20,
+      favorHinder: "none",
+    })
+
+    expect(check?.difficulty).toBe(6)
+  })
+})
+
 describe("SkillCheck exploding favor die", () => {
   beforeEach(() => {
     queuedRolls = []
